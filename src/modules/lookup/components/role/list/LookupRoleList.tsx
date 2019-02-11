@@ -71,22 +71,33 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.lookupRoleState.all;
+
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  if (request && request.filter) {
+    state.companyUid = request.filter.companyUid;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IRole>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IRole>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => () => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILookupRoleListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ILookupRoleListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -135,9 +146,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // toolbar controls
       toolbarControls: (callback: ListHandler) => [
         {
@@ -149,11 +157,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
@@ -161,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });

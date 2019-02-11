@@ -2,10 +2,11 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupRoleGetAllFilter } from '@lookup/classes/filters/role';
 import { ICompanyList } from '@lookup/classes/response';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { LookupRoleListFilterView } from './LookupRoleListFilterView';
 
 export type ILookupRoleListFilterResult = Pick<ILookupRoleGetAllFilter, 'companyUid'>;
@@ -43,12 +44,13 @@ interface IOwnHandler {
 
 export type LookupRoleListFilterProps
   = IOwnOption
-  & WithUser
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCompany
   & InjectedIntlProps;
 
 const createProps: mapper<LookupRoleListFilterProps, IOwnState> = (props: LookupRoleListFilterProps): IOwnState => ({
@@ -97,12 +99,34 @@ const handlerCreators: HandleCreators<LookupRoleListFilterProps, IOwnHandler> = 
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupRoleListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid } = this.props.initialProps;
+
+      // filter company
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+          
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const LookupRoleListFilter = compose<LookupRoleListFilterProps, IOwnOption>(
   setDisplayName('LookupRoleListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
+  withLookupCompany,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(LookupRoleListFilterView);

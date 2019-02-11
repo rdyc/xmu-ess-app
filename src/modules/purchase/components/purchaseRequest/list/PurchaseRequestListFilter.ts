@@ -9,7 +9,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,6 +20,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
 
 export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' >;
@@ -94,6 +98,8 @@ export type PurchaseRequestListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -198,12 +204,53 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListFilterProps, IOwnState> = {
+  componentDidMount() {
+    if (this.props.initialProps) {
+      const {customerUid, statusType, isSettlement, isRejected} = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      if (isSettlement) {
+        this.props.setFilterSettlement(isSettlement);
+      }
+
+      if (isRejected) {
+        this.props.setFilterRejected(isRejected);
+      }
+    }
+  }
+};
+
 export const PurchaseRequestListFilter = compose<PurchaseRequestListFilterProps, IOwnOption>(
   setDisplayName('PurchaseRequestListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(PurchaseRequestListFilterView);

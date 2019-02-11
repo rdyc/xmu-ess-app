@@ -30,10 +30,6 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { ILookupMileageExceptionFilterResult, LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends ILookupMileageExceptionFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageException>;
@@ -54,7 +50,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
@@ -85,30 +80,42 @@ const listView: React.SFC<AllProps> = props => (
 </React.Fragment>
 );
 
-const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-});
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
+  const { request } = props.mileageExceptionState.all;
+
+  const state: OwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.companyUid = request.filter.companyUid,
+    state.roleUid = request.filter.roleUid;
+  }
+  
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
-  setShouldUpdate: (prevState: OwnState) => () => ({
+  setShouldUpdate: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
   
-  setConfig: () => (config: IListConfig<IMileageException>) => ({
+  setConfig: () => (config: IListConfig<IMileageException>): Partial<OwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: ILookupMileageExceptionFilterResult) => ({
+  setFilterApplied: () => (filter: ILookupMileageExceptionFilterResult): Partial<OwnState> => ({
     ...filter,
     isFilterOpen: false
   })
 };
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
-  handleFilterVisibility: (props: AllProps) => () => {
+  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AllProps) => (filter: ILookupMileageExceptionFilterResult) => {
@@ -163,17 +170,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
                 roleUid: this.props.companyUid ? this.props.roleUid : undefined,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,

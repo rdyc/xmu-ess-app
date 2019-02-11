@@ -9,7 +9,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,6 +20,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { PurchaseSettlementListFilterView } from './PurchaseSettlementListFilterView';
 
 export type IPurchaseSettlementListFilterResult = Pick<ISettlementGetAllFilter, 'customerUid' | 'isRejected' | 'statusType' >;
@@ -85,6 +89,8 @@ export type PurchaseSettlementListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -180,12 +186,49 @@ const handlerCreators: HandleCreators<PurchaseSettlementListFilterProps, IOwnHan
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListFilterProps, IOwnState> = {
+  componentDidMount() {
+    if (this.props.initialProps) {
+      const { customerUid, statusType, isRejected } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      if (isRejected) {
+        this.props.setFilterRejected(isRejected);
+      }
+    }
+  }
+};
+
 export const PurchaseSettlementListFilter = compose<PurchaseSettlementListFilterProps, IOwnOption>(
   setDisplayName('PurchaseSettlementListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(PurchaseSettlementListFilterView);

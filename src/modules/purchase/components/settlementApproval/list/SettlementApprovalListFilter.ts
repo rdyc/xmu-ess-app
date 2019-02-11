@@ -10,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,6 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { SettlementApprovalListFilterView } from './SettlementApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -107,6 +111,8 @@ export type SettlementApprovalListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -226,12 +232,57 @@ const handlerCreators: HandleCreators<SettlementApprovalListFilterProps, IOwnHan
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<SettlementApprovalListFilterProps, IOwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, statusType, status, isNotify } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
+
+      if (isNotify) {
+        this.props.setFilterNotify(isNotify);
+      }
+    }
+  }
+};
+
 export const SettlementApprovalListFilter = compose<SettlementApprovalListFilterProps, IOwnOption>(
   setDisplayName('SettlementApprovalListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(SettlementApprovalListFilterView);
