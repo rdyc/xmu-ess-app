@@ -1,5 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
+import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeTrainingContainerFormView } from './AccountEmployeeTrainingContainerFormView';
 
@@ -21,6 +22,7 @@ export type AccountEmployeeTrainingFormData = {
 interface OwnProps {
   formMode: FormMode | undefined;
   formAction: 'update' | 'delete';
+  handleValidity: (valid: boolean) => void;
 }
 
 interface FormValueProps {
@@ -38,7 +40,23 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(AccountEmployeeTrainingContainerFormView);
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingContainerFormProps, {}> = {
+  componentDidMount() {
+    this.props.handleValidity(this.props.valid);
+  },
+  componentDidUpdate(prevProps: AccountEmployeeTrainingContainerFormProps) {
+    if (prevProps.valid !== this.props.valid) {
+      this.props.handleValidity(this.props.valid); 
+    }
+  }
+};
+
+// const connectedView = connect(mapStateToProps)(AccountEmployeeTrainingContainerFormView);
+
+const enhance = compose<AccountEmployeeTrainingContainerFormProps, OwnProps & InjectedFormProps<AccountEmployeeTrainingFormData, OwnProps>>(
+  connect(mapStateToProps),
+  lifecycle(lifecycles)
+)(AccountEmployeeTrainingContainerFormView);
 
 export const AccountEmployeeTrainingContainerForm = reduxForm<AccountEmployeeTrainingFormData, OwnProps>({
   form: formName,
@@ -46,4 +64,4 @@ export const AccountEmployeeTrainingContainerForm = reduxForm<AccountEmployeeTra
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true
-})(connectedView);
+})(enhance);
