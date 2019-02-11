@@ -163,11 +163,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         }
       ],
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {  
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || forceReload) {
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: user.company.uid,
@@ -180,7 +180,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });

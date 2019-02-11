@@ -2,13 +2,16 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { IPositionGetAllFilter } from '@lookup/classes/filters/position/IPositionGetAllFilter';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -61,6 +64,7 @@ export type PositionListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCompany
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -112,12 +116,34 @@ const handlerCreators: HandleCreators<PositionListFilterProps, IOwnHandler> = {
 
 };
 
+const lifecycles: ReactLifeCycleFunctions<PositionListFilterProps, IOwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid } = this.props.initialProps;
+
+      // filter customer
+      if ( companyUid ) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const PositionListFilter = compose<PositionListFilterProps, IOwnOption>(
   setDisplayName('PositionListFilter'),
   withUser,
   withLayout,
   withStyles(styles),
   injectIntl,
+  withLookupCompany,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(PositionListFilterView);
