@@ -119,6 +119,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       ...formData.information,
       ...formData.bank,
       ...formData.contact,
+      image: null
     };
 
     // creating
