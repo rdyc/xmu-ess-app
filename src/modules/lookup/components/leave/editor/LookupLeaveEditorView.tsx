@@ -9,7 +9,15 @@ import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const {     formMode, 
+    handleValidate, 
+    handleSubmit, 
+    handleSubmitSuccess, 
+    handleSubmitFail,
+    submitDialogTitle, 
+    submitDialogContentText, 
+    submitDialogConfirmedText, 
+    submitDialogCancelText  } = props;
   const { isLoading, response } = props.lookupLeaveState.detail;
 
   const renderForm = (formData: LookupLeaveFormData) => (
@@ -20,6 +28,10 @@ export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

@@ -3,14 +3,10 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import {
-  ILookupLeavePostPayload,
-  ILookupLeavePutPayload,
-} from '@lookup/classes/request/';
+import { layoutMessage } from '@layout/locales/messages';
+import { ILookupLeavePostPayload, ILookupLeavePutPayload } from '@lookup/classes/request/';
 import { ILookupLeave } from '@lookup/classes/response';
-import {
-  LookupLeaveFormData,
-} from '@lookup/components/leave/editor/forms/LookupLeaveForm';
+import { LookupLeaveFormData } from '@lookup/components/leave/editor/forms/LookupLeaveForm';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,6 +26,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupLeaveEditorView } from './LookupLeaveEditorView';
 
 interface OwnHandlers {
@@ -47,6 +44,10 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   leaveUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -71,8 +72,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'company', 'name',
-      'year', 'allocation', 'category'
+      'company', 'description', 'date',
     ];
 
     requiredFields.forEach(field => {
@@ -150,7 +150,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/lookup/leaves');
+    history.push(`/lookup/leaves/${response.uid}`);
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -184,7 +184,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.leave.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.leave.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -209,11 +213,6 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       return;
     }
 
-    stateUpdate({ 
-      companyUid: user.company.uid,
-      positionUid: user.position.uid
-    });
-
     if (!isNullOrUndefined(history.location.state)) {
       view.title = lookupMessage.leave.page.modifyTitle;
       view.subTitle = lookupMessage.leave.page.modifySubHeader;
@@ -226,13 +225,13 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       loadDetailRequest({
         companyUid: user.company.uid,
-        leaveUid: history.location.state.uid
+        leaveUid: history.location.state.uid,
       });
     }
 
     layoutDispatch.changeView({
       uid: AppMenu.LookupLeave,
-      parentUid: AppMenu.LookupLeave,
+      parentUid: AppMenu.Lookup,
       title: intl.formatMessage(view.title),
       subTitle : intl.formatMessage(view.subTitle)
     });

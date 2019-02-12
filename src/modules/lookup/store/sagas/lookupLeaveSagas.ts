@@ -8,7 +8,6 @@ import {
   lookupLeaveGetAllError,
   lookupLeaveGetAllRequest,
   lookupLeaveGetAllSuccess,
-  lookupLeaveGetByIdDispose,
   lookupLeaveGetByIdError,
   lookupLeaveGetByIdRequest,
   lookupLeaveGetByIdSuccess,
@@ -137,9 +136,9 @@ function* watchPostRequest() {
       path: `/v1/lookup/leaves/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(lookupLeaveGetAllDispose()),
         put(lookupLeavePostSuccess(response.body)),
-        put(lookupLeaveGetByIdDispose()),
-        put(lookupLeaveGetAllDispose())
+        put(lookupLeaveGetByIdSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -190,8 +189,8 @@ function* watchPutRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupLeavePutSuccess(response.body)),
-        put(lookupLeaveGetByIdDispose()),
-        put(lookupLeaveGetAllDispose())
+        put(lookupLeaveGetAllDispose()),
+        put(lookupLeaveGetByIdSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
