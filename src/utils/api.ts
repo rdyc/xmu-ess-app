@@ -20,7 +20,7 @@ export interface IApiResponse {
   statusText: string;
   headers: ICollectionValue[];
   ok: boolean;
-  body: any;
+  body?: any;
 }
 export interface IApiErrorResponse {
   status: number;
@@ -64,7 +64,7 @@ export async function apiRequest(method: string, url: string, path: string, payl
       statusText: response.statusText,
       headers: parseHeaders(response.headers),
       ok: response.ok,
-      body: text.length > 0 ? JSON.parse(text) : { message: response.statusText }
+      body: text.length > 0 ? JSON.parse(text) : undefined
     };
 
     return result;
