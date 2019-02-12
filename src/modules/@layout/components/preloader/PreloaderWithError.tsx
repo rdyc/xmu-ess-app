@@ -1,4 +1,5 @@
 import { IQueryCollectionState } from '@generic/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
@@ -15,15 +16,14 @@ import {
 } from '@material-ui/core';
 import { Warning } from '@material-ui/icons';
 import styles from '@styles';
-import { IApiHeaders } from '@utils/api';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, setDisplayName } from 'recompose';
 
-const getHeaderKey = (headers: IApiHeaders[], key: string): string => {
+const getHeaderKey = (headers: ICollectionValue[], name: string): string => {
   let result = '';
 
-  const header = headers.find(item => item.key === key);
+  const header = headers.find(item => item.name === name);
 
   if (header) {
     result = header.value;

@@ -1,16 +1,13 @@
+import { ICollectionValue } from '@layout/classes/core';
+
 import { AppUserManager } from './userManager';
 
-export interface IApiHeaders {
-  key: string;
-  value: string;
-}
-
 const parseHeaders = (headers: Headers) => {
-  const _headers: IApiHeaders[] = [];
+  const _headers: ICollectionValue[] = [];
 
   headers.forEach((v: string, k: string) => {
     _headers.push({
-      key: k,
+      name: k,
       value: v
     });
   });
@@ -21,17 +18,27 @@ const parseHeaders = (headers: Headers) => {
 export interface IApiResponse {
   status: number;
   statusText: string;
-  headers: IApiHeaders[];
+  headers: ICollectionValue[];
   ok: boolean;
   body: any;
+}
+export interface IApiErrorResponse {
+  status: number;
+  statusText: string;
+  errorId: string;
+  date: Date;
+  reason: string | string[];
 }
 
 export async function apiRequest(method: string, url: string, path: string, payload?: any, isJsonContent?: boolean) {
   const user = await AppUserManager.getUser();
-  const headers = new Headers();
+  
   let body = undefined;
+  
   const useJson = isJsonContent === undefined ? false : isJsonContent;
   
+  const headers = new Headers();
+
   headers.append('Accept', 'application/json');
 
   if (useJson) {
@@ -47,44 +54,21 @@ export async function apiRequest(method: string, url: string, path: string, payl
     headers.append('Authorization',  `Bearer ${user.access_token}`);
   }
 
-  return fetch(url + path, {
-    method,
-    headers,
-    body
-  })
-  .then(response => 
-    response.json()
-      .then(result => ({
-        status: response.status,
-        statusText: response.statusText,
-        headers: parseHeaders(response.headers),
-        ok: response.ok,
-        body: result
-      }))
-      .catch(reason => {
-        if (response.status === 204) {
-          console.info(`204:No-Content => [${method}] ${url}${path}`);
+  // invoke fetch request
+  try {
+    const response = await fetch(url + path, { method, headers, body });
+    const text = await response.text();
 
-          return {
-            status: response.status,
-            statusText: response.statusText,
-            headers: parseHeaders(response.headers),
-            ok: response.ok,
-            body: undefined
-          };
-        // tslint:disable-next-line:no-else-after-return
-        } else {
-          throw TypeError(reason);
-        }
-      })
-  )
-  .catch((error: TypeError) => {
-    switch (error.message) {
-      case 'Failed to fetch':
-        throw TypeError(`${error.message}, please check your network connection`);
+    const result: IApiResponse = {
+      status: response.status,
+      statusText: response.statusText,
+      headers: parseHeaders(response.headers),
+      ok: response.ok,
+      body: text.length > 0 ? JSON.parse(text) : { message: response.statusText }
+    };
 
-      default:
-        throw error;
-    }
-  });
+    return result;
+  } catch (error) {
+    throw error;
+  }
 }
