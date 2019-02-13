@@ -21,6 +21,7 @@ interface OwnProps {
   activityTypeValue: string | undefined;
   customerUidValue: string | undefined;
   isPresalesActivity: boolean;
+  isMaintenanceActivity: boolean;
   projectUidValue: string | undefined;
   showSiteProject: boolean;
   minDate: Date;
@@ -43,6 +44,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       activityTypeValue,
       customerUidValue,
       isPresalesActivity,
+      isMaintenanceActivity,
       projectUidValue,
       showSiteProject,
       minDate
@@ -53,7 +55,9 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
     const projectFilter: any = {
       employeeUid: user && user.uid,
       customerUid: customerUidValue,
-      projectTypes: isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
+      projectTypes: isPresalesActivity ? ProjectType.PreSales : 
+                    isMaintenanceActivity ? ProjectType.Maintenance : 
+                    [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
     };
 
     let fieldProps: SelectSystemOption & any = {};
