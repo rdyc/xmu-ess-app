@@ -33,6 +33,7 @@ interface FormValueProps {
   activityTypeValue: string | undefined;
   customerUidValue: string | undefined;
   isPresalesActivity: boolean | true;
+  isMaintenanceActivity: boolean | true;
   projectUidValue: string | undefined;
   formIsSiteProject: boolean | false;
 }
@@ -54,6 +55,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     activityTypeValue: activityType,
     customerUidValue: customerUid,
     isPresalesActivity: activityType === 'SAT02',
+    isMaintenanceActivity: activityType === 'SAT04',
     projectUidValue: projectUid,
     formIsSiteProject: projectUid
   };
