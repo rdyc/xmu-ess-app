@@ -15,6 +15,7 @@ import {
   withHandlers, 
   withStateHandlers 
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import { ExperimentMenuView } from './ExperimentMenuView';
 
 interface OwnState {
@@ -27,6 +28,8 @@ interface OwnState {
 interface OwnHandler {
   handleCheckbox: (uid: string, parentUid: string | undefined) => void;
   handleToggle: (parentUid: string) => void;
+  handleCheckParent: (uid: string) => void;
+  handleCheckChild: (uid: string, parentUid: string | undefined) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -62,6 +65,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const handlerCreators: HandleCreators<ExperimentMenuProps, OwnHandler> = {
   handleCheckbox: (props: ExperimentMenuProps) => (uid: string, parentUid: string | undefined) => {
     const { menuUids, stateUpdate } = props;
+    const { response } = props.lookupMenuState.list;
     const _check: string[] = [];
 
     if (menuUids.length >= 0) {
@@ -76,8 +80,121 @@ const handlerCreators: HandleCreators<ExperimentMenuProps, OwnHandler> = {
           }
         );
       }
+
+      if (response && response.data && isNullOrUndefined(parentUid)) {
+        response.data.map(item => {
+          if (item.parentUid && item.parentUid === uid) {
+            const findChild: number = menuUids.findIndex(child => child.uid === item.uid);
+            if (findChild === -1) {
+              menuUids.push({uid: item.uid, parentUid: item.parentUid});
+            } else {
+              menuUids.map((child, index) => {
+                if (child.uid === item.uid) {
+                  menuUids.splice(index, 1);
+                }
+                }
+              );
+            }
+          }
+        });
+      }
     } else {
       menuUids.push({uid, parentUid});
+    }
+
+    menuUids.map(item => 
+      _check.push(item.uid) 
+    );
+
+    stateUpdate({
+      check: _check
+    });
+  },
+  handleCheckParent: (props: ExperimentMenuProps) => (uid: string) => {
+    const { menuUids, stateUpdate } = props;
+    const { response } = props.lookupMenuState.list;
+    const _check: string[] = [];
+
+    if (menuUids.length >= 0) {
+      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
+      if (findIdx === -1) {
+        menuUids.push({uid, parentUid: undefined});
+      } else {
+        menuUids.map((item, index) => {
+            if (item.uid === uid) {
+              menuUids.splice(index, 1);
+            }
+          }
+        );
+      }
+
+      const findParent: number = menuUids.findIndex(parent => parent.uid === uid);
+      console.log(findParent);
+      if (response && response.data) {
+        response.data.map(item => {
+          if (item.parentUid && item.parentUid === uid) {
+            const findChild: number = menuUids.findIndex(child => child.uid === item.uid);
+            if (findParent !== -1) {
+              if (findChild === -1) {
+                menuUids.push({uid: item.uid, parentUid: item.parentUid});
+              }
+            } else if (findParent === -1 && findChild !== -1) {
+              menuUids.map((child, index) => {
+                if (child.uid === item.uid) {
+                  menuUids.splice(index, 1);
+                }
+                }
+              );
+            }
+          }
+        });
+      }
+    } else {
+      menuUids.push({uid, parentUid: undefined});
+    }
+
+    menuUids.map(item => 
+      _check.push(item.uid) 
+    );
+
+    stateUpdate({
+      check: _check
+    });
+  },
+  handleCheckChild: (props: ExperimentMenuProps) => (uid: string, parentUid: string | undefined) => {
+    const { menuUids, stateUpdate } = props;
+    const _check: string[] = [];
+
+    if (menuUids.length >= 0 && parentUid) {
+      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
+      const findParent: number = menuUids.findIndex(parent => parent.uid === parentUid);
+      if (findIdx === -1) {
+        menuUids.push({uid, parentUid});
+        if (findParent === -1) {
+          menuUids.push({uid: parentUid, parentUid: undefined});
+        }
+      } else {
+        menuUids.map((item, index) => {
+            if (item.uid === uid) {
+              menuUids.splice(index, 1);
+            }
+          }
+        );
+        const findChild: number = menuUids.findIndex(child => child.parentUid === parentUid);
+        if (findChild === -1) {
+          menuUids.map((item, index) => {
+              if (item.uid === parentUid) {
+                menuUids.splice(index, 1);
+              }
+            }
+          );
+        }
+      }
+    } else {
+      if (parentUid) {
+        menuUids.push({uid, parentUid});
+        menuUids.push({uid: parentUid, parentUid: undefined});
+      }
     }
 
     menuUids.map(item => 

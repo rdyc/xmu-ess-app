@@ -6,7 +6,7 @@ import * as React from 'react';
 import { ExperimentMenuProps } from './ExperimentMenu';
 
 export const ExperimentMenuView: React.SFC<ExperimentMenuProps> = props => {
-  const { active, isExpanded, handleToggle, handleCheckbox, check } = props;
+  const { active, isExpanded, handleToggle, check, handleCheckParent, handleCheckChild } = props;
   const { isLoading, response } = props.lookupMenuState.list;
 
   const isChecked = (uid: string) => {
@@ -29,7 +29,7 @@ export const ExperimentMenuView: React.SFC<ExperimentMenuProps> = props => {
           >
             <Checkbox 
               key={parent.uid}
-              onChange={() => handleCheckbox(parent.uid, parent.parentUid)}
+              onChange={() => handleCheckParent(parent.uid)}
               checked={isChecked(parent.uid)}
               style={{
                 height: 10
@@ -64,7 +64,7 @@ export const ExperimentMenuView: React.SFC<ExperimentMenuProps> = props => {
                     >
                       <Checkbox 
                         key={child.uid}
-                        onChange={() => handleCheckbox(child.uid, child.parentUid)}
+                        onChange={() => handleCheckChild(child.uid, child.parentUid)}
                         checked={isChecked(child.uid)}
                         style={{
                           height: 10,
