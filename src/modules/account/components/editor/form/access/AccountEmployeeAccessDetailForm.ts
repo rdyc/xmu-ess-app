@@ -58,6 +58,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
         
         case 'companyUid':
           fieldProps = {
+            required: true,
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             disabled: formMode === FormMode.Delete,
@@ -67,6 +68,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'unitType':
           fieldProps = {
+            required: true,
             category: 'unit',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
@@ -78,6 +80,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'departmentType':
           fieldProps = {
+            required: true,
             category: 'department',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
@@ -90,6 +93,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'levelType':
           fieldProps = {
+            required: true,
             category: 'level',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
@@ -100,6 +104,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'roleUid':
           fieldProps = {
+            required: true,
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
@@ -110,6 +115,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'positionUid':
           fieldProps = {
+            required: true,
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
@@ -120,6 +126,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'start': 
           fieldProps = {
+            required: true,
             type: 'text',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),

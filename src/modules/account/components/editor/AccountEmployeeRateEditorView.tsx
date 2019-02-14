@@ -1,7 +1,7 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Dialog, DialogTitle, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { FormInstance } from 'redux-form';
@@ -10,7 +10,7 @@ import { AccountEmployeeRateForm } from './form/rate/AccountEmployeeRateForm';
 
 export const AccountEmployeeRateEditorView: React.SFC<AccountEmployeeRateEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
-    intl, initialValues, isOpenDialog } = props;
+    intl, initialValues, isOpenDialog, handleValidity, validity } = props;
   
   const ref = React.createRef<FormInstance<any, any, any>>();
   const isMobile = isWidthDown('sm', props.width);
@@ -27,20 +27,31 @@ export const AccountEmployeeRateEditorView: React.SFC<AccountEmployeeRateEditorP
         </Typography>
       </DialogTitle>
 
-      <AccountEmployeeRateForm 
-        formMode={formMode || FormMode.New}
-        ref={ref}
-        initialValues={initialValues}
-        validate={handleValidate}
-        onSubmit={handleSubmit} 
-        onSubmitSuccess={handleSubmitSuccess}
-        onSubmitFail={handleSubmitFail}
-        handleDialogClose={props.handleDialogClose}
-        buttonDiscard={intl.formatMessage(layoutMessage.action.discard)}
-        buttonProcess={intl.formatMessage(layoutMessage.text.processing)}
-        buttonReset={intl.formatMessage(layoutMessage.action.reset)}
-        buttonSubmit={intl.formatMessage(layoutMessage.action.submit)}
-      />
+      <DialogContent>
+        <AccountEmployeeRateForm 
+          formMode={formMode || FormMode.New}
+          ref={ref}
+          initialValues={initialValues}
+          validate={handleValidate}
+          onSubmit={handleSubmit} 
+          onSubmitSuccess={handleSubmitSuccess}
+          onSubmitFail={handleSubmitFail}
+          handleValidity={handleValidity}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.handleDialogClose()} color="secondary">
+          {props.intl.formatMessage(layoutMessage.action.discard)}
+        </Button>
+
+        <Button type="button" color="secondary" onClick={() => ref.current && ref.current.reset()} >
+          {props.intl.formatMessage(layoutMessage.action.reset)}
+        </Button>
+
+        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()} disabled={!validity}>
+          {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
+        </Button>
+      </DialogActions>      
     </Dialog>
   );
 

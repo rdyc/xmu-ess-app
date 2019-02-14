@@ -1,5 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
+import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeRateFormView } from './AccountEmployeeRateFormView';
 
@@ -14,11 +15,7 @@ export type AccountEmployeeRateFormData = {
 
 interface OwnProps {
   formMode: FormMode;
-  handleDialogClose: () => void;
-  buttonSubmit: string;
-  buttonProcess: string;
-  buttonReset: string;
-  buttonDiscard: string;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface FormValueProps {
@@ -36,11 +33,27 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(AccountEmployeeRateFormView);
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateFormProps, {}> = {
+  componentDidMount() {
+    this.props.handleValidity(this.props.valid);
+  },
+  componentDidUpdate(prevProps: AccountEmployeeRateFormProps) {
+    if (prevProps.valid !== this.props.valid) {
+      this.props.handleValidity(this.props.valid); 
+    }
+  }
+};
+
+// const connectedView = connect(mapStateToProps)(AccountEmployeeRateFormView);
+
+const enhance = compose<AccountEmployeeRateFormProps, OwnProps & InjectedFormProps<AccountEmployeeRateFormData, OwnProps>>(
+  connect(mapStateToProps),
+  lifecycle(lifecycles)
+)(AccountEmployeeRateFormView);
 
 export const AccountEmployeeRateForm = reduxForm<AccountEmployeeRateFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true
-})(connectedView);
+})(enhance);
