@@ -6,6 +6,7 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
@@ -142,6 +143,12 @@ const gallery = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const employeeLeave = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={LeaveCalculationList} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/company`} component={company} />
@@ -158,5 +165,6 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/achievementchart`} component={achievement} />
     <Route path={`${props.match.path}/cogsupload`} component={cogsUpload} />
     <Route path={`${props.match.path}/imagegalleries`} component={gallery} />
+    <Route path={`${props.match.path}/employeeleave`} component={employeeLeave} />
   </Switch>
 );

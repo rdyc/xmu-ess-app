@@ -1,11 +1,11 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ICompanyList } from '@lookup/classes/response';
+import { ILookupCompany } from '@lookup/classes';
 
 export interface ILookupLeave {
   uid: string;
   companyUid: string;
-  company?: ICompanyList;
+  company?: ILookupCompany;
   categoryType: string;
   category?: ICommonSystem;
   year: number;
