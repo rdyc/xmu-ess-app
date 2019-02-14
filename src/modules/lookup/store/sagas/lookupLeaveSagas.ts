@@ -137,8 +137,8 @@ function* watchPostRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupLeaveGetAllDispose()),
-        put(lookupLeavePostSuccess(response.body)),
-        put(lookupLeaveGetByIdSuccess(response.body))
+        put(lookupLeaveGetByIdSuccess(response.body)),
+        put(lookupLeavePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -188,9 +188,9 @@ function* watchPutRequest() {
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupLeavePutSuccess(response.body)),
         put(lookupLeaveGetAllDispose()),
-        put(lookupLeaveGetByIdSuccess(response.body))
+        put(lookupLeaveGetByIdSuccess(response.body)),
+        put(lookupLeavePutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

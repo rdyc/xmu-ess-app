@@ -43,7 +43,7 @@ export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
       categoryType: undefined,
       year: undefined,
       name: undefined,
-      allocation: undefined,
+      allocation: 0,
       isWithinHoliday: undefined,
     },
   };
