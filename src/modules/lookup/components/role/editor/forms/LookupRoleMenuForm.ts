@@ -1,3 +1,4 @@
+import { Menus } from '@lookup/classes/types';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -14,25 +15,25 @@ interface OwnProps {
 interface OwnState {
   active: string | undefined;
   isExpanded: boolean;
-  menus: string[];
+  menuUids: Menus[];
+  check: string[];
+}
+
+interface OwnHandler {
+  handleToggle: (parentUid: string) => void;
+  handleCheckParent: (uid: string) => void;
+  handleCheckChild: (uid: string, parentUid: string | undefined) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  handleToggle: (type: string) => OwnState;
   stateUpdate: StateHandler<OwnState>;
-}
-
-interface OwnHandlers {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  isChecked: (type: string) => boolean;
-  handleCheck: (uid?: string, child?: string) => void;
 }
 
 export type LookupRoleMenuFormProps
   = OwnProps
   & OwnState
   & OwnStateUpdaters
-  & OwnHandlers
+  & OwnHandler
   & WithLookupMenu
   & WithStyles<typeof styles>
   & InjectedIntlProps;
@@ -40,50 +41,119 @@ export type LookupRoleMenuFormProps
 const createProps: mapper<LookupRoleMenuFormProps, OwnState> = (props: LookupRoleMenuFormProps): OwnState => ({
   active: undefined,
   isExpanded: false,
-  menus: []
+  menuUids: [],
+  check: []
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  handleToggle: (state: OwnState) => (type: string) => ({
-    active: type,
-    isExpanded: state.active === type ? !state.isExpanded : true
-  }),
-  stateUpdate: (prevState: OwnState) => (nextState: any) => ({
+  stateUpdate: (prevState: OwnState) => (newState: OwnState) => ({
     ...prevState,
-    ...nextState
+    ...newState
   })
 };
 
-const handlerCreators: HandleCreators<LookupRoleMenuFormProps, OwnHandlers> = {
-  handleChange: (props: LookupRoleMenuFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-    // 
-  },
-  isChecked: (props: LookupRoleMenuFormProps) => (type: string): boolean => {
-    const result: boolean = false;
-
-    return result;
-  },
-  handleCheck: (props: LookupRoleMenuFormProps) => (parent: string, child: string | undefined) => {
-    const { menus, stateUpdate } = props;
+const handlerCreators: HandleCreators<LookupRoleMenuFormProps, OwnHandler> = {
+  handleCheckParent: (props: LookupRoleMenuFormProps) => (uid: string) => {
+    const { menuUids, stateUpdate } = props;
     const { response } = props.lookupMenuState.list;
-    const _menus = new Set(menus);
-    
-    if (response && response.data && child === undefined) {
-      _menus.has(parent) ? _menus.delete(parent) : _menus.add(parent);  
-      response.data.map(item => {
-        if (item.parentUid && item.parentUid === parent) {
-           _menus.has(item.uid) ? _menus.delete(item.uid) : _menus.add(item.uid);  
-          } 
-        }
-      );
-    } else if (response && response.data && child !== undefined) {
-      _menus.has(child) ? _menus.delete(child) : _menus.add(child);  
+    const _check: string[] = [];
+
+    if (menuUids.length >= 0) {
+      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
+      if (findIdx === -1) {
+        menuUids.push({uid, parentUid: undefined});
+      } else {
+        menuUids.map((item, index) => {
+            if (item.uid === uid) {
+              menuUids.splice(index, 1);
+            }
+          }
+        );
+      }
+
+      const findParent: number = menuUids.findIndex(parent => parent.uid === uid);
+      console.log(findParent);
+      if (response && response.data) {
+        response.data.map(item => {
+          if (item.parentUid && item.parentUid === uid) {
+            const findChild: number = menuUids.findIndex(child => child.uid === item.uid);
+            if (findParent !== -1) {
+              if (findChild === -1) {
+                menuUids.push({uid: item.uid, parentUid: item.parentUid});
+              }
+            } else if (findParent === -1 && findChild !== -1) {
+              menuUids.map((child, index) => {
+                if (child.uid === item.uid) {
+                  menuUids.splice(index, 1);
+                }
+                }
+              );
+            }
+          }
+        });
+      }
+    } else {
+      menuUids.push({uid, parentUid: undefined});
     }
 
+    menuUids.map(item => 
+      _check.push(item.uid) 
+    );
+
     stateUpdate({
-      menus: Array.from(_menus)
+      check: _check
     });
   },
+  handleCheckChild: (props: LookupRoleMenuFormProps) => (uid: string, parentUid: string | undefined) => {
+    const { menuUids, stateUpdate } = props;
+    const _check: string[] = [];
+
+    if (menuUids.length >= 0 && parentUid) {
+      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
+      const findParent: number = menuUids.findIndex(parent => parent.uid === parentUid);
+      if (findIdx === -1) {
+        menuUids.push({uid, parentUid});
+        if (findParent === -1) {
+          menuUids.push({uid: parentUid, parentUid: undefined});
+        }
+      } else {
+        menuUids.map((item, index) => {
+            if (item.uid === uid) {
+              menuUids.splice(index, 1);
+            }
+          }
+        );
+        const findChild: number = menuUids.findIndex(child => child.parentUid === parentUid);
+        if (findChild === -1) {
+          menuUids.map((item, index) => {
+              if (item.uid === parentUid) {
+                menuUids.splice(index, 1);
+              }
+            }
+          );
+        }
+      }
+    } else {
+      if (parentUid) {
+        menuUids.push({uid, parentUid});
+        menuUids.push({uid: parentUid, parentUid: undefined});
+      }
+    }
+
+    menuUids.map(item => 
+      _check.push(item.uid) 
+    );
+
+    stateUpdate({
+      check: _check
+    });
+  },
+  handleToggle: (props: LookupRoleMenuFormProps) => (parentUid: string) => {
+    props.stateUpdate({
+      active: parentUid,
+      isExpanded: props.active ===  parentUid ? !props.isExpanded : true
+    });
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<LookupRoleMenuFormProps, {}> = {
@@ -105,7 +175,7 @@ export const LookupRoleMenuForm = compose<LookupRoleMenuFormProps, OwnProps>(
   withLookupMenu,
   injectIntl,
   withStyles(styles),
-  lifecycle<LookupRoleMenuFormProps, {}>(lifecycles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<LookupRoleMenuFormProps, OwnHandlers>(handlerCreators),
+  withHandlers<LookupRoleMenuFormProps, OwnHandler>(handlerCreators),
+  lifecycle<LookupRoleMenuFormProps, {}>(lifecycles),
 )(LookupRoleMenuFormView);

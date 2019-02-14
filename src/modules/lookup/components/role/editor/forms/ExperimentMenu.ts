@@ -33,7 +33,6 @@ interface OwnHandler {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  // stateCheckbox: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
 }
 
@@ -53,9 +52,6 @@ const createProps: mapper<ExperimentMenuProps, OwnState> = (props: ExperimentMen
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  // stateCheckbox: (prevState: OwnState) => (menuUids: string[]) => ({
-  //   menuUids
-  // }),
   stateUpdate: (prevState: OwnState) => (newState: OwnState) => ({
     ...prevState,
     ...newState
@@ -225,21 +221,7 @@ const lifecycles: ReactLifeCycleFunctions<ExperimentMenuProps, {}> = {
         }
       });
     }
-  },
-  // componentWillUpdate(prevProps: ExperimentMenuProps) {
-  //   if (prevProps.menuUids !== this.props.menuUids) {
-  //     const { menuUids, check, stateUpdate } = this.props;
-  //     const _check = new Set(check);
-
-  //     menuUids.map(item => 
-  //       _check.has(item.uid) ? _check.delete(item.uid) : _check.add(item.uid)  
-  //     );
-
-  //     stateUpdate({
-  //       check: Array.from(_check)
-  //     });
-  //   }
-  // }
+  }
 };
 
 export const ExperimentMenu = compose<ExperimentMenuProps, {}>(
