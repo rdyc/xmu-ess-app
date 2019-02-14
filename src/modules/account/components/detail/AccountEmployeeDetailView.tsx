@@ -91,7 +91,7 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
   const render = (
   <React.Fragment>
     <DetailPage
-      tab2={AccountEmployeeTabs.detail}      
+      tab={AccountEmployeeTabs.detail}      
     >
       <SinglePage
         config={config}
@@ -99,18 +99,18 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
       />
     </DetailPage>
       <Delete 
-          action={props.action}
-          isOpenDialog={props.dialogOpen}
-          title={props.dialogTitle}
-          content={props.dialogContent}
-          labelCancel={props.dialogCancelLabel}
-          labelConfirm={props.dialogConfirmLabel}
-          handleDialogOpen={props.handleOnOpenDialog}
-          handleDialogClose={props.handleOnCloseDialog}
-          handleDialogConfirmed={props.handleOnConfirm}
-          onSubmit={props.handleSubmit} 
-          onSubmitSuccess={props.handleSubmitSuccess}
-          onSubmitFail={props.handleSubmitFail}
+        action={props.action}
+        isOpenDialog={props.dialogOpen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        handleDialogOpen={props.handleOnOpenDialog}
+        handleDialogClose={props.handleOnCloseDialog}
+        handleDialogConfirmed={props.handleOnConfirm}
+        onSubmit={props.handleSubmit} 
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
       />
   </React.Fragment>
   );

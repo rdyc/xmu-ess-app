@@ -6,20 +6,17 @@ import { AccountEmployeeBankForm } from './AccountEmployeeBankForm';
 import { AccountEmployeeContactForm } from './AccountEmployeeContactForm';
 import { AccountEmployeeContainerFormProps } from './AccountEmployeeContainerForm';
 import { AccountEmployeeDetailForm } from './AccountEmployeeDetailForm';
-import { AccountEmployeeImageForm } from './AccountEmployeeImageForm';
 
 export const AccountEmployeeContainerFormView: React.SFC<
   AccountEmployeeContainerFormProps
 > = props => {
-  const { formMode, initialValues, companyUidValue } = props;
+  const { formMode, initialValues } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
   const fieldsBank = Object.getOwnPropertyNames(initialValues.bank);
   const fieldsContact = Object.getOwnPropertyNames(initialValues.contact);
-  const fieldsImage = Object.getOwnPropertyNames(initialValues.image);
-
   const componentInformation = (context: BaseFieldsProps) => (
-    <AccountEmployeeDetailForm formMode={formMode} context={context} companyUidValue={companyUidValue}/>
+    <AccountEmployeeDetailForm formMode={formMode} context={context}/>
   );
 
   const componentBank = (context: BaseFieldsProps) => (
@@ -28,10 +25,6 @@ export const AccountEmployeeContainerFormView: React.SFC<
 
   const componentContact = (context: BaseFieldsProps) => (
     <AccountEmployeeContactForm formMode={formMode} context={context} />
-  );
-
-  const componentImage = (context: BaseFieldsProps) => (
-    <AccountEmployeeImageForm formMode={formMode} context={context}/>
   );
 
   const render = (
@@ -50,11 +43,6 @@ export const AccountEmployeeContainerFormView: React.SFC<
         <Grid item xs={12} md={4}>
           <FormSection name="contact">
             <Fields names={fieldsContact} component={componentContact} />
-          </FormSection>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <FormSection name="image">
-            <Fields names={fieldsImage} component={componentImage} type="file"/>
           </FormSection>
         </Grid>
         <Grid item xs={12} md={4}>

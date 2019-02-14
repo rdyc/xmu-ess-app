@@ -17,7 +17,7 @@
   "account.shared.message.emptyProps": "Some props are empty",
   "account.shared.message.create.success": "New {state} Data has been created",
   "account.shared.message.create.failure": "Unable to process your submission",
-  "account.shared.message.update.success": "{state} Data with ID {uid} has been updated",
+  "account.shared.message.update.success": "{state} Data has been updated",
   "account.shared.message.update.failure": "Unable to process your submission",
   "account.shared.message.delete.success": "{state} Data has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
@@ -53,7 +53,7 @@
   "account.employee.tab.experience": "Job Experience",
   "account.employee.tab.training": "Training and Certification",
   "account.employee.tab.access": "Multi Company Access",
-  "account.employee.tab.rate": "Employee Rate",
+  "account.employee.tab.rate": "Rate",
 
   "account.employee.filter.company": "Company Name",
   "account.employee.filter.role": "Role Name",
@@ -321,13 +321,13 @@
   "account.access.message.delete.success": "Employee Access data has been deleted",
   "account.access.message.delete.failure": "Unable to process your deletion",
 
-  "account.access.dialog.create.title": "Add Access",
+  "account.access.dialog.create.title": "Add New Access",
   "account.access.dialog.create.subHeader": " ",
  
-  "account.access.dialog.modify.title": "Modify Access",
+  "account.access.dialog.modify.title": "Modify",
   "account.access.dialog.modify.subHeader": " ",
  
-  "account.access.dialog.delete.title": "Delete Access",
+  "account.access.dialog.delete.title": "Delete",
   "account.access.dialog.delete.subHeader": " ",
 
   "account.access.section.create.title": "Multi Access Company",
@@ -387,6 +387,7 @@
   "account.rate.field.isActive.false": "Inactive Rate",
 
   "account.rate.field.created": "Created Date",
+
   "account.family.field.uid": "Employee Education ID",
   "account.family.field.uid.placeholder": "Employee Education ID",
 
@@ -410,5 +411,15 @@
   "account.family.field.birthPlace.placeholder": "Type any Birth Place",
 
   "account.family.field.birthDate": "Birth Date",
-  "account.family.field.birthDate.placeholder": "Select a Birth Date"
+  "account.family.field.birthDate.placeholder": "Select a Birth Date",
+
+  "account.note.field.id": "Employee Note ID",
+  "account.note.field.id.placeholder": "Employee Note ID",
+
+  "account.note.field.employeeUid": "Employee ID",
+  "account.note.field.employeeUid.placeholder": "Employee ID",
+
+  "account.note.field.text": "Note",
+  "account.note.field.text.required": "Note is required",
+  "account.note.field.text.placeholder": "Type any note"
 }

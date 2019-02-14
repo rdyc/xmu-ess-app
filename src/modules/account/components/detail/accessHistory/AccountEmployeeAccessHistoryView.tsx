@@ -228,7 +228,7 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.history}        
+        tab={AccountEmployeeTabs.history}        
       >
         {renderAction}
         <SinglePage

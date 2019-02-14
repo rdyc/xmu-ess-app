@@ -38,7 +38,7 @@ interface OwnProps {
   data: ISummaryWinning[] | null | undefined;
   handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
-  handleDialog: () => void;
+  handleDialogDetail: () => void;
   handleDetail: (uid: string, type: string) => void;
   handleGoToPrevious: () => void;
   handleGoToNext: () => void;
@@ -59,7 +59,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
     handleChangePage,
     handleChangeSort,
     handleDetail,
-    handleDialog,
+    handleDialogDetail,
     handleGoToNext,
     handleGoToPrevious,
     handleChangeSize
@@ -70,7 +70,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
   };
 
   const _handledialog = (uid: string, type: string) => {
-    return handleDialog(), handleDetail(uid, type);
+    return handleDialogDetail(), handleDetail(uid, type);
   };
 
   const header = Object.keys(WinningRatioHeaderList).map(key => ({

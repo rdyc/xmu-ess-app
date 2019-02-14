@@ -8,10 +8,12 @@ import { AccountEmployeeDetail } from './detail/AccountEmployeeDetail';
 import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEducation';
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
+import { AccountEmployeeNote } from './detail/note/AccountEmployeeNote';
 import { AccountEmployeeRate } from './detail/rate/AccountEmployeeRate';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
 import AccountEmployeeAccessEditor from './editor/AccountEmployeeAccessEditor';
 import { AccountEmployeeEditor } from './editor/AccountEmployeeEditor';
+import AccountEmployeeNoteEditor from './editor/AccountEmployeeNoteEditor';
 import { AccountEmployeeList } from './list/AccountEmployeeList';
 import { AccountProfile } from './profile';
 
@@ -37,6 +39,7 @@ const employee = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:employeeUid/training`} component={employeeTraining} />
     <Route path={`${props.match.path}/:employeeUid/access`} component={employeeMultiAccess} />
     <Route path={`${props.match.path}/:employeeUid/rate`} component={AccountEmployeeRate} />
+    <Route path={`${props.match.path}/:employeeUid/note`} component={employeeNote} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>
@@ -76,6 +79,13 @@ const employeeMultiAccess = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={AccountEmployeeAccessEditor} />
     <Route path={`${props.match.path}`} component={AccountEmployeeAccess} />
+  </Switch>
+);
+
+const employeeNote = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeNoteEditor} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeNote} />
   </Switch>
 );
 

@@ -22,6 +22,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeTrainingFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -39,11 +40,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // employeeUid: string;
-  // submitDialogTitle: string;
-  // submitDialogContentText: string;
-  // submitDialogCancelText: string;
-  // submitDialogConfirmedText: string;
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -141,21 +138,21 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeTrainingEditorProps) => (response: IEmployeeTraining) => {
-    const { formMode, intl, history, editAction, handleDialogClose } = props;
+    const { formMode, intl, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadListRequest } = props.accountEmployeeTrainingDispatch;
+    const { loadAllRequest } = props.accountEmployeeTrainingDispatch;
 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.training.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Training' });
     }
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.training.message.updateSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Training' });
       } else {
-        message = intl.formatMessage(accountMessage.training.message.deleteSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Training' });
       }
     }
 
@@ -166,14 +163,12 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       time: new Date()
     });
 
-    loadListRequest({
+    loadAllRequest({
       employeeUid: props.employeeUid,
       filter: {
         direction: 'ascending'
       }
     });
-
-    history.push(`/account/employee/${props.employeeUid}/training`);
   },
   handleSubmitFail: (props: AccountEmployeeTrainingEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -183,18 +178,18 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
     } else {
       // another errors from server
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(accountMessage.training.message.createFailure);
+        message = intl.formatMessage(accountMessage.shared.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.training.message.updateFailure);
+        message = intl.formatMessage(accountMessage.shared.message.updateFailure);
       }
 
       alertAdd({
@@ -203,11 +198,16 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  handleValidity: (props: AccountEmployeeTrainingEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
 const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  //
+  validity: false
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

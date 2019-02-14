@@ -1,13 +1,16 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupCustomerGetAllFilter } from '@lookup/classes/filters/customer';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,7 +21,7 @@ import {
 import { LookupCustomerListFilterView } from './LookupCustomerListFilterView';
 
 export type ILookupCustomerListFilterResult = Pick<ILookupCustomerGetAllFilter,
-  'companyUid' >;
+  'companyUid'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -58,6 +61,7 @@ export type LookupCustomerListFilterProps
   = OwnOption
   & IOwnState
   & IOwnHandler
+  & WithLookupCompany
   & IOwnStateUpdater
   & WithStyles<typeof styles>
   & WithLayout
@@ -109,11 +113,33 @@ const handlerCreators: HandleCreators<LookupCustomerListFilterProps, IOwnHandler
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupCustomerListFilterProps, IOwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid } = this.props.initialProps;
+
+      // filter customer
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const LookupCustomerListFilter = compose<LookupCustomerListFilterProps, OwnOption>(
   setDisplayName('LookupCustomerListFilter'),
   withLayout,
   withStyles(styles),
   injectIntl,
+  withLookupCompany,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(LookupCustomerListFilterView);

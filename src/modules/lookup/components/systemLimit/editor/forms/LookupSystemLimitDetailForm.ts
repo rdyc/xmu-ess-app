@@ -42,6 +42,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailFormProps, OwnHandlers> =
         
       case 'companyUid':
         fieldProps = {
+          required: true,
           disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldPlaceholder')),
@@ -51,6 +52,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailFormProps, OwnHandlers> =
 
       case 'categoryType':
         fieldProps = {
+          required: true,
           category: 'limiter',
           disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldName')),
@@ -61,6 +63,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailFormProps, OwnHandlers> =
 
       case 'days':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber

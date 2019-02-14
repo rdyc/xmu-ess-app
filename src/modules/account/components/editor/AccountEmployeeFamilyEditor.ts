@@ -12,6 +12,7 @@ import {
   compose,
   HandleCreators,
   lifecycle,
+  mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -32,6 +33,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeFamilyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -49,8 +51,12 @@ interface OwnRouteParams {
   familyUid: string;  
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<{}> {
-  stateUpdate: StateHandler<{}>;
+interface OwnState {
+  validity: boolean;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type AccountEmployeeFamilyEditorProps
@@ -61,6 +67,7 @@ export type AccountEmployeeFamilyEditorProps
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnOption
+  & OwnState
   & OwnHandlers
   & OwnStateUpdaters;
 
@@ -143,7 +150,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeFamilyEditorProps) => (response: IEmployee) => {
-    const { formMode, intl, history, editAction, handleDialogClose, employeeUid } = props;
+    const { formMode, intl, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeFamilyDispatch; 
 
@@ -155,9 +162,9 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Family', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Family' });
       } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Family', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Family' });
       }
     }
 
@@ -174,8 +181,6 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
         direction: 'ascending'
       }
     });
-
-    history.push(`/account/employee/${employeeUid}/family`);
   },
   handleSubmitFail: (props: AccountEmployeeFamilyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -185,7 +190,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
     } else {
       // another errors from server
@@ -205,11 +210,21 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  
+  handleValidity: (props: AccountEmployeeFamilyEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
-const stateUpdaters: StateUpdaters<{}, {}, OwnStateUpdaters> = {
-  stateUpdate: (prevState: {}) => (newState: any) => ({
+const createProps: mapper<AccountEmployeeFamilyEditorProps, OwnState> = (): OwnState => ({ 
+  validity: false
+});
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -232,7 +247,7 @@ export const AccountEmployeeFamilyEditor = compose<AccountEmployeeFamilyEditorPr
   withWidth(),
   withAccountEmployeeFamily,
   injectIntl,
-  withStateHandlers<{}, OwnStateUpdaters, {}>({}, stateUpdaters),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeFamilyEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeFamilyEditorProps, {}>(lifecycles),
 )(AccountEmployeeFamilyEditorView);

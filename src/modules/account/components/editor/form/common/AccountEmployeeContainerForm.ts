@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
+import { InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeContainerFormView } from './AccountEmployeeContainerFormView';
 
 const formName = 'accountEmployee';
@@ -43,9 +43,6 @@ export type AccountEmployeeFormData = {
     emergencyContactRelation: string | null | undefined;
     emergencyContactPhone: string | null | undefined;
     emergencyContactPhoneAdditional: string | null | undefined;
-  },
-  image: {
-    image: FileList | null | undefined;
   }
 };
 
@@ -59,7 +56,6 @@ interface OwnProps {
 
 interface FormValueProps {
   formName: string;
-  companyUidValue: string | undefined;
 }
 
 export type AccountEmployeeContainerFormProps
@@ -67,14 +63,9 @@ export type AccountEmployeeContainerFormProps
   & FormValueProps 
   & OwnProps;
 
-const selector = formValueSelector(formName);
-
 const mapStateToProps = (state: any): FormValueProps => {
-  const companyUid = selector(state, 'information.companyUid');
-
   return {
     formName,
-    companyUidValue: companyUid
   };
 };
 

@@ -1,7 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAcceptanceGetAllFilter } from '@project/classes/filters/acceptance';
 import styles from '@styles';
@@ -9,7 +11,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -20,7 +24,7 @@ import {
 
 import { ProjectAcceptanceListFilterView } from './ProjectAcceptanceListFilterView';
 
-export type IProjectAcceptanceListFilterResult = Pick<IProjectAcceptanceGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid'>;
+export type IProjectAcceptanceListFilterResult = Pick<IProjectAcceptanceGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -92,6 +96,8 @@ export type ProjectAcceptanceListFilterProps
   & WithStyles<typeof styles>
   & WithLayout
   & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectAcceptanceListFilterProps, IOwnState> = (props: ProjectAcceptanceListFilterProps): IOwnState => ({
@@ -193,12 +199,57 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListFilterProps, IOwnHand
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUids, projectTypes, statusTypes } = this.props.initialProps;
+
+      // filter customer
+      if (customerUids) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUids);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project type
+      if (projectTypes) {
+        const { response } = this.props.commonProjectListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === projectTypes);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusTypes) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusTypes);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const ProjectAcceptanceListFilter = compose<ProjectAcceptanceListFilterProps, IOwnOption>(
   setDisplayName('ProjectAcceptanceListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(ProjectAcceptanceListFilterView);

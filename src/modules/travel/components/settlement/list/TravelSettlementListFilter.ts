@@ -1,8 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelSettlementGetAllFilter } from '@travel/classes/filters';
@@ -10,7 +12,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-
 import { TravelSettlementListFilterView } from './TravelSettlementListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -118,6 +121,8 @@ interface IOwnHandler {
 export type TravelSettlementListFilterProps 
   = IOwnOption
   & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -270,12 +275,47 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<TravelSettlementListFilterProps, IOwnState> = {
+  componentDidMount() { 
+
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, statusType } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const TravelSettlementListFilter = compose<TravelSettlementListFilterProps, IOwnOption>(
   setDisplayName('TravelSettlementListFilter'),
-  withUser,
+  withUser,  
+  withLookupCustomer,
+  withCommonSystem,
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(TravelSettlementListFilterView);

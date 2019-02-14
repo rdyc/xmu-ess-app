@@ -10,7 +10,7 @@ import { AccountEmployeeExperienceContainerForm } from './form/experience/Accoun
 export const AccountEmployeeExperienceEditorView: React.SFC<AccountEmployeeExperienceEditorProps> = props => {
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, 
     width, isOpenDialog, initialValues, 
-    editAction, handleDialogClose, formMode } = props;
+    editAction, handleDialogClose, formMode, handleValidity, validity } = props;
   
   const ref = React.createRef<FormInstance<any, any, any>>();
   const isMobile = isWidthDown('sm', width);
@@ -46,6 +46,7 @@ export const AccountEmployeeExperienceEditorView: React.SFC<AccountEmployeeExper
           onSubmit={handleSubmit} 
           onSubmitSuccess={handleSubmitSuccess}
           onSubmitFail={handleSubmitFail}
+          handleValidity={handleValidity}
         />
       </DialogContent>
       <DialogActions>
@@ -60,7 +61,7 @@ export const AccountEmployeeExperienceEditorView: React.SFC<AccountEmployeeExper
           </Button>
         }
 
-        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()}>
+        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()} disabled={!validity}>
           {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
         </Button>
       </DialogActions>

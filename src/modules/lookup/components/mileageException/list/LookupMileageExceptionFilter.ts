@@ -1,13 +1,18 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { IMileageExceptionAllFilter } from '@lookup/classes/filters';
+import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -16,7 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { LookupMileageExceptionFilterView } from './LookupMileageExceptionFilterView';
 
 export type ILookupMileageExceptionFilterResult = Pick<IMileageExceptionAllFilter,
@@ -77,6 +81,8 @@ export type LookupMileageExceptionFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
+  & WithLookupCompany
+  & WithLookupRole
   & WithLayout
   & InjectedIntlProps;
 
@@ -96,12 +102,13 @@ const stateUpdaters: StateUpdaters<LookupMileageExceptionFilterProps, OwnState, 
   setFilterCompanyVisibility: (prevState: OwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
-  setFilterCompany: () => (data?: ILookupCompany) => ({
+  setFilterCompany: (prevState: OwnState) => (data?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
     filterCompany: data,
     filterRoleValue: {
       companyUid: data && data.uid
-    }
+    },
+    filterRole: (prevState.filterCompany === data ? prevState.filterRole : undefined)
   }),
 
   // filter role
@@ -156,11 +163,42 @@ const handlerCreators: HandleCreators<LookupMileageExceptionFilterProps, OwnHand
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionFilterProps, OwnState> = {
+  componentDidMount() {
+    if (this.props.initialProps) {
+      const { companyUid, roleUid } = this.props.initialProps;
+
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+
+      if (roleUid) {
+        const { response } = this.props.lookupRoleState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === roleUid);
+
+          this.props.setFilterRole(selected);
+        }
+      }
+    }
+  }
+};
+
 export const LookupMileageExceptionFilter = compose<LookupMileageExceptionFilterProps, OwnOption>(
   setDisplayName('LookupMileageExceptionFilter'),
   withLayout,
-  withStyles(styles),
+  withLookupCompany,
+  withLookupRole,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles),
 )(LookupMileageExceptionFilterView);

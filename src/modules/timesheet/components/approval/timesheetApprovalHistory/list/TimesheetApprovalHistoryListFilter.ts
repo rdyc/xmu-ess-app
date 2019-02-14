@@ -10,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,6 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TimesheetApprovalHistoryListFilterView } from './TimesheetApprovalHistoryListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -117,12 +121,14 @@ interface IOwnHandler {
 
 export type TimesheetApprovalHistoryListFilterProps
   = IOwnOption
-  & WithUser
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = (props: TimesheetApprovalHistoryListFilterProps): IOwnState => ({
@@ -265,12 +271,64 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, activityType, statusType, status } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project type
+      if (activityType) {
+        const { response } = this.props.commonActivityListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === activityType);
+          
+          this.props.setFilterActivityType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+          
+        this.props.setFilterCompletion(selected);
+      }
+    }
+  }
+};
+
 export const TimesheetApprovalHistoryListFilter = compose<TimesheetApprovalHistoryListFilterProps, IOwnOption>(
   setDisplayName('TimesheetApprovalHistoryListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles),
 )(TimesheetApprovalHistoryListFilterView);

@@ -275,7 +275,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.access}        
+        tab={AccountEmployeeTabs.access}        
       >
         {renderAction}
         <SinglePage

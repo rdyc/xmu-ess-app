@@ -33,6 +33,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeExperienceFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -51,7 +52,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -149,7 +150,7 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeExperienceEditorProps) => (response: IEmployeeExperience) => {
-    const { formMode, intl, history, editAction, handleDialogClose } = props;
+    const { formMode, intl, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeExperienceDispatch; 
     let message: string = '';
@@ -160,9 +161,9 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Experience', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Experience' });
       } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Experience', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Experience' });
       }
     }
 
@@ -179,8 +180,6 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
         direction: 'ascending'
       }
     });
-    
-    history.push(`/account/employee/${props.employeeUid}/experience`);
   },
   handleSubmitFail: (props: AccountEmployeeExperienceEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -190,7 +189,7 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
     } else {
       // another errors from server
@@ -210,11 +209,17 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+
+  handleValidity: (props: AccountEmployeeExperienceEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
 const createProps: mapper<AccountEmployeeExperienceEditorProps, OwnState> = (): OwnState => ({ 
-
+  validity: false
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

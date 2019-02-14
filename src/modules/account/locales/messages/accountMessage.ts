@@ -32,6 +32,10 @@ import {
   accountFamilyField, 
   accountFamilyFieldHelperFor 
 } from './accountFamilyMessage';
+import { 
+  accountNoteField, 
+  accountNoteFieldHelperFor 
+} from './accountNoteMessage';
 import {
   accountRateDialog,
   accountRateField,
@@ -91,5 +95,9 @@ export const accountMessage = {
   family: {
     field: accountFamilyField,
     fieldFor: accountFamilyFieldHelperFor,
+  },
+  note: {
+    field: accountNoteField,
+    fieldFor: accountNoteFieldHelperFor
   }
 };

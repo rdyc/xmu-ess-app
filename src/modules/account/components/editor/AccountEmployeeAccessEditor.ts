@@ -32,6 +32,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeAccessFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnProps {
@@ -44,6 +45,7 @@ interface OwnProps {
 }
 
 interface OwnState {
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -156,11 +158,11 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Multi Company Access', uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Multi Company Access' });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Multi Company Access', uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Multi Company Access' });
     }
 
     if (formMode === FormMode.Delete) {
@@ -180,8 +182,6 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         direction: 'ascending'
       }
     });
-    
-    // history.push(`/account/employee/${employeeUid}/access`);
   },
   handleSubmitFail: (props: AccountEmployeeAccessEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -215,13 +215,17 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },  
+  handleValidity: (props: AccountEmployeeAccessEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
-const createProps: mapper<AccountEmployeeAccessEditorProps, OwnState> = (props: AccountEmployeeAccessEditorProps): OwnState => {
-  return {
-  };
-};
+const createProps: mapper<AccountEmployeeAccessEditorProps, OwnState> = (props: AccountEmployeeAccessEditorProps): OwnState => ({
+  validity: false
+});
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({

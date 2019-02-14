@@ -1,3 +1,4 @@
+import { Preloader } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, IconButton, Menu, MenuItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -16,128 +17,9 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
   <React.Fragment>
     <Paper square>
       <Toolbar>
-      <Typography
-        noWrap
-        variant="body2"
-        className={props.className}
-        >
-        {
-          props.isLoading &&
-          <FormattedMessage {...layoutMessage.text.loading} />
-        }
-
-        {
-          !props.isLoading &&
-          props.metadata &&
-          <FormattedMessage {...layoutMessage.text.dataInfo} values={{
-            total: props.metadata.total
-          }} />
-        }
-      </Typography>
-
-      {
-        props.additionalControls &&
-        props.additionalControls.map((item, index) =>
-        <Tooltip
-            key={index}
-            placement="bottom"
-            title={item.title}
-            >
-            <IconButton
-              id={item.id}
-              disabled={props.isLoading}
-              onClick={item.onClick} 
-              >
-              <Badge
-                invisible={!item.showBadgeWhen()}
-                badgeContent={<CheckCircleIcon color="primary" />}
-                >
-                <item.icon/>
-              </Badge>
-            </IconButton>
-          </Tooltip>
-        )
-      }
-      
-      <Tooltip
-        placement="bottom"
-        title={props.intl.formatMessage(layoutMessage.tooltip.orderBy)}
-        >
-        <IconButton
-          id="option-field"
-          disabled={props.isLoading}
-          onClick={props.handleOnClickMenu} 
-          >
-          <ReorderIcon />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip
-        placement="bottom"
-        title={props.intl.formatMessage(layoutMessage.tooltip.sortDirection)}
-        >
-        <IconButton 
-          id="option-order"
-          disabled={props.isLoading}
-          onClick={props.handleOnClickMenu}
-          >
-          <SortByAlphaIcon />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip
-        placement="bottom"
-        title={props.intl.formatMessage(layoutMessage.tooltip.rowsPerPage)}
-        >
-        <IconButton 
-          id="option-size"
-          disabled={props.isLoading}
-          onClick={props.handleOnClickMenu}
-          >
-          <ListAltIcon />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip
-        placement="bottom"
-        title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
-        >
-        <IconButton 
-          id="option-sync"
-          disabled={props.isLoading}
-          onClick={props.onClickSync}
-          >
-          <SyncIcon />
-        </IconButton>
-      </Tooltip>
-    </Toolbar>
-    </Paper>
-  
-    {props.children}
-      
-    {
-      !props.isLoading &&
-      props.metadata &&
-      props.metadata.paginate &&
-      <Toolbar>
-        <Tooltip
-          placement="right"
-          title={props.intl.formatMessage(layoutMessage.tooltip.prevPage)}
-        >
-          <div>
-            <IconButton
-              disabled={props.isLoading || !props.metadata.paginate.previous}
-              onClick={props.onClickPrevious}
-            >
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-        </Tooltip>
-
         <Typography
           noWrap
           variant="body2"
-          align="center"
           className={props.className}
         >
           {
@@ -147,31 +29,155 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
 
           {
             !props.isLoading &&
-            <FormattedMessage 
-            {...layoutMessage.text.pagingInfo} 
-            values={{
-              current: props.metadata.paginate.current,
-              total: props.metadata.paginate.total
-            }}
-            />
+            props.metadata &&
+            <FormattedMessage {...layoutMessage.text.dataInfo} values={{
+              total: props.metadata.total
+            }} />
           }
         </Typography>
 
-        <Tooltip
-          placement="left"
-          title={props.intl.formatMessage(layoutMessage.tooltip.nextPage)}
-        >
-          <div>
-            <IconButton 
-              disabled={props.isLoading || !props.metadata.paginate.next}
-              onClick={props.onClickNext}
+        {
+          props.additionalControls &&
+          props.additionalControls.map((item, index) =>
+            <Tooltip
+              key={index}
+              placement="bottom"
+              title={item.title}
+            >
+              <IconButton
+                id={item.id}
+                disabled={props.isLoading}
+                onClick={item.onClick} 
               >
-              <ChevronRightIcon />
-            </IconButton>
-          </div>
+                <Badge
+                  invisible={!item.showBadgeWhen()}
+                  badgeContent={<CheckCircleIcon color="primary" />}
+                >
+                  <item.icon/>
+                </Badge>
+              </IconButton>
+            </Tooltip>
+          )
+        }
+        
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.orderBy)}
+        >
+          <IconButton
+            id="option-field"
+            disabled={props.isLoading}
+            onClick={props.handleOnClickMenu} 
+          >
+            <ReorderIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.sortDirection)}
+        >
+          <IconButton 
+            id="option-order"
+            disabled={props.isLoading}
+            onClick={props.handleOnClickMenu}
+          >
+            <SortByAlphaIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.rowsPerPage)}
+        >
+          <IconButton 
+            id="option-size"
+            disabled={props.isLoading}
+            onClick={props.handleOnClickMenu}
+          >
+            <ListAltIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
+        >
+          <IconButton 
+            id="option-sync"
+            disabled={props.isLoading}
+            onClick={props.onClickSync}
+          >
+            <SyncIcon />
+          </IconButton>
         </Tooltip>
       </Toolbar>
-    }
+    </Paper>
+
+    <Preloader 
+      show={props.isLoading} 
+      label={props.intl.formatMessage(layoutMessage.text.waiting)}
+    >
+      {props.children}
+        
+      {
+        !props.isLoading &&
+        props.metadata &&
+        props.metadata.paginate &&
+        <Toolbar>
+          <Tooltip
+            placement="right"
+            title={props.intl.formatMessage(layoutMessage.tooltip.prevPage)}
+          >
+            <div>
+              <IconButton
+                disabled={props.isLoading || !props.metadata.paginate.previous}
+                onClick={props.onClickPrevious}
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+          </Tooltip>
+
+          <Typography
+            noWrap
+            variant="body2"
+            align="center"
+            className={props.className}
+          >
+            {
+              props.isLoading &&
+              <FormattedMessage {...layoutMessage.text.loading} />
+            }
+
+            {
+              !props.isLoading &&
+              <FormattedMessage 
+              {...layoutMessage.text.pagingInfo} 
+              values={{
+                current: props.metadata.paginate.current,
+                total: props.metadata.paginate.total
+              }}
+              />
+            }
+          </Typography>
+
+          <Tooltip
+            placement="left"
+            title={props.intl.formatMessage(layoutMessage.tooltip.nextPage)}
+          >
+            <div>
+              <IconButton 
+                disabled={props.isLoading || !props.metadata.paginate.next}
+                onClick={props.onClickNext}
+                >
+                <ChevronRightIcon />
+              </IconButton>
+            </div>
+          </Tooltip>
+        </Toolbar>
+      }
+    </Preloader>
 
     <Menu
       id="data-container-menu" 
