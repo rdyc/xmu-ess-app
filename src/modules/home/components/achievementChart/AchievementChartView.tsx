@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@mater
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTheme } from 'victory';
 
+import { HorizontalBar } from 'react-chartjs-2';
 import { AchievementChartProps } from './AchievementChart';
 
 // import { isWidthDown } from '@material-ui/core/withWidth';
@@ -35,6 +36,65 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
     strokeWidth: 0
   };
 
+  const dataSales = {
+    labels: [
+      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May'
+    ],
+    datasets: [
+      {
+        label: props.dataSales && props.dataSales.title,
+        backgroundColor: 'rgba(0,51,255,0.2)',
+        borderColor: 'rgba(0,51,255,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
+        hoverBorderColor: 'rgba(0,51,255,1)',
+        data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56]
+      }
+    ]
+  };
+  const dataDepartment = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: props.dataDepartment && props.dataDepartment.title,
+        backgroundColor: 'rgba(0,51,255,0.2)',
+        borderColor: 'rgba(0,51,255,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
+        hoverBorderColor: 'rgba(0,51,255,1)',
+        data: [65, 59, 80, 81, 56, 55, 40]
+      }
+    ]
+  };
+  const dataDivision = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: props.dataDiv && props.dataDiv.title,
+        backgroundColor: 'rgba(0,51,255,0.2)',
+        borderColor: 'rgba(0,51,255,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
+        hoverBorderColor: 'rgba(0,51,255,1)',
+        data: [65, 59, 80, 81, 56, 55, 40]
+      }
+    ]
+  };
+  const dataLOB = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: props.dataLob && props.dataLob.title,
+        backgroundColor: 'rgba(0,51,255,0.2)',
+        borderColor: 'rgba(0,51,255,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
+        hoverBorderColor: 'rgba(0,51,255,1)',
+        data: [65, 59, 80, 81, 56, 55, 40]
+      }
+    ]
+  };
+
   return (
     <div className={props.classes.marginFarBottom}>
       {
@@ -46,8 +106,8 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
         </Toolbar>
       }
 
-      <Preloader 
-        show={props.achievementState.all.isLoading} 
+      <Preloader
+        show={props.achievementState.all.isLoading}
         label={props.intl.formatMessage(layoutMessage.text.loading)}
       >
         <Grid container spacing={16} className={props.classes.marginFarBottom} direction="row" justify="flex-start">
@@ -215,6 +275,109 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
               </Grid>
             </Grid>
           </React.Fragment>
+        </Grid>
+        <Grid container spacing={16} className={props.classes.marginFarBottom} direction="row" justify="flex-start">
+          {props.dataLob && (
+            <Grid item xs={12} md={6}>
+              <Card square>
+                <CardHeader
+                  title={props.dataSales && props.dataSales.title}
+                  subheader={props.dataSales && props.dataSales.description}
+                />
+                <CardContent>
+                  <HorizontalBar
+                    data={dataSales}
+                    height={725}
+                    options={
+                      {
+                        maintainAspectRatio: false,
+                        scales: {
+                          xAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0}}]
+                        }
+                      }
+                    }
+                    
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={16} direction="row" justify="flex-start">
+              {props.dataDepartment && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataDepartment && props.dataDepartment.title}
+                      subheader={props.dataDepartment && props.dataDepartment.description}
+                    />
+                    <CardContent>
+                      <HorizontalBar
+                        data={dataDepartment}
+                        options={
+                          {
+                            maintainAspectRatio: false,
+                            scales: {
+                              xAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0}}]
+                            }
+                          }
+                        }
+                      />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+
+              {props.dataDiv && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataDiv && props.dataDiv.title}
+                      subheader={props.dataDiv && props.dataDiv.description}
+                    />
+                    <CardContent>
+                      <HorizontalBar
+                        data={dataDivision}
+                        options={
+                          {
+                            maintainAspectRatio: false,
+                            scales: {
+                              xAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0}}]
+                            }
+                          }
+                        }
+                      />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+
+              {props.dataLob && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataLob && props.dataLob.title}
+                      subheader={props.dataLob && props.dataLob.description}
+                    />
+                    <CardContent>
+                      <HorizontalBar
+                        data={dataLOB}
+                        options={
+                          {
+                            maintainAspectRatio: false,
+                            scales: {
+                              xAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0}}]
+                            }
+                          }
+                        }
+                      />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       </Preloader>
     </div>
