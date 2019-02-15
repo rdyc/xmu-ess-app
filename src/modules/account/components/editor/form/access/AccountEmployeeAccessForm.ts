@@ -1,5 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
+import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeAccessFormView } from './AccountEmployeeAccessFormView';
 
@@ -21,11 +22,7 @@ export type AccountEmployeeAccessFormData = {
 
 interface OwnProps {
   formMode: FormMode;
-  handleDialogClose: () => void;
-  buttonSubmit: string;
-  buttonProcess: string;
-  buttonReset: string;
-  buttonDiscard: string;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface FormValueProps {
@@ -52,11 +49,27 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(AccountEmployeeAccessFormView);
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessFormProps, {}> = {
+  componentDidMount() {
+    this.props.handleValidity(this.props.valid);
+  },
+  componentDidUpdate(prevProps: AccountEmployeeAccessFormProps) {
+    if (prevProps.valid !== this.props.valid) {
+      this.props.handleValidity(this.props.valid); 
+    }
+  }
+};
+
+// const connectedView = connect(mapStateToProps)(AccountEmployeeAccessFormView);
+
+const enhance = compose<AccountEmployeeAccessFormProps, OwnProps & InjectedFormProps<AccountEmployeeAccessFormData, OwnProps>>(
+  connect(mapStateToProps),
+  lifecycle(lifecycles)
+)(AccountEmployeeAccessFormView);
 
 export const AccountEmployeeAccessForm = reduxForm<AccountEmployeeAccessFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true
-})(connectedView);
+})(enhance);

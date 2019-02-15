@@ -3,5 +3,5 @@ export enum CurrencyField {
   symbol = 'Symbol',
   name = 'Name',
   rate = 'Rate',
-  isActive = 'Is Active',
+  // isActive = 'Is Active',
 }
