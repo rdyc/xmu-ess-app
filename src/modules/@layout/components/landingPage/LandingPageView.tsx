@@ -61,7 +61,7 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
               color="inherit"
               paragraph
             >
-              Every landing page needs a small description after the big bold title, that's why we added this text here. Add here all the information that can make you or your product create the first impression.
+              Manage and collaborate your daily professional activities through the Employee Self Service application
             </Typography>
 
             {
