@@ -144,7 +144,7 @@ interface IOwnHandler {
   handleFilterCompletionOnClose: () => void;
 
   // filter rejected
-  handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type ExpenseApprovalListFilterProps 
@@ -170,6 +170,7 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
+  filterCompletion: props.initialProps && props.initialProps.isNotify && { value: 'complete', name: 'Complete' } || undefined,
 });
 
 const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 
@@ -355,8 +356,14 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   },
   
   // filter rejected
-  handleFilterRejectedOnChange: (props: ExpenseApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  handleFilterNotifyOnChange: (props: ExpenseApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterNotify(checked);
+    if (checked) {
+      props.setFilterCompletion({ value: 'complete', name: 'Complete' });
+    } else {
+      props.setFilterCompletion();
+    }
+    
   },
 };
 
