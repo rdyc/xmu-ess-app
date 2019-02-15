@@ -50,6 +50,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         component="div"
         className={classNames(classes.virtualizedTableCell, classes.virtualizedFlexContainer)}
         variant="body"
+        padding="dense"
         numeric={numericColumn.some(numeric => numeric === dataKey)}
         style={{ height: 56 }}
       >
@@ -62,6 +63,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         component="div"
         className={classNames(classes.virtualizedTableCell, classes.virtualizedFlexContainer)}
         variant="head"
+        padding="dense"
         numeric={numericColumn.some(numeric => numeric === dataKey)}
         style={{ height: 56 }}
       >
