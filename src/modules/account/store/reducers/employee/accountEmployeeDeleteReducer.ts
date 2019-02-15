@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<IEmployeeDeleteRequest, boolean> = {
 
 const reducer: Reducer<IQuerySingleState<IEmployeeDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.DELETE_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.DELETE_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.DELETE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.DELETE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.DELETE_DISPOSE: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.DELETE_DISPOSE: return { ...state, ...initialState };
 
