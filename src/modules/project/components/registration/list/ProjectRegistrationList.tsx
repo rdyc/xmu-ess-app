@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
+import { CollectionPage, IListConfig, ListDataProps, ListHandler } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -68,9 +68,9 @@ const listView: React.SFC<AllProps> = props => (
   <React.Fragment>
     {
       props.config &&
-      <ListPage 
+      <CollectionPage 
         config={props.config} 
-        source={props.projectRegisterState.all} 
+        state={props.projectRegisterState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
         <ProjectRegistrationListFilter 
@@ -85,7 +85,7 @@ const listView: React.SFC<AllProps> = props => (
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
         />
-      </ListPage>
+      </CollectionPage>
     }
   </React.Fragment>
 );

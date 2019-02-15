@@ -7,6 +7,7 @@ export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
   waiting: { id: `${prefix}.text.waiting`},
   processing: { id: `${prefix}.text.processing`},
+  retry: { id: `${prefix}.text.retry`},
   none: { id: `${prefix}.text.none`},
   dataInfo: { id: `${prefix}.text.dataInfo` },
   pagingInfo: { id: `${prefix}.text.pagingInfo` },

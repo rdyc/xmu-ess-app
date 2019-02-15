@@ -32,7 +32,7 @@ const lookupHolidayInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.holiday.field.company)}
-          value={props.data.company && props.data.company.name}
+          value={props.data.company && props.data.company.name || props.data.companyUid}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

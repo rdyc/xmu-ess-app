@@ -43,23 +43,10 @@ function* watchGetAllRequest() {
         put(projectRegistrationGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectRegistrationGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectRegistrationGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectRegistrationGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectRegistrationGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -85,21 +72,10 @@ function* watchGetListRequest() {
         put(projectRegistrationGetListSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectRegistrationGetListError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(projectRegistrationGetListError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectRegistrationGetListError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectRegistrationGetListError(error.message))
       ]
     });
   };
@@ -116,23 +92,10 @@ function* watchGetByIdRequest() {
         put(projectRegistrationGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectRegistrationGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectRegistrationGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectRegistrationGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectRegistrationGetByIdError(error.message))
       ]
     });
   };

@@ -40,35 +40,35 @@ export const enum ProjectRegistrationAction {
 // get all
 export const projectRegistrationGetAllRequest = (request: IProjectRegistrationGetAllRequest) => action(ProjectRegistrationAction.GET_ALL_REQUEST, request);
 export const projectRegistrationGetAllSuccess = (response: IResponseCollection<IProject>) => action(ProjectRegistrationAction.GET_ALL_SUCCESS, response);
-export const projectRegistrationGetAllError = (message: string) => action(ProjectRegistrationAction.GET_ALL_ERROR, message);
+export const projectRegistrationGetAllError = (error: any) => action(ProjectRegistrationAction.GET_ALL_ERROR, error);
 export const projectRegistrationGetAllDispose = () => action(ProjectRegistrationAction.GET_ALL_DISPOSE);
 
 // get list
 export const projectRegistrationGetListRequest = (request: IProjectRegistrationGetListRequest) => action(ProjectRegistrationAction.GET_LIST_REQUEST, request);
 export const projectRegistrationGetListSuccess = (response: IResponseList<IProjectList>) => action(ProjectRegistrationAction.GET_LIST_SUCCESS, response);
-export const projectRegistrationGetListError = (message: string) => action(ProjectRegistrationAction.GET_LIST_ERROR, message);
+export const projectRegistrationGetListError = (error: any) => action(ProjectRegistrationAction.GET_LIST_ERROR, error);
 export const projectRegistrationGetListDispose = () => action(ProjectRegistrationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const projectRegistrationGetByIdRequest = (request: IProjectRegistrationGetByIdRequest) => action(ProjectRegistrationAction.GET_BY_ID_REQUEST, request);
 export const projectRegistrationGetByIdSuccess = (response: IResponseSingle<IProjectDetail>) => action(ProjectRegistrationAction.GET_BY_ID_SUCCESS, response);
-export const projectRegistrationGetByIdError = (message: string) => action(ProjectRegistrationAction.GET_BY_ID_ERROR, message);
+export const projectRegistrationGetByIdError = (error: any) => action(ProjectRegistrationAction.GET_BY_ID_ERROR, error);
 export const projectRegistrationGetByIdDispose = () => action(ProjectRegistrationAction.GET_BY_ID_DISPOSE);
 
 // post
 export const projectRegistrationPostRequest = (request: IProjectRegistrationPostRequest) => action(ProjectRegistrationAction.POST_REQUEST, request);
 export const projectRegistrationPostSuccess = (response: IResponseSingle<IProject>) => action(ProjectRegistrationAction.POST_SUCCESS, response);
-export const projectRegistrationPostError = (message: string) => action(ProjectRegistrationAction.POST_ERROR, message);
+export const projectRegistrationPostError = (error: any) => action(ProjectRegistrationAction.POST_ERROR, error);
 export const projectRegistrationPostDispose = () => action(ProjectRegistrationAction.POST_DISPOSE);
 
 // put
 export const projectRegistrationPutRequest = (request: IProjectRegistrationPutRequest) => action(ProjectRegistrationAction.PUT_REQUEST, request);
 export const projectRegistrationPutSuccess = (response: IResponseSingle<IProject>) => action(ProjectRegistrationAction.PUT_SUCCESS, response);
-export const projectRegistrationPutError = (message: string) => action(ProjectRegistrationAction.PUT_ERROR, message);
+export const projectRegistrationPutError = (error: any) => action(ProjectRegistrationAction.PUT_ERROR, error);
 export const projectRegistrationPutDispose = () => action(ProjectRegistrationAction.PUT_DISPOSE);
 
 // patch
 export const projectRegistrationPatchRequest = (request: IProjectRegistrationPatchRequest) => action(ProjectRegistrationAction.PATCH_REQUEST, request);
 export const projectRegistrationPatchSuccess = (response: IResponseSingle<IProject>) => action(ProjectRegistrationAction.PATCH_SUCCESS, response);
-export const projectRegistrationPatchError = (message: string) => action(ProjectRegistrationAction.PATCH_ERROR, message);
+export const projectRegistrationPatchError = (error: any) => action(ProjectRegistrationAction.PATCH_ERROR, error);
 export const projectRegistrationPatchDispose = () => action(ProjectRegistrationAction.PATCH_DISPOSE);
