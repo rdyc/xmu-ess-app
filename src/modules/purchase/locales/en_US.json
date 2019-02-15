@@ -64,7 +64,7 @@
   "purchase.field.information.rejectreason": "Reject Reason",
   "purchase.field.information.rejectreason.required": "Reason is required",
   "purchase.field.information.rejectreason.placeholder": "Type a reject reason",
-  "purchase.field.information.approveNotes": "Approval Notes (optional)",
+  "purchase.field.information.approveNotes": "Approval Note",
   "purchase.field.information.approveNotes.placeholder": "Type any",
   "purchase.field.information.adjustmentNote": "Adjustment Note",
   "purchase.field.information.adjustmentNote.required": "Adjustment note is required",
