@@ -1,9 +1,11 @@
+import { FinanceStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IFinance } from '@finance/classes/response';
 import { FinanceField } from '@finance/classes/types';
 import { FinanceSummary } from '@finance/components/approval/detail/shared/FinanceSummary';
+import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
-import { CollectionHandler, IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -27,8 +29,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { FinanceStatusType } from '@common/classes/types';
-import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { FinanceApprovalListFilter, IFinanceApprovalListFilterResult } from './FinanceApprovalListFilter';
 
 interface IOwnOption {
@@ -153,7 +153,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // selection
       hasSelection: true,
       notSelectionTypes: [FinanceStatusType.NotPaid, FinanceStatusType.Paid],
-      onProcessSelection: (values: string[], callback: CollectionHandler) => {
+      onProcessSelection: (values: string[], callback: ListHandler) => {
         this.props.history.push('/finance/approvals/payment', {values});
       },
     
