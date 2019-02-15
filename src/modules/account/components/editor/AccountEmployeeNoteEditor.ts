@@ -12,6 +12,7 @@ import {
   compose,
   HandleCreators,
   lifecycle,
+  mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -32,6 +33,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeNoteFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -50,7 +52,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -208,12 +210,17 @@ const handlerCreators: HandleCreators<AccountEmployeeNoteEditorProps, OwnHandler
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  handleValidity: (props: AccountEmployeeNoteEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
-// const createProps: mapper<AccountEmployeeNoteEditorProps, OwnState> = (): OwnState => ({ 
-
-// });
+const createProps: mapper<AccountEmployeeNoteEditorProps, OwnState> = (): OwnState => ({ 
+  validity: false
+});
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
@@ -239,7 +246,7 @@ export default compose<AccountEmployeeNoteEditorProps, OwnOption>(
   withWidth(),
   withAccountEmployeeNote,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>({}, stateUpdaters),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeNoteEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeNoteEditorProps, {}>(lifecycles),
 )(AccountEmployeeNoteEditorView);

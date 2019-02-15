@@ -1,5 +1,5 @@
 export enum StructureField {
   uid = 'Structure ID',
-  companyUid = 'Company',
+  // companyUid = 'Company Id',
   description = 'Description',
 }

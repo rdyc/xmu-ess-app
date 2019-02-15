@@ -17,7 +17,7 @@ function* watchGetAllRequest() {
     
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.companyUid}/${params}`,
+      path: `/v1/account/employees/${action.payload.companyUid}/${action.payload.year}/leaves?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(leaveCalculationGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))

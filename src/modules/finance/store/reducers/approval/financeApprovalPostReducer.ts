@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<IFinanceApprovalPostRequest, IFinance> = {
 
 const reducer: Reducer<IQuerySingleState<IFinanceApprovalPostRequest, IFinance>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.APPROVAL_POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.APPROVAL_POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.APPROVAL_POST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.APPROVAL_POST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.APPROVAL_POST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.APPROVAL_POST_DISPOSE: return initialState;
     

@@ -32,6 +32,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeRateFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnProps {
@@ -44,6 +45,7 @@ interface OwnProps {
 }
 
 interface OwnState {
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -166,13 +168,17 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  handleValidity: (props: AccountEmployeeRateEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
-const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (): OwnState => {
-  return {
-  };
-};
+const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (): OwnState => ({
+  validity: false
+});
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({

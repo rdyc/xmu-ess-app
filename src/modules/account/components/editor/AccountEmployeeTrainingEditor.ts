@@ -22,6 +22,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeTrainingFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -39,11 +40,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // employeeUid: string;
-  // submitDialogTitle: string;
-  // submitDialogContentText: string;
-  // submitDialogCancelText: string;
-  // submitDialogConfirmedText: string;
+  validity: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -201,11 +198,16 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  handleValidity: (props: AccountEmployeeTrainingEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
 const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  //
+  validity: false
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
