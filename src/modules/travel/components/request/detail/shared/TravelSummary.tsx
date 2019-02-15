@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Grid, TextField } from '@material-ui/core';
@@ -124,7 +125,7 @@ const travelSummary: React.SFC<AllProps> = props => (
           <TextField
             {...styled}
             margin="dense"
-            label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
+            label={props.intl.formatMessage(props.data.statusType === WorkflowStatusType.Approved ? travelMessage.request.field.approvalNotes : travelMessage.request.field.rejectReason )}
             value={props.data.rejectReason}
           />
         }

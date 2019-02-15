@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<ITravelGetByIdRequest, ITravelRequestDetai
 
 const reducer: Reducer<IQuerySingleState<ITravelGetByIdRequest, ITravelRequestDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.GET_BY_ID_DISPOSE: return initialState;
     
