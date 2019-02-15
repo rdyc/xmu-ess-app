@@ -116,6 +116,8 @@
   "travel.request.field.comment": "Comments",
   "travel.request.field.comment.placeholder": "Type the comments",
   "travel.request.field.rejectReason": "Reject Reason",
+  "travel.request.field.approvalNotes": "Approval Note",
+  "travel.request.field.adjustmentNotes": "Adjustment Note",
   "travel.request.field.projectUid": "Project Name",
   "travel.request.field.projectUid.required": "Project is required",
   "travel.request.field.projectUid.placeholder": "Select the Project",
