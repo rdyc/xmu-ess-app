@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<IPositionPutRequest, IPosition> = {
 
 const reducer: Reducer<IQuerySingleState<IPositionPutRequest, IPosition>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.PUT_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.PUT_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.PUT_DISPOSE: return initialState;
 

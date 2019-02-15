@@ -438,6 +438,8 @@
   "lookup.leave.message.emptyProps": "Some props are empty",
   "lookup.leave.field.filter.company": "Company",
   "lookup.leave.field.filter.company.placeholder": "Company",
+  "lookup.leave.dialog.newTitle": "Submit Confirmation",
+  "lookup.leave.dialog.newDescription": "Do you want to submit leave ?",
 
   "leave.calculation.filter.company": "Company", 
   "leave.calculation.filter.year": "Year",   
