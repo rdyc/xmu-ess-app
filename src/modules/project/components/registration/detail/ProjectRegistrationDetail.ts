@@ -1,4 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -63,7 +65,8 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type ProjectRegistrationDetailProps 
-  = WithUser
+  = WithOidc
+  & WithUser
   & WithProjectRegistration
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -71,11 +74,29 @@ export type ProjectRegistrationDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: ProjectRegistrationDetailProps): IOwnState => ({ 
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false
-});
+const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: ProjectRegistrationDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return { 
+    isAdmin,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
 
 const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IOwnStateUpdaters> = {
   setOptions: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
@@ -332,6 +353,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
 
 export const ProjectRegistrationDetail = compose(
   withRouter,
+  withOidc,
   withUser,
   withProjectRegistration,
   injectIntl,
