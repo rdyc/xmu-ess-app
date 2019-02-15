@@ -27,7 +27,7 @@ import {
   holidaySection,
 } from './holiday';
 import { inforField, inforFieldHelperFor, inforMessage, inforPage, inforSection } from './inforMessage';
-import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
+import { leaveConfirm, leaveDialog, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
 import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
 import {
   companyConfirm,
@@ -137,7 +137,8 @@ export const lookupMessage = {
     fieldFor: leaveFieldHelperFor,
     section: leaveSection,
     confirm: leaveConfirm,
-    message: leaveMessage
+    message: leaveMessage,
+    dialog: leaveDialog
   },
   calculation: {
     page: leaveCalculationPage,

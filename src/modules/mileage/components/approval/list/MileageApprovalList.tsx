@@ -94,6 +94,7 @@ const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
 
   // When location state are present (ex: redirection from dashboard) then don't use redux state
   if (props.location.state) {
+    state.status = props.location.state.status;
     state.isNotify = props.location.state.isNotify;
   } else {
     // fill from previous request if any

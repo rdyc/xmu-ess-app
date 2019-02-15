@@ -14,8 +14,8 @@ const initialState: IQueryCollectionState<IAnnouncementPatchRequest, IAnnounceme
 
 const reducer: Reducer<IQueryCollectionState<IAnnouncementPatchRequest, IAnnouncement>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.PATCH_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.PATCH_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.PATCH_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.PATCH_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.PATCH_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.PATCH_DISPOSE: return { ...state, ...initialState };
 
