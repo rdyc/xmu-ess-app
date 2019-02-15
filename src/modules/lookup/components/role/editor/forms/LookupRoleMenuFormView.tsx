@@ -9,12 +9,7 @@ import { LookupRoleMenuFormProps } from './LookupRoleMenuForm';
 
 export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props => {
   const { isLoading, response } = props.lookupMenuState.list;
-  const { active, isExpanded, handleToggle, handleCheckParent, handleCheckChild, check } = props;
-
-  const isChecked = (uid: string) => {
-    const _check = new Set(check);
-    return _check.has(uid);
-  };
+  const { active, isExpanded, handleToggle, handleCheckParent, handleCheckChild } = props;
 
   const renderMenu = (data: IMenuList[]) => {
     return ( 
@@ -35,8 +30,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                     <Checkbox
                       {...input}
                       value={parent.uid}
-                      onChange={() => handleCheckParent(parent.uid)}
-                      checked={isChecked(parent.uid)}
+                      onChange={(e) => handleCheckParent(e, parent.uid)}
                       disabled={meta.submitting}
                       onFocus={undefined}
                       onBlur={undefined}
@@ -84,7 +78,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                               {...input}
                               value={child.uid}
                               onChange={() => handleCheckChild(child.uid, child.parentUid)}
-                              checked={isChecked(child.uid)}
                               disabled={meta.submitting}
                               onFocus={undefined}
                               onBlur={undefined}

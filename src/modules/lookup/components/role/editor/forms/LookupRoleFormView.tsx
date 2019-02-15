@@ -1,14 +1,15 @@
 import { Submission } from '@layout/components/submission/Submission';
+import { SubmitMenu } from '@lookup/classes/types/role/SubmitMenu';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 // import { ExperimentMenu } from './ExperimentMenu';
 import { LookupRoleDetailForm } from './LookupRoleDetailForm';
-import { RoleFormProps } from './LookupRoleForm';
+import { LookupRoleMenuFormData, RoleFormProps } from './LookupRoleForm';
 import { LookupRoleMenuForm } from './LookupRoleMenuForm';
 
 export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, change } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
@@ -19,8 +20,14 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
     />
   );
 
+  const onCheckValue = (newValue: SubmitMenu) => {
+    const value: LookupRoleMenuFormData = {[newValue.uid]: newValue.check};
+
+    change(`menu.menus[${newValue.index}]`, value);
+  };
+
   const componentRoleMenu = (context: WrappedFieldArrayProps<any>) => (
-    <LookupRoleMenuForm context={context} />
+    <LookupRoleMenuForm context={context} onCheckValue={onCheckValue} formMode={formMode} />
   );
 
   const render = (
