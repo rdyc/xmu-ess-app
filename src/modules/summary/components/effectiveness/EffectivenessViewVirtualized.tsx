@@ -5,24 +5,24 @@ import { EffectivenessProps } from '@summary/components/effectiveness/Effectiven
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { AutoSizer, Table as VirtualizedTable, Column } from 'react-virtualized';
+import { AutoSizer, Column, Table as VirtualizedTable } from 'react-virtualized';
 import { isArray } from 'util';
 import { EffectivenessFilter } from './EffectivenessFilter';
 
 export type IEffectiveness = {
-  fullName: string;
-  position: string;
+  name: string;
+  positionRole: string;
   project: string;
   customer: string;
-  allocate: number;
+  allocated: number;
   actual: number;
-  remain: number;
-  percentage: number;
+  remaining: number;
+  progress: string;
 };
 
 export const EffectivenessViewVirtualized: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
-  const { width, classes, handleChangeFilter, intl, handleReloadData } = props;
+  const { width, classes, handleChangeFilter, handleReloadData, intl } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -32,31 +32,123 @@ export const EffectivenessViewVirtualized: React.SFC<EffectivenessProps> = props
     effectivenesses.map(effectiveness => 
       effectiveness.assignments && effectiveness.assignments.map((assignment, i) => 
       effectivenessVirtual.push({
-        fullName: effectiveness.employee.fullName,
-        position: `${assignment.position && assignment.position.name } - ${assignment.role}`,
+        name: effectiveness.employee.fullName,
+        positionRole: `${assignment.position && assignment.position.name } - ${assignment.role}`,
         project: `${assignment.project && assignment.project.uid } - ${ assignment.project && assignment.project.name}`,
         customer: `${ assignment.project && assignment.project.customer && assignment.project.customer.name }`,
-        allocate: assignment.allocateHours,
+        allocated: assignment.allocateHours,
         actual: assignment.actualHours,
-        remain: assignment.remainHours,
-        percentage: assignment.percentage,
+        remaining: assignment.remainHours,
+        progress: `${assignment.percentage} %`,
       })
     ));
+
+    const numericColumn = ['allocated', 'actual', 'remaining', 'progress'];
+
+    const cellRenderer = (cellData: any, dataKey: string) => (
+      <TableCell
+        component="div"
+        className={classNames(classes.virtualizedTableCell, classes.virtualizedFlexContainer)}
+        variant="body"
+        numeric={numericColumn.some(numeric => numeric === dataKey)}
+        style={{ height: 56 }}
+      >
+        {cellData}
+      </TableCell>
+    );
+
+    const headerRenderer = (header: any, dataKey: string) => (
+      <TableCell
+        component="div"
+        className={classNames(classes.virtualizedTableCell, classes.virtualizedFlexContainer)}
+        variant="head"
+        numeric={numericColumn.some(numeric => numeric === dataKey)}
+        style={{ height: 56 }}
+      >
+        {header}
+      </TableCell>
+    );
     
     return (
-    <AutoSizer>
+    <AutoSizer defaultWidth={1010}>
       {// tslint:disable-next-line:no-shadowed-variable
         ({height, width}) => (
         <VirtualizedTable
+          className={classNames(classes.virtualizedTable)}
           width={width}
           height={height}
-          headerHeight={20}
-          rowHeight={30}
+          headerHeight={56}
+          rowHeight={56}
+          rowClassName={classNames(classes.virtualizedTableRow, classes.virtualizedFlexContainer)}
           rowCount={effectivenessVirtual.length}
           rowGetter={({ index }) => effectivenessVirtual[index]}
         >
           <Column
-            
+            dataKey={'name'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.name)}
+            width={120}
+            flexGrow={1}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+           <Column
+            dataKey={'positionRole'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.positionRole)}
+            width={200}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+           <Column
+            dataKey={'project'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.project)}
+            width={160}
+            flexGrow={1}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+           <Column
+            dataKey={'customer'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.customer)}
+            width={130}
+            flexGrow={1}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+           <Column
+            dataKey={'allocated'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.allocated)}
+            width={100}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+           <Column
+            dataKey={'actual'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.actual)}
+            width={100}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+          <Column
+            dataKey={'remaining'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.remaining)}
+            width={100}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
+          />
+          <Column
+            dataKey={'progress'}
+            label={intl.formatMessage(summaryMessage.effectiveness.header.progress)}
+            width={100}
+            flexShrink={0}
+            cellRenderer={({cellData, dataKey}) => cellRenderer(cellData, dataKey)}
+            headerRenderer={({label, dataKey}) => headerRenderer(label, dataKey)}
           />
         </VirtualizedTable>
       )}

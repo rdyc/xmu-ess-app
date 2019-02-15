@@ -693,7 +693,7 @@ const styles = (theme: Theme) =>
       boxSizing: 'border-box',
     },
     virtualizedTableRow: {
-      cursor: 'pointer',
+      
     },
     virtualizedTableRowHover: {
       '&:hover': {

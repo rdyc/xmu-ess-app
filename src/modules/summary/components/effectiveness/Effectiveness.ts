@@ -4,7 +4,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import { EffectivenessView } from '@summary/components/effectiveness/EffectivenessView';
+// import { EffectivenessView } from '@summary/components/effectiveness/EffectivenessView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,6 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { IEffectivenessFilterResult } from './EffectivenessFilter';
+import { EffectivenessViewVirtualized } from './EffectivenessViewVirtualized';
 
 interface OwnHandlers {
   handleChangeFilter: (filter: IEffectivenessFilterResult) => void;
@@ -162,4 +163,4 @@ export const Effectiveness = compose<EffectivenessProps, OwnOptions>(
     withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
     withHandlers<EffectivenessProps, OwnHandlers>(handlerCreators),
     lifecycle<EffectivenessProps, OwnState>(lifecycles),
-  )(EffectivenessView);
+  )(EffectivenessViewVirtualized);
