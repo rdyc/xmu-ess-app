@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<ISettlementGetByIdRequest, ISettlementDeta
 
 const reducer: Reducer<IQuerySingleState<ISettlementGetByIdRequest, ISettlementDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.GET_BY_ID_SETTLEMENT_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.GET_BY_ID_SETTLEMENT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.GET_BY_ID_SETTLEMENT_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.GET_BY_ID_SETTLEMENT_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.GET_BY_ID_SETTLEMENT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.GET_BY_ID_SETTLEMENT_DISPOSE: return initialState;
     
