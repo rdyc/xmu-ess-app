@@ -80,19 +80,8 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
         path = path.concat('/approvals', uid && `/${uid}` || '');
-
-        if (type === NotificationType.Approval) {
-          state = {
-            status: 'pending',
-          };
-        }
-
-        if (type === NotificationType.Notify) {
-          state = {
-            status: 'complete',
-            isNotify: true,
-          };
-        }
+      } else {
+        path = path.concat('/requests', uid && `/${uid}` || '');
       }
       break;
 

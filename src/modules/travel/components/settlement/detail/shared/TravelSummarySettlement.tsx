@@ -122,11 +122,11 @@ const travelSummary: React.SFC<AllProps> = props => (
         {
           props.data &&
           props.data.rejectReason &&
-          props.data.statusType === WorkflowStatusType.AdjustmentNeeded &&
+          // props.data.statusType === WorkflowStatusType.AdjustmentNeeded &&
           <TextField
             {...styled}
             margin="dense"
-            label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
+            label={props.intl.formatMessage(props.data.statusType === WorkflowStatusType.Approved ? travelMessage.request.field.approvalNotes : travelMessage.request.field.adjustmentNotes )}
             value={props.data.rejectReason}
           />
         }
