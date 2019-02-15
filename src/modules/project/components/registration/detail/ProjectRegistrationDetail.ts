@@ -1,4 +1,8 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -8,7 +12,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -24,6 +30,7 @@ interface IOwnRouteParams {
 }
 
 interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnChangeStatus: () => void;
   handleOnChangeOwner: () => void;
@@ -35,6 +42,7 @@ interface IOwnHandler {
 }
 
 interface IOwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: ProjectUserAction;
   dialogFullScreen: boolean;
@@ -46,6 +54,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setClose: StateHandler<IOwnState>;
   setReopen: StateHandler<IOwnState>;
@@ -56,7 +65,8 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type ProjectRegistrationDetailProps 
-  = WithUser
+  = WithOidc
+  & WithUser
   & WithProjectRegistration
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -64,13 +74,34 @@ export type ProjectRegistrationDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: ProjectRegistrationDetailProps): IOwnState => ({ 
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: ProjectRegistrationDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return { 
+    isAdmin,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
 
 const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
@@ -137,6 +168,15 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
 };
 
 const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: ProjectRegistrationDetailProps) => () => { 
+    if (props.userState.user && props.match.params.projectUid && !props.projectRegisterState.detail.isLoading) {
+      props.projectRegisterDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        projectUid: props.match.params.projectUid
+      });
+    }
+  },
   handleOnModify: (props: ProjectRegistrationDetailProps) => () => { 
     props.setModify();
   },
@@ -228,12 +268,97 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: ProjectRegistrationDetailProps) {
+    if (this.props.projectRegisterState.detail.response !== prevProps.projectRegisterState.detail.response) {
+      const { user } = this.props.userState;
+      const { isLoading, response } = this.props.projectRegisterState.detail;
+
+      // find status type
+      let _statusType: string | undefined = undefined;
+
+      if (response && response.data) {
+        _statusType = response.data.statusType;
+      }
+
+      // 
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => { 
+        return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+      };
+      
+      // find project owner status
+      let isOwner = false;
+
+      if (user && response && response.data && response.data.ownerEmployeeUid) {
+        isOwner = user.uid === response.data.ownerEmployeeUid;
+      }
+
+      // the results
+      const options: IAppBarMenu[] = [
+        {
+          id: ProjectUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: ProjectUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: _statusType !== undefined,
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner,
+          onClick: this.props.handleOnModify
+        },
+        {
+          id: ProjectUserAction.Close,
+          name: this.props.intl.formatMessage(projectMessage.registration.option.close),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin),
+          onClick: this.props.handleOnChangeStatus
+        },
+        {
+          id: ProjectUserAction.ReOpen,
+          name: this.props.intl.formatMessage(projectMessage.registration.option.reOpen),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [ WorkflowStatusType.Closed ]) && this.props.isAdmin,
+          onClick: this.props.handleOnReOpen
+        },
+        {
+          id: ProjectUserAction.AdjustHour,
+          name: this.props.intl.formatMessage(projectMessage.registration.option.hour),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin,
+          onClick: this.props.handleOnAdjustHour
+        },
+        {
+          id: ProjectUserAction.ChangeOwner,
+          name: this.props.intl.formatMessage(projectMessage.registration.option.owner),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin),
+          onClick: this.props.handleOnChangeOwner
+        },
+        {
+          id: ProjectUserAction.ManageSites,
+          name: this.props.intl.formatMessage(projectMessage.registration.option.site),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && this.props.isAdmin,
+          onClick: this.props.handleOnManageSite
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const ProjectRegistrationDetail = compose(
-  setDisplayName('ProjectRegistrationDetail'),
   withRouter,
+  withOidc,
   withUser,
   withProjectRegistration,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters), 
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('ProjectRegistrationDetail')
 )(ProjectRegistrationDetailView);

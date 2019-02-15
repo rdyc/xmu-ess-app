@@ -3,7 +3,7 @@ import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-import { layoutAlertAdd, notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actions';
+import { notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actions';
 
 function* watchFetchRequest() {
   const worker = (action: ReturnType<typeof notificationFetchRequest>) => {
@@ -14,19 +14,10 @@ function* watchFetchRequest() {
         put(notificationFetchSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(notificationFetchError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(notificationFetchError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(notificationFetchError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(notificationFetchError(error.message))
       ])
     });
   };

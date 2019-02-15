@@ -13,5 +13,5 @@ export const enum AchievementAction {
 // get all
 export const achievementGetRequest = (request: IAchievementGetRequest) => action(AchievementAction.GET_REQUEST, request);
 export const achievementGetSuccess = (response: IResponseCollection<IAchievement>) => action(AchievementAction.GET_SUCCESS, response);
-export const achievementGetError = (message: string) => action(AchievementAction.GET_ERROR, message);
+export const achievementGetError = (message: any) => action(AchievementAction.GET_ERROR, message);
 export const achievementGetDispose = () => action(AchievementAction.GET_DISPOSE);

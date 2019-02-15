@@ -14,8 +14,8 @@ const initialState: IQuerySingleState<ISettlementPostRequest, ISettlement> = {
 
 const reducer: Reducer<IQuerySingleState<ISettlementPostRequest, ISettlement>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.POST_SETTLEMENT_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.POST_SETTLEMENT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.POST_SETTLEMENT_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.POST_SETTLEMENT_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.POST_SETTLEMENT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
     case Action.POST_SETTLEMENT_DISPOSE: return initialState;
     
