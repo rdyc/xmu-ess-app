@@ -63,101 +63,114 @@ const handlerCreators: HandleCreators<LookupRoleMenuFormProps, OwnHandler> = {
   handleCheckParent: (props: LookupRoleMenuFormProps) => (event: React.ChangeEvent<HTMLInputElement>, uid: string) => {
     const { menuUids, onCheckValue } = props;
     const { response } = props.lookupMenuState.list;
+    // found and submit is used for add data to redux
+    let found: number = 0;
+    let submit: SubmitMenu;
+    // find is used for finding data on the list (counter) menuUids
+    let find: number = 0;
 
-    if (menuUids.length >= 0) {
-      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
-      if (findIdx === -1) {
-        menuUids.push({uid, parentUid: undefined});
-        const found: number = props.menus.indexOf(uid);
-        const submit: SubmitMenu = {uid, index: found, check: true};
+    // if parent is not found, then add to the list
+    find = menuUids.findIndex(item => item.uid === uid);
+    if (find === -1) {
+      menuUids.push({uid, parentUid: undefined});
+      found = props.menus.indexOf(uid);
+      submit = {uid, index: found, check: true};
 
-        onCheckValue(submit);
-      } else {
-        menuUids.map((item, index) => {
-            if (item.uid === uid) {
-              menuUids.splice(index, 1);
-              const found: number = props.menus.indexOf(uid);
-              const submit: SubmitMenu = {uid, index: found, check: false};
+      onCheckValue(submit);
+    } else {
+      // if the parent is found on the list, then splice(remove) it from the list
+      menuUids.map((item, index) => {
+          if (item.uid === uid) {
+            menuUids.splice(index, 1);
+            found = props.menus.indexOf(uid);
+            submit = {uid, index: found, check: false};
+    
+            onCheckValue(submit);
+          }
+        }
+      );
+    }
+
+    // we have to find the parent again on the list after we just add the parent before, so we get the different value
+    find = menuUids.findIndex(item => item.uid === uid);
+    if (response && response.data) {
+      response.data.map(item => {
+        // find the child is exist on the list, if no then add, need to create a new const for compairing it with the parent later
+        const findChild: number = menuUids.findIndex(child => child.uid === item.uid);
+        if (item.parentUid && item.parentUid === uid) {
+          // if the parent is found then execute to add his childs
+          if (find !== -1) {
+            // add parent's childs
+            if (findChild === -1) {
+              menuUids.push({uid: item.uid, parentUid: item.parentUid});
+              found = props.menus.indexOf(item.uid);
+              submit = {uid: item.uid, index: found, check: true};
       
               onCheckValue(submit);
             }
-          }
-        );
-      }
-
-      const findParent: number = menuUids.findIndex(parent => parent.uid === uid);
-      if (response && response.data) {
-        response.data.map(item => {
-          if (item.parentUid && item.parentUid === uid) {
-            const findChild: number = menuUids.findIndex(child => child.uid === item.uid);
-            if (findParent !== -1) {
-              if (findChild === -1) {
-                menuUids.push({uid: item.uid, parentUid: item.parentUid});
-                const found: number = props.menus.indexOf(item.uid);
-                const submit: SubmitMenu = {uid: item.uid, index: found, check: true};
+            // if parent is not found and the child is on the list, then splice(remove) the child from the list
+          } else if (find === -1 && findChild !== -1) {
+            menuUids.map((child, index) => {
+              if (child.uid === item.uid) {
+                menuUids.splice(index, 1);
+                found = props.menus.indexOf(child.uid);
+                submit = {uid: item.uid, index: found, check: false};
         
                 onCheckValue(submit);
               }
-            } else if (findParent === -1 && findChild !== -1) {
-              menuUids.map((child, index) => {
-                if (child.uid === item.uid) {
-                  menuUids.splice(index, 1);
-                  const found: number = props.menus.indexOf(child.uid);
-                  const submit: SubmitMenu = {uid: item.uid, index: found, check: false};
-          
-                  onCheckValue(submit);
-                }
-                }
-              );
-            }
+              }
+            );
           }
-        });
-      }
-    } else {
-      menuUids.push({uid, parentUid: undefined});
-      const found: number = props.menus.indexOf(uid);
-      const submit: SubmitMenu = {uid, index: found, check: true};
-
-      onCheckValue(submit);
+        }
+      });
     }
   },
   handleCheckChild: (props: LookupRoleMenuFormProps) => (uid: string, parentUid: string | undefined) => {
     const { menuUids, onCheckValue } = props;
+    // found and submit is used for add data to redux
+    let found: number = 0;
+    let submit: SubmitMenu;
+    // find is used for finding data on the list (counter)
+    let find: number = 0;
 
-    if (menuUids.length >= 0 && parentUid) {
-      const findIdx: number = menuUids.findIndex(item => item.uid === uid);
-      const findParent: number = menuUids.findIndex(parent => parent.uid === parentUid);
-      if (findIdx === -1) {
+    if (parentUid) {
+      // add child when not found on the list
+      find = menuUids.findIndex(item => item.uid === uid);
+      if (find === -1) {
         menuUids.push({uid, parentUid});
-        const found: number = props.menus.indexOf(uid);
-        const submit: SubmitMenu = {uid, index: found, check: true};
+        found = props.menus.indexOf(uid);
+        submit = {uid, index: found, check: true};
   
         onCheckValue(submit);
-        if (findParent === -1) {
+        // add parent when not found on the list
+        find = menuUids.findIndex(parent => parent.uid === parentUid);
+        if (find === -1) {
           menuUids.push({uid: parentUid, parentUid: undefined});
-          const foundParent: number = props.menus.indexOf(parentUid);
-          const submitParent: SubmitMenu = {uid: parentUid, index: foundParent, check: true};
+          found = props.menus.indexOf(parentUid);
+          submit = {uid: parentUid, index: found, check: true};
     
-          onCheckValue(submitParent);
+          onCheckValue(submit);
         }
       } else {
+        // if the child is exist, splice(remove) it from the list
         menuUids.map((item, index) => {
             if (item.uid === uid) {
               menuUids.splice(index, 1);
-              const found: number = props.menus.indexOf(uid);
-              const submit: SubmitMenu = {uid, index: found, check: false};
+              found = props.menus.indexOf(uid);
+              submit = {uid, index: found, check: false};
         
               onCheckValue(submit);
             }
           }
         );
-        const findChild: number = menuUids.findIndex(child => child.parentUid === parentUid);
-        if (findChild === -1) {
+        // if there's no more child, then splice(remove) the parent
+        find = menuUids.findIndex(child => child.parentUid === parentUid);
+        if (find === -1) {
           menuUids.map((item, index) => {
               if (item.uid === parentUid) {
                 menuUids.splice(index, 1);
-                const found: number = props.menus.indexOf(parentUid);
-                const submit: SubmitMenu = {uid: parentUid, index: found, check: false};
+                found = props.menus.indexOf(parentUid);
+                submit = {uid: parentUid, index: found, check: false};
           
                 onCheckValue(submit);
               }
@@ -165,20 +178,7 @@ const handlerCreators: HandleCreators<LookupRoleMenuFormProps, OwnHandler> = {
           );
         }
       }
-    } else {
-      menuUids.push({uid, parentUid});
-      const found: number = props.menus.indexOf(uid);
-      const submit: SubmitMenu = {uid, index: found, check: true};
-
-      onCheckValue(submit);
-      if (parentUid) {
-        menuUids.push({uid: parentUid, parentUid: undefined});
-        const foundParent: number = props.menus.indexOf(parentUid);
-        const submitParent: SubmitMenu = {uid: parentUid, index: foundParent, check: true};
-  
-        onCheckValue(submitParent);
-      }
-    }
+    } 
   },
   handleToggle: (props: LookupRoleMenuFormProps) => (parentUid: string) => {
     props.stateUpdate({
@@ -210,6 +210,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupRoleMenuFormProps, {}> = {
   },
   componentDidUpdate(prevProps: LookupRoleMenuFormProps) {
     const { response } = this.props.lookupMenuState.list;
+    // for counter menus index array
     if (isNullOrUndefined(this.props.menus) || this.props.menus.length === 0) {
       if (response && response.data) {
         response.data.map((item, index) => {
