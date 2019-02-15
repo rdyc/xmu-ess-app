@@ -1,13 +1,16 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { IMenu } from '@lookup/classes/response';
-import { Button, Divider, Grid, Hidden, IconButton, ListItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { Badge, Button, Divider, Grid, Hidden, IconButton, ListItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SyncIcon from '@material-ui/icons/Sync';
+import TuneIcon from '@material-ui/icons/Tune';
 import { isMenusWithWorkflow } from '@organization/helper/isMenusWithWorkflow';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { isNullOrUndefined } from 'util';
-import { OrganizationWorkflowFilter } from './OrganizationWorkflowFilter';
+import { WorkflowListFilter } from './WorkflowListFilter';
+// import { OrganizationWorkflowFilter } from './OrganizationWorkflowFilter';
 import { WorkflowMenuListProps } from './WorkflowMenuList';
 
 export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
@@ -23,23 +26,22 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
           <ListItem
             button={!isLoading}
             key={menu.uid}
-          // onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
           >
             <Grid container spacing={8}>
-            <Hidden xsDown>
-              <Grid item  md={4}>
-                <Grid container>
-                  <Grid item xs={12} sm={8} md={3}>
-                    <Typography
-                      variant="body2"
-                      noWrap={true}
-                      paragraph={false}
-                    >
-                      {menu.uid}
-                    </Typography>
+              <Hidden xsDown>
+                <Grid item md={4}>
+                  <Grid container>
+                    <Grid item xs={12} sm={8} md={3}>
+                      <Typography
+                        variant="body2"
+                        noWrap={true}
+                        paragraph={false}
+                      >
+                        {menu.uid}
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
               </Hidden>
               <Grid item xs={12} md={8}>
                 <Grid container>
@@ -85,57 +87,58 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
     <React.Fragment>
       <Paper square>
         <Toolbar>
-          <Typography
-            noWrap
-            variant="body2"
+          <Tooltip
+            placement="bottom"
+            title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
           >
-            {
-              isLoading &&
-              <FormattedMessage {...layoutMessage.text.loading} />
-            }
-          </Typography>
-
-          {
-            <OrganizationWorkflowFilter handleFind={props.handleSelected} />
-          }
+            <IconButton
+              id="option-field"
+              disabled={isLoading}
+              onClick={props.handleFilterVisibility}
+            >
+              <Badge
+                  invisible={!props.companyUid}
+                  badgeContent={<CheckCircleIcon color="primary" />}
+              >
+                <TuneIcon />
+              </Badge>
+            </IconButton>
+          </Tooltip>
 
           <Tooltip
-            placement="right-end"
+            placement="bottom"
             title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
           >
             <IconButton
               id="option-sync"
               disabled={isLoading}
-              onClick={props.onClickSync}
+              onClick={() => props.setOnRefresh()}
             >
               <SyncIcon />
             </IconButton>
           </Tooltip>
         </Toolbar>
-        {/* <Grid container spacing={8}>
-          {
-            isLoading &&
-            <Typography>
-              {props.intl.formatMessage(layoutMessage.text.loading)}
-            </Typography>
-          }
-          <Grid item xs={12}>
-            {
-              <Toolbar>
-                <OrganizationWorkflowFilter handleFind={props.handleSelected} />
-              </Toolbar>
-            }
-          </Grid> */}
-          <Grid item xs={12}>
-            {
-              !isLoading &&
-              response &&
-              response.data &&
-              RenderWorkflowMenuList(response.data)
-            }
-          </Grid>
-        {/* </Grid> */}
       </Paper>
+      <Paper>
+        {
+          isLoading &&
+          <FormattedMessage {...layoutMessage.text.loading} />
+        }
+        <Grid item xs={12}>
+          {
+            !isLoading &&
+            response &&
+            response.data &&
+            RenderWorkflowMenuList(response.data)
+          }
+        </Grid>
+      </Paper>
+
+      <WorkflowListFilter
+        isOpen={props.isFilterOpen}
+        onClose={props.handleFilterVisibility}
+        onApply={props.handleFilterApplied}
+      />
     </React.Fragment>
   );
   return render;
