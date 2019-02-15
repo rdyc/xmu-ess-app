@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { Menus } from '@lookup/classes/types';
 import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { LookupRoleFormView } from './LookupRoleFormView';
@@ -29,6 +30,7 @@ interface OwnProps {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  isCheckedMenus: Menus[];
 }
 
 interface FormValueProps {

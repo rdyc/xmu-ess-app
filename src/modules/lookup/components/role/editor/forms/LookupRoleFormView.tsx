@@ -9,7 +9,7 @@ import { LookupRoleMenuFormData, RoleFormProps } from './LookupRoleForm';
 import { LookupRoleMenuForm } from './LookupRoleMenuForm';
 
 export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
-  const { formMode, change } = props;
+  const { formMode, change, isCheckedMenus } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
@@ -27,7 +27,7 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
   };
 
   const componentRoleMenu = (context: WrappedFieldArrayProps<any>) => (
-    <LookupRoleMenuForm context={context} onCheckValue={onCheckValue} formMode={formMode} />
+    <LookupRoleMenuForm context={context} onCheckValue={onCheckValue} formMode={formMode} isCheckedMenus={isCheckedMenus} />
   );
 
   const render = (

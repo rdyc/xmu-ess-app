@@ -15,6 +15,7 @@ interface OwnProps {
   context: WrappedFieldArrayProps<LookupRoleMenuFormData>;
   onCheckValue: (newValue: SubmitMenu) => void;
   formMode: FormMode;
+  isCheckedMenus: Menus[];
 }
 
 interface OwnState {
@@ -200,7 +201,11 @@ const lifecycles: ReactLifeCycleFunctions<LookupRoleMenuFormProps, {}> = {
       });
     }
     if (formMode === FormMode.Edit) {
-      // console.log(this.props.initialValues);
+      if (this.props.isCheckedMenus) {
+        this.props.isCheckedMenus.map(item => {
+          this.props.menuUids.push({uid: item.uid, parentUid: item.parentUid});
+        });
+      }
     }
   },
   componentDidUpdate(prevProps: LookupRoleMenuFormProps) {
