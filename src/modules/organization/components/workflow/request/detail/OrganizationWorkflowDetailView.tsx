@@ -9,7 +9,7 @@ import { organizationMessage } from '@organization/locales/messages/organization
 import * as React from 'react';
 import { OrganizationWorkflowDetailProps } from './OrganizationWorkflowDetail';
 import { OrganizationWorkflowInformation } from './shared/OrganizationWorkflowInformation';
-import { WorkflowMenuInformation } from './shared/WorkflowMenuInformation';
+// import { WorkflowMenuInformation } from './shared/WorkflowMenuInformation';
 
 const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
   // page info
@@ -82,15 +82,10 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
 
   // primary
   primaryComponent: (data: IWorkflowList[], props: OrganizationWorkflowDetailProps) => (
-    // <OrganizationWorkflowInformation data={data}/>
-    <WorkflowMenuInformation data={props.lookupMenuState.detail.response && props.lookupMenuState.detail.response.data}/>
-  ),
-
-  // primary
-  secondaryComponents: (data: IWorkflowList[], props: OrganizationWorkflowDetailProps) => ([
     <OrganizationWorkflowInformation data={data}/>
     // <WorkflowMenuInformation data={props.lookupMenuState.detail.response && props.lookupMenuState.detail.response.data}/>
-  ]),
+  ),
+
 };
 
 export const OrganizationWorkflowDetailView: React.SFC<OrganizationWorkflowDetailProps> = props => (

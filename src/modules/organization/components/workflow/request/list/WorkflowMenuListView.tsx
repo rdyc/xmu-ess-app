@@ -87,6 +87,12 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
     <React.Fragment>
       <Paper square>
         <Toolbar>
+        <Typography
+          noWrap
+          variant="body2"
+          className={props.classes.flex}
+        >
+        </Typography>
           <Tooltip
             placement="bottom"
             title={props.intl.formatMessage(layoutMessage.tooltip.filter)}

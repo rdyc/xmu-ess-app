@@ -15,9 +15,11 @@ import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import { WithOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { WorkflowMenuListView } from './WorkflowMenuListView';
@@ -56,6 +58,7 @@ export type WorkflowMenuListProps
   & OwnHandler
   & RouteComponentProps
   & WithLayout
+  & WithStyles<typeof styles>
   & WithWidth;
 
 const createProps: mapper<WorkflowMenuListProps, OwnState> = (props: WorkflowMenuListProps): OwnState => {
@@ -173,6 +176,7 @@ export const workflowMenuList = compose<WorkflowMenuListProps, {}>(
   withLayout,
   withLookupMenu,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycleFunctions)
