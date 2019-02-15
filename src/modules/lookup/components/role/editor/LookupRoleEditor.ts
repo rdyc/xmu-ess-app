@@ -6,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupRolePostPayload, ILookupRolePutPayload } from '@lookup/classes/request/role';
 import { IRole } from '@lookup/classes/response';
+import { Menus } from '@lookup/classes/types';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -36,6 +37,7 @@ interface OwnState {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  isCheckedMenus: Menus[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -194,6 +196,7 @@ const createProps: mapper<RoleEditorProps, OwnState> = (props: RoleEditorProps):
   submitDialogContentText: props.intl.formatMessage(lookupMessage.role.dialog.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  isCheckedMenus: []
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
