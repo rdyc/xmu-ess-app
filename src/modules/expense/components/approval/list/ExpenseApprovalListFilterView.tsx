@@ -194,7 +194,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
               <Switch
                 color="primary"
                 checked={props.filterNotify || false}
-                onChange={props.handleFilterRejectedOnChange}
+                onChange={props.handleFilterNotifyOnChange}
               />
             </ListItemSecondaryAction>
           </ListItem>
