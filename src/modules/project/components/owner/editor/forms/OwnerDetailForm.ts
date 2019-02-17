@@ -102,8 +102,12 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectEmployee,
-          companyUids: user && user.company.uid,
-          roleUids: _roleUids
+          filter: {
+            companyUids: user && user.company.uid,
+            roleUids: _roleUids,
+            useAcces: true,
+            orderBy: 'fullName'
+          }
         };
         break;
 

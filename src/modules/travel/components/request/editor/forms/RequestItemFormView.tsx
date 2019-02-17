@@ -71,8 +71,12 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.employeeUid`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     required={true}
-                    companyUids={props.userState.user && props.userState.user.company.uid}
                     component={SelectEmployee}
+                    filter={{
+                      companyUid: props.userState.user && props.userState.user.company.uid,
+                      useAcces: true,
+                      orderBy: 'fullName'
+                    }}
                   />
                   <Field 
                     type="text"

@@ -66,6 +66,7 @@ export const ListItemEmployeeSelectorView: React.SFC<ListItemEmployeeSelectorPro
       value={props.selected && props.selected.uid}
       filter={{
         companyUids: props.userState.user && props.userState.user.company.uid,
+        useAccess: true,
         orderBy: 'fullName',
         direction: 'ascending'
       }}

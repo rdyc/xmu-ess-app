@@ -64,8 +64,13 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                       name={`${field}.employeeUid`}
                       label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                       required={true}
-                      companyUids={props.userState.user && props.userState.user.company.uid}
+                      filter={{
+                        companyUid: props.userState.user && props.userState.user.company.uid,
+                        useAcces: true,
+                        orderBy: 'fullName'
+                      }}
                       component={SelectEmployee}
+                      
                     />
                     <Field
                       type="text"

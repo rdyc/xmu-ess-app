@@ -2,42 +2,42 @@ import { IEmployeeListFilter } from '@account/classes/filters';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  shallowEqual,
+  withHandlers,
+} from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 import { SelectEmployeeView } from './SelectEmployeeView';
 
-interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
+interface IOwnProps extends WrappedFieldProps, BaseFieldProps { 
   type?: string; 
   placeholder?: string;
   required?: boolean;
   label: string; 
   disabled: boolean;
-  companyUids?: string;
-  roleUids?: string;
-  positionUids?: string;
   filter?: IEmployeeListFilter;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleOnLoadApi: () => void;
 }
 
 export type SelectEmployeeProps 
   = WithAccountEmployee
   & WithWidth
-  & OwnHandlers
-  & OwnProps;
+  & IOwnHandlers
+  & IOwnProps;
 
-const handlerCreators: HandleCreators<SelectEmployeeProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<SelectEmployeeProps, IOwnHandlers> = {
   handleOnLoadApi: (props: SelectEmployeeProps) => () => {
     props.accountEmployeeDispatch.loadListRequest({
-      filter: {
-        companyUids: props.companyUids,
-        roleUids: props.roleUids,
-        positionUids: props.positionUids,
-        orderBy: 'fullName'
-      }
+      filter: props.filter
     });
   },
 };
@@ -52,19 +52,8 @@ const lifecycles: ReactLifeCycleFunctions<SelectEmployeeProps, {}> = {
     } else {
       // 2nd load only when request filter are present
       if (request.filter) {
-        // comparing filter props
-        const shouldUpdate = !shallowEqual(
-          {
-            companyUids: request.filter.companyUids,
-            roleUids: request.filter.roleUids,
-            positionUids: request.filter.positionUids,
-          },
-          {
-            companyUids: this.props.companyUids,
-            roleUids: this.props.roleUids,
-            positionUids: this.props.positionUids,
-          },
-        );
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
   
         // then should update the list?
         if (shouldUpdate) {
@@ -75,9 +64,10 @@ const lifecycles: ReactLifeCycleFunctions<SelectEmployeeProps, {}> = {
   }
 };
 
-export const SelectEmployee = compose<SelectEmployeeProps, OwnProps>(
+export const SelectEmployee = compose<SelectEmployeeProps, IOwnProps>(
   withAccountEmployee,
-  withWidth(),
-  withHandlers<SelectEmployeeProps, OwnHandlers>(handlerCreators),
-  lifecycle<SelectEmployeeProps, {}>(lifecycles)
-)(SelectEmployeeView);
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('SelectEmployee'),
+  withWidth()
+  )(SelectEmployeeView);
