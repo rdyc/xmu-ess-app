@@ -187,7 +187,7 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AllProps) => (params?: IBasePagingFilter, resetPage?: boolean) => {
+  handleOnLoadApi: (props: AllProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { isLoading, request } = props.projectRegisterState.all;
     const { loadAllRequest } = props.projectRegisterDispatch;
 
@@ -211,7 +211,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad) {
+      if (shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           companyUid: props.userState.user.company.uid,

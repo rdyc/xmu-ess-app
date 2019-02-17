@@ -89,7 +89,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
               <SwapHoriz/>
             </ListItemIcon>
             <ListItemText 
-              primary={props.intl.formatMessage(layoutMessage.label.anchor)}
+              primary={props.intl.formatMessage(props.layoutState.anchor === 'left' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft)}
               primaryTypographyProps={{
                 variant: 'body2'
               }}

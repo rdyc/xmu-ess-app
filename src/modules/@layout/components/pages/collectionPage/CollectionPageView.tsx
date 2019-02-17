@@ -29,8 +29,8 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     }}
     metadata={props.state.response && props.state.response.metadata}
     fields={props.fields}
-    onClickSync={() => props.handleForceReload()}
-    onClickRetry={() => props.setForceReload(false)}
+    onClickSync={() => props.handleOnLoad(true, true)}
+    onClickRetry={() => props.handleOnLoad(false, true)}
     onClickNext={() => props.setPageNext()}
     onClickPrevious={() => props.setPagePrevious()}
     onChangeField={props.setField}

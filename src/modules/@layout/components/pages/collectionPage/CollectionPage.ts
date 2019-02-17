@@ -49,7 +49,7 @@ interface IOwnOption {
     description: string;
     parentUrl?: string;
   };
-  onLoadApi: (filter?: IBasePagingFilter) => void;
+  onLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   onLoadedApi?: () => void;
   fields: ICollectionValue[];
   hasSearching?: boolean;
@@ -104,8 +104,9 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
+  handleOnLoad: (resetPage?: boolean, isRetry?: boolean) => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
+  handleOnSearch: (find?: string, field?: ICollectionValue) => void;
 }
 
 export type CollectionPageProps
@@ -199,6 +200,18 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, IOwnHandler> = {
+  handleOnLoad: (props: CollectionPageProps) => (resetPage?: boolean, isRetry?: boolean) => {
+    const filter: IBasePagingFilter = {
+      find: props.find,
+      findBy: props.findBy,
+      page: props.page,
+      size: props.size,
+      orderBy: props.orderBy,
+      direction: props.direction
+    };
+
+    props.onLoadApi(filter, resetPage, isRetry);
+  },
   handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setSelection(event.currentTarget.value);
 
@@ -272,10 +285,8 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
       this.props.appBarDispatch.assignMenus(this.props.options);
     }
 
-    // loading data event from config
-    this.props.onLoadApi({
-      
-    });
+    // loading data
+    this.props.handleOnLoad();
   },
   componentDidUpdate(prevProps: CollectionPageProps) {
     // handling updated request state
@@ -310,14 +321,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
     );
 
     if (isChanged) {
-      this.props.onLoadApi({
-        find: this.props.find,
-        findBy: this.props.findBy,
-        page: this.props.page,
-        size: this.props.size,
-        orderBy: this.props.orderBy,
-        direction: this.props.direction
-      });
+      this.props.handleOnLoad();
     }
     
     // handling updated response state
@@ -334,7 +338,6 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
 };
 
 export const CollectionPage = compose<CollectionPageProps, IOwnOption>(
-  withWidth(),
   withLayout,
   withAppBar,
   withPage,
@@ -342,5 +345,6 @@ export const CollectionPage = compose<CollectionPageProps, IOwnOption>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
+  withWidth(),
   withStyles(styles)
 )(CollectionPageView);
