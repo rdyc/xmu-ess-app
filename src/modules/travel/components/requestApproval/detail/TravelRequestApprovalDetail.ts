@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -11,10 +13,20 @@ import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMe
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { TravelRequestApprovalDetailView } from './TravelRequestApprovalDetailView';
 
 interface OwnHandler {
@@ -46,6 +58,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 export type TravelRequestApprovalDetailProps
   = WithTravelApproval
+  & WithNotification
   & WithUser
   & WithLayout
   & RouteComponentProps<OwnRouteParams> 
@@ -130,7 +143,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     });
   },
   handleSubmitSuccess: (props: TravelRequestApprovalDetailProps) => (response: boolean) => {
-    const { intl } = props;
+    const { intl, match } = props;
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
@@ -140,6 +153,13 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
 
     props.setDataload();
     // history.push('/travel/approvals/request');
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Travel,
+      detailType: NotificationType.Approval,
+      itemUid: match.params.travelUid
+    });
   },
   handleSubmitFail: (props: TravelRequestApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -165,6 +185,7 @@ export const TravelRequestApprovalDetail = compose<TravelRequestApprovalDetailPr
   withRouter,
   withUser,
   withLayout,
+  withNotification,
   withTravelApproval,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

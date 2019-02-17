@@ -1,7 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -23,6 +25,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
 interface OwnHandler {
@@ -60,6 +63,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 export type SettlementApprovalDetailProps
   = WithSettlementApproval
+  & WithNotification
   & WithUser
   & WithLayout
   & WithAppBar
@@ -133,7 +137,15 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       message,
       time: new Date()
     });
+
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.PurchaseSettlement,
+      detailType: NotificationType.Approval,
+      itemUid: props.match.params.purchaseUid
+    });
   },
   handleSubmitFail: (props: SettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -175,7 +187,8 @@ export const SettlementApprovalDetail = compose<SettlementApprovalDetailProps, {
   withAppBar,
   withRouter,
   withSettlementApproval,
+  withNotification,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<SettlementApprovalDetailProps, OwnHandler>(handlerCreators),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
 )(SettlementApprovalDetailView);

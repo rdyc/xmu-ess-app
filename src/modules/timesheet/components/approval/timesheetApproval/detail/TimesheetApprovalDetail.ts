@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -10,10 +12,20 @@ import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/wit
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { TimesheetApprovalDetailView } from './TimesheetApprovalDetailView';
 
 interface OwnRouteParams {
@@ -47,6 +59,7 @@ export type TimesheetApprovalDetailProps
   = WithUser
   & WithLayout
   & WithTimesheetApproval
+  & WithNotification
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -137,6 +150,13 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, OwnHandler> 
     });
 
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Timesheet,
+      detailType: NotificationType.Approval,
+      itemUid: props.match.params.timesheetUid
+    });
   },
   handleSubmitFail: (props: TimesheetApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -163,6 +183,7 @@ export const TimesheetApprovalDetail = compose<TimesheetApprovalDetailProps, {}>
   withUser,
   withLayout,
   withTimesheetApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
