@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
@@ -56,6 +58,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 export type LeaveApprovalDetailProps
   = WithLeaveApproval
+  & WithNotification
   & WithUser
   & WithLayout
   & RouteComponentProps<OwnRouteParams> 
@@ -148,6 +151,13 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
     });
 
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Leave,
+      detailType: NotificationType.Approval,
+      itemUid: props.match.params.leaveUid
+    });
   },
   handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -171,6 +181,7 @@ export const LeaveApprovalDetail = compose<LeaveApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withLeaveApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

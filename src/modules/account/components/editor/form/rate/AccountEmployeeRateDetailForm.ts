@@ -45,6 +45,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailFormProps, OwnHan
         
         case 'value':
           fieldProps = {
+            required: true,
             label: intl.formatMessage(accountMessage.rate.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.rate.fieldFor(fieldName, 'fieldPlaceholder')),
             component: InputNumber

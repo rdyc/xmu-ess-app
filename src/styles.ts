@@ -681,7 +681,31 @@ const styles = (theme: Theme) =>
     imageSize: {
       width: 500,
       height: 450
-    }
+    },
+
+    /* MUI Virtualize Table */
+    virtualizedTable: {
+      fontFamily: theme.typography.fontFamily,
+    },
+    virtualizedFlexContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      boxSizing: 'border-box',
+    },
+    virtualizedTableRow: {
+      
+    },
+    virtualizedTableRowHover: {
+      '&:hover': {
+        backgroundColor: theme.palette.grey[200],
+      },
+    },
+    virtualizedTableCell: {
+      flex: 1,
+    },
+    virtualizedNoClick: {
+      cursor: 'initial',
+    },
   });
 
 export default styles;

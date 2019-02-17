@@ -15,7 +15,8 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
     submitDialogTitle, 
     submitDialogContentText, 
     submitDialogConfirmedText, 
-    submitDialogCancelText 
+    submitDialogCancelText,
+    isCheckedMenus 
   } = props;
   const { isLoading, response } = props.lookupRoleState.detail;
 
@@ -31,6 +32,7 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       submitDialogContentText={submitDialogContentText}
       submitDialogCancelText={submitDialogCancelText}
       submitDialogConfirmedText={submitDialogConfirmedText}
+      isCheckedMenus={isCheckedMenus}
     />
   );
 
@@ -76,10 +78,14 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       initialValues.information.isActive = data.isActive;
 
       if (data.menus) {
-        data.menus.forEach(item => 
+        data.menus.forEach(item => {
           initialValues.menu.menus.push({
             [`${item.menuUid}`]: item.isAccess
-          })
+          });
+          if (item.isAccess) {
+            isCheckedMenus.push({uid: item.menuUid, parentUid: item.menu && item.menu.parentUid});
+          }
+          }
         );
       }
 

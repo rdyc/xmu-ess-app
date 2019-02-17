@@ -1,7 +1,15 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { IExpenseApprovalPostPayload } from '@expense/classes/request/approval';
 import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -14,16 +22,10 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-
-import { WorkflowStatusType } from '@common/classes/types';
-import { IExpenseApprovalPostPayload } from '@expense/classes/request/approval';
-import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { ExpenseApprovalDetailView } from './ExpenseApprovalDetailView';
 
 interface OwnRouteParams {
@@ -59,6 +61,7 @@ export type ExpenseApprovalDetailProps
   = WithUser
   & WithLayout
   & WithExpenseApproval
+  & WithNotification
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -165,6 +168,13 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
     });
 
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Expense,
+      detailType: NotificationType.Approval,
+      itemUid: match.params.expenseUid
+    });
   },
   handleSubmitFail: (props: ExpenseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -191,6 +201,7 @@ export const ExpenseApprovalDetail = compose(
   withUser,
   withLayout,
   withExpenseApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),

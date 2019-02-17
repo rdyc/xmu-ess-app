@@ -17,12 +17,21 @@ export type LookupLeaveFormData = {
   },
 };
 
+interface FormValueProps {
+  formName: string;
+}
+
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 export type RequestFormProps 
   = InjectedFormProps<LookupLeaveFormData, OwnProps> 
+  & FormValueProps
   & OwnProps;
 
 const connectedView = connect()(LookupLeaveFormView);

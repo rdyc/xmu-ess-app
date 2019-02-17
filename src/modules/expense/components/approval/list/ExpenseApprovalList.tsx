@@ -99,7 +99,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   };
 
   if (props.location.state) {
-    state.status = props.location.state.status;
+    state.status = props.location.state.isNotify && 'complete' || props.location.state.status;
     state.isNotify = props.location.state.isNotify;
   } else {
     if (request && request.filter) {
