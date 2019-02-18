@@ -46,8 +46,8 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
         </Toolbar>
       }
 
-      <Preloader 
-        show={props.achievementState.all.isLoading} 
+      <Preloader
+        show={props.achievementState.all.isLoading}
         label={props.intl.formatMessage(layoutMessage.text.loading)}
       >
         <Grid container spacing={16} className={props.classes.marginFarBottom} direction="row" justify="flex-start">
