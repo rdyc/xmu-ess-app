@@ -52,7 +52,7 @@ const lookupLeaveSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.leave.field.year)}
-        value={props.intl.formatNumber(props.data.year)}
+        value={props.data.year}
       />
     <TextField
         {...GlobalStyle.TextField.ReadOnly}

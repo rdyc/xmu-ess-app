@@ -1,10 +1,11 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   LeaveCancellationAction as Action,
   leaveCancellationGetAllDispose,
   leaveCancellationGetAllError,
   leaveCancellationGetAllRequest,
   leaveCancellationGetAllSuccess,
+  leaveCancellationGetByIdDispose,
   leaveCancellationGetByIdError,
   leaveCancellationGetByIdRequest,
   leaveCancellationGetByIdSuccess,
@@ -139,11 +140,23 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(leaveCancellationGetAllDispose()),
+      put(leaveCancellationGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* leaveCancellationSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 

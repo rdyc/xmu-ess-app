@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   LeaveRequestAction as Action,
   leaveRequestFetchError,
@@ -212,13 +212,25 @@ function* watchPutFetchRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(leaveRequestGetAllDispose()),
+      put(leaveRequestGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* leaveRequestSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchFetchRequest),
     fork(watchPostFetchRequest),
-    fork(watchPutFetchRequest)
+    fork(watchPutFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 

@@ -9,7 +9,8 @@ import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
-  const {     formMode, 
+  const {     
+    formMode, 
     handleValidate, 
     handleSubmit, 
     handleSubmitSuccess, 
