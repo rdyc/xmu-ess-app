@@ -40,6 +40,12 @@ export const LookupLeaveFormView: React.SFC<RequestFormProps> = props => {
             valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
+            withSubmitDialog={true}
+            formName={props.formName}
+            submitDialogTitle={props.submitDialogTitle}
+            submitDialogContentText={props.submitDialogContentText}
+            submitDialogCancelText={props.submitDialogCancelText}
+            submitDialogConfirmedText={props.submitDialogConfirmedText}
           />
         </Grid>
       </Grid>
