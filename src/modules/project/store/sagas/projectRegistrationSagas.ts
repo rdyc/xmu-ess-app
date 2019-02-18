@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   ProjectRegistrationAction as Action,
   projectRegistrationGetAllDispose,
@@ -9,6 +9,7 @@ import {
   projectRegistrationGetByIdError,
   projectRegistrationGetByIdRequest,
   projectRegistrationGetByIdSuccess,
+  projectRegistrationGetListDispose,
   projectRegistrationGetListError,
   projectRegistrationGetListRequest,
   projectRegistrationGetListSuccess,
@@ -246,6 +247,18 @@ function* watchPatchRequest() {
   yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(projectRegistrationGetAllDispose()),
+      put(projectRegistrationGetListDispose()),
+      put(projectRegistrationGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* projectRegistrationSagas() {
   yield all([
     fork(watchGetAllRequest),
@@ -253,7 +266,8 @@ function* projectRegistrationSagas() {
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
-    fork(watchPatchRequest)
+    fork(watchPatchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 
