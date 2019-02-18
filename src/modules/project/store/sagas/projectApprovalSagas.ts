@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   ProjectApprovalAction as Action,
   projectApprovalGetAllDispose,
@@ -141,11 +141,23 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(projectApprovalGetAllDispose()),
+      put(projectApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* projectApprovalSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 

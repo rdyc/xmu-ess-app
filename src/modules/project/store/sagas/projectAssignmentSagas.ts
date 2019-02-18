@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   ProjectAssignmentAction as Action,
   projectAssignmentGetAllDispose,
@@ -9,6 +9,7 @@ import {
   projectAssignmentGetByIdError,
   projectAssignmentGetByIdRequest,
   projectAssignmentGetByIdSuccess,
+  projectAssignmentGetListDispose,
   projectAssignmentGetListError,
   projectAssignmentGetListRequest,
   projectAssignmentGetListSuccess,
@@ -181,12 +182,25 @@ function* watchPatchRequest() {
   yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(projectAssignmentGetAllDispose()),
+      put(projectAssignmentGetListDispose()),
+      put(projectAssignmentGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* projectAssignmentSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
-    fork(watchPatchRequest)
+    fork(watchPatchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 
