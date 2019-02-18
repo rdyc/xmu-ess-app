@@ -270,6 +270,12 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
 
 const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectRegistrationDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.projectUid !== prevProps.match.params.projectUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
     if (this.props.projectRegisterState.detail.response !== prevProps.projectRegisterState.detail.response) {
       const { user } = this.props.userState;
       const { isLoading, response } = this.props.projectRegisterState.detail;
@@ -281,7 +287,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
         _statusType = response.data.statusType;
       }
 
-      // 
+      // checking status types
       const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => { 
         return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
       };
@@ -293,7 +299,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
         isOwner = user.uid === response.data.ownerEmployeeUid;
       }
 
-      // the results
+      // generate option menus
       const options: IAppBarMenu[] = [
         {
           id: ProjectUserAction.Refresh,
