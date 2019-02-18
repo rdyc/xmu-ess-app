@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetEntryAction as Action,
   timesheetGetAllDispose,
@@ -96,6 +96,7 @@ function* watchPostFetchRequest() {
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
+        put(timesheetGetByIdDispose()),
         put(timesheetGetAllDispose()),
         put(timesheetPostSuccess(response.body))
       ],
@@ -140,9 +141,9 @@ function* watchPutFetchRequest() {
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(timesheetPutSuccess(response.body)),
         put(timesheetGetByIdDispose()),
-        put(timesheetGetAllDispose())
+        put(timesheetGetAllDispose()),
+        put(timesheetPutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -179,12 +180,24 @@ function* watchPutFetchRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(timesheetGetAllDispose()),
+      put(timesheetGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* timesheetEntrySagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostFetchRequest),
-    fork(watchPutFetchRequest)
+    fork(watchPutFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 
