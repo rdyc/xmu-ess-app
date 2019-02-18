@@ -40,20 +40,10 @@ function* watchAllFetchRequest() {
         put(leaveRequestGetAllSuccess(response.body)),
       ], 
       failureEffects: (response: IApiResponse) => [
-        put(leaveRequestGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(leaveRequestGetAllError(response))
       ], 
       errorEffects: (error: TypeError) => [
         put(leaveRequestGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-           time: new Date(),
-           message: error.message
-        }))
       ],
       finallyEffects: [
         // nothing
@@ -73,19 +63,10 @@ function* watchByIdFetchRequest() {
         put(leaveRequestGetByIdSuccess(response.body)),
       ], 
       failureEffects: (response: IApiResponse) => [
-        put(leaveRequestGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(leaveRequestGetByIdError(response))
       ], 
       errorEffects: (error: TypeError) => [
         put(leaveRequestGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]
     });
   };
@@ -129,6 +110,7 @@ function* watchPostFetchRequest() {
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
+        put(leaveRequestGetByIdDispose()),
         put(leaveRequestGetAllDispose()),
         put(leaveRequestPostSuccess(response.body))
       ], 
@@ -173,8 +155,8 @@ function* watchPutFetchRequest() {
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(leaveRequestGetAllDispose()),
         put(leaveRequestGetByIdDispose()),
+        put(leaveRequestGetAllDispose()),
         put(leaveRequestPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
