@@ -9,6 +9,7 @@ import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -65,7 +66,8 @@ export type PreviewPageProps
   & WithWidth
   & WithLayout
   & WithAppBar
-  & InjectedIntlProps;
+  & InjectedIntlProps
+  & RouteComponentProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   isAdmin: false
@@ -126,7 +128,12 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
     // loading data event from config
     this.props.onLoadApi();
   },
-  componentDidUpdate(prevProps: PreviewPageProps, prevState: IOwnState) {
+  componentDidUpdate(prevProps: PreviewPageProps) {
+    // handling updated route params
+    if (this.props.match.params !== prevProps.match.params) {
+      this.props.onLoadApi();
+    }
+
     // handling updated page options state
     if (this.props.options && this.props.options !== prevProps.options) {
       this.props.layoutDispatch.moreShow();
@@ -151,6 +158,7 @@ export const PreviewPage = compose<PreviewPageProps, IOwnOption>(
   withOidc,
   withLayout,
   withAppBar,
+  withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
