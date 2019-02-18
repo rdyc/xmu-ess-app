@@ -10,6 +10,7 @@ import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -90,7 +91,8 @@ export type SinglePageProps
   & WithWidth
   & WithLayout
   & WithAppBar
-  & InjectedIntlProps;
+  & InjectedIntlProps
+  & RouteComponentProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
   isAdmin: false,
@@ -177,6 +179,11 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
     this.props.config.onDataLoad(this.props.connectedProps, this.props);
   },
   componentDidUpdate(prevProps: SinglePageProps, prevState: OwnState) {
+    // handling updated route params
+    if (this.props.match.params !== prevProps.match.params) {
+      this.props.config.onDataLoad(this.props.connectedProps, this.props);
+    }
+
     // track force reload changes
     if (this.props.forceReload !== prevProps.forceReload) {
       if (this.props.forceReload) {
@@ -222,6 +229,7 @@ export const SinglePage = compose<SinglePageProps, OwnOption>(
   withOidc,
   withLayout,
   withAppBar,
+  withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
