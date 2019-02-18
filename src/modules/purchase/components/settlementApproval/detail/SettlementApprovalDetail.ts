@@ -1,7 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -15,7 +14,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -26,9 +27,12 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { IAppBarMenu } from '@layout/interfaces';
+import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -36,7 +40,8 @@ interface OwnHandler {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setDataload: StateHandler<OwnState>;
+  setOptions: StateHandler<OwnState>;
+  setNextLoad: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
@@ -44,7 +49,8 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  shouldDataReload: boolean;
+  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -55,9 +61,12 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
-    shouldDataReload: !prevState.shouldDataReload
+const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnStateUpdaters> = {
+  setNextLoad: (state: OwnState, props: SettlementApprovalDetailProps) => (): Partial<OwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
   })
 };
 
@@ -66,7 +75,6 @@ export type SettlementApprovalDetailProps
   & WithNotification
   & WithUser
   & WithLayout
-  & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandler
@@ -74,6 +82,15 @@ export type SettlementApprovalDetailProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: SettlementApprovalDetailProps) => () => {
+    if (props.userState.user && !props.settlementApprovalState.detail.isLoading && props.match.params.purchaseUid) {
+      props.settlementApprovalDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        purchaseUid: props.match.params.purchaseUid
+      });
+    }
+  },
   handleValidate: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
     const errors = {
     };
@@ -165,7 +182,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 };
 
 const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: SettlementApprovalDetailProps): OwnState => ({
-  shouldDataReload: false,
+  shouldLoad: false,
   approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
   approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
   // approvalSubHeader: ` `,
@@ -181,14 +198,47 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
 
 });
 
+const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: SettlementApprovalDetailProps) {
+    // handle updated should load
+    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+      // turn of shoul load
+      this.props.setNextLoad();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated route params
+    if (this.props.match.params.purchaseUid !== prevProps.match.params.purchaseUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.settlementApprovalState.detail !== prevProps.settlementApprovalState.detail) {
+      const options: IAppBarMenu[] = [
+        {
+          id: PurchaseApprovalUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !this.props.settlementApprovalState.detail.isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const SettlementApprovalDetail = compose<SettlementApprovalDetailProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
   withRouter,
   withSettlementApproval,
   withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(SettlementApprovalDetailView);
