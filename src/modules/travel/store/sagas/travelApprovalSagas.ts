@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TravelApprovalAction as Action,
   travelApprovalGetAllDispose,
@@ -131,11 +131,23 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(travelApprovalGetAllDispose()),
+      put(travelApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* travelApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
-    fork(watchPostFetchRequest)
+    fork(watchPostFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 
