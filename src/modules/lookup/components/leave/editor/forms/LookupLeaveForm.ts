@@ -29,17 +29,22 @@ interface OwnProps {
   submitDialogConfirmedText: string;
 }
 
-export type RequestFormProps 
-  = InjectedFormProps<LookupLeaveFormData, OwnProps> 
+export type RequestFormProps
+  = InjectedFormProps<LookupLeaveFormData, OwnProps>
   & FormValueProps
   & OwnProps;
 
-const connectedView = connect()(LookupLeaveFormView);
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName
+  };
+};
+
+const connectedView = connect(mapStateToProps)(LookupLeaveFormView);
 
 export const LeaveForm = reduxForm<LookupLeaveFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true,
-  destroyOnUnmount: true
 })(connectedView);
