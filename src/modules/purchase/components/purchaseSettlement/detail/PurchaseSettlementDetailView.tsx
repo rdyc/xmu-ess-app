@@ -1,108 +1,33 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
-import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
-import { IAppBarMenu } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
+import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
-import { PurchaseUserAction } from '@purchase/classes/types';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 import { PurchaseSettlementDetailProps } from './PurchaseSettlementDetail';
 import { SettlementInformation } from './shared/SettlementInformation';
 import { SettlementItemContainer } from './shared/SettlementItemContainer';
-// import { PurchaseItemInformation } from './shared/PurchaseItemInformation';
-
-const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: string[]): boolean => {
-  return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
-};
-
-const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
-  // page info
-  page: (props: PurchaseSettlementDetailProps) => ({
-    uid: AppMenu.PurchaseSettlementRequest,
-    parentUid: AppMenu.Purchase,
-    title: props.intl.formatMessage(purchaseMessage.settlement.pages.detailTitle),
-    // description: props.intl.formatMessage(purchaseMessage.settlement.pages.detailSubHeader)
-    description: ''
-  }),
-
-  // parent url
-  parentUrl: (props: PurchaseSettlementDetailProps) => '/purchase/settlement/requests',
-
-  // action centre
-  showActionCentre: true,
-
-  // more
-  hasMore: true,
-  moreOptions: (props: PurchaseSettlementDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
-    {
-      id: PurchaseUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: callback.handleForceReload
-    },
-    {
-      id: PurchaseUserAction.Modify,
-      name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: true,
-      visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Rejected, WorkflowStatusType.AdjustmentNeeded]),
-      onClick: props.handleOnModify
-    }
-  ]),
-
-  // events
-  onDataLoad: (props: PurchaseSettlementDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
-    const { user } = props.userState;
-    const { isLoading, request, response } = props.purchaseSettlementState.detail;
-    const { loadDetailRequest } = props.purchaseSettlementDispatch;
-
-    // when user is set and not loading and has purchaseUid in route params
-    if (user && !isLoading && props.match.params.purchaseUid) {
-      // when purchaseUid was changed or response are empty or force to reload
-      if ((request && request.purchaseUid !== props.match.params.purchaseUid) || !response || forceReload) {
-        loadDetailRequest({
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-          purchaseUid: props.match.params.purchaseUid
-        });
-      } else {
-        // just take data from previous response
-        callback.handleResponse(response);
-        callback.handleStatusType(response.data.statusType || '');
-      }
-    }
-  },
-  onUpdated: (states: PurchaseSettlementDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.purchaseSettlementState.detail;
-
-    callback.handleLoading(isLoading);
-
-    // when got a response from api
-    if (response && response.data) {
-      callback.handleResponse(response);
-      callback.handleStatusType(response.data.statusType || '');
-    }
-  },
-
-  // primary
-  primaryComponent: (data: ISettlementDetail, props: PurchaseSettlementDetailProps) => (
-    <SettlementInformation data={data} />
-  ),
-
-  // secondary (multiple components are allowed)
-  secondaryComponents: (data: ISettlementDetail, props: PurchaseSettlementDetailProps) => ([
-    <SettlementItemContainer data={data} />,
-    <WorkflowHistory data={data.workflow} />
-  ])
-};
 
 export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailProps> = props => (
-  <SinglePage
-    config={config}
-    connectedProps={props}
+  <PreviewPage
+    info={{
+      uid: AppMenu.PurchaseSettlementRequest,
+      parentUid: AppMenu.Purchase,
+      parentUrl: '/purchase/settlement/requests',
+      title: props.intl.formatMessage(purchaseMessage.settlement.pages.detailTitle),
+      description: props.intl.formatMessage(purchaseMessage.settlement.pages.detailSubHeader)
+    }}
+    options={props.pageOptions}
+    state={props.purchaseSettlementState.detail}
+    onLoadApi={props.handleOnLoadApi}
+    primary={(data: ISettlementDetail) => (
+      <SettlementInformation data={data} />
+    )}
+    secondary={(data: ISettlementDetail) => ([
+      <SettlementItemContainer data={data} />,
+      <WorkflowHistory data={data.workflow} />
+    ])}
   >
     <DialogConfirmation
       isOpen={props.dialogOpen}
@@ -114,5 +39,5 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
       onClickCancel={props.handleOnCloseDialog}
       onClickConfirm={props.handleOnConfirm}
     />
-  </SinglePage>
+  </PreviewPage>
 );

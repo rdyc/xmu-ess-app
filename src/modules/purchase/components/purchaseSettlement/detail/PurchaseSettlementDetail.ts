@@ -1,4 +1,6 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSettlementDetailView } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetailView';
@@ -9,7 +11,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -18,12 +23,14 @@ import {
 } from 'recompose';
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   action?: PurchaseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -57,6 +64,9 @@ const createProps: mapper<PurchaseSettlementDetailProps, OwnState> = (props: Pur
 });
 
 const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
     action: PurchaseUserAction.Modify,
     dialogFullScreen: false,
@@ -78,6 +88,15 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
 };
 
 const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: PurchaseSettlementDetailProps) => () => {
+    if (props.userState.user && props.match.params.purchaseUid && !props.purchaseSettlementState.detail.isLoading) {
+      props.purchaseSettlementDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        purchaseUid: props.match.params.purchaseUid
+      });
+    }
+  },
   handleOnModify: (props: PurchaseSettlementDetailProps) => () => {
     props.setModify();
   },
@@ -117,9 +136,58 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
       props.setDefault();
 
-      props.history.push(next, { uid: purchaseUid, statusType: status });
+      props.history.push(next, { 
+        uid: purchaseUid, 
+        statusType: status 
+      });
     }
   },
+};
+
+const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: PurchaseSettlementDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.purchaseUid !== prevProps.match.params.purchaseUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.purchaseSettlementState.detail.response !== prevProps.purchaseSettlementState.detail.response) {
+      const { isLoading, response } = this.props.purchaseSettlementState.detail;
+
+      // find status type
+      let _statusType: string | undefined = undefined;
+
+      if (response && response.data) {
+        _statusType = response.data.statusType;
+      }
+
+      // checking status types
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => {
+        return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+      };
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: PurchaseUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: PurchaseUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: _statusType !== undefined,
+          visible: isContains(_statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded, WorkflowStatusType.Rejected]),
+          onClick: this.props.handleOnModify
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
 };
 
 export const PurchaseSettlementDetail = compose(
@@ -129,4 +197,6 @@ export const PurchaseSettlementDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('PurchaseSettlementDetail')
 )(PurchaseSettlementDetailView);
