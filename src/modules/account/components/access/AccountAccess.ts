@@ -112,7 +112,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
     
         // set redux state
         props.assignUser(user);
-    
+        
         // redirect to home page
         props.history.push('/home/dashboard');
       }
@@ -142,6 +142,8 @@ const lifecycles: ReactLifeCycleFunctions<AccessSwitcherProps, {}> = {
     if (!isLoading) {
       loadRequest();
     }
+
+    this.props.switchAccess();
   },
   componentDidUpdate(prevProps: AccessSwitcherProps) {
     if (this.props.accountEmployeeMyState.detail !== prevProps.accountEmployeeMyState.detail) {
