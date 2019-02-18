@@ -38,59 +38,52 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
 
   const dataSales = {
     labels: [
-      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May'
+      'SI (Imam)', 'SI (Fadil)', 'SI (Tika)', 'SI (Salman)', 'SI (Siti)', 'SI (Nidia)', 'SI (DianRa)', 'SI (Lulu)', 'SI (Lupi)', 'SI (Firmansyah)', 'SI (William)', 'SI (Chandra)',
+      'SI (Dianis)', 'SAP (Handry)', 'SAP (Ryan)', 'ECS (Nadya)', 'XMU (Debby)', 'XMU (Reinhard)', 'XMU (Sally)', 'XMU (Dian)', 'XMU (Wendi)', 'XA (Michael)', 'ODI (Felicia)', 'ODI (Shiella)', 'ODI (Jeniffer)', 'ODI (Caim)'
     ],
     datasets: [
       {
         label: props.dataSales && props.dataSales.title,
-        backgroundColor: 'rgba(0,51,255,0.2)',
-        borderColor: 'rgba(0,51,255,1)',
+        backgroundColor: '#283593',
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
-        hoverBorderColor: 'rgba(0,51,255,1)',
-        data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56]
+        hoverBackgroundColor: '#1a237e',
+        data: [60.77, 99.08, 18.19, 53.39, 11.14, 35.16, 55.1, 49.38, 31.17, 69.95, 0, 0.97, 7.53, 129.39, 4.51, 35.57, 167.55, 95.06, 32.21, 56.96, 2.69, 0, 100.15, 44.87, 27.52, 12.6]
       }
     ]
   };
   const dataDepartment = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['SI (Major)', 'SI (Corp 1)', 'SI (Corp 2)', 'SI (Corp 3)', 'SI (Corp 5)', 'SI (MTC)', 'ODI (SALES)', 'ODI (MTC)', 'ODI (CLOUD)', 'ODI (OED 2)', 'ODI (OED 3)', 'XMU (BTS 1)', 'XMU (BTS 2)', 'XMU (XA)'],
     datasets: [
       {
         label: props.dataDepartment && props.dataDepartment.title,
-        backgroundColor: 'rgba(0,51,255,0.2)',
-        borderColor: 'rgba(0,51,255,1)',
+        backgroundColor: '#283593',
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
-        hoverBorderColor: 'rgba(0,51,255,1)',
-        data: [65, 59, 80, 81, 56, 55, 40]
+        hoverBackgroundColor: '#1a237e',
+        data: [76.98, 40.32, 37.26, 52.54, 40.5, 72.92, 87.2, 124.85, 61.62, 39.43, 66.63, 88.3, 25.55, 38.32]
       }
     ]
   };
   const dataDivision = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['SI (Infra)', 'SI (BAF)', 'SI (BAA)', 'ODI (EBS)'],
     datasets: [
       {
         label: props.dataDiv && props.dataDiv.title,
-        backgroundColor: 'rgba(0,51,255,0.2)',
-        borderColor: 'rgba(0,51,255,1)',
+        backgroundColor: '#283593',
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
-        hoverBorderColor: 'rgba(0,51,255,1)',
-        data: [65, 59, 80, 81, 56, 55, 40]
+        hoverBackgroundColor: '#1a237e',
+        data: [72.86, 17.81, 49.69, 50.79]
       }
     ]
   };
   const dataLOB = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['SI', 'SAP', 'ECS', 'ODI', 'XMU'],
     datasets: [
       {
         label: props.dataLob && props.dataLob.title,
-        backgroundColor: 'rgba(0,51,255,0.2)',
-        borderColor: 'rgba(0,51,255,1)',
+        backgroundColor: '#283593',
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(0,51,255,0.4)',
-        hoverBorderColor: 'rgba(0,51,255,1)',
-        data: [65, 59, 80, 81, 56, 55, 40]
+        hoverBackgroundColor: '#1a237e',
+        data: [58.04, 77.28, 49.42, 85.39, 83.86]
       }
     ]
   };
@@ -315,6 +308,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                     <CardContent>
                       <HorizontalBar
                         data={dataDepartment}
+                        height={250}
                         options={
                           {
                             maintainAspectRatio: false,
