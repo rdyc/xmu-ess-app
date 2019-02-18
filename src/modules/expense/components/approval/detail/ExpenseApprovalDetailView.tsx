@@ -8,12 +8,22 @@ import { WorkflowHistory } from '@organization/components/workflow/history/Workf
 import * as React from 'react';
 import { ExpenseApprovalDetailProps } from './ExpenseApprovalDetail';
 
+const parentUrl = (props: ExpenseApprovalDetailProps): string => {
+  let path = '';
+  if (props.location.state && props.location.state.financeUid) {
+    path = `/finance/approvals/${props.location.state.financeUid}`;
+  } else {
+    path = '/expense/approvals';
+  }
+  return path;
+};
+
 export const ExpenseApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props => (
   <PreviewPage
     info={{
       uid: AppMenu.ExpenseApproval,
       parentUid: AppMenu.Expense,
-      parentUrl: '/expense/approvals',
+      parentUrl: parentUrl(props),
       title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
       description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
     }}
