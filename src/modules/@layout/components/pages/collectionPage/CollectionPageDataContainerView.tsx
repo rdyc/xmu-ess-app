@@ -41,18 +41,20 @@ export const CollectionPageDataContainerView: React.SFC<CollectionPageDataContai
               placement="bottom"
               title={item.title}
             >
-              <IconButton
-                id={item.id}
-                disabled={props.state.isLoading || props.state.isError}
-                onClick={item.onClick} 
-              >
-                <Badge
-                  invisible={!item.showBadgeWhen()}
-                  badgeContent={<CheckCircleIcon color="primary" />}
+              <div>
+                <IconButton
+                  id={item.id}
+                  disabled={props.state.isLoading || props.state.isError}
+                  onClick={item.onClick} 
                 >
-                  <item.icon/>
-                </Badge>
-              </IconButton>
+                  <Badge
+                    invisible={!item.showBadgeWhen()}
+                    badgeContent={<CheckCircleIcon color="primary" />}
+                  >
+                    <item.icon/>
+                  </Badge>
+                </IconButton>
+              </div>
             </Tooltip>
           )
         }
@@ -61,52 +63,60 @@ export const CollectionPageDataContainerView: React.SFC<CollectionPageDataContai
           placement="bottom"
           title={props.intl.formatMessage(layoutMessage.tooltip.orderBy)}
         >
-          <IconButton
-            id="option-field"
-            disabled={props.state.isLoading || props.state.isError}
-            onClick={props.handleOnClickMenu} 
-          >
-            <ReorderIcon />
-          </IconButton>
+          <div>
+            <IconButton
+              id="option-field"
+              disabled={props.state.isLoading || props.state.isError}
+              onClick={props.handleOnClickMenu} 
+            >
+              <ReorderIcon />
+            </IconButton>
+          </div>
         </Tooltip>
 
         <Tooltip
           placement="bottom"
           title={props.intl.formatMessage(layoutMessage.tooltip.sortDirection)}
         >
-          <IconButton 
-            id="option-order"
-            disabled={props.state.isLoading || props.state.isError}
-            onClick={props.handleOnClickMenu}
-          >
-            <SortByAlphaIcon />
-          </IconButton>
+          <div>
+            <IconButton 
+              id="option-order"
+              disabled={props.state.isLoading || props.state.isError}
+              onClick={props.handleOnClickMenu}
+            >
+              <SortByAlphaIcon />
+            </IconButton>
+          </div>
         </Tooltip>
 
         <Tooltip
           placement="bottom"
           title={props.intl.formatMessage(layoutMessage.tooltip.rowsPerPage)}
         >
-          <IconButton 
-            id="option-size"
-            disabled={props.state.isLoading || props.state.isError}
-            onClick={props.handleOnClickMenu}
-          >
-            <ListAltIcon />
-          </IconButton>
+          <div>
+            <IconButton 
+              id="option-size"
+              disabled={props.state.isLoading || props.state.isError}
+              onClick={props.handleOnClickMenu}
+            >
+              <ListAltIcon />
+            </IconButton>
+          </div>
         </Tooltip>
 
         <Tooltip
           placement="bottom"
           title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
         >
-          <IconButton 
-            id="option-sync"
-            disabled={props.state.isLoading || props.state.isError}
-            onClick={props.onClickSync}
-          >
-            <SyncIcon />
-          </IconButton>
+          <div>
+            <IconButton 
+              id="option-sync"
+              disabled={props.state.isLoading || props.state.isError}
+              onClick={props.onClickSync}
+            >
+              <SyncIcon />
+            </IconButton>
+          </div>
         </Tooltip>
       </Toolbar>
     </Paper>
