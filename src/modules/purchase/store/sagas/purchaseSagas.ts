@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   PurchaseAction,
   PurchaseApprovalAction,
@@ -631,6 +631,22 @@ function* watchSettlementApprovalPostFetchRequest() {
   yield takeEvery(SettlementApprovalAction.POST_S_APPROVAL_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(purchaseGetByIdDispose()),
+      put(purchaseGetAllDispose()),
+      put(purchaseApprovalGetAllDispose()),
+      put(purchaseApprovalGetByIdDispose()),
+      put(settlementGetByIdDispose()),
+      put(settlementGetAllDispose()),
+      put(settlementApprovalGetAllDispose()),
+      put(settlementApprovalGetByIdDispose()),
+    ]);
+  }
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* purchaseSagas() {
   yield all([
     fork(watchPurchaseAllFetchRequest),
@@ -647,6 +663,7 @@ function* purchaseSagas() {
     fork(watchSettlementApprovalAllFetchRequest),
     fork(watchSettlementApprovalByIdFetchRequest),
     fork(watchSettlementApprovalPostFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 
