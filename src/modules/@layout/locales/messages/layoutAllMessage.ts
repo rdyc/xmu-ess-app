@@ -22,7 +22,8 @@ export const layoutLabel = defineMessages({
   login: { id: `${prefix}.label.login`},
   logout: { id: `${prefix}.label.logout`},
   theme: { id: `${prefix}.label.theme`},
-  anchor: { id: `${prefix}.label.anchor`},
+  anchorRight: { id: `${prefix}.label.anchor.right`},
+  anchorLeft: { id: `${prefix}.label.anchor.left`},
   switch: { id: `${prefix}.label.switch`}
 });
 

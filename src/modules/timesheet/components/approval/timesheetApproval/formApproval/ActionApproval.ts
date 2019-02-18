@@ -1,23 +1,33 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import {
-  ITimesheetApprovalItem, ITimesheetApprovalPostBulkPayload
-} from '@timesheet/classes/request/approval';
+import { ITimesheetApprovalItem, ITimesheetApprovalPostBulkPayload } from '@timesheet/classes/request/approval';
 import { ITimesheet } from '@timesheet/classes/response';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { ActionApprovalView } from './ActionApprovalView';
 
 interface OwnHandler {
@@ -53,6 +63,7 @@ interface OwnRouteParams {
 
 export type ApprovalTimesheetsProps
   = WithTimesheetApproval
+  & WithNotification
   & WithUser
   & WithLayout
   & WithAppBar
@@ -179,6 +190,13 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
     });
 
     history.push('/timesheet/approvals');
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Timesheet,
+      detailType: NotificationType.Approval,
+      itemUid: props.timesheetUids
+    });
   },
   handleSubmitFail: (props: ApprovalTimesheetsProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -204,6 +222,7 @@ export const ActionApproval = compose(
   withLayout,
   withRouter,
   withTimesheetApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -59,6 +61,7 @@ export type ProjectApprovalDetailProps
   = WithProjectApproval
   & WithUser
   & WithLayout
+  & WithNotification
   & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
   & IOwnHandler
@@ -145,6 +148,13 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
     });
 
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.ProjectRegistration,
+      detailType: NotificationType.Approval,
+      itemUid: props.match.params.projectUid
+    });
   },
   handleSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -169,6 +179,7 @@ export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withProjectApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

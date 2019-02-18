@@ -1,6 +1,7 @@
 export * from './company/CompanyUserAction';
 export * from './company/CompanyField';
 export * from './role/RoleField';
+export * from './role/Menus';
 export * from './role/RoleUserAction';
 export * from './currency/CurrencyField';
 export * from './currency/CurrencyUserAction';

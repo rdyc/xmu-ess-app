@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -58,6 +60,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 export type ProjectAcceptanceApprovalProps
   = WithProjectAcceptance
+  & WithNotification
   & WithUser
   & WithLayout
   // & WithAppBar
@@ -146,6 +149,13 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler
     });
 
     props.setDataload();
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.ProjectAssignment,
+      detailType: NotificationType.Assignment,
+      itemUid: props.match.params.assignmentUid
+    });
   },
   handleSubmitFail: (props: ProjectAcceptanceApprovalProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -248,6 +258,7 @@ export const ProjectAcceptanceApproval = compose<ProjectAcceptanceApprovalProps,
   // withAppBar,
   withRouter,
   withProjectAcceptance,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

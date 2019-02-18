@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -12,10 +14,22 @@ import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMe
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { TravelSettlementApprovalDetailViews } from './TravelSettlementApprovalDetailViews';
 
 interface OwnHandler {
@@ -47,6 +61,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 export type TravelSettlementApprovalDetailProps
   = WithTravelSettlementApproval
+  & WithNotification
   & WithTravelApproval
   & WithUser
   & WithLayout
@@ -132,7 +147,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     });
   },
   handleSubmitSuccess: (props: TravelSettlementApprovalDetailProps) => (response: boolean) => {
-    const { intl } = props;
+    const { intl, match } = props;
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
@@ -142,6 +157,13 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
 
     props.setDataload();
     // history.push('/travel/approvals/settlement');
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.TravelSettlement,
+      detailType: NotificationType.Approval,
+      itemUid: match.params.travelSettlementUid
+    });
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -194,8 +216,9 @@ export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalD
   withLayout,
   withTravelApproval,
   withTravelSettlementApproval,
+  withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle<TravelSettlementApprovalDetailProps, OwnState>(lifecycles),
+  lifecycle(lifecycles)
 )(TravelSettlementApprovalDetailViews);

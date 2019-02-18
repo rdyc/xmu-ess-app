@@ -4,6 +4,7 @@ export * from './IAppBarState';
 export * from './ILayoutState';
 export * from './IListBarState';
 export * from './INotification';
+export * from './INotificationMark';
 export * from './INotificationDetail';
 export * from './INotificationDetailItem';
 export * from './INotificationQuery';

@@ -1,16 +1,14 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
 import { IMileageRequestDetail } from '@mileage/classes/response';
-
-import {
-  WithMileageApproval,
-  withMileageApproval
-} from '@mileage/hoc/withMileageApproval';
+import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -20,19 +18,21 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { MileageApprovalDetailView } from './MileageApprovalDetailView';
 import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
-interface OwnHandler {
+interface IOwnHandler {
   handleCheckbox: (mileageItemUid: string) => void;
   handleValidate: (payload: WorkflowApprovalMileageFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalMileageFormData) => void;
@@ -44,11 +44,11 @@ interface OwnHandler {
   ) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   mileageUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   shouldDataReload: boolean;
   mileageItemUids: string[];
   approvalTitle: string;
@@ -61,24 +61,26 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateCheckbox: StateHandler<OwnState>;
-  setDataload: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateCheckbox: StateHandler<IOwnState>;
+  setDataload: StateHandler<IOwnState>;
 }
 
-export type MileageApprovalDetailProps = WithMileageApproval &
-  WithUser &
-  WithLayout &
-  WithAppBar &
-  RouteComponentProps<OwnRouteParams> &
-  InjectedIntlProps &
-  OwnState &
-  OwnHandler &
-  OwnStateUpdaters;
+export type MileageApprovalDetailProps 
+  = WithMileageApproval 
+  & WithUser 
+  & WithLayout 
+  & WithAppBar 
+  & WithNotification
+  & RouteComponentProps<IOwnRouteParams> 
+  & InjectedIntlProps 
+  & IOwnState 
+  & IOwnHandler 
+  & IOwnStateUpdaters;
 
-const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
+const createProps: mapper<MileageApprovalDetailProps, IOwnState> = (
   props: MileageApprovalDetailProps
-): OwnState => {
+): IOwnState => {
   const { intl } = props;
 
   return {
@@ -98,18 +100,18 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateCheckbox: (prevState: OwnState) => (mileageItemUids: string[]) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateCheckbox: (prevState: IOwnState) => (mileageItemUids: string[]) => ({
     mileageItemUids
   }),
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDataload: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     shouldDataReload: !prevState.shouldDataReload
   })
 };
 
 const handlerCreators: HandleCreators<
   MileageApprovalDetailProps,
-  OwnHandler
+  IOwnHandler
 > = {
   handleCheckbox: (props: MileageApprovalDetailProps) => (
     mileageItemUid: string
@@ -191,7 +193,7 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageRequestDetail
   ) => {
-    const { intl, mileageItemUids } = props;
+    const { match, intl, history /*mileageItemUids*/ } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
     // let counter: number = 0;
@@ -211,14 +213,25 @@ const handlerCreators: HandleCreators<
     //   });
     // }
 
-    props.setDataload();
-    mileageItemUids.splice(0, mileageItemUids.length);
+    // props.setDataload();
+    // mileageItemUids.splice(0, mileageItemUids.length);
+
     // if (mileageItemUids.length === counter) {
     //   props.setDataload();
     // } else {
     //   loadData(props);
     //   mileageItemUids.splice(0, mileageItemUids.length);
     // }
+
+    // back to approval list
+    history.push('/mileage/approvals');
+
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinition.Mileage,
+      detailType: NotificationType.Approval,
+      itemUid: match.params.mileageUid
+    });
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -265,7 +278,9 @@ export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withAppBar,
   withRouter,
   withMileageApproval,
+  withNotification,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<MileageApprovalDetailProps, OwnHandler>(handlerCreators),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  setDisplayName('MileageApprovalDetail')
 )(MileageApprovalDetailView);

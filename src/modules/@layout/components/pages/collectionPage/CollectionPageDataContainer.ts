@@ -44,10 +44,10 @@ interface IOwnOption {
   pagination: {
     field?: string;
     direction?: string;
-    page: number;
-    size: number;
+    page?: number;
+    size?: number;
   };
-  metadata: IBaseMetadata | undefined;
+  metadata?: IBaseMetadata;
   fields: ICollectionValue[];
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onClickRetry: (event: React.MouseEvent<HTMLElement>) => void;

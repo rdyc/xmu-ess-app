@@ -27,35 +27,34 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       page: props.page,
       size: props.size,
     }}
-    metadata={props.response && props.response.metadata}
-    fields={props.config.fields}
-    onClickSync={() => props.setPageOne()}
-    onClickRetry={() => props.setForceReload(false)}
+    metadata={props.state.response && props.state.response.metadata}
+    fields={props.fields}
+    onClickSync={() => props.handleOnLoad(true, true)}
+    onClickRetry={() => props.handleOnLoad(false, true)}
     onClickNext={() => props.setPageNext()}
     onClickPrevious={() => props.setPagePrevious()}
     onChangeField={props.setField}
     onChangeOrder={props.setOrder}
     onChangeSize={props.setSize}
-    additionalControls={props.config.additionalControls}
+    additionalControls={props.dataControls}
   >
     {
-      // !props.isLoading &&
-      props.response &&
-      props.response.data &&
-      props.response.data.map((item, index) => {
+      props.state.response &&
+      props.state.response.data &&
+      props.state.response.data.map((item, index) => {
         // run overrider if any
-        if (props.config.onRowRender) {
-          return props.config.onRowRender(item, index);
+        if (props.onRowRender) {
+          return props.onRowRender(item, index);
         }   
 
         // collecting fields
-        const bind = props.config.onBind(item, index);
+        const bind = props.onBind(item, index);
         
         return (
           <Fade 
             key={item.uid} 
             in={!props.isLoading}
-            timeout={props.inTransition ? index * 150 : (props.size / index) * 100}
+            timeout={props.inTransition ? index * 150 : ((props.size || 10) / index) * 100}
             mountOnEnter
             unmountOnExit 
           >
@@ -65,7 +64,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                 expandIcon={<ExpandMoreIcon />}
               >
                 {
-                  props.config.hasSelection &&
+                  props.hasSelection &&
                   <Checkbox
                     checked={props.selected.indexOf(item.uid) !== -1}
                     onChange={props.handleOnChangeSelection}
@@ -165,16 +164,16 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
               
               <Delayed time={1000}>
                 <ExpansionPanelDetails>
-                  {props.config.summaryComponent(item)}
+                  {props.summaryComponent(item)}
                 </ExpansionPanelDetails>
               </Delayed>
               
               <Divider/>
 
               {
-                props.config.actionComponent &&
+                props.actionComponent &&
                 <ExpansionPanelActions>
-                  {props.config.actionComponent(item, props)}
+                  {props.actionComponent(item)}
                 </ExpansionPanelActions>
               }
             </ExpansionPanel>

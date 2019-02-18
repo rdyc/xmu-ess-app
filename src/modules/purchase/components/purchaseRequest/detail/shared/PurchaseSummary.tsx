@@ -30,7 +30,7 @@ const purchaseSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage( props.data.statusType === WorkflowStatusType.Approved
+        label={props.intl.formatMessage(props.data.statusType === WorkflowStatusType.Rejected
           ? purchaseMessage.request.field.reason
           : purchaseMessage.request.field.approveNotes)}
         value={props.data.reason || 'N/A'}

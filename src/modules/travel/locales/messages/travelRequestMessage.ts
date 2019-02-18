@@ -109,6 +109,10 @@ export const travelRequestField = defineMessages({
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
   rejectReason: { id: `${prefix}.field.rejectReason` },
+  
+  approvalNotes: { id: `${prefix}.field.approvalNotes` },
+
+  adjustmentNotes: { id: `${prefix}.field.adjustmentNotes` },
 
   total: { id: `${prefix}.field.total` },
   totalPlaceholder: { id: `${prefix}.field.total.placeholder` },

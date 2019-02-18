@@ -3,7 +3,7 @@ import { WithWidth } from '@material-ui/core/withWidth';
 import { IOrganizationHierarchyListFilter } from '@organization/classes/filters/hierarchy';
 import { IHierarchyList } from '@organization/classes/response/hierarchy';
 import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { SelectHierarchyView } from './SelectHierarchyView';
 
@@ -19,6 +19,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 
 interface OwnHandlers {
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleOnLoadApi: () => void;
 }
 
 export type SelectHierarchyProps
@@ -28,6 +29,9 @@ export type SelectHierarchyProps
   & OwnHandlers;
 
 const handlerCreators: HandleCreators<SelectHierarchyProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectHierarchyProps) => () => {
+    props.organizationHierarchyDispatch.loadListRequest({filter: props.filter});
+  },
   handleOnChange: (props: SelectHierarchyProps) => (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { input, onSelected } = props;
     const { response } = props.organizationHierarchyState.list;
@@ -48,26 +52,20 @@ const handlerCreators: HandleCreators<SelectHierarchyProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectHierarchyProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.organizationHierarchyState.list;
-    const { loadListRequest } = this.props.organizationHierarchyDispatch;
+    const { request } = this.props.organizationHierarchyState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({filter});
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      if (request.filter) {
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
   },
-  componentWillReceiveProps(nextProps: SelectHierarchyProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListRequest } = this.props.organizationHierarchyDispatch;
-      const { filter } = nextProps;
-      
-      loadListRequest({filter});
-    }
-  },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.organizationHierarchyDispatch;
-    loadListDispose();
-  }
 };
 
 export const SelectHierarchy = compose<SelectHierarchyProps, OwnProps>(

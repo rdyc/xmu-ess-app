@@ -18,38 +18,19 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
     
     <ListItem 
       button
-      onClick={() => props.handleOnClickMenuHeader(AppMenu.Home)}
+      selected={props.childUid === AppMenu.Dashboard}
+      onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard, !isWidthUp('md', props.width))}
     >
       <ListItemIcon className={props.classes.drawerPaperMenuItem}>
         <ModuleIcon module={AppMenu.Home} innerProps={{ color: 'action' }} />
       </ListItemIcon>
       <ListItemText 
-        primary="Home" 
+        primary="Dashboard" 
         primaryTypographyProps={{
           variant: 'body2'
         }}
       />
-      <ListItemSecondaryAction>
-        {props.headerUid === AppMenu.Home ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
-      </ListItemSecondaryAction>
     </ListItem>
-
-    <Collapse in={props.headerUid === AppMenu.Home}>
-      <ListItem
-        button
-        selected={props.childUid === AppMenu.Dashboard}
-        onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard, !isWidthUp('md', props.width))}
-      >
-        <ListItemText 
-          className={props.classes.drawerPaperMenuItemSub}
-          primary={'Dashboard'}
-          primaryTypographyProps={{
-            noWrap: true,
-            variant: 'body2',
-          }}
-        />
-      </ListItem>
-    </Collapse>
 
     {
       props.userState.user &&
