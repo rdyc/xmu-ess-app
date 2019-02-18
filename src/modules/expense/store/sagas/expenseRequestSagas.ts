@@ -15,7 +15,7 @@ import {
   expenseRequestPutRequest,
   expenseRequestPutSuccess,
 } from '@expense/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
@@ -178,12 +178,24 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(expenseRequestGetAllDispose()),
+      put(expenseRequestGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* expenseRequestSagas() {
   yield all([
     fork(watchAllRequest),
     fork(watchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchSwitchAccess),
   ]);
 }
 
