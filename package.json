@@ -79,8 +79,7 @@
     "typeface-roboto": "0.0.54",
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.1.1",
-    "utility-types": "^2.1.0",
-    "victory": "^31.1.0"
+    "utility-types": "^2.1.0"
   },
   "devDependencies": {
     "@types/qs": "^6.5.1"
