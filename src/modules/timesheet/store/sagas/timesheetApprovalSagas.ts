@@ -69,13 +69,7 @@ function* watchGetByIdRequest() {
         put(timesheetApprovalGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(timesheetApprovalGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(timesheetApprovalGetByIdError(error.message))
       ]
     });
   };

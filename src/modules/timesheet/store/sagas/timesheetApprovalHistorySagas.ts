@@ -61,13 +61,7 @@ function* watchGetByIdRequest() {
         put(timesheetApprovalHistoryGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(timesheetApprovalHistoryGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(timesheetApprovalHistoryGetByIdError(error.message))
       ]
     });
   };
