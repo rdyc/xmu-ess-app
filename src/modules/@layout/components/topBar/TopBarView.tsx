@@ -1,31 +1,10 @@
-import { ICollectionValue } from '@layout/classes/core';
 import { IAppBarControl, IAppBarMenu } from '@layout/interfaces';
-import {
-  AppBar,
-  Badge,
-  Button,
-  Divider,
-  IconButton,
-  Input,
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  Menu,
-  MenuItem,
-  PropTypes,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import { AppBar, Badge, Button, IconButton, Menu, MenuItem, PropTypes, Toolbar, Typography } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import ClearIcon from '@material-ui/icons/Clear';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
-import SearchIcon from '@material-ui/icons/Search';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -98,6 +77,8 @@ interface ToolbarControlOptions {
   onClickMore: (event: React.MouseEvent<HTMLDivElement>) => void;
   onClickMoreItem: (item: IAppBarMenu) => void;
   onCloseMore: () => void;
+  searchComponent?: React.ReactNode;
+  customComponent?: React.ReactNode;
 }
 
 const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
@@ -137,16 +118,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
     </Typography>
 
     {/* search */}
-    {
-      props.showSearch &&
-      <IconButton
-        color={props.color}
-        aria-label="Search"
-        onClick={props.OnClickSearch}
-      >
-        <SearchIcon />
-      </IconButton>
-    }
+    {props.searchComponent}
     
     {
       /* notifications */
@@ -177,6 +149,8 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       )
     }
 
+    {props.customComponent}
+
     {
       props.showMore &&
       <MoreControl 
@@ -188,60 +162,6 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
         onClose={props.onCloseMore}
       />
     }
-  </Toolbar>
-);
-
-interface SearchControlOptions {
-  find?: string;
-  field?: ICollectionValue;
-  className: string;
-  OnClickBack: (event: React.MouseEvent) => void;
-  OnClickClear: (event: React.MouseEvent) => void;
-  OnClickField: (event: React.MouseEvent) => void;
-  OnChangeFind: (event: React.ChangeEvent) => void;
-  OnKeyUpFind: (event: React.KeyboardEvent) => void;
-}
-
-const SearchControl: React.SFC<SearchControlOptions> = props => (
-  <Toolbar className={props.className}>
-    <IconButton
-      aria-label="close search"
-      onClick={props.OnClickBack}
-    >
-      <ArrowBackIcon />
-    </IconButton>
-    
-    <Input 
-      fullWidth
-      autoFocus
-      disableUnderline
-      placeholder="Type something"
-      value={props.find}
-      onChange={props.OnChangeFind}
-      onKeyUp={props.OnKeyUpFind}
-      startAdornment={
-        <InputAdornment 
-          position="start" 
-          onClick={props.OnClickField}>
-          <Typography 
-            variant="body2" 
-            color="inherit"
-            noWrap
-          >
-            {props.field ? props.field.name : ''}
-          </Typography>
-        </InputAdornment>
-      }
-      endAdornment={
-        props.find &&
-        props.find.length > 0 &&
-        <InputAdornment position="end">
-          <IconButton onClick={props.OnClickClear}>
-            <ClearIcon/>
-          </IconButton>
-        </InputAdornment>
-      }
-    />
   </Toolbar>
 );
 
@@ -273,6 +193,8 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           onClickMore={props.handleOnClickMore}
           onClickMoreItem={props.handleOnClickMoreItem}
           onCloseMore={props.handleOnCloseMore}
+          searchComponent={props.appBarState.searchComponent}
+          customComponent={props.appBarState.customComponent}
         />
       }
 
@@ -303,64 +225,6 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           </Button>
         </Toolbar>
       }
-
-      {
-        props.mode === 'search' &&
-        <SearchControl
-          find={props.search}
-          field={props.field}
-          className={props.classes.appBarSearch}
-          OnClickBack={props.handleOnDiscardSearch}
-          OnClickClear={props.handleOnClearSearch}
-          OnKeyUpFind={props.handleOnKeyUpSearch}
-          OnClickField={props.setFieldVisibility}
-          OnChangeFind={props.handleOnChangeSearch}
-        />
-      }
-
-    {
-      props.isShowFields &&
-      props.appBarState.fields &&
-      <div className={props.search && props.search.length < 3 ? props.classes.hide : props.classes.appBarSearchField}>
-        <Divider />
-        <List disablePadding>
-          <ListItem
-            button 
-            onClick={() => props.handleOnClickField()}
-          >
-            <ListItemText 
-              primary={`${props.search} in Any`}
-              primaryTypographyProps={{
-                variant: 'body2'
-              }}
-            />
-            <ListItemSecondaryAction>
-              <CallMadeIcon color="action" />
-            </ListItemSecondaryAction>
-          </ListItem>
-          {
-            props.appBarState.fields.map((field, index) =>
-              <ListItem 
-                key={index} 
-                button 
-                component="div"
-                onClick={() => props.handleOnClickField(field)}
-              >
-                <ListItemText 
-                  primary={`${props.search} in ${field.name}`}
-                  primaryTypographyProps={{
-                    variant: 'body2'
-                  }}
-                />
-                <ListItemSecondaryAction>
-                  <CallMadeIcon color="action" />
-                </ListItemSecondaryAction>
-              </ListItem>   
-            )
-          }
-        </List>
-      </div>
-    }
 
   </AppBar>
 );

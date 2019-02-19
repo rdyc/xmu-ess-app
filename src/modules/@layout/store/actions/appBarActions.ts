@@ -12,7 +12,9 @@ export const enum AppBarAction {
   ASSIGN_SELECTION_PROCESS_CALLBACK = '@@app-bar/ASSIGN_SELECTION_PROCESS_CALLBACK',
   SELECTION_ADD_REMOVE = '@@app-bar/SELECTION_ADD_REMOVE',
   SELECTION_CLEAR = '@@app-bar/SELECTION_CLEAR',
-  DISPOSE = '@@app-bar/DISPOSE'
+  DISPOSE = '@@app-bar/DISPOSE',
+  ASSIGN_SEARCH_COMPONENT = '@@app-bar/ASSIGN_SEARCH_COMPONENT',
+  ASSIGN_CUSTOM_COMPONENT = '@@app-bar/ASSIGN_CUSTOM_COMPONENT',
 }
 
 export const appBarAssignControls = (controls: IAppBarControl[]) => action(AppBarAction.ASSIGN_CONTROLS, controls);
@@ -20,6 +22,8 @@ export const appBarAssignMenus = (menus: IAppBarMenu[]) => action(AppBarAction.A
 export const appBarAssignMenuCallback = (callback: (menu: IAppBarMenu) => void) => action(AppBarAction.ASSIGN_MENU_CALLBACK, callback);
 export const appBarAssignFields = (fields: ICollectionValue[]) => action(AppBarAction.ASSIGN_FIELDS, fields);
 export const appBarAssignSearchCallback = (callback: (find: string, field?: ICollectionValue) => void) => action(AppBarAction.ASSIGN_SEARCH_CALLBACK, callback);
+export const appBarAssignSearchComponent = (component: React.ReactNode) => action(AppBarAction.ASSIGN_SEARCH_COMPONENT, component);
+export const appBarAssignCustomComponent = (component: React.ReactNode) => action(AppBarAction.ASSIGN_CUSTOM_COMPONENT, component);
 export const appBarSelectionAddRemove = (value: string) => action(AppBarAction.SELECTION_ADD_REMOVE, value);
 export const appBarSelectionClear = () => action(AppBarAction.SELECTION_CLEAR);
 export const appBarAssignSelectionClearCallback = (callback: () => void) => action(AppBarAction.ASSIGN_SELECTION_CLEAR_CALLBACK, callback);

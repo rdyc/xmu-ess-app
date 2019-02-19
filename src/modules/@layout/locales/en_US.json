@@ -41,7 +41,8 @@
   "layout.text.inactive": "Inactive",
   "layout.text.find": "Find",
   "layout.text.search": "Search",
-  
+  "layout.text.selection": "{count} selected",
+
   "layout.tooltip.more": "More options",
   "layout.tooltip.filter": "Filter",
   "layout.tooltip.orderBy": "Order by",
@@ -96,7 +97,6 @@
   "layout.label.anchor.right": "Right Handed",
   "layout.label.anchor.left": "Left Handed",
   "layout.label.switch": "Switch Access",
-  "layout.label.selection": "{count} selected",
   
   "layout.profile.my.title": "Profile",
   "layout.access.title": "Access",

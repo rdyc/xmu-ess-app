@@ -5,10 +5,10 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithPage, withPage } from '@layout/hoc/withPage';
-import { IAppBarControl, IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -24,7 +24,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IDataControl } from '../dataContainer/DataContainer';
 import { CollectionPageView } from './CollectionPageView';
 
 export interface IDataBindResult {
@@ -39,9 +38,6 @@ export interface IDataBindResult {
 
 interface IOwnOption {
   state: IQueryCollectionState<any, any>;
-  options?: IAppBarMenu[];
-  dataControls?: IDataControl[];
-  toolbarControls?: IAppBarControl[];
   info: {
     uid: AppMenu | string;
     parentUid?: AppMenu | string;
@@ -49,64 +45,45 @@ interface IOwnOption {
     description: string;
     parentUrl?: string;
   };
+  fields: ICollectionValue[];
   onLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   onLoadedApi?: () => void;
-  fields: ICollectionValue[];
-  hasSearching?: boolean;
-  isModeSearch?: boolean;
-  hasSelection?: boolean;
-  notSelectionTypes?: string[] | [];
-  hasNavBack?: boolean;
-  onProcessSelection?: (values: string[]) => void;
+  disableSelection?: (item: any) => boolean;
+  onSelection?: (values: string[]) => void;
   onBind: (item: any, index: number) => IDataBindResult;
-  onRowRender?: (item: any, index: number) => JSX.Element;
-  summaryComponent: (item: any) => JSX.Element;
-  actionComponent?: (item: any) => JSX.Element;
+  onRowRender?: (item: any, index: number) => React.ReactNode;
+  summaryComponent: (item: any) => React.ReactNode;
+  actionComponent?: (item: any) => React.ReactNode;
+  appBarSearchComponent?: React.ReactNode;
+  appBarCustomComponent?: React.ReactNode;
+  toolbarDataComponent?: React.ReactNode;
 }
 
 interface IOwnState {
-  // selection
   selected: string[];
-
-  // filter
-  find?: string;
-  findBy?: string;
-  
-  // order
   orderBy?: string;
   direction?: 'ascending' | 'descending';
-  
-  // paging
   page?: number;
   size?: number;
-
-  // transition
-  inTransition: boolean;
-
-  // not selection types
-  notSelectionTypes: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setRequestFilter: StateHandler<IOwnState>;
   setSelection: StateHandler<IOwnState>;
-  setSelectionClear: StateHandler<IOwnState>;
-  setSearchDefault: StateHandler<IOwnState>;
-  setSearchResult: StateHandler<IOwnState>;
   setPageNext: StateHandler<IOwnState>;
   setPagePrevious: StateHandler<IOwnState>;
   setPageOne: StateHandler<IOwnState>;
   setField: StateHandler<IOwnState>;
   setOrder: StateHandler<IOwnState>;
   setSize: StateHandler<IOwnState>;
-  setNotSelectionTypes: StateHandler<IOwnState>;
   setPageAndSize: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoad: (resetPage?: boolean, isRetry?: boolean) => void;
-  handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOnSearch: (find?: string, field?: ICollectionValue) => void;
+  handleOnCheckedSelection: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  handleOnChangeSelection: (event: React.MouseEvent<HTMLElement>) => void;
+  handleOnClearSelection: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export type CollectionPageProps
@@ -118,21 +95,15 @@ export type CollectionPageProps
   & WithWidth
   & WithLayout
   & WithAppBar
-  & WithPage;
+  & WithPage
+  & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  // pagination props
-  find: props.state.request && props.state.request.filter.find,
-  findBy: props.state.request && props.state.request.filter.findBy,
   orderBy: props.state.request && props.state.request.filter.orderBy,
   direction: props.state.request && props.state.request.filter.direction,
   page: props.state.request && props.state.request.filter.page,
-  size: props.state.request && props.state.request.filter.size,
-  
-  // other props
-  selected: [],
-  inTransition: true,
-  notSelectionTypes: []
+  size: props.state.request && props.state.request.filter.size,  
+  selected: []
 });
 
 const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
@@ -142,32 +113,8 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
   setForceReload: (state: IOwnState) => (toFirst?: boolean): Partial<IOwnState> => ({
     page: toFirst ? 1 : state.page
   }),
-  setSelection: (state: IOwnState) => (uid: string): Partial<IOwnState> => {
-    const index = state.selected.indexOf(uid);
-    const result: string[] = state.selected;
-
-    if (index !== -1) {
-      result.splice(index, 1);
-    } else {
-      result.push(uid);
-    }
-
-    return {
-      selected: result
-    };
-  },
-  setSelectionClear: (state: IOwnState) => (): Partial<IOwnState> => ({
-    selected: []
-  }),
-  setSearchDefault: (state: IOwnState) => (find: string, field: ICollectionValue | undefined) => ({
-    find: undefined,
-    findBy: undefined,
-    page: 1
-  }),
-  setSearchResult: (state: IOwnState) => (find: string, field: ICollectionValue | undefined) => ({
-    find,
-    findBy: field ? field.value : undefined,
-    page: 1
+  setSelection: (state: IOwnState) => (values: string[]): Partial<IOwnState> => ({
+    selected: values
   }),
   setPageNext: (state: IOwnState) => () => ({
     page: (state.page || 1) + 1
@@ -193,17 +140,12 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
   setPageAndSize: (state: IOwnState) => (page: number, size: number) => ({
     size,
     page
-  }),
-  setNotSelectionTypes: (state: IOwnState) => (types: string[]) => ({
-    notSelectionTypes: types
-  }),
+  })
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, IOwnHandler> = {
   handleOnLoad: (props: CollectionPageProps) => (resetPage?: boolean, isRetry?: boolean) => {
     const filter: IBasePagingFilter = {
-      find: props.find,
-      findBy: props.findBy,
       page: props.page,
       size: props.size,
       orderBy: props.orderBy,
@@ -212,20 +154,30 @@ const handlerCreators: HandleCreators<CollectionPageProps, IOwnHandler> = {
 
     props.onLoadApi(filter, resetPage, isRetry);
   },
-  handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setSelection(event.currentTarget.value);
+  handleOnCheckedSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    const value = event.currentTarget.value;
+    const selected = props.selected;
 
-    props.appBarDispatch.selectionAddRemove(event.currentTarget.value);
-  },
-  handleOnSearch: (props: CollectionPageProps) => (find?: string, field?: ICollectionValue) => {
-    // when find is undefided, that means user has close or exit from search mode
-    if (find) {
-      // set search state props for searching
-      props.setSearchResult(find.trim(), field);
+    if (checked) {
+      selected.push(value);
     } else {
-      // set search state props to default
-      props.setSearchDefault();
+      const index = props.selected.indexOf(value);
+
+      if (index !== -1) {
+        selected.splice(index, 1);
+      }
     }
+
+    props.setSelection(selected);
+  },
+  handleOnChangeSelection: (props: CollectionPageProps) => (event: React.MouseEvent<HTMLElement>) => {
+    if (props.onSelection && props.selected.length > 0) {
+      props.onSelection(props.selected);
+      props.setSelection([]);
+    }
+  },
+  handleOnClearSelection: (props: CollectionPageProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setSelection([]);
   }
 };
 
@@ -244,45 +196,20 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
       },
       parentUrl: page.parentUrl,
       status: {
-        isNavBackVisible: this.props.hasNavBack || false,
-        isSearchVisible: this.props.hasSearching,
+        isNavBackVisible: false,
         isMoreVisible: false,
-        isModeList: true,
-        isModeSearch: this.props.isModeSearch
+        isModeList: true
       }
     });
-    
-    // assign search callback
-    if (this.props.hasSearching) {
-      this.props.appBarDispatch.assignSearchCallback(this.props.handleOnSearch);
+
+    // assign search component
+    if (this.props.appBarSearchComponent) {
+      this.props.appBarDispatch.assignSearchComponent(this.props.appBarSearchComponent);
     }
 
-    // assign selection callback
-    if (this.props.hasSelection) {
-      this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
-
-      this.props.setNotSelectionTypes(this.props.notSelectionTypes);
-
-      // call config processing callback
-      this.props.appBarDispatch.assignSelectionProcessCallback(() => {
-        return this.props.onProcessSelection ? this.props.onProcessSelection(this.props.selected) : undefined;
-      });
-    }
-    
-    // assign fields
-    if (this.props.fields) {
-      this.props.appBarDispatch.assignFields(this.props.fields);
-    }
-
-    // assign custom toolbar controls
-    if (this.props.toolbarControls) {
-      this.props.appBarDispatch.assignControls(this.props.toolbarControls);
-    }
-
-    // assign more menu items
-    if (this.props.options) {
-      this.props.layoutDispatch.moreShow();
-      this.props.appBarDispatch.assignMenus(this.props.options);
+    // assign custom component
+    if (this.props.appBarCustomComponent) {
+      this.props.appBarDispatch.assignCustomComponent(this.props.appBarCustomComponent);
     }
 
     // loading data
@@ -293,12 +220,6 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
     if (this.props.state.request !== prevProps.state.request) {
       this.props.setRequestFilter(this.props.state.request.filter);
     } 
-
-    // handling updated page options state
-    if (this.props.options && this.props.options !== prevProps.options) {
-      this.props.layoutDispatch.moreShow();
-      this.props.appBarDispatch.assignMenus(this.props.options);
-    }
     
     // handling updated pagination state
     const isChanged = !shallowEqual(
@@ -346,5 +267,6 @@ export const CollectionPage = compose<CollectionPageProps, IOwnOption>(
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   withWidth(),
-  withStyles(styles)
+  withStyles(styles),
+  injectIntl
 )(CollectionPageView);

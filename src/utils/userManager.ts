@@ -14,14 +14,15 @@ const settings: UserManagerSettings = {
   popup_redirect_uri: `${selfHost}/signin`,
   post_logout_redirect_uri: `${selfHost}`,
   silent_redirect_uri: `${selfHost}/silent_renew`,
-  automaticSilentRenew: true,
+  // automaticSilentRenew: true,
+  automaticSilentRenew: false,
   filterProtocolClaims: true,
   loadUserInfo: true,
   monitorSession: true,
   userStore: new WebStorageStateStore({
     store: localStorage
   }),
-  clockSkew: 900, // 15 mins  
+  clockSkew: 900, // 15 mins
 };
 
 export const AppUserManager = createUserManager(settings);

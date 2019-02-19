@@ -3,10 +3,12 @@ import { ICollectionValue } from '@layout/classes/core';
 import { IAppBarControl, IAppBarMenu, IAppBarState } from '@layout/interfaces';
 import {
   appBarAssignControls,
+  appBarAssignCustomComponent,
   appBarAssignFields,
   appBarAssignMenuCallback,
   appBarAssignMenus,
   appBarAssignSearchCallback,
+  appBarAssignSearchComponent,
   appBarAssignSelectionClearCallback,
   appBarAssignSelectionProcessCallback,
   appBarDispose,
@@ -33,6 +35,8 @@ interface PropsFromDispatch {
     selectionAddRemove: typeof appBarSelectionAddRemove;
     selectionClear: typeof appBarSelectionClear;
     dispose: typeof appBarDispose;
+    assignSearchComponent: typeof appBarAssignSearchComponent;
+    assignCustomComponent: typeof appBarAssignCustomComponent;
   };
 }
 
@@ -54,6 +58,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     selectionAddRemove: (value: string) => dispatch(appBarSelectionAddRemove(value)),
     selectionClear: () => dispatch(appBarSelectionClear()),
     dispose: () => dispatch(appBarDispose()),
+    assignSearchComponent: (component: React.ReactNode) => dispatch(appBarAssignSearchComponent(component)),
+    assignCustomComponent: (component: React.ReactNode) => dispatch(appBarAssignCustomComponent(component)),
   }
 });
 

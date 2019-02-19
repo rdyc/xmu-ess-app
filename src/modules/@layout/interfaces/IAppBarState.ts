@@ -24,4 +24,6 @@ export interface IAppBarState {
   menus?: IAppBarMenu[];
   fields?: ICollectionValue[];
   selections?: string[];
+  searchComponent?: React.ReactNode;
+  customComponent?: React.ReactNode;
 }
