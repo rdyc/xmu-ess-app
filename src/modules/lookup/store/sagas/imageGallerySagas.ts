@@ -34,12 +34,7 @@ function* watchFetchAllRequest() {
         put(imageGalleryGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(imageGalleryGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(imageGalleryGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(imageGalleryGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchByIdRequest() {
         put(imageGalleryGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(imageGalleryGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(imageGalleryGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(imageGalleryGetByIdError(error.message)),

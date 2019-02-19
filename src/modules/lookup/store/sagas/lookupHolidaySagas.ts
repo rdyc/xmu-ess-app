@@ -42,12 +42,7 @@ function* watchFetchAllRequest() {
         put(lookupHolidayGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupHolidayGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupHolidayGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupHolidayGetAllError(error.message)),
@@ -79,12 +74,7 @@ function* watchFetchListRequest() {
         put(lookupHolidayGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupHolidayGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupHolidayGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupHolidayGetListError(error.message)),
@@ -108,12 +98,7 @@ function* watchFetchByIdRequest() {
         put(lookupHolidayGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupHolidayGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupHolidayGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupHolidayGetByIdError(error.message)),

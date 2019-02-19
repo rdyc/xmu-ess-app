@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(bloodGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(bloodGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(bloodGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(bloodGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(bloodGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(bloodGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(bloodGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(bloodGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(bloodGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(bloodGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(bloodGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(bloodGetByIdError(error.message)),

@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(certificationGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(certificationGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(certificationGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(certificationGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(certificationGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(certificationGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(certificationGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(certificationGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(certificationGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(certificationGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(certificationGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(certificationGetByIdError(error.message)),

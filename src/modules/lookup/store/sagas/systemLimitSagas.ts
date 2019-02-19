@@ -46,12 +46,7 @@ function* watchGetAllRequest() {
         put(systemLimitGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemLimitGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemLimitGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetAllError(error.message)),
@@ -78,12 +73,7 @@ function* watchGetAmountRequest() {
         put(systemLimitGetAmountSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemLimitGetAmountError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemLimitGetAmountError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetAmountError(error.message)),
@@ -112,12 +102,7 @@ function* watchGetListRequest() {
         put(systemLimitGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemLimitGetListError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemLimitGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetListError(error.message)),
@@ -141,12 +126,7 @@ function* watchGetByIdRequest() {
         put(systemLimitGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemLimitGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemLimitGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetByIdError(error.message)),

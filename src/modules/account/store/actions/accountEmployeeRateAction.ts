@@ -33,23 +33,23 @@ export const enum AccountEmployeeRateAction {
 // get all
 export const accountEmployeeRateGetAllRequest = (request: IEmployeeRateAllRequest) => action(AccountEmployeeRateAction.GET_ALL_REQUEST, request);
 export const accountEmployeeRateGetAllSuccess = (response: IResponseCollection<IEmployeeRate>) => action(AccountEmployeeRateAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeRateGetAllError = (message: string) => action(AccountEmployeeRateAction.GET_ALL_ERROR, message);
+export const accountEmployeeRateGetAllError = (error: any) => action(AccountEmployeeRateAction.GET_ALL_ERROR, error);
 export const accountEmployeeRateGetAllDispose = () => action(AccountEmployeeRateAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeRateGetListRequest = (request: IEmployeeRateListRequest) => action(AccountEmployeeRateAction.GET_LIST_REQUEST, request);
 export const accountEmployeeRateGetListSuccess = (response: IResponseCollection<IEmployeeRateList>) => action(AccountEmployeeRateAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeRateGetListError = (message: string) => action(AccountEmployeeRateAction.GET_LIST_ERROR, message);
+export const accountEmployeeRateGetListError = (error: any) => action(AccountEmployeeRateAction.GET_LIST_ERROR, error);
 export const accountEmployeeRateGetListDispose = () => action(AccountEmployeeRateAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeRateGetByIdRequest = (request: IEmployeeRateByIdRequest) => action(AccountEmployeeRateAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeRateGetByIdSuccess = (response: IResponseCollection<IEmployeeRate>) => action(AccountEmployeeRateAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeRateGetByIdError = (message: string) => action(AccountEmployeeRateAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeRateGetByIdError = (error: any) => action(AccountEmployeeRateAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeRateGetByIdDispose = () => action(AccountEmployeeRateAction.GET_BY_ID_DISPOSE);
 
 // put
 export const accountEmployeeRatePutRequest = (request: IEmployeeRatePutRequest) => action(AccountEmployeeRateAction.PUT_REQUEST, request);
 export const accountEmployeeRatePutSuccess = (response: IResponseSingle<IEmployeeRate>) => action(AccountEmployeeRateAction.PUT_SUCCESS, response);
-export const accountEmployeeRatePutError = (message: string) => action(AccountEmployeeRateAction.PUT_ERROR, message);
+export const accountEmployeeRatePutError = (error: any) => action(AccountEmployeeRateAction.PUT_ERROR, error);
 export const accountEmployeeRatePutDispose = () => action(AccountEmployeeRateAction.PUT_DISPOSE);

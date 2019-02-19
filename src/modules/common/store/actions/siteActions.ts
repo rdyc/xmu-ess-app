@@ -21,17 +21,17 @@ export const enum SiteAction {
 // get all
 export const siteGetAllRequest = (request: ISystemAllRequest) => action(SiteAction.GET_ALL_REQUEST, request);
 export const siteGetAllSuccess = (response: IResponseCollection<ISystem>) => action(SiteAction.GET_ALL_SUCCESS, response);
-export const siteGetAllError = (message: string) => action(SiteAction.GET_ALL_ERROR, message);
+export const siteGetAllError = (error: any) => action(SiteAction.GET_ALL_ERROR, error);
 export const siteGetAllDispose = () => action(SiteAction.GET_ALL_DISPOSE);
 
 // get list
 export const siteGetListRequest = (request: ISystemListRequest) => action(SiteAction.GET_LIST_REQUEST, request);
 export const siteGetListSuccess = (response: IResponseCollection<ISystemList>) => action(SiteAction.GET_LIST_SUCCESS, response);
-export const siteGetListError = (message: string) => action(SiteAction.GET_LIST_ERROR, message);
+export const siteGetListError = (error: any) => action(SiteAction.GET_LIST_ERROR, error);
 export const siteGetListDispose = () => action(SiteAction.GET_LIST_DISPOSE);
 
 // get by id
 export const siteGetByIdRequest = (request: ISystemByIdRequest) => action(SiteAction.GET_BY_ID_REQUEST, request);
 export const siteGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(SiteAction.GET_BY_ID_SUCCESS, response);
-export const siteGetByIdError = (message: string) => action(SiteAction.GET_BY_ID_ERROR, message);
+export const siteGetByIdError = (error: any) => action(SiteAction.GET_BY_ID_ERROR, error);
 export const siteGetByIdDispose = () => action(SiteAction.GET_BY_ID_DISPOSE);

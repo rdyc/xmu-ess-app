@@ -43,12 +43,7 @@ function* watchAllRequest() {
         put(accountEmployeeEducationGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeEducationGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeEducationGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeEducationGetAllError(error.message)),
@@ -77,12 +72,7 @@ function* watchListRequest() {
         put(accountEmployeeEducationGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeEducationGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeEducationGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeEducationGetListError(error.message)),
@@ -106,12 +96,7 @@ function* watchByIdRequest() {
         put(accountEmployeeEducationGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeEducationGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeEducationGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeEducationGetByIdError(error.message)),

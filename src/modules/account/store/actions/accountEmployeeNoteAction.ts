@@ -43,35 +43,35 @@ export const enum AccountEmployeeNoteAction {
 // get all
 export const accountEmployeeNoteGetAllRequest = (request: IEmployeeNoteAllRequest) => action(AccountEmployeeNoteAction.GET_ALL_REQUEST, request);
 export const accountEmployeeNoteGetAllSuccess = (response: IResponseCollection<IEmployeeNote>) => action(AccountEmployeeNoteAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeNoteGetAllError = (message: string) => action(AccountEmployeeNoteAction.GET_ALL_ERROR, message);
+export const accountEmployeeNoteGetAllError = (error: any) => action(AccountEmployeeNoteAction.GET_ALL_ERROR, error);
 export const accountEmployeeNoteGetAllDispose = () => action(AccountEmployeeNoteAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeNoteGetListRequest = (request: IEmployeeNoteListRequest) => action(AccountEmployeeNoteAction.GET_LIST_REQUEST, request);
 export const accountEmployeeNoteGetListSuccess = (response: IResponseCollection<IEmployeeNoteList>) => action(AccountEmployeeNoteAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeNoteGetListError = (message: string) => action(AccountEmployeeNoteAction.GET_LIST_ERROR, message);
+export const accountEmployeeNoteGetListError = (error: any) => action(AccountEmployeeNoteAction.GET_LIST_ERROR, error);
 export const accountEmployeeNoteGetListDispose = () => action(AccountEmployeeNoteAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeNoteGetByIdRequest = (request: IEmployeeNoteByIdRequest) => action(AccountEmployeeNoteAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeNoteGetByIdSuccess = (response: IResponseCollection<IEmployeeNote>) => action(AccountEmployeeNoteAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeNoteGetByIdError = (message: string) => action(AccountEmployeeNoteAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeNoteGetByIdError = (error: any) => action(AccountEmployeeNoteAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeNoteGetByIdDispose = () => action(AccountEmployeeNoteAction.GET_BY_ID_DISPOSE);
 
 // post
 export const accountEmployeeNotePostRequest = (request: IEmployeeNotePostRequest) => action(AccountEmployeeNoteAction.POST_REQUEST, request);
 export const accountEmployeeNotePostSuccess = (response: IResponseSingle<IEmployeeNote>) => action(AccountEmployeeNoteAction.POST_SUCCESS, response);
-export const accountEmployeeNotePostError = (message: string) => action(AccountEmployeeNoteAction.POST_ERROR, message);
+export const accountEmployeeNotePostError = (error: any) => action(AccountEmployeeNoteAction.POST_ERROR, error);
 export const accountEmployeeNotePostDispose = () => action(AccountEmployeeNoteAction.POST_DISPOSE);
 
 // put
 export const accountEmployeeNotePutRequest = (request: IEmployeeNotePutRequest) => action(AccountEmployeeNoteAction.PUT_REQUEST, request);
 export const accountEmployeeNotePutSuccess = (response: IResponseSingle<IEmployeeNote>) => action(AccountEmployeeNoteAction.PUT_SUCCESS, response);
-export const accountEmployeeNotePutError = (message: string) => action(AccountEmployeeNoteAction.PUT_ERROR, message);
+export const accountEmployeeNotePutError = (error: any) => action(AccountEmployeeNoteAction.PUT_ERROR, error);
 export const accountEmployeeNotePutDispose = () => action(AccountEmployeeNoteAction.PUT_DISPOSE);
 
 // delete
 export const accountEmployeeNoteDeleteRequest = (request: IEmployeeNoteDeleteRequest) => action(AccountEmployeeNoteAction.DELETE_REQUEST, request);
 export const accountEmployeeNoteDeleteSuccess = (response: boolean) => action(AccountEmployeeNoteAction.DELETE_SUCCESS, response);
-export const accountEmployeeNoteDeleteError = (message: string) => action(AccountEmployeeNoteAction.DELETE_ERROR, message);
+export const accountEmployeeNoteDeleteError = (error: any) => action(AccountEmployeeNoteAction.DELETE_ERROR, error);
 export const accountEmployeeNoteDeleteDispose = () => action(AccountEmployeeNoteAction.DELETE_DISPOSE);

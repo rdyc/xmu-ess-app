@@ -14,8 +14,8 @@ export const enum EmployeeProfileAction {
 
 export const EmployeeProfileFetchRequest = (params: IEmployeeQuery) => action(EmployeeProfileAction.FETCH_REQUEST, params);
 export const EmployeeProfileFetchSuccess = (data: IEmployee) => action(EmployeeProfileAction.FETCH_SUCCESS, data);
-export const EmployeeProfileFetchError = (message: string) => action(EmployeeProfileAction.FETCH_ERROR, message);
+export const EmployeeProfileFetchError = (error: string) => action(EmployeeProfileAction.FETCH_ERROR, error);
 
 export const EmployeeProfileCommandRequest = (params: IEmployeeCommand) => action(EmployeeProfileAction.COMMAND_REQUEST, params);
 export const EmployeeProfileCommandSuccess = (data: IEmployee) => action(EmployeeProfileAction.COMMAND_SUCCESS, data);
-export const EmployeeProfileCommandError = (message: string) => action(EmployeeProfileAction.COMMAND_ERROR, message);
+export const EmployeeProfileCommandError = (error: string) => action(EmployeeProfileAction.COMMAND_ERROR, error);

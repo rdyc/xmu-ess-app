@@ -43,12 +43,7 @@ function* watchGetAllRequest() {
         put(lookupLeaveGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupLeaveGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupLeaveGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetAllError(error.message)),
@@ -80,12 +75,7 @@ function* watchGetListRequest() {
         put(lookupLeaveGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupLeaveGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupLeaveGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetListError(error.message)),
@@ -109,12 +99,7 @@ function* watchGetByIdRequest() {
         put(lookupLeaveGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupLeaveGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupLeaveGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetByIdError(error.message)),

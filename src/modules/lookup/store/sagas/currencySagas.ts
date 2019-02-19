@@ -43,12 +43,7 @@ function* watchFetchAllRequest() {
         put(lookupCurrencyGetAllSuccess(response.body)), 
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCurrencyGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCurrencyGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetAllError(error.message)),
@@ -79,12 +74,7 @@ function* watchFetchListRequest() {
         put(lookupCurrencyGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCurrencyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCurrencyGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetListError(error.message)),
@@ -108,12 +98,7 @@ function* watchFetchByIdRequest() {
         put(lookupCurrencyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCurrencyGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCurrencyGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetByIdError(error.message)),

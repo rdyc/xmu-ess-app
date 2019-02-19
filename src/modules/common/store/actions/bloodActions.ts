@@ -21,17 +21,17 @@ export const enum BloodAction {
 // get all
 export const bloodGetAllRequest = (request: ISystemAllRequest) => action(BloodAction.GET_ALL_REQUEST, request);
 export const bloodGetAllSuccess = (response: IResponseCollection<ISystem>) => action(BloodAction.GET_ALL_SUCCESS, response);
-export const bloodGetAllError = (message: string) => action(BloodAction.GET_ALL_ERROR, message);
+export const bloodGetAllError = (error: any) => action(BloodAction.GET_ALL_ERROR, error);
 export const bloodGetAllDispose = () => action(BloodAction.GET_ALL_DISPOSE);
 
 // get list
 export const bloodGetListRequest = (request: ISystemListRequest) => action(BloodAction.GET_LIST_REQUEST, request);
 export const bloodGetListSuccess = (response: IResponseCollection<ISystemList>) => action(BloodAction.GET_LIST_SUCCESS, response);
-export const bloodGetListError = (message: string) => action(BloodAction.GET_LIST_ERROR, message);
+export const bloodGetListError = (error: any) => action(BloodAction.GET_LIST_ERROR, error);
 export const bloodGetListDispose = () => action(BloodAction.GET_LIST_DISPOSE);
 
 // get by id
 export const bloodGetByIdRequest = (request: ISystemByIdRequest) => action(BloodAction.GET_BY_ID_REQUEST, request);
 export const bloodGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(BloodAction.GET_BY_ID_SUCCESS, response);
-export const bloodGetByIdError = (message: string) => action(BloodAction.GET_BY_ID_ERROR, message);
+export const bloodGetByIdError = (error: any) => action(BloodAction.GET_BY_ID_ERROR, error);
 export const bloodGetByIdDispose = () => action(BloodAction.GET_BY_ID_DISPOSE);

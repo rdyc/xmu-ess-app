@@ -44,35 +44,35 @@ export const enum AccountEmployeeFamilyAction {
 // get all
 export const accountEmployeeFamilyGetAllRequest = (request: IEmployeeFamilyAllRequest) => action(AccountEmployeeFamilyAction.GET_ALL_REQUEST, request);
 export const accountEmployeeFamilyGetAllSuccess = (response: IResponseCollection<IEmployeeFamily>) => action(AccountEmployeeFamilyAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeFamilyGetAllError = (message: string) => action(AccountEmployeeFamilyAction.GET_ALL_ERROR, message);
+export const accountEmployeeFamilyGetAllError = (error: any) => action(AccountEmployeeFamilyAction.GET_ALL_ERROR, error);
 export const accountEmployeeFamilyGetAllDispose = () => action(AccountEmployeeFamilyAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeFamilyGetListRequest = (request: IEmployeeFamilyListRequest) => action(AccountEmployeeFamilyAction.GET_LIST_REQUEST, request);
 export const accountEmployeeFamilyGetListSuccess = (response: IResponseCollection<IEmployeeFamilyList>) => action(AccountEmployeeFamilyAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeFamilyGetListError = (message: string) => action(AccountEmployeeFamilyAction.GET_LIST_ERROR, message);
+export const accountEmployeeFamilyGetListError = (error: any) => action(AccountEmployeeFamilyAction.GET_LIST_ERROR, error);
 export const accountEmployeeFamilyGetListDispose = () => action(AccountEmployeeFamilyAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeFamilyGetByIdRequest = (request: IEmployeeFamilyByIdRequest) => action(AccountEmployeeFamilyAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeFamilyGetByIdSuccess = (response: IResponseCollection<IEmployeeFamilyDetail>) => action(AccountEmployeeFamilyAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeFamilyGetByIdError = (message: string) => action(AccountEmployeeFamilyAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeFamilyGetByIdError = (error: any) => action(AccountEmployeeFamilyAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeFamilyGetByIdDispose = () => action(AccountEmployeeFamilyAction.GET_BY_ID_DISPOSE);
 
 // post
 export const accountEmployeeFamilyPostRequest = (request: IEmployeeFamilyPostRequest) => action(AccountEmployeeFamilyAction.POST_REQUEST, request);
 export const accountEmployeeFamilyPostSuccess = (response: IResponseSingle<IEmployeeFamily>) => action(AccountEmployeeFamilyAction.POST_SUCCESS, response);
-export const accountEmployeeFamilyPostError = (message: string) => action(AccountEmployeeFamilyAction.POST_ERROR, message);
+export const accountEmployeeFamilyPostError = (error: any) => action(AccountEmployeeFamilyAction.POST_ERROR, error);
 export const accountEmployeeFamilyPostDispose = () => action(AccountEmployeeFamilyAction.POST_DISPOSE);
 
 // put
 export const accountEmployeeFamilyPutRequest = (request: IEmployeeFamilyPutRequest) => action(AccountEmployeeFamilyAction.PUT_REQUEST, request);
 export const accountEmployeeFamilyPutSuccess = (response: IResponseSingle<IEmployeeFamily>) => action(AccountEmployeeFamilyAction.PUT_SUCCESS, response);
-export const accountEmployeeFamilyPutError = (message: string) => action(AccountEmployeeFamilyAction.PUT_ERROR, message);
+export const accountEmployeeFamilyPutError = (error: any) => action(AccountEmployeeFamilyAction.PUT_ERROR, error);
 export const accountEmployeeFamilyPutDispose = () => action(AccountEmployeeFamilyAction.PUT_DISPOSE);
 
 // delete
 export const accountEmployeeFamilyDeleteRequest = (request: IEmployeeFamilyDeleteRequest) => action(AccountEmployeeFamilyAction.DELETE_REQUEST, request);
 export const accountEmployeeFamilyDeleteSuccess = (response: boolean) => action(AccountEmployeeFamilyAction.DELETE_SUCCESS, response);
-export const accountEmployeeFamilyDeleteError = (message: string) => action(AccountEmployeeFamilyAction.DELETE_ERROR, message);
+export const accountEmployeeFamilyDeleteError = (error: any) => action(AccountEmployeeFamilyAction.DELETE_ERROR, error);
 export const accountEmployeeFamilyDeleteDispose = () => action(AccountEmployeeFamilyAction.DELETE_DISPOSE);

@@ -21,17 +21,17 @@ export const enum TaxAction {
 // get all
 export const taxGetAllRequest = (request: ISystemAllRequest) => action(TaxAction.GET_ALL_REQUEST, request);
 export const taxGetAllSuccess = (response: IResponseCollection<ISystem>) => action(TaxAction.GET_ALL_SUCCESS, response);
-export const taxGetAllError = (message: string) => action(TaxAction.GET_ALL_ERROR, message);
+export const taxGetAllError = (error: any) => action(TaxAction.GET_ALL_ERROR, error);
 export const taxGetAllDispose = () => action(TaxAction.GET_ALL_DISPOSE);
 
 // get list
 export const taxGetListRequest = (request: ISystemListRequest) => action(TaxAction.GET_LIST_REQUEST, request);
 export const taxGetListSuccess = (response: IResponseCollection<ISystemList>) => action(TaxAction.GET_LIST_SUCCESS, response);
-export const taxGetListError = (message: string) => action(TaxAction.GET_LIST_ERROR, message);
+export const taxGetListError = (error: any) => action(TaxAction.GET_LIST_ERROR, error);
 export const taxGetListDispose = () => action(TaxAction.GET_LIST_DISPOSE);
 
 // get by id
 export const taxGetByIdRequest = (request: ISystemByIdRequest) => action(TaxAction.GET_BY_ID_REQUEST, request);
 export const taxGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(TaxAction.GET_BY_ID_SUCCESS, response);
-export const taxGetByIdError = (message: string) => action(TaxAction.GET_BY_ID_ERROR, message);
+export const taxGetByIdError = (error: any) => action(TaxAction.GET_BY_ID_ERROR, error);
 export const taxGetByIdDispose = () => action(TaxAction.GET_BY_ID_DISPOSE);

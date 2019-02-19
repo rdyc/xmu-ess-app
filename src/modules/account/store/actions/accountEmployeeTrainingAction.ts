@@ -43,35 +43,35 @@ export const enum AccountEmployeeTrainingAction {
 // get all
 export const accountEmployeeTrainingGetAllRequest = (request: IEmployeeTrainingAllRequest) => action(AccountEmployeeTrainingAction.GET_ALL_REQUEST, request);
 export const accountEmployeeTrainingGetAllSuccess = (response: IResponseCollection<IEmployeeTraining>) => action(AccountEmployeeTrainingAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeTrainingGetAllError = (message: string) => action(AccountEmployeeTrainingAction.GET_ALL_ERROR, message);
+export const accountEmployeeTrainingGetAllError = (error: any) => action(AccountEmployeeTrainingAction.GET_ALL_ERROR, error);
 export const accountEmployeeTrainingGetAllDispose = () => action(AccountEmployeeTrainingAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeTrainingGetListRequest = (request: IEmployeeTrainingListRequest) => action(AccountEmployeeTrainingAction.GET_LIST_REQUEST, request);
 export const accountEmployeeTrainingGetListSuccess = (response: IResponseCollection<IEmployeeTrainingList>) => action(AccountEmployeeTrainingAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeTrainingGetListError = (message: string) => action(AccountEmployeeTrainingAction.GET_LIST_ERROR, message);
+export const accountEmployeeTrainingGetListError = (error: any) => action(AccountEmployeeTrainingAction.GET_LIST_ERROR, error);
 export const accountEmployeeTrainingGetListDispose = () => action(AccountEmployeeTrainingAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeTrainingGetByIdRequest = (request: IEmployeeTrainingByIdRequest) => action(AccountEmployeeTrainingAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeTrainingGetByIdSuccess = (response: IResponseCollection<IEmployeeTraining>) => action(AccountEmployeeTrainingAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeTrainingGetByIdError = (message: string) => action(AccountEmployeeTrainingAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeTrainingGetByIdError = (error: any) => action(AccountEmployeeTrainingAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeTrainingGetByIdDispose = () => action(AccountEmployeeTrainingAction.GET_BY_ID_DISPOSE);
 
 // post
 export const accountEmployeeTrainingPostRequest = (request: IEmployeeTrainingPostRequest) => action(AccountEmployeeTrainingAction.POST_REQUEST, request);
 export const accountEmployeeTrainingPostSuccess = (response: IResponseSingle<IEmployeeTraining>) => action(AccountEmployeeTrainingAction.POST_SUCCESS, response);
-export const accountEmployeeTrainingPostError = (message: string) => action(AccountEmployeeTrainingAction.POST_ERROR, message);
+export const accountEmployeeTrainingPostError = (error: any) => action(AccountEmployeeTrainingAction.POST_ERROR, error);
 export const accountEmployeeTrainingPostDispose = () => action(AccountEmployeeTrainingAction.POST_DISPOSE);
 
 // put
 export const accountEmployeeTrainingPutRequest = (request: IEmployeeTrainingPutRequest) => action(AccountEmployeeTrainingAction.PUT_REQUEST, request);
 export const accountEmployeeTrainingPutSuccess = (response: IResponseSingle<IEmployeeTraining>) => action(AccountEmployeeTrainingAction.PUT_SUCCESS, response);
-export const accountEmployeeTrainingPutError = (message: string) => action(AccountEmployeeTrainingAction.PUT_ERROR, message);
+export const accountEmployeeTrainingPutError = (error: any) => action(AccountEmployeeTrainingAction.PUT_ERROR, error);
 export const accountEmployeeTrainingPutDispose = () => action(AccountEmployeeTrainingAction.PUT_DISPOSE);
 
 // delete
 export const accountEmployeeTrainingDeleteRequest = (request: IEmployeeTrainingDeleteRequest) => action(AccountEmployeeTrainingAction.DELETE_REQUEST, request);
 export const accountEmployeeTrainingDeleteSuccess = (response: boolean) => action(AccountEmployeeTrainingAction.DELETE_SUCCESS, response);
-export const accountEmployeeTrainingDeleteError = (message: string) => action(AccountEmployeeTrainingAction.DELETE_ERROR, message);
+export const accountEmployeeTrainingDeleteError = (error: any) => action(AccountEmployeeTrainingAction.DELETE_ERROR, error);
 export const accountEmployeeTrainingDeleteDispose = () => action(AccountEmployeeTrainingAction.DELETE_DISPOSE);

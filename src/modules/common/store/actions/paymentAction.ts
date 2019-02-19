@@ -21,17 +21,17 @@ export const enum PaymentAction {
 // get all
 export const paymentGetAllRequest = (request: ISystemAllRequest) => action(PaymentAction.GET_ALL_REQUEST, request);
 export const paymentGetAllSuccess = (response: IResponseCollection<ISystem>) => action(PaymentAction.GET_ALL_SUCCESS, response);
-export const paymentGetAllError = (message: string) => action(PaymentAction.GET_ALL_ERROR, message);
+export const paymentGetAllError = (error: any) => action(PaymentAction.GET_ALL_ERROR, error);
 export const paymentGetAllDispose = () => action(PaymentAction.GET_ALL_DISPOSE);
 
 // get list
 export const paymentGetListRequest = (request: ISystemListRequest) => action(PaymentAction.GET_LIST_REQUEST, request);
 export const paymentGetListSuccess = (response: IResponseCollection<ISystemList>) => action(PaymentAction.GET_LIST_SUCCESS, response);
-export const paymentGetListError = (message: string) => action(PaymentAction.GET_LIST_ERROR, message);
+export const paymentGetListError = (error: any) => action(PaymentAction.GET_LIST_ERROR, error);
 export const paymentGetListDispose = () => action(PaymentAction.GET_LIST_DISPOSE);
 
 // get by id
 export const paymentGetByIdRequest = (request: ISystemByIdRequest) => action(PaymentAction.GET_BY_ID_REQUEST, request);
 export const paymentGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(PaymentAction.GET_BY_ID_SUCCESS, response);
-export const paymentGetByIdError = (message: string) => action(PaymentAction.GET_BY_ID_ERROR, message);
+export const paymentGetByIdError = (error: any) => action(PaymentAction.GET_BY_ID_ERROR, error);
 export const paymentGetByIdDispose = () => action(PaymentAction.GET_BY_ID_DISPOSE);

@@ -37,41 +37,41 @@ export const enum SystemLimitAction {
 // get all
 export const systemLimitGetAllRequest = (request: ISystemLimitAllRequest) => action(SystemLimitAction.GET_ALL_REQUEST, request);
 export const systemLimitGetAllSuccess = (response: IResponseCollection<ISystemLimit>) => action(SystemLimitAction.GET_ALL_SUCCESS, response);
-export const systemLimitGetAllError = (message: string) => action(SystemLimitAction.GET_ALL_ERROR, message);
+export const systemLimitGetAllError = (error: any) => action(SystemLimitAction.GET_ALL_ERROR, error);
 export const systemLimitGetAllDispose = () => action(SystemLimitAction.GET_ALL_DISPOSE);
 
 // get list
 export const systemLimitGetListRequest = (request: ISystemLimitListRequest) => action(SystemLimitAction.GET_LIST_REQUEST, request);
 export const systemLimitGetListSuccess = (response: IResponseCollection<ISystemLimitList>) => action(SystemLimitAction.GET_LIST_SUCCESS, response);
-export const systemLimitGetListError = (message: string) => action(SystemLimitAction.GET_LIST_ERROR, message);
+export const systemLimitGetListError = (error: any) => action(SystemLimitAction.GET_LIST_ERROR, error);
 export const systemLimitGetListDispose = () => action(SystemLimitAction.GET_LIST_DISPOSE);
 
 // get by id
 export const systemLimitGetByIdRequest = (request: ISystemLimitByIdRequest) => action(SystemLimitAction.GET_BY_ID_REQUEST, request);
 export const systemLimitGetByIdSuccess = (response: IResponseCollection<ISystemLimitDetail>) => action(SystemLimitAction.GET_BY_ID_SUCCESS, response);
-export const systemLimitGetByIdError = (message: string) => action(SystemLimitAction.GET_BY_ID_ERROR, message);
+export const systemLimitGetByIdError = (error: any) => action(SystemLimitAction.GET_BY_ID_ERROR, error);
 export const systemLimitGetByIdDispose = () => action(SystemLimitAction.GET_BY_ID_DISPOSE);
 
 // post
 export const systemLimitPostRequest = (request: ISystemLimitPostRequest) => action(SystemLimitAction.POST_REQUEST, request);
 export const systemLimitPostSuccess = (response: IResponseSingle<ISystemLimit>)  => action(SystemLimitAction.POST_SUCCESS, response); 
-export const systemLimitPostError = (message: string) => action(SystemLimitAction.POST_ERROR, message);
+export const systemLimitPostError = (error: any) => action(SystemLimitAction.POST_ERROR, error);
 export const systemLimitPostDispose = () => action(SystemLimitAction.POST_DISPOSE);
 
 // put
 export const systemLimitPutRequest = (request: ISystemLimitPutRequest) => action(SystemLimitAction.PUT_REQUEST, request);
 export const systemLimitPutSuccess = (response: IResponseSingle<ISystemLimit>) => action(SystemLimitAction.PUT_SUCCESS, response);
-export const systemLimitPutError = (message: string) => action(SystemLimitAction.POST_ERROR, message);
+export const systemLimitPutError = (error: any) => action(SystemLimitAction.POST_ERROR, error);
 export const systemLimitPutDispose = () => action(SystemLimitAction.PUT_DISPOSE);
 
 // delete
 export const systemLimitDeleteRequest = (request: ISystemLimitDeleteRequest) => action(SystemLimitAction.DELETE_REQUEST, request);
 export const systemLimitDeleteSuccess = (response: boolean) => action(SystemLimitAction.DELETE_SUCCESS, response);
-export const systemLimitDeleteError = (message: string) => action(SystemLimitAction.DELETE_ERROR, message);
+export const systemLimitDeleteError = (error: any) => action(SystemLimitAction.DELETE_ERROR, error);
 export const systemLimitDeleteDispose = () => action(SystemLimitAction.DELETE_DISPOSE);
 
 // get amount
 export const systemLimitGetAmountRequest = (request: ISystemLimitAmountRequest) => action(SystemLimitAction.GET_AMOUNT_REQUEST, request);
 export const systemLimitGetAmountSuccess = (response: IResponseSingle<ISystemLimitAmount>) => action(SystemLimitAction.GET_AMOUNT_SUCCESS, response);
-export const systemLimitGetAmountError = (message: string) => action(SystemLimitAction.GET_AMOUNT_ERROR, message);
+export const systemLimitGetAmountError = (error: any) => action(SystemLimitAction.GET_AMOUNT_ERROR, error);
 export const systemLimitGetAmountDispose = () => action(SystemLimitAction.GET_AMOUNT_DISPOSE);

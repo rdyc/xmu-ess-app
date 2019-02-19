@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(taxGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(taxGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(taxGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(taxGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(taxGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(taxGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(taxGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(taxGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(taxGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(taxGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(taxGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(taxGetByIdError(error.message)),

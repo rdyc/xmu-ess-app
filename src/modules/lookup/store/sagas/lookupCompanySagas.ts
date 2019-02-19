@@ -43,12 +43,7 @@ function* watchFetchAllRequest() {
         put(lookupCompanyGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCompanyGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCompanyGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetAllError(error.message)),
@@ -77,12 +72,7 @@ function* watchFetchListRequest() {
         put(lookupCompanyGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCompanyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCompanyGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetListError(error.message)),
@@ -106,12 +96,7 @@ function* watchFetchByIdRequest() {
         put(lookupCompanyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCompanyGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCompanyGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetByIdError(error.message)),

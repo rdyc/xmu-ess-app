@@ -21,17 +21,17 @@ export const enum DestinationAction {
 // get all
 export const destinationGetAllRequest = (request: ISystemAllRequest) => action(DestinationAction.GET_ALL_REQUEST, request);
 export const destinationGetAllSuccess = (response: IResponseCollection<ISystem>) => action(DestinationAction.GET_ALL_SUCCESS, response);
-export const destinationGetAllError = (message: string) => action(DestinationAction.GET_ALL_ERROR, message);
+export const destinationGetAllError = (error: any) => action(DestinationAction.GET_ALL_ERROR, error);
 export const destinationGetAllDispose = () => action(DestinationAction.GET_ALL_DISPOSE);
 
 // get list
 export const destinationGetListRequest = (request: ISystemListRequest) => action(DestinationAction.GET_LIST_REQUEST, request);
 export const destinationGetListSuccess = (response: IResponseCollection<ISystemList>) => action(DestinationAction.GET_LIST_SUCCESS, response);
-export const destinationGetListError = (message: string) => action(DestinationAction.GET_LIST_ERROR, message);
+export const destinationGetListError = (error: any) => action(DestinationAction.GET_LIST_ERROR, error);
 export const destinationGetListDispose = () => action(DestinationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const destinationGetByIdRequest = (request: ISystemByIdRequest) => action(DestinationAction.GET_BY_ID_REQUEST, request);
 export const destinationGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(DestinationAction.GET_BY_ID_SUCCESS, response);
-export const destinationGetByIdError = (message: string) => action(DestinationAction.GET_BY_ID_ERROR, message);
+export const destinationGetByIdError = (error: any) => action(DestinationAction.GET_BY_ID_ERROR, error);
 export const destinationGetByIdDispose = () => action(DestinationAction.GET_BY_ID_DISPOSE);

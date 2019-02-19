@@ -21,17 +21,17 @@ export const enum LeaveAction {
 // get all
 export const leaveGetAllRequest = (request: ISystemAllRequest) => action(LeaveAction.GET_ALL_REQUEST, request);
 export const leaveGetAllSuccess = (response: IResponseCollection<ISystem>) => action(LeaveAction.GET_ALL_SUCCESS, response);
-export const leaveGetAllError = (message: string) => action(LeaveAction.GET_ALL_ERROR, message);
+export const leaveGetAllError = (error: any) => action(LeaveAction.GET_ALL_ERROR, error);
 export const leaveGetAllDispose = () => action(LeaveAction.GET_ALL_DISPOSE);
 
 // get list
 export const leaveGetListRequest = (request: ISystemListRequest) => action(LeaveAction.GET_LIST_REQUEST, request);
 export const leaveGetListSuccess = (response: IResponseCollection<ISystemList>) => action(LeaveAction.GET_LIST_SUCCESS, response);
-export const leaveGetListError = (message: string) => action(LeaveAction.GET_LIST_ERROR, message);
+export const leaveGetListError = (error: any) => action(LeaveAction.GET_LIST_ERROR, error);
 export const leaveGetListDispose = () => action(LeaveAction.GET_LIST_DISPOSE);
 
 // get by id
 export const leaveGetByIdRequest = (request: ISystemByIdRequest) => action(LeaveAction.GET_BY_ID_REQUEST, request);
 export const leaveGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(LeaveAction.GET_BY_ID_SUCCESS, response);
-export const leaveGetByIdError = (message: string) => action(LeaveAction.GET_BY_ID_ERROR, message);
+export const leaveGetByIdError = (error: any) => action(LeaveAction.GET_BY_ID_ERROR, error);
 export const leaveGetByIdDispose = () => action(LeaveAction.GET_BY_ID_DISPOSE);

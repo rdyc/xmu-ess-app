@@ -33,35 +33,35 @@ export const enum LookupHolidayAction {
 // get all
 export const lookupHolidayGetAllRequest = (request: ILookupHolidayGetAllRequest) => action(LookupHolidayAction.GET_ALL_REQUEST, request);
 export const lookupHolidayGetAllSuccess = (response: IResponseCollection<ILookupHoliday>) => action(LookupHolidayAction.GET_ALL_SUCCESS, response);
-export const lookupHolidayGetAllError = (message: string) => action(LookupHolidayAction.GET_ALL_ERROR, message);
+export const lookupHolidayGetAllError = (error: any) => action(LookupHolidayAction.GET_ALL_ERROR, error);
 export const lookupHolidayGetAllDispose = () => action(LookupHolidayAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupHolidayGetListRequest = (request: ILookupHolidayGetListRequest) => action(LookupHolidayAction.GET_LIST_REQUEST, request);
 export const lookupHolidayGetListSuccess = (response: IResponseCollection<ILookupHolidayList>) => action(LookupHolidayAction.GET_LIST_SUCCESS, response);
-export const lookupHolidayGetListError = (message: string) => action(LookupHolidayAction.GET_LIST_ERROR, message);
+export const lookupHolidayGetListError = (error: any) => action(LookupHolidayAction.GET_LIST_ERROR, error);
 export const lookupHolidayGetListDispose = () => action(LookupHolidayAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupHolidayGetByIdRequest = (request: ILookupHolidayGetByIdRequest) => action(LookupHolidayAction.GET_BY_ID_REQUEST, request);
 export const lookupHolidayGetByIdSuccess = (response: IResponseSingle<ILookupHolidayDetail>) => action(LookupHolidayAction.GET_BY_ID_SUCCESS, response);
-export const lookupHolidayGetByIdError = (message: string) => action(LookupHolidayAction.GET_BY_ID_ERROR, message);
+export const lookupHolidayGetByIdError = (error: any) => action(LookupHolidayAction.GET_BY_ID_ERROR, error);
 export const lookupHolidayGetByIdDispose = () => action(LookupHolidayAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupHolidayPostRequest = (request: ILookupHolidayPostRequest) => action(LookupHolidayAction.POST_REQUEST, request);
 export const lookupHolidayPostSuccess = (response: IResponseSingle<ILookupHoliday>) => action(LookupHolidayAction.POST_SUCCESS, response);
-export const lookupHolidayPostError = (message: string) => action(LookupHolidayAction.POST_ERROR, message);
+export const lookupHolidayPostError = (error: any) => action(LookupHolidayAction.POST_ERROR, error);
 export const lookupHolidayPostDispose = () => action(LookupHolidayAction.POST_DISPOSE);
 
 // put
 export const lookupHolidayPutRequest = (request: ILookupHolidayPutRequest) => action(LookupHolidayAction.PUT_REQUEST, request);
 export const lookupHolidayPutSuccess = (response: IResponseSingle<ILookupHoliday>) => action(LookupHolidayAction.PUT_SUCCESS, response);
-export const lookupHolidayPutError = (message: string) => action(LookupHolidayAction.PUT_ERROR, message);
+export const lookupHolidayPutError = (error: any) => action(LookupHolidayAction.PUT_ERROR, error);
 export const lookupHolidayPutDispose = () => action(LookupHolidayAction.PUT_DISPOSE);
 
 // delete
 export const lookupHolidayDeleteRequest = (request: ILookupHolidayDeleteRequest) => action(LookupHolidayAction.DELETE_REQUEST, request);
 export const lookupHolidayDeleteSuccess = (response: IResponseSingle<ILookupHoliday>) => action(LookupHolidayAction.DELETE_SUCCESS, response);
-export const lookupHolidayDeleteError = (message: string) => action(LookupHolidayAction.DELETE_ERROR, message);
+export const lookupHolidayDeleteError = (error: any) => action(LookupHolidayAction.DELETE_ERROR, error);
 export const lookupHolidayDeleteDispose = () => action(LookupHolidayAction.DELETE_DISPOSE);

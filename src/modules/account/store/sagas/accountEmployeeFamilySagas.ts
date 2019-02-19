@@ -43,12 +43,7 @@ function* watchAllRequest() {
         put(accountEmployeeFamilyGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeFamilyGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeFamilyGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeFamilyGetAllError(error.message)),
@@ -77,12 +72,7 @@ function* watchListRequest() {
         put(accountEmployeeFamilyGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeFamilyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeFamilyGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeFamilyGetListError(error.message)),
@@ -106,12 +96,7 @@ function* watchByIdRequest() {
         put(accountEmployeeFamilyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeFamilyGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeFamilyGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeFamilyGetByIdError(error.message)),

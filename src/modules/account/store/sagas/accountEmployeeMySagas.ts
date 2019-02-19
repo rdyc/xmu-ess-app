@@ -17,12 +17,7 @@ function* watchGetRequest() {
         put(accountEmployeeMyGetSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeMyGetError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeMyGetError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeMyGetError(error.message)),

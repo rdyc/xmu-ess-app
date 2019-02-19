@@ -21,17 +21,17 @@ export const enum CertificationAction {
 // get all
 export const certificationGetAllRequest = (request: ISystemAllRequest) => action(CertificationAction.GET_ALL_REQUEST, request);
 export const certificationGetAllSuccess = (response: IResponseCollection<ISystem>) => action(CertificationAction.GET_ALL_SUCCESS, response);
-export const certificationGetAllError = (message: string) => action(CertificationAction.GET_ALL_ERROR, message);
+export const certificationGetAllError = (error: any) => action(CertificationAction.GET_ALL_ERROR, error);
 export const certificationGetAllDispose = () => action(CertificationAction.GET_ALL_DISPOSE);
 
 // get list
 export const certificationGetListRequest = (request: ISystemListRequest) => action(CertificationAction.GET_LIST_REQUEST, request);
 export const certificationGetListSuccess = (response: IResponseCollection<ISystemList>) => action(CertificationAction.GET_LIST_SUCCESS, response);
-export const certificationGetListError = (message: string) => action(CertificationAction.GET_LIST_ERROR, message);
+export const certificationGetListError = (error: any) => action(CertificationAction.GET_LIST_ERROR, error);
 export const certificationGetListDispose = () => action(CertificationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const certificationGetByIdRequest = (request: ISystemByIdRequest) => action(CertificationAction.GET_BY_ID_REQUEST, request);
 export const certificationGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(CertificationAction.GET_BY_ID_SUCCESS, response);
-export const certificationGetByIdError = (message: string) => action(CertificationAction.GET_BY_ID_ERROR, message);
+export const certificationGetByIdError = (error: any) => action(CertificationAction.GET_BY_ID_ERROR, error);
 export const certificationGetByIdDispose = () => action(CertificationAction.GET_BY_ID_DISPOSE);

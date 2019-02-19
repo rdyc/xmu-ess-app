@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(documentPresalesGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(documentPresalesGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(documentPresalesGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(documentPresalesGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(documentPresalesGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(documentPresalesGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(documentPresalesGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(documentPresalesGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(documentPresalesGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(documentPresalesGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(documentPresalesGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(documentPresalesGetByIdError(error.message)),

@@ -21,17 +21,17 @@ export const enum FamilyAction {
 // get all
 export const familyGetAllRequest = (request: ISystemAllRequest) => action(FamilyAction.GET_ALL_REQUEST, request);
 export const familyGetAllSuccess = (response: IResponseCollection<ISystem>) => action(FamilyAction.GET_ALL_SUCCESS, response);
-export const familyGetAllError = (message: string) => action(FamilyAction.GET_ALL_ERROR, message);
+export const familyGetAllError = (error: any) => action(FamilyAction.GET_ALL_ERROR, error);
 export const familyGetAllDispose = () => action(FamilyAction.GET_ALL_DISPOSE);
 
 // get list
 export const familyGetListRequest = (request: ISystemListRequest) => action(FamilyAction.GET_LIST_REQUEST, request);
 export const familyGetListSuccess = (response: IResponseCollection<ISystemList>) => action(FamilyAction.GET_LIST_SUCCESS, response);
-export const familyGetListError = (message: string) => action(FamilyAction.GET_LIST_ERROR, message);
+export const familyGetListError = (error: any) => action(FamilyAction.GET_LIST_ERROR, error);
 export const familyGetListDispose = () => action(FamilyAction.GET_LIST_DISPOSE);
 
 // get by id
 export const familyGetByIdRequest = (request: ISystemByIdRequest) => action(FamilyAction.GET_BY_ID_REQUEST, request);
 export const familyGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(FamilyAction.GET_BY_ID_SUCCESS, response);
-export const familyGetByIdError = (message: string) => action(FamilyAction.GET_BY_ID_ERROR, message);
+export const familyGetByIdError = (error: any) => action(FamilyAction.GET_BY_ID_ERROR, error);
 export const familyGetByIdDispose = () => action(FamilyAction.GET_BY_ID_DISPOSE);

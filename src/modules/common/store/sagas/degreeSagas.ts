@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(degreeGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(degreeGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(degreeGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(degreeGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(degreeGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(degreeGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(degreeGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(degreeGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(degreeGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(degreeGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(degreeGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(degreeGetByIdError(error.message)),

@@ -21,17 +21,17 @@ export const enum EmploymentAction {
 // get all
 export const employmentGetAllRequest = (request: ISystemAllRequest) => action(EmploymentAction.GET_ALL_REQUEST, request);
 export const employmentGetAllSuccess = (response: IResponseCollection<ISystem>) => action(EmploymentAction.GET_ALL_SUCCESS, response);
-export const employmentGetAllError = (message: string) => action(EmploymentAction.GET_ALL_ERROR, message);
+export const employmentGetAllError = (error: any) => action(EmploymentAction.GET_ALL_ERROR, error);
 export const employmentGetAllDispose = () => action(EmploymentAction.GET_ALL_DISPOSE);
 
 // get list
 export const employmentGetListRequest = (request: ISystemListRequest) => action(EmploymentAction.GET_LIST_REQUEST, request);
 export const employmentGetListSuccess = (response: IResponseCollection<ISystemList>) => action(EmploymentAction.GET_LIST_SUCCESS, response);
-export const employmentGetListError = (message: string) => action(EmploymentAction.GET_LIST_ERROR, message);
+export const employmentGetListError = (error: any) => action(EmploymentAction.GET_LIST_ERROR, error);
 export const employmentGetListDispose = () => action(EmploymentAction.GET_LIST_DISPOSE);
 
 // get by id
 export const employmentGetByIdRequest = (request: ISystemByIdRequest) => action(EmploymentAction.GET_BY_ID_REQUEST, request);
 export const employmentGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(EmploymentAction.GET_BY_ID_SUCCESS, response);
-export const employmentGetByIdError = (message: string) => action(EmploymentAction.GET_BY_ID_ERROR, message);
+export const employmentGetByIdError = (error: any) => action(EmploymentAction.GET_BY_ID_ERROR, error);
 export const employmentGetByIdDispose = () => action(EmploymentAction.GET_BY_ID_DISPOSE);

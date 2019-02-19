@@ -21,17 +21,17 @@ export const enum DocumentAction {
 // get all
 export const documentGetAllRequest = (request: ISystemAllRequest) => action(DocumentAction.GET_ALL_REQUEST, request);
 export const documentGetAllSuccess = (response: IResponseCollection<ISystem>) => action(DocumentAction.GET_ALL_SUCCESS, response);
-export const documentGetAllError = (message: string) => action(DocumentAction.GET_ALL_ERROR, message);
+export const documentGetAllError = (error: any) => action(DocumentAction.GET_ALL_ERROR, error);
 export const documentGetAllDispose = () => action(DocumentAction.GET_ALL_DISPOSE);
 
 // get list
 export const documentGetListRequest = (request: ISystemListRequest) => action(DocumentAction.GET_LIST_REQUEST, request);
 export const documentGetListSuccess = (response: IResponseCollection<ISystemList>) => action(DocumentAction.GET_LIST_SUCCESS, response);
-export const documentGetListError = (message: string) => action(DocumentAction.GET_LIST_ERROR, message);
+export const documentGetListError = (error: any) => action(DocumentAction.GET_LIST_ERROR, error);
 export const documentGetListDispose = () => action(DocumentAction.GET_LIST_DISPOSE);
 
 // get by id
 export const documentGetByIdRequest = (request: ISystemByIdRequest) => action(DocumentAction.GET_BY_ID_REQUEST, request);
 export const documentGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(DocumentAction.GET_BY_ID_SUCCESS, response);
-export const documentGetByIdError = (message: string) => action(DocumentAction.GET_BY_ID_ERROR, message);
+export const documentGetByIdError = (error: any) => action(DocumentAction.GET_BY_ID_ERROR, error);
 export const documentGetByIdDispose = () => action(DocumentAction.GET_BY_ID_DISPOSE);

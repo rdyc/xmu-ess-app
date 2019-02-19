@@ -21,17 +21,17 @@ export const enum FinanceAction {
 // get all
 export const financeGetAllRequest = (request: ISystemAllRequest) => action(FinanceAction.GET_ALL_REQUEST, request);
 export const financeGetAllSuccess = (response: IResponseCollection<ISystem>) => action(FinanceAction.GET_ALL_SUCCESS, response);
-export const financeGetAllError = (message: string) => action(FinanceAction.GET_ALL_ERROR, message);
+export const financeGetAllError = (error: any) => action(FinanceAction.GET_ALL_ERROR, error);
 export const financeGetAllDispose = () => action(FinanceAction.GET_ALL_DISPOSE);
 
 // get list
 export const financeGetListRequest = (request: ISystemListRequest) => action(FinanceAction.GET_LIST_REQUEST, request);
 export const financeGetListSuccess = (response: IResponseCollection<ISystemList>) => action(FinanceAction.GET_LIST_SUCCESS, response);
-export const financeGetListError = (message: string) => action(FinanceAction.GET_LIST_ERROR, message);
+export const financeGetListError = (error: any) => action(FinanceAction.GET_LIST_ERROR, error);
 export const financeGetListDispose = () => action(FinanceAction.GET_LIST_DISPOSE);
 
 // get by id
 export const financeGetByIdRequest = (request: ISystemByIdRequest) => action(FinanceAction.GET_BY_ID_REQUEST, request);
 export const financeGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(FinanceAction.GET_BY_ID_SUCCESS, response);
-export const financeGetByIdError = (message: string) => action(FinanceAction.GET_BY_ID_ERROR, message);
+export const financeGetByIdError = (error: any) => action(FinanceAction.GET_BY_ID_ERROR, error);
 export const financeGetByIdDispose = () => action(FinanceAction.GET_BY_ID_DISPOSE);

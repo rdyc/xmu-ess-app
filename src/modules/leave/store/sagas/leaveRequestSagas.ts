@@ -83,19 +83,10 @@ function* watchFetchRequest() {
         put(leaveRequestFetchSuccess(response.body))
       ], 
       failureEffects: (response: IApiResponse) => [
-        put(leaveRequestFetchError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(leaveRequestFetchError(response)),
       ], 
       errorEffects: (error: TypeError) => [
         put(leaveRequestFetchError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]
     });
   };

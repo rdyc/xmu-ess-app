@@ -21,17 +21,17 @@ export const enum DepartmentAction {
 // get all
 export const departmentGetAllRequest = (request: ISystemAllRequest) => action(DepartmentAction.GET_ALL_REQUEST, request);
 export const departmentGetAllSuccess = (response: IResponseCollection<ISystem>) => action(DepartmentAction.GET_ALL_SUCCESS, response);
-export const departmentGetAllError = (message: string) => action(DepartmentAction.GET_ALL_ERROR, message);
+export const departmentGetAllError = (error: any) => action(DepartmentAction.GET_ALL_ERROR, error);
 export const departmentGetAllDispose = () => action(DepartmentAction.GET_ALL_DISPOSE);
 
 // get list
 export const departmentGetListRequest = (request: ISystemListRequest) => action(DepartmentAction.GET_LIST_REQUEST, request);
 export const departmentGetListSuccess = (response: IResponseCollection<ISystemList>) => action(DepartmentAction.GET_LIST_SUCCESS, response);
-export const departmentGetListError = (message: string) => action(DepartmentAction.GET_LIST_ERROR, message);
+export const departmentGetListError = (error: any) => action(DepartmentAction.GET_LIST_ERROR, error);
 export const departmentGetListDispose = () => action(DepartmentAction.GET_LIST_DISPOSE);
 
 // get by id
 export const departmentGetByIdRequest = (request: ISystemByIdRequest) => action(DepartmentAction.GET_BY_ID_REQUEST, request);
 export const departmentGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(DepartmentAction.GET_BY_ID_SUCCESS, response);
-export const departmentGetByIdError = (message: string) => action(DepartmentAction.GET_BY_ID_ERROR, message);
+export const departmentGetByIdError = (error: any) => action(DepartmentAction.GET_BY_ID_ERROR, error);
 export const departmentGetByIdDispose = () => action(DepartmentAction.GET_BY_ID_DISPOSE);

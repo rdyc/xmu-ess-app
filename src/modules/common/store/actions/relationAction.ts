@@ -21,17 +21,17 @@ export const enum RelationAction {
 // get all
 export const relationGetAllRequest = (request: ISystemAllRequest) => action(RelationAction.GET_ALL_REQUEST, request);
 export const relationGetAllSuccess = (response: IResponseCollection<ISystem>) => action(RelationAction.GET_ALL_SUCCESS, response);
-export const relationGetAllError = (message: string) => action(RelationAction.GET_ALL_ERROR, message);
+export const relationGetAllError = (error: any) => action(RelationAction.GET_ALL_ERROR, error);
 export const relationGetAllDispose = () => action(RelationAction.GET_ALL_DISPOSE);
 
 // get list
 export const relationGetListRequest = (request: ISystemListRequest) => action(RelationAction.GET_LIST_REQUEST, request);
 export const relationGetListSuccess = (response: IResponseCollection<ISystemList>) => action(RelationAction.GET_LIST_SUCCESS, response);
-export const relationGetListError = (message: string) => action(RelationAction.GET_LIST_ERROR, message);
+export const relationGetListError = (error: any) => action(RelationAction.GET_LIST_ERROR, error);
 export const relationGetListDispose = () => action(RelationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const relationGetByIdRequest = (request: ISystemByIdRequest) => action(RelationAction.GET_BY_ID_REQUEST, request);
 export const relationGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(RelationAction.GET_BY_ID_SUCCESS, response);
-export const relationGetByIdError = (message: string) => action(RelationAction.GET_BY_ID_ERROR, message);
+export const relationGetByIdError = (error: any) => action(RelationAction.GET_BY_ID_ERROR, error);
 export const relationGetByIdDispose = () => action(RelationAction.GET_BY_ID_DISPOSE);

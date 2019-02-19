@@ -21,17 +21,17 @@ export const enum MenuAction {
 // get all
 export const menuGetAllRequest = (request: IMenuGetAllRequest) => action(MenuAction.GET_ALL_REQUEST, request);
 export const menuGetAllSuccess = (response: IResponseCollection<IMenu>) => action(MenuAction.GET_ALL_SUCCESS, response);
-export const menuGetAllError = (message: string) => action(MenuAction.GET_ALL_ERROR, message);
+export const menuGetAllError = (error: any) => action(MenuAction.GET_ALL_ERROR, error);
 export const menuGetAllDispose = () => action(MenuAction.GET_ALL_DISPOSE);
 
 // get list
 export const menuGetListRequest = (request: IMenuListRequest) => action(MenuAction.GET_LIST_REQUEST, request);
 export const menuGetListSuccess = (response: IResponseCollection<IMenuList>) => action(MenuAction.GET_LIST_SUCCESS, response);
-export const menuGetListError = (message: string) => action(MenuAction.GET_LIST_ERROR, message);
+export const menuGetListError = (error: any) => action(MenuAction.GET_LIST_ERROR, error);
 export const menuGetListDispose = () => action(MenuAction.GET_LIST_DISPOSE);
 
 // get by id
 export const menuGetByIdRequest = (request: IMenuGetByIdRequest) => action(MenuAction.GET_BY_ID_REQUEST, request);
 export const menuGetByIdSuccess = (response: IResponseCollection<IMenuDetail>) => action(MenuAction.GET_BY_ID_SUCCESS, response);
-export const menuGetByIdError = (message: string) => action(MenuAction.GET_BY_ID_ERROR, message);
+export const menuGetByIdError = (error: any) => action(MenuAction.GET_BY_ID_ERROR, error);
 export const menuGetByIdDispose = () => action(MenuAction.GET_BY_ID_DISPOSE);

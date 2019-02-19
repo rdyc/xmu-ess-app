@@ -41,14 +41,7 @@ function* watchGetAllRequest() {
         put(mileageExceptionGetAllSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(mileageExceptionGetAllError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetAllError(error.message)),
@@ -85,14 +78,7 @@ function* watchGetListRequest() {
         put(mileageExceptionGetListSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetListError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(mileageExceptionGetListError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetListError(error.message)),
@@ -123,14 +109,7 @@ function* watchGetByIdRequest() {
         put(mileageExceptionGetByIdSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetByIdError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(mileageExceptionGetByIdError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetByIdError(error.message)),

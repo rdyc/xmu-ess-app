@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(expenseGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(expenseGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(expenseGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(expenseGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(expenseGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(expenseGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseGetByIdError(error.message)),

@@ -21,17 +21,17 @@ export const enum GradeAction {
 // get all
 export const gradeGetAllRequest = (request: ISystemAllRequest) => action(GradeAction.GET_ALL_REQUEST, request);
 export const gradeGetAllSuccess = (response: IResponseCollection<ISystem>) => action(GradeAction.GET_ALL_SUCCESS, response);
-export const gradeGetAllError = (message: string) => action(GradeAction.GET_ALL_ERROR, message);
+export const gradeGetAllError = (error: any) => action(GradeAction.GET_ALL_ERROR, error);
 export const gradeGetAllDispose = () => action(GradeAction.GET_ALL_DISPOSE);
 
 // get list
 export const gradeGetListRequest = (request: ISystemListRequest) => action(GradeAction.GET_LIST_REQUEST, request);
 export const gradeGetListSuccess = (response: IResponseCollection<ISystemList>) => action(GradeAction.GET_LIST_SUCCESS, response);
-export const gradeGetListError = (message: string) => action(GradeAction.GET_LIST_ERROR, message);
+export const gradeGetListError = (error: any) => action(GradeAction.GET_LIST_ERROR, error);
 export const gradeGetListDispose = () => action(GradeAction.GET_LIST_DISPOSE);
 
 // get by id
 export const gradeGetByIdRequest = (request: ISystemByIdRequest) => action(GradeAction.GET_BY_ID_REQUEST, request);
 export const gradeGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(GradeAction.GET_BY_ID_SUCCESS, response);
-export const gradeGetByIdError = (message: string) => action(GradeAction.GET_BY_ID_ERROR, message);
+export const gradeGetByIdError = (error: any) => action(GradeAction.GET_BY_ID_ERROR, error);
 export const gradeGetByIdDispose = () => action(GradeAction.GET_BY_ID_DISPOSE);

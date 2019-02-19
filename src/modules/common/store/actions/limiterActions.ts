@@ -21,17 +21,17 @@ export const enum LimiterAction {
 // get all
 export const limiterGetAllRequest = (request: ISystemAllRequest) => action(LimiterAction.GET_ALL_REQUEST, request);
 export const limiterGetAllSuccess = (response: IResponseCollection<ISystem>) => action(LimiterAction.GET_ALL_SUCCESS, response);
-export const limiterGetAllError = (message: string) => action(LimiterAction.GET_ALL_ERROR, message);
+export const limiterGetAllError = (error: any) => action(LimiterAction.GET_ALL_ERROR, error);
 export const limiterGetAllDispose = () => action(LimiterAction.GET_ALL_DISPOSE);
 
 // get list
 export const limiterGetListRequest = (request: ISystemListRequest) => action(LimiterAction.GET_LIST_REQUEST, request);
 export const limiterGetListSuccess = (response: IResponseCollection<ISystemList>) => action(LimiterAction.GET_LIST_SUCCESS, response);
-export const limiterGetListError = (message: string) => action(LimiterAction.GET_LIST_ERROR, message);
+export const limiterGetListError = (error: any) => action(LimiterAction.GET_LIST_ERROR, error);
 export const limiterGetListDispose = () => action(LimiterAction.GET_LIST_DISPOSE);
 
 // get by id
 export const limiterGetByIdRequest = (request: ISystemByIdRequest) => action(LimiterAction.GET_BY_ID_REQUEST, request);
 export const limiterGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(LimiterAction.GET_BY_ID_SUCCESS, response);
-export const limiterGetByIdError = (message: string) => action(LimiterAction.GET_BY_ID_ERROR, message);
+export const limiterGetByIdError = (error: any) => action(LimiterAction.GET_BY_ID_ERROR, error);
 export const limiterGetByIdDispose = () => action(LimiterAction.GET_BY_ID_DISPOSE);

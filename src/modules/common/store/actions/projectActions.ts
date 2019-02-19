@@ -21,17 +21,17 @@ export const enum ProjectAction {
 // get all
 export const projectGetAllRequest = (request: ISystemAllRequest) => action(ProjectAction.GET_ALL_REQUEST, request);
 export const projectGetAllSuccess = (response: IResponseCollection<ISystem>) => action(ProjectAction.GET_ALL_SUCCESS, response);
-export const projectGetAllError = (message: string) => action(ProjectAction.GET_ALL_ERROR, message);
+export const projectGetAllError = (error: any) => action(ProjectAction.GET_ALL_ERROR, error);
 export const projectGetAllDispose = () => action(ProjectAction.GET_ALL_DISPOSE);
 
 // get list
 export const projectGetListRequest = (request: ISystemListRequest) => action(ProjectAction.GET_LIST_REQUEST, request);
 export const projectGetListSuccess = (response: IResponseCollection<ISystemList>) => action(ProjectAction.GET_LIST_SUCCESS, response);
-export const projectGetListError = (message: string) => action(ProjectAction.GET_LIST_ERROR, message);
+export const projectGetListError = (error: any) => action(ProjectAction.GET_LIST_ERROR, error);
 export const projectGetListDispose = () => action(ProjectAction.GET_LIST_DISPOSE);
 
 // get by id
 export const projectGetByIdRequest = (request: ISystemByIdRequest) => action(ProjectAction.GET_BY_ID_REQUEST, request);
 export const projectGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(ProjectAction.GET_BY_ID_SUCCESS, response);
-export const projectGetByIdError = (message: string) => action(ProjectAction.GET_BY_ID_ERROR, message);
+export const projectGetByIdError = (error: any) => action(ProjectAction.GET_BY_ID_ERROR, error);
 export const projectGetByIdDispose = () => action(ProjectAction.GET_BY_ID_DISPOSE);

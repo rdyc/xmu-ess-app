@@ -21,17 +21,17 @@ export const enum LevelAction {
 // get all
 export const levelGetAllRequest = (request: ISystemAllRequest) => action(LevelAction.GET_ALL_REQUEST, request);
 export const levelGetAllSuccess = (response: IResponseCollection<ISystem>) => action(LevelAction.GET_ALL_SUCCESS, response);
-export const levelGetAllError = (message: string) => action(LevelAction.GET_ALL_ERROR, message);
+export const levelGetAllError = (error: any) => action(LevelAction.GET_ALL_ERROR, error);
 export const levelGetAllDispose = () => action(LevelAction.GET_ALL_DISPOSE);
 
 // get list
 export const levelGetListRequest = (request: ISystemListRequest) => action(LevelAction.GET_LIST_REQUEST, request);
 export const levelGetListSuccess = (response: IResponseCollection<ISystemList>) => action(LevelAction.GET_LIST_SUCCESS, response);
-export const levelGetListError = (message: string) => action(LevelAction.GET_LIST_ERROR, message);
+export const levelGetListError = (error: any) => action(LevelAction.GET_LIST_ERROR, error);
 export const levelGetListDispose = () => action(LevelAction.GET_LIST_DISPOSE);
 
 // get by id
 export const levelGetByIdRequest = (request: ISystemByIdRequest) => action(LevelAction.GET_BY_ID_REQUEST, request);
 export const levelGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(LevelAction.GET_BY_ID_SUCCESS, response);
-export const levelGetByIdError = (message: string) => action(LevelAction.GET_BY_ID_ERROR, message);
+export const levelGetByIdError = (error: any) => action(LevelAction.GET_BY_ID_ERROR, error);
 export const levelGetByIdDispose = () => action(LevelAction.GET_BY_ID_DISPOSE);

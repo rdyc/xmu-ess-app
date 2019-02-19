@@ -33,35 +33,35 @@ export const enum LookupRoleAction {
 // get all
 export const lookupRoleGetAllRequest = (request: ILookupRoleGetAllRequest) => action(LookupRoleAction.GET_ALL_REQUEST, request);
 export const lookupRoleGetAllSuccess = (response: IResponseCollection<IRole>) => action(LookupRoleAction.GET_ALL_SUCCESS, response);
-export const lookupRoleGetAllError = (message: string) => action(LookupRoleAction.GET_ALL_ERROR, message);
+export const lookupRoleGetAllError = (error: any) => action(LookupRoleAction.GET_ALL_ERROR, error);
 export const lookupRoleGetAllDispose = () => action(LookupRoleAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupRoleGetListRequest = (request: ILookupRoleGetListRequest) => action(LookupRoleAction.GET_LIST_REQUEST, request);
 export const lookupRoleGetListSuccess = (response: IResponseCollection<IRoleList>) => action(LookupRoleAction.GET_LIST_SUCCESS, response);
-export const lookupRoleGetListError = (message: string) => action(LookupRoleAction.GET_LIST_ERROR, message);
+export const lookupRoleGetListError = (error: any) => action(LookupRoleAction.GET_LIST_ERROR, error);
 export const lookupRoleGetListDispose = () => action(LookupRoleAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupRoleGetByIdRequest = (request: ILookupRoleGetDetailRequest) => action(LookupRoleAction.GET_BY_ID_REQUEST, request);
 export const lookupRoleGetByIdSuccess = (response: IResponseCollection<IRoleDetail>) => action(LookupRoleAction.GET_BY_ID_SUCCESS, response);
-export const lookupRoleGetByIdError = (message: string) => action(LookupRoleAction.GET_BY_ID_ERROR, message);
+export const lookupRoleGetByIdError = (error: any) => action(LookupRoleAction.GET_BY_ID_ERROR, error);
 export const lookupRoleGetByIdDispose = () => action(LookupRoleAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupRolePostRequest = (request: ILookupRolePostRequest) => action(LookupRoleAction.POST_REQUEST, request);
 export const lookupRolePostSuccess = (response: IResponseSingle<IRole>) => action(LookupRoleAction.POST_SUCCESS, response);
-export const lookupRolePostError = (message: string) => action(LookupRoleAction.POST_ERROR, message);
+export const lookupRolePostError = (error: any) => action(LookupRoleAction.POST_ERROR, error);
 export const lookupRolePostDispose = () => action(LookupRoleAction.POST_DISPOSE);
 
 // put
 export const lookupRolePutRequest = (request: ILookupRolePutRequest) => action(LookupRoleAction.PUT_REQUEST, request);
 export const lookupRolePutSuccess = (response: IResponseSingle<IRole>) => action(LookupRoleAction.PUT_SUCCESS, response);
-export const lookupRolePutError = (message: string) => action(LookupRoleAction.PUT_ERROR, message);
+export const lookupRolePutError = (error: any) => action(LookupRoleAction.PUT_ERROR, error);
 export const lookupRolePutDispose = () => action(LookupRoleAction.PUT_DISPOSE);
 
 // delete
 export const lookupRoleDeleteRequest = (request: ILookupRoleDeleteRequest) => action(LookupRoleAction.DELETE_REQUEST, request);
 export const lookupRoleDeleteSuccess = (response: boolean) => action(LookupRoleAction.DELETE_SUCCESS, response);
-export const lookupRoleDeleteError = (message: string) => action(LookupRoleAction.DELETE_ERROR, message);
+export const lookupRoleDeleteError = (error: any) => action(LookupRoleAction.DELETE_ERROR, error);
 export const lookupRoleDeleteDispose = () => action(LookupRoleAction.DELETE_DISPOSE);

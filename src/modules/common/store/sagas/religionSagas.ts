@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(religionGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(religionGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(religionGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(religionGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(religionGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(religionGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(religionGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(religionGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(religionGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(religionGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(religionGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(religionGetByIdError(error.message)),

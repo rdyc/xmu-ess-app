@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(genderGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(genderGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(genderGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(genderGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(genderGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(genderGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(genderGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(genderGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(genderGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(genderGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(genderGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(genderGetByIdError(error.message)),

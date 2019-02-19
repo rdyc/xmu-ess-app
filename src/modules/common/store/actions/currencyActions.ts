@@ -21,17 +21,17 @@ export const enum CurrencyAction {
 // get all
 export const currencyGetAllRequest = (request: ISystemAllRequest) => action(CurrencyAction.GET_ALL_REQUEST, request);
 export const currencyGetAllSuccess = (response: IResponseCollection<ISystem>) => action(CurrencyAction.GET_ALL_SUCCESS, response);
-export const currencyGetAllError = (message: string) => action(CurrencyAction.GET_ALL_ERROR, message);
+export const currencyGetAllError = (error: any) => action(CurrencyAction.GET_ALL_ERROR, error);
 export const currencyGetAllDispose = () => action(CurrencyAction.GET_ALL_DISPOSE);
 
 // get list
 export const currencyGetListRequest = (request: ISystemListRequest) => action(CurrencyAction.GET_LIST_REQUEST, request);
 export const currencyGetListSuccess = (response: IResponseCollection<ISystemList>) => action(CurrencyAction.GET_LIST_SUCCESS, response);
-export const currencyGetListError = (message: string) => action(CurrencyAction.GET_LIST_ERROR, message);
+export const currencyGetListError = (error: any) => action(CurrencyAction.GET_LIST_ERROR, error);
 export const currencyGetListDispose = () => action(CurrencyAction.GET_LIST_DISPOSE);
 
 // get by id
 export const currencyGetByIdRequest = (request: ISystemByIdRequest) => action(CurrencyAction.GET_BY_ID_REQUEST, request);
 export const currencyGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(CurrencyAction.GET_BY_ID_SUCCESS, response);
-export const currencyGetByIdError = (message: string) => action(CurrencyAction.GET_BY_ID_ERROR, message);
+export const currencyGetByIdError = (error: any) => action(CurrencyAction.GET_BY_ID_ERROR, error);
 export const currencyGetByIdDispose = () => action(CurrencyAction.GET_BY_ID_DISPOSE);
