@@ -1,23 +1,14 @@
-import AppMenu from '@constants/AppMenu';
 import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
-import { CollectionPage, IDataBindResult, IListConfig } from '@layout/components/pages';
-import { IDataControl } from '@layout/components/pages/dataContainer/DataContainer';
+import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarControl } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import { Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import TuneIcon from '@material-ui/icons/Tune';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField } from '@project/classes/types';
-import { ProjectRegistrationSumarry } from '@project/components/registration/detail/shared/ProjectRegistrationSummary';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
 import * as moment from 'moment';
-import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -35,7 +26,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IProjectRegistrationListFilterResult, ProjectRegistrationListFilter } from './ProjectRegistrationListFilter';
+import { IProjectRegistrationListFilterResult } from './ProjectRegistrationListFilter';
+import { ProjectRegistrationListView } from './ProjectRegistrationListView';
 
 interface IOwnOption {
   
@@ -43,28 +35,28 @@ interface IOwnOption {
 
 interface IOwnState extends IProjectRegistrationListFilterResult {
   fields: ICollectionValue[];
-  dataControls?: IDataControl[];
-  toolbarControls?: IAppBarControl[];
-  config?: IListConfig<IProject>;
   isFilterOpen: boolean;
-  isModeSearch: boolean;
+  selected: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setConfig: StateHandler<IOwnState>;
-  setDataControls: StateHandler<IOwnState>;
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
+  setSelection: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean) => void;
+  handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
+  handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IProject, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IProjectRegistrationListFilterResult) => void;
+  handleFilterBadge: () => boolean;
+  // handleSelection: (values: string[]) => void;
+  // handleDisableSelection: (item: IProject) => boolean;
 }
 
-type AllProps 
+export type ProjectRegistrationListProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -72,84 +64,20 @@ type AllProps
   & WithUser
   & WithProjectRegistration
   & InjectedIntlProps
-  & RouteComponentProps;
+  & RouteComponentProps
+  & WithStyles<typeof styles>;
 
-const listView: React.SFC<AllProps> = props => (
-  <React.Fragment>
-    <CollectionPage
-      info={{
-        uid: AppMenu.ProjectRegistrationRequest,
-        parentUid: AppMenu.ProjectRegistration,
-        title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
-        description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader)
-      }}
-      state={props.projectRegisterState.all}
-      hasSearching={true}
-      isModeSearch={props.isModeSearch}
-      fields={props.fields}
-      dataControls={props.dataControls}
-      toolbarControls={props.toolbarControls}
-      onLoadApi={props.handleOnLoadApi}
-      onBind={props.handleOnBind}
-      summaryComponent={(item: IProject) => ( 
-        <ProjectRegistrationSumarry data={item} />
-      )}
-      actionComponent={(item: IProject) => (
-        <React.Fragment>
-          {
-            isRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => props.history.push(`/project/requests/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-          }
-
-          <Button 
-            size="small"
-            onClick={() => props.history.push(`/project/requests/${item.uid}`)}
-          >
-            {props.intl.formatMessage(layoutMessage.action.details)}
-          </Button>
-        </React.Fragment>
-      )}
-    />
-
-    <ProjectRegistrationListFilter 
-      isOpen={props.isFilterOpen}
-      initialProps={{
-        customerUid: props.customerUid,
-        projectType: props.projectType,
-        statusType: props.statusType,
-        isRejected: props.isRejected,
-        isNewOwner: props.isNewOwner
-      }}
-      onClose={props.handleFilterVisibility}
-      onApply={props.handleFilterApplied}
-    />
-  </React.Fragment>
-);
-
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+const createProps: mapper<ProjectRegistrationListProps, IOwnState> = (props: ProjectRegistrationListProps): IOwnState => {
   const { request } = props.projectRegisterState.all;
   
   // default state
   const state: IOwnState = {
-    isModeSearch: request && request.filter && request.filter.find !== undefined || false,
     isFilterOpen: false,
+    selected: [],
     fields: Object.keys(ProjectRegistrationField).map(key => ({ 
       value: key, 
       name: ProjectRegistrationField[key] 
-    })),
-    toolbarControls: [
-      {
-        icon: AddCircleIcon,
-        onClick: () => { 
-          props.history.push('/project/requests/form'); 
-        }
-      }
-    ]
+    }))
   };
 
   // When location state are present (ex: redirection from dashboard) then don't use redux state
@@ -170,13 +98,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   return state;
 };
 
-const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setDataControls: (state: IOwnState) => (controls: IDataControl[]): Partial<IOwnState> => ({
-    dataControls: controls
-  }),
-  setConfig: (state: IOwnState) => (config: IListConfig<IProject>): Partial<IOwnState> => ({
-    config
-  }),
+const stateUpdaters: StateUpdaters<ProjectRegistrationListProps, IOwnState, IOwnStateUpdater> = {
   setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
@@ -184,10 +106,13 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
     ...filter,
     isFilterOpen: false
   }),
+  setSelection: (state: IOwnState) => (values?: string[]): Partial<IOwnState> => ({
+    selected: values
+  }),
 };
 
-const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AllProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+const handlerCreators: HandleCreators<ProjectRegistrationListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: ProjectRegistrationListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { isLoading, request } = props.projectRegisterState.all;
     const { loadAllRequest } = props.projectRegisterDispatch;
 
@@ -199,11 +124,11 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
         statusType: props.statusType,
         isRejected: props.isRejected,
         isNewOwner: props.isNewOwner,
-        find: params && params.find || request && request.filter && request.filter.find,
-        findBy: params && params.findBy || request && request.filter && request.filter.findBy,
+        find: request && request.filter && request.filter.find,
+        findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
-        page: resetPage && 1 || params && params.page || request && request.filter && request.filter.page,
+        page: resetPage && undefined || params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size
       };
 
@@ -220,7 +145,33 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: (props: AllProps) => (item: IProject, index: number) => ({
+  handleOnLoadApiSearch: (props: ProjectRegistrationListProps) => (find?: string, findBy?: string) => {
+    const { isLoading, request } = props.projectRegisterState.all;
+    const { loadAllRequest } = props.projectRegisterDispatch;
+
+    if (props.userState.user && !isLoading) {
+      // predefined filter
+      const filter = {
+        ...request && request.filter,
+        find,
+        findBy,
+        page: undefined
+      };
+      
+      // compare request
+      const shouldLoad = !shallowEqual(filter, request && request.filter || {});
+      
+      // only load when request parameter are differents
+      if (shouldLoad) {
+        loadAllRequest({
+          filter,
+          companyUid: props.userState.user.company.uid,
+          positionUid: props.userState.user.position.uid
+        });
+      }
+    }
+  },
+  handleOnBind: (props: ProjectRegistrationListProps) => (item: IProject, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.name,
@@ -229,35 +180,29 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
     quinary: item.valueIdr && props.intl.formatNumber(item.valueIdr, GlobalFormat.CurrencyDefault) || '-',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: ProjectRegistrationListProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IProjectRegistrationListFilterResult) => {
+  handleFilterApplied: (props: ProjectRegistrationListProps) => (filter: IProjectRegistrationListFilterResult) => {
     props.setFilterApplied(filter);
   },
+  handleFilterBadge: (props: ProjectRegistrationListProps) => () => {
+    return props.customerUid !== undefined || 
+      props.projectType !== undefined || 
+      props.statusType !== undefined ||
+      props.isRejected === true ||
+      props.isNewOwner === true;
+  },
+  // handleSelection: (props: ProjectRegistrationListProps) => (values: string[]) => {
+  //   console.log(values);
+  // },
+  // handleDisableSelection: (props: ProjectRegistrationListProps) => (item: IProject): boolean => {
+  //   return item.statusType === 'SST03';
+  // }
 };
 
-const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
-  componentDidMount() { 
-    const dataControls = [
-      {
-        id: 'option-filter',
-        title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
-        icon: TuneIcon,
-        showBadgeWhen: () => {
-          return this.props.customerUid !== undefined || 
-            this.props.projectType !== undefined || 
-            this.props.statusType !== undefined ||
-            this.props.isRejected === true ||
-            this.props.isNewOwner === true;
-        },
-        onClick: this.props.handleFilterVisibility
-      }
-    ];
-
-    this.props.setDataControls(dataControls);
-  },
-  componentDidUpdate(nextProps: AllProps) {
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListProps, IOwnState> = {
+  componentDidUpdate(nextProps: ProjectRegistrationListProps) {
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
@@ -288,7 +233,8 @@ export const ProjectRegistrationList = compose(
   withProjectRegistration,
   withRouter,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
-)(listView);
+  lifecycle(lifecycles),
+)(ProjectRegistrationListView);

@@ -57,7 +57,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
               input: props.classes.searchInput,
             }}
             onChange={props.handleOnChangeSearch}
-            onKeyUpCapture={props.handlerOnKeyUpSearch}
+            onKeyUpCapture={props.handleOnKeyUpSearch}
           />
         </div>
       </Toolbar>
