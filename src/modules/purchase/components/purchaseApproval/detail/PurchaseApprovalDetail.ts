@@ -18,6 +18,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -32,21 +33,16 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { PurchaseApprovalDetailView } from './PurchaseApprovalDetailView';
 
+interface OwnRouteParams {
+  purchaseUid: string;
+}
+
 interface OwnHandler {
   handleOnLoadApi: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setNextLoad: StateHandler<OwnState>;
-}
-
-interface OwnRouteParams {
-  purchaseUid: string;
 }
 
 interface OwnState {
@@ -62,25 +58,50 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-const stateUpdaters: StateUpdaters<PurchaseApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setNextLoad: (state: OwnState, props: PurchaseApprovalDetailProps) => (): Partial<OwnState> => ({
-    shouldLoad: !state.shouldLoad
-  }),
-  setOptions: (state: OwnState, props: PurchaseApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
-  })
-};
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
+  setNextLoad: StateHandler<OwnState>;
+}
 
 export type PurchaseApprovalDetailProps
   = WithPurchaseApproval
-  & WithNotification
   & WithUser
   & WithLayout
+  & WithNotification
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandler
   & OwnState
   & OwnStateUpdaters;
+
+const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => ({
+  shouldLoad: false,
+  approvalTitle: props.intl.formatMessage(purchaseMessage.approval.section.approveForm),
+  approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
+  approvalChoices: [
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.approval.message.approve) },
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(purchaseMessage.approval.message.reject) }
+  ],
+  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalDialogTitle: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
+  approvalDialogContentText: props.intl.formatMessage(purchaseMessage.approval.confirm.approveDescription),
+  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
+
+});
+
+const stateUpdaters: StateUpdaters<PurchaseApprovalDetailProps, OwnState, OwnStateUpdaters> = {
+  setNextLoad: (state: OwnState, props: PurchaseApprovalDetailProps) => (): Partial<OwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+  setOptions: (state: OwnState, props: PurchaseApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  })
+};
 
 const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> = {
   handleOnLoadApi: (props: PurchaseApprovalDetailProps) => () => {
@@ -162,7 +183,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
       detailType: NotificationType.Approval,
       itemUid: props.match.params.purchaseUid
     });
-
+    
     // set next load
     props.setNextLoad();
   },
@@ -183,27 +204,11 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
   }
 };
 
-const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => ({
-    shouldLoad: false,
-    approvalTitle: props.intl.formatMessage(purchaseMessage.approval.section.approveForm),
-    approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
-    approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.approval.message.approve) },
-      { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(purchaseMessage.approval.message.reject) }
-    ],
-    approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
-    approvalDialogContentText: props.intl.formatMessage(purchaseMessage.approval.confirm.approveDescription),
-    approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
-    approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
-
-});
-
 const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: PurchaseApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
-      // turn of shoul load
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      // turn of should load
       this.props.setNextLoad();
 
       // load from api
@@ -233,6 +238,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
 };
 
 export const PurchaseApprovalDetail = compose<PurchaseApprovalDetailProps, {}>(
+  setDisplayName('PurchaseApprovalDetail'),
   withUser,
   withLayout,
   withRouter,

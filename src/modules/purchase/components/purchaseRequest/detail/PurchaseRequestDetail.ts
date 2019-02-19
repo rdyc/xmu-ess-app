@@ -22,6 +22,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+interface OwnRouteParams {
+  purchaseUid: string;
+}
+
 interface OwnHandler {
   handleOnLoadApi: () => void;
   handleOnModify: () => void;
@@ -42,18 +46,15 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
   setSettle: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
 }
 
-interface OwnRouteParams {
-  purchaseUid: string;
-}
-
 export type PurchaseRequestDetailProps
-  = WithPurchaseRequest
-  & WithUser
+  = WithUser
+  & WithPurchaseRequest
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -89,6 +90,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
+    action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -107,7 +109,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
         purchaseUid: props.match.params.purchaseUid
       });
     }
-  },  handleOnModify: (props: PurchaseRequestDetailProps) => () => {
+  },  
+  handleOnModify: (props: PurchaseRequestDetailProps) => () => {
     props.setModify();
   },
   handleOnSettle: (props: PurchaseRequestDetailProps) => () => {
@@ -213,12 +216,12 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> 
 };
 
 export const PurchaseRequestDetail = compose(
+  setDisplayName('PurchaseRequestDetail'),
   withUser,
   withRouter,
   withPurchaseRequest,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  setDisplayName('PurchaseRequestDetail')
+  lifecycle(lifecycles)
 )(PurchaseRequestDetailView);

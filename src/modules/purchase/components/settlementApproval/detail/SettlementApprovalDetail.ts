@@ -17,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -61,15 +62,6 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setNextLoad: (state: OwnState, props: SettlementApprovalDetailProps) => (): Partial<OwnState> => ({
-    shouldLoad: !state.shouldLoad
-  }),
-  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
-  })
-};
-
 export type SettlementApprovalDetailProps
   = WithSettlementApproval
   & WithNotification
@@ -80,6 +72,36 @@ export type SettlementApprovalDetailProps
   & OwnHandler
   & OwnState
   & OwnStateUpdaters;
+
+const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: SettlementApprovalDetailProps): OwnState => ({
+  shouldLoad: false,
+  approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
+  approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
+  // approvalSubHeader: ` `,
+  approvalChoices: [
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.s_approval.message.approve) },
+    { value: WorkflowStatusType.AdjustmentNeeded, label: props.intl.formatMessage(purchaseMessage.s_approval.message.adjustmentNeeded) }
+  ],
+  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalDialogTitle: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
+  approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
+  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
+
+});
+
+const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnStateUpdaters> = {
+  setNextLoad: (state: OwnState, props: SettlementApprovalDetailProps) => (): Partial<OwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }), 
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  })
+};
 
 const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler> = {
   handleOnLoadApi: (props: SettlementApprovalDetailProps) => () => {
@@ -181,28 +203,11 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
   }
 };
 
-const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: SettlementApprovalDetailProps): OwnState => ({
-  shouldLoad: false,
-  approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
-  approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
-  // approvalSubHeader: ` `,
-  approvalChoices: [
-    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.s_approval.message.approve) },
-    { value: WorkflowStatusType.AdjustmentNeeded, label: props.intl.formatMessage(purchaseMessage.s_approval.message.adjustmentNeeded) }
-  ],
-  approvalTrueValue: WorkflowStatusType.Approved,
-  approvalDialogTitle: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
-  approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
-  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
-  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
-
-});
-
 const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: SettlementApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
-      // turn of shoul load
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      // turn of should load
       this.props.setNextLoad();
 
       // load from api
@@ -232,6 +237,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, OwnStat
 };
 
 export const SettlementApprovalDetail = compose<SettlementApprovalDetailProps, {}>(
+  setDisplayName('SettlementApprovalDetail'),
   withUser,
   withLayout,
   withRouter,
