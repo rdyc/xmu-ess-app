@@ -21,6 +21,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -169,15 +170,16 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
       message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
-    props.setNextload();
-    // history.push('/travel/approvals/request');
-
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
       moduleUid: ModuleDefinition.Travel,
       detailType: NotificationType.Approval,
       itemUid: match.params.travelUid
     });
+
+    // set next load
+    props.setNextLoad();
+
   },
   handleSubmitFail: (props: TravelRequestApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -202,7 +204,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
 const lifecycles: ReactLifeCycleFunctions<TravelRequestApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: TravelRequestApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
       this.props.setNextLoad();
 
@@ -233,6 +235,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestApprovalDetailProps, OwnS
 };
 
 export const TravelRequestApprovalDetail = compose<TravelRequestApprovalDetailProps, {}>(
+  setDisplayName('TravelApprovalDetail'),
   withRouter,
   withUser,
   withLayout,

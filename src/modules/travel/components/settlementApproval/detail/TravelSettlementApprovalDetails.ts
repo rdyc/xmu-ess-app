@@ -22,6 +22,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -171,15 +172,15 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
       message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
-    props.setNextload();
-    // history.push('/travel/approvals/settlement');
-
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
       moduleUid: ModuleDefinition.TravelSettlement,
       detailType: NotificationType.Approval,
       itemUid: match.params.travelSettlementUid
     });
+
+    props.setNextload();
+    // history.push('/travel/approvals/settlement');    
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -204,7 +205,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: TravelSettlementApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
       this.props.setNextLoad();
 
@@ -257,6 +258,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
 };
 
 export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(
+  setDisplayName('TravelSettlementApprovalDetail'),
   withRouter,
   withUser,
   withLayout,
