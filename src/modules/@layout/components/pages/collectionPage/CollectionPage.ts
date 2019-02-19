@@ -224,16 +224,12 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
     // handling updated pagination state
     const isChanged = !shallowEqual(
       {
-        find: this.props.find,
-        findBy: this.props.findBy,
         page: this.props.page,
         size: this.props.size,
         orderBy: this.props.orderBy,
         direction: this.props.direction
       }, 
       {
-        find: prevProps.find,
-        findBy: prevProps.findBy,
         page: prevProps.page,
         size: prevProps.size,
         orderBy: prevProps.orderBy,

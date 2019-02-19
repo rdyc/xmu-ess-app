@@ -128,7 +128,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationListProps, IOwnHandler>
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
-        page: resetPage && undefined || params && params.page || request && request.filter && request.filter.page,
+        page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size
       };
 
