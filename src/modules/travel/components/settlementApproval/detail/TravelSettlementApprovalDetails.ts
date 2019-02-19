@@ -61,7 +61,7 @@ interface OwnState {
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setOptions: StateHandler<OwnState>;
-  setNextload: StateHandler<OwnState>;
+  setNextLoad: StateHandler<OwnState>;
 }
 
 export type TravelSettlementApprovalDetailProps
@@ -92,7 +92,7 @@ const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (prop
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
-  setNextload: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setNextLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldLoad: !prevState.shouldLoad
   }),
   setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
@@ -179,7 +179,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
       itemUid: match.params.travelSettlementUid
     });
 
-    props.setNextload();
+    props.setNextLoad();
     // history.push('/travel/approvals/settlement');    
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
