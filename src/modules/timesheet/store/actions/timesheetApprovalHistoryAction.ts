@@ -19,11 +19,11 @@ export const enum TimesheetApprovalHistoryAction {
 // get all
 export const timesheetApprovalHistoryGetAllRequest = (request: ITimesheetApprovalGetAllRequest) => action(TimesheetApprovalHistoryAction.GET_ALL_REQUEST, request);
 export const timesheetApprovalHistoryGetAllSuccess = (response: IResponseCollection<ITimesheet>) => action(TimesheetApprovalHistoryAction.GET_ALL_SUCCESS, response);
-export const timesheetApprovalHistoryGetAllError = (message: string) => action(TimesheetApprovalHistoryAction.GET_ALL_ERROR, message);
+export const timesheetApprovalHistoryGetAllError = (error: any) => action(TimesheetApprovalHistoryAction.GET_ALL_ERROR, error);
 export const timesheetApprovalHistoryGetAllDispose = () => action(TimesheetApprovalHistoryAction.GET_ALL_DISPOSE);
 
 // get by id
 export const timesheetApprovalHistoryGetByIdRequest = (request: ITimesheetApprovalGetByIdRequest) => action(TimesheetApprovalHistoryAction.GET_BY_ID_REQUEST, request);
 export const timesheetApprovalHistoryGetByIdSuccess = (response: IResponseSingle<ITimesheetDetail>) => action(TimesheetApprovalHistoryAction.GET_BY_ID_SUCCESS, response);
-export const timesheetApprovalHistoryGetByIdError = (message: string) => action(TimesheetApprovalHistoryAction.GET_BY_ID_ERROR, message);
+export const timesheetApprovalHistoryGetByIdError = (error: any) => action(TimesheetApprovalHistoryAction.GET_BY_ID_ERROR, error);
 export const timesheetApprovalHistoryGetByIdDispose = () => action(TimesheetApprovalHistoryAction.GET_BY_ID_DISPOSE);

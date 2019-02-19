@@ -15,5 +15,5 @@ export const enum TimesheetMileagesAction {
 // get all
 export const timesheetMileagesGetAllRequest = (request: ITimesheetMileagesGetAllRequest) => action(TimesheetMileagesAction.GET_ALL_REQUEST, request);
 export const timesheetMileagesGetAllSuccess = (response: IResponseCollection<ITimesheetMileages>) => action(TimesheetMileagesAction.GET_ALL_SUCCESS, response);
-export const timesheetMileagesGetAllError = (message: string) => action(TimesheetMileagesAction.GET_ALL_ERROR, message);
+export const timesheetMileagesGetAllError = (error: any) => action(TimesheetMileagesAction.GET_ALL_ERROR, error);
 export const timesheetMileagesGetAllDispose = () => action(TimesheetMileagesAction.GET_ALL_DISPOSE);

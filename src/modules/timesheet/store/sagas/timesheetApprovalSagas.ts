@@ -23,66 +23,60 @@ import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchAllFetchRequest() {
+function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof timesheetApprovalGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, {
       allowDots: true,
       skipNulls: true
     });
-    
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/timesheet?${params}`, 
-      successEffects: (response: IApiResponse) => ([
+      path: `/v1/approvals/timesheet?${params}`,
+      successEffects: (response: IApiResponse) => [
         put(timesheetApprovalGetAllSuccess(response.body))
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalGetAllError(response))
+      ],
+      errorEffects: (error: TypeError) => [
         put(timesheetApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ]),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
       finallyEffects: [
 
       ]
     });
   };
-  
+
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchByIdFetchRequest() {
+function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof timesheetApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`, 
-      successEffects: (response: IApiResponse) => ([
+      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
+      successEffects: (response: IApiResponse) => [
         put(timesheetApprovalGetByIdSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalGetByIdError(response))
+      ],
+      errorEffects: (error: TypeError) => [
         put(timesheetApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ])
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ]
     });
   };
 
@@ -108,9 +102,9 @@ function* watchPostRequest() {
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
-          const errors: any = { 
+          const errors: any = {
             // information -> based form section name
-            information: flattenObject(response.body.errors) 
+            information: flattenObject(response.body.errors)
           };
 
           action.payload.reject(new SubmissionError(errors));
@@ -155,9 +149,9 @@ function* watchPostBulkRequest() {
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
-          const errors: any = { 
+          const errors: any = {
             // information -> based form section name
-            information: flattenObject(response.body.errors) 
+            information: flattenObject(response.body.errors)
           };
 
           action.payload.reject(new SubmissionError(errors));
@@ -184,7 +178,7 @@ function* watchPostBulkRequest() {
 }
 
 function* watchSwitchAccess() {
-  function* worker() { 
+  function* worker() {
     yield all([
       put(timesheetApprovalGetAllDispose()),
       put(timesheetApprovalGetByIdDispose())
@@ -196,8 +190,8 @@ function* watchSwitchAccess() {
 
 function* timesheetApprovalSagas() {
   yield all([
-    fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPostBulkRequest),
     fork(watchSwitchAccess)

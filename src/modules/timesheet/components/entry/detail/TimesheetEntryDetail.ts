@@ -1,13 +1,21 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { TimesheetUserAction } from '@timesheet/classes/types';
+import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -15,20 +23,21 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { TimesheetEntryDetailView } from './TimesheetEntryDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   timesheetUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: TimesheetUserAction;
   dialogFullScreen: boolean;
@@ -39,28 +48,51 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type TimesheetEntryDetailProps
-  = WithUser
+  = WithOidc
+  & WithUser
   & WithTimesheetEntry
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<TimesheetEntryDetailProps, OwnState> = (props: TimesheetEntryDetailProps): OwnState => ({
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<TimesheetEntryDetailProps, IOwnState> = (props: TimesheetEntryDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: TimesheetEntryDetailProps) => (): Partial<OwnState> => ({
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return { 
+    isAdmin,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
+
+const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: TimesheetEntryDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
+  setModify: (prevState: IOwnState, props: TimesheetEntryDetailProps) => (): Partial<IOwnState> => ({
     action: TimesheetUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -69,7 +101,8 @@ const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnState
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+    action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -79,7 +112,14 @@ const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnState
   })
 };
 
-const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<TimesheetEntryDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: TimesheetEntryDetailProps) => () => {
+    if (props.userState.user && props.match.params.timesheetUid && !props.timesheetEntryState.detail.isLoading) {
+      props.timesheetEntryDispatch.loadDetailRequest({
+        timesheetUid: props.match.params.timesheetUid
+      });
+    }
+  },
   handleOnModify: (props: TimesheetEntryDetailProps) => () => {
     props.setModify();
   },
@@ -128,11 +168,60 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<TimesheetEntryDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: TimesheetEntryDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.timesheetUid !== prevProps.match.params.timesheetUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.timesheetEntryState.detail.response !== prevProps.timesheetEntryState.detail.response) {
+      const { isLoading, response } = this.props.timesheetEntryState.detail;
+
+      // find status type
+      let _statusType: string | undefined = undefined;
+
+      if (response && response.data) {
+        _statusType = response.data.statusType;
+      }
+
+      // checking status types
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => { 
+        return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+      };
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: TimesheetUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: TimesheetUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: _statusType !== undefined,
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted ]),
+          onClick: this.props.handleOnModify
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const TimesheetEntryDetail = compose(
   withRouter,
+  withOidc,
   withUser,
   withTimesheetEntry,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('TimesheetEntryDetail')
 )(TimesheetEntryDetailView);

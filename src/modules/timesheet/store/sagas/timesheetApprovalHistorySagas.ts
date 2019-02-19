@@ -15,66 +15,60 @@ import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchAllFetchRequest() {
+function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof timesheetApprovalHistoryGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, {
       allowDots: true,
       skipNulls: true
     });
-    
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/timesheet?${params}`, 
-      successEffects: (response: IApiResponse) => ([
+      path: `/v1/approvals/timesheet?${params}`,
+      successEffects: (response: IApiResponse) => [
         put(timesheetApprovalHistoryGetAllSuccess(response.body))
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalHistoryGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalHistoryGetAllError(response))
+      ],
+      errorEffects: (error: TypeError) => [
         put(timesheetApprovalHistoryGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ]),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
       finallyEffects: [
 
       ]
     });
   };
-  
+
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchByIdFetchRequest() {
+function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof timesheetApprovalHistoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`, 
-      successEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalHistoryGetByIdSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalHistoryGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
+      successEffects: (response: IApiResponse) => [
+        put(timesheetApprovalHistoryGetByIdSuccess(response.body))
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalHistoryGetByIdError(response))
+      ],
+      errorEffects: (error: TypeError) => [
         put(timesheetApprovalHistoryGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ])
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ]
     });
   };
 
@@ -82,7 +76,7 @@ function* watchByIdFetchRequest() {
 }
 
 function* watchSwitchAccess() {
-  function* worker() { 
+  function* worker() {
     yield all([
       put(timesheetApprovalHistoryGetAllDispose()),
       put(timesheetApprovalHistoryGetByIdDispose())
@@ -94,8 +88,8 @@ function* watchSwitchAccess() {
 
 function* timesheetApprovalHistorySagas() {
   yield all([
-    fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetByIdRequest),
     fork(watchSwitchAccess)
   ]);
 }
