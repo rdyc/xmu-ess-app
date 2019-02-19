@@ -1,5 +1,4 @@
-import { IAchievement } from '@home/classes/response/achievement';
-import { IValueResponseArray } from '@home/classes/response/achievement/IValueResponseArray';
+import { IAchievement, IValueResponseArray } from '@home/classes/response/achievement';
 import { AchievementType } from '@home/classes/types';
 import { WithAchievement, withAchievement } from '@home/hoc/withAchievement';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -15,7 +14,6 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  symbol?: string;
   dataDiv?: IAchievement;
   dataLob?: IAchievement;
   dataDepartment?: IAchievement;
@@ -47,10 +45,10 @@ export type AchievementChartProps
   & InjectedIntlProps;
 
 const createProps: mapper<AchievementChartProps, IOwnState> = (props: AchievementChartProps): IOwnState => ({
-  sales: {name: [], value: [], color: []},
-  department: {name: [], value: [], color: []},
-  division: {name: [], value: [], color: []},
-  lob: {name: [], value: [], color: []},
+  sales: { name: [], value: [], color: [] },
+  department: { name: [], value: [], color: [] },
+  division: { name: [], value: [], color: [] },
+  lob: { name: [], value: [], color: [] },
 });
 
 const stateUpdaters: StateUpdaters<AchievementChartProps, IOwnState, IOwnStateUpdaters> = {
@@ -72,9 +70,9 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
           props.division.name.push(division.name);
           props.division.value.push(division.value);
           if (division.value > 100) {
-            props.division.color.push('red');
+            props.division.color.push('#2e7d32');
           } else {
-            props.division.color.push('blue');
+            props.division.color.push('#283593');
           }
         });
       } else if (item.title === AchievementType.ETGLob) {
@@ -85,9 +83,9 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
           props.lob.name.push(lob.name);
           props.lob.value.push(lob.value);
           if (lob.value > 100) {
-            props.lob.color.push('red');
+            props.lob.color.push('#2e7d32');
           } else {
-            props.lob.color.push('blue');
+            props.lob.color.push('#283593');
           }
         });
       } else if (item.title === AchievementType.ETGDepartment) {
@@ -98,9 +96,9 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
           props.department.name.push(department.name);
           props.department.value.push(department.value);
           if (department.value > 100) {
-            props.department.color.push('red');
+            props.department.color.push('#2e7d32');
           } else {
-            props.department.color.push('blue');
+            props.department.color.push('#283593');
           }
         });
       } else if (item.title === AchievementType.ETGSales) {
@@ -111,9 +109,9 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
           props.sales.name.push(sales.name);
           props.sales.value.push(sales.value);
           if (sales.value > 100) {
-            props.sales.color.push('red');
+            props.sales.color.push('#2e7d32');
           } else {
-            props.sales.color.push('blue');
+            props.sales.color.push('#283593');
           }
         });
       }
