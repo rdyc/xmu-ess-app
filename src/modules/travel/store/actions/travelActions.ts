@@ -30,23 +30,23 @@ export const enum TravelAction {
 // get all travelrequest
 export const travelGetAllRequest = (request: ITravelGetAllRequest) => action(TravelAction.GET_ALL_REQUEST, request);
 export const travelGetAllSuccess = (response: IResponseCollection<ITravelRequest>) => action(TravelAction.GET_ALL_SUCCESS, response);
-export const travelGetAllError = (message: string) => action(TravelAction.GET_ALL_ERROR, message);
+export const travelGetAllError = (error: any) => action(TravelAction.GET_ALL_ERROR, error);
 export const travelGetAllDispose = () => action(TravelAction.GET_ALL_DISPOSE);
 
 // get request by id
 export const travelGetByIdRequest = (request: ITravelGetByIdRequest) => action(TravelAction.GET_BY_ID_REQUEST, request);
 export const travelGetByIdSuccess = (response: IResponseSingle<ITravelRequestDetail>) => action(TravelAction.GET_BY_ID_SUCCESS, response);
-export const travelGetByIdError = (message: string) => action(TravelAction.GET_BY_ID_ERROR, message);
+export const travelGetByIdError = (error: any) => action(TravelAction.GET_BY_ID_ERROR, error);
 export const travelGetByIdDispose = () => action(TravelAction.GET_BY_ID_DISPOSE);
 
 // post
 export const travelPostRequest = (request: ITravelPostRequest) => action(TravelAction.POST_REQUEST, request);
 export const travelPostSuccess = (response: IResponseSingle<ITravelRequest>) => action(TravelAction.POST_SUCCESS, response);
-export const travelPostError = (message: string) => action(TravelAction.POST_ERROR, message);
+export const travelPostError = (error: any) => action(TravelAction.POST_ERROR, error);
 export const travelPostDispose = () => action(TravelAction.POST_DISPOSE);
 
 // put
 export const travelPutRequest = (request: ITravelPutRequest) => action(TravelAction.PUT_REQUEST, request);
 export const travelPutSuccess = (response: IResponseSingle<ITravelRequest>) => action(TravelAction.PUT_SUCCESS, response);
-export const travelPutError = (message: string) => action(TravelAction.PUT_ERROR, message);
+export const travelPutError = (error: any) => action(TravelAction.PUT_ERROR, error);
 export const travelPutDispose = () => action(TravelAction.PUT_DISPOSE);

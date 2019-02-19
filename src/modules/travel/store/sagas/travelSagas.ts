@@ -37,19 +37,10 @@ function* watchAllFetchRequest() {
         put(travelGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(travelGetAllError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
         put(travelGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
         // nothing
@@ -69,19 +60,10 @@ function* watchByIdFetchRequest() {
         put(travelGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(travelGetByIdError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(travelGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(travelGetByIdError(error.message))
       ])
     });
   };
@@ -96,6 +78,7 @@ function* watchPostFetchRequest() {
       path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
+        put(travelGetByIdDispose()),
         put(travelGetAllDispose()),
         put(travelPostSuccess(response.body))
       ], 

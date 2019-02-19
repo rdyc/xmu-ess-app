@@ -29,17 +29,17 @@ export const enum TravelSettlementApprovalAction {
 // get all travelApproval
 export const travelSettlementApprovalGetAllRequest = (request: ITravelSettlementApprovalGetAllRequest) => action(TravelSettlementApprovalAction.GET_ALL_REQUEST, request);
 export const travelSettlementApprovalGetAllSuccess = (response: IResponseCollection<ITravelSettlement>) => action(TravelSettlementApprovalAction.GET_ALL_SUCCESS, response);
-export const travelSettlementApprovalGetAllError = (message: string) => action(TravelSettlementApprovalAction.GET_ALL_ERROR, message);
+export const travelSettlementApprovalGetAllError = (error: any) => action(TravelSettlementApprovalAction.GET_ALL_ERROR, error);
 export const travelSettlementApprovalGetAllDispose = () => action(TravelSettlementApprovalAction.GET_ALL_DISPOSE);
 
 // get request by id
 export const travelSettlementApprovalGetByIdRequest = (request: ITravelSettlementApprovalGetByIdRequest) => action(TravelSettlementApprovalAction.GET_BY_ID_REQUEST, request);
 export const travelSettlementApprovalGetByIdSuccess = (response: IResponseSingle<ITravelSettlementDetail>) => action(TravelSettlementApprovalAction.GET_BY_ID_SUCCESS, response);
-export const travelSettlementApprovalGetByIdError = (message: string) => action(TravelSettlementApprovalAction.GET_BY_ID_ERROR, message);
+export const travelSettlementApprovalGetByIdError = (error: any) => action(TravelSettlementApprovalAction.GET_BY_ID_ERROR, error);
 export const travelSettlementApprovalGetByIdDispose = () => action(TravelSettlementApprovalAction.GET_BY_ID_DISPOSE);
 
 // post
 export const travelSettlementApprovalPostRequest = (request: ITravelSettlementApprovalPostRequest) => action(TravelSettlementApprovalAction.POST_REQUEST, request);
 export const travelSettlementApprovalPostSuccess = (response: IResponseSingle<ITravelSettlement>) => action(TravelSettlementApprovalAction.POST_SUCCESS, response);
-export const travelSettlementApprovalPostError = (message: string) => action(TravelSettlementApprovalAction.POST_ERROR, message);
+export const travelSettlementApprovalPostError = (error: any) => action(TravelSettlementApprovalAction.POST_ERROR, error);
 export const travelSettlementApprovalPostDispose = () => action(TravelSettlementApprovalAction.POST_DISPOSE);

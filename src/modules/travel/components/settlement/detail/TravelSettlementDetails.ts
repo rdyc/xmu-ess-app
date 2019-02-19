@@ -1,5 +1,12 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { TravelUserAction } from '@travel/classes/types';
+import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
+import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -8,17 +15,13 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-
-import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
-import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
-import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { TravelSettlementDetailViews } from './TravelSettlementDetailViews';
 
 interface OwnRouteParams {
@@ -26,12 +29,14 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: TravelUserAction;
   dialogFullScreen: boolean;
@@ -43,12 +48,14 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
 }
 
 export type TravelSettlementDetailProps 
-  = WithUser
+  = WithOidc
+  & WithUser
   & WithTravelSettlement
   & WithTravelRequest
   & RouteComponentProps<OwnRouteParams>
@@ -64,6 +71,9 @@ const createProps: mapper<TravelSettlementDetailProps, OwnState> = (props: Trave
 });
 
 const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: TravelSettlementDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: OwnState, props: TravelSettlementDetailProps) => (): Partial<OwnState> => ({
     action: TravelUserAction.Modify,
     dialogFullScreen: false,
@@ -84,6 +94,15 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnSta
 };
 
 const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: TravelSettlementDetailProps) => () => { 
+    if (props.userState.user && props.match.params.travelSettlementUid && !props.travelSettlementState.detail.isLoading) {
+      props.travelSettlementDispatch.loadRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        travelSettlementUid: props.match.params.travelSettlementUid
+      });
+    }
+  },
   handleOnModify: (props: TravelSettlementDetailProps) => () => { 
     props.setModify();
   },
@@ -132,6 +151,49 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> =
 };
 
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: TravelSettlementDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.travelSettlementState.detail.response !== prevProps.travelSettlementState.detail.response) {
+      const { isLoading, response } = this.props.travelSettlementState.detail;
+
+      // find status type
+      let _statusType: string | undefined = undefined;
+
+      if (response && response.data) {
+        _statusType = response.data.statusType;
+      }
+
+      // checking status types
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => { 
+        return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+      };
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: TravelUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: TravelUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded]),
+          onClick: this.props.handleOnModify
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
   componentWillReceiveProps(nextProps: TravelSettlementDetailProps) {
     if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
       const { response } = nextProps.travelSettlementState.detail;
@@ -153,16 +215,18 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState>
     travelSettlementDispatch.loadDetailDispose();
     travelRequestDispatch.loadDetailDispose();
     
-  }
+  }  
 };
 
 export const TravelSettlementDetails = compose(
   withRouter,
+  withOidc,
   withUser,
   withTravelSettlement,
   withTravelRequest,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-  lifecycle<TravelSettlementDetailProps, OwnState>(lifecycles),
+  lifecycle(lifecycles),
+  setDisplayName('TravelSettlementDetail')
 )(TravelSettlementDetailViews);

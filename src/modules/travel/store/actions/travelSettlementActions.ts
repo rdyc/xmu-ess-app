@@ -30,23 +30,23 @@ export const enum TravelSettlementAction {
 // get all
 export const travelSettlementGetAllRequest = (request: ITravelSettlementGetAllRequest) => action(TravelSettlementAction.GET_ALL_REQUEST, request);
 export const travelSettlementGetAllSuccess = (response: IResponseCollection<ITravelSettlement>) => action(TravelSettlementAction.GET_ALL_SUCCESS, response);
-export const travelSettlementGetAllError = (message: string) => action(TravelSettlementAction.GET_ALL_ERROR, message);
+export const travelSettlementGetAllError = (error: any) => action(TravelSettlementAction.GET_ALL_ERROR, error);
 export const travelSettlementGetAllDispose = () => action(TravelSettlementAction.GET_ALL_DISPOSE);
 
 // get by id
 export const travelSettlementGetByIdRequest = (request: ITravelSettlementGetByIdRequest) => action(TravelSettlementAction.GET_BY_ID_REQUEST, request);
 export const travelSettlementGetByIdSuccess = (response: IResponseSingle<ITravelSettlementDetail>) => action(TravelSettlementAction.GET_BY_ID_SUCCESS, response);
-export const travelSettlementGetByIdError = (message: string) => action(TravelSettlementAction.GET_BY_ID_ERROR, message);
+export const travelSettlementGetByIdError = (error: any) => action(TravelSettlementAction.GET_BY_ID_ERROR, error);
 export const travelSettlementGetByIdDispose = () => action(TravelSettlementAction.GET_BY_ID_DISPOSE);
 
 // post
 export const travelSettlementPostRequest = (request: ITravelSettlementPostRequest) => action(TravelSettlementAction.POST_REQUEST, request);
 export const travelSettlementPostSuccess = (response: IResponseSingle<ITravelSettlement>) => action(TravelSettlementAction.POST_SUCCESS, response);
-export const travelSettlementPostError = (message: string) => action(TravelSettlementAction.POST_ERROR, message);
+export const travelSettlementPostError = (error: any) => action(TravelSettlementAction.POST_ERROR, error);
 export const travelSettlementPostDispose = () => action(TravelSettlementAction.POST_DISPOSE);
 
 // put
 export const travelSettlementPutRequest = (request: ITravelSettlementPutRequest) => action(TravelSettlementAction.PUT_REQUEST, request);
 export const travelSettlementPutSuccess = (response: IResponseSingle<ITravelSettlement>) => action(TravelSettlementAction.PUT_SUCCESS, response);
-export const travelSettlementPutError = (message: string) => action(TravelSettlementAction.PUT_ERROR, message);
+export const travelSettlementPutError = (error: any) => action(TravelSettlementAction.PUT_ERROR, error);
 export const travelSettlementPutDispose = () => action(TravelSettlementAction.PUT_DISPOSE);
