@@ -257,6 +257,6 @@ export const ExpenseApprovalDetail = compose(
   withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
-  lifecycle(lifecycles),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ExpenseApprovalDetailView);

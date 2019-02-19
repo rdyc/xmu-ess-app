@@ -198,6 +198,6 @@ export const ExpenseRequestDetail = compose(
   withExpenseRequest,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
-  lifecycle(lifecycles),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ExpenseRequestDetailView);
