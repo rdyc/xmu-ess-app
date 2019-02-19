@@ -37,54 +37,50 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
   };
 
   const dataSales = {
-    labels: [
-      'SI (Imam)', 'SI (Fadil)', 'SI (Tika)', 'SI (Salman)', 'SI (Siti)', 'SI (Nidia)', 'SI (DianRa)', 'SI (Lulu)', 'SI (Lupi)', 'SI (Firmansyah)', 'SI (William)', 'SI (Chandra)',
-      'SI (Dianis)', 'SAP (Handry)', 'SAP (Ryan)', 'ECS (Nadya)', 'XMU (Debby)', 'XMU (Reinhard)', 'XMU (Sally)', 'XMU (Dian)', 'XMU (Wendi)', 'XA (Michael)', 'ODI (Felicia)', 'ODI (Shiella)', 'ODI (Jeniffer)', 'ODI (Caim)'
-    ],
-    // labels: 
+    labels: props.sales.name,
     datasets: [
       {
         label: props.dataSales && props.dataSales.title,
-        backgroundColor: '#283593',
+        backgroundColor: props.sales.color,
         borderWidth: 1,
-        hoverBackgroundColor: '#1a237e',
-        data: [60.77, 99.08, 18.19, 53.39, 11.14, 35.16, 55.1, 49.38, 31.17, 69.95, 0, 0.97, 7.53, 129.39, 4.51, 35.57, 167.55, 95.06, 32.21, 56.96, 2.69, 0, 100.15, 44.87, 27.52, 12.6]
+        // hoverBackgroundColor: '#1a237e',
+        data: props.sales.value
       }
     ]
   };
   const dataDepartment = {
-    labels: ['SI (Major)', 'SI (Corp 1)', 'SI (Corp 2)', 'SI (Corp 3)', 'SI (Corp 5)', 'SI (MTC)', 'ODI (SALES)', 'ODI (MTC)', 'ODI (CLOUD)', 'ODI (OED 2)', 'ODI (OED 3)', 'XMU (BTS 1)', 'XMU (BTS 2)', 'XMU (XA)'],
+    labels: props.department.name,
     datasets: [
       {
         label: props.dataDepartment && props.dataDepartment.title,
-        backgroundColor: '#283593',
+        backgroundColor: props.department.color,
         borderWidth: 1,
-        hoverBackgroundColor: '#1a237e',
-        data: [76.98, 40.32, 37.26, 52.54, 40.5, 72.92, 87.2, 124.85, 61.62, 39.43, 66.63, 88.3, 25.55, 38.32]
+        // hoverBackgroundColor: '#1a237e',
+        data: props.department.value
       }
     ]
   };
   const dataDivision = {
-    labels: ['SI (Infra)', 'SI (BAF)', 'SI (BAA)', 'ODI (EBS)'],
+    labels: props.division.name,
     datasets: [
       {
         label: props.dataDiv && props.dataDiv.title,
-        backgroundColor: '#283593',
+        backgroundColor: props.division.color,
         borderWidth: 1,
-        hoverBackgroundColor: '#1a237e',
-        data: [72.86, 17.81, 49.69, 50.79]
+        // hoverBackgroundColor: '#1a237e',
+        data: props.division.value
       }
     ]
   };
   const dataLOB = {
-    labels: ['SI', 'SAP', 'ECS', 'ODI', 'XMU'],
+    labels: props.lob.name,
     datasets: [
       {
         label: props.dataLob && props.dataLob.title,
-        backgroundColor: '#283593',
+        backgroundColor: props.lob.color,
         borderWidth: 1,
-        hoverBackgroundColor: '#1a237e',
-        data: [58.04, 77.28, 49.42, 85.39, 83.86]
+        // hoverBackgroundColor: '#1a237e',
+        data: props.lob.value
       }
     ]
   };
