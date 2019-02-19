@@ -246,6 +246,14 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
 
 const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: FinanceApprovalDetailProps) {
+    if (this.props.shouldDataReload && this.props.shouldDataReload !== prevProps.shouldDataReload) {
+      // turn of shoul load
+      this.props.setDataload();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
     if (this.props.match.params.financeUid !== prevProps.match.params.financeUid) {
       this.props.handleOnLoadApi();
     }
@@ -274,6 +282,6 @@ export const FinanceApprovalDetail = compose(
   withFinanceApproval,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
-  lifecycle(lifecycles),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(FinanceApprovalDetailView);
