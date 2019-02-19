@@ -12,7 +12,7 @@ import {
   expenseApprovalPostRequest,
   expenseApprovalPostSuccess,
 } from '@expense/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
@@ -130,11 +130,23 @@ function* watchApprovalPostFetchRequest() {
   yield takeEvery(Action.APPROVAL_POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(expenseApprovalGetAllDispose()),
+      put(expenseApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* expenseApprovalSagas() {
   yield all([
     fork(watchApprovalAllFetchRequest),
     fork(watchApprovalByIdFetchRequest),
     fork(watchApprovalPostFetchRequest),
+    fork(watchSwitchAccess),
   ]);
 }
 

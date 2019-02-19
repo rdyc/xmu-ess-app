@@ -34,14 +34,7 @@ function* watchGetAllRequest() {
         put(projectApprovalGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectApprovalGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectApprovalGetAllError(response)),
       ],
       errorEffects: (error: TypeError) => [
         put(projectApprovalGetAllError(error.message)),
@@ -70,14 +63,7 @@ function* watchGetByIdRequest() {
         put(projectApprovalGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectApprovalGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectApprovalGetByIdError(response)),
       ],
       errorEffects: (error: TypeError) => [
         put(projectApprovalGetByIdError(error.message)),

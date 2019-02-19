@@ -15,7 +15,7 @@ import {
   financeApprovalPostRequest,
   financeApprovalPostSuccess,
 } from '@finance/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
@@ -178,12 +178,24 @@ function* watchBulkPostFetchRequest() {
   yield takeEvery(Action.APPROVAL_BULK_POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(financeApprovalGetAllDispose()),
+      put(financeApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* financeSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostFetchRequest),
-    fork(watchBulkPostFetchRequest)
+    fork(watchBulkPostFetchRequest),
+    fork(watchSwitchAccess),
   ]);
 }
 

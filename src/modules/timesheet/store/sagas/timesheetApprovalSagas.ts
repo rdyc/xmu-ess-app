@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetApprovalAction as Action,
   timesheetApprovalGetAllDispose,
@@ -183,13 +183,24 @@ function* watchPostBulkRequest() {
   yield takeEvery(Action.POST_BULK_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(timesheetApprovalGetAllDispose()),
+      put(timesheetApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* timesheetApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostRequest),
     fork(watchPostBulkRequest),
-    
+    fork(watchSwitchAccess)
   ]);
 }
 

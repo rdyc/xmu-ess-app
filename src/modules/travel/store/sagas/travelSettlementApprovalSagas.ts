@@ -1,10 +1,11 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TravelSettlementApprovalAction as Action,
   travelSettlementApprovalGetAllDispose,
   travelSettlementApprovalGetAllError,
   travelSettlementApprovalGetAllRequest,
   travelSettlementApprovalGetAllSuccess,
+  travelSettlementApprovalGetByIdDispose,
   travelSettlementApprovalGetByIdError,
   travelSettlementApprovalGetByIdRequest,
   travelSettlementApprovalGetByIdSuccess,
@@ -129,11 +130,24 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(travelSettlementApprovalGetAllDispose()),
+      put(travelSettlementApprovalGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* travelSettlementApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
-    fork(watchPostFetchRequest)
+    fork(watchPostFetchRequest),
+    fork(watchSwitchAccess)
+
   ]);
 }
 

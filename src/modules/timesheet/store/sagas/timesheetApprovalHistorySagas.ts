@@ -1,9 +1,11 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetApprovalHistoryAction as Action,
+  timesheetApprovalHistoryGetAllDispose,
   timesheetApprovalHistoryGetAllError,
   timesheetApprovalHistoryGetAllRequest,
   timesheetApprovalHistoryGetAllSuccess,
+  timesheetApprovalHistoryGetByIdDispose,
   timesheetApprovalHistoryGetByIdError,
   timesheetApprovalHistoryGetByIdRequest,
   timesheetApprovalHistoryGetByIdSuccess,
@@ -79,10 +81,22 @@ function* watchByIdFetchRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(timesheetApprovalHistoryGetAllDispose()),
+      put(timesheetApprovalHistoryGetByIdDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* timesheetApprovalHistorySagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 

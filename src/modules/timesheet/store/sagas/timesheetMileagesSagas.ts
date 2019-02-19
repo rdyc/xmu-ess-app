@@ -1,6 +1,7 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetMileagesAction as Action,
+  timesheetMileagesGetAllDispose,
   timesheetMileagesGetAllError,
   timesheetMileagesGetAllRequest,
   timesheetMileagesGetAllSuccess,
@@ -47,9 +48,20 @@ function* watchAllFetchRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(timesheetMileagesGetAllDispose())
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
 function* timesheetMileagesSagas() {
   yield all([
     fork(watchAllFetchRequest),
+    fork(watchSwitchAccess)
   ]);
 }
 

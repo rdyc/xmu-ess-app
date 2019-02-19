@@ -1,27 +1,13 @@
 import AppMenu from '@constants/AppMenu';
-import { AppRole } from '@constants/AppRole';
 import { IQuerySingleState } from '@generic/interfaces';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import {
-  compose,
-  HandleCreators,
-  lifecycle,
-  mapper,
-  ReactLifeCycleFunctions,
-  setDisplayName,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
+import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'recompose';
 
 import { PreviewPageView } from './PreviewPageView';
 
@@ -31,9 +17,9 @@ interface IOwnOption {
   info: {
     uid: AppMenu | string;
     parentUid?: AppMenu | string;
+    parentUrl?: string;
     title: string;
     description: string;
-    parentUrl?: string;
   };
   onLoadApi: () => void;
   onLoadedApi?: () => void;
@@ -42,44 +28,16 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  isAdmin: boolean;
-}
-
-interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setAdmin: StateHandler<IOwnState>;
-}
-
-interface IOwnHandler {
 
 }
-
-export type PreviewPageState = Pick<PreviewPageProps, 'isAdmin'>;
 
 export type PreviewPageProps
   = IOwnOption
-  & IOwnState
-  & IOwnStateUpdater
-  & IOwnHandler
-  & WithOidc
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
   & WithAppBar
   & InjectedIntlProps;
-
-const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  isAdmin: false
-});
-
-const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
-  setAdmin: (prev: IOwnState) => (): Partial<IOwnState> => ({
-    isAdmin: true
-  })
-};
-
-const handlerCreators: HandleCreators<PreviewPageProps, IOwnHandler> = {
-  
-};
 
 const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
   componentDidMount() {
@@ -104,29 +62,10 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
       }
     });
 
-    // checking admin status
-    const { user } = this.props.oidcState;
-    let result: boolean = false;
-    if (user) {
-      const role: string | string[] | undefined = user.profile.role;
-
-      if (role) {
-        if (Array.isArray(role)) {
-          result = role.indexOf(AppRole.Admin) !== -1;
-        } else {
-          result = role === AppRole.Admin;
-        }
-      }
-
-      if (result) {
-        this.props.setAdmin();
-      }
-    }
-
     // loading data event from config
     this.props.onLoadApi();
   },
-  componentDidUpdate(prevProps: PreviewPageProps, prevState: IOwnState) {
+  componentDidUpdate(prevProps: PreviewPageProps) {
     // handling updated page options state
     if (this.props.options && this.props.options !== prevProps.options) {
       this.props.layoutDispatch.moreShow();
@@ -148,11 +87,8 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
 
 export const PreviewPage = compose<PreviewPageProps, IOwnOption>(
   setDisplayName('PreviewPage'),
-  withOidc,
   withLayout,
   withAppBar,
-  withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators),
   lifecycle(lifecycles),
   withStyles(styles),
   withWidth(),
