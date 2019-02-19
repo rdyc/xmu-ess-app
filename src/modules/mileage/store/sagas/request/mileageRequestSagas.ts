@@ -34,22 +34,13 @@ function* watchAllFetchRequest() {
         put(mileageRequestGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageRequestGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(mileageRequestGetAllError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(mileageRequestGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(mileageRequestGetAllError(error.message))
       ]),
       finallyEffects: [
-        // put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -66,19 +57,10 @@ function* watchByIdFetchRequest() {
         put(mileageRequestGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageRequestGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(mileageRequestGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(mileageRequestGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -93,6 +75,7 @@ function* watchPostFetchRequest() {
       path: `/v1/mileage/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
+        put(mileageRequestGetByIdDispose()),
         put(mileageRequestGetAllDispose()),
         put(mileageRequestPostSuccess(response.body))
       ]),

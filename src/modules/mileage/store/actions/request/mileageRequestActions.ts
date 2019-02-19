@@ -31,18 +31,18 @@ export const enum MileageRequestAction {
 // get all
 export const mileageRequestGetAllRequest = (request: IMileageRequestGetAllRequest) => action(MileageRequestAction.GET_ALL_REQUEST, request);
 export const mileageRequestGetAllSuccess = (response: IResponseCollection<IMileageRequest>) => action(MileageRequestAction.GET_ALL_SUCCESS, response);
-export const mileageRequestGetAllError = (message: string) => action(MileageRequestAction.GET_ALL_ERROR, message);
+export const mileageRequestGetAllError = (error: any) => action(MileageRequestAction.GET_ALL_ERROR, error);
 export const mileageRequestGetAllDispose = () => action(MileageRequestAction.GET_ALL_DISPOSE);
 
 // get by id
 export const mileageRequestGetByIdRequest = (request: IMileageRequestGetByIdRequest) => action(MileageRequestAction.GET_BY_ID_REQUEST, request);
 export const mileageRequestGetByIdSuccess = (response: IResponseSingle<IMileageRequestDetail>) => action(MileageRequestAction.GET_BY_ID_SUCCESS, response);
-export const mileageRequestGetByIdError = (message: string) => action(MileageRequestAction.GET_BY_ID_ERROR, message);
+export const mileageRequestGetByIdError = (error: any) => action(MileageRequestAction.GET_BY_ID_ERROR, error);
 export const mileageRequestGetByIdDispose = () => action(MileageRequestAction.GET_BY_ID_DISPOSE);
 
 // post
 export const mileageRequestPostRequest = (request: IMileageRequestPostRequest) => action(MileageRequestAction.POST_REQUEST, request);
 export const mileageRequestPostSuccess = (response: IResponseSingle<IMileageRequest>) => action(MileageRequestAction.POST_SUCCESS, response);
-export const mileageRequestPostError = (message: string) => action(MileageRequestAction.POST_ERROR, message);
+export const mileageRequestPostError = (error: string) => action(MileageRequestAction.POST_ERROR, error);
 export const mileageRequestPostDispose = () => action(MileageRequestAction.POST_DISPOSE);
   

@@ -34,8 +34,8 @@ export const mileageApprovalGetAllSuccess = (
   response: IResponseCollection<IMileageRequest>
 ) => action(MileageApprovalAction.GET_ALL_SUCCESS, response);
 
-export const mileageApprovalGetAllError = (message: string) =>
-  action(MileageApprovalAction.GET_ALL_ERROR, message);
+export const mileageApprovalGetAllError = (error: any) =>
+  action(MileageApprovalAction.GET_ALL_ERROR, error);
 
 export const mileageApprovalGetAllDispose = () =>
   action(MileageApprovalAction.GET_ALL_DISPOSE);
@@ -49,14 +49,14 @@ export const mileageApprovalGetByIdSuccess = (
   response: IResponseSingle<IMileageRequestDetail>
 ) => action(MileageApprovalAction.GET_BY_ID_SUCCESS, response);
 
-export const mileageApprovalGetByIdError = (message: string) =>
-  action(MileageApprovalAction.GET_BY_ID_ERROR, message);
+export const mileageApprovalGetByIdError = (error: any) =>
+  action(MileageApprovalAction.GET_BY_ID_ERROR, error);
 
 export const mileageApprovalGetByIdDispose = () =>
   action(MileageApprovalAction.GET_BY_ID_DISPOSE);
 
-  // post
+// post
 export const mileageApprovalPostRequest = (request: IMileageApprovalPostRequest) => action(MileageApprovalAction.POST_REQUEST, request);
 export const mileageApprovalPostSuccess = (response: IResponseSingle<IMileageRequest>) => action(MileageApprovalAction.POST_SUCCESS, response);
-export const mileageApprovalPostError = (message: string) => action(MileageApprovalAction.POST_ERROR, message);
+export const mileageApprovalPostError = (error: string) => action(MileageApprovalAction.POST_ERROR, error);
 export const mileageApprovalPostDispose = () => action(MileageApprovalAction.POST_DISPOSE);
