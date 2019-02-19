@@ -93,7 +93,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnState
 const handlerCreators: HandleCreators<ExpenseRequestDetailProps, OwnHandler> = {
   handleOnLoadApi: (props: ExpenseRequestDetailProps) => () => { 
     if (props.userState.user && props.match.params.expenseUid && !props.expenseRequestState.detail.isLoading) {
-      props.loadDetailRequest({
+      props.expenseRequestDispatch.loadDetailRequest({
         companyUid: props.userState.user.company.uid,
         positionUid: props.userState.user.position.uid,
         expenseUid: props.match.params.expenseUid
