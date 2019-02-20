@@ -19,8 +19,8 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
       info= {{
         uid: AppMenu.PurchaseSettlementRequest,
         parentUid: AppMenu.Purchase,
-        title: props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
-        description: props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader)
+        title: props.intl.formatMessage(purchaseMessage.settlement.pages.listTitle),
+        description: props.intl.formatMessage(purchaseMessage.settlement.pages.listSubHeader)
       }}
 
     // state & fields

@@ -5,7 +5,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import { IPurchaseGetAllFilter } from '@purchase/classes/filters/purchaseRequest';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { SettlementField } from '@purchase/classes/types';
+import { PurchaseField } from '@purchase/classes/types';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -55,9 +55,9 @@ const createProps: mapper<PurchaseRequestListProps, IOwnState> = (props: Purchas
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
-    fields: Object.keys(SettlementField).map(key => ({
+    fields: Object.keys(PurchaseField).map(key => ({
       value: key,
-      name: SettlementField[key]
+      name: PurchaseField[key]
     }))
   };
   // When location state are present (ex: redirection from dashboard) then don't use redux state
