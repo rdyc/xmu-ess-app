@@ -3,34 +3,29 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import { IProject } from '@project/classes/response';
+import { ProjectRegistrationSumarry } from '@project/components/registration/detail/shared/ProjectRegistrationSummary';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
 
-import { ProjectRegistrationSumarry } from '../detail/shared/ProjectRegistrationSummary';
-import { ProjectRegistrationListProps } from './ProjectRegistrationList';
-import { ProjectRegistrationListFilter } from './ProjectRegistrationListFilter';
+import { ProjectApprovalListProps } from './ProjectApprovalList';
+import { ProjectApprovalListFilter } from './ProjectApprovalListFilter';
 
-export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps> = props => (
+export const ProjectApprovalListView: React.SFC<ProjectApprovalListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.ProjectRegistrationRequest,
+        uid: AppMenu.ProjectRegistrationApproval,
         parentUid: AppMenu.ProjectRegistration,
-        title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
-        description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader)
+        title: props.intl.formatMessage(projectMessage.approval.page.listTitle),
+        description: props.intl.formatMessage(projectMessage.approval.page.listSubHeader),
       }}
 
       // state & fields
-      state={props.projectRegisterState.all}
+      state={props.projectApprovalState.all}
       fields={props.fields}
-      
-      // selection
-      // disableSelection={props.handleDisableSelection}
-      // onSelection={props.handleSelection}
       
       // callback
       onLoadApi={props.handleOnLoadApi}
@@ -42,19 +37,9 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
       )}
       actionComponent={(item: IProject) => (
         <React.Fragment>
-          {
-            isRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => props.history.push(`/project/requests/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-          }
-
           <Button 
             size="small"
-            onClick={() => props.history.push(`/project/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/project/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -64,18 +49,11 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="project.registration.request"
-          default={props.projectRegisterState.all.request && props.projectRegisterState.all.request.filter && props.projectRegisterState.all.request.filter.find}
+          key="project.registration.approval"
+          default={props.projectApprovalState.all.request && props.projectApprovalState.all.request.filter && props.projectApprovalState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
-      }
-      appBarCustomComponent={
-        <IconButton
-          onClick={() => props.history.push('/project/requests/form')}
-        >
-          <AddCircle/>
-        </IconButton>
       }
 
       // data toolbar component
@@ -87,7 +65,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.projectRegisterState.all.isLoading || props.projectRegisterState.all.isError}
+              disabled={props.projectApprovalState.all.isLoading || props.projectApprovalState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -104,14 +82,14 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
       }
     />
 
-    <ProjectRegistrationListFilter 
+    <ProjectApprovalListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
         customerUid: props.customerUid,
         projectType: props.projectType,
         statusType: props.statusType,
-        isRejected: props.isRejected,
-        isNewOwner: props.isNewOwner
+        status: props.status,
+        isNotify: props.isNotify,
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
