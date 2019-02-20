@@ -1,12 +1,15 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { listBarLoading, listBarMetadata } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
-import { LeaveCalculationAction as Action,
-         leaveCalculationGetAllError, 
-         leaveCalculationGetAllRequest, 
-         leaveCalculationGetAllSuccess } from '../actions/leaveCalculationActions';
+
+import {
+  LeaveCalculationAction as Action,
+  leaveCalculationGetAllError,
+  leaveCalculationGetAllRequest,
+  leaveCalculationGetAllSuccess,
+} from '../actions/leaveCalculationActions';
 
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof leaveCalculationGetAllRequest>) => {
@@ -27,10 +30,6 @@ function* watchGetAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(leaveCalculationGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [put(listBarLoading(false))]
     });

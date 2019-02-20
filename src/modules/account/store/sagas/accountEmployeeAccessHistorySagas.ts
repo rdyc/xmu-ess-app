@@ -10,7 +10,6 @@ import {
   accountEmployeeAccessHistoryGetListRequest,
   accountEmployeeAccessHistoryGetListSuccess,
 } from '@account/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
@@ -34,10 +33,6 @@ function* watchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeAccessHistoryGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -63,10 +58,6 @@ function* watchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeAccessHistoryGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -87,10 +78,7 @@ function* watchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeAccessHistoryGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
+
       ])
     });
   };
