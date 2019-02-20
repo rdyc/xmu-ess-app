@@ -38,12 +38,6 @@ function* watchGetAllRequest() {
       ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ],
       finallyEffects: [
         // nothing
@@ -67,12 +61,6 @@ function* watchGetByIdRequest() {
       ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ]
     });
   };
