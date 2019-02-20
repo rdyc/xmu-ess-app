@@ -30,23 +30,23 @@ export const enum FinanceApprovalAction {
 // get all
 export const financeApprovalGetAllRequest = (request: IFinanceApprovalGetAllRequest) => action(FinanceApprovalAction.APPROVAL_GET_ALL_REQUEST, request);
 export const financeApprovalGetAllSuccess = (response: IResponseCollection<IFinance>) => action(FinanceApprovalAction.APPROVAL_GET_ALL_SUCCESS, response);
-export const financeApprovalGetAllError = (message: string) => action(FinanceApprovalAction.APPROVAL_GET_ALL_ERROR, message);
+export const financeApprovalGetAllError = (error: any) => action(FinanceApprovalAction.APPROVAL_GET_ALL_ERROR, error);
 export const financeApprovalGetAllDispose = () => action(FinanceApprovalAction.APPROVAL_GET_ALL_DISPOSE);
 
 // get by id
 export const financeApprovalGetByIdRequest = (request: IFinanceApprovalGetByIdRequest) => action(FinanceApprovalAction.APPROVAL_GET_BY_ID_REQUEST, request);
 export const financeApprovalGetByIdSuccess = (response: IResponseSingle<IFinanceDetail>) => action(FinanceApprovalAction.APPROVAL_GET_BY_ID_SUCCESS, response);
-export const financeApprovalGetByIdError = (message: string) => action(FinanceApprovalAction.APPROVAL_GET_BY_ID_ERROR, message);
+export const financeApprovalGetByIdError = (error: any) => action(FinanceApprovalAction.APPROVAL_GET_BY_ID_ERROR, error);
 export const financeApprovalGetByIdDispose = () => action(FinanceApprovalAction.APPROVAL_GET_BY_ID_DISPOSE);
 
 // post
 export const financeApprovalPostRequest = (request: IFinanceApprovalPostRequest) => action(FinanceApprovalAction.APPROVAL_POST_REQUEST, request);
 export const financeApprovalPostSuccess = (response: IResponseSingle<IFinance>) => action(FinanceApprovalAction.APPROVAL_POST_SUCCESS, response);
-export const financeApprovalPostError = (message: string) => action(FinanceApprovalAction.APPROVAL_POST_ERROR, message);
+export const financeApprovalPostError = (error: any) => action(FinanceApprovalAction.APPROVAL_POST_ERROR, error);
 export const financeApprovalPostDispose = () => action(FinanceApprovalAction.APPROVAL_POST_DISPOSE);
 
 // bulk post
 export const financeApprovalBulkPostRequest = (request: IFinanceApprovalBulkPostRequest) => action(FinanceApprovalAction.APPROVAL_BULK_POST_REQUEST, request);
 export const financeApprovalBulkPostSuccess = (response: IResponseSingle<IFinance>) => action(FinanceApprovalAction.APPROVAL_BULK_POST_SUCCESS, response);
-export const financeApprovalBulkPostError = (message: string) => action(FinanceApprovalAction.APPROVAL_BULK_POST_ERROR, message);
+export const financeApprovalBulkPostError = (error: any) => action(FinanceApprovalAction.APPROVAL_BULK_POST_ERROR, error);
 export const financeApprovalBulkPostDispose = () => action(FinanceApprovalAction.APPROVAL_BULK_POST_DISPOSE);

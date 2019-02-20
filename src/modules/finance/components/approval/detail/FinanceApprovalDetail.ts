@@ -4,7 +4,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -20,6 +23,7 @@ import { withFinanceApproval, WithFinanceApproval } from '@finance/hoc/withFinan
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -33,6 +37,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleToDocument: (moduleUid: string, documentUid: string) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
@@ -41,6 +46,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   action?: FinanceUserAction;
   shouldDataReload: boolean;
   approvalTitle: string;
@@ -56,6 +62,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
   setDataload: StateHandler<OwnState>;
 }
@@ -93,6 +100,9 @@ const createProps: mapper<FinanceApprovalDetailProps, OwnState> = (props: Financ
 };
 
 const stateUpdaters: StateUpdaters<FinanceApprovalDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: FinanceApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
@@ -103,6 +113,15 @@ const stateUpdaters: StateUpdaters<FinanceApprovalDetailProps, OwnState, OwnStat
 };
 
 const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: FinanceApprovalDetailProps) => () => { 
+    if (props.userState.user && props.match.params.financeUid && !props.financeApprovalState.detail.isLoading) {
+      props.financeApprovalDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        financeUid: props.match.params.financeUid
+      });
+    }
+  },
   handleValidate: (props: FinanceApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -225,7 +244,38 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: FinanceApprovalDetailProps) {
+    if (this.props.shouldDataReload && this.props.shouldDataReload !== prevProps.shouldDataReload) {
+      // turn of shoul load
+      this.props.setDataload();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.match.params.financeUid !== prevProps.match.params.financeUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.financeApprovalState.detail.response !== prevProps.financeApprovalState.detail.response) {
+      const options: IAppBarMenu[] = [
+        {
+          id: FinanceUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !this.props.financeApprovalState.detail.isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
+};
+
 export const FinanceApprovalDetail = compose(
+  setDisplayName('FinanceApprovalDetail'),
   withRouter,
   withUser,
   withLayout,
@@ -233,4 +283,5 @@ export const FinanceApprovalDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(FinanceApprovalDetailView);

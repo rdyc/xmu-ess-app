@@ -37,19 +37,10 @@ function* watchAllFetchRequest() {
         put(financeApprovalGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(financeApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(financeApprovalGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(financeApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
       ]
@@ -68,19 +59,10 @@ function* watchByIdFetchRequest() {
         put(financeApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(financeApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(financeApprovalGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(financeApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
