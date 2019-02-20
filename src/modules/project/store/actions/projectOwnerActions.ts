@@ -11,5 +11,5 @@ export const enum ProjectOwnerAction {
 // put 
 export const projectOwnerPutRequest = (request: IProjectOwnerPutRequest) => action(ProjectOwnerAction.PUT_REQUEST, request);
 export const projectOwnerPutSuccess = (response: boolean) => action(ProjectOwnerAction.PUT_SUCCESS, response);
-export const projectOwnerPutError = (message: string) => action(ProjectOwnerAction.PUT_ERROR, message);
+export const projectOwnerPutError = (error: any) => action(ProjectOwnerAction.PUT_ERROR, error);
 export const projectOwnerPutDispose = () => action(ProjectOwnerAction.PUT_DISPOSE);

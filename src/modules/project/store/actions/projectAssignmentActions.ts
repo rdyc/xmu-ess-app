@@ -30,23 +30,23 @@ export const enum ProjectAssignmentAction {
 // get all
 export const projectAssignmentGetAllRequest = (request: IProjectAssignmentGetAllRequest) => action(ProjectAssignmentAction.GET_ALL_REQUEST, request);
 export const projectAssignmentGetAllSuccess = (response: IResponseCollection<IProjectAssignment>) => action(ProjectAssignmentAction.GET_ALL_SUCCESS, response);
-export const projectAssignmentGetAllError = (message: string) => action(ProjectAssignmentAction.GET_ALL_ERROR, message);
+export const projectAssignmentGetAllError = (error: any) => action(ProjectAssignmentAction.GET_ALL_ERROR, error);
 export const projectAssignmentGetAllDispose = () => action(ProjectAssignmentAction.GET_ALL_DISPOSE);
 
 // get by id
 export const projectAssignmentGetByIdRequest = (request: IProjectAssignmentGetByIdRequest) => action(ProjectAssignmentAction.GET_BY_ID_REQUEST, request);
 export const projectAssignmentGetByIdSuccess = (response: IResponseSingle<IProjectAssignmentDetail>) => action(ProjectAssignmentAction.GET_BY_ID_SUCCESS, response);
-export const projectAssignmentGetByIdError = (message: string) => action(ProjectAssignmentAction.GET_BY_ID_ERROR, message);
+export const projectAssignmentGetByIdError = (error: any) => action(ProjectAssignmentAction.GET_BY_ID_ERROR, error);
 export const projectAssignmentGetByIdDispose = () => action(ProjectAssignmentAction.GET_BY_ID_DISPOSE);
 
 // get list
 export const projectAssignmentGetListRequest = (request: IProjectAssignmentGetListRequest) => action(ProjectAssignmentAction.GET_LIST_REQUEST, request);
 export const projectAssignmentGetListSuccess = (response: IResponseSingle<IProjectAssignmentList>) => action(ProjectAssignmentAction.GET_LIST_SUCCESS, response);
-export const projectAssignmentGetListError = (message: string) => action(ProjectAssignmentAction.GET_LIST_ERROR, message);
+export const projectAssignmentGetListError = (error: any) => action(ProjectAssignmentAction.GET_LIST_ERROR, error);
 export const projectAssignmentGetListDispose = () => action(ProjectAssignmentAction.GET_LIST_DISPOSE);
 
 // post
 export const projectAssignmentPatchRequest = (request: IProjectAssignmentPatchRequest) => action(ProjectAssignmentAction.PATCH_REQUEST, request);
 export const projectAssignmentPatchSuccess = (response: undefined) => action(ProjectAssignmentAction.PATCH_SUCCESS, response);
-export const projectAssignmentPatchError = (message: string) => action(ProjectAssignmentAction.PATCH_ERROR, message);
+export const projectAssignmentPatchError = (error: any) => action(ProjectAssignmentAction.PATCH_ERROR, error);
 export const projectAssignmentPatchDispose = () => action(ProjectAssignmentAction.PATCH_DISPOSE);
