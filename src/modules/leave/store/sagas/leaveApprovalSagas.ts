@@ -58,7 +58,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof leaveApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/leave/${action.payload.companyUid}1/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => [
         put(leaveApprovalGetByIdSuccess(response.body))
       ],
