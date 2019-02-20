@@ -38,12 +38,6 @@ function* watchGetAllRequest() {
       ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ],
       finallyEffects: [
         // nothing
@@ -58,7 +52,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof leaveApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/leave/${action.payload.companyUid}1/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => [
         put(leaveApprovalGetByIdSuccess(response.body))
       ],
@@ -67,12 +61,6 @@ function* watchGetByIdRequest() {
       ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ]
     });
   };

@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-
 import { TravelRequestDetail } from './request/detail/TravelRequestDetail';
 import RequestEditor from './request/editor/RequestEditor';
 import { TravelRequestList } from './request/list/TravelRequestList';
@@ -10,9 +9,9 @@ import { TravelRequestApprovalDetail } from './requestApproval/detail/TravelRequ
 import { TravelApprovalList } from './requestApproval/list/TravelApprovalList';
 import { TravelSettlementDetails } from './settlement/detail/TravelSettlementDetails';
 import TravelSettlementEditor from './settlement/editor/TravelSettlementEditor';
-import { TravelSettlementRequestList } from './settlement/list/TravelSettlementRequestList';
+import { TravelSettlementList } from './settlement/list/TravelSettlementList';
 import { TravelSettlementApprovalDetails } from './settlementApproval/detail/TravelSettlementApprovalDetails';
-import { TravelSettlementListApproval } from './settlementApproval/list/TravelSettlementListApproval';
+import { TravelSettlementApprovalList } from './settlementApproval/list/TravelSettlementApprovalList';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
@@ -26,7 +25,7 @@ const settlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={TravelSettlementEditor} />
     <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementDetails} />
-    <Route path={`${props.match.path}`} component={TravelSettlementRequestList} />
+    <Route path={`${props.match.path}`} component={TravelSettlementList} />
   </Switch>
 );
 
@@ -40,7 +39,7 @@ const approvalRequest = (props: RouteComponentProps) => (
 const approvalSettlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementApprovalDetails} />
-    <Route path={`${props.match.path}`} component={TravelSettlementListApproval} />
+    <Route path={`${props.match.path}`} component={TravelSettlementApprovalList} />
   </Switch>
 );
 

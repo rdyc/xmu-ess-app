@@ -48,10 +48,6 @@ function* watchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -78,10 +74,6 @@ function* watchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -102,10 +94,6 @@ function* watchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };
@@ -144,12 +132,6 @@ function* watchPostRequest() {
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeePostError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ],
       errorCallback: (error: any) => {
         action.payload.reject(error);

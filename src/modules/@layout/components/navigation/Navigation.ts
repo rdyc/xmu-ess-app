@@ -66,7 +66,7 @@ const stateUpdaters: StateUpdaters<NavigationProps, OwnState, OwnStateUpdaters> 
 };
 
 const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
- handleOnClickMenuHeader: (props: NavigationProps) => (uid: string) => {
+  handleOnClickMenuHeader: (props: NavigationProps) => (uid: string) => {
     if (props.headerUid !== uid) {
       props.setHeader(uid);
     } else {
@@ -85,7 +85,7 @@ const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<NavigationProps, OwnState> = {
-  componentDidUpdate(prevProps: NavigationProps, prevState: OwnState) {
+  componentDidUpdate(prevProps: NavigationProps) {
     if (this.props.layoutState.view !== prevProps.layoutState.view) {
       const { view } = this.props.layoutState;
 
@@ -100,10 +100,10 @@ export const Navigation = compose<NavigationProps, IOwnOption>(
   setDisplayName('Navigation'),
   withUser,
   withLayout,
-  withWidth(),
-  withStyles(styles),
   withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  withWidth(),
+  withStyles(styles)
 )(NavigationView);

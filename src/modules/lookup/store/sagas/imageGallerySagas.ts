@@ -38,10 +38,6 @@ function* watchFetchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(imageGalleryGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -63,10 +59,6 @@ function* watchFetchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(imageGalleryGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

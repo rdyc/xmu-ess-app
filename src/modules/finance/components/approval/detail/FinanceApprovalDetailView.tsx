@@ -24,6 +24,7 @@ export const FinanceApprovalDetailView: React.SFC<FinanceApprovalDetailProps> = 
     info={{
       uid: AppMenu.FinanceApproval,
       parentUid: AppMenu.Finance,
+      parentUrl: '/finance/approvals',
       title: props.intl.formatMessage(financeMessage.approval.page.detailTitle),
       description: props.intl.formatMessage(financeMessage.approval.page.detailSubTitle)
     }}

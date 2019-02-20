@@ -11,5 +11,5 @@ export const enum ProjectHourAction {
 // put 
 export const projectHourPutRequest = (request: IProjectHourPutRequest) => action(ProjectHourAction.PUT_REQUEST, request);
 export const projectHourPutSuccess = (response: boolean) => action(ProjectHourAction.PUT_SUCCESS, response);
-export const projectHourPutError = (message: string) => action(ProjectHourAction.PUT_ERROR, message);
+export const projectHourPutError = (error: any) => action(ProjectHourAction.PUT_ERROR, error);
 export const projectHourPutDispose = () => action(ProjectHourAction.PUT_DISPOSE);

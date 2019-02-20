@@ -47,10 +47,6 @@ function* watchGetAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
         // put(listBarLoading(false))
@@ -79,10 +75,6 @@ function* watchGetListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -103,10 +95,6 @@ function* watchGetByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupLeaveGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

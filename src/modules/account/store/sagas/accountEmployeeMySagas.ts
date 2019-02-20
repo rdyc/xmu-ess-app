@@ -3,7 +3,6 @@ import {
   accountEmployeeMyGetError,
   accountEmployeeMyGetSuccess,
 } from '@account/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
@@ -21,10 +20,6 @@ function* watchGetRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeMyGetError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };

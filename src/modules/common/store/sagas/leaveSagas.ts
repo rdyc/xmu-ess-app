@@ -10,7 +10,6 @@ import {
   leaveGetListRequest,
   leaveGetListSuccess,
 } from '@common/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
@@ -34,10 +33,6 @@ function* watchFetchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(leaveGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -58,10 +53,6 @@ function* watchFetchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(leaveGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -82,10 +73,6 @@ function* watchFetchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(leaveGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

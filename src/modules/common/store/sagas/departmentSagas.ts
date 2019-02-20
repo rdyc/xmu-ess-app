@@ -1,5 +1,5 @@
 import {
-  DepartmentAction as Action, 
+  DepartmentAction as Action,
   departmentGetAllError,
   departmentGetAllRequest,
   departmentGetAllSuccess,
@@ -34,10 +34,6 @@ function* watchFetchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(departmentGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -63,10 +59,6 @@ function* watchFetchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(departmentGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };

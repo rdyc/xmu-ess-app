@@ -45,12 +45,6 @@ function* watchGetAllRequest() {
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ]),
       finallyEffects: [
         // put(listBarLoading(false))
@@ -82,12 +76,6 @@ function* watchGetListRequest() {
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetListError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ])
     });
   };
@@ -113,12 +101,6 @@ function* watchGetByIdRequest() {
       ]),
       errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ])
     });
   };
