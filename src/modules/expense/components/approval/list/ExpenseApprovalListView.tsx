@@ -53,7 +53,7 @@ export const ExpenseApprovalListView: React.SFC<ExpenseApprovalListProps> = prop
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="expense.request"
+          key="expense.approval"
           default={props.expenseApprovalState.all.request && props.expenseApprovalState.all.request.filter && props.expenseApprovalState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
