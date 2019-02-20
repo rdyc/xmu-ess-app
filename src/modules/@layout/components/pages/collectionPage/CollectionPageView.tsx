@@ -80,11 +80,8 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         const bind = props.onBind(item, index);
         
         return (
-          <ExpansionPanel tabIndex={index}>
-            <ExpansionPanelSummary
-              key={`EPS${index}`}
-              expandIcon={<ExpandMoreIcon/>}
-            >
+          <ExpansionPanel key={`EPS${index}`} tabIndex={index}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
               {
                 props.onSelection &&
                 <Checkbox
