@@ -30,23 +30,23 @@ export const enum PurchaseAction {
 // get all
 export const purchaseGetAllRequest = (request: IPurchaseGetAllRequest) => action(PurchaseAction.GET_ALL_REQUEST, request);
 export const purchaseGetAllSuccess = (response: IResponseCollection<IPurchase>) => action(PurchaseAction.GET_ALL_SUCCESS, response);
-export const purchaseGetAllError = (message: string) => action(PurchaseAction.GET_ALL_ERROR, message);
+export const purchaseGetAllError = (error: any) => action(PurchaseAction.GET_ALL_ERROR, error);
 export const purchaseGetAllDispose = () => action(PurchaseAction.GET_ALL_DISPOSE);
 
 // get by id
 export const purchaseGetByIdRequest = (request: IPurchaseGetByIdRequest) => action(PurchaseAction.GET_BY_ID_REQUEST, request);
 export const purchaseGetByIdSuccess = (response: IResponseSingle<IPurchaseDetail>) => action(PurchaseAction.GET_BY_ID_SUCCESS, response);
-export const purchaseGetByIdError = (message: string) => action(PurchaseAction.GET_BY_ID_ERROR, message);
+export const purchaseGetByIdError = (error: any) => action(PurchaseAction.GET_BY_ID_ERROR, error);
 export const purchaseGetByIdDispose = () => action(PurchaseAction.GET_BY_ID_DISPOSE);
 
 // post
 export const purchasePostRequest = (request: IPurchasePostRequest) => action(PurchaseAction.POST_REQUEST, request);
 export const purchasePostSuccess = (response: IResponseSingle<IPurchase>) => action(PurchaseAction.POST_SUCCESS, response);
-export const purchasePostError = (message: string) => action(PurchaseAction.POST_ERROR, message);
+export const purchasePostError = (error: any) => action(PurchaseAction.POST_ERROR, error);
 export const purchasePostDispose = () => action(PurchaseAction.POST_DISPOSE);
 
 // put
 export const purchasePutRequest = (request: IPurchasePutRequest) => action(PurchaseAction.PUT_REQUEST, request);
 export const purchasePutSuccess = (response: IResponseSingle<IPurchase>) => action(PurchaseAction.PUT_SUCCESS, response);
-export const purchasePutError = (message: string) => action(PurchaseAction.PUT_ERROR, message);
+export const purchasePutError = (error: any) => action(PurchaseAction.PUT_ERROR, error);
 export const purchasePutDispose = () => action(PurchaseAction.PUT_DISPOSE);

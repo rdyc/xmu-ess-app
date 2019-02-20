@@ -25,17 +25,17 @@ export const enum SettlementApprovalAction {
 // get all
 export const settlementApprovalGetAllRequest = (request: ISettlementApprovalGetAllRequest) => action(SettlementApprovalAction.GET_ALL_S_APPROVAL_REQUEST, request);
 export const settlementApprovalGetAllSuccess = (response: IResponseCollection<ISettlement>) => action(SettlementApprovalAction.GET_ALL_S_APPROVAL_SUCCESS, response);
-export const settlementApprovalGetAllError = (message: string) => action(SettlementApprovalAction.GET_ALL_S_APPROVAL_ERROR, message);
+export const settlementApprovalGetAllError = (error: any) => action(SettlementApprovalAction.GET_ALL_S_APPROVAL_ERROR, error);
 export const settlementApprovalGetAllDispose = () => action(SettlementApprovalAction.GET_ALL_S_APPROVAL_DISPOSE);
 
 // get by id
 export const settlementApprovalGetByIdRequest = (request: ISettlementApprovalGetByIdRequest) => action(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_REQUEST, request);
 export const settlementApprovalGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_SUCCESS, response);
-export const settlementApprovalGetByIdError = (message: string) => action(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_ERROR, message);
+export const settlementApprovalGetByIdError = (error: any) => action(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_ERROR, error);
 export const settlementApprovalGetByIdDispose = () => action(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_DISPOSE);
 
 // post
 export const settlementApprovalPostRequest = (request: ISettlementApprovalPostRequest) => action(SettlementApprovalAction.POST_S_APPROVAL_REQUEST, request);
 export const settlementApprovalPostSuccess = (response: boolean) => action(SettlementApprovalAction.POST_S_APPROVAL_SUCCESS, response);
-export const settlementApprovalPostError = (message: string) => action(SettlementApprovalAction.POST_S_APPROVAL_ERROR, message);
+export const settlementApprovalPostError = (error: any) => action(SettlementApprovalAction.POST_S_APPROVAL_ERROR, error);
 export const settlementApprovalPostDispose = () => action(SettlementApprovalAction.POST_S_APPROVAL_DISPOSE);

@@ -30,23 +30,23 @@ export const enum SettlementAction {
 // get all
 export const settlementGetAllRequest = (request: ISettlementGetAllRequest) => action(SettlementAction.GET_ALL_SETTLEMENT_REQUEST, request);
 export const settlementGetAllSuccess = (response: IResponseCollection<ISettlement>) => action(SettlementAction.GET_ALL_SETTLEMENT_SUCCESS, response);
-export const settlementGetAllError = (message: string) => action(SettlementAction.GET_ALL_SETTLEMENT_ERROR, message);
+export const settlementGetAllError = (error: any) => action(SettlementAction.GET_ALL_SETTLEMENT_ERROR, error);
 export const settlementGetAllDispose = () => action(SettlementAction.GET_ALL_SETTLEMENT_DISPOSE);
 
 // get by id
 export const settlementGetByIdRequest = (request: ISettlementGetByIdRequest) => action(SettlementAction.GET_BY_ID_SETTLEMENT_REQUEST, request);
 export const settlementGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementAction.GET_BY_ID_SETTLEMENT_SUCCESS, response);
-export const settlementGetByIdError = (message: string) => action(SettlementAction.GET_BY_ID_SETTLEMENT_ERROR, message);
+export const settlementGetByIdError = (error: any) => action(SettlementAction.GET_BY_ID_SETTLEMENT_ERROR, error);
 export const settlementGetByIdDispose = () => action(SettlementAction.GET_BY_ID_SETTLEMENT_DISPOSE);
 
 // post
 export const settlementPostRequest = (request: ISettlementPostRequest) => action(SettlementAction.POST_SETTLEMENT_REQUEST, request);
 export const settlementPostSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementAction.POST_SETTLEMENT_SUCCESS, response);
-export const settlementPostError = (message: string) => action(SettlementAction.POST_SETTLEMENT_ERROR, message);
+export const settlementPostError = (error: any) => action(SettlementAction.POST_SETTLEMENT_ERROR, error);
 export const settlementPostDispose = () => action(SettlementAction.POST_SETTLEMENT_DISPOSE);
 
 // put
 export const settlementPutRequest = (request: ISettlementPutRequest) => action(SettlementAction.PUT_SETTLEMENT_REQUEST, request);
 export const settlementPutSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementAction.PUT_SETTLEMENT_SUCCESS, response);
-export const settlementPutError = (message: string) => action(SettlementAction.PUT_SETTLEMENT_ERROR, message);
+export const settlementPutError = (error: any) => action(SettlementAction.PUT_SETTLEMENT_ERROR, error);
 export const settlementPutDispose = () => action(SettlementAction.PUT_SETTLEMENT_DISPOSE);

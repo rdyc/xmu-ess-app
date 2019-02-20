@@ -1,4 +1,4 @@
-import { layoutAlertAdd, UserAction } from '@layout/store/actions';
+import { UserAction } from '@layout/store/actions';
 import {
   PurchaseAction,
   PurchaseApprovalAction,
@@ -76,19 +76,10 @@ function* watchPurchaseAllFetchRequest() {
         put(purchaseGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(purchaseGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchaseGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(purchaseGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
         
@@ -108,19 +99,10 @@ function* watchPurchaseByIdFetchRequest() {
         put(purchaseGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(purchaseGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchaseGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(purchaseGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -143,12 +125,7 @@ function* watchPurchasePostFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(purchasePostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchasePostError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -164,10 +141,6 @@ function* watchPurchasePostFetchRequest() {
       },
       errorEffects: (error: TypeError) => [
         put(purchasePostError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ],
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -193,12 +166,7 @@ function* watchPurchasePutFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(purchasePutError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchasePutError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -215,10 +183,6 @@ function* watchPurchasePutFetchRequest() {
       },
       errorEffects: (error: TypeError) => ([
         put(purchasePutError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -243,23 +207,10 @@ function* watchPurchaseApprovalAllFetchRequest() {
         put(purchaseApprovalGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(purchaseApprovalGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(purchaseApprovalGetAllError(response)),
       ],
       errorEffects: (error: TypeError) => [
         put(purchaseApprovalGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ],
       finallyEffects: [
         // nothing
@@ -279,19 +230,10 @@ function* watchPurchaseApprovalByIdFetchRequest() {
         put(purchaseApprovalGetByIdSuccess(response.body)),
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(purchaseApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchaseApprovalGetByIdError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(purchaseApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -314,12 +256,7 @@ function* watchPurchaseApprovalPostFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(purchaseApprovalPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(purchaseApprovalPostError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -335,10 +272,6 @@ function* watchPurchaseApprovalPostFetchRequest() {
       },
       errorEffects: (error: TypeError) => ([
         put(purchaseApprovalPostError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -363,19 +296,10 @@ function* watchSettlementAllFetchRequest() {
         put(settlementGetAllSuccess(response.body)),
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(settlementGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementGetAllError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(settlementGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
         
@@ -395,19 +319,10 @@ function* watchSettlementByIdFetchRequest() {
         put(settlementGetByIdSuccess(response.body)),
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(settlementGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementGetByIdError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(settlementGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -430,12 +345,7 @@ function* watchSettlementPostFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(settlementPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementPostError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -451,10 +361,6 @@ function* watchSettlementPostFetchRequest() {
       },
       errorEffects: (error: TypeError) => ([
         put(settlementPostError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]), 
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -480,12 +386,7 @@ function* watchSettlementPutFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(settlementPutError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementPutError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -501,10 +402,6 @@ function* watchSettlementPutFetchRequest() {
       },
       errorEffects: (error: TypeError) => ([
         put(settlementPutError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -529,19 +426,10 @@ function* watchSettlementApprovalAllFetchRequest() {
         put(settlementApprovalGetAllSuccess(response.body)),
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(settlementApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementApprovalGetAllError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(settlementApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
 
@@ -561,19 +449,10 @@ function* watchSettlementApprovalByIdFetchRequest() {
         put(settlementApprovalGetByIdSuccess(response.body)),
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(settlementApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementApprovalGetByIdError(response)),
       ]),
       errorEffects: (error: TypeError) => ([
         put(settlementApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -596,12 +475,7 @@ function* watchSettlementApprovalPostFetchRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(settlementApprovalPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(settlementApprovalPostError(response)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -617,10 +491,6 @@ function* watchSettlementApprovalPostFetchRequest() {
       },
       errorEffects: (error: TypeError) => ([
         put(settlementApprovalPostError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       errorCallback: (error: any) => {
         action.payload.reject(error);
