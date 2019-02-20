@@ -38,23 +38,10 @@ function* watchGetAllRequest() {
         put(projectAssignmentGetAllSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectAssignmentGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectAssignmentGetAllError(response)),
       ],
       errorEffects: (error: TypeError) => [
-        put(projectAssignmentGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectAssignmentGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -80,21 +67,10 @@ function* watchGetListRequest() {
         put(projectAssignmentGetListSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectAssignmentGetListError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(projectAssignmentGetListError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectAssignmentGetListError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectAssignmentGetListError(error.message))
       ]
     });
   };
@@ -111,23 +87,10 @@ function* watchGetByIdRequest() {
         put(projectAssignmentGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectAssignmentGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectAssignmentGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectAssignmentGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectAssignmentGetByIdError(error.message))
       ]
     });
   };
