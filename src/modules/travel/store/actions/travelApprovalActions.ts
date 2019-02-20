@@ -25,17 +25,17 @@ export const enum TravelApprovalAction {
 // get all travelApproval
 export const travelApprovalGetAllRequest = (request: ITravelApprovalGetAllRequest) => action(TravelApprovalAction.GET_ALL_REQUEST, request);
 export const travelApprovalGetAllSuccess = (response: IResponseCollection<ITravelRequest>) => action(TravelApprovalAction.GET_ALL_SUCCESS, response);
-export const travelApprovalGetAllError = (message: string) => action(TravelApprovalAction.GET_ALL_ERROR, message);
+export const travelApprovalGetAllError = (error: any) => action(TravelApprovalAction.GET_ALL_ERROR, error);
 export const travelApprovalGetAllDispose = () => action(TravelApprovalAction.GET_ALL_DISPOSE);
 
 // get request by id
 export const travelApprovalGetByIdRequest = (request: ITravelApprovalGetByIdRequest) => action(TravelApprovalAction.GET_BY_ID_REQUEST, request);
 export const travelApprovalGetByIdSuccess = (response: IResponseSingle<ITravelRequestDetail>) => action(TravelApprovalAction.GET_BY_ID_SUCCESS, response);
-export const travelApprovalGetByIdError = (message: string) => action(TravelApprovalAction.GET_BY_ID_ERROR, message);
+export const travelApprovalGetByIdError = (error: any) => action(TravelApprovalAction.GET_BY_ID_ERROR, error);
 export const travelApprovalGetByIdDispose = () => action(TravelApprovalAction.GET_BY_ID_DISPOSE);
 
 // post
 export const travelApprovalPostRequest = (request: ITravelApprovalPostRequest) => action(TravelApprovalAction.POST_REQUEST, request);
 export const travelApprovalPostSuccess = (response: IResponseSingle<ITravelRequest>) => action(TravelApprovalAction.POST_SUCCESS, response);
-export const travelApprovalPostError = (message: string) => action(TravelApprovalAction.POST_ERROR, message);
+export const travelApprovalPostError = (error: any) => action(TravelApprovalAction.POST_ERROR, error);
 export const travelApprovalPostDispose = () => action(TravelApprovalAction.POST_DISPOSE);

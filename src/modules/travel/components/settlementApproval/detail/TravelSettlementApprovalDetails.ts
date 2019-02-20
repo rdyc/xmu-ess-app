@@ -4,10 +4,12 @@ import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import { TravelUserAction } from '@travel/classes/types';
 import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
 import { WithTravelSettlementApproval, withTravelSettlementApproval } from '@travel/hoc/withTravelSettlementApproval';
 import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMessages';
@@ -20,6 +22,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -29,10 +32,10 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-
 import { TravelSettlementApprovalDetailViews } from './TravelSettlementApprovalDetailViews';
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -44,7 +47,8 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  shouldDataReload: boolean;
+  shouldLoad: boolean;
+  pageOptions?: IAppBarMenu[];
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -56,7 +60,8 @@ interface OwnState {
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setDataload: StateHandler<OwnState>;
+  setOptions: StateHandler<OwnState>;
+  setNextLoad: StateHandler<OwnState>;
 }
 
 export type TravelSettlementApprovalDetailProps
@@ -72,7 +77,7 @@ export type TravelSettlementApprovalDetailProps
   & OwnStateUpdater;
 
 const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (props: TravelSettlementApprovalDetailProps): OwnState => ({
-  shouldDataReload: false,
+  shouldLoad: false,
   approvalTitle: props.intl.formatMessage(travelMessage.settlement.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(travelMessage.settlement.section.approvalSubHeader),
   approvalChoices: [
@@ -87,12 +92,24 @@ const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (prop
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
-    shouldDataReload: !prevState.shouldDataReload
+  setNextLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldLoad: !prevState.shouldLoad
+  }),
+  setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
   })
 };
 
 const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: TravelSettlementApprovalDetailProps) => () => { 
+    if (props.userState.user && !props.travelSettlementApprovalState.detail.isLoading && props.match.params.travelSettlementUid) {
+      props.travelSettlementApprovalDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        travelSettlementUid: props.match.params.travelSettlementUid
+      });
+    }
+  },
   handleValidate: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -155,15 +172,15 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
       message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
-    props.setDataload();
-    // history.push('/travel/approvals/settlement');
-
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
       moduleUid: ModuleDefinition.TravelSettlement,
       detailType: NotificationType.Approval,
       itemUid: match.params.travelSettlementUid
     });
+
+    props.setNextLoad();
+    // history.push('/travel/approvals/settlement');    
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -186,6 +203,36 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
 };
 
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: TravelSettlementApprovalDetailProps) {
+    // handle updated should load
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      // turn of shoul load
+      this.props.setNextLoad();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated route params
+    if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.travelSettlementApprovalState.detail !== prevProps.travelSettlementApprovalState.detail) {
+      const options: IAppBarMenu[] = [
+        {
+          id: TravelUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !this.props.travelSettlementApprovalState.detail.isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
   componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
     if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
       const { response } = nextProps.travelSettlementApprovalState.detail;
@@ -211,6 +258,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
 };
 
 export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(
+  setDisplayName('TravelSettlementApprovalDetail'),
   withRouter,
   withUser,
   withLayout,

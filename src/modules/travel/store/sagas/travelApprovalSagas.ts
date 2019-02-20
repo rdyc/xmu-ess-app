@@ -34,12 +34,7 @@ function* watchAllFetchRequest() {
         put(travelApprovalGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(travelApprovalGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(travelApprovalGetAllError(error.message)),
@@ -66,12 +61,7 @@ function* watchByIdFetchRequest() {
         put(travelApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(travelApprovalGetByIdError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
         put(travelApprovalGetByIdError(error.message)),
