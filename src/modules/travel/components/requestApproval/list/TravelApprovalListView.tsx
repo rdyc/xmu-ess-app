@@ -52,18 +52,12 @@ export const TravelApprovalListView: React.SFC<TravelApprovalListProps> = props 
       // app bar component
       appBarSearchComponent={
         <SearchBox
+          key="travel.approval"
           default={props.travelApprovalState.all.request && props.travelApprovalState.all.request.filter && props.travelApprovalState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
-      // appBarCustomComponent={
-      //   <IconButton
-      //     onClick={() => props.history.push('/travel/requests/form')}
-      //   >
-      //     <AddCircle />
-      //   </IconButton>
-      // }
 
       // data toolbar component
       toolbarDataComponent={
