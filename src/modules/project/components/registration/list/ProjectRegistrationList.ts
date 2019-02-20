@@ -233,5 +233,5 @@ export const ProjectRegistrationList = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(ProjectRegistrationListView);

@@ -31,23 +31,10 @@ function* watchGetRequest() {
         put(projectSiteGetSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectSiteGetError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectSiteGetError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectSiteGetError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectSiteGetError(error.message))
       ],
       finallyEffects: [
         

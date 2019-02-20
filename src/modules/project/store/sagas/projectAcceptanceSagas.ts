@@ -35,23 +35,10 @@ function* watchGetAllRequest() {
         put(projectAcceptanceGetAllSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectAcceptanceGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectAcceptanceGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectAcceptanceGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectAcceptanceGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -71,23 +58,10 @@ function* watchGetByIdRequest() {
         put(projectAcceptanceGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(projectAcceptanceGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectAcceptanceGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(projectAcceptanceGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectAcceptanceGetByIdError(error.message))
       ]
     });
   };
