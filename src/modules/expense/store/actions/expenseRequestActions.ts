@@ -30,23 +30,23 @@ export const enum ExpenseRequestAction {
 // get all
 export const expenseRequestGetAllRequest = (request: IExpenseRequestGetAllRequest) => action(ExpenseRequestAction.GET_ALL_REQUEST, request);
 export const expenseRequestGetAllSuccess = (response: IResponseCollection<IExpense>) => action(ExpenseRequestAction.GET_ALL_SUCCESS, response);
-export const expenseRequestGetAllError = (message: string) => action(ExpenseRequestAction.GET_ALL_ERROR, message);
+export const expenseRequestGetAllError = (error: any) => action(ExpenseRequestAction.GET_ALL_ERROR, error);
 export const expenseRequestGetAllDispose = () => action(ExpenseRequestAction.GET_ALL_DISPOSE);
 
 // get by id
 export const expenseRequestGetByIdRequest = (request: IExpenseRequestGetByIdRequest) => action(ExpenseRequestAction.GET_BY_ID_REQUEST, request);
 export const expenseRequestGetByIdSuccess = (response: IResponseSingle<IExpenseDetail>) => action(ExpenseRequestAction.GET_BY_ID_SUCCESS, response);
-export const expenseRequestGetByIdError = (message: string) => action(ExpenseRequestAction.GET_BY_ID_ERROR, message);
+export const expenseRequestGetByIdError = (error: any) => action(ExpenseRequestAction.GET_BY_ID_ERROR, error);
 export const expenseRequestGetByIdDispose = () => action(ExpenseRequestAction.GET_BY_ID_DISPOSE);
 
 // post
 export const expenseRequestPostRequest = (request: IExpenseRequestPostRequest) => action(ExpenseRequestAction.POST_REQUEST, request);
 export const expenseRequestPostSuccess = (response: IResponseSingle<IExpense>) => action(ExpenseRequestAction.POST_SUCCESS, response);
-export const expenseRequestPostError = (message: string) => action(ExpenseRequestAction.POST_ERROR, message);
+export const expenseRequestPostError = (error: any) => action(ExpenseRequestAction.POST_ERROR, error);
 export const expenseRequestPostDispose = () => action(ExpenseRequestAction.POST_DISPOSE);
 
 // put
 export const expenseRequestPutRequest = (request: IExpenseRequestPutRequest) => action(ExpenseRequestAction.PUT_REQUEST, request);
 export const expenseRequestPutSuccess = (response: IResponseSingle<IExpense>) => action(ExpenseRequestAction.PUT_SUCCESS, response);
-export const expenseRequestPutError = (message: string) => action(ExpenseRequestAction.PUT_ERROR, message);
+export const expenseRequestPutError = (error: any) => action(ExpenseRequestAction.PUT_ERROR, error);
 export const expenseRequestPutDispose = () => action(ExpenseRequestAction.PUT_DISPOSE);

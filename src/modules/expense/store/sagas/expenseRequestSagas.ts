@@ -37,19 +37,10 @@ function* watchAllRequest() {
         put(expenseRequestGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseRequestGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(expenseRequestGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseRequestGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
       ]
@@ -68,19 +59,10 @@ function* watchByIdRequest() {
         put(expenseRequestGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseRequestGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(expenseRequestGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseRequestGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -96,6 +78,7 @@ function* watchPostRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseRequestGetAllDispose()),
+        put(expenseRequestGetByIdDispose()),
         put(expenseRequestPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {

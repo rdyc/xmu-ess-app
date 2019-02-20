@@ -34,19 +34,10 @@ function* watchApprovalAllFetchRequest() {
         put(expenseApprovalGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(expenseApprovalGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
       ]
@@ -65,19 +56,10 @@ function* watchApprovalByIdFetchRequest() {
         put(expenseApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(expenseApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(expenseApprovalGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(expenseApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };

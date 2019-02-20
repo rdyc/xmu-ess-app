@@ -15,7 +15,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -26,6 +29,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { ExpenseUserAction } from '@expense/classes/types';
+import { IAppBarMenu } from '@layout/interfaces';
 import { ExpenseApprovalDetailView } from './ExpenseApprovalDetailView';
 
 interface OwnRouteParams {
@@ -33,6 +38,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -50,11 +56,13 @@ interface OwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  pageOptions?: IAppBarMenu[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
   setDataload: StateHandler<OwnState>;
+  setOptions: StateHandler<OwnState>;
 }
 
 export type ExpenseApprovalDetailProps 
@@ -94,10 +102,22 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   }),
   setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldDataReload: !prevState.shouldDataReload
-  })
+  }),
+  setOptions: (prevState: OwnState, props: ExpenseApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
 };
 
 const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: ExpenseApprovalDetailProps) => () => { 
+    if (props.userState.user && props.match.params.expenseUid && !props.expenseApprovalState.detail.isLoading) {
+      props.expenseApprovalDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        expenseUid: props.match.params.expenseUid
+      });
+    }
+  },
   handleValidate: (props: ExpenseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -196,7 +216,40 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: ExpenseApprovalDetailProps) {
+    if (this.props.shouldDataReload && this.props.shouldDataReload !== prevProps.shouldDataReload) {
+      // turn of shoul load
+      this.props.setDataload();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.match.params.expenseUid !== prevProps.match.params.expenseUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.expenseApprovalState.detail.response !== prevProps.expenseApprovalState.detail.response) {
+      const { isLoading } = this.props.expenseApprovalState.detail;
+
+      const options: IAppBarMenu[] = [
+        {
+          id: ExpenseUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi,
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
+};
+
 export const ExpenseApprovalDetail = compose(
+  setDisplayName('ExpenseApprovalDetail'),
   withRouter,
   withUser,
   withLayout,
@@ -205,4 +258,5 @@ export const ExpenseApprovalDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ExpenseApprovalDetailView);
