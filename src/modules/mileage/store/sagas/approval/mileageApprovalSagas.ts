@@ -34,22 +34,13 @@ function* watchAllFetchRequest() {
         put(mileageApprovalGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(mileageApprovalGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(mileageApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
-        // put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -66,19 +57,10 @@ function* watchByIdFetchRequest() {
         put(mileageApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
+        put(mileageApprovalGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(mileageApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(mileageApprovalGetByIdError(error.message))
       ])
     });
   };
