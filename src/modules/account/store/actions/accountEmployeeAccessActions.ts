@@ -40,35 +40,35 @@ export const enum AccountEmployeeAccessAction {
 // get all
 export const accountEmployeeAccessGetAllRequest = (request: IEmployeeAccessGetAllRequest) => action(AccountEmployeeAccessAction.GET_ALL_REQUEST, request);
 export const accountEmployeeAccessGetAllSuccess = (response: IResponseCollection<IEmployeeAccess>) => action(AccountEmployeeAccessAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeAccessGetAllError = (message: string) => action(AccountEmployeeAccessAction.GET_ALL_ERROR, message);
+export const accountEmployeeAccessGetAllError = (error: any) => action(AccountEmployeeAccessAction.GET_ALL_ERROR, error);
 export const accountEmployeeAccessGetAllDispose = () => action(AccountEmployeeAccessAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeAccessGetListRequest = (request: IEmployeeAccessGetListRequest) => action(AccountEmployeeAccessAction.GET_LIST_REQUEST, request);
 export const accountEmployeeAccessGetListSuccess = (response: IResponseCollection<IEmployeeAccessList>) => action(AccountEmployeeAccessAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeAccessGetListError = (message: string) => action(AccountEmployeeAccessAction.GET_LIST_ERROR, message);
+export const accountEmployeeAccessGetListError = (error: any) => action(AccountEmployeeAccessAction.GET_LIST_ERROR, error);
 export const accountEmployeeAccessGetListDispose = () => action(AccountEmployeeAccessAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeAccessGetByIdRequest = (request: IEmployeeAccessGetDetailRequest) => action(AccountEmployeeAccessAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeAccessGetByIdSuccess = (response: IResponseSingle<IEmployeeAccess>) => action(AccountEmployeeAccessAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeAccessGetByIdError = (message: string) => action(AccountEmployeeAccessAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeAccessGetByIdError = (error: any) => action(AccountEmployeeAccessAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeAccessGetByIdDispose = () => action(AccountEmployeeAccessAction.GET_BY_ID_DISPOSE);
 
 // post
 export const accountEmployeeAccessPostRequest = (request: IEmployeeAccessPostRequest) => action(AccountEmployeeAccessAction.POST_REQUEST, request);
 export const accountEmployeeAccessPostSuccess = (response: IResponseSingle<IEmployeeAccess>) => action(AccountEmployeeAccessAction.POST_SUCCESS, response);
-export const accountEmployeeAccessPostError = (message: string) => action(AccountEmployeeAccessAction.POST_ERROR, message);
+export const accountEmployeeAccessPostError = (error: any) => action(AccountEmployeeAccessAction.POST_ERROR, error);
 export const accountEmployeeAccessPostDispose = () => action(AccountEmployeeAccessAction.POST_DISPOSE);
 
 // put
 export const accountEmployeeAccessPutRequest = (request: IEmployeeAccessPutRequest) => action(AccountEmployeeAccessAction.PUT_REQUEST, request);
 export const accountEmployeeAccessPutSuccess = (response: IResponseSingle<IEmployeeAccess>) => action(AccountEmployeeAccessAction.PUT_SUCCESS, response);
-export const accountEmployeeAccessPutError = (message: string) => action(AccountEmployeeAccessAction.PUT_ERROR, message);
+export const accountEmployeeAccessPutError = (error: any) => action(AccountEmployeeAccessAction.PUT_ERROR, error);
 export const accountEmployeeAccessPutDispose = () => action(AccountEmployeeAccessAction.PUT_DISPOSE);
 
 // delete
 export const accountEmployeeAccessDeleteRequest = (request: IEmployeeAccessDeleteRequest) => action(AccountEmployeeAccessAction.DELETE_REQUEST, request);
 export const accountEmployeeAccessDeleteSuccess = (response: boolean) => action(AccountEmployeeAccessAction.DELETE_SUCCESS, response);
-export const accountEmployeeAccessDeleteError = (message: string) => action(AccountEmployeeAccessAction.DELETE_ERROR, message);
+export const accountEmployeeAccessDeleteError = (error: any) => action(AccountEmployeeAccessAction.DELETE_ERROR, error);
 export const accountEmployeeAccessDeleteDispose = () => action(AccountEmployeeAccessAction.DELETE_DISPOSE);

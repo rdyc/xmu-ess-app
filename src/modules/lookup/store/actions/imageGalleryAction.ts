@@ -21,17 +21,17 @@ export const enum ImageGalleryAction {
 // get all
 export const imageGalleryGetAllRequest = (request: IGalleryGetAllRequest) => action(ImageGalleryAction.GET_ALL_REQUEST, request);
 export const imageGalleryGetAllSuccess = (response: IResponseCollection<IGallery>) => action(ImageGalleryAction.GET_ALL_SUCCESS, response);
-export const imageGalleryGetAllError = (message: string) => action(ImageGalleryAction.GET_ALL_ERROR, message);
+export const imageGalleryGetAllError = (error: any) => action(ImageGalleryAction.GET_ALL_ERROR, error);
 export const imageGalleryGetAllDispose = () => action(ImageGalleryAction.GET_ALL_DISPOSE);
 
 // get by id
 export const imageGalleryGetByIdRequest = (request: IGalleryGetDetailRequest) => action(ImageGalleryAction.GET_BY_ID_REQUEST, request);
 export const imageGalleryGetByIdSuccess = (response: IResponseSingle<IGallery>) => action(ImageGalleryAction.GET_BY_ID_SUCCESS, response);
-export const imageGalleryGetByIdError = (message: string) => action(ImageGalleryAction.GET_BY_ID_ERROR, message);
+export const imageGalleryGetByIdError = (error: any) => action(ImageGalleryAction.GET_BY_ID_ERROR, error);
 export const imageGalleryGetByIdDispose = () => action(ImageGalleryAction.GET_BY_ID_DISPOSE);
 
 // post
 export const imageGalleryPostRequest = (request: IGalleryPostRequest) => action(ImageGalleryAction.POST_REQUEST, request);
 export const imageGalleryPostSuccess = (response: IResponseSingle<IGallery>) => action(ImageGalleryAction.POST_SUCCESS, response);
-export const imageGalleryPostError = (message: string) => action(ImageGalleryAction.POST_ERROR, message);
+export const imageGalleryPostError = (error: any) => action(ImageGalleryAction.POST_ERROR, error);
 export const imageGalleryPostDispose = () => action(ImageGalleryAction.POST_DISPOSE);

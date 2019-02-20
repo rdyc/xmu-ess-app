@@ -17,11 +17,11 @@ export const enum LookupVersionAction {
 // get by id
 export const lookupVersionGetByIdRequest = (request: ILookupVersionGetByIdRequest) => action(LookupVersionAction.GET_BY_ID_REQUEST, request);
 export const lookupVersionGetByIdSuccess = (response: IResponseCollection<ILookupVersion>) => action(LookupVersionAction.GET_BY_ID_SUCCESS, response);
-export const lookupVersionGetByIdError = (message: string) => action(LookupVersionAction.GET_BY_ID_ERROR, message);
+export const lookupVersionGetByIdError = (error: any) => action(LookupVersionAction.GET_BY_ID_ERROR, error);
 export const lookupVersionGetByIdDispose = () => action(LookupVersionAction.GET_BY_ID_DISPOSE);
 
 // patch
 export const lookupVersionPatchRequest = (request: ILookupVersionPatchRequest) => action(LookupVersionAction.PATCH_REQUEST, request);
 export const lookupVersionPatchSuccess = (response: IResponseCollection<ILookupVersion>) => action(LookupVersionAction.PATCH_SUCCESS, response);
-export const lookupVersionPatchError = (message: string) => action(LookupVersionAction.PATCH_ERROR, message);
+export const lookupVersionPatchError = (error: any) => action(LookupVersionAction.PATCH_ERROR, error);
 export const lookupVersionPatchDispose = () => action(LookupVersionAction.PATCH_DISPOSE);

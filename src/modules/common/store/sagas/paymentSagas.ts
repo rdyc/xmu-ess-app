@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(paymentGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(paymentGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(paymentGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(paymentGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(paymentGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(paymentGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(paymentGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(paymentGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(paymentGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(paymentGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(paymentGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(paymentGetByIdError(error.message)),

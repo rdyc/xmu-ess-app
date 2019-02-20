@@ -23,12 +23,7 @@ function* watchGetAllRequest() {
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(leaveCalculationGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(leaveCalculationGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(leaveCalculationGetAllError(error.message)),

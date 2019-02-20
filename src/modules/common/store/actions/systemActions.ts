@@ -33,35 +33,35 @@ export const enum SystemAction {
 // get all
 export const systemGetAllRequest = (request: ISystemAllRequest) => action(SystemAction.GET_ALL_REQUEST, request);
 export const systemGetAllSuccess = (response: IResponseCollection<ISystem>) => action(SystemAction.GET_ALL_SUCCESS, response);
-export const systemGetAllError = (message: string) => action(SystemAction.GET_ALL_ERROR, message);
+export const systemGetAllError = (error: any) => action(SystemAction.GET_ALL_ERROR, error);
 export const systemGetAllDispose = () => action(SystemAction.GET_ALL_DISPOSE);
 
 // get list
 export const systemGetListRequest = (request: ISystemListRequest) => action(SystemAction.GET_LIST_REQUEST, request);
 export const systemGetListSuccess = (response: IResponseCollection<ISystemList>) => action(SystemAction.GET_LIST_SUCCESS, response);
-export const systemGetListError = (message: string) => action(SystemAction.GET_LIST_ERROR, message);
+export const systemGetListError = (error: any) => action(SystemAction.GET_LIST_ERROR, error);
 export const systemGetListDispose = () => action(SystemAction.GET_LIST_DISPOSE);
 
 // get by id
 export const systemGetByIdRequest = (request: ISystemByIdRequest) => action(SystemAction.GET_BY_ID_REQUEST, request);
 export const systemGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(SystemAction.GET_BY_ID_SUCCESS, response);
-export const systemGetByIdError = (message: string) => action(SystemAction.GET_BY_ID_ERROR, message);
+export const systemGetByIdError = (error: any) => action(SystemAction.GET_BY_ID_ERROR, error);
 export const systemGetByIdDispose = () => action(SystemAction.GET_BY_ID_DISPOSE);
 
 // get type
 export const systemGetTypeRequest = () => action(SystemAction.GET_TYPE_REQUEST);
 export const systemGetTypeSuccess = (response: IResponseCollection<ISystemType>) => action(SystemAction.GET_TYPE_SUCCESS, response);
-export const systemGetTypeError = (message: string) => action(SystemAction.GET_TYPE_ERROR, message);
+export const systemGetTypeError = (error: any) => action(SystemAction.GET_TYPE_ERROR, error);
 export const systemGetTypeDispose = () => action(SystemAction.GET_TYPE_DISPOSE);
 
 // post
 export const systemPostRequest = (request: ISystemPostRequest) => action(SystemAction.POST_REQUEST, request);
 export const systemPostSuccess = (response: IResponseCollection<ISystem>) => action(SystemAction.POST_SUCCESS, response);
-export const systemPostError = (message: string) => action(SystemAction.POST_ERROR, message);
+export const systemPostError = (error: any) => action(SystemAction.POST_ERROR, error);
 export const systemPostDispose = () => action(SystemAction.POST_DISPOSE);
 
 // put
 export const systemPutRequest = (request: ISystemPutRequest) => action(SystemAction.PUT_REQUEST, request);
 export const systemPutSuccess = (response: IResponseCollection<ISystem>) => action(SystemAction.PUT_SUCCESS, response);
-export const systemPutError = (message: string) => action(SystemAction.PUT_ERROR, message);
+export const systemPutError = (error: any) => action(SystemAction.PUT_ERROR, error);
 export const systemPutDispose = () => action(SystemAction.PUT_DISPOSE);

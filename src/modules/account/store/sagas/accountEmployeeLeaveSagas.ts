@@ -13,17 +13,12 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/${action.payload.year}/leaves?companyUid=${action.payload.companyUid}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}1/${action.payload.year}/leaves?companyUid=${action.payload.companyUid}`,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeLeaveGetByIdSuccess(response.body)),
       ], 
       failureEffects: (response: IApiResponse) => [
-        put(accountEmployeeLeaveGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(accountEmployeeLeaveGetByIdError(response)),
       ], 
       errorEffects: (error: TypeError) => [
         put(accountEmployeeLeaveGetByIdError(error.message)),

@@ -33,35 +33,35 @@ export const enum LookupLeaveAction {
 // get all
 export const lookupLeaveGetAllRequest = (request: ILookupLeaveGetAllRequest) => action(LookupLeaveAction.GET_ALL_REQUEST, request);
 export const lookupLeaveGetAllSuccess = (response: IResponseCollection<ILookupLeave>) => action(LookupLeaveAction.GET_ALL_SUCCESS, response);
-export const lookupLeaveGetAllError = (message: string) => action(LookupLeaveAction.GET_ALL_ERROR, message);
+export const lookupLeaveGetAllError = (error: any) => action(LookupLeaveAction.GET_ALL_ERROR, error);
 export const lookupLeaveGetAllDispose = () => action(LookupLeaveAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupLeaveGetListRequest = (request: ILookupLeaveGetListRequest) => action(LookupLeaveAction.GET_LIST_REQUEST, request);
 export const lookupLeaveGetListSuccess = (response: IResponseCollection<ILookupLeaveList>) => action(LookupLeaveAction.GET_LIST_SUCCESS, response);
-export const lookupLeaveGetListError = (message: string) => action(LookupLeaveAction.GET_LIST_ERROR, message);
+export const lookupLeaveGetListError = (error: any) => action(LookupLeaveAction.GET_LIST_ERROR, error);
 export const lookupLeaveGetListDispose = () => action(LookupLeaveAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupLeaveGetByIdRequest = (request: ILookupLeaveGetDetailRequest) => action(LookupLeaveAction.GET_BY_ID_REQUEST, request);
 export const lookupLeaveGetByIdSuccess = (response: IResponseCollection<ILookupLeaveDetail>) => action(LookupLeaveAction.GET_BY_ID_SUCCESS, response);
-export const lookupLeaveGetByIdError = (message: string) => action(LookupLeaveAction.GET_BY_ID_ERROR, message);
+export const lookupLeaveGetByIdError = (error: any) => action(LookupLeaveAction.GET_BY_ID_ERROR, error);
 export const lookupLeaveGetByIdDispose = () => action(LookupLeaveAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupLeavePostRequest = (request: ILookupLeavePostRequest) => action(LookupLeaveAction.POST_REQUEST, request);
 export const lookupLeavePostSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.POST_SUCCESS, response);
-export const lookupLeavePostError = (message: string) => action(LookupLeaveAction.POST_ERROR, message);
+export const lookupLeavePostError = (error: any) => action(LookupLeaveAction.POST_ERROR, error);
 export const lookupLeavePostDispose = () => action(LookupLeaveAction.POST_DISPOSE);
 
 // put
 export const lookupLeavePutRequest = (request: ILookupLeavePutRequest) => action(LookupLeaveAction.PUT_REQUEST, request);
 export const lookupLeavePutSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.PUT_SUCCESS, response);
-export const lookupLeavePutError = (message: string) => action(LookupLeaveAction.PUT_ERROR, message);
+export const lookupLeavePutError = (error: any) => action(LookupLeaveAction.PUT_ERROR, error);
 export const lookupLeavePutDispose = () => action(LookupLeaveAction.PUT_DISPOSE);
 
 // delete
 export const lookupLeaveDeleteRequest = (request: ILookupLeaveDeleteRequest) => action(LookupLeaveAction.DELETE_REQUEST, request);
 export const lookupLeaveDeleteSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.DELETE_SUCCESS, response);
-export const lookupLeaveDeleteError = (message: string) => action(LookupLeaveAction.DELETE_ERROR, message);
+export const lookupLeaveDeleteError = (error: any) => action(LookupLeaveAction.DELETE_ERROR, error);
 export const lookupLeaveDeleteDispose = () => action(LookupLeaveAction.DELETE_DISPOSE);

@@ -21,17 +21,17 @@ export const enum DocumentPresalesAction {
 // get all
 export const documentPresalesGetAllRequest = (request: ISystemAllRequest) => action(DocumentPresalesAction.GET_ALL_REQUEST, request);
 export const documentPresalesGetAllSuccess = (response: IResponseCollection<ISystem>) => action(DocumentPresalesAction.GET_ALL_SUCCESS, response);
-export const documentPresalesGetAllError = (message: string) => action(DocumentPresalesAction.GET_ALL_ERROR, message);
+export const documentPresalesGetAllError = (error: any) => action(DocumentPresalesAction.GET_ALL_ERROR, error);
 export const documentPresalesGetAllDispose = () => action(DocumentPresalesAction.GET_ALL_DISPOSE);
 
 // get list
 export const documentPresalesGetListRequest = (request: ISystemListRequest) => action(DocumentPresalesAction.GET_LIST_REQUEST, request);
 export const documentPresalesGetListSuccess = (response: IResponseCollection<ISystemList>) => action(DocumentPresalesAction.GET_LIST_SUCCESS, response);
-export const documentPresalesGetListError = (message: string) => action(DocumentPresalesAction.GET_LIST_ERROR, message);
+export const documentPresalesGetListError = (error: any) => action(DocumentPresalesAction.GET_LIST_ERROR, error);
 export const documentPresalesGetListDispose = () => action(DocumentPresalesAction.GET_LIST_DISPOSE);
 
 // get by id
 export const documentPresalesGetByIdRequest = (request: ISystemByIdRequest) => action(DocumentPresalesAction.GET_BY_ID_REQUEST, request);
 export const documentPresalesGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(DocumentPresalesAction.GET_BY_ID_SUCCESS, response);
-export const documentPresalesGetByIdError = (message: string) => action(DocumentPresalesAction.GET_BY_ID_ERROR, message);
+export const documentPresalesGetByIdError = (error: any) => action(DocumentPresalesAction.GET_BY_ID_ERROR, error);
 export const documentPresalesGetByIdDispose = () => action(DocumentPresalesAction.GET_BY_ID_DISPOSE);

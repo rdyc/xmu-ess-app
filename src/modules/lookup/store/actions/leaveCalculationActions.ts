@@ -14,5 +14,5 @@ export const enum LeaveCalculationAction {
 // get all
 export const leaveCalculationGetAllRequest = (request: ILeaveCalculationGetAllRequest) => action(LeaveCalculationAction.GET_ALL_REQUEST, request);
 export const leaveCalculationGetAllSuccess = (response: IResponseCollection<ILeaveCalculation>) => action(LeaveCalculationAction.GET_ALL_SUCCESS, response);
-export const leaveCalculationGetAllError = (message: string) => action(LeaveCalculationAction.GET_ALL_ERROR, message);
+export const leaveCalculationGetAllError = (error: any) => action(LeaveCalculationAction.GET_ALL_ERROR, error);
 export const leaveCalculationGetAllDispose = () => action(LeaveCalculationAction.GET_ALL_DISPOSE);

@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(projectGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(projectGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(projectGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(projectGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(projectGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(projectGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(projectGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(projectGetListError(error.message)),

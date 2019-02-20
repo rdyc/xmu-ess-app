@@ -33,34 +33,34 @@ export const enum PositionAction {
 // get all
 export const positionGetAllRequest = (request: IPositionGetAllRequest) => action(PositionAction.GET_ALL_REQUEST, request);
 export const positionGetAllSuccess = (response: IResponseCollection<IPosition>) => action(PositionAction.GET_ALL_SUCCESS, response);
-export const positionGetAllError = (message: string) => action(PositionAction.GET_ALL_ERROR, message);
+export const positionGetAllError = (error: any) => action(PositionAction.GET_ALL_ERROR, error);
 export const positionGetAllDispose = () => action(PositionAction.GET_ALL_DISPOSE);
 
 // get list
 export const positionGetListRequest = (request: IPositionGetListRequest) => action(PositionAction.GET_LIST_REQUEST, request);
 export const positionGetListSuccess = (response: IResponseCollection<IPositionList>) => action(PositionAction.GET_LIST_SUCCESS, response);
-export const positionGetListError = (message: string) => action(PositionAction.GET_LIST_ERROR, message);
+export const positionGetListError = (error: any) => action(PositionAction.GET_LIST_ERROR, error);
 export const positionGetListDispose = () => action(PositionAction.GET_LIST_DISPOSE);
 
 // get by id
 export const positionGetByIdRequest = (request: IPositionGetByIdRequest) => action(PositionAction.GET_BY_ID_REQUEST, request);
 export const positionGetByIdSuccess = (response: IResponseCollection<IPositionDetail>) => action(PositionAction.GET_BY_ID_SUCCESS, response);
-export const positionGetByIdError = (message: string) => action(PositionAction.GET_BY_ID_ERROR, message);
+export const positionGetByIdError = (error: any) => action(PositionAction.GET_BY_ID_ERROR, error);
 export const positionGetByIdDispose = () => action(PositionAction.GET_BY_ID_DISPOSE);
 
 // post
 export const positionPostRequest = (request: IPositionPostRequest) => action(PositionAction.POST_REQUEST, request);
 export const positionPostSuccess = (response: IResponseSingle<IPosition>) => action(PositionAction.POST_SUCCESS, response);
-export const positionPostError = (message: string) => action(PositionAction.POST_ERROR, message);
+export const positionPostError = (error: any) => action(PositionAction.POST_ERROR, error);
 export const positionPostDispose = () => action(PositionAction.POST_DISPOSE);
 
 // put
 export const positionPutRequest = (request: IPositionPutRequest) => action(PositionAction.PUT_REQUEST, request);
 export const positionPutSuccess = (response: IResponseSingle<IPosition>) => action(PositionAction.PUT_SUCCESS, response);
-export const positionPutError = (message: string) => action(PositionAction.PUT_ERROR, message);
+export const positionPutError = (error: any) => action(PositionAction.PUT_ERROR, error);
 export const positionPutDispose = () => action(PositionAction.PUT_DISPOSE);
 
 export const positionDeleteRequest = (request: IPositionDeleteRequest) => action(PositionAction.DELETE_REQUEST, request);
 export const positionDeleteSuccess = (response: boolean) => action(PositionAction.DELETE_SUCCESS, response);
-export const positionDeleteError = (message: string) => action(PositionAction.DELETE_ERROR, message);
+export const positionDeleteError = (error: any) => action(PositionAction.DELETE_ERROR, error);
 export const positionDeleteDispose = () => action(PositionAction.DELETE_DISPOSE);

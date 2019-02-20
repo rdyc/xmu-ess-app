@@ -29,17 +29,17 @@ export const enum AccountEmployeeAccessHistoryAction {
 // get all
 export const accountEmployeeAccessHistoryGetAllRequest = (request: IEmployeeAccessHistoryAllRequest) => action(AccountEmployeeAccessHistoryAction.GET_ALL_REQUEST, request);
 export const accountEmployeeAccessHistoryGetAllSuccess = (response: IResponseCollection<IEmployeeAccessHistory>) => action(AccountEmployeeAccessHistoryAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeAccessHistoryGetAllError = (message: string) => action(AccountEmployeeAccessHistoryAction.GET_ALL_ERROR, message);
+export const accountEmployeeAccessHistoryGetAllError = (error: any) => action(AccountEmployeeAccessHistoryAction.GET_ALL_ERROR, error);
 export const accountEmployeeAccessHistoryGetAllDispose = () => action(AccountEmployeeAccessHistoryAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeAccessHistoryGetListRequest = (request: IEmployeeAccessHistoryListRequest) => action(AccountEmployeeAccessHistoryAction.GET_LIST_REQUEST, request);
 export const accountEmployeeAccessHistoryGetListSuccess = (response: IResponseCollection<IEmployeeAccessHistoryList>) => action(AccountEmployeeAccessHistoryAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeAccessHistoryGetListError = (message: string) => action(AccountEmployeeAccessHistoryAction.GET_LIST_ERROR, message);
+export const accountEmployeeAccessHistoryGetListError = (error: any) => action(AccountEmployeeAccessHistoryAction.GET_LIST_ERROR, error);
 export const accountEmployeeAccessHistoryGetListDispose = () => action(AccountEmployeeAccessHistoryAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeAccessHistoryGetByIdRequest = (request: IEmployeeAccessHistoryByIdRequest) => action(AccountEmployeeAccessHistoryAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeAccessHistoryGetByIdSuccess = (response: IResponseCollection<IEmployeeAccessHistoryDetail>) => action(AccountEmployeeAccessHistoryAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeAccessHistoryGetByIdError = (message: string) => action(AccountEmployeeAccessHistoryAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeAccessHistoryGetByIdError = (error: any) => action(AccountEmployeeAccessHistoryAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeAccessHistoryGetByIdDispose = () => action(AccountEmployeeAccessHistoryAction.GET_BY_ID_DISPOSE);

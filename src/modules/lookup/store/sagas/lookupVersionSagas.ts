@@ -24,12 +24,7 @@ function* watchGetByIdRequest() {
         put(lookupVersionGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupVersionGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupVersionGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupVersionGetByIdError(error.message)),

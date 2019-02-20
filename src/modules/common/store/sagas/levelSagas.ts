@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(levelGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(levelGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(levelGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(levelGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(levelGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(levelGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(levelGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(levelGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(levelGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(levelGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(levelGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(levelGetByIdError(error.message)),

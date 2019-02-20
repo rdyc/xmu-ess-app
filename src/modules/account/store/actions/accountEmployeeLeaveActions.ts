@@ -13,5 +13,5 @@ export const enum AccountEmployeeLeaveAction {
 // get by id
 export const accountEmployeeLeaveGetByIdRequest = (request: IEmployeeLeaveByIdRequest) => action(AccountEmployeeLeaveAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeLeaveGetByIdSuccess = (response: IResponseCollection<IEmployeeLeave>) => action(AccountEmployeeLeaveAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeLeaveGetByIdError = (message: string) => action(AccountEmployeeLeaveAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeLeaveGetByIdError = (error: any) => action(AccountEmployeeLeaveAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeLeaveGetByIdDispose = () => action(AccountEmployeeLeaveAction.GET_BY_ID_DISPOSE);

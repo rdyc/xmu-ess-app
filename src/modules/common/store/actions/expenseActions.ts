@@ -21,17 +21,17 @@ export const enum ExpenseAction {
 // get all
 export const expenseGetAllRequest = (request: ISystemAllRequest) => action(ExpenseAction.GET_ALL_REQUEST, request);
 export const expenseGetAllSuccess = (response: IResponseCollection<ISystem>) => action(ExpenseAction.GET_ALL_SUCCESS, response);
-export const expenseGetAllError = (message: string) => action(ExpenseAction.GET_ALL_ERROR, message);
+export const expenseGetAllError = (error: any) => action(ExpenseAction.GET_ALL_ERROR, error);
 export const expenseGetAllDispose = () => action(ExpenseAction.GET_ALL_DISPOSE);
 
 // get list
 export const expenseGetListRequest = (request: ISystemListRequest) => action(ExpenseAction.GET_LIST_REQUEST, request);
 export const expenseGetListSuccess = (response: IResponseCollection<ISystemList>) => action(ExpenseAction.GET_LIST_SUCCESS, response);
-export const expenseGetListError = (message: string) => action(ExpenseAction.GET_LIST_ERROR, message);
+export const expenseGetListError = (error: any) => action(ExpenseAction.GET_LIST_ERROR, error);
 export const expenseGetListDispose = () => action(ExpenseAction.GET_LIST_DISPOSE);
 
 // get by id
 export const expenseGetByIdRequest = (request: ISystemByIdRequest) => action(ExpenseAction.GET_BY_ID_REQUEST, request);
 export const expenseGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(ExpenseAction.GET_BY_ID_SUCCESS, response);
-export const expenseGetByIdError = (message: string) => action(ExpenseAction.GET_BY_ID_ERROR, message);
+export const expenseGetByIdError = (error: any) => action(ExpenseAction.GET_BY_ID_ERROR, error);
 export const expenseGetByIdDispose = () => action(ExpenseAction.GET_BY_ID_DISPOSE);

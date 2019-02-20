@@ -44,35 +44,35 @@ export const enum AccountEmployeeEducationAction {
 // get all
 export const accountEmployeeEducationGetAllRequest = (request: IEmployeeEducationAllRequest) => action(AccountEmployeeEducationAction.GET_ALL_REQUEST, request);
 export const accountEmployeeEducationGetAllSuccess = (response: IResponseCollection<IEmployeeEducation>) => action(AccountEmployeeEducationAction.GET_ALL_SUCCESS, response);
-export const accountEmployeeEducationGetAllError = (message: string) => action(AccountEmployeeEducationAction.GET_ALL_ERROR, message);
+export const accountEmployeeEducationGetAllError = (error: any) => action(AccountEmployeeEducationAction.GET_ALL_ERROR, error);
 export const accountEmployeeEducationGetAllDispose = () => action(AccountEmployeeEducationAction.GET_ALL_DISPOSE);
 
 // get list
 export const accountEmployeeEducationGetListRequest = (request: IEmployeeEducationListRequest) => action(AccountEmployeeEducationAction.GET_LIST_REQUEST, request);
 export const accountEmployeeEducationGetListSuccess = (response: IResponseCollection<IEmployeeEducationList>) => action(AccountEmployeeEducationAction.GET_LIST_SUCCESS, response);
-export const accountEmployeeEducationGetListError = (message: string) => action(AccountEmployeeEducationAction.GET_LIST_ERROR, message);
+export const accountEmployeeEducationGetListError = (error: any) => action(AccountEmployeeEducationAction.GET_LIST_ERROR, error);
 export const accountEmployeeEducationGetListDispose = () => action(AccountEmployeeEducationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeEducationGetByIdRequest = (request: IEmployeeEducationByIdRequest) => action(AccountEmployeeEducationAction.GET_BY_ID_REQUEST, request);
 export const accountEmployeeEducationGetByIdSuccess = (response: IResponseCollection<IEmployeeEducationDetail>) => action(AccountEmployeeEducationAction.GET_BY_ID_SUCCESS, response);
-export const accountEmployeeEducationGetByIdError = (message: string) => action(AccountEmployeeEducationAction.GET_BY_ID_ERROR, message);
+export const accountEmployeeEducationGetByIdError = (error: any) => action(AccountEmployeeEducationAction.GET_BY_ID_ERROR, error);
 export const accountEmployeeEducationGetByIdDispose = () => action(AccountEmployeeEducationAction.GET_BY_ID_DISPOSE);
 
 // post
 export const accountEmployeeEducationPostRequest = (request: IEmployeeEducationPostRequest) => action(AccountEmployeeEducationAction.POST_REQUEST, request);
 export const accountEmployeeEducationPostSuccess = (response: IResponseSingle<IEmployeeEducation>) => action(AccountEmployeeEducationAction.POST_SUCCESS, response);
-export const accountEmployeeEducationPostError = (message: string) => action(AccountEmployeeEducationAction.POST_ERROR, message);
+export const accountEmployeeEducationPostError = (error: any) => action(AccountEmployeeEducationAction.POST_ERROR, error);
 export const accountEmployeeEducationPostDispose = () => action(AccountEmployeeEducationAction.POST_DISPOSE);
 
 // put
 export const accountEmployeeEducationPutRequest = (request: IEmployeeEducationPutRequest) => action(AccountEmployeeEducationAction.PUT_REQUEST, request);
 export const accountEmployeeEducationPutSuccess = (response: IResponseSingle<IEmployeeEducation>) => action(AccountEmployeeEducationAction.PUT_SUCCESS, response);
-export const accountEmployeeEducationPutError = (message: string) => action(AccountEmployeeEducationAction.PUT_ERROR, message);
+export const accountEmployeeEducationPutError = (error: any) => action(AccountEmployeeEducationAction.PUT_ERROR, error);
 export const accountEmployeeEducationPutDispose = () => action(AccountEmployeeEducationAction.PUT_DISPOSE);
 
 // delete
 export const accountEmployeeEducationDeleteRequest = (request: IEmployeeEducationDeleteRequest) => action(AccountEmployeeEducationAction.DELETE_REQUEST, request);
 export const accountEmployeeEducationDeleteSuccess = (response: boolean) => action(AccountEmployeeEducationAction.DELETE_SUCCESS, response);
-export const accountEmployeeEducationDeleteError = (message: string) => action(AccountEmployeeEducationAction.DELETE_ERROR, message);
+export const accountEmployeeEducationDeleteError = (error: any) => action(AccountEmployeeEducationAction.DELETE_ERROR, error);
 export const accountEmployeeEducationDeleteDispose = () => action(AccountEmployeeEducationAction.DELETE_DISPOSE);

@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(gradeGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(gradeGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(gradeGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(gradeGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(gradeGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(gradeGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(gradeGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(gradeGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(gradeGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(gradeGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(gradeGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(gradeGetByIdError(error.message)),

@@ -37,12 +37,7 @@ function* watchFetchTypeRequest() {
         put(systemGetTypeSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetTypeError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemGetTypeError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemGetTypeError(error.message)),
@@ -71,12 +66,7 @@ function* watchFetchAllRequest() {
         put(systemGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemGetAllError(error.message)),
@@ -105,12 +95,7 @@ function* watchFetchListRequest() {
         put(systemGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemGetListError(error.message)),
@@ -134,12 +119,7 @@ function* watchFetchByIdRequest() {
         put(systemGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(systemGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemGetByIdError(error.message)),

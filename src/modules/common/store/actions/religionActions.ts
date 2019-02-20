@@ -21,17 +21,17 @@ export const enum ReligionAction {
 // get all
 export const religionGetAllRequest = (request: ISystemAllRequest) => action(ReligionAction.GET_ALL_REQUEST, request);
 export const religionGetAllSuccess = (response: IResponseCollection<ISystem>) => action(ReligionAction.GET_ALL_SUCCESS, response);
-export const religionGetAllError = (message: string) => action(ReligionAction.GET_ALL_ERROR, message);
+export const religionGetAllError = (error: any) => action(ReligionAction.GET_ALL_ERROR, error);
 export const religionGetAllDispose = () => action(ReligionAction.GET_ALL_DISPOSE);
 
 // get list
 export const religionGetListRequest = (request: ISystemListRequest) => action(ReligionAction.GET_LIST_REQUEST, request);
 export const religionGetListSuccess = (response: IResponseCollection<ISystemList>) => action(ReligionAction.GET_LIST_SUCCESS, response);
-export const religionGetListError = (message: string) => action(ReligionAction.GET_LIST_ERROR, message);
+export const religionGetListError = (error: any) => action(ReligionAction.GET_LIST_ERROR, error);
 export const religionGetListDispose = () => action(ReligionAction.GET_LIST_DISPOSE);
 
 // get by id
 export const religionGetByIdRequest = (request: ISystemByIdRequest) => action(ReligionAction.GET_BY_ID_REQUEST, request);
 export const religionGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(ReligionAction.GET_BY_ID_SUCCESS, response);
-export const religionGetByIdError = (message: string) => action(ReligionAction.GET_BY_ID_ERROR, message);
+export const religionGetByIdError = (error: any) => action(ReligionAction.GET_BY_ID_ERROR, error);
 export const religionGetByIdDispose = () => action(ReligionAction.GET_BY_ID_DISPOSE);

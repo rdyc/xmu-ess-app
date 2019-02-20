@@ -42,12 +42,7 @@ function* watchGetAllRequest() {
         put(lookupCustomerGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCustomerGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCustomerGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCustomerGetAllError(error.message)),
@@ -76,12 +71,7 @@ function* watchGetListRequest() {
         put(lookupCustomerGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCustomerGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCustomerGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCustomerGetListError(error.message)),
@@ -105,12 +95,8 @@ function* watchGetByIdRequest() {
         put(lookupCustomerGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupCustomerGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupCustomerGetByIdError(response)),
+
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCustomerGetByIdError(error.message)),

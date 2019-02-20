@@ -11,5 +11,5 @@ export const enum AccountEmployeeMyAction {
 
 export const accountEmployeeMyGetRequest = () => action(AccountEmployeeMyAction.GET_REQUEST);
 export const accountEmployeeMyGetSuccess = (data: IResponseSingle<IEmployeeMy>) => action(AccountEmployeeMyAction.GET_SUCCESS, data);
-export const accountEmployeeMyGetError = (message: string) => action(AccountEmployeeMyAction.GET_ERROR, message);
+export const accountEmployeeMyGetError = (error: any) => action(AccountEmployeeMyAction.GET_ERROR, error);
 export const accountEmployeeMyGetDispose = () => action(AccountEmployeeMyAction.GET_DISPOSE);

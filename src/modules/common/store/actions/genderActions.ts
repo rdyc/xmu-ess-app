@@ -21,17 +21,17 @@ export const enum GenderAction {
 // get all
 export const genderGetAllRequest = (request: ISystemAllRequest) => action(GenderAction.GET_ALL_REQUEST, request);
 export const genderGetAllSuccess = (response: IResponseCollection<ISystem>) => action(GenderAction.GET_ALL_SUCCESS, response);
-export const genderGetAllError = (message: string) => action(GenderAction.GET_ALL_ERROR, message);
+export const genderGetAllError = (error: any) => action(GenderAction.GET_ALL_ERROR, error);
 export const genderGetAllDispose = () => action(GenderAction.GET_ALL_DISPOSE);
 
 // get list
 export const genderGetListRequest = (request: ISystemListRequest) => action(GenderAction.GET_LIST_REQUEST, request);
 export const genderGetListSuccess = (response: IResponseCollection<ISystemList>) => action(GenderAction.GET_LIST_SUCCESS, response);
-export const genderGetListError = (message: string) => action(GenderAction.GET_LIST_ERROR, message);
+export const genderGetListError = (error: any) => action(GenderAction.GET_LIST_ERROR, error);
 export const genderGetListDispose = () => action(GenderAction.GET_LIST_DISPOSE);
 
 // get by id
 export const genderGetByIdRequest = (request: ISystemByIdRequest) => action(GenderAction.GET_BY_ID_REQUEST, request);
 export const genderGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(GenderAction.GET_BY_ID_SUCCESS, response);
-export const genderGetByIdError = (message: string) => action(GenderAction.GET_BY_ID_ERROR, message);
+export const genderGetByIdError = (error: any) => action(GenderAction.GET_BY_ID_ERROR, error);
 export const genderGetByIdDispose = () => action(GenderAction.GET_BY_ID_DISPOSE);

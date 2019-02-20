@@ -21,17 +21,17 @@ export const enum ActivityAction {
 // get all
 export const activityGetAllRequest = (request: ISystemAllRequest) => action(ActivityAction.GET_ALL_REQUEST, request);
 export const activityGetAllSuccess = (response: IResponseCollection<ISystem>) => action(ActivityAction.GET_ALL_SUCCESS, response);
-export const activityGetAllError = (message: string) => action(ActivityAction.GET_ALL_ERROR, message);
+export const activityGetAllError = (error: any) => action(ActivityAction.GET_ALL_ERROR, error);
 export const activityGetAllDispose = () => action(ActivityAction.GET_ALL_DISPOSE);
 
 // get list
 export const activityGetListRequest = (request: ISystemListRequest) => action(ActivityAction.GET_LIST_REQUEST, request);
 export const activityGetListSuccess = (response: IResponseCollection<ISystemList>) => action(ActivityAction.GET_LIST_SUCCESS, response);
-export const activityGetListError = (message: string) => action(ActivityAction.GET_LIST_ERROR, message);
+export const activityGetListError = (error: any) => action(ActivityAction.GET_LIST_ERROR, error);
 export const activityGetListDispose = () => action(ActivityAction.GET_LIST_DISPOSE);
 
 // get by id
 export const activityGetByIdRequest = (request: ISystemByIdRequest) => action(ActivityAction.GET_BY_ID_REQUEST, request);
 export const activityGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(ActivityAction.GET_BY_ID_SUCCESS, response);
-export const activityGetByIdError = (message: string) => action(ActivityAction.GET_BY_ID_ERROR, message);
+export const activityGetByIdError = (error: any) => action(ActivityAction.GET_BY_ID_ERROR, error);
 export const activityGetByIdDispose = () => action(ActivityAction.GET_BY_ID_DISPOSE);

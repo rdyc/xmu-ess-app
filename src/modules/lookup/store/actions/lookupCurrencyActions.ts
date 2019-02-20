@@ -42,35 +42,35 @@ export const enum LookupCurrencyAction {
 // get all
 export const lookupCurrencyGetAllRequest = (request: ICurrencyGetAllRequest) => action(LookupCurrencyAction.GET_ALL_REQUEST, request);
 export const lookupCurrencyGetAllSuccess = (response: IResponseCollection<ICurrency>) => action(LookupCurrencyAction.GET_ALL_SUCCESS, response);
-export const lookupCurrencyGetAllError = (message: string) => action(LookupCurrencyAction.GET_ALL_ERROR, message);
+export const lookupCurrencyGetAllError = (error: any) => action(LookupCurrencyAction.GET_ALL_ERROR, error);
 export const lookupCurrencyGetAllDispose = () => action(LookupCurrencyAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupCurrencyGetListRequest = (request: ICurrencyGetListRequest) => action(LookupCurrencyAction.GET_LIST_REQUEST, request);
 export const lookupCurrencyGetListSuccess = (response: IResponseCollection<ICurrencyList>) => action(LookupCurrencyAction.GET_LIST_SUCCESS, response);
-export const lookupCurrencyGetListError = (message: string) => action(LookupCurrencyAction.GET_LIST_ERROR, message);
+export const lookupCurrencyGetListError = (error: any) => action(LookupCurrencyAction.GET_LIST_ERROR, error);
 export const lookupCurrencyGetListDispose = () => action(LookupCurrencyAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupCurrencyGetByIdRequest = (request: ICurrencyGetByIdRequest) => action(LookupCurrencyAction.GET_BY_ID_REQUEST, request);
 export const lookupCurrencyGetByIdSuccess = (response: IResponseCollection<ICurrencyDetail>) => action(LookupCurrencyAction.GET_BY_ID_SUCCESS, response);
-export const lookupCurrencyGetByIdError = (message: string) => action(LookupCurrencyAction.GET_BY_ID_ERROR, message);
+export const lookupCurrencyGetByIdError = (error: any) => action(LookupCurrencyAction.GET_BY_ID_ERROR, error);
 export const lookupCurrencyGetByIdDispose = () => action(LookupCurrencyAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupCurrencyPostRequest = (request: ICurrencyPostRequest) => action(LookupCurrencyAction.POST_REQUEST, request);
 export const lookupCurrencyPostSuccess = (response: IResponseSingle<ICurrency>) => action(LookupCurrencyAction.POST_SUCCESS, response);
-export const lookupCurrencyPostError = (message: string) => action(LookupCurrencyAction.POST_ERROR, message);
+export const lookupCurrencyPostError = (error: any) => action(LookupCurrencyAction.POST_ERROR, error);
 export const lookupCurrencyPostDispose = () => action(LookupCurrencyAction.POST_DISPOSE);
 
 // put
 export const lookupCurrencyPutRequest = (request: ICurrencyPutRequest) => action(LookupCurrencyAction.PUT_REQUEST, request);
 export const lookupCurrencyPutSuccess = (response: IResponseSingle<ICurrency>) => action(LookupCurrencyAction.PUT_SUCCESS, response);
-export const lookupCurrencyPutError = (message: string) => action(LookupCurrencyAction.PUT_ERROR, message);
+export const lookupCurrencyPutError = (error: any) => action(LookupCurrencyAction.PUT_ERROR, error);
 export const lookupCurrencyPutDispose = () => action(LookupCurrencyAction.PUT_DISPOSE);
 
 // delete
 export const lookupCurrencyDeleteRequest = (request: ICurrencyDeleteRequest) => action(LookupCurrencyAction.DELETE_REQUEST, request);
 export const lookupCurrencyDeleteSuccess = (response: boolean) => action(LookupCurrencyAction.DELETE_SUCCESS, response);
-export const lookupCurrencyDeleteError = (message: string) => action(LookupCurrencyAction.DELETE_ERROR, message);
+export const lookupCurrencyDeleteError = (error: any) => action(LookupCurrencyAction.DELETE_ERROR, error);
 export const lookupCurrencyDeleteDispose = () => action(LookupCurrencyAction.DELETE_DISPOSE);

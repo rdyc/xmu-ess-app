@@ -21,17 +21,17 @@ export const enum DegreeAction {
 // get all
 export const degreeGetAllRequest = (request: ISystemAllRequest) => action(DegreeAction.GET_ALL_REQUEST, request);
 export const degreeGetAllSuccess = (response: IResponseCollection<ISystem>) => action(DegreeAction.GET_ALL_SUCCESS, response);
-export const degreeGetAllError = (message: string) => action(DegreeAction.GET_ALL_ERROR, message);
+export const degreeGetAllError = (error: any) => action(DegreeAction.GET_ALL_ERROR, error);
 export const degreeGetAllDispose = () => action(DegreeAction.GET_ALL_DISPOSE);
 
 // get list
 export const degreeGetListRequest = (request: ISystemListRequest) => action(DegreeAction.GET_LIST_REQUEST, request);
 export const degreeGetListSuccess = (response: IResponseCollection<ISystemList>) => action(DegreeAction.GET_LIST_SUCCESS, response);
-export const degreeGetListError = (message: string) => action(DegreeAction.GET_LIST_ERROR, message);
+export const degreeGetListError = (error: any) => action(DegreeAction.GET_LIST_ERROR, error);
 export const degreeGetListDispose = () => action(DegreeAction.GET_LIST_DISPOSE);
 
 // get by id
 export const degreeGetByIdRequest = (request: ISystemByIdRequest) => action(DegreeAction.GET_BY_ID_REQUEST, request);
 export const degreeGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(DegreeAction.GET_BY_ID_SUCCESS, response);
-export const degreeGetByIdError = (message: string) => action(DegreeAction.GET_BY_ID_ERROR, message);
+export const degreeGetByIdError = (error: any) => action(DegreeAction.GET_BY_ID_ERROR, error);
 export const degreeGetByIdDispose = () => action(DegreeAction.GET_BY_ID_DISPOSE);

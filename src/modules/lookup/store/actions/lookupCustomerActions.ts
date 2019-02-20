@@ -40,35 +40,35 @@ export const enum LookupCustomerAction {
 // get all
 export const lookupCustomerGetAllRequest = (request: ILookupCustomerGetAllRequest) => action(LookupCustomerAction.GET_ALL_REQUEST, request);
 export const lookupCustomerGetAllSuccess = (response: IResponseCollection<ICustomer>) => action(LookupCustomerAction.GET_ALL_SUCCESS, response);
-export const lookupCustomerGetAllError = (message: string) => action(LookupCustomerAction.GET_ALL_ERROR, message);
+export const lookupCustomerGetAllError = (error: any) => action(LookupCustomerAction.GET_ALL_ERROR, error);
 export const lookupCustomerGetAllDispose = () => action(LookupCustomerAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupCustomerGetListRequest = (request: ILookupCustomerGetListRequest) => action(LookupCustomerAction.GET_LIST_REQUEST, request);
 export const lookupCustomerGetListSuccess = (response: IResponseCollection<ICustomerList>) => action(LookupCustomerAction.GET_LIST_SUCCESS, response);
-export const lookupCustomerGetListError = (message: string) => action(LookupCustomerAction.GET_LIST_ERROR, message);
+export const lookupCustomerGetListError = (error: any) => action(LookupCustomerAction.GET_LIST_ERROR, error);
 export const lookupCustomerGetListDispose = () => action(LookupCustomerAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupCustomerGetByIdRequest = (request: ILookupCustomerGetDetailRequest) => action(LookupCustomerAction.GET_BY_ID_REQUEST, request);
 export const lookupCustomerGetByIdSuccess = (response: IResponseSingle<ICustomerDetail>) => action(LookupCustomerAction.GET_BY_ID_SUCCESS, response);
-export const lookupCustomerGetByIdError = (message: string) => action(LookupCustomerAction.GET_BY_ID_ERROR, message);
+export const lookupCustomerGetByIdError = (error: any) => action(LookupCustomerAction.GET_BY_ID_ERROR, error);
 export const lookupCustomerGetByIdDispose = () => action(LookupCustomerAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupCustomerPostRequest = (request: ILookupCustomerPostRequest) => action(LookupCustomerAction.POST_REQUEST, request);
 export const lookupCustomerPostSuccess = (response: IResponseSingle<ICustomer>) => action(LookupCustomerAction.POST_SUCCESS, response);
-export const lookupCustomerPostError = (message: string) => action(LookupCustomerAction.POST_ERROR, message);
+export const lookupCustomerPostError = (error: any) => action(LookupCustomerAction.POST_ERROR, error);
 export const lookupCustomerPostDispose = () => action(LookupCustomerAction.POST_DISPOSE);
 
 // put
 export const lookupCustomerPutRequest = (request: ILookupCustomerPutRequest) => action(LookupCustomerAction.PUT_REQUEST, request);
 export const lookupCustomerPutSuccess = (response: IResponseSingle<ICustomer>) => action(LookupCustomerAction.PUT_SUCCESS, response);
-export const lookupCustomerPutError = (message: string) => action(LookupCustomerAction.PUT_ERROR, message);
+export const lookupCustomerPutError = (error: any) => action(LookupCustomerAction.PUT_ERROR, error);
 export const lookupCustomerPutDispose = () => action(LookupCustomerAction.PUT_DISPOSE);
 
 // delete
 export const lookupCustomerDeleteRequest = (request: ILookupCustomerDeleteRequest) => action(LookupCustomerAction.DELETE_REQUEST, request);
 export const lookupCustomerDeleteSuccess = (response: boolean) => action(LookupCustomerAction.DELETE_SUCCESS, response);
-export const lookupCustomerDeleteError = (message: string) => action(LookupCustomerAction.DELETE_ERROR, message);
+export const lookupCustomerDeleteError = (error: any) => action(LookupCustomerAction.DELETE_ERROR, error);
 export const lookupCustomerDeleteDispose = () => action(LookupCustomerAction.DELETE_DISPOSE);

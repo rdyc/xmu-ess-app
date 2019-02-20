@@ -42,12 +42,7 @@ function* watchFetchAllRequest() {
         put(lookupDiemGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupDiemGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupDiemGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupDiemGetAllError(error.message)),
@@ -75,12 +70,7 @@ function* watchFetchListRequest() {
         put(lookupDiemGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupDiemGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupDiemGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupDiemGetListError(error.message)),
@@ -104,12 +94,7 @@ function* watchFetchByIdRequest() {
         put(lookupDiemGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupDiemGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupDiemGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupDiemGetByIdError(error.message)),

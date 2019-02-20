@@ -30,12 +30,7 @@ function* watchFetchAllRequest() {
         put(currencyGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(currencyGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(currencyGetAllError(error.message)),
@@ -64,12 +59,7 @@ function* watchFetchListRequest() {
         put(currencyGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(currencyGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(currencyGetListError(error.message)),
@@ -93,12 +83,7 @@ function* watchFetchByIdRequest() {
         put(currencyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(currencyGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(currencyGetByIdError(error.message)),

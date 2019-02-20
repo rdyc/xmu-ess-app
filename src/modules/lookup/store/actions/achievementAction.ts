@@ -12,5 +12,5 @@ export const enum AchievementAction {
 // patch
 export const achievementPatchRequest = (request: IAchievementPatchRequest) => action(AchievementAction.PATCH_REQUEST, request);
 export const achievementPatchSuccess = (response: IAchievementResult) => action(AchievementAction.PATCH_SUCCESS, response);
-export const achievementPatchError = (message: string) => action(AchievementAction.PATCH_ERROR, message);
+export const achievementPatchError = (error: any) => action(AchievementAction.PATCH_ERROR, error);
 export const achievementPatchDispose = () => action(AchievementAction.PATCH_DISPOSE);

@@ -34,35 +34,35 @@ export const enum LookupDiemAction {
 // get all
 export const lookupDiemGetAllRequest = (request: ILookupDiemAllRequest) => action(LookupDiemAction.GET_ALL_REQUEST, request);
 export const lookupDiemGetAllSuccess = (response: IResponseCollection<IDiem>) => action(LookupDiemAction.GET_ALL_SUCCESS, response);
-export const lookupDiemGetAllError = (message: string) => action(LookupDiemAction.GET_ALL_ERROR, message);
+export const lookupDiemGetAllError = (error: any) => action(LookupDiemAction.GET_ALL_ERROR, error);
 export const lookupDiemGetAllDispose = () => action(LookupDiemAction.GET_ALL_DISPOSE);
 
 // get list
 export const lookupDiemGetListRequest = (request: ILookupDiemListRequest) => action(LookupDiemAction.GET_LIST_REQUEST, request);
 export const lookupDiemGetListSuccess = (response: IResponseCollection<IDiemList>) => action(LookupDiemAction.GET_LIST_SUCCESS, response);
-export const lookupDiemGetListError = (message: string) => action(LookupDiemAction.GET_LIST_ERROR, message);
+export const lookupDiemGetListError = (error: any) => action(LookupDiemAction.GET_LIST_ERROR, error);
 export const lookupDiemGetListDispose = () => action(LookupDiemAction.GET_LIST_DISPOSE);
 
 // get by id
 export const lookupDiemGetByIdRequest = (request: ILookupDiemDetailRequest) => action(LookupDiemAction.GET_BY_ID_REQUEST, request);
 export const lookupDiemGetByIdSuccess = (response: IResponseSingle<IDiemDetail>) => action(LookupDiemAction.GET_BY_ID_SUCCESS, response);
-export const lookupDiemGetByIdError = (message: string) => action(LookupDiemAction.GET_BY_ID_ERROR, message);
+export const lookupDiemGetByIdError = (error: any) => action(LookupDiemAction.GET_BY_ID_ERROR, error);
 export const lookupDiemGetByIdDispose = () => action(LookupDiemAction.GET_BY_ID_DISPOSE);
 
 // post
 export const lookupDiemPostRequest = (request: ILookupDiemPostRequest) => action(LookupDiemAction.POST_REQUEST, request);
 export const lookupDiemPostSuccess = (response: IResponseSingle<IDiem>) => action(LookupDiemAction.POST_SUCCESS, response);
-export const lookupDiemPostError = (message: string) => action(LookupDiemAction.POST_ERROR, message);
+export const lookupDiemPostError = (error: any) => action(LookupDiemAction.POST_ERROR, error);
 export const lookupDiemPostDispose = () => action(LookupDiemAction.POST_DISPOSE);
 
 // put
 export const lookupDiemPutRequest = (request: ILookupDiemPutRequest) => action(LookupDiemAction.PUT_REQUEST, request);
 export const lookupDiemPutSuccess = (response: IResponseSingle<IDiem>) => action(LookupDiemAction.PUT_SUCCESS, response);
-export const lookupDiemPutError = (message: string) => action(LookupDiemAction.PUT_ERROR, message);
+export const lookupDiemPutError = (error: any) => action(LookupDiemAction.PUT_ERROR, error);
 export const lookupDiemPutDispose = () => action(LookupDiemAction.PUT_DISPOSE);
 
 // delete
 export const lookupDiemDeleteRequest = (request: ILookupDiemDeleteRequest) => action(LookupDiemAction.DELETE_REQUEST, request);
 export const lookupDiemDeleteSuccess = (response: boolean) => action(LookupDiemAction.DELETE_SUCCESS, response);
-export const lookupDiemDeleteError = (message: string) => action(LookupDiemAction.DELETE_ERROR, message);
+export const lookupDiemDeleteError = (error: any) => action(LookupDiemAction.DELETE_ERROR, error);
 export const lookupDiemDeleteDispose = () => action(LookupDiemAction.DELETE_DISPOSE);

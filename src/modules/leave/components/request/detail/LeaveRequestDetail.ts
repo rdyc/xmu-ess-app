@@ -1,4 +1,8 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
@@ -8,7 +12,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -18,17 +25,18 @@ import {
 
 import { LeaveRequestDetailView } from './LeaveRequestDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: LeaveRequestUserAction;
   dialogFullScreen: boolean;
@@ -39,37 +47,60 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
-export type LeaveRequestDetailProps 
-  = WithUser
+export type LeaveRequestDetailProps
+  = WithOidc
+  & WithUser
   & WithLeaveRequest
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<LeaveRequestDetailProps, OwnState> = (props: LeaveRequestDetailProps): OwnState => ({ 
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<LeaveRequestDetailProps, IOwnState> = (props: LeaveRequestDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: LeaveRequestDetailProps) => (): Partial<OwnState> => ({
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+
+  return {
+    isAdmin,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
+
+const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: LeaveRequestDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
+  setModify: (prevState: IOwnState, props: LeaveRequestDetailProps) => (): Partial<IOwnState> => ({
     action: LeaveRequestUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.modifyTitle), 
+    dialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.modifyTitle),
     dialogContent: props.intl.formatMessage(leaveMessage.request.dialog.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+    action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -79,20 +110,29 @@ const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUp
   })
 };
 
-const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
-  handleOnModify: (props: LeaveRequestDetailProps) => () => { 
+const handlerCreators: HandleCreators<LeaveRequestDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: LeaveRequestDetailProps) => () => {
+    if (props.userState.user && props.match.params.leaveUid && !props.leaveRequestState.detail.isLoading) {
+      props.leaveRequestDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        leaveUid: props.match.params.leaveUid
+      });
+    }
+  },
+  handleOnModify: (props: LeaveRequestDetailProps) => () => {
     props.setModify();
   },
-  handleOnCloseDialog: (props: LeaveRequestDetailProps) => () => { 
+  handleOnCloseDialog: (props: LeaveRequestDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: LeaveRequestDetailProps) => () => { 
+  handleOnConfirm: (props: LeaveRequestDetailProps) => () => {
     const { response } = props.leaveRequestState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
       return;
-    } 
+    }
 
     // define vars
     let leaveUid: string | undefined;
@@ -104,7 +144,7 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
 
     // actions with new page
     const actions = [
-      LeaveRequestUserAction.Modify, 
+      LeaveRequestUserAction.Modify,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -121,18 +161,68 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
 
       props.setDefault();
 
-      props.history.push(next, { 
-        uid: leaveUid 
+      props.history.push(next, {
+        uid: leaveUid
       });
     }
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LeaveRequestDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: LeaveRequestDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.leaveUid !== prevProps.match.params.leaveUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.leaveRequestState.detail.response !== prevProps.leaveRequestState.detail.response) {
+      const { isLoading, response } = this.props.leaveRequestState.detail;
+
+      // find status type
+      let _statusType: string | undefined = undefined;
+
+      if (response && response.data) {
+        _statusType = response.data.statusType;
+      }
+
+      // checking status types
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => {
+        return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+      };
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LeaveRequestUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LeaveRequestUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: _statusType !== undefined,
+          visible: isContains(_statusType, [WorkflowStatusType.Submitted]),
+          onClick: this.props.handleOnModify
+        },
+
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const LeaveRequestDetail = compose(
   withRouter,
+  withOidc,
   withUser,
   withLeaveRequest,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters), 
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('LeaveRequestDetail')
 )(LeaveRequestDetailView);

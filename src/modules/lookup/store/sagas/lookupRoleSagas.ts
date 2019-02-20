@@ -43,12 +43,7 @@ function* watchFetchAllRequest() {
         put(lookupRoleGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupRoleGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupRoleGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupRoleGetAllError(error.message)),
@@ -77,12 +72,7 @@ function* watchFetchListRequest() {
         put(lookupRoleGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupRoleGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupRoleGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupRoleGetListError(error.message)),
@@ -106,12 +96,7 @@ function* watchFetchByIdRequest() {
         put(lookupRoleGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(lookupRoleGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(lookupRoleGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupRoleGetByIdError(error.message)),

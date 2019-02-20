@@ -21,17 +21,17 @@ export const enum TransportationAction {
 // get all
 export const transportationGetAllRequest = (request: ISystemAllRequest) => action(TransportationAction.GET_ALL_REQUEST, request);
 export const transportationGetAllSuccess = (response: IResponseCollection<ISystem>) => action(TransportationAction.GET_ALL_SUCCESS, response);
-export const transportationGetAllError = (message: string) => action(TransportationAction.GET_ALL_ERROR, message);
+export const transportationGetAllError = (error: any) => action(TransportationAction.GET_ALL_ERROR, error);
 export const transportationGetAllDispose = () => action(TransportationAction.GET_ALL_DISPOSE);
 
 // get list
 export const transportationGetListRequest = (request: ISystemListRequest) => action(TransportationAction.GET_LIST_REQUEST, request);
 export const transportationGetListSuccess = (response: IResponseCollection<ISystemList>) => action(TransportationAction.GET_LIST_SUCCESS, response);
-export const transportationGetListError = (message: string) => action(TransportationAction.GET_LIST_ERROR, message);
+export const transportationGetListError = (error: any) => action(TransportationAction.GET_LIST_ERROR, error);
 export const transportationGetListDispose = () => action(TransportationAction.GET_LIST_DISPOSE);
 
 // get by id
 export const transportationGetByIdRequest = (request: ISystemByIdRequest) => action(TransportationAction.GET_BY_ID_REQUEST, request);
 export const transportationGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(TransportationAction.GET_BY_ID_SUCCESS, response);
-export const transportationGetByIdError = (message: string) => action(TransportationAction.GET_BY_ID_ERROR, message);
+export const transportationGetByIdError = (error: any) => action(TransportationAction.GET_BY_ID_ERROR, error);
 export const transportationGetByIdDispose = () => action(TransportationAction.GET_BY_ID_DISPOSE);

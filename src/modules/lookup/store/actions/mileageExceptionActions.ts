@@ -45,8 +45,8 @@ export const mileageExceptionGetAllSuccess = (
   response: IResponseCollection<IMileageException>
 ) => action(MileageExceptionAction.GET_ALL_SUCCESS, response);
 
-export const mileageExceptionGetAllError = (message: string) =>
-  action(MileageExceptionAction.GET_ALL_ERROR, message);
+export const mileageExceptionGetAllError = (error: any) =>
+  action(MileageExceptionAction.GET_ALL_ERROR, error);
 
 export const mileageExceptionGetAllDispose = () =>
   action(MileageExceptionAction.GET_ALL_DISPOSE);
@@ -60,8 +60,8 @@ export const mileageExceptionGetListSuccess = (
   response: IResponseCollection<IMileageExceptionList>
 ) => action(MileageExceptionAction.GET_LIST_SUCCESS, response);
 
-export const mileageExceptionGetListError = (message: string) =>
-  action(MileageExceptionAction.GET_LIST_ERROR, message);
+export const mileageExceptionGetListError = (error: any) =>
+  action(MileageExceptionAction.GET_LIST_ERROR, error);
 
 export const mileageExceptionGetListDispose = () =>
   action(MileageExceptionAction.GET_LIST_DISPOSE);
@@ -75,8 +75,8 @@ export const mileageExceptionGetByIdSuccess = (
   response: IResponseCollection<IMileageExceptionDetail>
 ) => action(MileageExceptionAction.GET_BY_ID_SUCCESS, response);
 
-export const mileageExceptionGetByIdError = (message: string) =>
-  action(MileageExceptionAction.GET_BY_ID_ERROR, message);
+export const mileageExceptionGetByIdError = (error: any) =>
+  action(MileageExceptionAction.GET_BY_ID_ERROR, error);
 
 export const mileageExceptionGetByIdDispose = () =>
   action(MileageExceptionAction.GET_BY_ID_DISPOSE);
@@ -84,11 +84,11 @@ export const mileageExceptionGetByIdDispose = () =>
 // post
 export const mileageExceptionPostRequest = (request: IMileageExceptionPostRequest) => action(MileageExceptionAction.POST_REQUEST, request);
 export const mileageExceptionPostSuccess = (response: IResponseSingle<IMileageException>) => action(MileageExceptionAction.POST_SUCCESS, response);
-export const mileageExceptionPostError = (message: string) => action(MileageExceptionAction.POST_ERROR, message);
+export const mileageExceptionPostError = (error: any) => action(MileageExceptionAction.POST_ERROR, error);
 export const mileageExceptionPostDispose = () => action(MileageExceptionAction.POST_DISPOSE);
 
 // put
 export const mileageExceptionPutRequest = (request: IMileageExceptionPutRequest) => action(MileageExceptionAction.PUT_REQUEST, request);
 export const mileageExceptionPutSuccess = (response: IResponseSingle<IMileageException>) => action(MileageExceptionAction.PUT_SUCCESS, response);
-export const mileageExceptionPutError = (message: string) => action(MileageExceptionAction.PUT_ERROR, message);
+export const mileageExceptionPutError = (error: any) => action(MileageExceptionAction.PUT_ERROR, error);
 export const mileageExceptionPutDispose = () => action(MileageExceptionAction.PUT_DISPOSE);

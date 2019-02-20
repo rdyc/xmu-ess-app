@@ -21,17 +21,17 @@ export const enum TrainingAction {
 // get all
 export const trainingGetAllRequest = (request: ISystemAllRequest) => action(TrainingAction.GET_ALL_REQUEST, request);
 export const trainingGetAllSuccess = (response: IResponseCollection<ISystem>) => action(TrainingAction.GET_ALL_SUCCESS, response);
-export const trainingGetAllError = (message: string) => action(TrainingAction.GET_ALL_ERROR, message);
+export const trainingGetAllError = (error: any) => action(TrainingAction.GET_ALL_ERROR, error);
 export const trainingGetAllDispose = () => action(TrainingAction.GET_ALL_DISPOSE);
 
 // get list
 export const trainingGetListRequest = (request: ISystemListRequest) => action(TrainingAction.GET_LIST_REQUEST, request);
 export const trainingGetListSuccess = (response: IResponseCollection<ISystemList>) => action(TrainingAction.GET_LIST_SUCCESS, response);
-export const trainingGetListError = (message: string) => action(TrainingAction.GET_LIST_ERROR, message);
+export const trainingGetListError = (error: any) => action(TrainingAction.GET_LIST_ERROR, error);
 export const trainingGetListDispose = () => action(TrainingAction.GET_LIST_DISPOSE);
 
 // get by id
 export const trainingGetByIdRequest = (request: ISystemByIdRequest) => action(TrainingAction.GET_BY_ID_REQUEST, request);
 export const trainingGetByIdSuccess = (response: IResponseCollection<ISystemDetail>) => action(TrainingAction.GET_BY_ID_SUCCESS, response);
-export const trainingGetByIdError = (message: string) => action(TrainingAction.GET_BY_ID_ERROR, message);
+export const trainingGetByIdError = (error: any) => action(TrainingAction.GET_BY_ID_ERROR, error);
 export const trainingGetByIdDispose = () => action(TrainingAction.GET_BY_ID_DISPOSE);
