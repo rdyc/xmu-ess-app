@@ -1,31 +1,30 @@
 import AppMenu from '@constants/AppMenu';
 import { IExpense } from '@expense/classes/response';
+import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ExpenseSummary } from '../detail/shared/ExpenseSummary';
-import { ExpenseRequestListProps } from './ExpenseRequestList';
-import { ExpenseRequestListFilter } from './ExpenseRequestListFilter';
+import { ExpenseApprovalListProps } from './ExpenseApprovalList';
+import { ExpenseApprovalListFilter } from './ExpenseApprovalListFilter';
 
-export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props => (
+export const ExpenseApprovalListView: React.SFC<ExpenseApprovalListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.ExpenseRequest,
+        uid: AppMenu.ExpenseApproval,
         parentUid: AppMenu.Expense,
-        title: props.intl.formatMessage(expenseMessage.request.page.title),
-        description: props.intl.formatMessage(expenseMessage.request.page.subTitle),
+        title: props.intl.formatMessage(expenseMessage.approval.page.title),
+        description: props.intl.formatMessage(expenseMessage.approval.page.subTitle),
       }}
 
       // state & fields
-      state={props.expenseRequestState.all}
+      state={props.expenseApprovalState.all}
       fields={props.fields}
       
       // selection
@@ -42,19 +41,9 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
       )}
       actionComponent={(item: IExpense) => (
         <React.Fragment>
-          {
-            isModuleRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => props.history.push(`/expense/requests/form`, { uid: item.uid })}
-            >
-              <FormattedMessage {...layoutMessage.action.modify}/>
-            </Button>
-          }
-
           <Button 
             size="small"
-            onClick={() => props.history.push(`/expense/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/expense/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -65,17 +54,10 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
       appBarSearchComponent={
         <SearchBox
           key="expense.request"
-          default={props.expenseRequestState.all.request && props.expenseRequestState.all.request.filter && props.expenseRequestState.all.request.filter.find}
+          default={props.expenseApprovalState.all.request && props.expenseApprovalState.all.request.filter && props.expenseApprovalState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
-      }
-      appBarCustomComponent={
-        <IconButton
-          onClick={() => props.history.push('/expense/requests/form')}
-        >
-          <AddCircle/>
-        </IconButton>
       }
 
       // data toolbar component
@@ -87,7 +69,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.expenseRequestState.all.isLoading || props.expenseRequestState.all.isError}
+              disabled={props.expenseApprovalState.all.isLoading || props.expenseApprovalState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -104,7 +86,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
       }
     />
 
-    <ExpenseRequestListFilter 
+    <ExpenseApprovalListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
         customerUid: props.customerUid,
@@ -114,7 +96,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
         start: props.start,
         end: props.end,
         status: props.status,
-        isRejected: props.isRejected
+        isNotify: props.isNotify
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
