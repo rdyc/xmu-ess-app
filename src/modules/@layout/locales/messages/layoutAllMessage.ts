@@ -14,7 +14,8 @@ export const layoutText = defineMessages({
   active: { id: `${prefix}.text.active`},
   inactive: { id: `${prefix}.text.inactive`},
   find: { id: `${prefix}.text.find`},
-  search: { id: `${prefix}.text.search`}
+  search: { id: `${prefix}.text.search`},
+  selection: { id: `${prefix}.text.selection`}
 });
 
 // label
@@ -49,6 +50,7 @@ export const layoutAction = defineMessages({
   aggre: { id: `${prefix}.action.aggre`},
   disaggre: { id: `${prefix}.action.disaggre`},
   continue: { id: `${prefix}.action.continue`},
+  process: { id: `${prefix}.action.process`},
   create: { id: `${prefix}.action.create`},
   save: { id: `${prefix}.action.save`},
   cancel: { id: `${prefix}.action.cancel`},
@@ -62,7 +64,7 @@ export const layoutAction = defineMessages({
   refresh: { id: `${prefix}.action.refresh`},
   submit: { id: `${prefix}.action.submit`},
   reset: { id: `${prefix}.action.reset`},
-  clear: { id: `${prefix}.action.yes`},
+  clear: { id: `${prefix}.action.clear`},
   details: { id: `${prefix}.action.details`},
   next: { id: `${prefix}.action.next`},
   nextCount: { id: `${prefix}.action.nextCount`},

@@ -1,7 +1,6 @@
 import { PreloaderWithError } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, IconButton, Menu, MenuItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { IconButton, Menu, MenuItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -33,32 +32,8 @@ export const CollectionPageDataContainerView: React.SFC<CollectionPageDataContai
           }
         </Typography>
 
-        {
-          props.additionalControls &&
-          props.additionalControls.map((item, index) =>
-            <Tooltip
-              key={index}
-              placement="bottom"
-              title={item.title}
-            >
-              <div>
-                <IconButton
-                  id={item.id}
-                  disabled={props.state.isLoading || props.state.isError}
-                  onClick={item.onClick} 
-                >
-                  <Badge
-                    invisible={!item.showBadgeWhen()}
-                    badgeContent={<CheckCircleIcon color="primary" />}
-                  >
-                    <item.icon/>
-                  </Badge>
-                </IconButton>
-              </div>
-            </Tooltip>
-          )
-        }
-        
+        {props.dataComponent}
+                
         <Tooltip
           placement="bottom"
           title={props.intl.formatMessage(layoutMessage.tooltip.orderBy)}

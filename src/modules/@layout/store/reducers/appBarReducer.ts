@@ -7,6 +7,8 @@ const initialState: IAppBarState = {
   controls: undefined,
   menus: undefined,
   fields: undefined,
+  searchComponent: undefined,
+  customComponent: undefined,
   onClickMenu: () => { 
     console.warn('onClick must be handled'); 
   },
@@ -49,6 +51,8 @@ const reducer: Reducer<IAppBarState> = (state = initialState, action) => {
     case Action.SELECTION_ADD_REMOVE: return { ...state, selections: selectionAddRemove(action.payload, state.selections) };
     case Action.SELECTION_CLEAR: return { ...state, selections: undefined };
     case Action.DISPOSE: return { ...state, ...initialState };
+    case Action.ASSIGN_SEARCH_COMPONENT: return { ...state, searchComponent: action.payload };
+    case Action.ASSIGN_CUSTOM_COMPONENT: return { ...state, customComponent: action.payload };
     
     default: return state;
   }

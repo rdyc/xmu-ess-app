@@ -49,16 +49,14 @@ interface IOwnOption {
   };
   metadata?: IBaseMetadata;
   fields: ICollectionValue[];
+  dataComponent?: React.ReactNode;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onClickRetry: (event: React.MouseEvent<HTMLElement>) => void;
   onClickNext: (event: React.MouseEvent<HTMLElement>) => void;
   onClickPrevious: (event: React.MouseEvent<HTMLElement>) => void;
-
   onChangeField: (field: string) => void;
   onChangeOrder: (direction: string) => void;
   onChangeSize: (size: number) => void;
-
-  additionalControls?: IDataControl[]; 
 }
 
 interface IOwnState {
