@@ -1,4 +1,4 @@
-import { layoutAlertAdd, UserAction } from '@layout/store/actions';
+import { UserAction } from '@layout/store/actions';
 import {
   TimesheetMileagesAction as Action,
   timesheetMileagesGetAllDispose,
@@ -21,26 +21,17 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/timesheet/reports/mileages?${params}`, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(timesheetMileagesGetAllSuccess(response.body))
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetMileagesGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(timesheetMileagesGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ]),
+      ], 
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetMileagesGetAllError(response))
+      ], 
+      errorEffects: (error: TypeError) => [
+        put(timesheetMileagesGetAllError(error.message))
+      ],
       finallyEffects: [
-        // put(listBarLoading(false))
+        // nothing
       ]
     });
   };

@@ -1,20 +1,20 @@
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetEntryAction as Action,
-  timesheetGetAllDispose,
-  timesheetGetAllError,
-  timesheetGetAllRequest,
-  timesheetGetAllSuccess,
-  timesheetGetByIdDispose,
-  timesheetGetByIdError,
-  timesheetGetByIdRequest,
-  timesheetGetByIdSuccess,
-  timesheetPostError,
-  timesheetPostRequest,
-  timesheetPostSuccess,
-  timesheetPutError,
-  timesheetPutRequest,
-  timesheetPutSuccess,
+  timesheetEntryGetAllDispose,
+  timesheetEntryGetAllError,
+  timesheetEntryGetAllRequest,
+  timesheetEntryGetAllSuccess,
+  timesheetEntryGetByIdDispose,
+  timesheetEntryGetByIdError,
+  timesheetEntryGetByIdRequest,
+  timesheetEntryGetByIdSuccess,
+  timesheetEntryPostError,
+  timesheetEntryPostRequest,
+  timesheetEntryPostSuccess,
+  timesheetEntryPutError,
+  timesheetEntryPutRequest,
+  timesheetEntryPutSuccess,
 } from '@timesheet/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -23,8 +23,8 @@ import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetGetAllRequest>) => {
+function* watchGetAllRequest() {
+  const worker = (action: ReturnType<typeof timesheetEntryGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -33,26 +33,17 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/timesheet/reports?${params}`, 
-      successEffects: (response: IApiResponse) => ([
-        put(timesheetGetAllSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(timesheetGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ]),
+      successEffects: (response: IApiResponse) => [
+        put(timesheetEntryGetAllSuccess(response.body)),
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetEntryGetAllError(response))
+      ],
+      errorEffects: (error: TypeError) => [
+        put(timesheetEntryGetAllError(error.message))
+      ],
       finallyEffects: [
-
+        // nothing
       ]
     });
   };
@@ -60,51 +51,42 @@ function* watchAllFetchRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchByIdFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetGetByIdRequest>) => {
+function* watchGetByIdRequest() {
+  const worker = (action: ReturnType<typeof timesheetEntryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/timesheet/reports/${action.payload.timesheetUid}`, 
-      successEffects: (response: IApiResponse) => ([
-        put(timesheetGetByIdSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(timesheetGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ])
+      successEffects: (response: IApiResponse) => [
+        put(timesheetEntryGetByIdSuccess(response.body)),
+      ], 
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetEntryGetByIdError(response))
+      ], 
+      errorEffects: (error: TypeError) => [
+        put(timesheetEntryGetByIdError(error.message))
+      ]
     });
   };
 
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetPostRequest>) => {
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof timesheetEntryPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(timesheetGetByIdDispose()),
-        put(timesheetGetAllDispose()),
-        put(timesheetPostSuccess(response.body))
+        put(timesheetEntryGetByIdDispose()),
+        put(timesheetEntryGetAllDispose()),
+        put(timesheetEntryPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       }, 
       failureEffects: (response: IApiResponse) => [
-        put(timesheetPostError(response.statusText))
+        put(timesheetEntryPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -119,7 +101,7 @@ function* watchPostFetchRequest() {
         }
       },
       errorEffects: (error: TypeError) => [
-        put(timesheetPostError(error.message)),
+        put(timesheetEntryPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -134,22 +116,22 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* watchPutFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetPutRequest>) => {
+function* watchPutRequest() {
+  const worker = (action: ReturnType<typeof timesheetEntryPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(timesheetGetByIdDispose()),
-        put(timesheetGetAllDispose()),
-        put(timesheetPutSuccess(response.body))
+        put(timesheetEntryGetByIdDispose()),
+        put(timesheetEntryGetAllDispose()),
+        put(timesheetEntryPutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => ([
-        put(timesheetPutError(response.statusText)),
+        put(timesheetEntryPutError(response.statusText)),
       ]),
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -165,7 +147,7 @@ function* watchPutFetchRequest() {
         }
       }, 
       errorEffects: (error: TypeError) => [
-        put(timesheetPutError(error.message)),
+        put(timesheetEntryPutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -183,8 +165,8 @@ function* watchPutFetchRequest() {
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
-      put(timesheetGetAllDispose()),
-      put(timesheetGetByIdDispose())
+      put(timesheetEntryGetAllDispose()),
+      put(timesheetEntryGetByIdDispose())
     ]);
   }
 
@@ -193,10 +175,10 @@ function* watchSwitchAccess() {
 
 function* timesheetEntrySagas() {
   yield all([
-    fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest),
-    fork(watchPostFetchRequest),
-    fork(watchPutFetchRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
     fork(watchSwitchAccess)
   ]);
 }

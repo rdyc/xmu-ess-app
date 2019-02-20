@@ -2,14 +2,14 @@ import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/in
 import { ITimesheetGetAllRequest, ITimesheetGetByIdRequest, ITimesheetPostRequest, ITimesheetPutRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { 
-  timesheetGetAllDispose,
-  timesheetGetAllRequest,
-  timesheetGetByIdDispose,
-  timesheetGetByIdRequest,
-  timesheetPostDispose,
-  timesheetPostRequest,
-  timesheetPutDispose,
-  timesheetPutRequest
+  timesheetEntryGetAllDispose,
+  timesheetEntryGetAllRequest,
+  timesheetEntryGetByIdDispose,
+  timesheetEntryGetByIdRequest,
+  timesheetEntryPostDispose,
+  timesheetEntryPostRequest,
+  timesheetEntryPutDispose,
+  timesheetEntryPutRequest
 } from '@timesheet/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -24,16 +24,16 @@ interface PropsFromState {
 interface PropsFromDispatch {
   timesheetEntryDispatch: {
     // command
-    createRequest: typeof timesheetPostRequest;
-    createDispose: typeof timesheetPostDispose;
-    updateRequest: typeof timesheetPutRequest;
-    updateDispose: typeof timesheetPutDispose;
+    createRequest: typeof timesheetEntryPostRequest;
+    createDispose: typeof timesheetEntryPostDispose;
+    updateRequest: typeof timesheetEntryPutRequest;
+    updateDispose: typeof timesheetEntryPutDispose;
 
     // query
-    loadAllRequest: typeof timesheetGetAllRequest;
-    loadAllDispose: typeof timesheetGetAllDispose;
-    loadDetailRequest: typeof timesheetGetByIdRequest;
-    loadDetailDispose: typeof timesheetGetByIdDispose;
+    loadAllRequest: typeof timesheetEntryGetAllRequest;
+    loadAllDispose: typeof timesheetEntryGetAllDispose;
+    loadDetailRequest: typeof timesheetEntryGetByIdRequest;
+    loadDetailDispose: typeof timesheetEntryGetByIdDispose;
   };
 }
 
@@ -49,16 +49,16 @@ const mapStateToProps = ({ timesheetGetAll, timesheetGetById }: IAppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   timesheetEntryDispatch: {
     // command
-    createRequest: (request: ITimesheetPostRequest) => dispatch(timesheetPostRequest(request)),
-    createDispose: () => dispatch(timesheetPostDispose()),
-    updateRequest: (request: ITimesheetPutRequest) => dispatch(timesheetPutRequest(request)),
-    updateDispose: () => dispatch(timesheetPutDispose()),
+    createRequest: (request: ITimesheetPostRequest) => dispatch(timesheetEntryPostRequest(request)),
+    createDispose: () => dispatch(timesheetEntryPostDispose()),
+    updateRequest: (request: ITimesheetPutRequest) => dispatch(timesheetEntryPutRequest(request)),
+    updateDispose: () => dispatch(timesheetEntryPutDispose()),
     
     // query
-    loadAllRequest: (request: ITimesheetGetAllRequest) => dispatch(timesheetGetAllRequest(request)),
-    loadAllDispose: () => dispatch(timesheetGetAllDispose()),
-    loadDetailRequest: (request: ITimesheetGetByIdRequest) => dispatch(timesheetGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(timesheetGetByIdDispose()),
+    loadAllRequest: (request: ITimesheetGetAllRequest) => dispatch(timesheetEntryGetAllRequest(request)),
+    loadAllDispose: () => dispatch(timesheetEntryGetAllDispose()),
+    loadDetailRequest: (request: ITimesheetGetByIdRequest) => dispatch(timesheetEntryGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(timesheetEntryGetByIdDispose()),
   }
 });
 
