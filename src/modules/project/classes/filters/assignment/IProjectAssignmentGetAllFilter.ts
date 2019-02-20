@@ -1,6 +1,6 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IProjectAssignmentGetAllFilter extends IBaseFilter, IBasePagingFilter {
+export interface IProjectAssignmentGetAllFilter extends IBasePagingFilter {
   customerUids?: string;
   projectTypes?: string;
   statusTypes?: string;

@@ -25,17 +25,17 @@ export const enum ProjectAcceptanceAction {
 // get all
 export const projectAcceptanceGetAllRequest = (request: IProjectAcceptanceGetAllRequest) => action(ProjectAcceptanceAction.GET_ALL_REQUEST, request);
 export const projectAcceptanceGetAllSuccess = (response: IResponseCollection<IProjectAssignmentDetail>) => action(ProjectAcceptanceAction.GET_ALL_SUCCESS, response);
-export const projectAcceptanceGetAllError = (message: string) => action(ProjectAcceptanceAction.GET_ALL_ERROR, message);
+export const projectAcceptanceGetAllError = (error: any) => action(ProjectAcceptanceAction.GET_ALL_ERROR, error);
 export const projectAcceptanceGetAllDispose = () => action(ProjectAcceptanceAction.GET_ALL_DISPOSE);
 
 // get by id
 export const projectAcceptanceGetByIdRequest = (request: IProjectAcceptanceGetByIdRequest) => action(ProjectAcceptanceAction.GET_BY_ID_REQUEST, request);
 export const projectAcceptanceGetByIdSuccess = (response: IResponseSingle<IProjectAssignmentDetailItem>) => action(ProjectAcceptanceAction.GET_BY_ID_SUCCESS, response);
-export const projectAcceptanceGetByIdError = (message: string) => action(ProjectAcceptanceAction.GET_BY_ID_ERROR, message);
+export const projectAcceptanceGetByIdError = (error: any) => action(ProjectAcceptanceAction.GET_BY_ID_ERROR, error);
 export const projectAcceptanceGetByIdDispose = () => action(ProjectAcceptanceAction.GET_BY_ID_DISPOSE);
 
 // post
 export const projectAcceptancePostRequest = (request: IProjectAcceptancePostRequest) => action(ProjectAcceptanceAction.POST_REQUEST, request);
 export const projectAcceptancePostSuccess = (response: boolean) => action(ProjectAcceptanceAction.POST_SUCCESS, response);
-export const projectAcceptancePostError = (message: string) => action(ProjectAcceptanceAction.POST_ERROR, message);
+export const projectAcceptancePostError = (error: string) => action(ProjectAcceptanceAction.POST_ERROR, error);
 export const projectAcceptancePostDispose = () => action(ProjectAcceptanceAction.POST_DISPOSE);

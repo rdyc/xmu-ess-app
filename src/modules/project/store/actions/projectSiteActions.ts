@@ -30,23 +30,23 @@ export const enum ProjectSiteAction {
 // get
 export const projectSiteGetRequest = (request: IProjectSiteGetRequest) => action(ProjectSiteAction.GET_REQUEST, request);
 export const projectSiteGetSuccess = (response: IResponseCollection<IProjectSite>) => action(ProjectSiteAction.GET_SUCCESS, response);
-export const projectSiteGetError = (message: string) => action(ProjectSiteAction.GET_ERROR, message);
+export const projectSiteGetError = (error: any) => action(ProjectSiteAction.GET_ERROR, error);
 export const projectSiteGetDispose = () => action(ProjectSiteAction.GET_DISPOSE);
 
 // post
 export const projectSitePostRequest = (request: IProjectSitePostRequest) => action(ProjectSiteAction.POST_REQUEST, request);
 export const projectSitePostSuccess = (response: boolean) => action(ProjectSiteAction.POST_SUCCESS, response);
-export const projectSitePostError = (message: string) => action(ProjectSiteAction.POST_ERROR, message);
+export const projectSitePostError = (error: any) => action(ProjectSiteAction.POST_ERROR, error);
 export const projectSitePostDispose = () => action(ProjectSiteAction.POST_DISPOSE);
 
 // put
 export const projectSitePutRequest = (request: IProjectSitePutRequest) => action(ProjectSiteAction.PUT_REQUEST, request);
 export const projectSitePutSuccess = (response: boolean) => action(ProjectSiteAction.PUT_SUCCESS, response);
-export const projectSitePutError = (message: string) => action(ProjectSiteAction.PUT_ERROR, message);
+export const projectSitePutError = (error: any) => action(ProjectSiteAction.PUT_ERROR, error);
 export const projectSitePutDispose = () => action(ProjectSiteAction.PUT_DISPOSE);
 
 // delete
 export const projectSiteDeleteRequest = (request: IProjectSiteDeleteRequest) => action(ProjectSiteAction.DELETE_REQUEST, request);
 export const projectSiteDeleteSuccess = (response: boolean) => action(ProjectSiteAction.DELETE_SUCCESS, response);
-export const projectSiteDeleteError = (message: string) => action(ProjectSiteAction.DELETE_ERROR, message);
+export const projectSiteDeleteError = (error: any) => action(ProjectSiteAction.DELETE_ERROR, error);
 export const projectSiteDeleteDispose = () => action(ProjectSiteAction.DELETE_DISPOSE);
