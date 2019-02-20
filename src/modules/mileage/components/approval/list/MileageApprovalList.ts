@@ -33,20 +33,14 @@ interface IOwnOption {
 
 }
 
-// interface IOwnRouteParams {
-//   isReload: string;
-// }
-
 interface IOwnState extends IMileageApprovalListFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
-  isReload: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
-  setIsReload: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -72,7 +66,6 @@ const createProps: mapper<MileageApprovalListProps, IOwnState> = (props: Mileage
   const { request } = props.mileageApprovalState.all;
 
   const state: IOwnState = {
-    isReload: false,
     isFilterOpen: false,
     fields: Object.keys(MileageRequestField).map(key => ({
       value: key,
@@ -111,9 +104,6 @@ const stateUpdaters: StateUpdaters<MileageApprovalListProps, IOwnState, IOwnStat
   setFilterApplied: (state: IOwnState) => (filter: IMileageApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
-  }),
-  setIsReload: (state: IOwnState) => () => ({
-    isReload: !state.isReload
   })
 };
 
