@@ -8,7 +8,15 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  shallowEqual,
+  withHandlers,
+} from 'recompose';
 
 import { LookupSystemDialogView } from './LookupSystemDialogView';
 
@@ -44,7 +52,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = 
     
     // don't load while control has set as disabled
     if (!this.props.disabled) {
-      const _request: ISystemListRequest = {
+      const params: ISystemListRequest = {
         category,
         filter: {
           companyUid,
@@ -54,81 +62,94 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = 
         }
       };
 
+      // compare each props
+      const shouldLoad = !shallowEqual(
+        {
+          category,
+          companyUid,
+          moduleType
+        },
+        {
+          category: request && request.category,
+          companyUid: request && request.filter && request.filter.companyUid,
+          moduleType: request && request.filter && request.filter.moduleType
+        }
+      );
+
       // skipp fetch while current request state is being loaded or equals
-      if (!isLoading && request !== _request) {
-        switch (_request.category) {
+      if (shouldLoad && !isLoading) {
+        switch (params.category) {
           case 'activity':
-            commonDispatch.activityListRequest(_request);
+            commonDispatch.activityListRequest(params);
             break;
     
           case 'currency':
-            commonDispatch.currencyListRequest(_request);
+            commonDispatch.currencyListRequest(params);
             break;
     
           case 'document':
-            commonDispatch.documentListRequest(_request);
+            commonDispatch.documentListRequest(params);
             break;
     
           case 'documentPreSales':
-            commonDispatch.documentPresalesListRequest(_request);
+            commonDispatch.documentPresalesListRequest(params);
             break;
     
           case 'project':
-            commonDispatch.projectListRequest(_request);
+            commonDispatch.projectListRequest(params);
             break;
             
           case 'site':
-            commonDispatch.siteListRequest(_request);
+            commonDispatch.siteListRequest(params);
             break;
             
           case 'expense':
-            commonDispatch.expenseListRequest(_request);
+            commonDispatch.expenseListRequest(params);
             break;
 
           case 'leave':
-            commonDispatch.leaveListRequest(_request);
+            commonDispatch.leaveListRequest(params);
             break;
 
           case 'status':
-            commonDispatch.statusListRequest(_request);
+            commonDispatch.statusListRequest(params);
             break;
 
           case 'destination':
-            commonDispatch.destinationListRequest(_request);
+            commonDispatch.destinationListRequest(params);
             break;
           
           case 'purpose':
-            commonDispatch.purposeListRequest(_request);
+            commonDispatch.purposeListRequest(params);
             break;
           
           case 'transportation':
-            commonDispatch.transportationListRequest(_request);
+            commonDispatch.transportationListRequest(params);
             break;
 
           case 'limiter':
-            commonDispatch.limiterListRequest(_request);
+            commonDispatch.limiterListRequest(params);
             break;
             
           case 'unit':
-            commonDispatch.unitListRequest(_request);
+            commonDispatch.unitListRequest(params);
             break;
 
           case 'grade':
-            commonDispatch.gradeListRequest(_request);
+            commonDispatch.gradeListRequest(params);
             break;
 
           case 'payment':
-            commonDispatch.paymentListRequest(_request);
+            commonDispatch.paymentListRequest(params);
             break;
 
           case 'finance':
-            commonDispatch.financeListRequest(_request);
+            commonDispatch.financeListRequest(params);
             break;
 
           default:
             break;
         }
-
       }
     }
   }
