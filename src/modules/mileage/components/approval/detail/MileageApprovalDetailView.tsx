@@ -15,12 +15,22 @@ import * as React from 'react';
 import { MileageApprovalDetailProps } from './MileageApprovalDetail';
 import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
+const parentUrl = (props: MileageApprovalDetailProps): string => {
+  let path = '';
+  if (props.location.state && props.location.state.financeUid) {
+    path = `/finance/approvals/${props.location.state.financeUid}`;
+  } else {
+    path = '/mileage/approvals';
+  }
+  return path;
+};
+
 export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = props => (
   <PreviewPage 
     info={{
       uid: AppMenu.MileageApproval,
       parentUid: AppMenu.Mileage,
-      parentUrl: '/mileage/approvals',
+      parentUrl: parentUrl(props),
       title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
       description: props.intl.formatMessage(mileageMessage.request.page.detailSubHeader)
     }}
