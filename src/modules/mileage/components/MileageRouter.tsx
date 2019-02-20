@@ -1,8 +1,8 @@
 import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
-import { MileageApprovalList } from '@mileage/components//approval/list/MileageApprovalList';
 import { MileageRequestList } from '@mileage/components//request/list/MileageRequestList';
 import { MileageApprovalDetail } from '@mileage/components/approval/detail/MileageApprovalDetail';
+import { MileageApprovalList } from '@mileage/components/approval/list/MileageApprovalList';
 import { MileageRequestDetail } from '@mileage/components/request/detail/MileageRequestDetail';
 import MileageRequestEditor from '@mileage/components/request/editor/MileageRequestEditor';
 import * as React from 'react';

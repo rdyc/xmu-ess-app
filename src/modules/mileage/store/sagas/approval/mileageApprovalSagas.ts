@@ -75,7 +75,7 @@ function* watchPostFetchRequest() {
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageApprovalGetAllDispose()),
+        // put(mileageApprovalGetAllDispose()),
         put(mileageApprovalGetByIdDispose()),
         put(mileageApprovalPostSuccess(response.body))
       ]), 
