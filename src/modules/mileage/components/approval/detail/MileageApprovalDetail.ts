@@ -60,6 +60,7 @@ interface IOwnState {
   action?: MileageApprovalUserAction;
   shouldDataReload: boolean;
   mileageItemUids: string[];
+  itemsNeedApprove: number;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -71,6 +72,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateApprovalItem: StateHandler<IOwnState>;
   stateCheckbox: StateHandler<IOwnState>;
   setDataload: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
@@ -110,6 +112,7 @@ const createProps: mapper<MileageApprovalDetailProps, IOwnState> = (
   return {
     isAdmin,
     mileageItemUids: [],
+    itemsNeedApprove: 0,
     shouldDataReload: false,
     approvalTitle: intl.formatMessage(mileageMessage.approval.submission.title),
     approvalSubHeader: intl.formatMessage(mileageMessage.approval.submission.subHeader),
@@ -135,6 +138,9 @@ const stateUpdaters: StateUpdaters<MileageApprovalDetailProps, IOwnState, IOwnSt
   setOptions: (prevState: IOwnState, props: MileageApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
     pageOptions: options
   }),
+  stateApprovalItem: (prevState: IOwnState) => () => ({
+    itemsNeedApprove: prevState.itemsNeedApprove + 1
+  })
 };
 
 const handlerCreators: HandleCreators<
@@ -162,7 +168,6 @@ const handlerCreators: HandleCreators<
 
     stateCheckbox(Array.from(_mileageItemUid));
   },
-
   handleValidate: (props: MileageApprovalDetailProps) => (
     formData: WorkflowApprovalMileageFormData
   ) => {
@@ -230,7 +235,7 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageRequestDetail
   ) => {
-    const { match, intl, history } = props;
+    const { match, intl, history, mileageItemUids, itemsNeedApprove } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
 
@@ -244,14 +249,18 @@ const handlerCreators: HandleCreators<
     // mileageItemUids.splice(0, mileageItemUids.length);
 
     // back to approval list
-    history.push('/mileage/approvals');
+    if (mileageItemUids.length === itemsNeedApprove) {
+      history.push('/mileage/approvals', {isReload: true});
 
-    // notification: mark as complete
-    props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Mileage,
-      detailType: NotificationType.Approval,
-      itemUid: match.params.mileageUid
-    });
+      // notification: mark as complete
+      props.notificationDispatch.markAsComplete({
+        moduleUid: ModuleDefinition.Mileage,
+        detailType: NotificationType.Approval,
+        itemUid: match.params.mileageUid
+      });
+    } else {
+      history.push('/mileage/approvals');
+    }
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -300,11 +309,24 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, IOwnState>
       ];
 
       this.props.setOptions(options);
+      if (this.props.mileageApprovalState.detail.response && 
+        this.props.mileageApprovalState.detail.response.data &&
+        this.props.mileageApprovalState.detail.response.data.items &&
+        this.props.itemsNeedApprove === 0
+        ) {
+        this.props.mileageApprovalState.detail.response.data.items.map(item => {
+            if (item.statusType === WorkflowStatusType.Submitted) {
+              this.props.stateApprovalItem();
+            }
+          }  
+        );
+      }
     }
   }
 };
 
 export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
+  setDisplayName('MileageApprovalDetail'),
   withUser,
   withLayout,
   withOidc,
@@ -315,5 +337,4 @@ export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  setDisplayName('MileageApprovalDetail')
 )(MileageApprovalDetailView);
