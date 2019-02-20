@@ -47,10 +47,6 @@ function* watchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeNoteGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -76,10 +72,6 @@ function* watchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeNoteGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -100,10 +92,6 @@ function* watchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(accountEmployeeNoteGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

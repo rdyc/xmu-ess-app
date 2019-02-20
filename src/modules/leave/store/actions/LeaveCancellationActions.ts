@@ -25,17 +25,17 @@ export const enum LeaveCancellationAction {
 // get all
 export const leaveCancellationGetAllRequest = (request: ILeaveCancellationGetAllRequest) => action(LeaveCancellationAction.GET_ALL_REQUEST, request);
 export const leaveCancellationGetAllSuccess = (response: IResponseCollection<ILeave>) => action(LeaveCancellationAction.GET_ALL_SUCCESS, response);
-export const leaveCancellationGetAllError = (message: string) => action(LeaveCancellationAction.GET_ALL_ERROR, message);
+export const leaveCancellationGetAllError = (error: any) => action(LeaveCancellationAction.GET_ALL_ERROR, error);
 export const leaveCancellationGetAllDispose = () => action(LeaveCancellationAction.GET_ALL_DISPOSE);
 
 // get by id
 export const leaveCancellationGetByIdRequest = (request: ILeaveCancellationGetByIdRequest) => action(LeaveCancellationAction.GET_BY_ID_REQUEST, request);
 export const leaveCancellationGetByIdSuccess = (response: IResponseSingle<ILeaveDetail>) => action(LeaveCancellationAction.GET_BY_ID_SUCCESS, response);
-export const leaveCancellationGetByIdError = (message: string) => action(LeaveCancellationAction.GET_BY_ID_ERROR, message);
+export const leaveCancellationGetByIdError = (error: any) => action(LeaveCancellationAction.GET_BY_ID_ERROR, error);
 export const leaveCancellationGetByIdDispose = () => action(LeaveCancellationAction.GET_BY_ID_DISPOSE);
 
 // post
 export const leaveCancellationPostRequest = (request: ILeaveCancellationPostRequest) => action(LeaveCancellationAction.POST_REQUEST, request);
 export const leaveCancellationPostSuccess = (response: IResponseSingle<ILeave>) => action(LeaveCancellationAction.POST_SUCCESS, response);
-export const leaveCancellationPostError = (message: string) => action(LeaveCancellationAction.POST_ERROR, message);
+export const leaveCancellationPostError = (error: any) => action(LeaveCancellationAction.POST_ERROR, error);
 export const leaveCancellationPostDispose = () => action(LeaveCancellationAction.POST_DISPOSE);

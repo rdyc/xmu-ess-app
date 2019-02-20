@@ -47,10 +47,6 @@ function* watchFetchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
       ]
@@ -78,10 +74,6 @@ function* watchFetchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -102,10 +94,6 @@ function* watchFetchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCurrencyGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

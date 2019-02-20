@@ -34,23 +34,10 @@ function* watchGetAllRequest() {
         put(leaveCancellationGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(leaveCancellationGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(leaveCancellationGetAllError(response)),
       ],
       errorEffects: (error: TypeError) => [
         put(leaveCancellationGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
       ],
       finallyEffects: [
         // nothing
@@ -70,14 +57,7 @@ function* watchGetByIdRequest() {
         put(leaveCancellationGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(leaveCancellationGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(leaveCancellationGetByIdError(response)),
       ],
       errorEffects: (error: TypeError) => [
         put(leaveCancellationGetByIdError(error.message)),

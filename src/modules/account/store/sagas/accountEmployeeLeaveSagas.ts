@@ -4,7 +4,6 @@ import {
   accountEmployeeLeaveGetByIdRequest,
   accountEmployeeLeaveGetByIdSuccess,
 } from '@account/store/actions';
-import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
@@ -22,10 +21,6 @@ function* watchByIdFetchRequest() {
       ], 
       errorEffects: (error: TypeError) => [
         put(accountEmployeeLeaveGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ]
     });
   };

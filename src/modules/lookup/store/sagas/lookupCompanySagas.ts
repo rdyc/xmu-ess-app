@@ -47,10 +47,6 @@ function* watchFetchAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -76,10 +72,6 @@ function* watchFetchListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -100,10 +92,6 @@ function* watchFetchByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupCompanyGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

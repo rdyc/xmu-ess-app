@@ -37,13 +37,7 @@ function* watchGetAllRequest() {
         put(projectApprovalGetAllError(response)),
       ],
       errorEffects: (error: TypeError) => [
-        put(projectApprovalGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectApprovalGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -66,13 +60,7 @@ function* watchGetByIdRequest() {
         put(projectApprovalGetByIdError(response)),
       ],
       errorEffects: (error: TypeError) => [
-        put(projectApprovalGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
+        put(projectApprovalGetByIdError(error.message))
       ]
     });
   };
