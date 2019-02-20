@@ -50,10 +50,6 @@ function* watchGetAllRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [
         // nothing
@@ -77,10 +73,6 @@ function* watchGetAmountRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetAmountError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -106,10 +98,6 @@ function* watchGetListRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -130,10 +118,6 @@ function* watchGetByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(systemLimitGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

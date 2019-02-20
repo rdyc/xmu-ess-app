@@ -28,10 +28,6 @@ function* watchGetByIdRequest() {
       ]), 
       errorEffects: (error: TypeError) => ([
         put(lookupVersionGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };
