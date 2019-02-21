@@ -1,13 +1,13 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { AppRole } from '@constants/AppRole';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
 import { IMileageRequestDetail } from '@mileage/classes/response';
 import { MileageApprovalUserAction, MileageUserAction } from '@mileage/classes/types';
@@ -33,9 +33,9 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
 import { MileageApprovalDetailView } from './MileageApprovalDetailView';
+import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
@@ -254,7 +254,7 @@ const handlerCreators: HandleCreators<
 
       // notification: mark as complete
       props.notificationDispatch.markAsComplete({
-        moduleUid: ModuleDefinition.Mileage,
+        moduleUid: ModuleDefinitionType.Mileage,
         detailType: NotificationType.Approval,
         itemUid: match.params.mileageUid
       });

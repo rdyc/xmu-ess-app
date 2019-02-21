@@ -1,13 +1,15 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { IExpenseApprovalPostPayload } from '@expense/classes/request/approval';
+import { ExpenseUserAction } from '@expense/classes/types';
 import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,8 +31,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { ExpenseUserAction } from '@expense/classes/types';
-import { IAppBarMenu } from '@layout/interfaces';
 import { ExpenseApprovalDetailView } from './ExpenseApprovalDetailView';
 
 interface OwnRouteParams {
@@ -191,7 +191,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Expense,
+      moduleUid: ModuleDefinitionType.Expense,
       detailType: NotificationType.Approval,
       itemUid: match.params.expenseUid
     });

@@ -13,6 +13,7 @@ export const LookupMileageExceptionDetailView: React.SFC<LookupMileageExceptionD
     info={{
       uid: AppMenu.LookupMileageException,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/mileageexceptions',
       title: props.intl.formatMessage(lookupMessage.mileageException.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.mileageException.page.detailSubHeader),
     }}

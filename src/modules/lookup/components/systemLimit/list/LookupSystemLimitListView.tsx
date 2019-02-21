@@ -1,6 +1,3 @@
-import { ISystem } from '@common/classes/response';
-import { CommonCategory } from '@common/classes/types';
-import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
@@ -8,73 +5,64 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { CommonSummary } from '../detail/shared/CommonSummary';
-import { CommonListProps } from './CommonList';
-import { CommonListFilter } from './CommonListFilter';
 
-export const CommonListView: React.SFC<CommonListProps> = props => (
+import { ISystemLimit } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { LookupSystemLimitFilter } from './LookupSystemLimitFilter';
+import { LookupSystemLimitListProps } from './LookupSystemLimitList';
+import { LookupSystemLimitSummary } from './LookupSystemLimitSummary';
+
+export const LookupSystemLimitListView: React.SFC<LookupSystemLimitListProps> = props => (
   <React.Fragment>
-    <CollectionPage
+    <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.Common,
+        uid: AppMenu.LookupSystemLimit,
         parentUid: AppMenu.Lookup,
-        parentUrl: '/common/system',
-        enableNavBack: true,
-        title: `${props.intl.formatMessage(commonMessage.system.page.title)} ${CommonCategory[props.match.params.category]}`,
-        description: props.intl.formatMessage(commonMessage.system.page.subTitle),
+        title: props.intl.formatMessage(lookupMessage.systemLimit.page.listTitle),
+        description: props.intl.formatMessage(lookupMessage.systemLimit.page.listSubHeader),
       }}
 
       // state & fields
-      state={props.commonSystemState.all}
+      state={props.systemLimitState.all}
       fields={props.fields}
-      
-      // selection
-      // disableSelection={props.handleDisableSelection}
-      // onSelection={props.handleSelection}
-      
+
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: ISystem) => ( 
-        <CommonSummary 
-          data={item}
-          category={props.match.params.category}
-        />
+      summaryComponent={(item: ISystemLimit) => (
+        <LookupSystemLimitSummary data={item} />
       )}
-      actionComponent={(item: ISystem) => (
+      actionComponent={(item: ISystemLimit) => (
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => props.history.push(`/common/system/${props.match.params.category}/form`, { id: item.id })}
+            onClick={() => props.history.push(`/lookup/systemlimits/form`, { uid: item.uid })}
           >
-            <FormattedMessage {...layoutMessage.action.modify}/>
+            {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
-
           <Button 
             size="small"
-            onClick={() => props.history.push(`/common/system/${props.match.params.category}/${item.id}`)}
+            onClick={() => props.history.push(`/lookup/systemlimits/${item.uid}`, { companyUid: item.companyUid })}
           >
-            <FormattedMessage {...layoutMessage.action.details}/>
+            {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
-
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key={`common.system.${props.match.params.category}`}
-          default={props.commonSystemState.all.request && props.commonSystemState.all.request.filter && props.commonSystemState.all.request.filter.find}
+          key="lookup.systemlimit"
+          default={props.systemLimitState.all.request && props.systemLimitState.all.request.filter && props.systemLimitState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push(`/common/system/${props.match.params.category}/form`)}
+          onClick={() => props.history.push('/lookup/systemlimits/form')}
         >
           <AddCircle/>
         </IconButton>
@@ -89,7 +77,7 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.commonSystemState.all.isLoading || props.commonSystemState.all.isError}
+              disabled={props.systemLimitState.all.isLoading || props.systemLimitState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -105,11 +93,11 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
         </Tooltip>
       }
     />
-
-    <CommonListFilter 
+    <LookupSystemLimitFilter
       isOpen={props.isFilterOpen}
       initialProps={{
-        companyUid: props.companyUid
+        companyUid: props.companyUid,
+        categoryType: props.categoryType
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

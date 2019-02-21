@@ -1,7 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -188,7 +188,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
     <LookupSystemDialog
       title={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
       category="status"
-      moduleType={ModuleDefinition.Timesheet}
+      moduleType={ModuleDefinitionType.Timesheet}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

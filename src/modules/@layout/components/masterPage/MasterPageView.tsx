@@ -1,5 +1,4 @@
 import { LayoutTheme } from '@layout/hoc/withRoot';
-import { isWidthUp } from '@material-ui/core/withWidth';
 import * as classNames from 'classnames';
 import * as React from 'react';
 
@@ -16,32 +15,13 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
       { 
         props.userState.user &&
         <React.Fragment>
-          <TopBar
-            isOpenMenu={props.isOpenDrawerLeft}
-            onClickMenu={props.handleVisibilityDrawerLeft}
-            onClickNotif={props.handleVisibilityDrawerRight}
-          />
+          <TopBar />
 
-          <DrawerRight 
-            isOpen={props.isOpenDrawerRight}
-            anchor={props.layoutState.anchor}
-            className={classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)}
-            onClose={props.handleVisibilityDrawerRight}
-          />
+          <DrawerRight anchor={props.layoutState.anchor} />
           
-          <DrawerLeft
-            isOpen={props.isOpenDrawerLeft}
-            variant={isWidthUp('md', props.width) ? 'permanent' : 'temporary'}
-            anchor={props.layoutState.anchor}
-            className={props.classes.drawerPaper}
-            onClose={props.handleVisibilityDrawerLeft}
-          />
+          <DrawerLeft anchor={props.layoutState.anchor} />
           
-          <main className={classNames(
-            props.classes.content,
-            props.layoutState.isModeList ? props.classes.contentWithBottomNav : '',
-            props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}
-          >
+          <main className={classNames(props.classes.content, props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}>
             <ErrorBoundary>
               {props.children}
             </ErrorBoundary>
