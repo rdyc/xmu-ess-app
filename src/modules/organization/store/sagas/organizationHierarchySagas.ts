@@ -43,19 +43,10 @@ function* watchGetAllRequest() {
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationHierarchyGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationHierarchyGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [put(listBarLoading(false))]
     });
@@ -78,19 +69,10 @@ function* watchGetListRequest() {
         put(organizationHierarchyGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationHierarchyGetListError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationHierarchyGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -107,19 +89,10 @@ function* watchGetByIdRequest() {
         put(organizationHierarchyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationHierarchyGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationHierarchyGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };
