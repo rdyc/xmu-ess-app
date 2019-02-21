@@ -1,0 +1,131 @@
+import { UserAction } from '@layout/store/actions';
+import {
+  SettlementApprovalAction,
+  settlementApprovalGetAllDispose,
+  settlementApprovalGetAllError,
+  settlementApprovalGetAllRequest,
+  settlementApprovalGetAllSuccess,
+  settlementApprovalGetByIdDispose,
+  settlementApprovalGetByIdError,
+  settlementApprovalGetByIdRequest,
+  settlementApprovalGetByIdSuccess,
+  settlementApprovalPostError,
+  settlementApprovalPostRequest,
+  settlementApprovalPostSuccess,
+} from '@purchase/store/actions';
+import { flattenObject } from '@utils/flattenObject';
+import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
+import { SubmissionError } from 'redux-form';
+import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { IApiResponse } from 'utils';
+
+function* watchSettlementApprovalAllFetchRequest() {
+  const worker = (action: ReturnType<typeof settlementApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/approvals/purchase/settlement?${params}`,
+      successEffects: (response: IApiResponse) => ([
+        put(settlementApprovalGetAllSuccess(response.body)),
+      ]),
+      failureEffects: (response: IApiResponse) => ([
+        put(settlementApprovalGetAllError(response)),
+      ]),
+      errorEffects: (error: TypeError) => ([
+        put(settlementApprovalGetAllError(error.message)),
+      ]),
+      finallyEffects: [
+
+      ]
+    });
+  };
+
+  yield takeEvery(SettlementApprovalAction.GET_ALL_S_APPROVAL_REQUEST, worker);
+}
+
+function* watchSettlementApprovalByIdFetchRequest() {
+  const worker = (action: ReturnType<typeof settlementApprovalGetByIdRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
+      successEffects: (response: IApiResponse) => ([
+        put(settlementApprovalGetByIdSuccess(response.body)),
+      ]),
+      failureEffects: (response: IApiResponse) => ([
+        put(settlementApprovalGetByIdError(response)),
+      ]),
+      errorEffects: (error: TypeError) => ([
+        put(settlementApprovalGetByIdError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_REQUEST, worker);
+}
+
+function* watchSettlementApprovalPostFetchRequest() {
+  const worker = (action: ReturnType<typeof settlementApprovalPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(settlementApprovalGetAllDispose()),
+        put(settlementApprovalGetByIdDispose()),
+        put(settlementApprovalPostSuccess(response.body))
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(settlementApprovalPostError(response)),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => ([
+        put(settlementApprovalPostError(error.message)),
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(SettlementApprovalAction.POST_S_APPROVAL_REQUEST, worker);
+}
+
+function* watchSwitchAccess() {
+  function* worker() {
+    yield all([
+      put(settlementApprovalGetAllDispose()),
+      put(settlementApprovalGetByIdDispose()),
+    ]);
+  }
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
+}
+
+function* purchaseSettlementApprovalSagas() {
+  yield all([
+    fork(watchSettlementApprovalAllFetchRequest),
+    fork(watchSettlementApprovalByIdFetchRequest),
+    fork(watchSettlementApprovalPostFetchRequest),
+    fork(watchSwitchAccess)
+  ]);
+}
+
+export default purchaseSettlementApprovalSagas;
