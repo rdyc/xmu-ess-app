@@ -5,7 +5,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -13,6 +15,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IAppBarMenu } from '@layout/interfaces';
 import { HierarchyUserAction } from '@organization/classes/types';
 import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -23,6 +26,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -37,11 +41,13 @@ interface OwnState {
   dialogContent?: string;
   dialogCancelLabel?: string;
   dialogConfirmLabel?: string;
+  pageOptions?: IAppBarMenu[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setModify: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
+  setOptions: StateHandler<OwnState>;
 }
 
 export type OrganizationHierarchyDetailProps 
@@ -76,10 +82,25 @@ const stateUpdaters: StateUpdaters<OrganizationHierarchyDetailProps, OwnState, O
     dialogContent: undefined,
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
-  })
+  }),
+  setOptions: (prevState: OwnState, props: OrganizationHierarchyDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
 };
 
 const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: OrganizationHierarchyDetailProps) => () => { 
+    if (props.userState.user && props.match.params.hierarchyUid && !props.organizationHierarchyState.detail.isLoading) {
+      if (props.history.location.state.companyUid) {
+        props.organizationHierarchyDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          hierarchyUid: props.match.params.hierarchyUid
+        });
+      } else {
+        props.history.push('/organization/hierarchy');
+      }
+    }
+  },
   handleOnModify: (props: OrganizationHierarchyDetailProps) => () => { 
     props.setModify();
   },
@@ -130,6 +151,37 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, OwnHandl
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: OrganizationHierarchyDetailProps) {
+    if (this.props.match.params.hierarchyUid !== prevProps.match.params.hierarchyUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.organizationHierarchyState.detail.response !== prevProps.organizationHierarchyState.detail.response) {
+      const { isLoading } = this.props.organizationHierarchyState.detail;
+
+      const options: IAppBarMenu[] = [
+        {
+          id: HierarchyUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi,
+        },
+        {
+          id: HierarchyUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
+};
+
 export const OrganizationHierarchyDetail = compose(
   withRouter,
   withUser,
@@ -137,4 +189,5 @@ export const OrganizationHierarchyDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(OrganizationHierarchyDetailView);
