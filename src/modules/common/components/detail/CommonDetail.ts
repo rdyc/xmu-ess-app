@@ -5,7 +5,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -14,8 +16,10 @@ import {
 } from 'recompose';
 
 import { CommonUserAction } from '@common/classes/types';
+import { categoryTypeTranslator } from '@common/helper';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { commonMessage } from '@common/locales/messages/commonMessage';
+import { IAppBarMenu } from '@layout/interfaces';
 import { CommonDetailView } from './CommonDetailView';
 
 interface OwnRouteParams {
@@ -24,6 +28,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -38,11 +43,13 @@ interface OwnState {
   dialogContent?: string;
   dialogCancelLabel?: string;
   dialogConfirmLabel?: string;
+  pageOptions?: IAppBarMenu[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setModify: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
+  setOptions: StateHandler<OwnState>;
 }
 
 export type CommonDetailProps 
@@ -77,10 +84,21 @@ const stateUpdaters: StateUpdaters<CommonDetailProps, OwnState, OwnStateUpdaters
     dialogContent: undefined,
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
-  })
+  }),
+  setOptions: (prevState: OwnState, props: CommonDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
 };
 
 const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: CommonDetailProps) => () => { 
+    if (props.userState.user && props.match.params.category && props.match.params.id && !props.commonSystemState.detail.isLoading) {
+      props.commonDispatch.systemDetailRequest({
+          category: categoryTypeTranslator(props.match.params.category),
+          id: props.match.params.id
+      });
+    }
+  },
   handleOnModify: (props: CommonDetailProps) => () => { 
     props.setModify();
   },
@@ -130,6 +148,37 @@ const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<CommonDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: CommonDetailProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.handleOnLoadApi();
+    }
+
+    if (this.props.commonSystemState.detail.response !== prevProps.commonSystemState.detail.response) {
+      const { isLoading } = this.props.commonSystemState.detail;
+
+      const options: IAppBarMenu[] = [
+        {
+          id: CommonUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi,
+        },
+        {
+          id: CommonUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  },
+};
+
 export const CommonDetail = compose(
   withRouter,
   withUser,
@@ -137,4 +186,5 @@ export const CommonDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(CommonDetailView);

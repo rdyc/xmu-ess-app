@@ -6,25 +6,25 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IMileageRequest } from '@mileage/classes/response';
-import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
-import { MileageSummary } from '../shared/MileageSummary';
-import { MileageRequestListProps } from './MileageRequestList';
-import { MileageRequestListFilter } from './MileageRequestListFilter';
+import { IMileageException } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
+import { LookupMileageExceptionProps } from './LookupMileageExceptionList';
+import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
-export const MileageRequestListView: React.SFC<MileageRequestListProps> = props => (
+export const LookupMileageExceptionListView: React.SFC<LookupMileageExceptionProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.MileageRequest,
-        parentUid: AppMenu.Mileage,
-        title: props.intl.formatMessage(mileageMessage.request.page.listTitle),
-        description: props.intl.formatMessage(mileageMessage.request.page.listSubHeader),
+        uid: AppMenu.LookupMileageException,
+        parentUid: AppMenu.Lookup,
+        title: props.intl.formatMessage(lookupMessage.mileageException.page.listTitle),
+        description: props.intl.formatMessage(lookupMessage.mileageException.page.listSubHeader),
       }}
 
       // state & fields
-      state={props.mileageRequestState.all}
+      state={props.mileageExceptionState.all}
       fields={props.fields}
 
       // callback
@@ -32,14 +32,20 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IMileageRequest) => (
-        <MileageSummary data={item} />
+      summaryComponent={(item: IMileageException) => (
+        <LookupMileageExceptionSummary data={item} />
       )}
-      actionComponent={(item: IMileageRequest) => (
+      actionComponent={(item: IMileageException) => (
         <React.Fragment>
+           <Button 
+            size="small"
+            onClick={() => props.history.push(`/lookup/mileageexceptions/form`, { uid: item.uid })}
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
           <Button 
             size="small"
-            onClick={() => props.history.push(`/mileage/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/lookup/mileageexceptions/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -48,15 +54,15 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="mileage.request"
-          default={props.mileageRequestState.all.request && props.mileageRequestState.all.request.filter && props.mileageRequestState.all.request.filter.find}
+          key="lookup.mileageexception"
+          default={props.mileageExceptionState.all.request && props.mileageExceptionState.all.request.filter && props.mileageExceptionState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/mileage/requests/form')}
+          onClick={() => props.history.push('/lookup/mileageexceptions/form')}
         >
           <AddCircle/>
         </IconButton>
@@ -71,7 +77,7 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.mileageRequestState.all.isLoading || props.mileageRequestState.all.isError}
+              disabled={props.mileageExceptionState.all.isLoading || props.mileageExceptionState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -87,14 +93,11 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
         </Tooltip>
       }
     />
-    <MileageRequestListFilter 
+    <LookupMileageExceptionFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        year: props.year,
-        month: props.month,
-        status: props.status,
-        statusType: props.statusType,
-        isRejected: props.isRejected
+        companyUid: props.companyUid,
+        roleUid: props.roleUid
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

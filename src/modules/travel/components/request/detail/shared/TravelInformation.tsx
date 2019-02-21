@@ -10,7 +10,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ITravelRequestDetail | undefined;
+  data: ITravelRequestDetail;
 }
 
 type AllProps

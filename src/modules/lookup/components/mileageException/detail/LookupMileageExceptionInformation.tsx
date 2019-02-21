@@ -104,4 +104,4 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const MileageExceptionInformation = compose<AllProps, OwnProps>(injectIntl)(mileageExceptionInformation);
+export const LookupMileageExceptionInformation = compose<AllProps, OwnProps>(injectIntl)(mileageExceptionInformation);
