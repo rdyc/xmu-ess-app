@@ -40,35 +40,35 @@ export const enum OrganizationWorkflowAction {
 // get all
 export const organizationWorkflowGetAllRequest = (request: IOrganizationWorkflowAllRequest) => action(OrganizationWorkflowAction.GET_ALL_REQUEST, request);
 export const organizationWorkflowGetAllSuccess = (response: IResponseCollection<IWorkflow>) => action(OrganizationWorkflowAction.GET_ALL_SUCCESS, response);
-export const organizationWorkflowGetAllError = (message: string) => action(OrganizationWorkflowAction.GET_ALL_ERROR, message);
+export const organizationWorkflowGetAllError = (error: any) => action(OrganizationWorkflowAction.GET_ALL_ERROR, error);
 export const organizationWorkflowGetAllDispose = () => action(OrganizationWorkflowAction.GET_ALL_DISPOSE);
 
 // get list
 export const organizationWorkflowGetListRequest = (request: IOrganizationWorkflowListRequest) => action(OrganizationWorkflowAction.GET_LIST_REQUEST, request);
 export const organizationWorkflowGetListSuccess = (response: IResponseCollection<IWorkflowList>) => action(OrganizationWorkflowAction.GET_LIST_SUCCESS, response);
-export const organizationWorkflowGetListError = (message: string) => action(OrganizationWorkflowAction.GET_LIST_ERROR, message);
+export const organizationWorkflowGetListError = (error: any) => action(OrganizationWorkflowAction.GET_LIST_ERROR, error);
 export const organizationWorkflowGetListDispose = () => action(OrganizationWorkflowAction.GET_LIST_DISPOSE);
 
 // get by id
 export const organizationWorkflowGetByIdRequest = (request: IOrganizationWorkflowByIdRequest) => action(OrganizationWorkflowAction.GET_BY_ID_REQUEST, request);
 export const organizationWorkflowGetByIdSuccess = (response: IResponseCollection<IWorkflow>) => action(OrganizationWorkflowAction.GET_BY_ID_SUCCESS, response);
-export const organizationWorkflowGetByIdError = (message: string) => action(OrganizationWorkflowAction.GET_BY_ID_ERROR, message);
+export const organizationWorkflowGetByIdError = (error: any) => action(OrganizationWorkflowAction.GET_BY_ID_ERROR, error);
 export const organizationWorkflowGetByIdDispose = () => action(OrganizationWorkflowAction.GET_BY_ID_DISPOSE);
 
 // post
 export const organizationWorkflowPostRequest = (request: IOrganizationWorkflowPostRequest) => action(OrganizationWorkflowAction.POST_REQUEST, request);
 export const organizationWorkflowPostSuccess = (response: IResponseSingle<IWorkflow>) => action(OrganizationWorkflowAction.POST_SUCCESS, response);
-export const organizationWorkflowPostError = (message: string) => action(OrganizationWorkflowAction.POST_ERROR, message);
+export const organizationWorkflowPostError = (error: any) => action(OrganizationWorkflowAction.POST_ERROR, error);
 export const organizationWorkflowPostDispose = () => action(OrganizationWorkflowAction.POST_DISPOSE);
 
 // put
 export const organizationWorkflowPutRequest = (request: IOrganizationWorkflowPutRequest) => action(OrganizationWorkflowAction.PUT_REQUEST, request);
 export const organizationWorkflowPutSuccess = (response: IResponseSingle<IWorkflow>) => action(OrganizationWorkflowAction.PUT_SUCCESS, response);
-export const organizationWorkflowPutError = (message: string) => action(OrganizationWorkflowAction.PUT_ERROR, message);
+export const organizationWorkflowPutError = (error: any) => action(OrganizationWorkflowAction.PUT_ERROR, error);
 export const organizationWorkflowPutDispose = () => action(OrganizationWorkflowAction.PUT_DISPOSE);
 
 // delete
 export const organizationWorkflowDeleteRequest = (request: IOrganizationWorkflowDeleteRequest) => action(OrganizationWorkflowAction.DELETE_REQUEST, request);
 export const organizationWorkflowDeleteSuccess = (response: boolean) => action(OrganizationWorkflowAction.DELETE_SUCCESS, response);
-export const organizationWorkflowDeleteError = (message: string) => action(OrganizationWorkflowAction.DELETE_ERROR, message);
+export const organizationWorkflowDeleteError = (error: any) => action(OrganizationWorkflowAction.DELETE_ERROR, error);
 export const organizationWorkflowDeleteDispose = () => action(OrganizationWorkflowAction.DELETE_DISPOSE);

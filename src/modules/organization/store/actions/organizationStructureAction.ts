@@ -35,29 +35,29 @@ export const enum OrganizationStructureAction {
 // get all
 export const organizationStructureGetAllRequest = (request: IOrganizationStructureAllRequest) => action(OrganizationStructureAction.GET_ALL_STRUCTURE_REQUEST, request);
 export const organizationStructureGetAllSuccess = (response: IResponseCollection<IStructure>) => action(OrganizationStructureAction.GET_ALL_STRUCTURE_SUCCESS, response);
-export const organizationStructureGetAllError = (message: string) => action(OrganizationStructureAction.GET_ALL_STRUCTURE_ERROR, message);
+export const organizationStructureGetAllError = (error: any) => action(OrganizationStructureAction.GET_ALL_STRUCTURE_ERROR, error);
 export const organizationStructureGetAllDispose = () => action(OrganizationStructureAction.GET_ALL_STRUCTURE_DISPOSE);
 
 // get by id
 export const organizationStructureGetByIdRequest = (request: IOrganizationStructureByIdRequest) => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_REQUEST, request);
 export const organizationStructureGetByIdSuccess = (response: IResponseSingle<IStructureDetail>) => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_SUCCESS, response);
-export const organizationStructureGetByIdError = (message: string) => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_ERROR, message);
+export const organizationStructureGetByIdError = (error: any) => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_ERROR, error);
 export const organizationStructureGetByIdDispose = () => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_DISPOSE);
 
 // post
 export const organizationStructurePostRequest = (request: IOrganizationStructurePostRequest) => action(OrganizationStructureAction.POST_STRUCTURE_REQUEST, request);
 export const organizationStructurePostSuccess = (response: IResponseSingle<IStructure>) => action(OrganizationStructureAction.POST_STRUCTURE_SUCCESS, response);
-export const organizationStructurePostError = (message: string) => action(OrganizationStructureAction.POST_STRUCTURE_ERROR, message);
+export const organizationStructurePostError = (error: any) => action(OrganizationStructureAction.POST_STRUCTURE_ERROR, error);
 export const organizationStructurePostDispose = () => action(OrganizationStructureAction.POST_STRUCTURE_DISPOSE);
 
 // put
 export const organizationStructurePutRequest = (request: IOrganizationStructurePutRequest) => action(OrganizationStructureAction.PUT_STRUCTURE_REQUEST, request);
 export const organizationStructurePutSuccess = (response: IResponseSingle<IStructure>) => action(OrganizationStructureAction.PUT_STRUCTURE_SUCCESS, response);
-export const organizationStructurePutError = (message: string) => action(OrganizationStructureAction.PUT_STRUCTURE_ERROR, message);
+export const organizationStructurePutError = (error: any) => action(OrganizationStructureAction.PUT_STRUCTURE_ERROR, error);
 export const organizationStructurePutDispose = () => action(OrganizationStructureAction.PUT_STRUCTURE_DISPOSE);
 
 // delete
 export const organizationStructureDeleteRequest = (request: IOrganizationStructureDeleteRequest) => action(OrganizationStructureAction.DELETE_STRUCTURE_REQUEST, request);
 export const organizationStructureDeleteSuccess = (response: boolean) => action(OrganizationStructureAction.DELETE_STRUCTURE_SUCCESS, response);
-export const organizationStructureDeleteError = (message: string) => action(OrganizationStructureAction.DELETE_STRUCTURE_ERROR, message);
+export const organizationStructureDeleteError = (error: any) => action(OrganizationStructureAction.DELETE_STRUCTURE_ERROR, error);
 export const organizationStructureDeleteDispose = () => action(OrganizationStructureAction.DELETE_STRUCTURE_DISPOSE);
