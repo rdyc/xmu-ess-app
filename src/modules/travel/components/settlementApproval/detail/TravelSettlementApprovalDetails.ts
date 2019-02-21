@@ -108,6 +108,14 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
         positionUid: props.userState.user.position.uid,
         travelSettlementUid: props.match.params.travelSettlementUid
       });
+      if ( props.history.location.state ) {
+        props.travelApprovalDispatch.loadDetailRequest({
+          companyUid: props.userState.user.company.uid,
+          positionUid: props.userState.user.position.uid,
+          travelUid: props.history.location.state.travelUid
+        });
+      }
+      
     }
   },
   handleValidate: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -233,28 +241,28 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
       this.props.setOptions(options);
     }
   },
-  componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
-    if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
-      const { response } = nextProps.travelSettlementApprovalState.detail;
-      const { user } = this.props.userState;
-      const { loadDetailRequest } = this.props.travelApprovalDispatch;
+  // componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
+  //   if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
+  //     const { response } = nextProps.travelSettlementApprovalState.detail;
+  //     const { user } = this.props.userState;
+  //     const { loadDetailRequest } = this.props.travelApprovalDispatch;
 
-      if (user && response) {
-            loadDetailRequest ({
-              companyUid: user.company.uid,
-              positionUid: user.position.uid,
-              travelUid: response.data.travelUid
-            });
-          }
-    }
-  },
-  componentWillUnmount() {
-    const { travelSettlementApprovalDispatch, travelApprovalDispatch } = this.props;
+  //     if (user && response) {
+  //           loadDetailRequest ({
+  //             companyUid: user.company.uid,
+  //             positionUid: user.position.uid,
+  //             travelUid: response.data.travelUid
+  //           });
+  //         }
+  //   }
+  // },
+  // componentWillUnmount() {
+  //   const { travelSettlementApprovalDispatch, travelApprovalDispatch } = this.props;
 
-    travelSettlementApprovalDispatch.loadDetailDispose();
-    travelApprovalDispatch.loadDetailDispose();
+  //   travelSettlementApprovalDispatch.loadDetailDispose();
+  //   travelApprovalDispatch.loadDetailDispose();
     
-  }
+  // }
 };
 
 export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(

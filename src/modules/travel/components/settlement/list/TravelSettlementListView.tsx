@@ -53,7 +53,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
 
           <Button
             size="small"
-            onClick={() => props.history.push(`/travel/settlement/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/travel/settlement/requests/${item.uid}`, { travelUid: item.travelUid } )}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
