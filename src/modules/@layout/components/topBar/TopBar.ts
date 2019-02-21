@@ -1,5 +1,6 @@
 import AppEvent from '@constants/AppEvent';
 import { ICollectionValue } from '@layout/classes/core';
+import { pageHelper } from '@layout/helper/pageHelper';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
@@ -27,9 +28,7 @@ import { TopBarView } from './TopBarView';
 type TopBarMode = 'normal' | 'selection' | 'search';
 
 interface IOwnOption {
-  isOpenMenu: boolean;
-  onClickMenu: () => void;
-  onClickNotif: () => void;
+
 }
 
 interface IOwnState {
@@ -109,19 +108,19 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
 
 const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
   handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
-    dispatchEvent(new CustomEvent(AppEvent.onClickMenu));
+    dispatchEvent(new CustomEvent(AppEvent.DrawerLeft));
   },
   handleOnClickNotif: (props: TopBarProps) => (event: React.MouseEvent) => {
-    dispatchEvent(new CustomEvent(AppEvent.onClickNotif));
+    dispatchEvent(new CustomEvent(AppEvent.DrawerRight));
   },
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
-    props.layoutDispatch.navBackShow();
-    
     if (props.layoutState.parentUrl) {
-      props.history.push(props.layoutState.parentUrl);
+      pageHelper.redirect({ path: props.layoutState.parentUrl });
     } else {
       props.history.goBack();
     }
+
+    props.layoutDispatch.navBackShow();
   },
   handleOnClickSearch: (props: TopBarProps) => (event: React.MouseEvent) => {
     event.preventDefault();

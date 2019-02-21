@@ -1,6 +1,8 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import {
   AppBar,
   Button,
@@ -20,8 +22,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
-import { financeMessage } from '@finance/locales/messages/financeMessage';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { FinanceApprovalListFilterProps } from './FinanceApprovalListFilter';
 
 export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterProps> = props => (
@@ -109,7 +109,7 @@ export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterP
       title={props.intl.formatMessage(financeMessage.approval.field.moduleName)}
       category="finance"
       hideBackdrop={true}
-      moduleType={ModuleDefinition.Finance}
+      moduleType={ModuleDefinitionType.Finance}
       isOpen={props.isFilterModuleOpen}
       value={props.filterModule && props.filterModule.type}
       onSelected={props.handleFilterModuleOnSelected}

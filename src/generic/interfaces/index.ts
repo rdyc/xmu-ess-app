@@ -24,3 +24,4 @@ export * from './IResponseSingle';
 export * from './IUserAccount';
 export * from './IBaseQueryFilter';
 export * from './IBaseQueryPagingFilter';
+export * from './IRedirection';

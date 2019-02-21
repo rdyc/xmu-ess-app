@@ -1,11 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
 import { leaveApprovalMessage } from '@leave/locales/messages/leaveApprovalMessage';
@@ -169,7 +169,7 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, IOwnHandler> = {
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Leave,
+      moduleUid: ModuleDefinitionType.Leave,
       detailType: NotificationType.Approval,
       itemUid: props.match.params.leaveUid
     });

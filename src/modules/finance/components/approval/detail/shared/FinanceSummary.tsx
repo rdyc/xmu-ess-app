@@ -1,8 +1,7 @@
 import { IFinance } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
+import { GlobalFormat, ModuleDefinitionType } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
@@ -59,9 +58,9 @@ const financeSummary: React.SFC<AllProps> = props => (
             {...GlobalStyle.TextField.ReadOnly}
             multiline
             label={
-              props.data.moduleUid === ModuleDefinition.Expense &&
+              props.data.moduleUid === ModuleDefinitionType.Expense &&
               props.intl.formatMessage(financeMessage.approval.field.notesExpense) ||
-              props.data.moduleUid === ModuleDefinition.Mileage &&
+              props.data.moduleUid === ModuleDefinitionType.Mileage &&
               props.intl.formatMessage(financeMessage.approval.field.notesMileage)
             }
             value={props.data.document.documentNotes}

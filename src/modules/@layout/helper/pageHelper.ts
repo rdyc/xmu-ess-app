@@ -1,32 +1,12 @@
-export enum ModuleDefinition {
-  ProjectRegistration = 'MOD07',
-  ProjectAssignment = 'MOD08',
-  Leave = 'MOD10',
-  Expense = 'MOD01',
-  Timesheet = 'MOD09',
-  Travel = 'MOD05',
-  TravelSettlement = 'MOD06',
-  Purchase = 'MOD02',
-  PurchaseSettlement = 'MOD03',
-  Mileage = 'MOD04',
-  Finance = 'MOD11',
-}
+import AppEvent from '@constants/AppEvent';
+import { IRedirection } from '@generic/interfaces';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 
-export enum NotificationType {
-  Approval = 'Approval',
-  Assignment = 'New Assignment',
-  Notify = 'Notify',
-  Rejected = 'Rejected',
-  Settlement = 'Settlement',
-  NewOwner = 'New Owner'
-}
+const redirect = (redirection: IRedirection): void => {
+  dispatchEvent(new CustomEvent(AppEvent.Redirection, { detail: redirection }));
+};
 
-export interface IModuleRedirectResult {
-  path: string;
-  state: any;
-}
-
-export const redirector = (module: ModuleDefinition, type: NotificationType, uid?: string): IModuleRedirectResult => {
+const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?: string): void => {
   let path: string = '/';
 
   let state: any = { 
@@ -35,7 +15,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
   };
 
   switch (module) {
-    case ModuleDefinition.ProjectRegistration: 
+    case ModuleDefinitionType.ProjectRegistration: 
       path = '/project';
     
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -65,7 +45,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
 
-    case ModuleDefinition.ProjectAssignment:
+    case ModuleDefinitionType.ProjectAssignment:
       path = '/project';
       
       if (type === NotificationType.Assignment) {
@@ -75,7 +55,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
 
-    case ModuleDefinition.Leave:
+    case ModuleDefinitionType.Leave:
       path = '/leave';
       
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -85,7 +65,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
 
-    case ModuleDefinition.Expense:
+    case ModuleDefinitionType.Expense:
       path = '/expense';
 
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -95,7 +75,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
 
-    case ModuleDefinition.Timesheet:
+    case ModuleDefinitionType.Timesheet:
       path = '/timesheet';
 
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -105,7 +85,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
       
-    case ModuleDefinition.Travel:
+    case ModuleDefinitionType.Travel:
       path = '/travel';
 
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -140,7 +120,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
 
-    case ModuleDefinition.TravelSettlement:
+    case ModuleDefinitionType.TravelSettlement:
       path = '/travel';
 
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -170,7 +150,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;        
   
-    case ModuleDefinition.Purchase:
+    case ModuleDefinitionType.Purchase:
       path = '/purchase';
       
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -205,7 +185,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
   
-    case ModuleDefinition.PurchaseSettlement:
+    case ModuleDefinitionType.PurchaseSettlement:
       path = '/purchase/settlement';
 
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -234,7 +214,7 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       }
       break;
   
-    case ModuleDefinition.Mileage:
+    case ModuleDefinitionType.Mileage:
       path = '/mileage';
       
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
@@ -261,8 +241,13 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       break;
   }
     
-  return {
+  redirect({
     path,
     state
-  };
+  });
+};
+
+export const pageHelper = {
+  redirect,
+  redirectFrom
 };

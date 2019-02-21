@@ -1,7 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -159,7 +159,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
-      moduleType={ModuleDefinition.Travel}
+      moduleType={ModuleDefinitionType.Travel}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}
