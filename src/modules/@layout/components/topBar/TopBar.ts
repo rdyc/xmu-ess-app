@@ -1,3 +1,4 @@
+import AppEvent from '@constants/AppEvent';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -48,6 +49,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
+  handleOnClickMenu: (event: React.MouseEvent) => void;
+  handleOnClickNotif: (event: React.MouseEvent) => void;
   handleOnClickBack: (event: React.MouseEvent) => void;
   handleOnClickSearch: (event: React.MouseEvent) => void;
   handleOnClickMore: (event: React.MouseEvent) => void;
@@ -105,6 +108,12 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
+  handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
+    dispatchEvent(new CustomEvent(AppEvent.onClickMenu));
+  },
+  handleOnClickNotif: (props: TopBarProps) => (event: React.MouseEvent) => {
+    dispatchEvent(new CustomEvent(AppEvent.onClickNotif));
+  },
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.navBackShow();
     

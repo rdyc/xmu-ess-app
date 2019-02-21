@@ -1,5 +1,4 @@
 import { LayoutTheme } from '@layout/hoc/withRoot';
-import { isWidthUp } from '@material-ui/core/withWidth';
 import * as classNames from 'classnames';
 import * as React from 'react';
 
@@ -23,25 +22,14 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
           />
 
           <DrawerRight 
-            isOpen={props.isOpenDrawerRight}
             anchor={props.layoutState.anchor}
-            className={classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)}
-            onClose={props.handleVisibilityDrawerRight}
           />
           
-          <DrawerLeft
-            isOpen={props.isOpenDrawerLeft}
-            variant={isWidthUp('md', props.width) ? 'permanent' : 'temporary'}
+          <DrawerLeft 
             anchor={props.layoutState.anchor}
-            className={props.classes.drawerPaper}
-            onClose={props.handleVisibilityDrawerLeft}
           />
           
-          <main className={classNames(
-            props.classes.content,
-            props.layoutState.isModeList ? props.classes.contentWithBottomNav : '',
-            props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}
-          >
+          <main className={classNames(props.classes.content, props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}>
             <ErrorBoundary>
               {props.children}
             </ErrorBoundary>
