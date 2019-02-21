@@ -175,8 +175,8 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         props.mode === 'normal' &&
         <ToolbarControl
           color={isWidthUp('md', props.width) ? 'default' : 'inherit'}
-          menuclassName={classNames(props.classes.navIconHide, props.isOpenMenu && props.classes.hide)}
-          OnClickMenu={props.onClickMenu}
+          menuclassName={classNames(props.classes.navIconHide, isWidthUp('md', props.width) ? props.classes.hide : '')}
+          OnClickMenu={props.handleOnClickMenu}
           title={props.layoutState.view && props.layoutState.view.title}
           titleClassName={props.classes.flex}
           showBack={props.layoutState.isNavBackVisible}
@@ -185,7 +185,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           OnClickSearch={props.handleOnClickSearch}
           showNotif={true}
           notifCount={props.getCountNotif()}
-          OnClickNotif={props.onClickNotif}
+          OnClickNotif={props.handleOnClickNotif}
           showMore={props.layoutState.isMoreVisible}
           customControls={props.appBarState.controls}
           moreItems={props.appBarState.menus}
