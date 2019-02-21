@@ -44,6 +44,7 @@ interface IOwnOption {
     title: string;
     description: string;
     parentUrl?: string;
+    enableNavBack?: boolean;
   };
   fields: ICollectionValue[];
   onLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
@@ -196,7 +197,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
       },
       parentUrl: page.parentUrl,
       status: {
-        isNavBackVisible: false,
+        isNavBackVisible: page.enableNavBack || false,
         isMoreVisible: false,
         isModeList: true
       }

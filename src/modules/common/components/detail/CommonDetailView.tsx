@@ -1,97 +1,30 @@
 import { ISystemDetail } from '@common/classes/response';
-import { CommonUserAction } from '@common/classes/types';
-import { categoryTypeTranslator } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
-import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
-import { IAppBarMenu } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
+import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import * as React from 'react';
 import { CommonDetailProps } from './CommonDetail';
 import { CommonInformation } from './shared/CommonInformation';
 
-const config: SingleConfig<ISystemDetail, CommonDetailProps> = {
-  // page info
-  page: (props: CommonDetailProps) => ({
-    uid: AppMenu.Common,
-    parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(commonMessage.system.page.detailTitle),
-    description : props.intl.formatMessage(commonMessage.system.page.detailSubTitle)
-  }),
-  
-  parentUrl: (props: CommonDetailProps) => `/common/system/${props.match.params.category}`,
-  
-  // action centre
-  showActionCentre: true,
-
-  // more
-  hasMore: true,
-  moreOptions: (props: CommonDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
-    {
-      id: CommonUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleForceReload()
-    },
-    {
-      id: CommonUserAction.Modify,
-      name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: true,
-      visible: true,
-      onClick: props.handleOnModify
-    }
-  ]),
-
-  // events
-  onDataLoad: (props: CommonDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
-    const { user } = props.userState;
-    const { isLoading, request, response } = props.commonSystemState.detail;
-    const { systemDetailRequest } = props.commonDispatch;
-
-    // when user is set and not loading and has projectUid in route params
-    if (user && !isLoading && props.match.params.category && props.match.params.id) {
-      // when projectUid was changed or response are empty or force to reload
-      if ((request && request.id !== props.match.params.id) || !response || forceReload) {
-        systemDetailRequest({
-          category: categoryTypeTranslator(props.match.params.category),
-          id: props.match.params.id
-        });
-      } else {
-        // just take data from previous response
-        callback.handleResponse(response);
-      }
-    }
-  },
-  onUpdated: (props: CommonDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = props.commonSystemState.detail;
-    
-    callback.handleLoading(isLoading);
-
-    // when got a response from api
-    if (response && response.data) {
-      callback.handleResponse(response);
-    }
-  },
-
-  // primary
-  primaryComponent: (data: ISystemDetail, props: CommonDetailProps) => (
-    <CommonInformation 
-      data={data} 
-      category={props.match.params.category}
-    />
-  ),
-  
-  // secondary (multiple components are allowed)
-  secondaryComponents: (data: ISystemDetail, props: CommonDetailProps) => ([
-  ]),
-};
-
 export const CommonDetailView: React.SFC<CommonDetailProps> = props => (
-  <SinglePage
-    config={config}
-    connectedProps={props}
+  <PreviewPage
+    info={{
+      uid: AppMenu.Common,
+      parentUid: AppMenu.Lookup,
+      title: props.intl.formatMessage(commonMessage.system.page.detailTitle),
+      description : props.intl.formatMessage(commonMessage.system.page.detailSubTitle)
+    }}
+    options={props.pageOptions}
+    state={props.commonSystemState.detail}
+    onLoadApi={props.handleOnLoadApi}
+    primary={(data: ISystemDetail) => (
+      <CommonInformation 
+        data={data} 
+        category={props.match.params.category}
+      />
+    )}
+    secondary={() => ([])}
   >
     <DialogConfirmation 
       isOpen={props.dialogOpen}
@@ -103,5 +36,5 @@ export const CommonDetailView: React.SFC<CommonDetailProps> = props => (
       onClickCancel={props.handleOnCloseDialog}
       onClickConfirm={props.handleOnConfirm}
     />
-  </SinglePage>
+  </PreviewPage>
 );
