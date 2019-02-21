@@ -27,9 +27,9 @@ import { TopBarView } from './TopBarView';
 type TopBarMode = 'normal' | 'selection' | 'search';
 
 interface IOwnOption {
-  isOpenMenu: boolean;
-  onClickMenu: () => void;
-  onClickNotif: () => void;
+  // isOpenMenu: boolean;
+  // onClickMenu: () => void;
+  // onClickNotif: () => void;
 }
 
 interface IOwnState {
@@ -109,10 +109,10 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
 
 const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
   handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
-    dispatchEvent(new CustomEvent(AppEvent.onClickMenu));
+    dispatchEvent(new CustomEvent(AppEvent.DrawerLeft));
   },
   handleOnClickNotif: (props: TopBarProps) => (event: React.MouseEvent) => {
-    dispatchEvent(new CustomEvent(AppEvent.onClickNotif));
+    dispatchEvent(new CustomEvent(AppEvent.DrawerRight));
   },
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.navBackShow();

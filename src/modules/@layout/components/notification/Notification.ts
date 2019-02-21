@@ -1,10 +1,11 @@
-import { ModuleDefinition, NotificationType, redirector } from '@layout/helper/redirector';
+import AppEvent from '@constants/AppEvent';
+import { pageHelper } from '@layout/helper/pageHelper';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { INotificationDetailItem } from '@layout/interfaces';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -23,12 +24,11 @@ import { NotificationView } from './NotificationView';
 
 interface OwnOption {
   interval?: number;
-  onClose: () => void;
 }
 
 interface OwnState {
   index: number;
-  module?: ModuleDefinition;
+  module?: ModuleDefinitionType;
   name?: string;
   type?: NotificationType;
   shouldReload: boolean;
@@ -53,7 +53,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 interface OwnHandler {
   handleOnClickReload: () => void;
   handleOnChangeIndex: (e: React.MouseEvent, index: number, module?: string, name?: string, type?: string) => void;
-  handleRedirection: (uid: string, module?: ModuleDefinition, type?: NotificationType) => void;
+  handleRedirection: (uid: string, module?: ModuleDefinitionType, type?: NotificationType) => void;
 }
 
 export type NotificationProps
@@ -63,8 +63,7 @@ export type NotificationProps
   & OwnHandler
   & WithUser
   & WithNotification
-  & WithStyles<typeof styles>
-  & RouteComponentProps;
+  & WithStyles<typeof styles>;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
   index: 0,
@@ -79,7 +78,7 @@ const stateUpdaters: StateUpdaters<NotificationProps, OwnState, OwnStateUpdater>
   setTimer: (prev: OwnState) => (timerId?: number): Partial<OwnState> => ({
     timerId
   }),
-  setIndex: (prev: OwnState) => (index: number, module?: ModuleDefinition, name?: string, type?: NotificationType): Partial<OwnState> => ({
+  setIndex: (prev: OwnState) => (index: number, module?: ModuleDefinitionType, name?: string, type?: NotificationType): Partial<OwnState> => ({
     index,
     module,
     name,
@@ -103,16 +102,16 @@ const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
     
     props.setReload();
   },
-  handleOnChangeIndex: (props: NotificationProps) => (e: React.MouseEvent, index: number, module?: ModuleDefinition, name?: string, type?: string) => {
+  handleOnChangeIndex: (props: NotificationProps) => (e: React.MouseEvent, index: number, module?: ModuleDefinitionType, name?: string, type?: string) => {
     props.setIndex(index, module, name, type);
   },
-  handleRedirection: (props: NotificationProps) => (uid: string, module?: ModuleDefinition, type?: NotificationType) => {
-    props.onClose();
-
+  handleRedirection: (props: NotificationProps) => (uid: string, module?: ModuleDefinitionType, type?: NotificationType) => {
     if (module && type) {
-      const redirect = redirector(module, type, uid);
+      // open/close drawer event
+      dispatchEvent(new CustomEvent(AppEvent.DrawerRight));
       
-      props.history.push(redirect.path, redirect.state);
+      // redirection
+      pageHelper.redirectFrom(module, type, uid);
     }
   }
 };
@@ -141,7 +140,6 @@ export const Notification = compose<NotificationProps, OwnOption>(
   setDisplayName('Notification'),
   withUser,
   withNotification,
-  withRouter,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

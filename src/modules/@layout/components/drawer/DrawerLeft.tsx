@@ -33,7 +33,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnEventMenu: (event: CustomEvent) => void;
+  handleOnEventDrawerLeft: (event: CustomEvent) => void;
 }
 
 type DrawerLeftProps 
@@ -66,7 +66,7 @@ const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
       }
     }}
   >
-    <Navigation onClose={props.setVisibility} />
+    <Navigation />
   </Drawer>
 );
 
@@ -77,17 +77,17 @@ const stateUpdaters: StateUpdaters<DrawerLeftProps, IOwnState, IOwnStateUpdater>
 };
 
 const handlerCreators: HandleCreators<DrawerLeftProps, IOwnHandler> = {
-  handleOnEventMenu: (props: DrawerLeftProps) => (event: CustomEvent) => {
+  handleOnEventDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
     props.setVisibility();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerLeftProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.onClickMenu, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onClickMenu, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
   }
 };
 

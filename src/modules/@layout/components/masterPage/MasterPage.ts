@@ -1,77 +1,44 @@
+import AppEvent from '@constants/AppEvent';
+import { IRedirection } from '@generic/interfaces';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import {
-  compose,
-  HandleCreators,
-  lifecycle,
-  mapper,
-  ReactLifeCycleFunctions,
-  setDisplayName,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
 
 import { MasterPageView } from './MasterPageView';
 
 interface IOwnOption {
-  showDrawerRight?: boolean;
-}
-
-interface IOwnState {
-  isOpenDrawerLeft: boolean;
-  isOpenDrawerRight: boolean;
-}
-
-interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setDrawerRight: StateHandler<IOwnState>;
-  setDrawerLeft: StateHandler<IOwnState>;
+  
 }
 
 interface IOwnHandler {
-  handleVisibilityDrawerLeft: () => void;
-  handleVisibilityDrawerRight: () => void;
+  handleOnEventRedirection: (event: CustomEvent) => void;
 }
 
 export type MasterPageProps
   = IOwnOption
-  & IOwnState
-  & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
-  & WithUser;
-
-const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  isOpenDrawerLeft: true,
-  isOpenDrawerRight: props.showDrawerRight || false
-});
-
-const stateUpdaters: StateUpdaters<MasterPageProps, IOwnState, IOwnStateUpdater> = {
-  setDrawerLeft: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpenDrawerLeft: !prevState.isOpenDrawerLeft
-  }),
-  setDrawerRight: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpenDrawerRight: !prevState.isOpenDrawerRight
-  })
-};
+  & WithUser
+  & RouteComponentProps;
 
 const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
-  handleVisibilityDrawerLeft: (props: MasterPageProps) => () => {
-    props.setDrawerLeft();
-  },
-  handleVisibilityDrawerRight: (props: MasterPageProps) => () => {
-    props.setDrawerRight();
+  handleOnEventRedirection: (props: MasterPageProps) => (event: CustomEvent) => {
+    const redirect: IRedirection = event.detail;
+
+    setTimeout(() => props.history.push(redirect.path, redirect.state), 100);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<MasterPageProps, IOwnState> = {
+const lifecycles: ReactLifeCycleFunctions<MasterPageProps, {}> = {
+  componentDidMount() {
+    addEventListener(AppEvent.Redirection, this.props.handleOnEventRedirection);
+  },
   componentDidUpdate(prevProps: MasterPageProps) {
     if (this.props.layoutState.view !== prevProps.layoutState.view) {
       const envWebName = process.env.REACT_APP_WEBSITE_NAME;
@@ -90,16 +57,19 @@ const lifecycles: ReactLifeCycleFunctions<MasterPageProps, IOwnState> = {
         document.title = envWebName || '?';	
       }
     }
+  },
+  componentWillUnmount() {
+    removeEventListener(AppEvent.Redirection, this.props.handleOnEventRedirection);
   }
 };
 
 export const MasterPage = compose<MasterPageProps, IOwnOption>(
   setDisplayName('MasterPage'),
-  withStyles(styles),
-  withWidth(),
+  withRouter,
   withLayout,
   withUser,
-  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  withStyles(styles),
+  withWidth(),
 )(MasterPageView);
