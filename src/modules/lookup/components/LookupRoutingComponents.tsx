@@ -25,7 +25,7 @@ import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
-import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
+import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
@@ -64,7 +64,7 @@ const currency = (props: RouteComponentProps) => (
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={MileageExceptionEditor} />
-    <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
+    <Route path={`${props.match.path}/:mileageExceptionUid`} component={LookupMileageExceptionDetail} />
     <Route path={`${props.match.path}`} component={LookupMileageExceptionList} />
   </Switch>
 );
