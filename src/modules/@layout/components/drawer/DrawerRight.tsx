@@ -51,19 +51,19 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
 
 const DrawerRightView: React.SFC<DrawerRightProps> = props => (
   <SwipeableDrawer
+    open={props.isOpen}
     variant="temporary"
     anchor={props.anchor === 'left' ? 'right' : 'left'}
     classes={{
       paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
     }} 
-    open={props.isOpen}
+    ModalProps={{
+      keepMounted: true
+    }}
     onOpen={props.setVisibility}
     onClose={props.setVisibility}
-    ModalProps={{
-      keepMounted: true, // Better open performance on mobile.
-    }}
   >
-    <Notification onClose={props.setVisibility} />
+    <Notification />
   </SwipeableDrawer>
 );
 
@@ -81,10 +81,10 @@ const handlerCreators: HandleCreators<DrawerRightProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<DrawerRightProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.onClickNotif, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onClickNotif, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
   }
 };
 

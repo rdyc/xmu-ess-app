@@ -1,7 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import {
   AppBar,
@@ -148,7 +148,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
     <LookupSystemDialog
       title={props.intl.formatMessage(leaveMessage.request.field.statusType)}
       category="status"
-      moduleType={ModuleDefinition.Leave}
+      moduleType={ModuleDefinitionType.Leave}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

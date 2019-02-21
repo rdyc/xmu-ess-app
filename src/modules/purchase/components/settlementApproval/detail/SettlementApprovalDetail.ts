@@ -1,12 +1,14 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { ISettlementApprovalPostPayload } from '@purchase/classes/request/settlementApproval';
+import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -28,8 +30,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { IAppBarMenu } from '@layout/interfaces';
-import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
 interface OwnHandler {
@@ -181,7 +181,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.PurchaseSettlement,
+      moduleUid: ModuleDefinitionType.PurchaseSettlement,
       detailType: NotificationType.Approval,
       itemUid: props.match.params.purchaseUid
     });

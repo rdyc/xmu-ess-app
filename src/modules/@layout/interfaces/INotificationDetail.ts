@@ -1,5 +1,4 @@
-import { NotificationType } from '@layout/helper/redirector';
-
+import { NotificationType } from '@layout/types';
 import { INotificationDetailItem } from './INotificationDetailItem';
 
 export interface INotificationDetail {

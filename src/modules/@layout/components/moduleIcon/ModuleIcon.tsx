@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { ModuleDefinition } from '@layout/helper/redirector';
+import { ModuleDefinitionType } from '@layout/types';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -18,7 +18,7 @@ import WeekendIcon from '@material-ui/icons/Weekend';
 import * as React from 'react';
 
 interface ModuleIconProps {
-  module: AppMenu | ModuleDefinition | string;
+  module: AppMenu | ModuleDefinitionType | string;
   innerProps?: SvgIconProps;
 }
 
@@ -28,26 +28,26 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
       return <HomeIcon {...props.innerProps} />;
 
     case AppMenu.Expense:
-    case ModuleDefinition.Expense:
+    case ModuleDefinitionType.Expense:
       return <LocalMallIcon {...props.innerProps} />;
 
     case AppMenu.Leave:
-    case ModuleDefinition.Leave:
+    case ModuleDefinitionType.Leave:
       return <WeekendIcon {...props.innerProps} />;
 
     case AppMenu.Mileage:
-    case ModuleDefinition.Mileage:
+    case ModuleDefinitionType.Mileage:
       return <DepartureBoardIcon {...props.innerProps} />;
 
     case AppMenu.Account:
       return <PersonPinIcon {...props.innerProps} />;
 
     case AppMenu.ProjectAssignment:
-    case ModuleDefinition.ProjectAssignment:
+    case ModuleDefinitionType.ProjectAssignment:
       return <AssignmentIcon {...props.innerProps} />;
 
     case AppMenu.ProjectRegistration:
-    case ModuleDefinition.ProjectRegistration:
+    case ModuleDefinitionType.ProjectRegistration:
       return <NextWeekIcon {...props.innerProps} />;
 
     case AppMenu.Report:
@@ -57,17 +57,17 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
       return <SettingsIcon {...props.innerProps} />;
 
     case AppMenu.Timesheet:
-    case ModuleDefinition.Timesheet:
+    case ModuleDefinitionType.Timesheet:
       return <AlarmOnIcon {...props.innerProps} />;
 
     case AppMenu.Travel:
-    case ModuleDefinition.Travel:
-    case ModuleDefinition.TravelSettlement:
+    case ModuleDefinitionType.Travel:
+    case ModuleDefinitionType.TravelSettlement:
       return <FlightTakeOffIcon {...props.innerProps} />;
     
     case AppMenu.Purchase:
-    case ModuleDefinition.Purchase:
-    case ModuleDefinition.PurchaseSettlement:
+    case ModuleDefinitionType.Purchase:
+    case ModuleDefinitionType.PurchaseSettlement:
       return <ShoppingCartIcon {...props.innerProps} />;
 
     case AppMenu.Finance:
