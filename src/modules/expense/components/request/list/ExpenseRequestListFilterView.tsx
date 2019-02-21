@@ -1,8 +1,8 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { InputDateWithValue } from '@layout/components/input/date';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -230,7 +230,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
     <LookupSystemDialog
       title={props.intl.formatMessage(expenseMessage.request.field.status)}
       category="status"
-      moduleType={ModuleDefinition.Expense}
+      moduleType={ModuleDefinitionType.Expense}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

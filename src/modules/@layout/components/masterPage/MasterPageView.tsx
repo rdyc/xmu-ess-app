@@ -15,19 +15,11 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
       { 
         props.userState.user &&
         <React.Fragment>
-          <TopBar
-            isOpenMenu={props.isOpenDrawerLeft}
-            onClickMenu={props.handleVisibilityDrawerLeft}
-            onClickNotif={props.handleVisibilityDrawerRight}
-          />
+          <TopBar />
 
-          <DrawerRight 
-            anchor={props.layoutState.anchor}
-          />
+          <DrawerRight anchor={props.layoutState.anchor} />
           
-          <DrawerLeft 
-            anchor={props.layoutState.anchor}
-          />
+          <DrawerLeft anchor={props.layoutState.anchor} />
           
           <main className={classNames(props.classes.content, props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}>
             <ErrorBoundary>

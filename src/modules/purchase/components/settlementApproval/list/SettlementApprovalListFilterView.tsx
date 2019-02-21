@@ -1,7 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -159,7 +159,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.status)}
       category="status"
-      moduleType={ModuleDefinition.PurchaseSettlement}
+      moduleType={ModuleDefinitionType.PurchaseSettlement}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

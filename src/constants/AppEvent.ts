@@ -1,6 +1,7 @@
 enum AppEvent {
-  onClickMenu = 'onClick@menu',
-  onClickNotif = 'onClick@notif',
+  Redirection = 'page.redirection',
+  DrawerLeft = 'drawer.left',
+  DrawerRight = 'drawer.right',
 }
 
 export default AppEvent;
