@@ -63,7 +63,7 @@ const DrawerRightView: React.SFC<DrawerRightProps> = props => (
       keepMounted: true, // Better open performance on mobile.
     }}
   >
-    <Notification onClose={props.setVisibility} />
+    <Notification />
   </SwipeableDrawer>
 );
 
@@ -81,10 +81,10 @@ const handlerCreators: HandleCreators<DrawerRightProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<DrawerRightProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.onClickNotif, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onClickNotif, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
   }
 };
 

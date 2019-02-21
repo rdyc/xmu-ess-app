@@ -3,8 +3,8 @@ import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { ModuleDefinitionType } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -23,7 +23,7 @@ import { LookupSystemDialogView } from './LookupSystemDialogView';
 interface OwnOption { 
   category: CommonCategoryType;
   companyUid?: string;
-  moduleType?: ModuleDefinition;
+  moduleType?: ModuleDefinitionType;
   isOpen: boolean;
   hideBackdrop?: boolean;
   disabled?: boolean;

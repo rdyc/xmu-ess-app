@@ -1,6 +1,7 @@
-import { ModuleDefinition, NotificationType, redirector } from '@layout/helper/redirector';
+import { pageHelper } from '@layout/helper/pageHelper';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WithLookupVersion, withLookupVersion } from '@lookup/hoc/withLookupVersion';
 import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import styles from '@styles';
@@ -45,7 +46,7 @@ interface IOwnHandler {
   isExpanded: (cIndex: number, dIndex: number) => boolean;
   handleSyncClick: () => void;
   handleDownloadClick: (e: React.MouseEvent) => void;
-  handleNotifClick: (category: ModuleDefinition, type: NotificationType, uid?: string) => void;
+  handleNotifClick: (category: ModuleDefinitionType, type: NotificationType, uid?: string) => void;
 }
 
 export type NotificationProps
@@ -120,10 +121,8 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
       });
     }
   },
-  handleNotifClick: (props: NotificationProps) => (category: ModuleDefinition, type: NotificationType, uid?: string) => {
-    const redirect = redirector(category, type, uid);
-
-    props.history.push(redirect.path, redirect.state);
+  handleNotifClick: (props: NotificationProps) => (category: ModuleDefinitionType, type: NotificationType, uid?: string) => {
+    pageHelper.redirectFrom(category, type, uid);
   },
   handleDownloadClick: (props: NotificationProps) => () => {
     const cdn = process.env.REACT_APP_CDN_HOST || window.location.origin;
