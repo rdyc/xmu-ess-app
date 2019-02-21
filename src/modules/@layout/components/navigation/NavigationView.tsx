@@ -1,8 +1,8 @@
 import AppMenu from '@constants/AppMenu';
 import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { ModuleIcon } from '../moduleIcon/ModuleIcon';
@@ -52,7 +52,10 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
               }}
             />
             <ListItemSecondaryAction>
-              {props.headerUid === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
+              <ExpandMore 
+                color="action" 
+                className={classNames(props.classes.expand, props.headerUid === header.uid ? props.classes.expandOpen : '')} 
+              />
             </ListItemSecondaryAction>
           </ListItem>
           
