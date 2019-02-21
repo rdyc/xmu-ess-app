@@ -27,10 +27,6 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
       state={props.mileageRequestState.all}
       fields={props.fields}
 
-      // selection
-      // disableSelection={props.handleDisableSelection}
-      // onSelection={props.handleSelection}
-
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
