@@ -35,7 +35,12 @@ export const TravelSettlementDetailViews: React.SFC<TravelSettlementDetailProps>
       <TravelSettlementItem data={data.items} />,
       <TravelRequestItem data={props.travelRequestState.detail.response && props.travelRequestState.detail.response.data.items} />,
       <TravelSettlementInformation data={data} />,
-      <TravelInformation data={props.travelRequestState.detail.response && props.travelRequestState.detail.response.data} />,
+      <React.Fragment>
+        {
+          props.travelRequestState.detail.response &&
+          <TravelInformation data={props.travelRequestState.detail.response.data} />
+        }
+      </React.Fragment>,
       <WorkflowHistory data={data.workflow} />,
 
     ])}

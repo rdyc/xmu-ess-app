@@ -53,7 +53,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
 }
 
-export type TravelSettlementDetailProps 
+export type TravelSettlementDetailProps
   = WithOidc
   & WithUser
   & WithTravelSettlement
@@ -64,7 +64,7 @@ export type TravelSettlementDetailProps
   & OwnStateUpdaters
   & OwnHandler;
 
-const createProps: mapper<TravelSettlementDetailProps, OwnState> = (props: TravelSettlementDetailProps): OwnState => ({ 
+const createProps: mapper<TravelSettlementDetailProps, OwnState> = (props: TravelSettlementDetailProps): OwnState => ({
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
@@ -78,7 +78,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnSta
     action: TravelUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle), 
+    dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(travelMessage.request.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
@@ -94,28 +94,35 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnSta
 };
 
 const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> = {
-  handleOnLoadApi: (props: TravelSettlementDetailProps) => () => { 
+  handleOnLoadApi: (props: TravelSettlementDetailProps) => () => {
     if (props.userState.user && props.match.params.travelSettlementUid && !props.travelSettlementState.detail.isLoading) {
       props.travelSettlementDispatch.loadRequest({
         companyUid: props.userState.user.company.uid,
         positionUid: props.userState.user.position.uid,
         travelSettlementUid: props.match.params.travelSettlementUid
       });
+      if (props.history.location.state) {
+        props.travelRequestDispatch.loadDetailRequest({
+          companyUid: props.userState.user.company.uid,
+          positionUid: props.userState.user.position.uid,
+          travelUid: props.history.location.state.travelUid
+        });        
+      }      
     }
   },
-  handleOnModify: (props: TravelSettlementDetailProps) => () => { 
+  handleOnModify: (props: TravelSettlementDetailProps) => () => {
     props.setModify();
   },
-  handleOnCloseDialog: (props: TravelSettlementDetailProps) => () => { 
+  handleOnCloseDialog: (props: TravelSettlementDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: TravelSettlementDetailProps) => () => { 
+  handleOnConfirm: (props: TravelSettlementDetailProps) => () => {
     const { response } = props.travelSettlementState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
       return;
-    } 
+    }
 
     // define vars
     let travelSettlementUid: string | undefined;
@@ -143,8 +150,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> =
       }
 
       props.setDefault();
-      props.history.push(next, { 
-          uid: travelSettlementUid 
+      props.history.push(next, {
+        uid: travelSettlementUid
       });
     }
   },
@@ -169,7 +176,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState>
       }
 
       // checking status types
-      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => { 
+      const isContains = (statusType: string | undefined, statusTypes: string[]): boolean => {
         return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
       };
 
@@ -186,7 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState>
           id: TravelUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded]),
+          visible: isContains(_statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded]),
           onClick: this.props.handleOnModify
         }
       ];
@@ -201,12 +208,12 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState>
       const { loadDetailRequest } = this.props.travelRequestDispatch;
 
       if (user && response) {
-            loadDetailRequest ({
-              companyUid: user.company.uid,
-              positionUid: user.position.uid,
-              travelUid: response.data.travelUid
-            });
-          }
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelUid: response.data.travelUid
+        });
+      }
     }
   },
   componentWillUnmount() {
@@ -214,8 +221,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, OwnState>
 
     travelSettlementDispatch.loadDetailDispose();
     travelRequestDispatch.loadDetailDispose();
-    
-  }  
+
+  }
 };
 
 export const TravelSettlementDetails = compose(
@@ -225,7 +232,7 @@ export const TravelSettlementDetails = compose(
   withTravelSettlement,
   withTravelRequest,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters), 
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   setDisplayName('TravelSettlementDetail')
