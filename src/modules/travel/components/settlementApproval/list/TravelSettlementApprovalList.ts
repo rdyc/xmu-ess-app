@@ -197,17 +197,15 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListProps, IOw
     const isFilterChanged = !shallowEqual(
       {
         customerUid: this.props.customerUid,
-        projectType: this.props.projectType,
         statusType: this.props.statusType,
         status: this.props.status,
         isNotify: this.props.isNotify
       },
       {
         customerUid: prevProps.customerUid,
-        projectType: prevProps.projectType,
         statusType: prevProps.statusType,
-        isRejected: prevProps.isRejected,
-        isNewOwner: prevProps.isNewOwner
+        status: prevProps.status,
+        isNotify: prevProps.isNotify
       }
     );
 
