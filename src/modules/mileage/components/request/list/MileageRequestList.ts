@@ -35,13 +35,11 @@ interface IOwnOption {
 interface IOwnState extends IMileageRequestListFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
-  // selected: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
-  // setSelection: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -51,8 +49,6 @@ interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IMileageRequestListFilterResult) => void;
   handleFilterBadge: () => boolean;
-  // handleSelection: (values: string[]) => void;
-  // handleDisableSelection: (item: IProject) => boolean;
 }
 
 export type MileageRequestListProps 
@@ -70,7 +66,6 @@ const createProps: mapper<MileageRequestListProps, IOwnState> = (props: MileageR
 
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
     fields: Object.keys(MileageRequestField).map(key => ({
       value: key,
       name: MileageRequestField[key]
@@ -101,9 +96,6 @@ const stateUpdaters: StateUpdaters<MileageRequestListProps, IOwnState, IOwnState
     ...filter,
     isFilterOpen: false
   }),
-  // setSelection: (state: IOwnState) => (values?: string[]): Partial<IOwnState> => ({
-  //   selected: values
-  // }),
 };
 
 const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
@@ -189,12 +181,6 @@ const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
       props.status !== undefined ||
       props.isRejected === true;
   },
-  // handleSelection: (props: MileageRequestListProps) => (values: string[]) => {
-  //   console.log(values);
-  // },
-  // handleDisableSelection: (props: MileageRequestListProps) => (item: IProject): boolean => {
-  //   return item.statusType === 'SST03';
-  // }
 };
 
 const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, IOwnState> = {

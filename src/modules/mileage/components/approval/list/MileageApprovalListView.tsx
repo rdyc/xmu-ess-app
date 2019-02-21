@@ -26,10 +26,6 @@ export const MileageApprovalListView: React.SFC<MileageApprovalListProps> = prop
       state={props.mileageApprovalState.all}
       fields={props.fields}
 
-      // selection
-      // disableSelection={props.handleDisableSelection}
-      // onSelection={props.handleSelection}
-
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
