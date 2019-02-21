@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
@@ -12,7 +13,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -23,7 +26,12 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 
+interface OwnRouteParams {
+  currencyUid: string;
+}
+
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -31,6 +39,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   action?: CurrencyUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -41,13 +50,10 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
   setDelete: StateHandler<OwnState>;
-}
-
-interface OwnRouteParams {
-  currencyUid: string;
 }
 
 export type CurrencyDetailProps
@@ -66,6 +72,9 @@ const createProps: mapper<CurrencyDetailProps, OwnState> = (props: CurrencyDetai
 });
 
 const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: CurrencyDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
     action: CurrencyUserAction.Modify,
     dialogFullScreen: false,
@@ -96,6 +105,13 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
 };
 
 const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: CurrencyDetailProps) => () => {
+    if (props.userState.user && props.match.params.currencyUid && !props.lookupCurrencyState.detail.isLoading) {
+      props.lookupCurrencyDispatch.loadDetailRequest({
+        currencyUid: props.match.params.currencyUid
+      });
+    }
+  },  
   handleOnModify: (props: CurrencyDetailProps) => () => {
     props.setModify();
   },
@@ -187,6 +203,47 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: CurrencyDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.currencyUid !== prevProps.match.params.currencyUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupCurrencyState.detail.response !== prevProps.lookupCurrencyState.detail.response) {
+      const { isLoading } = this.props.lookupCurrencyState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {              
+          id: CurrencyUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: CurrencyUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        },
+        {
+          id: CurrencyUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const CurrencyDetail = compose(
   withUser,
   withLayout,
@@ -195,4 +252,5 @@ export const CurrencyDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(CurrencyDetailView);
