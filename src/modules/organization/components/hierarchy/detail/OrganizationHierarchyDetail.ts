@@ -91,10 +91,14 @@ const stateUpdaters: StateUpdaters<OrganizationHierarchyDetailProps, OwnState, O
 const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, OwnHandler> = {
   handleOnLoadApi: (props: OrganizationHierarchyDetailProps) => () => { 
     if (props.userState.user && props.match.params.hierarchyUid && !props.organizationHierarchyState.detail.isLoading) {
-      props.organizationHierarchyDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        hierarchyUid: props.match.params.hierarchyUid
-      });
+      if (props.history.location.state.companyUid) {
+        props.organizationHierarchyDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          hierarchyUid: props.match.params.hierarchyUid
+        });
+      } else {
+        props.history.push('/organization/hierarchy');
+      }
     }
   },
   handleOnModify: (props: OrganizationHierarchyDetailProps) => () => { 
