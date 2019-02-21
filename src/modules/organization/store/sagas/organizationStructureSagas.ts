@@ -39,19 +39,10 @@ function* watchGetAllRequest() {
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationStructureGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationStructureGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationStructureGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [put(listBarLoading(false))]
     });
@@ -69,19 +60,10 @@ function* watchGetByIdRequest() {
         put(organizationStructureGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationStructureGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationStructureGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationStructureGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };
