@@ -235,7 +235,7 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, OwnState> = {
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnModify
+          onClick: this.props.handleOnDelete
         },
       ];
 
