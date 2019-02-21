@@ -23,7 +23,7 @@ import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchPurchaseAllFetchRequest() {
+function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof purchaseGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, {
       allowDots: true,
@@ -51,7 +51,7 @@ function* watchPurchaseAllFetchRequest() {
   yield takeEvery(PurchaseAction.GET_ALL_REQUEST, worker);
 }
 
-function* watchPurchaseByIdFetchRequest() {
+function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof purchaseGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
@@ -71,7 +71,7 @@ function* watchPurchaseByIdFetchRequest() {
   yield takeEvery(PurchaseAction.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPurchasePostFetchRequest() {
+function* watchPostRequest() {
   const worker = (action: ReturnType<typeof purchasePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
@@ -112,7 +112,7 @@ function* watchPurchasePostFetchRequest() {
   yield takeEvery(PurchaseAction.POST_REQUEST, worker);
 }
 
-function* watchPurchasePutFetchRequest() {
+function* watchPutRequest() {
   const worker = (action: ReturnType<typeof purchasePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
@@ -166,10 +166,10 @@ function* watchSwitchAccess() {
 
 function* purchaseRequestSagas() {
   yield all([
-    fork(watchPurchaseAllFetchRequest),
-    fork(watchPurchaseByIdFetchRequest),
-    fork(watchPurchasePostFetchRequest),
-    fork(watchPurchasePutFetchRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
     fork(watchSwitchAccess)
   ]);
 }

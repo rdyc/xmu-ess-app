@@ -20,7 +20,7 @@ import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchSettlementApprovalAllFetchRequest() {
+function* watchGetAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, {
       allowDots: true,
@@ -48,7 +48,7 @@ function* watchSettlementApprovalAllFetchRequest() {
   yield takeEvery(SettlementApprovalAction.GET_ALL_S_APPROVAL_REQUEST, worker);
 }
 
-function* watchSettlementApprovalByIdFetchRequest() {
+function* watchGetByIdFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
@@ -68,7 +68,7 @@ function* watchSettlementApprovalByIdFetchRequest() {
   yield takeEvery(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_REQUEST, worker);
 }
 
-function* watchSettlementApprovalPostFetchRequest() {
+function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
@@ -121,9 +121,9 @@ function* watchSwitchAccess() {
 
 function* purchaseSettlementApprovalSagas() {
   yield all([
-    fork(watchSettlementApprovalAllFetchRequest),
-    fork(watchSettlementApprovalByIdFetchRequest),
-    fork(watchSettlementApprovalPostFetchRequest),
+    fork(watchGetAllFetchRequest),
+    fork(watchGetByIdFetchRequest),
+    fork(watchPostFetchRequest),
     fork(watchSwitchAccess)
   ]);
 }

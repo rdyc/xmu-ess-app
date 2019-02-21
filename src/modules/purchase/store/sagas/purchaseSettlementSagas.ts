@@ -23,7 +23,7 @@ import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchSettlementAllFetchRequest() {
+function* watchGetAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, {
       allowDots: true,
@@ -51,7 +51,7 @@ function* watchSettlementAllFetchRequest() {
   yield takeEvery(SettlementAction.GET_ALL_SETTLEMENT_REQUEST, worker);
 }
 
-function* watchSettlementByIdFetchRequest() {
+function* watchGetByIdFetchRequest() {
   const worker = (action: ReturnType<typeof settlementGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
@@ -71,7 +71,7 @@ function* watchSettlementByIdFetchRequest() {
   yield takeEvery(SettlementAction.GET_BY_ID_SETTLEMENT_REQUEST, worker);
 }
 
-function* watchSettlementPostFetchRequest() {
+function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof settlementPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
@@ -112,7 +112,7 @@ function* watchSettlementPostFetchRequest() {
   yield takeEvery(SettlementAction.POST_SETTLEMENT_REQUEST, worker);
 }
 
-function* watchSettlementPutFetchRequest() {
+function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof settlementPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
@@ -165,10 +165,10 @@ function* watchSwitchAccess() {
 
 function* purchaseSettlementSagas() {
   yield all([
-    fork(watchSettlementAllFetchRequest),
-    fork(watchSettlementByIdFetchRequest),
-    fork(watchSettlementPostFetchRequest),
-    fork(watchSettlementPutFetchRequest),
+    fork(watchGetAllFetchRequest),
+    fork(watchGetByIdFetchRequest),
+    fork(watchPostFetchRequest),
+    fork(watchPutFetchRequest),
     fork(watchSwitchAccess)
   ]);
 }
