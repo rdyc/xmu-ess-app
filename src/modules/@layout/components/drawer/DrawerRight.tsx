@@ -51,17 +51,17 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
 
 const DrawerRightView: React.SFC<DrawerRightProps> = props => (
   <SwipeableDrawer
+    open={props.isOpen}
     variant="temporary"
     anchor={props.anchor === 'left' ? 'right' : 'left'}
     classes={{
       paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
     }} 
-    open={props.isOpen}
+    ModalProps={{
+      keepMounted: true
+    }}
     onOpen={props.setVisibility}
     onClose={props.setVisibility}
-    ModalProps={{
-      keepMounted: true, // Better open performance on mobile.
-    }}
   >
     <Notification />
   </SwipeableDrawer>
