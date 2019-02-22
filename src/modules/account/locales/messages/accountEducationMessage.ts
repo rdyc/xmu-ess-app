@@ -10,6 +10,9 @@ export const accountEducationField = defineMessages({
   employeeUid: { id: `${prefix}.field.employeeUid`},
   employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder`},
 
+  employeeName: { id: `${prefix}.field.employeeName`},
+  employeeNamePlaceholder: { id: `${prefix}.field.employeeName.placeholder`},
+
   degree: { id: `${prefix}.field.degree`},
   degreePlaceholder: { id: `${prefix}.field.degree.placeholder`},
   degreeRequired: { id: `${prefix}.field.degree.required`},

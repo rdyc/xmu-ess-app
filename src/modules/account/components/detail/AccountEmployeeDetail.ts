@@ -1,23 +1,28 @@
 import { IEmployeeDeletePayload } from '@account/classes/request';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { AppRole } from '@constants/AppRole';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 import { AccountEmployeeDetailView } from './AccountEmployeeDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   employeeUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
+  isAdmin: boolean;
+  pageOptions?: IAppBarMenu[];
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -27,7 +32,8 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -36,35 +42,65 @@ interface OwnHandler {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeDetailProps
-  = OwnState
-  & OwnHandler
-  & OwnStateUpdaters
-  & RouteComponentProps<OwnRouteParams>
+  = IOwnState
+  & IOwnHandler
+  & IOwnStateUpdaters
+  & RouteComponentProps<IOwnRouteParams>
   & WithUser
+  & WithOidc
   & WithLayout
   & WithAccountEmployee
   & InjectedIntlProps;
 
-const createProps: mapper<AccountEmployeeDetailProps, OwnState> = (props: AccountEmployeeDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-});
+const createProps: mapper<AccountEmployeeDetailProps, IOwnState> = (props: AccountEmployeeDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<AccountEmployeeDetailProps, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  })
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  return {
+    isAdmin,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+  };
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = {
+const stateUpdaters: StateUpdaters<AccountEmployeeDetailProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+  setOptions: (prevState: IOwnState, props: AccountEmployeeDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
+};
+
+const handlerCreators: HandleCreators<AccountEmployeeDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: AccountEmployeeDetailProps) => () => { 
+    if (props.userState.user && props.match.params.employeeUid && !props.accountEmployeeState.detail.isLoading) {
+      props.accountEmployeeDispatch.loadDetailRequest({
+        employeeUid: props.match.params.employeeUid
+      });
+    }
+  },
   handleOnOpenDialog: (props: AccountEmployeeDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
@@ -178,12 +214,49 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = 
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: AccountEmployeeDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.accountEmployeeState.detail.response !== prevProps.accountEmployeeState.detail.response) {
+      const { isLoading } = this.props.accountEmployeeState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LookupUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LookupUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+ 
 export const AccountEmployeeDetail = compose<AccountEmployeeDetailProps, {}>(
   withRouter,
+  withOidc,
   withUser,
   withLayout,
   withAccountEmployee,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeDetailProps, OwnHandler>(handlerCreators)
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<AccountEmployeeDetailProps, IOwnHandler>(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('AccountEmployeeDetail')
 )(AccountEmployeeDetailView);

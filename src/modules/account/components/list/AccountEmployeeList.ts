@@ -1,86 +1,198 @@
-import { AccountEmployeeUserAction } from '@account/classes/types';
-import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { accountMessage } from '@account/locales/messages/accountMessage';
+import { IBasePagingFilter } from '@generic/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  shallowEqual,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
+import { IEmployeeAllFilter } from '@account/classes/filters';
+import { IEmployee } from '@account/classes/response';
+import { AccountEmployeeField } from '@account/classes/types';
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
+import { IAccountEmployeeFilterResult } from './AccountEmployeeFilter';
 import { AccountEmployeeListView } from './AccountEmployeeListView';
 
-interface OwnHandler {
-  handleOnCreate: () => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
+interface IOwnOption {
+  
 }
 
-interface OwnState {
-  action?: AccountEmployeeUserAction;
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string;
-  dialogContent?: string;
-  dialogCancelLabel?: string;
-  dialogConfirmLabel?: string;
+interface IOwnState extends IAccountEmployeeFilterResult {
+  fields: ICollectionValue[];
+  isFilterOpen: boolean;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setCreate: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
 }
 
-export type AccountEmployeeListProps
-  = WithUser
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler
-  & RouteComponentProps
+interface IOwnHandler {
+  handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
+  handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
+  handleOnBind: (item: IEmployee, index: number) => IDataBindResult;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
+  handleFilterBadge: () => boolean;
+}
+
+export type AccountEmployeeListProps 
+  = IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler
+  & WithUser
+  & WithAccountEmployee
   & InjectedIntlProps
-  & WithAccountEmployee;
+  & RouteComponentProps;
 
-const createProps: mapper<AccountEmployeeListProps, OwnState> = (): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: AccountEmployeeListProps): IOwnState => {
+  const { request } = props.accountEmployeeState.all;
+  
+  // default state
+  const state: IOwnState = {
+    isFilterOpen: false,
+    fields: Object.keys(AccountEmployeeField).map(key => ({ 
+      value: key, 
+      name: AccountEmployeeField[key] 
+    }))
+  };
 
-const stateUpdaters: StateUpdaters<AccountEmployeeListProps, OwnState, OwnStateUpdaters> = {
-  setCreate: (prevState: OwnState, props: AccountEmployeeListProps) => (): Partial<OwnState> => ({
-    action: AccountEmployeeUserAction.Create,
-    dialogFullScreen: false,
-    dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle), 
-    dialogContent: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.ok)
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.companyUids = request.filter.companyUids,
+    state.roleUids = request.filter.roleUids;
+  }
+
+  return state;
+};
+
+const stateUpdaters: StateUpdaters<AccountEmployeeListProps, IOwnState, IOwnStateUpdater> = {
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setDefault: () => (): Partial<OwnState> => ({
-    action: undefined,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
+  setFilterApplied: (state: IOwnState) => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
+    ...filter,
+    isFilterOpen: false
   })
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeListProps, OwnHandler> = {
-  handleOnCreate: (props: AccountEmployeeListProps) => () => { 
-    props.setCreate();
+const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: AccountEmployeeListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { isLoading, request } = props.accountEmployeeState.all;
+    const { loadAllRequest } = props.accountEmployeeDispatch;
+
+    if (props.userState.user && !isLoading) {
+      // predefined filter
+      const filter: IEmployeeAllFilter = {
+        companyUids: props.companyUids,
+        roleUids: props.companyUids ? props.roleUids : undefined,
+        find: request && request.filter && request.filter.find,
+        findBy: request && request.filter && request.filter.findBy,
+        orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
+        direction: params && params.direction || request && request.filter && request.filter.direction,
+        page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
+        size: params && params.size || request && request.filter && request.filter.size
+      };
+
+      // when request is defined, then compare the filter props
+      const shouldLoad = !shallowEqual(filter, request && request.filter || {});
+      
+      // only load when request parameter are differents
+      if (shouldLoad || isRetry) {
+        loadAllRequest({
+          filter
+        });
+      }
+    }
   },
-  handleOnCloseDialog: (props: AccountEmployeeListProps) => () => { 
-    props.setDefault();
+  handleOnLoadApiSearch: (props: AccountEmployeeListProps) => (find?: string, findBy?: string) => {
+    const { isLoading, request } = props.accountEmployeeState.all;
+    const { loadAllRequest } = props.accountEmployeeDispatch;
+
+    if (props.userState.user && !isLoading) {
+      // predefined filter
+      const filter = {
+        ...request && request.filter,
+        find,
+        findBy,
+        page: undefined
+      };
+      
+      // compare request
+      const shouldLoad = !shallowEqual(filter, request && request.filter || {});
+      
+      // only load when request parameter are differents
+      if (shouldLoad) {
+        loadAllRequest({
+          filter
+        });
+      }
+    }
   },
-  handleOnConfirm: (props: AccountEmployeeListProps) => () => { 
-    props.history.push('employee/form');
+  handleOnBind: (props: AccountEmployeeListProps) => (item: IEmployee, index: number) => ({
+    key: index,
+    primary: item.uid,
+    secondary: item.company ? item.company.name : 'N/A',
+    tertiary: item.fullName,
+    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  }),
+  handleFilterVisibility: (props: AccountEmployeeListProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: AccountEmployeeListProps) => (filter: IAccountEmployeeFilterResult) => {
+    props.setFilterApplied(filter);
+  },
+  handleFilterBadge: (props: AccountEmployeeListProps) => () => {
+    return props.companyUids !== undefined || 
+      props.roleUids !== undefined;
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeListProps, IOwnState> = {
+  componentDidUpdate(prevProps: AccountEmployeeListProps) {
+    // track any changes in filter props
+    const isFilterChanged = !shallowEqual(
+      {
+        companyUids: this.props.companyUids,
+        roleUids: this.props.roleUids
+      },
+      {
+        companyUids: prevProps.companyUids,
+        roleUids: prevProps.roleUids
+      }
+    );
+
+    if (isFilterChanged) {
+      this.props.handleOnLoadApi(undefined, true);
+    }
+  }
+};
+
 export const AccountEmployeeList = compose(
-  withRouter,
+  setDisplayName('AccountEmployeeList'),
   withUser,
-  injectIntl,
   withAccountEmployee,
-  withStateHandlers(createProps, stateUpdaters), 
+  withRouter,
+  injectIntl,
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(AccountEmployeeListView);

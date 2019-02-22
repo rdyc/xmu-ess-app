@@ -1,8 +1,10 @@
 import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { AccountEmployeeEducationFormData } from '@account/components/editor/form/education/AccountEmployeeEducationContainer';
 import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -13,11 +15,12 @@ import { AccountEmployeeEducationView } from './AccountEmployeeEducationView';
 
 type EditAction = 'update' | 'delete';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   employeeUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
+  isAdmin: boolean;
   formMode: FormMode | undefined;
   isReload: boolean | false;
   educationUid?: string;
@@ -30,7 +33,9 @@ interface OwnState {
   size: number;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
+  handleOnLoadApi: () => void;
+
   handleMenuOpen: (education: IEmployeeEducation, index: number) => void;
   handleMenuClose: () => void;
   handleDialogClose: () => void;
@@ -43,25 +48,43 @@ interface OwnHandlers {
   handleChangeSize: (size: number) => void;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeEducationProps
   = WithUser
+  & WithOidc
   & WithLayout
   & WithStyles<typeof styles>
-  & OwnState
-  & OwnHandlers
-  & OwnStateUpdaters
+  & IOwnState
+  & IOwnHandlers
+  & IOwnStateUpdaters
   & InjectedIntlProps
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & WithAccountEmployeeEducation;
 
-const createProps: mapper<AccountEmployeeEducationProps, OwnState> = (props: AccountEmployeeEducationProps): OwnState => {
+const createProps: mapper<AccountEmployeeEducationProps, IOwnState> = (props: AccountEmployeeEducationProps): IOwnState => {
   const { page, size } = props;
   const { request } = props.accountEmployeeEducationState.all;
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+
   return {
+    isAdmin,
     formMode: undefined,
     editAction: undefined,
     isOpenDialog: false,
@@ -72,14 +95,26 @@ const createProps: mapper<AccountEmployeeEducationProps, OwnState> = (props: Acc
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeEducationProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<AccountEmployeeEducationProps, IOwnHandlers> = {
+  handleOnLoadApi: (props: AccountEmployeeEducationProps) => () => { 
+    if (props.userState.user && props.match.params.employeeUid && !props.accountEmployeeEducationState.detail.isLoading) {
+      props.accountEmployeeEducationDispatch.loadAllRequest({
+        employeeUid: props.match.params.employeeUid,
+          filter: {
+            page: props.page,
+            size: props.size,
+            direction: 'ascending'
+          }
+      });
+    }
+  },
   handleMenuOpen: (props: AccountEmployeeEducationProps) => (education: IEmployeeEducation, index: number) => {
     const { stateUpdate } = props;
 
@@ -180,8 +215,8 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationProps, OwnHandlers
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationProps, OwnState> = {
-  componentWillUpdate(props: AccountEmployeeEducationProps, state: OwnState) {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationProps, IOwnState> = {
+  componentWillUpdate(props: AccountEmployeeEducationProps, state: IOwnState) {
     if (
       this.props.page !== props.page ||
       this.props.size !== props.size
@@ -223,12 +258,13 @@ const loadData = (props: AccountEmployeeEducationProps): void => {
 
 export const AccountEmployeeEducation = compose<AccountEmployeeEducationProps, {}>(
   withUser,
+  withOidc,
   withRouter,
   withLayout,
   withStyles(styles),
   injectIntl,
   withAccountEmployeeEducation,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeEducationProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeEducationProps, OwnState>(lifecycles)
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<AccountEmployeeEducationProps, IOwnHandlers>(handlerCreators),
+  lifecycle<AccountEmployeeEducationProps, IOwnState>(lifecycles)
 )(AccountEmployeeEducationView);

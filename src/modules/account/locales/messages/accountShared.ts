@@ -13,6 +13,7 @@ export const accountSharedOption = defineMessages({
 export const accountSharedField = defineMessages({
   no: {id: `${prefix}.field.no`},
   action: {id: `${prefix}.field.action`},
+  titleInformation: {id: `${prefix}.field.title.information`}
 });
 
 // page
@@ -38,4 +39,20 @@ export const accountSharedMessage = defineMessages({
   updateFailure: { id: `${prefix}.message.update.failure` },
   deleteSuccess: { id: `${prefix}.message.delete.success` },
   deleteFailure: { id: `${prefix}.message.delete.failure` },
+});
+
+// confirmation
+export const accountSharedConfirm = defineMessages({
+  createTitle: { id: `${prefix}.confirm.create.title` },
+  createDescription: { id: `${prefix}.confirm.create.subHeader` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
+});
+
+// section
+export const accountSharedSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title`},
+  infoSubHeader: { id: `${prefix}.section.info.subHeader`},
 });
