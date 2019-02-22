@@ -18,7 +18,7 @@ import {
 
 import { LeaveCancellationListFilterView } from './LeaveCancellationListFilterView';
 
-export type ILeaveCancellationListFilterResult = Pick<ILeaveCancellationGetAllFilter, 'leaveType' >;
+export type ILeaveCancellationListFilterResult = Pick<ILeaveCancellationGetAllFilter, 'employeeUid' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -94,7 +94,7 @@ const handlerCreators: HandleCreators<LeaveCancellationListFilterProps, IOwnHand
   },
   handleFilterOnApply: (props: LeaveCancellationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
-      leaveType: props.filterType && props.filterType.type,
+      employeeUid: props.filterType && props.filterType.type,
 
     });
   },

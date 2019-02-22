@@ -1,32 +1,52 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { ILeaveCancellationPostPayload } from '@leave/classes/request';
+import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
 import { leaveCancellationMessage } from '@leave/locales/messages/leaveCancellationMessage';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { LeaveCancellationFormData } from '../form/LeaveCancellationForm';
 import { LeaveCancellationDetailView } from './LeaveCancellationDetailView';
 
-interface OwnHandler {
+interface IOwnRouteParams {
+  leaveUid: string;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleValidate: (payload: LeaveCancellationFormData) => FormErrors;
   handleSubmit: (payload: LeaveCancellationFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
-  leaveUid: string;
-}
-
-interface OwnState {
+interface IOwnState {
+  shoulLoad: boolean;
+  pageOptions?: IAppBarMenu[];
   cancellationTitle: string;
   cancellationSubHeader: string;
   cancellationDialogTitle: string;
@@ -35,29 +55,51 @@ interface OwnState {
   cancellationDialogConfirmedText: string;
 }
 
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  setNextLoad: StateHandler<IOwnState>;
+}
+
 export type LeaveCancellationDetailProps
   = WithLeaveCancellation
   & WithUser
   & WithLayout
-  & RouteComponentProps<OwnRouteParams> 
+  & WithNotification
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnHandler
-  & OwnState;
+  & IOwnHandler
+  & IOwnState
+  & IOwnStateUpdater;
 
-const createProps: mapper<LeaveCancellationDetailProps, OwnState> = (props: LeaveCancellationDetailProps): OwnState => {
-  const { intl } = props;
+const createProps: mapper<LeaveCancellationDetailProps, IOwnState> = (props: LeaveCancellationDetailProps): IOwnState => ({
+  shoulLoad: false,
+  cancellationTitle: props.intl.formatMessage(leaveMessage.request.section.cancellationTitle),
+  cancellationSubHeader: props.intl.formatMessage(leaveMessage.request.section.cancellationSubHeader),
+  cancellationDialogTitle: props.intl.formatMessage(leaveMessage.cancellation.confirm.submissionTitle),
+  cancellationDialogContentText: props.intl.formatMessage(leaveMessage.cancellation.confirm.submissionContent),
+  cancellationDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  cancellationDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+});
 
-  return {
-    cancellationTitle: intl.formatMessage(leaveMessage.request.section.cancellationTitle),
-    cancellationSubHeader: intl.formatMessage(leaveMessage.request.section.cancellationSubHeader),
-    cancellationDialogTitle: intl.formatMessage(leaveMessage.cancellation.confirm.submissionTitle),
-    cancellationDialogContentText: intl.formatMessage(leaveMessage.cancellation.confirm.submissionContent),
-    cancellationDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    cancellationDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-  };
+const stateUpdaters: StateUpdaters<LeaveCancellationDetailProps, IOwnState, IOwnStateUpdater> = {
+  setNextLoad: (state: IOwnState, props: LeaveCancellationDetailProps) => (): Partial<IOwnState> => ({
+    shoulLoad: !state.shoulLoad
+  }),
+  setOptions: (state: IOwnState, props: LeaveCancellationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  })
 };
 
-const handlerCreators: HandleCreators<LeaveCancellationDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<LeaveCancellationDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: LeaveCancellationDetailProps) => () => { 
+    if (props.userState.user && !props.leaveCancellationState.detail.isLoading && props.match.params.leaveUid) {
+      props.leaveCancellationDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        leaveUid: props.match.params.leaveUid
+      });
+    }
+  },
   handleValidate: (props: LeaveCancellationDetailProps) => (formData: LeaveCancellationFormData) => { 
     const errors = {};
   
@@ -106,42 +148,81 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, OwnHandler> 
     });
   },
   handleSubmitSuccess: (props: LeaveCancellationDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    alertAdd({
+    // add success alert
+    props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: intl.formatMessage(leaveCancellationMessage.submitSuccess),
+      message: props.intl.formatMessage(leaveCancellationMessage.submitSuccess)
     });
 
-    history.push('/Leave/Cancellations');
+    // notification: mark as complete
+    props.notificationDispatch.markAsComplete({
+      moduleUid: ModuleDefinitionType.Leave,
+      detailType: NotificationType.Approval,
+      itemUid: props.match.params.leaveUid
+    });
+
+    // set next load
+    props.setNextLoad();
   },
   handleSubmitFail: (props: LeaveCancellationDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
     if (errors) {
       // validation errors from server (400: Bad Request)
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: intl.formatMessage(leaveCancellationMessage.submitFailure),
+        message: props.intl.formatMessage(leaveCancellationMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: LeaveCancellationDetailProps) {
+    // handle updated should load
+    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+      // turn of shoul load
+      this.props.setNextLoad();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated route params
+    if (this.props.match.params.leaveUid !== prevProps.match.params.leaveUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.leaveCancellationState.detail !== prevProps.leaveCancellationState.detail) {
+      const options: IAppBarMenu[] = [
+        {
+          id: LeaveRequestUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !this.props.leaveCancellationState.detail.isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const LeaveCancellationDetail = compose<LeaveCancellationDetailProps, {}>(
+  setDisplayName('LeaveCancellationDetail'),
   withRouter,
   withUser,
   withLayout,
   withLeaveCancellation,
+  withNotification,
   injectIntl,
-  withStateHandlers(createProps, {}),
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(LeaveCancellationDetailView);
