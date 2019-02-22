@@ -171,6 +171,7 @@ const styles = (theme: Theme) =>
 
     // Application Bar
     appBar: {
+      zIndex: theme.zIndex.drawer + 1,
       backgroundColor: theme.palette.primary.main,
       // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
@@ -202,14 +203,22 @@ const styles = (theme: Theme) =>
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
         marginRight: 0,
-      }
+      },
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      })
     },
     appBarShiftRight: {
       [theme.breakpoints.up('md')]: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: 0,
         marginRight: drawerWidth
-      }
+      },
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      })
     },
     appBarDialog: {
       position: 'relative'
@@ -472,11 +481,7 @@ const styles = (theme: Theme) =>
       transform: 'rotate(0deg)',
       transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
-      }),
-      marginLeft: 'auto',
-      [theme.breakpoints.up('sm')]: {
-        marginRight: -8,
-      },
+      })
     },
     expandOpen: {
       transform: 'rotate(180deg)',

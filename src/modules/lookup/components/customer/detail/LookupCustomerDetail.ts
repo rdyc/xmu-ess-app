@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCustomerDeletePayload } from '@lookup/classes/request/customer';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -10,12 +11,15 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { 
   compose, 
   HandleCreators, 
+  lifecycle, 
   mapper, 
+  ReactLifeCycleFunctions, 
+  setDisplayName, 
   StateHandler, 
   StateHandlerMap, 
-  StateUpdaters, 
-  withHandlers, 
-  withStateHandlers 
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
@@ -27,6 +31,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -36,6 +41,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
@@ -47,6 +53,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
 }
 
@@ -72,10 +79,21 @@ const stateUpdaters: StateUpdaters<LookupCustomerDetailProps, OwnState, OwnState
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setOptions: (prevState: OwnState, props: LookupCustomerDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
 };
 
 const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: LookupCustomerDetailProps) => () => { 
+    if (props.userState.user && props.match.params.customerUid && !props.lookupCustomerState.detail.isLoading ) {
+      props.lookupCustomerDispatch.loadDetailRequest({
+        companyUid: props.history.location.state ? props.history.location.state.companyUid : '',
+        customerUid: props.match.params.customerUid
+      });
+    }
+  },
   handleOnOpenDialog: (props: LookupCustomerDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
@@ -188,6 +206,47 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupCustomerDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: LookupCustomerDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.customerUid !== prevProps.match.params.customerUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupCustomerState.detail.response !== prevProps.lookupCustomerState.detail.response) {
+      const { isLoading } = this.props.lookupCustomerState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LookupUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LookupUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const LookupCustomerDetail = compose<LookupCustomerDetailProps, {}>(
   withRouter,
   withUser,
@@ -196,4 +255,6 @@ export const LookupCustomerDetail = compose<LookupCustomerDetailProps, {}>(
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<LookupCustomerDetailProps, OwnHandler>(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('LookupDiemDetail')
 )(LookupCustomerDetailView);
