@@ -171,7 +171,7 @@ const lifecycles: ReactLifeCycleFunctions<PositionListProps, IOwnState> = {
   }
 };
 
-export const StructureList = compose<PositionListProps, IOwnOption>(
+export const PositionList = compose(
   setDisplayName('PositionList'),
   withUser,
   withLookupPosition,

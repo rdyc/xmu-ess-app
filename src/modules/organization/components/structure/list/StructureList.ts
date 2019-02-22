@@ -183,7 +183,7 @@ const lifecycles: ReactLifeCycleFunctions<StructureListProps, IOwnState> = {
     }
   };
 
-export const StructureList = compose<StructureListProps, IOwnOption>(
+export const StructureList = compose(
   setDisplayName('StructureList'),
   withUser,
   withOrganizationStructure,
