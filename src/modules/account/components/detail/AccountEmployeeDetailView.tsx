@@ -1,90 +1,16 @@
+import AppMenu from '@constants/AppMenu';
+import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import * as React from 'react';
+
 import { IEmployeeDetail } from '@account/classes/response';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import AppMenu from '@constants/AppMenu';
-import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
-import { IAppBarMenu } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
-import { LookupUserAction } from '@lookup/classes/types';
 import { Delete } from '@lookup/components/shared/Delete';
-import * as React from 'react';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
 import { DetailPage } from './DetailPage';
-
-const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
-  // page info
-  page: (props: AccountEmployeeDetailProps) => ({
-    uid: AppMenu.Account,
-    parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
-    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
-  }),
-
-  // parent url
-  parentUrl: () => '/account/employee',
-  
-  // action centre
-  showActionCentre: true,
-
-  // more
-  hasMore: true,
-  moreOptions: (props: AccountEmployeeDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
-    {
-      id: LookupUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleForceReload()
-    },
-    {
-      id: LookupUserAction.Modify,
-      name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: true,
-      visible: true,
-      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
-    },
-  ]),
-
-  // events
-  onDataLoad: (props: AccountEmployeeDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
-    const { user } = props.userState;
-    const { isLoading, request, response } = props.accountEmployeeState.detail;
-    const { loadDetailRequest } = props.accountEmployeeDispatch;
-
-    // when user is set and not loading and has projectUid in route params
-    if (user && !isLoading && props.match.params.employeeUid) {
-      // when projectUid was changed or response are empty or force to reload
-      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload) {
-        loadDetailRequest({
-          employeeUid: props.match.params.employeeUid
-        });
-      } else {
-        // just take data from previous response
-        callback.handleResponse(response);
-      }
-    }
-  },
-  onUpdated: (states: AccountEmployeeDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.accountEmployeeState.detail;
-    
-    callback.handleLoading(isLoading);
-    callback.handleResponse(response);
-  },
-
-  // primary
-  primaryComponent: (data: IEmployeeDetail) => (
-    <AccountEmployeeInformation data={data} />
-  ),
-
-  // secondary (multiple components are allowed)
-  secondaryComponents: (data: IEmployeeDetail) => ([
-    <AccountEmployeeContact data={data}/>,
-    <AccountEmployeeBank data={data}/> 
-  ])
-};
 
 export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = props => {
 
@@ -93,25 +19,41 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
     <DetailPage
       tab={AccountEmployeeTabs.detail}      
     >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      />
+      <PreviewPage
+        info={{
+          uid: AppMenu.LookupEmployee,
+          parentUid: AppMenu.Lookup,
+          parentUrl: '/account/employee',
+          title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+          description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
+        }}
+        options={props.pageOptions}
+        state={props.accountEmployeeState.detail}
+        onLoadApi={props.handleOnLoadApi}
+        primary={(data: IEmployeeDetail) => (
+          <AccountEmployeeInformation data={data} />
+        )}
+        secondary={(data: IEmployeeDetail) => ([
+          <AccountEmployeeContact data={data}/>,
+          <AccountEmployeeBank data={data}/> 
+        ])}
+      >
+        <Delete 
+          action={props.action}
+          isOpenDialog={props.dialogOpen}
+          title={props.dialogTitle}
+          content={props.dialogContent}
+          labelCancel={props.dialogCancelLabel}
+          labelConfirm={props.dialogConfirmLabel}
+          handleDialogOpen={props.handleOnOpenDialog}
+          handleDialogClose={props.handleOnCloseDialog}
+          handleDialogConfirmed={props.handleOnConfirm}
+          onSubmit={props.handleSubmit} 
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+        />
+      </PreviewPage>
     </DetailPage>
-      <Delete 
-        action={props.action}
-        isOpenDialog={props.dialogOpen}
-        title={props.dialogTitle}
-        content={props.dialogContent}
-        labelCancel={props.dialogCancelLabel}
-        labelConfirm={props.dialogConfirmLabel}
-        handleDialogOpen={props.handleOnOpenDialog}
-        handleDialogClose={props.handleOnCloseDialog}
-        handleDialogConfirmed={props.handleOnConfirm}
-        onSubmit={props.handleSubmit} 
-        onSubmitSuccess={props.handleSubmitSuccess}
-        onSubmitFail={props.handleSubmitFail}
-      />
   </React.Fragment>
   );
 

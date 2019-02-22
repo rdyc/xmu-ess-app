@@ -6,11 +6,10 @@ import { InputYearDegree } from '@layout/components/input/yearDegree';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { AccountEmployeeEducationDetailView } from './AccountEmployeeEducationDetailView';
+import { AccountEmployeeEducationDetailFormView } from './AccountEmployeeEducationDetailViewForm';
 
 interface OwnProps {
-  formMode: FormMode | undefined;
-  disabledControls: boolean;
+  formMode: FormMode;
   context: BaseFieldsProps;
 }
 
@@ -18,20 +17,20 @@ interface OwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
-export type AccountEmployeeEducationDetailProps =
+export type AccountEmployeeEducationDetailFormProps =
   OwnProps
   & OwnHandlers
   & InjectedIntlProps;
 
-const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHandlers> = {
-  generateFieldProps: (props: AccountEmployeeEducationDetailProps) => (name: string) => {
-    const { intl, disabledControls } = props;
+const handleCreators: HandleCreators<AccountEmployeeEducationDetailFormProps, OwnHandlers> = {
+  generateFieldProps: (props: AccountEmployeeEducationDetailFormProps) => (name: string) => {
+    const { intl } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
     switch (name) {
-
-      case 'uid':
+      
+      case 'employeeUid':
         fieldProps = {
           disabled: true,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
@@ -40,7 +39,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
         };
         break;
 
-      case 'employeeUid':
+      case 'uid':
         fieldProps = {
           disabled: true,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
@@ -52,7 +51,6 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'degreeType':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           category: 'degree',
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
@@ -63,7 +61,6 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'institution':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputText  
@@ -73,7 +70,6 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'major':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputText  
@@ -83,7 +79,6 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'start':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -92,7 +87,6 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
 
       case 'end':
         fieldProps = {
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -113,8 +107,8 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
   }
 };
 
-export const AccountEmployeeEducationDetail = compose<AccountEmployeeEducationDetailProps, OwnProps>(
+export const AccountEmployeeEducationDetailForm = compose<AccountEmployeeEducationDetailFormProps, OwnProps>(
   setDisplayName('EducationDetailForm'),
   injectIntl,
-  withHandlers<AccountEmployeeEducationDetailProps, OwnHandlers>(handleCreators)
-)(AccountEmployeeEducationDetailView);
+  withHandlers<AccountEmployeeEducationDetailFormProps, OwnHandlers>(handleCreators)
+)(AccountEmployeeEducationDetailFormView);
