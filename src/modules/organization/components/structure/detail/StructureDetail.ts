@@ -94,7 +94,7 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandl
     if (props.userState.user && props.match.params.structureUid && !props.organizationStructureState.detail.isLoading) {
        if (props.history.location.state.companyUid) {
       props.organizationStructureDispatch.loadDetailRequest({
-        companyUid: props.userState.user.company.uid,
+        companyUid: props.history.location.state.companyUid,
         structureUid: props.match.params.structureUid
       });
       } else {
