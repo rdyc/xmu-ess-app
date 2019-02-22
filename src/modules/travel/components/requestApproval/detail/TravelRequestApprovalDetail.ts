@@ -1,11 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -31,6 +31,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { TravelRequestApprovalDetailView } from './TravelRequestApprovalDetailView';
 
 interface OwnHandler {
@@ -172,7 +173,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Travel,
+      moduleUid: ModuleDefinitionType.Travel,
       detailType: NotificationType.Approval,
       itemUid: match.params.travelUid
     });

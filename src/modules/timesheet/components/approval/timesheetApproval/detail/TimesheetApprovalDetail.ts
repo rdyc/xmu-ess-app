@@ -1,11 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ITimesheetApprovalPostPayload } from '@timesheet/classes/request/approval';
@@ -168,7 +168,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Timesheet,
+      moduleUid: ModuleDefinitionType.Timesheet,
       detailType: NotificationType.Approval,
       itemUid: props.match.params.timesheetUid
     });

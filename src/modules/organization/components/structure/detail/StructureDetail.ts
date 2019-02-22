@@ -5,7 +5,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -13,6 +16,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IAppBarMenu } from '@layout/interfaces';
 import { StructureUserAction } from '@organization/classes/types';
 import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -23,6 +27,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -30,6 +35,7 @@ interface OwnHandler {
 
 interface OwnState {
   isAdmin: boolean;
+  pageOptions?: IAppBarMenu[];
   action?: StructureUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -40,6 +46,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
 }
@@ -60,6 +67,9 @@ const createProps: mapper<OrganizationStructureDetailProps, OwnState> = (): OwnS
 });
 
 const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: OrganizationStructureDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: OwnState, props: OrganizationStructureDetailProps) => (): Partial<OwnState> => ({
     action: StructureUserAction.Modify,
     dialogFullScreen: false,
@@ -80,6 +90,18 @@ const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, OwnState, O
 };
 
 const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: OrganizationStructureDetailProps) => () => {
+    if (props.userState.user && props.match.params.structureUid && !props.organizationStructureState.detail.isLoading) {
+       if (props.history.location.state.companyUid) {
+      props.organizationStructureDispatch.loadDetailRequest({
+        companyUid: props.history.location.state.companyUid,
+        structureUid: props.match.params.structureUid
+      });
+      } else {
+         props.history.push('/organization/structure');
+      }
+    }
+  }, 
   handleOnModify: (props: OrganizationStructureDetailProps) => () => {
     props.setModify();
   },
@@ -130,11 +152,47 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandl
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: OrganizationStructureDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.structureUid !== prevProps.match.params.structureUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.organizationStructureState.detail.response !== prevProps.organizationStructureState.detail.response) {
+      const { isLoading } = this.props.organizationStructureState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: StructureUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: StructureUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const StructureDetail = compose(
+  setDisplayName('OrganizationStructureDetail'),
   withRouter,
   withUser,
   withOrganizationStructure,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(StructureDetailView);

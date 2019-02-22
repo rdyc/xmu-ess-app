@@ -1,6 +1,6 @@
 import AppEvent from '@constants/AppEvent';
 import { Anchor } from '@layout/types';
-import { Drawer, WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { SwipeableDrawer, WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { isWidthDown, isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as React from 'react';
@@ -33,7 +33,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnEventMenu: (event: CustomEvent) => void;
+  handleOnEventDrawerLeft: (event: CustomEvent) => void;
 }
 
 type DrawerLeftProps 
@@ -49,16 +49,17 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
 });
 
 const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
-  <Drawer
+  <SwipeableDrawer
+    open={props.isOpen}
     variant={isWidthUp('md', props.width) ? 'permanent' : 'temporary'}
     anchor={props.anchor}
-    open={props.isOpen}
     classes={{
-      paper: props.classes.drawerPaper,
-    }}
+      paper: props.classes.drawerPaper
+    }} 
     ModalProps={{
       keepMounted: true
     }}
+    onOpen={props.setVisibility}
     onClose={props.setVisibility}
     onRendered={() => {
       if (isWidthDown('sm', props.width)) {
@@ -66,8 +67,8 @@ const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
       }
     }}
   >
-    <Navigation onClose={props.setVisibility} />
-  </Drawer>
+    <Navigation />
+  </SwipeableDrawer>
 );
 
 const stateUpdaters: StateUpdaters<DrawerLeftProps, IOwnState, IOwnStateUpdater> = {
@@ -77,17 +78,17 @@ const stateUpdaters: StateUpdaters<DrawerLeftProps, IOwnState, IOwnStateUpdater>
 };
 
 const handlerCreators: HandleCreators<DrawerLeftProps, IOwnHandler> = {
-  handleOnEventMenu: (props: DrawerLeftProps) => (event: CustomEvent) => {
+  handleOnEventDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
     props.setVisibility();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerLeftProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.onClickMenu, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onClickMenu, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
   }
 };
 

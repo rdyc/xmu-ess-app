@@ -18,9 +18,9 @@
   "lookup.mileageException.message.emptyProps": "Some props are empty",
   "lookup.mileageException.message.create.success": "New Mileage Exception has been created",
   "lookup.mileageException.message.create.failure": "Unable to process your submission",
-  "lookup.mileageException.message.update.success": "Current data with ID {uid} has been updated",
+  "lookup.mileageException.message.update.success": "Mileage Exception with ID {uid} has been updated",
   "lookup.mileageException.message.update.failure": "Unable to process your submission",
-  "lookup.mileageException.message.delete.success": "Current data with ID {uid} has been deleted",
+  "lookup.mileageException.message.delete.success": "Mileage Exception with ID {uid} has been deleted",
   "lookup.mileageException.message.delete.failure": "Unable to process your submission",
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",
@@ -67,9 +67,9 @@
   "lookup.systemLimit.message.emptyProps": "Some props are empty",
   "lookup.systemLimit.message.create.success": "New System Limit has been created",
   "lookup.systemLimit.message.create.failure": "Unable to process your submission",
-  "lookup.systemLimit.message.update.success": "Current {uid} has been updated",
+  "lookup.systemLimit.message.update.success": "System Limit with ID {uid} has been updated",
   "lookup.systemLimit.message.update.failure": "Unable to process your submission",
-  "lookup.systemLimit.message.delete.success": "Current {uid} has been deleted",
+  "lookup.systemLimit.message.delete.success": "System Limit with ID {uid} has been deleted",
   "lookup.systemLimit.message.delete.failure": "Unable to process your submission",
   
   "lookup.systemLimit.field.uid": "System Limit ID",

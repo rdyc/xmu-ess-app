@@ -1,6 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -153,7 +153,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
       category="status"
-      moduleType={ModuleDefinition.Purchase}
+      moduleType={ModuleDefinitionType.Purchase}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

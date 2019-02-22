@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupDiemDeletePayload } from '@lookup/classes/request/diem';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -10,7 +11,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -27,6 +31,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -36,6 +41,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   isAdmin: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
@@ -47,6 +53,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
 }
 
@@ -72,10 +79,21 @@ const stateUpdaters: StateUpdaters<LookupDiemDetailProps, OwnState, OwnStateUpda
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setOptions: (prevState: OwnState, props: LookupDiemDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
 };
 
 const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: LookupDiemDetailProps) => () => { 
+    if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
+      props.lookupDiemDispatch.loadDetailRequest({
+        companyUid: props.history.location.state ? props.history.location.state.companyUid : '',
+        diemUid: props.match.params.diemUid
+      });
+    }
+  },
   handleOnOpenDialog: (props: LookupDiemDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
@@ -188,6 +206,47 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupDiemDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: LookupDiemDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.diemUid !== prevProps.match.params.diemUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupDiemState.detail.response !== prevProps.lookupDiemState.detail.response) {
+      const { isLoading } = this.props.lookupDiemState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LookupUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LookupUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const LookupDiemDetail = compose(
   withRouter,
   withUser,
@@ -196,4 +255,6 @@ export const LookupDiemDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('LookupDiemDetail')
 )(LookupDiemDetailView);

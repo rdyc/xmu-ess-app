@@ -78,7 +78,10 @@ import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
 import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
-import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
+import purchaseApprovalSagas from '@purchase/store/sagas/purchaseApprovalSagas';
+import purchaseRequestSagas from '@purchase/store/sagas/purchaseRequestSagas';
+import purchaseSettlementApprovalSagas from '@purchase/store/sagas/purchaseSettlementApprovalSagas';
+import purchaseSettlementSagas from '@purchase/store/sagas/purchaseSettlementSagas';
 import summarySagas from '@summary/store/sagas/summarySagas';
 import timesheetApprovalHistorySagas from '@timesheet/store/sagas/timesheetApprovalHistorySagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
@@ -193,7 +196,10 @@ export function* rootSaga() {
     fork(travelSettlementApprovalSagas),
     
     // purchase
-    fork(purchaseSagas),
+    fork(purchaseRequestSagas),
+    fork(purchaseSettlementSagas),
+    fork(purchaseApprovalSagas),
+    fork(purchaseSettlementApprovalSagas),
     
     // finance
     fork(financeSagas),

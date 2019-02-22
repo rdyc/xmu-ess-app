@@ -1,13 +1,15 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchaseApproval';
+import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,8 +31,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { IAppBarMenu } from '@layout/interfaces';
-import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { PurchaseApprovalDetailView } from './PurchaseApprovalDetailView';
 
 interface OwnRouteParams {
@@ -179,7 +179,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinition.Purchase,
+      moduleUid: ModuleDefinitionType.Purchase,
       detailType: NotificationType.Approval,
       itemUid: props.match.params.purchaseUid
     });
