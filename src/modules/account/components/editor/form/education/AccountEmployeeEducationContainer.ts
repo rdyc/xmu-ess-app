@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
+import { compose } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeEducationContainerView } from './AccountEmployeeEducationContainerView';
 
@@ -19,9 +19,11 @@ export type AccountEmployeeEducationFormData = {
 };
 
 interface OwnProps {
-  formMode?: FormMode | undefined;
-  formAction?: 'update' | 'delete';
-  handleValidity: (valid: boolean) => void;
+  formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
@@ -39,20 +41,8 @@ const mapStateToProps = (): FormValueProps => {
   };
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationContainerProps, {}> = {
-  componentDidMount() {
-    this.props.handleValidity(this.props.valid);
-  },
-  componentDidUpdate(prevProps: AccountEmployeeEducationContainerProps) {
-    if (prevProps.valid !== this.props.valid) {
-      this.props.handleValidity(this.props.valid); 
-    }
-  }
-};
-
 const enhance = compose<AccountEmployeeEducationContainerProps, OwnProps & InjectedFormProps<AccountEmployeeEducationFormData, OwnProps>>(
-  connect(mapStateToProps),
-  lifecycle(lifecycles)
+  connect(mapStateToProps)
 )(AccountEmployeeEducationContainerView);
 
 export const AccountEmployeeEducationContainerForm = reduxForm<AccountEmployeeEducationFormData, OwnProps>({

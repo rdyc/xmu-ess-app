@@ -1,72 +1,72 @@
-import { accountMessage } from '@account/locales/messages/accountMessage';
+import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
-import { isWidthDown } from '@material-ui/core/withWidth';
+import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormInstance } from 'redux-form';
 import { AccountEmployeeEducationEditorProps } from './AccountEmployeeEducationEditor';
-import { AccountEmployeeEducationContainerForm } from './form/education/AccountEmployeeEducationContainer';
+import { AccountEmployeeEducationContainerForm, AccountEmployeeEducationFormData } from './form/education/AccountEmployeeEducationContainer';
 
 export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducationEditorProps> = props => {
-  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, 
-    width, isOpenDialog, initialValues, 
-    editAction, handleDialogClose, formMode, handleValidity, validity } = props;
-  
-  const ref = React.createRef<FormInstance<any, any, any>>();
-  const isMobile = isWidthDown('sm', width);
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+    submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText, submitDialogTitle } = props;
+  const { isLoading, response } = props.accountEmployeeEducationState.detail;
 
-  const dialogTitle = () => {
-    switch (editAction) {
-      case 'update': return accountMessage.shared.page.modifyTitle;
-      case 'delete': return accountMessage.shared.page.deleteTitle;
+  const renderForm = (formData: AccountEmployeeEducationFormData) => (
+    <AccountEmployeeEducationContainerForm
+      formMode={formMode}
+      initialValues={formData}
+      validate={handleValidate}
+      onSubmit={handleSubmit} 
+      onSubmitSuccess={handleSubmitSuccess}
+      onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
+    />
+  );
 
-      default: return accountMessage.shared.page.newTitle;
+  // init form values
+  const initialValues: AccountEmployeeEducationFormData = {
+    education: {
+      employeeUid: props.match.params.employeeUid,
+      uid: undefined,
+      degreeType: undefined,
+      institution: undefined,
+      major: undefined,
+      start: undefined,
+      end: undefined
     }
   };
 
-  const renderDialog = (
-    <Dialog
-      open={isOpenDialog}
-      fullScreen={isMobile}
-      scroll="paper"
-    >
-      <DialogTitle disableTypography>
-        <Typography variant="title" color="primary">
-          {props.intl.formatMessage(dialogTitle(), {state: 'Education'})}
+  // New
+  if (formMode === FormMode.New) {
+    return renderForm(initialValues);
+  }
+
+  // Modify
+  if (formMode === FormMode.Edit) {
+    if (isLoading && !response) {
+      return (
+        <Typography variant="body2">
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
-      </DialogTitle>
+      );
+    }
 
-      <DialogContent>
-        <AccountEmployeeEducationContainerForm
-          formMode={formMode}
-          ref={ref}
-          formAction={editAction ? editAction : 'update'}
-          initialValues={initialValues}
-          validate={handleValidate}
-          onSubmit={handleSubmit} 
-          onSubmitSuccess={handleSubmitSuccess}
-          onSubmitFail={handleSubmitFail}
-          handleValidity={handleValidity}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => handleDialogClose()} color="secondary">
-          {props.intl.formatMessage(layoutMessage.action.discard)}
-        </Button>
+    if (!isLoading && response && response.data) {
+      // todo: replace values with response data
+      const data = response.data;
 
-        {
-          editAction !== 'delete' &&
-          <Button type="button" color="secondary" onClick={() => ref.current && ref.current.reset()} >
-            {props.intl.formatMessage(layoutMessage.action.reset)}
-          </Button>
-        }
+      initialValues.education.uid = data.uid;
+      initialValues.education.degreeType = data.degreeType;
+      initialValues.education.institution = data.institution;
+      initialValues.education.major = data.major;
+      initialValues.education.start = data.start;
+      initialValues.education.end = data.end;
 
-        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()} disabled={!validity}>
-          {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+      return renderForm(initialValues);
+    }
+  }
 
-  return renderDialog;
+  return null;
 };

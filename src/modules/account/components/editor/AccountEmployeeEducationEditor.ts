@@ -1,10 +1,13 @@
-import { IEmployeeEducationDeletePayload, IEmployeeEducationPostPayload, IEmployeeEducationPutPayload } from '@account/classes/request/employeeEducation';
+import { IEmployeeEducationPostPayload, IEmployeeEducationPutPayload } from '@account/classes/request/employeeEducation';
 import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
+import { withAppBar, WithAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -26,24 +29,15 @@ import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeEducationEditorView } from './AccountEmployeeEducationEditorView';
 import { AccountEmployeeEducationFormData } from './form/education/AccountEmployeeEducationContainer';
 
-type EditAction = 'update' | 'delete';
-
 interface OwnHandlers {
   handleValidate: (payload: AccountEmployeeEducationFormData) => FormErrors;
   handleSubmit: (payload: AccountEmployeeEducationFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
-  formMode: FormMode | undefined;
-  educationUid?: string;
-  employeeUid: string;
-  isOpenDialog: boolean;
-  editAction?: EditAction | undefined;
-  initialValues?: AccountEmployeeEducationFormData;
-  handleDialogClose: () => void;
+
 }
 
 interface OwnRouteParams {
@@ -52,7 +46,13 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  validity: boolean;
+  formMode: FormMode;
+  employeeUid: string;
+  educationUid?: string | undefined;  
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -62,6 +62,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type AccountEmployeeEducationEditorProps
   = WithAccountEmployeeEducation
   & WithUser
+  & WithAppBar
   & WithLayout
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
@@ -90,9 +91,9 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     return errors;
   },
   handleSubmit: (props: AccountEmployeeEducationEditorProps) => (formData: AccountEmployeeEducationFormData) => { 
-    const { formMode, employeeUid, intl, editAction, educationUid } = props;
+    const { formMode, educationUid, employeeUid, intl } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeEducationDispatch;
+    const { createRequest, updateRequest } = props.accountEmployeeEducationDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -106,53 +107,38 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
         createRequest({
-          employeeUid,
           resolve, 
           reject,
+          employeeUid,
           data: payload as IEmployeeEducationPostPayload
         });
       });
     }
 
     // update checking
-    if (!employeeUid) {
+    if (!educationUid) {
       const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
 
       return Promise.reject(message);
     }
 
     if (formMode === FormMode.Edit) {
-      if (educationUid) {
-        if (editAction === 'update') {
-          return new Promise((resolve, reject) => {
-            updateRequest({
-              employeeUid,
-              resolve, 
-              reject,
-              data: payload as IEmployeeEducationPutPayload, 
-            });
-          });
-        }
-
-        if (editAction === 'delete') {
-          return new Promise((resolve, reject) => {
-            deleteRequest({
-              employeeUid,
-              resolve, 
-              reject,
-              data: payload as IEmployeeEducationDeletePayload, 
-            });
-          });
-        }
-      }
+      return new Promise((resolve, reject) => {
+        updateRequest({
+          employeeUid,
+          resolve, 
+          reject,
+          data: payload as IEmployeeEducationPutPayload, 
+        });
+      });
     }
 
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployeeEducation) => {
-    const { formMode, intl, editAction, handleDialogClose } = props;
+    const { formMode, intl, history, employeeUid, } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadAllRequest } = props.accountEmployeeEducationDispatch; 
+
     let message: string = '';
 
     if (formMode === FormMode.New) {
@@ -160,26 +146,15 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     }
 
     if (formMode === FormMode.Edit) {
-      if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education'});
-      } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Education'});
-      }
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education', uid: response.uid });
     }
-
-    handleDialogClose();
 
     alertAdd({
       message,
       time: new Date()
     });
 
-    loadAllRequest({
-      employeeUid: props.employeeUid,
-      filter: {
-        direction: 'ascending'
-      }
-    });
+    history.push(`/account/employee/${employeeUid}/education/${response.uid}`);
   },
   handleSubmitFail: (props: AccountEmployeeEducationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -210,17 +185,16 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
-  },
-
-  handleValidity: (props: AccountEmployeeEducationEditorProps) => (valid: boolean) => {
-    props.stateUpdate({
-      validity: valid
-    });
   }
 };
 
-const createProps: mapper<AccountEmployeeEducationEditorProps, OwnState> = (): OwnState => ({ 
-  validity: false
+const createProps: mapper<AccountEmployeeEducationEditorProps, OwnState> = (props: AccountEmployeeEducationEditorProps): OwnState => ({ 
+  employeeUid: props.match.params.employeeUid,
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, {state: 'Education'}),
+  submitDialogContentText: props.intl.formatMessage(accountMessage.shared.confirm.createDescription, {state: 'education'}),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -231,18 +205,73 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {}> = {
-  componentWillUnmount() {
-    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeEducationDispatch;
+  componentDidMount() {
+    const { layoutDispatch, intl, history, stateUpdate, match } = this.props;
+    const { loadDetailRequest } = this.props.accountEmployeeEducationDispatch;
+    const { user } = this.props.userState;
 
-    createDispose();
-    updateDispose();
-    deleteDispose();
+    const view = {
+      title: accountMessage.shared.page.newTitle,
+      subTitle: accountMessage.shared.page.newSubHeader
+    };
+
+    if (!user) {
+      return;
+    }
+
+    if (!isNullOrUndefined(history.location.state)) {
+      view.title = accountMessage.shared.page.modifyTitle;
+      view.subTitle = accountMessage.shared.page.modifySubHeader;
+
+      stateUpdate({
+        formMode: FormMode.Edit,
+        employeeUid: match.params.employeeUid,
+        educationUid: history.location.state.educationUid,
+        submitDialogTitle: this.props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, { state: 'Education'}),
+        submitDialogContentText : this.props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, { state: 'education'})
+      });
+
+      loadDetailRequest({
+        employeeUid: match.params.employeeUid,
+        educationUid: history.location.state.educationUid
+      });
+    }
+
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupEmployee,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title, {state: 'Education'}),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/account/employee/${match.params.employeeUid}/education`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
+    });
+  },
+  componentWillUnmount() {
+    const { layoutDispatch, appBarDispatch, accountEmployeeEducationDispatch } = this.props;
+
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
+    layoutDispatch.moreHide();
+
+    appBarDispatch.dispose();
+
+    accountEmployeeEducationDispatch.createDispose();
+    accountEmployeeEducationDispatch.updateDispose();
   }
 };
 
-export default compose<AccountEmployeeEducationEditorProps, OwnOption>(
+export const AccountEmployeeEducationEditor = compose<AccountEmployeeEducationEditorProps, {}>(
   withUser,
   withLayout,
+  withAppBar,
   withRouter,
   withWidth(),
   withAccountEmployeeEducation,
