@@ -1,9 +1,11 @@
+import AppEvent from '@constants/AppEvent';
+import { pageHelper } from '@layout/helper/pageHelper';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { menuLinkMapper } from '@utils/index';
 import {
   compose,
   HandleCreators,
@@ -17,12 +19,11 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { menuLinkMapper } from 'utils';
 
 import { NavigationView } from './NavigationView';
 
 interface IOwnOption {
-  onClose: () => void;
+
 }
 
 interface OwnState {
@@ -47,8 +48,7 @@ export type NavigationProps
   & WithUser 
   & WithLayout 
   & WithWidth
-  & WithStyles<typeof styles>
-  & RouteComponentProps;
+  & WithStyles<typeof styles>;
 
 const createProps: mapper<NavigationProps, OwnState> = (props: NavigationProps) => ({ 
   headerUid: props.layoutState.view && props.layoutState.view.parentUid,
@@ -74,13 +74,16 @@ const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
     }
   },
   handleOnClickMenuItem: (props: NavigationProps) => (headerUid: string, childUid: string, closeMenu: boolean) => {
-    props.setHeaderAndChild(headerUid, childUid);
-
-    props.history.push(menuLinkMapper(childUid));
-
     if (closeMenu) {
-      props.onClose();
+      dispatchEvent(new CustomEvent(AppEvent.DrawerLeft));
     }
+    
+    pageHelper.redirect({
+      path: menuLinkMapper(childUid),
+      state: undefined
+    });
+
+    props.setHeaderAndChild(headerUid, childUid);
   },
 };
 
@@ -100,7 +103,6 @@ export const Navigation = compose<NavigationProps, IOwnOption>(
   setDisplayName('Navigation'),
   withUser,
   withLayout,
-  withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
   lifecycle(lifecycles),

@@ -37,19 +37,10 @@ function* watchGetAllRequest() {
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationWorkflowGetAllError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationWorkflowGetAllError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationWorkflowGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ]),
       finallyEffects: [put(listBarLoading(false))]
     });
@@ -68,18 +59,9 @@ function* watchGetListRequest() {
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(organizationWorkflowGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationWorkflowGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
       ])
     });
   };
@@ -96,19 +78,10 @@ function* watchGetByIdRequest() {
         put(organizationWorkflowGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationWorkflowGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
+        put(organizationWorkflowGetByIdError(response)),
       ]), 
       errorEffects: (error: TypeError) => ([
         put(organizationWorkflowGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message,
-        }))
       ])
     });
   };

@@ -1,7 +1,7 @@
-import { ModuleDefinition, NotificationType } from '@layout/helper/redirector';
+import { ModuleDefinitionType, NotificationType } from '@layout/types';
 
 export interface INotificationMark {
-  moduleUid: ModuleDefinition;
+  moduleUid: ModuleDefinitionType;
   detailType: NotificationType;
   itemUid: string | string[];
 }

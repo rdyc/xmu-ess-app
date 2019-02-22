@@ -1,9 +1,9 @@
-import { ModuleDefinition } from '@layout/helper/redirector';
+import { ModuleDefinitionType } from '@layout/types';
 
 import { INotificationDetail } from './INotificationDetail';
 
 export interface INotification {
   name: string;
-  moduleUid: ModuleDefinition;
+  moduleUid: ModuleDefinitionType;
   details: INotificationDetail[];
 }

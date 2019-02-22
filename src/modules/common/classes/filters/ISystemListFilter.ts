@@ -1,11 +1,11 @@
 import { CommonCategoryField } from '@common/classes/types';
 import { DirectionType } from '@generic/types';
-import { ModuleDefinition } from '@layout/helper/redirector';
+import { ModuleDefinitionType } from '@layout/types';
 
 export interface ISystemListFilter {
   companyUid?: string; 
   parentCode?: string;
-  moduleType?: ModuleDefinition;
+  moduleType?: ModuleDefinitionType;
   orderBy?: CommonCategoryField;
   direction?: DirectionType;
 }
