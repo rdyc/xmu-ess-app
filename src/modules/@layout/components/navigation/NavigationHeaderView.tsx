@@ -12,9 +12,10 @@ import {
   ListSubheader,
   Switch,
 } from '@material-ui/core';
-import { ExpandLess, ExpandMore, PowerSettingsNew, SwapHorizontalCircle } from '@material-ui/icons';
+import { ExpandMore, PowerSettingsNew, SwapHorizontalCircle } from '@material-ui/icons';
 import InvertColors from '@material-ui/icons/InvertColors';
 import SwapHoriz from '@material-ui/icons/SwapHoriz';
+import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { DialogConfirmation } from '../dialogs';
@@ -22,6 +23,8 @@ import { NavigationHeaderProps } from './NavigationHeader';
 
 export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = props => (
   <ListSubheader component="div" disableGutters className={props.classes.brandingContainer}>
+    {props.children}
+    
     {
       props.userState.user &&
       <React.Fragment>
@@ -61,7 +64,10 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
             }}
           />
           <ListItemSecondaryAction>
-            {props.headerUid === AppMenu.User ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
+            <ExpandMore 
+              color="inherit" 
+              className={classNames(props.classes.expand, props.headerUid === AppMenu.User ? props.classes.expandOpen : '')}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         
@@ -149,6 +155,6 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
           onClickConfirm={props.handleOnClickLogoutConfirmed}
         />  
     </React.Fragment>     
-  }
-</ListSubheader>
+    }
+  </ListSubheader>
 );
