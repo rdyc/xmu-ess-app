@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupHolidayDeletePayload } from '@lookup/classes/request';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -10,7 +11,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -20,14 +24,16 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
+
 import { LookupHolidayDetailView } from './LookupHolidayDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   holidayUid: string;
   companyUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -36,7 +42,8 @@ interface OwnHandler {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
+interface IOwnState {
+  pageOptions?: IAppBarMenu[];
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -46,58 +53,70 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
-export type LookupHolidayDetailProps
+export type HolidayDetailProps
   = WithUser
   & WithLayout
   & WithLookupHoliday
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<LookupHolidayDetailProps, OwnState> = (props: LookupHolidayDetailProps): OwnState => ({
+const createProps: mapper<HolidayDetailProps, IOwnState> = (props: HolidayDetailProps): IOwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
   dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
 });
 
-const stateUpdaters: StateUpdaters<LookupHolidayDetailProps, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<HolidayDetailProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setOptions: (prevState: IOwnState, props: HolidayDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
 };
 
-const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
-  handleOnOpenDialog: (props: LookupHolidayDetailProps) => (action: LookupUserAction) => {
+const handlerCreators: HandleCreators<HolidayDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: HolidayDetailProps) => () => { 
+    if (props.userState.user && props.match.params.holidayUid && !props.lookupHolidayState.detail.isLoading) {
+      props.lookupHolidayDispatch.loadDetailRequest({
+        companyUid: props.history.location.state.companyUid,
+        holidayUid: props.match.params.holidayUid
+      });
+    }
+  },
+  handleOnOpenDialog: (props: HolidayDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
         action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Holiday' }),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Holiday' }),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
       });
     }
   },
-  handleOnCloseDialog: (props: LookupHolidayDetailProps) => () => {
+  handleOnCloseDialog: (props: HolidayDetailProps) => () => {
     props.stateUpdate({
       dialogOpen: false
     });
   },
-  handleOnConfirm: (props: LookupHolidayDetailProps) => () => {
+  handleOnConfirm: (props: HolidayDetailProps) => () => {
     const { response } = props.lookupHolidayState.detail;
 
     // skipp untracked action or empty response
@@ -143,7 +162,7 @@ const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
     }
 
   },
-  handleSubmit: (props: LookupHolidayDetailProps) => () => {
+  handleSubmit: (props: HolidayDetailProps) => () => {
     const { match, intl } = props;
     const { user } = props.userState;
     const { deleteRequest } = props.lookupHolidayDispatch;
@@ -167,15 +186,15 @@ const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
       });
     });
   },
-  handleSubmitSuccess: (props: LookupHolidayDetailProps) => (response: boolean) => {
-    props.history.push('/lookup/holidays/');
-
+  handleSubmitSuccess: (props: HolidayDetailProps) => (response: boolean) => {
     props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: props.intl.formatMessage(lookupMessage.holiday.message.deleteSuccess, { uid: props.match.params.holidayUid })
+      message: props.intl.formatMessage(lookupMessage.holiday.message.deleteSuccess, { uid : props.match.params.holidayUid })
     });
+
+    props.history.push('/lookup/holidays/');
   },
-  handleSubmitFail: (props: LookupHolidayDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: HolidayDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
@@ -191,12 +210,55 @@ const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
   }
 };
 
-export const LookupHolidayDetail = compose<LookupHolidayDetailProps, {}>(
+const lifecycles: ReactLifeCycleFunctions<HolidayDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: HolidayDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.holidayUid !== prevProps.match.params.holidayUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupHolidayState.detail.response !== prevProps.lookupHolidayState.detail.response) {
+      const { isLoading } = this.props.lookupHolidayState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LookupUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LookupUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
+export const LookupHolidayDetail = compose<HolidayDetailProps, {}>(
   withRouter,
   withUser,
   withLayout,
   withLookupHoliday,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<LookupHolidayDetailProps, OwnHandler>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<HolidayDetailProps, IOwnHandler>(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('LookupHolidayDetail')
 )(LookupHolidayDetailView);

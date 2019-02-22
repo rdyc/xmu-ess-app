@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupLeaveDeletePayload } from '@lookup/classes/request';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -10,7 +11,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -20,14 +24,16 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
+
 import { LookupLeaveDetailView } from './LookupLeaveDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   leaveUid: string;
   companyUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
   handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -36,7 +42,8 @@ interface OwnHandler {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
+interface IOwnState {
+  pageOptions?: IAppBarMenu[];
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -46,58 +53,70 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
-export type LookupLeaveDetailProps
+export type LeaveDetailProps
   = WithUser
   & WithLayout
   & WithLookupLeave
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<LookupLeaveDetailProps, OwnState> = (props: LookupLeaveDetailProps): OwnState => ({
+const createProps: mapper<LeaveDetailProps, IOwnState> = (props: LeaveDetailProps): IOwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
   dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
 });
 
-const stateUpdaters: StateUpdaters<LookupLeaveDetailProps, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<LeaveDetailProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setOptions: (prevState: IOwnState, props: LeaveDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    pageOptions: options
+  }),
 };
 
-const handlerCreators: HandleCreators<LookupLeaveDetailProps, OwnHandler> = {
-  handleOnOpenDialog: (props: LookupLeaveDetailProps) => (action: LookupUserAction) => {
+const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: LeaveDetailProps) => () => { 
+    if (props.userState.user && props.match.params.leaveUid && !props.lookupLeaveState.detail.isLoading) {
+      props.lookupLeaveDispatch.loadDetailRequest({
+        companyUid: props.history.location.state.companyUid,
+        leaveUid: props.match.params.leaveUid
+      });
+    }
+  },
+  handleOnOpenDialog: (props: LeaveDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
         action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Leave'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Leave'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
       });
     }
   },
-  handleOnCloseDialog: (props: LookupLeaveDetailProps) => () => {
+  handleOnCloseDialog: (props: LeaveDetailProps) => () => {
     props.stateUpdate({
       dialogOpen: false
     });
   },
-  handleOnConfirm: (props: LookupLeaveDetailProps) => () => {
+  handleOnConfirm: (props: LeaveDetailProps) => () => {
     const { response } = props.lookupLeaveState.detail;
 
     // skipp untracked action or empty response
@@ -143,7 +162,7 @@ const handlerCreators: HandleCreators<LookupLeaveDetailProps, OwnHandler> = {
     }
 
   },
-  handleSubmit: (props: LookupLeaveDetailProps) => () => {
+  handleSubmit: (props: LeaveDetailProps) => () => {
     const { match, intl } = props;
     const { user } = props.userState;
     const { deleteRequest } = props.lookupLeaveDispatch;
@@ -167,15 +186,15 @@ const handlerCreators: HandleCreators<LookupLeaveDetailProps, OwnHandler> = {
       });
     });
   },
-  handleSubmitSuccess: (props: LookupLeaveDetailProps) => (response: boolean) => {
-    props.history.push('/lookup/leaves/');
-
+  handleSubmitSuccess: (props: LeaveDetailProps) => (response: boolean) => {
     props.layoutDispatch.alertAdd({
       time: new Date(),
       message: props.intl.formatMessage(lookupMessage.leave.message.deleteSuccess, { uid : props.match.params.leaveUid })
     });
+
+    props.history.push('/lookup/leaves/');
   },
-  handleSubmitFail: (props: LookupLeaveDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: LeaveDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
@@ -191,12 +210,55 @@ const handlerCreators: HandleCreators<LookupLeaveDetailProps, OwnHandler> = {
   }
 };
 
-export const LookupLeaveDetail = compose<LookupLeaveDetailProps, {}>(
+const lifecycles: ReactLifeCycleFunctions<LeaveDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: LeaveDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.leaveUid !== prevProps.match.params.leaveUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupLeaveState.detail.response !== prevProps.lookupLeaveState.detail.response) {
+      const { isLoading } = this.props.lookupLeaveState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: LookupUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: LookupUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true,
+          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
+export const LookupLeaveDetail = compose<LeaveDetailProps, {}>(
   withRouter,
   withUser,
   withLayout,
   withLookupLeave,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<LookupLeaveDetailProps, OwnHandler>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<LeaveDetailProps, IOwnHandler>(handlerCreators),
+  lifecycle(lifecycles),
+  setDisplayName('LookupLeaveDetail')
 )(LookupLeaveDetailView);
