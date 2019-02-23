@@ -44,6 +44,13 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
           <Typography variant="h6" color="inherit" className={props.classes.flex}>
             {props.intl.formatMessage(layoutMessage.tooltip.filter)}
           </Typography>
+          
+          {
+            (props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            <Button color="inherit" onClick={props.handleFilterOnReset}>
+              {props.intl.formatMessage(layoutMessage.action.reset)}
+            </Button>
+          }
 
           <Button
             color="inherit"

@@ -20,6 +20,8 @@
   "leave.request.section.info.subHeader": " ",
   "leave.request.section.approval.title": "Approval",
   "leave.request.section.approval.subHeader": " ",
+  "leave.request.section.cancellation.title": "Cancellation",
+  "leave.request.section.cancellation.subHeader": " ",
 
   "leave.form.newTitle": "Leave Request",
   "leave.approvalTitle": "Leave Approval",
@@ -64,6 +66,7 @@
   "leave.request.field.isNotify": "Notified Only",
   "leave.request.field.isRejected": "Rejected Only",
   "leave.request.field.completion": "Completion",
+  "leave.request.field.employeeUid": "Employee",
 
   "leave.field.information.uid": "PID",
   "leave.field.information.uid.placeholder": "PID",
@@ -116,7 +119,7 @@
 
   "leave.cancellation.page.list.title": "Leave Cancellations",
   "leave.cancellation.page.list.subHeader": " ",
-  "leave.cancellation.page.detail.title": "Leave Approval Details",
+  "leave.cancellation.page.detail.title": "Leave Cancellations Details",
   "leave.cancellation.page.detail.subHeader": " ",
 
   "leave.cancellation.message.emptyProps": "Some props are empty",
@@ -132,7 +135,7 @@
   "leave.message.cancellation.create.failure": "Unable to process your submission",
   "leave.message.cancellation.emptyProps": "Some props are empty",
 
-  "leave.CancellationSubHeader": " ",
+  "leave.CancellationSubHeader": "",
   "leave.cancellation.field.cancelDate": "Cancel Date",
   "leave.cancellation.field.cancelDate.placeholder": "Input Date",
   "leave.cancellation.field.cancelDate.required": "Cancel date is required",

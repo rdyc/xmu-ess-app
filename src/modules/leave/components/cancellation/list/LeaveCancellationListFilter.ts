@@ -1,5 +1,7 @@
-import { ISystemList } from '@common/classes/response';
+import { IEmployee } from '@account/classes/response';
+import { WithAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveCancellationGetAllFilter } from '@leave/classes/filters/cancellation';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -7,7 +9,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,7 +22,7 @@ import {
 
 import { LeaveCancellationListFilterView } from './LeaveCancellationListFilterView';
 
-export type ILeaveCancellationListFilterResult = Pick<ILeaveCancellationGetAllFilter, 'leaveType' >;
+export type ILeaveCancellationListFilterResult = Pick<ILeaveCancellationGetAllFilter, 'employeeUid' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -28,33 +32,31 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-
-  // filter type
-  isFilterTypeOpen: boolean;
-  filterType?: ISystemList;
-
+  // filter employee
+  isFilterEmployeeOpen: boolean;
+  filterEmployee?: IEmployee;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // main filter
   setFilterReset: StateHandler<IOwnState>;
 
-  // filter type
-  setFilterTypeVisibility: StateHandler<IOwnState>;
-  setFilterType: StateHandler<IOwnState>;
+  // filter Employee
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;
 
 }
 
 interface IOwnHandler {
-  // main filter
+  // mainfilter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
 
-  // filter type
-  handleFilterTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterTypeOnSelected: (data: ISystemList) => void;
-  handleFilterTypeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterTypeOnClose: () => void;
+  // filter Employee
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (data?: IEmployee) => void;
+  handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnClose: () => void;
 
 }
 
@@ -65,25 +67,28 @@ export type LeaveCancellationListFilterProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser 
+  & WithAccountEmployee
   & InjectedIntlProps;
 
 const createProps: mapper<LeaveCancellationListFilterProps, IOwnState> = (props: LeaveCancellationListFilterProps): IOwnState => ({
-  isFilterTypeOpen: false
+  isFilterEmployeeOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<LeaveCancellationListFilterProps, IOwnState, IOwnStateUpdater> = { 
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
-    filterType: undefined,
+    filterEmployee: undefined,
   }),
 
-  // filter type
-  setFilterTypeVisibility: (prevState: IOwnState) => () => ({
-    isFilterTypeOpen: !prevState.isFilterTypeOpen
+  // filter Employee
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
+    isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
   }),
-  setFilterType: (prevState: IOwnState) => (data?: ISystemList) => ({
-    isFilterTypeOpen: false,
-    filterType: data
+
+  setFilterEmployee: () => (data?: IEmployee) => ({
+    isFilterEmployeeOpen: false,
+    filterEmployee: data
   }),
 };
 
@@ -94,31 +99,58 @@ const handlerCreators: HandleCreators<LeaveCancellationListFilterProps, IOwnHand
   },
   handleFilterOnApply: (props: LeaveCancellationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
-      leaveType: props.filterType && props.filterType.type,
-
+      employeeUid: props.filterEmployee && props.filterEmployee.uid,
     });
+    props.setFilterVisibility();
   },
 
-  // filter type
-  handleFilterTypeVisibility: (props: LeaveCancellationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterTypeVisibility();
+  handleFilterVisibility: (props: LeaveCancellationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
   },
-  handleFilterTypeOnSelected: (props: LeaveCancellationListFilterProps) => (data: ISystemList) => {
-    props.setFilterType(data);
+
+   // filter Employee
+   handleFilterEmployeeVisibility: (props: LeaveCancellationListFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
   },
-  handleFilterTypeOnClear: (props: LeaveCancellationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterType();
+  handleFilterEmployeeOnSelected: (props: LeaveCancellationListFilterProps) => (data?: IEmployee) => {
+    props.setFilterEmployee(data);
   },
-  handleFilterTypeOnClose: (props: LeaveCancellationListFilterProps) => () => {
-    props.setFilterTypeVisibility();
+  handleFilterEmployeeOnClear: (props: LeaveCancellationListFilterProps) => () => {
+    props.setFilterEmployee();
   },
+  handleFilterEmployeeOnClose: (props: LeaveCancellationListFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
+  },
+};
+
+const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { employeeUid } = this.props.initialProps;
+
+      // filter project type
+      if (employeeUid) {
+        const { response } = this.props.accountEmployeeState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === employeeUid);
+          
+          this.props.setFilterEmployee(selected);
+        }
+      }
+    }
+  }
 };
 
 export const LeaveCancellationListFilter = compose<LeaveCancellationListFilterProps, IOwnOption>(
   setDisplayName('LeaveCancellationListFilter'),
   withLayout,
   withStyles(styles),
+  withUser,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(LeaveCancellationListFilterView);

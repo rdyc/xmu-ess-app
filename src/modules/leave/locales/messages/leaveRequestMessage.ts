@@ -96,8 +96,8 @@ export const leaveRequestSection = defineMessages({
   statusSubHeader: { id: `${prefix}.section.status.subHeader` },
   approvalTitle: { id: `${prefix}.section.approval.title` },
   approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
-  cancellationTitle: { id: `${prefix}.section.approval.title` },
-  cancellationSubHeader: { id: `${prefix}.section.approval.subHeader` },
+  cancellationTitle: { id: `${prefix}.section.cancellation.title` },
+  cancellationSubHeader: { id: `${prefix}.section.cancellation.subHeader` },
 });
 
 export const leaveRequestFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
