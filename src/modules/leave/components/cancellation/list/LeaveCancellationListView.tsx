@@ -82,7 +82,7 @@ export const LeaveCancellationListView: React.SFC<LeaveCancellationListProps> = 
       }
     />
 
-    <LeaveCancellationListFilter 
+    <LeaveCancellationListFilter
       isOpen={props.isFilterOpen}
       initialProps={{
         employeeUid: props.employeeUid,

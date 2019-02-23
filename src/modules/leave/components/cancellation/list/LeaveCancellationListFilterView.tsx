@@ -1,4 +1,4 @@
-import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { layoutMessage } from '@layout/locales/messages';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import {
@@ -18,72 +18,83 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
 
 import { LeaveCancellationListFilterProps } from './LeaveCancellationListFilter';
 
 export const LeaveCancellationListFilterView: React.SFC<LeaveCancellationListFilterProps> = props => (
-  <React.Fragment>
-    <Dialog
-      fullScreen
-      disableBackdropClick
-      open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
-      scroll="paper"
-      onClose={props.onClose}
-    >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
-        <Toolbar>
-          <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
-            <CloseIcon />
-          </IconButton>
+  < React.Fragment >
+  <Dialog
+    fullScreen
+    disableBackdropClick
+    open={props.isOpen}
+    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    scroll="paper"
+    onClose={props.onClose}
+  >
+    <AppBar className={props.classes.appBarDialog}>
+      <Toolbar>
+        <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
+          <CloseIcon />
+        </IconButton>
 
-          <Typography variant="h6" color="inherit" className={props.classes.flex}>
-            {props.intl.formatMessage(layoutMessage.tooltip.filter)}
-          </Typography>
+        <Typography variant="h6" color="inherit" className={props.classes.flex}>
+          {props.intl.formatMessage(layoutMessage.tooltip.filter)}
+        </Typography>
 
-          <Button
-            color="inherit"
-            onClick={props.handleFilterOnApply}
-          >
-            {props.intl.formatMessage(layoutMessage.action.apply)}
+        {
+          (props.filterEmployee) &&
+          <Button color="inherit" onClick={props.handleFilterOnReset}>
+            {props.intl.formatMessage(layoutMessage.action.reset)}
           </Button>
-        </Toolbar>
-      </AppBar>
+        }
 
-      <DialogContent className={props.classes.paddingDisabled}>
-        <List>
-          <ListItem button onClick={props.handleFilterTypeVisibility}>
-            <ListItemText
-              primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-              secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterType &&
-                <IconButton onClick={props.handleFilterTypeOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
+        <Button
+          color="inherit"
+          onClick={props.handleFilterOnApply}
+        >
+          {props.intl.formatMessage(layoutMessage.action.apply)}
+        </Button>
+      </Toolbar>
+    </AppBar>
 
-              <IconButton onClick={props.handleFilterCompletionVisibility}>
-                <ChevronRightIcon />
+    <DialogContent className={props.classes.paddingDisabled}>
+      <List>
+        <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+          <ListItemText
+            primary={props.intl.formatMessage(leaveMessage.request.field.employeeUid)}
+            secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterEmployee &&
+              <IconButton onClick={props.handleFilterEmployeeOnClear}>
+                <ClearIcon />
               </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-        </List>
-      </DialogContent>
-    </Dialog>
+            }
+            <IconButton onClick={props.handleFilterEmployeeVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+      </List>
+    </DialogContent>
+  </Dialog>
 
-    <LookupSystemDialog
-      title={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-      category="leave"
-      hideBackdrop={true}
-      isOpen={props.isFilterTypeOpen}
-      value={props.filterType && props.filterType.type}
-      onSelected={props.handleFilterTypeOnSelected}
-      onClose={props.handleFilterTypeOnClose}
-    />
-  </React.Fragment>
+  <AccountEmployeeDialog
+    isOpen={props.isFilterEmployeeOpen}
+    title={props.intl.formatMessage(summaryMessage.winningRatio.field.name)}
+    value={props.filterEmployee && props.filterEmployee.uid}
+    filter={{
+      companyUids: props.userState.user && props.userState.user.company.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    }}
+    hideBackdrop={true}
+    onSelected={props.handleFilterEmployeeOnSelected}
+    onClose={props.handleFilterEmployeeOnClose}
+  />
+  </React.Fragment >
 );

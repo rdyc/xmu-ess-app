@@ -70,7 +70,6 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             >
               {props.intl.formatMessage(layoutMessage.action.apply)}
             </Button>
-
           </Toolbar>
         </AppBar>
 
