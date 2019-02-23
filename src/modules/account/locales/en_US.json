@@ -17,13 +17,26 @@
   "account.shared.message.emptyProps": "Some props are empty",
   "account.shared.message.create.success": "New {state} Data has been created",
   "account.shared.message.create.failure": "Unable to process your submission",
-  "account.shared.message.update.success": "{state} Data has been updated",
+  "account.shared.message.update.success": "{state} Data with ID {uid} has been updated",
   "account.shared.message.update.failure": "Unable to process your submission",
-  "account.shared.message.delete.success": "{state} Data has been deleted",
+  "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
+
+  "account.shared.section.info.title": "Employee {state}",
+  "account.shared.section.info.subHeader": " ",
 
   "account.shared.field.no": "No",
   "account.shared.field.action": "Actions",
+  "account.shared.field.title.information": "Detail {state}",
+
+  "account.shared.confirm.create.title": "Create New {state}",
+  "account.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
+ 
+  "account.shared.confirm.modify.title": "Modify {state}",
+  "account.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
+
+  "account.shared.confirm.delete.title": "Delete {state}",
+  "account.shared.confirm.delete.subHeader": "You are about to delete this {state} data. Do you want to continue?",
 
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
   "account.access.message.selection": "Please select your company access",
@@ -271,6 +284,9 @@
 
   "account.education.field.employeeUid": "Employee ID",
   "account.education.field.employeeUid.placeholder": "Employee ID",
+
+  "account.education.field.employeeName": "Employee Name",
+  "account.education.field.employeeName.placeholder": "Employee Name",
 
   "account.education.field.degree": "Education Degree",
   "account.education.field.degree.required": "Education Degree is required",

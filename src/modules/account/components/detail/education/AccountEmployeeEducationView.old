@@ -1,11 +1,11 @@
 import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { AccountEmployeeEducationHeaderTable } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
-import AccountEmployeeEducationEditor from '@account/components/editor/AccountEmployeeEducationEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
 import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages';
+import { PreloaderWithError } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   Fade,
@@ -91,8 +91,8 @@ const config: SingleConfig<IEmployeeEducation, AccountEmployeeEducationProps> = 
 export const AccountEmployeeEducationView: React.SFC<
   AccountEmployeeEducationProps
 > = props => {
-  const { isOpenDialog, isOpenMenu, educationItemIndex, editAction, initialValues, page, size, classes } = props;
-  const { handleDialogClose, handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
+  const { isOpenMenu, educationItemIndex, page, size, classes } = props;
+  const { handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
 
   const { response, isLoading } = props.accountEmployeeEducationState.all;
 
@@ -259,20 +259,26 @@ export const AccountEmployeeEducationView: React.SFC<
       <DetailPage
         tab={AccountEmployeeTabs.education}        
       >
-        {renderAction}
-        <SinglePage
-          config={config}
-          connectedProps={props}
+        <PreloaderWithError
+          state={props.accountEmployeeEducationState.all}
+          waitingText={props.intl.formatMessage(layoutMessage.text.waiting)}
+          onRetry={() => props.onLoadApi()}
         >
-          {(( !isLoading && response && !response.data) ||
-            ( !isLoading && response && response.data && response.data.length === 0)) && (
-            <Typography variant="body2">No Data</Typography>
-          )}
-          { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data, response.metadata)}
-        </SinglePage>
+          {renderAction}
+          <SinglePage
+            config={config}
+            connectedProps={props}
+          >
+            {(( !isLoading && response && !response.data) ||
+              ( !isLoading && response && response.data && response.data.length === 0)) && (
+              <Typography variant="body2">No Data</Typography>
+            )}
+            { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data, response.metadata)}
+          </SinglePage>
+        </PreloaderWithError>
       </DetailPage>
       
-      <AccountEmployeeEducationEditor
+      {/* <AccountEmployeeEducationEditor
         formMode={props.formMode}
         educationUid={props.educationUid}
         employeeUid={props.match.params.employeeUid}
@@ -280,7 +286,7 @@ export const AccountEmployeeEducationView: React.SFC<
         editAction={editAction}
         initialValues={initialValues}
         handleDialogClose={handleDialogClose}
-      />
+      /> */}
     </React.Fragment>
   );
 };

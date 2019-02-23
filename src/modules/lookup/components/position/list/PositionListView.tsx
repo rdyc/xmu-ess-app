@@ -2,79 +2,76 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeave } from '@leave/classes/response';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { IPosition } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isLeaveRequestEditable } from '@organization/helper';
 import * as React from 'react';
+import { PositionSummary } from '../detail/shared/PositionSummary';
+import { PositionListProps } from './PositionList';
+import { PositionListFilter } from './PositionListFilter';
 
-import { LeaveSummary } from '../detail/shared/LeaveSummary';
-import { LeaveRequestListProps } from './LeaveRequestList';
-import { LeaveRequestListFilter } from './LeaveRequestListFilter';
-
-export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
+export const PositionListView: React.SFC<PositionListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.LeaveRequest,
-        parentUid: AppMenu.Leave,
-        title: props.intl.formatMessage(leaveMessage.request.page.listTitle),
-        description: props.intl.formatMessage(leaveMessage.request.page.listSubHeader)
+        uid: AppMenu.LookupPosition,
+        parentUid: AppMenu.Lookup,
+        title: props.intl.formatMessage(lookupMessage.position.page.listTitle),
+        // description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
+        description: '',
       }}
 
       // state & fields
-      state={props.leaveRequestState.all}
+      state={props.lookupPositionState.all}
       fields={props.fields}
-      
+
       // selection
       // disableSelection={props.handleDisableSelection}
       // onSelection={props.handleSelection}
-      
+
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
-      
-      // row components
-      summaryComponent={(item: ILeave) => ( 
-        <LeaveSummary data={item} />
-      )}
-      actionComponent={(item: ILeave) => (
-        <React.Fragment>
-          {
-            isLeaveRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => props.history.push(`/leave/requests/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-          }
 
-          <Button 
+      // row components
+      summaryComponent={(item: IPosition) => (
+        <PositionSummary data={item} />
+      )}
+      actionComponent={(item: IPosition) => (
+        <React.Fragment>
+          <Button
             size="small"
-            onClick={() => props.history.push(`/leave/requests/${item.uid}`)}
+            onClick={() => props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
+
+          <Button
+            size="small"
+            onClick={() => props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
+
       )}
 
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="leave.request"
-          default={props.leaveRequestState.all.request && props.leaveRequestState.all.request.filter && props.leaveRequestState.all.request.filter.find}
+          key="lookup.position"
+          default={props.lookupPositionState.all.request && props.lookupPositionState.all.request.filter && props.lookupPositionState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/leave/requests/form')}
+          onClick={() => props.history.push('/lookup/positions/form')}
         >
-          <AddCircle/>
+          <AddCircle />
         </IconButton>
       }
 
@@ -87,8 +84,8 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.leaveRequestState.all.isLoading || props.leaveRequestState.all.isError}
-              onClick={props.handleFilterVisibility} 
+              disabled={props.lookupPositionState.all.isLoading || props.lookupPositionState.all.isError}
+              onClick={props.handleFilterVisibility}
             >
               <Badge
                 invisible={!props.handleFilterBadge()}
@@ -96,7 +93,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
                   <CheckCircle color="primary" fontSize="small" />
                 }
               >
-                <Tune/>
+                <Tune />
               </Badge>
             </IconButton>
           </div>
@@ -104,12 +101,10 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
       }
     />
 
-    <LeaveRequestListFilter 
+    <PositionListFilter
       isOpen={props.isFilterOpen}
       initialProps={{
-        leaveType: props.leaveType,
-        statusType: props.statusType,
-        isRejected: props.isRejected,
+        companyUid: props.companyUid,
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

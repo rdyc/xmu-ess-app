@@ -1,5 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IPositionDeletePayload } from '@lookup/classes/request';
 import { PositionUserAction } from '@lookup/classes/types';
@@ -11,7 +12,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -22,7 +26,13 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 
+interface OwnRouteParams {
+  positionUid: string;
+  companyUid: string;
+}
+
 interface OwnHandler {
+  handleOnLoadApi: () => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -30,6 +40,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
+  pageOptions?: IAppBarMenu[];
   action?: PositionUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -40,14 +51,10 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setOptions: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
   setDelete: StateHandler<OwnState>;
-}
-
-interface OwnRouteParams {
-  positionUid: string;
-  companyUid: string;
 }
 
 export type PositionDetailProps
@@ -66,6 +73,9 @@ const createProps: mapper<PositionDetailProps, OwnState> = (props: PositionDetai
 });
 
 const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdaters> = {
+  setOptions: (prevState: OwnState, props: PositionDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+    pageOptions: options
+  }),
   setModify: (prevState: OwnState, props: PositionDetailProps) => (): Partial<OwnState> => ({
     action: PositionUserAction.Modify,
     dialogFullScreen: false,
@@ -96,6 +106,19 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdate
 };
 
 const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: PositionDetailProps) => () => {
+    if (props.userState.user && props.match.params.companyUid && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
+      // if (props.history.location.state.companyUid) {
+        props.lookupPositionDispatch.loadDetailRequest({
+          companyUid: props.match.params.companyUid,
+          positionUid: props.match.params.positionUid
+        });
+      } 
+      // else {
+      //   props.history.push('/lookup/positions');
+      // }
+    // }
+  }, 
   handleOnModify: (props: PositionDetailProps) => () => {
     props.setModify();
   },
@@ -191,7 +214,49 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<PositionDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: PositionDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.positionUid !== prevProps.match.params.positionUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.lookupPositionState.detail.response !== prevProps.lookupPositionState.detail.response) {
+      const { isLoading } = this.props.lookupPositionState.detail;
+
+      // generate option menus
+      const options: IAppBarMenu[] = [
+        {
+          id: PositionUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnLoadApi
+        },
+        {
+          id: PositionUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnModify
+        },
+        {
+          id: PositionUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: !isLoading,
+          visible: true,
+          onClick: this.props.handleOnDelete
+        },
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const PositionDetail = compose(
+  setDisplayName('LookupPositionDetail'),
   withUser,
   withLayout,
   withRouter,
@@ -199,4 +264,5 @@ export const PositionDetail = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(PositionDetailView);

@@ -5,7 +5,7 @@ import { AccountAccess } from './access';
 import { AccountEmployeeAccess } from './detail/access/AccountEmployeeAccess';
 import { AccountEmployeeAccessHistory } from './detail/accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeDetail } from './detail/AccountEmployeeDetail';
-import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEducation';
+import { AccountEmployeeEducationDetail } from './detail/education/AccountEmployeeEducationDetail';
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
 import { AccountEmployeeNote } from './detail/note/AccountEmployeeNote';
@@ -13,8 +13,10 @@ import { AccountEmployeeRate } from './detail/rate/AccountEmployeeRate';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
 import AccountEmployeeAccessEditor from './editor/AccountEmployeeAccessEditor';
 import { AccountEmployeeEditor } from './editor/AccountEmployeeEditor';
+import { AccountEmployeeEducationEditor } from './editor/AccountEmployeeEducationEditor';
 import AccountEmployeeNoteEditor from './editor/AccountEmployeeNoteEditor';
 import { AccountEmployeeList } from './list/AccountEmployeeList';
+import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEducationList';
 import { AccountProfile } from './profile';
 
 const access = (props: RouteComponentProps) => (
@@ -47,7 +49,9 @@ const employee = (props: RouteComponentProps) => (
 
 const employeeEducation = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={AccountEmployeeEducation} />
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEducationEditor} />    
+    <Route path={`${props.match.path}/:educationUid`} component={AccountEmployeeEducationDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeEducationList} />
   </Switch>
 );
 

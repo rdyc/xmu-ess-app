@@ -43,10 +43,12 @@ import {
   accountRateMessage
 } from './accountRateMessage';
 import {
+  accountSharedConfirm,
   accountSharedField,
   accountSharedMessage,
   accountSharedOption,
-  accountSharedPage
+  accountSharedPage,
+  accountSharedSection
 } from './accountShared';
 
 export const accountMessage = {
@@ -75,7 +77,9 @@ export const accountMessage = {
     option: accountSharedOption,
     page: accountSharedPage,
     field: accountSharedField,
-    message: accountSharedMessage
+    message: accountSharedMessage,
+    confirm: accountSharedConfirm,
+    section: accountSharedSection
   },
   training: {
     field: accountEmployeeTrainingField,

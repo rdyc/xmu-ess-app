@@ -2,72 +2,68 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
+import { IRole } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
+import { LookupRoleSumarry } from '../detail/shared/LookupRoleSummary';
+import { LookupRoleListProps } from './LookupRoleList';
+import { LookupRoleListFilter } from './LookupRoleListFilter';
 
-import { IEmployee } from '@account/classes/response';
-import { accountMessage } from '@account/locales/messages/accountMessage';
-import { AccountEmployeeFilter } from './AccountEmployeeFilter';
-import { AccountEmployeeListProps } from './AccountEmployeeList';
-import { AccountEmployeeSummary } from './AccountEmployeeSummary';
-
-export const AccountEmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
+export const LookupRoleListView: React.SFC<LookupRoleListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.LookupEmployee,
+        uid: AppMenu.LookupRole,
         parentUid: AppMenu.Lookup,
-        title: props.intl.formatMessage(accountMessage.shared.page.listTitle, { state: 'Employee'}),
-        description: props.intl.formatMessage(accountMessage.shared.page.listSubHeader),
-
+        title: props.intl.formatMessage(lookupMessage.role.page.listTitle),
+        description: props.intl.formatMessage(lookupMessage.role.page.listSubHeader)
       }}
 
       // state & fields
-      state={props.accountEmployeeState.all}
+      state={props.lookupRoleState.all}
       fields={props.fields}
 
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
-      
+
       // row components
-      summaryComponent={(item: IEmployee) => ( 
-        <AccountEmployeeSummary data={item} />
+      summaryComponent={(item: IRole) => (
+        <LookupRoleSumarry data={item} />
       )}
-      actionComponent={(item: IEmployee) => (
+      actionComponent={(item: IRole) => (
         <React.Fragment>
-          <Button 
+          <Button
             size="small"
-            onClick={() => props.history.push(`/account/employee/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
-
-          <Button 
+          <Button
             size="small"
-            onClick={() => props.history.push(`/account/employee/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/lookup/roles/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
-
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee"
-          default={props.accountEmployeeState.all.request && props.accountEmployeeState.all.request.filter && props.accountEmployeeState.all.request.filter.find}
+          key="lookup.role"
+          default={props.lookupRoleState.all.request && props.lookupRoleState.all.request.filter && props.lookupRoleState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/account/employee/form')}
+          onClick={() => props.history.push('/lookup/roles/form')}
         >
-          <AddCircle/>
+          <AddCircle />
         </IconButton>
       }
 
@@ -80,8 +76,8 @@ export const AccountEmployeeListView: React.SFC<AccountEmployeeListProps> = prop
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.accountEmployeeState.all.isLoading || props.accountEmployeeState.all.isError}
-              onClick={props.handleFilterVisibility} 
+              disabled={props.lookupRoleState.all.isLoading || props.lookupRoleState.all.isError}
+              onClick={props.handleFilterVisibility}
             >
               <Badge
                 invisible={!props.handleFilterBadge()}
@@ -89,22 +85,20 @@ export const AccountEmployeeListView: React.SFC<AccountEmployeeListProps> = prop
                   <CheckCircle color="primary" fontSize="small" />
                 }
               >
-                <Tune/>
+                <Tune />
               </Badge>
             </IconButton>
           </div>
         </Tooltip>
       }
     />
-
-    <AccountEmployeeFilter
+    <LookupRoleListFilter
       isOpen={props.isFilterOpen}
       initialProps={{
-        companyUids: props.companyUids,
-        roleUids: props.roleUids
+        companyUid: props.companyUid
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
     />
-</React.Fragment>
+  </React.Fragment>
 );

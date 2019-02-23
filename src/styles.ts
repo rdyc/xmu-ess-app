@@ -301,6 +301,7 @@ const styles = (theme: Theme) =>
     },
     drawerPaper: {
       width: drawerWidth,
+      overflow: 'hidden',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
@@ -345,7 +346,6 @@ const styles = (theme: Theme) =>
 
     // branding
     brandingContainer: {
-      flex: 1,
       backgroundColor: theme.palette.background.paper,
       backgroundImage: `url(${Pattern2})`,
       backgroundSize: 'cover',

@@ -4,7 +4,6 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IProjectAssignment } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
@@ -38,18 +37,15 @@ export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = 
       )}
       actionComponent={(item: IProjectAssignment) => (
         <React.Fragment>
-          {
-            isRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => props.history.push('/project/assignments/form', { 
-                companyUid: item.customer && item.customer.companyUid, 
-                assignmentUid: item.uid 
-              })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-          }
+          <Button 
+            size="small"
+            onClick={() => props.history.push('/project/assignments/form', { 
+              companyUid: item.customer && item.customer.companyUid, 
+              assignmentUid: item.uid 
+            })}
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
 
           <Button 
             size="small"

@@ -83,7 +83,7 @@ function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeEducationGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/educations${action.payload.educationUid}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/educations/${action.payload.educationUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeEducationGetByIdSuccess(response.body)),
       ]), 
