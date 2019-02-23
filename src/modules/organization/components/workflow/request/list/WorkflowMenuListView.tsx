@@ -5,7 +5,7 @@ import { isWidthDown } from '@material-ui/core/withWidth';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
-import { isMenusWithWorkflow } from '@organization/helper/isMenusWithWorkflow';
+import { isMenusWithWorkflow } from '@organization/helper';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { isNullOrUndefined } from 'util';

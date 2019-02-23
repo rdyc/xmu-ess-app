@@ -4,7 +4,7 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
+import { isModuleRequestEditable } from '@organization/helper';
 import { ITravelRequest } from '@travel/classes/response';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';

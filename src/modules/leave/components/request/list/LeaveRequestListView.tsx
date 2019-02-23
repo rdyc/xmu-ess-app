@@ -6,7 +6,7 @@ import { ILeave } from '@leave/classes/response';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isLeaveRequestEditable } from '@organization/helper';
 import * as React from 'react';
 
 import { LeaveSummary } from '../detail/shared/LeaveSummary';
@@ -43,7 +43,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
       actionComponent={(item: ILeave) => (
         <React.Fragment>
           {
-            isRequestEditable(item.statusType) &&
+            isLeaveRequestEditable(item.statusType) &&
             <Button 
               size="small"
               onClick={() => props.history.push(`/leave/requests/form`, { uid: item.uid })}

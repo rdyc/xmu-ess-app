@@ -4,10 +4,11 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isSettlementRequestEditable } from '@organization/helper';
 import { ITravelSettlement } from '@travel/classes/response';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
+
 import { TravelSummarySettlement } from '../detail/shared/TravelSummarySettlement';
 import { TravelSettlementListProps } from './TravelSettlementList';
 import { TravelSettlementListFilter } from './TravelSettlementListFilter';
@@ -42,7 +43,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
       actionComponent={(item: ITravelSettlement) => (
         <React.Fragment>
           {
-            isRequestEditable(item.statusType) &&
+            isSettlementRequestEditable(item.statusType) &&
             <Button
               size="small"
               onClick={() => props.history.push(`/travel/settlement/requests/form`, { uid: item.uid })}

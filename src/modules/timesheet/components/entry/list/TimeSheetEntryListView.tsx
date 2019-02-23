@@ -4,7 +4,7 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isTimesheetEditable } from '@organization/helper';
 import { ITimesheet } from '@timesheet/classes/response';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
@@ -43,7 +43,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
       actionComponent={(item: ITimesheet) => (
         <React.Fragment>
           {
-            isRequestEditable(item.statusType) &&
+            isTimesheetEditable(item.statusType) &&
             <Button 
               size="small"
               onClick={() => props.history.push(`/timesheet/requests/form`, { uid: item.uid })}

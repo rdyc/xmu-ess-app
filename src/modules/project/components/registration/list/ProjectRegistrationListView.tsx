@@ -4,7 +4,7 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isRequestEditable } from '@organization/helper';
 import { IProject } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';

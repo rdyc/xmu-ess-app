@@ -6,7 +6,7 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
+import { isModuleRequestEditable } from '@organization/helper';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ExpenseSummary } from '../detail/shared/ExpenseSummary';
