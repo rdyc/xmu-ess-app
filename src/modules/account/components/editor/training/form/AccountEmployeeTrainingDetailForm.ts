@@ -10,7 +10,6 @@ import { AccountEmployeeTrainingDetailFormView } from './AccountEmployeeTraining
 
 interface OwnProps {
   formMode: FormMode | undefined;
-  disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
@@ -25,7 +24,7 @@ export type AccountEmployeeTrainingDetailFormProps =
 
 const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: AccountEmployeeTrainingDetailFormProps) => (name: string) => {
-    const { intl, disabledControls } = props;
+    const { intl } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -52,17 +51,16 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'name':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: InputText,
+          multiline: true
         };
         break;
 
       case 'start':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
@@ -72,7 +70,6 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'end':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
@@ -82,17 +79,16 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'organizer':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: InputText,
+          multiline: true
         };
         break;
 
       case 'trainingType':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           category: 'training',
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
@@ -103,7 +99,6 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'certificationType':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           category: 'certification',
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),

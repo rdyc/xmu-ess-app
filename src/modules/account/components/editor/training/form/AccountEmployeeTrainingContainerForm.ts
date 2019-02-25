@@ -1,13 +1,13 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
+import { compose } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeTrainingContainerFormView } from './AccountEmployeeTrainingContainerFormView';
 
 const formName = 'accountEmployeeTraining';
 
 export type AccountEmployeeTrainingFormData = {
-  information: {
+  training: {
     uid: string | null | undefined;
     employeeUid: string| null | undefined;
     name: string | null | undefined;
@@ -20,9 +20,11 @@ export type AccountEmployeeTrainingFormData = {
 };
 
 interface OwnProps {
-  formMode: FormMode | undefined;
-  formAction: 'update' | 'delete';
-  handleValidity: (valid: boolean) => void;
+  formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
@@ -34,28 +36,16 @@ export type AccountEmployeeTrainingContainerFormProps
   & FormValueProps
   & OwnProps;
 
-const mapStateToProps = (state: any): FormValueProps => {
+const mapStateToProps = (): FormValueProps => {
   return {
     formName,
   };
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingContainerFormProps, {}> = {
-  componentDidMount() {
-    this.props.handleValidity(this.props.valid);
-  },
-  componentDidUpdate(prevProps: AccountEmployeeTrainingContainerFormProps) {
-    if (prevProps.valid !== this.props.valid) {
-      this.props.handleValidity(this.props.valid); 
-    }
-  }
-};
-
 // const connectedView = connect(mapStateToProps)(AccountEmployeeTrainingContainerFormView);
 
 const enhance = compose<AccountEmployeeTrainingContainerFormProps, OwnProps & InjectedFormProps<AccountEmployeeTrainingFormData, OwnProps>>(
-  connect(mapStateToProps),
-  lifecycle(lifecycles)
+  connect(mapStateToProps)
 )(AccountEmployeeTrainingContainerFormView);
 
 export const AccountEmployeeTrainingContainerForm = reduxForm<AccountEmployeeTrainingFormData, OwnProps>({
