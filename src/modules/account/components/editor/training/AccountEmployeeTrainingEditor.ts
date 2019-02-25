@@ -1,10 +1,13 @@
-import { IEmployeeTrainingDeletePayload, IEmployeeTrainingPostPayload, IEmployeeTrainingPutPayload } from '@account/classes/request/employeeTraining';
+import { IEmployeeTrainingPostPayload, IEmployeeTrainingPutPayload } from '@account/classes/request/employeeTraining';
 import { IEmployeeTraining } from '@account/classes/response/employeeTraining';
 import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -13,34 +16,32 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeTrainingEditorView } from './AccountEmployeeTrainingEditorView';
-import { AccountEmployeeTrainingFormData } from './form/training/AccountEmployeeTrainingContainerForm';
-
-type EditAction = 'update' | 'delete';
+import { AccountEmployeeTrainingFormData } from './form/AccountEmployeeTrainingContainerForm';
 
 interface OwnHandlers {
   handleValidate: (payload: AccountEmployeeTrainingFormData) => FormErrors;
   handleSubmit: (payload: AccountEmployeeTrainingFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
-  formMode: FormMode | undefined;
-  trainingUid?: string;
-  employeeUid: string;
-  isOpenDialog: boolean;
-  editAction?: EditAction | undefined;
-  initialValues?: AccountEmployeeTrainingFormData;
-  handleDialogClose: () => void;
+
 }
+
 interface OwnRouteParams {
   employeeUid: string;
   trainingUid: string;
 }
 
 interface OwnState {
-  validity: boolean;
+  formMode: FormMode;
+  employeeUid: string;
+  trainingUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -51,6 +52,7 @@ export type AccountEmployeeTrainingEditorProps
   = WithAccountEmployeeTraining
   & WithUser
   & WithLayout
+  & WithAppBar
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -62,7 +64,7 @@ export type AccountEmployeeTrainingEditorProps
 const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHandlers> = {
   handleValidate: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
     const errors = {
-      information: {}
+      training: {}
     };
 
     const requiredFields = [
@@ -70,24 +72,24 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage(accountMessage.training.fieldFor(field, 'fieldRequired'));
+      if (!formData.training[field] || isNullOrUndefined(formData.training[field])) {
+        errors.training[field] = props.intl.formatMessage(accountMessage.training.fieldFor(field, 'fieldRequired'));
       }
     });
 
     return errors;
   },
   handleSubmit: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
-    const { formMode, employeeUid, intl, editAction, trainingUid } = props;
+    const { formMode, employeeUid, intl, trainingUid } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeTrainingDispatch;
+    const { createRequest, updateRequest } = props.accountEmployeeTrainingDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
 
     const payload = {
-      ...formData.information,
+      ...formData.training,
     };
 
     // creating
@@ -103,15 +105,13 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     // update checking
-    if (!employeeUid) {
+    if (!trainingUid && employeeUid) {
       const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
 
       return Promise.reject(message);
     }
 
     if (formMode === FormMode.Edit) {
-      if (trainingUid) {
-        if (editAction === 'update') {
           return new Promise((resolve, reject) => {
             updateRequest({
               employeeUid,
@@ -120,27 +120,13 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
               data: payload as IEmployeeTrainingPutPayload,
             });
           });
-        }
-
-        if (editAction === 'delete') {
-          return new Promise((resolve, reject) => {
-            deleteRequest({
-              employeeUid,
-              resolve,
-              reject,
-              data: payload as IEmployeeTrainingDeletePayload
-            });
-          });
-        }
-      }
     }
 
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeTrainingEditorProps) => (response: IEmployeeTraining) => {
-    const { formMode, intl, editAction, handleDialogClose } = props;
+    const { formMode, intl, history, employeeUid } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadAllRequest } = props.accountEmployeeTrainingDispatch;
 
     let message: string = '';
 
@@ -149,26 +135,15 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     if (formMode === FormMode.Edit) {
-      if (editAction && editAction === 'update') {
         message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Training' });
-      } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Training' });
-      }
     }
-
-    handleDialogClose();
 
     alertAdd({
       message,
       time: new Date()
     });
 
-    loadAllRequest({
-      employeeUid: props.employeeUid,
-      filter: {
-        direction: 'ascending'
-      }
-    });
+    history.push(`/account/employee/${employeeUid}/training/${response.uid}`);
   },
   handleSubmitFail: (props: AccountEmployeeTrainingEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -198,16 +173,16 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
-  },
-  handleValidity: (props: AccountEmployeeTrainingEditorProps) => (valid: boolean) => {
-    props.stateUpdate({
-      validity: valid
-    });
   }
 };
 
 const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  validity: false
+  employeeUid: props.match.params.employeeUid,
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, { state: 'Training' }),
+  submitDialogContentText: props.intl.formatMessage(accountMessage.shared.confirm.createDescription, { state: 'training' }),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -218,18 +193,73 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}> = {
-  componentWillUnmount() {
-    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeTrainingDispatch;
+  componentDidMount() {
+    const { layoutDispatch, intl, history, stateUpdate, match } = this.props;
+    const { loadDetailRequest } = this.props.accountEmployeeTrainingDispatch;
+    const { user } = this.props.userState;
 
-    createDispose();
-    updateDispose();
-    deleteDispose();
+    const view = {
+      title: accountMessage.shared.page.newTitle,
+      subTitle: accountMessage.shared.page.newSubHeader
+    };
+
+    if (!user) {
+      return;
+    }
+
+    if (!isNullOrUndefined(history.location.state)) {
+      view.title = accountMessage.shared.page.modifyTitle;
+      view.subTitle = accountMessage.shared.page.modifySubHeader;
+
+      stateUpdate({
+        formMode: FormMode.Edit,
+        employeeUid: match.params.employeeUid,
+        trainingUid: history.location.state.trainingUid,
+        submitDialogTitle: this.props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, { state: 'Training' }),
+        submitDialogContentText: this.props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, { state: 'training' })
+      });
+
+      loadDetailRequest({
+        employeeUid: match.params.employeeUid,
+        trainingUid: history.location.state.trainingUid
+      });
+    }
+
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupEmployee,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title, { state: 'Training' }),
+        subTitle: intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/account/employee/${match.params.employeeUid}/training`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
+    });
+  },
+  componentWillUnmount() {
+    const { layoutDispatch, appBarDispatch, accountEmployeeTrainingDispatch } = this.props;
+
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
+    layoutDispatch.moreHide();
+
+    appBarDispatch.dispose();
+
+    accountEmployeeTrainingDispatch.createDispose();
+    accountEmployeeTrainingDispatch.updateDispose();
   }
 };
 
-export default compose<AccountEmployeeTrainingEditorProps, OwnOption>(
+export const AccountEmployeeTrainingEditor = compose<AccountEmployeeTrainingEditorProps, OwnOption>(
   withUser,
   withLayout,
+  withAppBar,
   withWidth(),
   withRouter,
   withAccountEmployeeTraining,
