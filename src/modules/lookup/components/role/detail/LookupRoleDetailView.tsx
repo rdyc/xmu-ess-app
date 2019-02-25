@@ -4,11 +4,11 @@ import { IRoleDetail } from '@lookup/classes/response';
 import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
-import { RoleDetailProps } from './LookupRoleDetail';
+import { LookupRoleDetailProps } from './LookupRoleDetail';
 import { LookupRoleInformation } from './shared/LookupRoleInformation';
 import { LookupRoleMenu } from './shared/LookupRoleMenu';
 
-export const LookupRoleDetailView: React.SFC<RoleDetailProps> = props => (
+export const LookupRoleDetailView: React.SFC<LookupRoleDetailProps> = props => (
   <PreviewPage
     info={{
       uid: AppMenu.LookupRole,
@@ -41,9 +41,9 @@ export const LookupRoleDetailView: React.SFC<RoleDetailProps> = props => (
       handleDialogOpen={props.handleOnOpenDialog}
       handleDialogClose={props.handleOnCloseDialog}
       handleDialogConfirmed={props.handleOnConfirm}
-      onSubmit={props.handleSubmit}
-      onSubmitSuccess={props.handleSubmitSuccess}
-      onSubmitFail={props.handleSubmitFail}
+      onSubmit={props.handleDelete}
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
     />
   </PreviewPage>
 );
