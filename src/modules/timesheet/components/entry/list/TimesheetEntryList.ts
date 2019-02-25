@@ -27,7 +27,7 @@ import {
 } from 'recompose';
 
 import { ITimesheetEntryListFilterResult } from './TimesheetEntryListFilter';
-import { TimesheetEntryListView } from './TimeSheetEntryListView';
+import { TimesheetEntryListView } from './TimesheetEntryListView';
 
 interface IOwnOption {
 

@@ -108,12 +108,26 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   handleLoadData: (props: ApprovalTimesheetsProps) => () => {
     const { timesheetUids, stateUpdate, history } = props;
     const { response } = props.timesheetApprovalState.all;
+    const { response: detailResponse } = props.timesheetApprovalState.detail;
+    const { loadDetailRequest } = props.timesheetApprovalDispatch;
 
     if (response && response.data) {
-      const _timesheets = response.data.filter(timesheet => 
-        timesheetUids.some(timesheetUid => 
+      const _timesheets = response.data.filter(timesheet =>
+        timesheetUids.some(timesheetUid =>
           timesheetUid === timesheet.uid
-      ));
+        ));
+
+      if (!detailResponse) {
+        if (props.userState.user) {
+          loadDetailRequest({
+            companyUid: props.userState.user.company.uid,
+            positionUid: props.userState.user.position.uid,
+            timesheetUid: props.timesheetUids[0]
+          });
+        } else {
+          history.push('/timesheet/approvals');
+        }
+      }
 
       stateUpdate({
         timesheets: _timesheets

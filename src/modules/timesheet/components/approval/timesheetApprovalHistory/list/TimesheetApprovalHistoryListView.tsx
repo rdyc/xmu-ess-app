@@ -19,8 +19,8 @@ export const TimesheetApprovalHistoryListView: React.SFC<TimesheetApprovalHistor
       info={{
         uid: AppMenu.TimesheetApprovalHistory,
         parentUid: AppMenu.Timesheet,
-        title: props.intl.formatMessage(timesheetMessage.approval.page.listTitle),
-        description: props.intl.formatMessage(timesheetMessage.approval.page.listSubHeader),
+        title: props.intl.formatMessage(timesheetMessage.approval.page2.listTitle),
+        description: props.intl.formatMessage(timesheetMessage.approval.page2.listSubHeader),
       }}
 
       // state & fields

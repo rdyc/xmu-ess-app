@@ -26,6 +26,9 @@ export const TimesheetApprovalListView: React.SFC<TimesheetApprovalListProps> = 
       // state & fields
       state={props.timesheetApprovalState.all}
       fields={props.fields}
+
+      // selection
+      onSelection={props.handleSelection}
       
       // callback
       onLoadApi={props.handleOnLoadApi}
