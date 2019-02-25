@@ -68,7 +68,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/timesheet/entrys/form')}
+          onClick={() => props.history.push('/timesheet/requests/form')}
         >
           <AddCircle/>
         </IconButton>
