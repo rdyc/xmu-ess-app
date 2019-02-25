@@ -53,7 +53,8 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
           required: true,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: InputText,
+          multiline: true
         };
         break;
 
@@ -80,7 +81,8 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
           required: true,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: InputText,
+          multiline: true
         };
         break;
 

@@ -42,6 +42,7 @@ const accountEmployeeTrainingInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(accountMessage.training.field.name)}
           value={data.name}
+          multiline
         />
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
@@ -72,6 +73,7 @@ const accountEmployeeTrainingInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(accountMessage.training.field.organizer)}
           value={data.organizer}
+          multiline
         />
         {
           props.data.changes &&

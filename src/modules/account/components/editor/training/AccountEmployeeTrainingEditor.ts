@@ -131,11 +131,11 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Training' });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Training', uid: `${employeeUid}` });
     }
 
     if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Training' });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Training', uid: `${employeeUid}`  });
     }
 
     alertAdd({

@@ -37,6 +37,7 @@ const accountEmployeeTrainingSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(accountMessage.training.field.organizer)}
         value={props.data.organizer}
+        multiline
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
@@ -45,6 +46,7 @@ const accountEmployeeTrainingSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(accountMessage.training.field.name)}
         value={props.data.name}
+        multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
