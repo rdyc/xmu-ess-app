@@ -85,7 +85,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
             <ListItemSecondaryAction>
               <Switch color="secondary"
                 onChange={() => props.handleOnClickTheme()}
-                checked={props.layoutState.theme.palette ? props.layoutState.theme.palette.type === 'dark' : false}
+                checked={props.paletteType === 'dark'}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -95,7 +95,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
               <SwapHoriz/>
             </ListItemIcon>
             <ListItemText 
-              primary={props.intl.formatMessage(props.layoutState.anchor === 'left' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft)}
+              primary={props.intl.formatMessage(props.anchor === 'left' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft)}
               primaryTypographyProps={{
                 variant: 'body2'
               }}
@@ -103,7 +103,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
             <ListItemSecondaryAction>
               <Switch color="secondary"
                 onChange={() => props.handleOnClickAnchor()}
-                checked={props.layoutState.anchor === 'right'}
+                checked={props.anchor === 'right'}
               />
             </ListItemSecondaryAction>
           </ListItem>

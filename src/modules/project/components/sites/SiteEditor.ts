@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { IProjectSitePayload } from '@project/classes/request/site';
@@ -73,7 +73,7 @@ export type SiteEditorProps
   & WithProjectRegistration
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & WithWidth
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -309,22 +309,21 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, match, history } = this.props;
+    const { intl, match } = this.props;
     const { user } = this.props.userState;
-    const { response } = this.props.projectRegisterState.detail;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
     const { loadRequest } = this.props.projectSiteDispatch;
 
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.site.page.modifyTitle),
-      subTitle : intl.formatMessage(projectMessage.site.page.modifyTitle)
-    });
-    
-    layoutDispatch.navBackShow(); 
+    if (user && match.params.projectUid) {
+      // set page
+      this.props.masterPage.changePage({
+        uid: AppMenu.ProjectRegistrationRequest,
+        parentUid: AppMenu.ProjectRegistration,
+        parentUrl: `/project/requests/${match.params.projectUid}`,
+        title: intl.formatMessage(projectMessage.site.page.modifyTitle),
+        description : intl.formatMessage(projectMessage.site.page.modifyTitle)
+      });
 
-    if (!isNullOrUndefined(history.location.state) && !response && user) {
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -339,13 +338,7 @@ const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectSiteDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectSiteDispatch } = this.props;
 
     projectSiteDispatch.createDispose();
     projectSiteDispatch.updateDispose();
@@ -357,7 +350,7 @@ export const SiteEditor = compose<SiteEditorProps, {}>(
   setDisplayName('SiteEditor'),
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withProjectRegistration,
   withProjectSite,

@@ -21,19 +21,22 @@ import {
 import { Navigation } from '../navigation/Navigation';
 
 interface IOwnOption {
-  anchor: Anchor;
+  defaultAnchor: Anchor;
 }
 
 interface IOwnState {
+  anchor: Anchor;
   isOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setVisibility: StateHandler<IOwnState>;
+  setAnchor: StateHandler<IOwnState>;
+  setOpen: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnEventDrawerLeft: (event: CustomEvent) => void;
+  handleOnChangeAnchor: (event: CustomEvent) => void;
+  handleOnChangeDrawerLeft: (event: CustomEvent) => void;
 }
 
 type DrawerLeftProps 
@@ -45,6 +48,7 @@ type DrawerLeftProps
   & WithStyles<typeof styles>;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  anchor: props.defaultAnchor,
   isOpen: true
 });
 
@@ -59,36 +63,44 @@ const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
     ModalProps={{
       keepMounted: true
     }}
-    onOpen={props.setVisibility}
-    onClose={props.setVisibility}
+    onOpen={props.setOpen}
+    onClose={props.setOpen}
     onRendered={() => {
       if (isWidthDown('sm', props.width)) {
-        props.setVisibility();
+        props.setOpen();
       }
     }}
   >
-    <Navigation />
+    <Navigation defaultAnchor={props.anchor} />
   </SwipeableDrawer>
 );
 
 const stateUpdaters: StateUpdaters<DrawerLeftProps, IOwnState, IOwnStateUpdater> = {
-  setVisibility: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpen: !prevState.isOpen
+  setAnchor: (state: IOwnState) => (): Partial<IOwnState> => ({
+    anchor: state.anchor === 'left' ? 'right' : 'left'
+  }),
+  setOpen: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isOpen: !state.isOpen
   })
 };
 
 const handlerCreators: HandleCreators<DrawerLeftProps, IOwnHandler> = {
-  handleOnEventDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
-    props.setVisibility();
+  handleOnChangeAnchor: (props: DrawerLeftProps) => (event: CustomEvent) => {
+    props.setAnchor();
+  },
+  handleOnChangeDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
+    props.setOpen();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerLeftProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
+    addEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
+    addEventListener(AppEvent.onChangeDrawerLeft, this.props.handleOnChangeDrawerLeft);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
+    removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
+    removeEventListener(AppEvent.onChangeDrawerLeft, this.props.handleOnChangeDrawerLeft);
   }
 };
 

@@ -11,7 +11,8 @@ import { NavigationHeader } from './NavigationHeader';
 
 export const NavigationView: React.SFC<NavigationProps> = props => (
   <React.Fragment>
-    <NavigationHeader 
+    <NavigationHeader
+      defaultAnchor={props.defaultAnchor} 
       headerUid={props.headerUid} 
       onClickHeader={() => props.handleOnClickMenuHeader(AppMenu.User)} 
     />

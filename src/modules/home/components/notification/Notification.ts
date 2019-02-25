@@ -1,4 +1,4 @@
-import { pageHelper } from '@layout/helper/pageHelper';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
@@ -55,6 +55,7 @@ export type NotificationProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
+  & WithMasterPage
   & WithNotification
   & WithLookupVersion
   & WithStyles<typeof styles>
@@ -122,7 +123,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     }
   },
   handleNotifClick: (props: NotificationProps) => (category: ModuleDefinitionType, type: NotificationType, uid?: string) => {
-    pageHelper.redirectFrom(category, type, uid);
+    props.masterPage.changeRouteFrom(category, type, uid);
   },
   handleDownloadClick: (props: NotificationProps) => () => {
     const cdn = process.env.REACT_APP_CDN_HOST || window.location.origin;
@@ -150,6 +151,7 @@ export const Notification = compose<NotificationProps, IOwnOption>(
   setDisplayName('Notification'),
   withUser,
   withRouter,
+  withMasterPage,
   withNotification,
   withLookupVersion,
   injectIntl,

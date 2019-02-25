@@ -2,9 +2,9 @@ import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import * as React from 'react';
 
-import { MoreOptionProps } from '.';
+import { PopupMenuProps } from './PopupMenu';
 
-export const MoreOptionView: React.SFC<MoreOptionProps> = props => (
+export const PopupMenuView: React.SFC<PopupMenuProps> = props => (
   <React.Fragment>
     <IconButton
       id={props.id}
@@ -14,7 +14,7 @@ export const MoreOptionView: React.SFC<MoreOptionProps> = props => (
     </IconButton>
 
     <Menu
-      id="appbar-more-menu" 
+      id={`${props.id}.menu`} 
       anchorEl={document.getElementById(props.id)} 
       open={props.isOpen} 
       onClose={props.handleVisibility}

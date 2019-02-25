@@ -1,8 +1,8 @@
-import AppStorage from '@constants/AppStorage';
 import { initialName } from '@layout/helper/initialName';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { Anchor } from '@layout/types';
+import { PaletteType, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,22 +18,26 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import * as store from 'store';
 
 import { NavigationHeaderView } from './NavigationHeaderView';
 
 interface IOwnOption {
+  defaultAnchor: Anchor;
   headerUid?: string;
   onClickHeader: (headerUid: string) => void;
 }
 
 interface IOwnState {
   nameInitial?: string;
+  anchor: Anchor;
+  paletteType: PaletteType;
   isDialogAccessOpen: boolean;
   isDialogLogoutOpen: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setAnchor: StateHandler<IOwnState>;
+  setPaletteType: StateHandler<IOwnState>;
   setDialogAccess: StateHandler<IOwnState>;
   setDialogLogout: StateHandler<IOwnState>;
 }
@@ -55,44 +59,58 @@ export type NavigationHeaderProps
   & InjectedIntlProps
   & WithUser
   & WithStyles<typeof styles>
-  & WithLayout
+  // & WithLayout
+  & WithMasterPage
   & RouteComponentProps;
 
-const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({ 
+const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({
+  anchor: props.defaultAnchor,
+  paletteType: 'light',
   nameInitial: props.userState.user && initialName(props.userState.user.fullName),
   isDialogAccessOpen: false,
   isDialogLogoutOpen: false
 });
 
 const stateUpdaters: StateUpdaters<NavigationHeaderProps, IOwnState, IOwnStateUpdaters> = {
-  setDialogAccess: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isDialogAccessOpen: !prevState.isDialogAccessOpen
+  setAnchor: (state: IOwnState) => (): Partial<IOwnState> => ({
+    anchor: state.anchor === 'left' ? 'right' : 'left'
   }),
-  setDialogLogout: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isDialogLogoutOpen: !prevState.isDialogLogoutOpen
+  setPaletteType: (state: IOwnState) => (): Partial<IOwnState> => ({
+    paletteType: state.paletteType === 'light' ? 'dark' : 'light'
+  }),
+  setDialogAccess: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isDialogAccessOpen: !state.isDialogAccessOpen
+  }),
+  setDialogLogout: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isDialogLogoutOpen: !state.isDialogLogoutOpen
   })
 };
 
 const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
   handleOnClickTheme: (props: NavigationHeaderProps) => () => {
-    props.layoutDispatch.themeChange();
+    props.setPaletteType();
+    // props.layoutDispatch.themeChange();
 
-    if (props.userState.user) {
-      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
-        theme: props.layoutState.theme,
-        anchor: props.layoutState.anchor
-      });
-    }
+    // if (props.userState.user) {
+    //   store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
+    //     theme: props.layoutState.theme,
+    //     anchor: props.layoutState.anchor
+    //   });
+    // }
   },
   handleOnClickAnchor: (props: NavigationHeaderProps) => () => {
-    props.layoutDispatch.changeAnchor(props.layoutState.anchor === 'right' ? 'left' : 'right');
+    props.masterPage.changeAnchor();
 
-    if (props.userState.user) {
-      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
-        theme: props.layoutState.theme,
-        anchor: props.layoutState.anchor
-      });
-    }
+    props.setAnchor();
+
+    // props.layoutDispatch.changeAnchor(props.layoutState.anchor === 'right' ? 'left' : 'right');
+
+    // if (props.userState.user) {
+    //   store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
+    //     theme: props.layoutState.theme,
+    //     anchor: props.layoutState.anchor
+    //   });
+    // }
   },
   handleOnClickAccess: (props: NavigationHeaderProps) => (event: React.MouseEvent) => {
     props.setDialogAccess();
@@ -143,7 +161,8 @@ export const NavigationHeader = compose<NavigationHeaderProps, IOwnOption>(
   injectIntl,
   withUser,
   withStyles(styles),
-  withLayout,
+  // withLayout,
+  withMasterPage,
   withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),

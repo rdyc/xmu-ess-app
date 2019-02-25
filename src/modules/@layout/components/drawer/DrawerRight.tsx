@@ -22,19 +22,22 @@ import {
 import { Notification } from '../notification/Notification';
 
 interface IOwnOption {
-  anchor: Anchor;
+  defaultAnchor: Anchor;
 }
 
 interface IOwnState {
+  anchor: Anchor;
   isOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setVisibility: StateHandler<IOwnState>;
+  setAnchor: StateHandler<IOwnState>;
+  setOpen: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnEventMenu: (event: CustomEvent) => void;
+  handleOnChangeAnchor: (event: CustomEvent) => void;
+  handleOnChangeDrawerRight: (event: CustomEvent) => void;
 }
 
 type DrawerRightProps 
@@ -46,6 +49,7 @@ type DrawerRightProps
   & WithStyles<typeof styles>;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  anchor: props.defaultAnchor,
   isOpen: false
 });
 
@@ -60,31 +64,39 @@ const DrawerRightView: React.SFC<DrawerRightProps> = props => (
     ModalProps={{
       keepMounted: true
     }}
-    onOpen={props.setVisibility}
-    onClose={props.setVisibility}
+    onOpen={props.setOpen}
+    onClose={props.setOpen}
   >
     <Notification />
   </SwipeableDrawer>
 );
 
 const stateUpdaters: StateUpdaters<DrawerRightProps, IOwnState, IOwnStateUpdater> = {
-  setVisibility: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpen: !prevState.isOpen
+  setAnchor: (state: IOwnState) => (): Partial<IOwnState> => ({
+    anchor: state.anchor === 'left' ? 'right' : 'left'
+  }),
+  setOpen: (State: IOwnState) => (): Partial<IOwnState> => ({
+    isOpen: !State.isOpen
   })
 };
 
 const handlerCreators: HandleCreators<DrawerRightProps, IOwnHandler> = {
-  handleOnEventMenu: (props: DrawerRightProps) => (event: CustomEvent) => {
-    props.setVisibility();
+  handleOnChangeAnchor: (props: DrawerRightProps) => (event: CustomEvent) => {
+    props.setAnchor();
+  },
+  handleOnChangeDrawerRight: (props: DrawerRightProps) => (event: CustomEvent) => {
+    props.setOpen();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerRightProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
+    addEventListener(AppEvent.onChangeDrawerRight, this.props.handleOnChangeDrawerRight);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
+    removeEventListener(AppEvent.onChangeDrawerRight, this.props.handleOnChangeDrawerRight);
   }
 };
 

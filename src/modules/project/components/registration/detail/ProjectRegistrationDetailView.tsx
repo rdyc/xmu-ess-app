@@ -2,6 +2,7 @@ import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { IProjectDetail } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -37,6 +38,15 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
       <ProjectSite data={data.sites} />,
       <WorkflowHistory data={data.workflow} />
     ])}
+    customComponent={
+      props.pageOptions &&
+      <PopupMenu 
+        id="project-request-option"
+        selectable={false}
+        menuItems={props.pageOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <DialogConfirmation 
       isOpen={props.dialogOpen}

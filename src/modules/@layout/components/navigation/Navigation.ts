@@ -1,7 +1,8 @@
 import AppEvent from '@constants/AppEvent';
-import { pageHelper } from '@layout/helper/pageHelper';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { IPageInfo } from '@generic/interfaces';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { Anchor } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -23,7 +24,7 @@ import {
 import { NavigationView } from './NavigationView';
 
 interface IOwnOption {
-
+  defaultAnchor: Anchor;
 }
 
 interface OwnState {
@@ -37,22 +38,23 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
+  handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
   handleOnClickMenuHeader: (uid: string) => void;
   handleOnClickMenuItem: (headerUid: string, childUid: string, closeMenu: boolean) => void;
 }
 
 export type NavigationProps 
-  = OwnState 
+  = IOwnOption
+  & OwnState 
   & OwnStateUpdaters
   & OwnHandler
   & WithUser 
-  & WithLayout 
+  & WithMasterPage
   & WithWidth
   & WithStyles<typeof styles>;
 
 const createProps: mapper<NavigationProps, OwnState> = (props: NavigationProps) => ({ 
-  headerUid: props.layoutState.view && props.layoutState.view.parentUid,
-  childUid: props.layoutState.view && props.layoutState.view.uid
+
 });
 
 const stateUpdaters: StateUpdaters<NavigationProps, OwnState, OwnStateUpdaters> = {
@@ -66,6 +68,9 @@ const stateUpdaters: StateUpdaters<NavigationProps, OwnState, OwnStateUpdaters> 
 };
 
 const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
+  handleOnChangePage: (props: NavigationProps) => (event: CustomEvent<IPageInfo>) => {
+    props.setHeaderAndChild(event.detail.parentUid, event.detail.uid);
+  },
   handleOnClickMenuHeader: (props: NavigationProps) => (uid: string) => {
     if (props.headerUid !== uid) {
       props.setHeader(uid);
@@ -75,34 +80,34 @@ const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
   },
   handleOnClickMenuItem: (props: NavigationProps) => (headerUid: string, childUid: string, closeMenu: boolean) => {
     if (closeMenu) {
-      dispatchEvent(new CustomEvent(AppEvent.DrawerLeft));
+      // auto show hide left drawer
+      props.masterPage.changeDrawerLeft();
     }
-    
-    pageHelper.redirect({
-      path: menuLinkMapper(childUid),
-      state: undefined
+  
+    // redirect to route path
+    props.masterPage.changeRoute({
+      path: menuLinkMapper(childUid)
     });
 
+    // set local states
     props.setHeaderAndChild(headerUid, childUid);
   },
 };
 
 const lifecycles: ReactLifeCycleFunctions<NavigationProps, OwnState> = {
-  componentDidUpdate(prevProps: NavigationProps) {
-    if (this.props.layoutState.view !== prevProps.layoutState.view) {
-      const { view } = this.props.layoutState;
-
-      if (view) {
-        this.props.setHeaderAndChild(view.parentUid, view.uid);
-      }
-    }
+  componentWillMount() {
+    console.log('Navigation mount');
+    addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+  },
+  componentWillUnmount() {
+    removeEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
   }
 };
 
 export const Navigation = compose<NavigationProps, IOwnOption>(
   setDisplayName('Navigation'),
   withUser,
-  withLayout,
+  withMasterPage,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
   lifecycle(lifecycles),

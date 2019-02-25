@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectHourPutPayload } from '@project/classes/request/hour';
 import { WithProjectHour, withProjectHour } from '@project/hoc/withProjectHour';
@@ -38,7 +38,7 @@ interface IOwnHandlers {
 }
 
 interface IOwnRouteParams {
-  projectUid: string;
+
 }
 
 interface IOwnState {
@@ -57,7 +57,7 @@ export type HourEditorProps
   & WithProjectRegistration
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnHandlers
@@ -175,21 +175,19 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<HourEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history } = this.props;
+    const { intl, history } = this.props;
     const { user } = this.props.userState;
-    const { response } = this.props.projectRegisterState.detail;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.registration.page.hourModifyTitle),
-      subTitle : intl.formatMessage(projectMessage.registration.page.hourModifySubHeader)
-    });
-    
-    layoutDispatch.navBackShow(); 
-
-    if (!isNullOrUndefined(history.location.state) && !response && user) {
+    if (!isNullOrUndefined(history.location.state) && user) {
+      this.props.masterPage.changePage({
+        uid: AppMenu.ProjectRegistrationRequest,
+        parentUid: AppMenu.ProjectRegistration,
+        parentUrl: `/project/requests/${history.location.state.uid}`,
+        title: intl.formatMessage(projectMessage.registration.page.hourModifyTitle),
+        description : intl.formatMessage(projectMessage.registration.page.hourModifySubHeader)
+      });
+      
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -198,13 +196,7 @@ const lifecycles: ReactLifeCycleFunctions<HourEditorProps, {}> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectHourDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectHourDispatch } = this.props;
 
     projectHourDispatch.updateDispose();
   }
@@ -214,12 +206,12 @@ export const HourEditor = compose<HourEditorProps, {}>(
   setDisplayName('HourEditor'),
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withProjectRegistration,
   withProjectHour,
   injectIntl,
-  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<HourEditorProps, IOwnHandlers>(handlerCreators),
-  lifecycle<HourEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(HourEditorView);
