@@ -21,7 +21,7 @@ import {
 
 import { IEmployeeRateAllFilter } from '@account/classes/filters/employeeRate';
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
-import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeField';
+import { AccountEmployeeRateField } from '@account/classes/types/AccountEmployeeField';
 import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/withAccountEmployeeRate';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { GlobalFormat } from '@layout/types';
@@ -57,9 +57,9 @@ export type AccountEmployeeRateListProps
 const createProps: mapper<AccountEmployeeRateListProps, IOwnState> = (): IOwnState => {  
   // default state
   const state: IOwnState = {
-    fields: Object.keys(AccountEmployeeField).map(key => ({ 
+    fields: Object.keys(AccountEmployeeRateField).map(key => ({ 
       value: key, 
-      name: AccountEmployeeField[key] 
+      name: AccountEmployeeRateField[key] 
     })),
   };
   

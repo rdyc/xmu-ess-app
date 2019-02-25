@@ -398,7 +398,7 @@
   "account.rate.field.value.required": "Employee Rate is Required",
   "account.rate.field.value.placeholder": "Type the Employee Rate Value",
 
-  "account.rate.field.isActive": "Is Active",
+  "account.rate.field.isActive": "Status",
   "account.rate.field.isActive.true": "Current Rate",
   "account.rate.field.isActive.false": "Inactive Rate",
 
