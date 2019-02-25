@@ -35,11 +35,13 @@ interface IOwnOption {
 interface IOwnState extends ITimesheetApprovalListFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
+  selected: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
+  setSelection: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -49,6 +51,7 @@ interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: ITimesheetApprovalListFilterResult) => void;
   handleFilterBadge: () => boolean;
+  handleSelection: (values: string[]) => void;
 }
 
 export type TimesheetApprovalListProps
@@ -67,6 +70,7 @@ const createProps: mapper<TimesheetApprovalListProps, IOwnState> = (props: Times
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
+    selected: [],
     fields: Object.keys(TimesheetEntryField).map(key => ({
       value: key,
       name: TimesheetEntryField[key]
@@ -83,7 +87,7 @@ const createProps: mapper<TimesheetApprovalListProps, IOwnState> = (props: Times
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
-      state.status = request.filter.status;
+      state.status = request.filter.status,
       state.isNotify = request.filter.isNotify;
     }
   }
@@ -98,7 +102,10 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalListProps, IOwnState, IOwnSt
   setFilterApplied: (state: IOwnState) => (filter: ITimesheetApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
-  })
+  }),
+  setSelection: (state: IOwnState) => (values?: string[]): Partial<IOwnState> => ({
+    selected: values
+  }),
 };
 
 const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> = {
@@ -181,6 +188,9 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
       props.status !== undefined ||
       props.isNotify === true;
   },
+  handleSelection: (props: TimesheetApprovalListProps) => (values: string[]) => {
+    props.history.push('/timesheet/approvals/action', {values});
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalListProps, IOwnState> = {
