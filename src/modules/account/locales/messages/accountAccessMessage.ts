@@ -26,6 +26,7 @@ export const accountAccessDialog = defineMessages({
 
 export const accountAccessField = defineMessages({
   uid: {id: `${fieldPrefix}.uid`},
+  employeeUid: {id: `${fieldPrefix}.employeeUid`},
 
   companyUid: {id: `${fieldPrefix}.companyUid`},
   companyUidRequired: {id: `${fieldPrefix}.companyUid.required`},
@@ -63,6 +64,7 @@ export const accountAccessFieldHelperFor = (field: string, type: 'fieldName' | '
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return accountAccessField.uid;
+      case 'employeeUid': return accountAccessField.employeeUid;
       case 'companyUid': return accountAccessField.companyUid;
       case 'positionUid': return accountAccessField.positionUid;
       case 'departmentType': return accountAccessField.departmentType;

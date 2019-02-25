@@ -27,7 +27,7 @@ import {
 } from 'recompose';
 
 import { ITimesheetEntryListFilterResult } from './TimesheetEntryListFilter';
-import { TimesheetEntryListView } from './TimeSheetEntryListView';
+import { TimesheetEntryListView } from './TimesheetEntryListView';
 
 interface IOwnOption {
 
@@ -68,7 +68,6 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
     fields: Object.keys(TimesheetEntryField).map(key => ({
       value: key,
       name: TimesheetEntryField[key]
@@ -82,9 +81,9 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
     // fill from previous request if any
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
-        state.activityType = request.filter.activityType,
-        state.statusType = request.filter.statusType,
-        state.isRejected = request.filter.isRejected;
+      state.activityType = request.filter.activityType,
+      state.statusType = request.filter.statusType,
+      state.isRejected = request.filter.isRejected;
     }
   }
 
@@ -99,9 +98,6 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListProps, IOwnState, IOwnState
     ...filter,
     isFilterOpen: false
   }),
-  // setSelection: (state: IOwnState) => (values?: string[]): Partial<IOwnState> => ({
-  //   selected: values
-  // }),
 };
 
 const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {

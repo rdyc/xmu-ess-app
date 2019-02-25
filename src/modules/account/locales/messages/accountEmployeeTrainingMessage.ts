@@ -7,8 +7,8 @@ export const accountEmployeeTrainingField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
 
-  employeeUid: { id: `${prefix}.field.uid`},
-  employeeUidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
+  employeeUid: { id: `${prefix}.field.employeeUid`},
+  employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder`},
 
   name: { id: `${prefix}.field.name`},
   namePlaceholder: { id: `${prefix}.field.name.placeholder`},

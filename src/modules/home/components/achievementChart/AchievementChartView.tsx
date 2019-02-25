@@ -65,7 +65,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
         label={props.intl.formatMessage(layoutMessage.text.loading)}
       >
         <Grid container spacing={16} className={props.classes.marginFarBottom} direction="row" justify="flex-start">
-          {props.dataLob && (
+          {props.dataSales && (
             <Grid item xs={12} md={6}>
               <Card square>
                 <CardHeader
