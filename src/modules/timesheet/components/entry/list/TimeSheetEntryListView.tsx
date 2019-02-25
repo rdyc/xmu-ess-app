@@ -18,7 +18,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.TimesheetRequest,
+        uid: AppMenu.TimesheetHistory,
         parentUid: AppMenu.Timesheet,
         title: props.intl.formatMessage(timesheetMessage.entry.page.listTitle),
         description: props.intl.formatMessage(timesheetMessage.entry.page.listSubHeader)
@@ -27,11 +27,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
       // state & fields
       state={props.timesheetEntryState.all}
       fields={props.fields}
-      
-      // selection
-      // disableSelection={props.handleDisableSelection}
-      // onSelection={props.handleSelection}
-      
+            
       // callback
       onLoadApi={props.handleOnLoadApi}
       onBind={props.handleOnBind}
