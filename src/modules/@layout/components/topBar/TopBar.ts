@@ -37,6 +37,7 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setAnchor: StateHandler<IOwnState>;
   setPage: StateHandler<IOwnState>;
+  setPageDefault: StateHandler<IOwnState>;
   setNotif: StateHandler<IOwnState>;
   setSearchComponent: StateHandler<IOwnState>;
   setCustomComponent: StateHandler<IOwnState>;
@@ -44,6 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
+  handleOnResetPage: (event: CustomEvent) => void;
   handleOnChangeAnchor: (event: CustomEvent) => void;
   handleOnChangeNotif: (event: CustomEvent<number>) => void;
   handleOnChangeSearch: (event: CustomEvent<React.ReactNode>) => void;
@@ -77,6 +79,12 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
     searchComponent: undefined,
     customComponent: undefined
   }),
+  setPageDefault: (state: IOwnState) => (): Partial<IOwnState> => ({
+    title: undefined,
+    parentUrl: undefined,
+    searchComponent: undefined,
+    customComponent: undefined
+  }),
   setNotif: (state: IOwnState) => (totalNotif: number): Partial<IOwnState> => ({
     totalNotif
   }),
@@ -91,6 +99,9 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
 const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
   handleOnChangePage: (props: TopBarProps) => (event: CustomEvent<IPageInfo>) => {
     props.setPage(event.detail.title, event.detail.parentUrl);
+  },
+  handleOnResetPage: (props: TopBarProps) => (event: CustomEvent) => {
+    props.setPageDefault();
   },
   handleOnChangeAnchor: (props: TopBarProps) => (event: CustomEvent) => {
     props.setAnchor();
@@ -123,6 +134,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
   componentWillMount() {
     addEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+    addEventListener(AppEvent.onResetPage, this.props.handleOnResetPage);
     addEventListener(AppEvent.onChangeNotif, this.props.handleOnChangeNotif);
     addEventListener(AppEvent.onChangeSearchComponent, this.props.handleOnChangeSearch);
     addEventListener(AppEvent.onChangeCustomComponent, this.props.handleOnChangeCustom);
@@ -130,6 +142,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
   componentWillUnmount() {
     removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
     removeEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+    removeEventListener(AppEvent.onResetPage, this.props.handleOnResetPage);
     removeEventListener(AppEvent.onChangeNotif, this.props.handleOnChangeNotif);
     removeEventListener(AppEvent.onChangeSearchComponent, this.props.handleOnChangeSearch);
     removeEventListener(AppEvent.onChangeCustomComponent, this.props.handleOnChangeCustom);

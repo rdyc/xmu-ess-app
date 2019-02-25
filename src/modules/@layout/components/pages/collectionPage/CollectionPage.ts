@@ -224,8 +224,8 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
     }
   },
   componentWillUnmount() {
-    // reset top bar back to default 
-    // this.props.appBarDispatch.dispose();
+    // reset page
+    this.props.masterPage.resetPage();
   }
 };
 

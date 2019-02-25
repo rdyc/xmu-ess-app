@@ -21,7 +21,7 @@ export interface IPopupMenuOption {
 
 interface IOwnOption {
   id: string;
-  menuItems: IPopupMenuOption[];
+  menuOptions: IPopupMenuOption[];
   selectable: boolean;
   onSelected: (item: IPopupMenuOption) => void;
 }

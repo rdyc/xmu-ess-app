@@ -20,8 +20,8 @@ export const PopupMenuView: React.SFC<PopupMenuProps> = props => (
       onClose={props.handleVisibility}
     >
       {
-        props.menuItems && 
-        props.menuItems
+        props.menuOptions && 
+        props.menuOptions
           .filter(item => item.visible)
           .map((item, index) =>
             <MenuItem 

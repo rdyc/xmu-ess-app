@@ -30,17 +30,10 @@ interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
-}
-
 interface IOwnState {
-  pageOptions?: IPopupMenuOption[];
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  shouldReload: boolean;
+  shouldLoad: boolean;
   action?: ProjectUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -51,7 +44,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
-  setReload: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setClose: StateHandler<IOwnState>;
@@ -60,6 +53,13 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setAdjustHour: StateHandler<IOwnState>;
   setManageSite: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 export type ProjectRegistrationDetailProps 
@@ -91,20 +91,20 @@ const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: P
   
   return { 
     isAdmin,
-    shouldReload: false,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false
   };
 };
 
 const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setReload: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
-    shouldReload: !prevState.shouldReload
+  setShouldLoad: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (state: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setModify: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -113,7 +113,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setClose: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setClose: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Close,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -122,7 +122,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setReopen: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setReopen: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ReOpen,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -140,7 +140,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setAdjustHour: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setAdjustHour: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.AdjustHour,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -149,7 +149,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setManageSite: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setManageSite: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ManageSites,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -158,7 +158,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+  setDefault: (state: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -182,7 +182,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
   handleOnSelectedMenu: (props: ProjectRegistrationDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
       case ProjectUserAction.Refresh:
-        props.setReload();
+        props.setShouldLoad();
         break;
       case ProjectUserAction.Modify:
         props.setModify();
@@ -283,8 +283,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
 const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectRegistrationDetailProps) {
     // handle updated reload state
-    if (this.props.shouldReload && this.props.shouldReload !== prevProps.shouldReload) {
-      this.props.setReload();
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
       this.props.handleOnLoadApi();
     }
 

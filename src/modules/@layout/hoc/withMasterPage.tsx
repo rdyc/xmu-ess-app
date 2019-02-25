@@ -13,6 +13,7 @@ const changeRouteFrom = (module: ModuleDefinitionType, type: NotificationType, u
 };
 const changeAnchor = () => dispatchEvent(new CustomEvent(AppEvent.onChangeAnchor));
 const changePage = (detail: IPageInfo) => dispatchEvent(new CustomEvent(AppEvent.onChangePage, { detail }));
+const resetPage = () => dispatchEvent(new CustomEvent(AppEvent.onResetPage));
 const changeNotif = (detail: number) => dispatchEvent(new CustomEvent(AppEvent.onChangeNotif, { detail }));
 const changeDrawerLeft = () => dispatchEvent(new CustomEvent(AppEvent.onChangeDrawerLeft));
 const changeDrawerRight = () => dispatchEvent(new CustomEvent(AppEvent.onChangeDrawerRight));
@@ -25,6 +26,7 @@ const mapDispatchToProps = () => ({
     changeRouteFrom,
     changeAnchor,
     changePage,
+    resetPage,
     changeNotif,
     changeDrawerLeft,
     changeDrawerRight,
@@ -39,6 +41,7 @@ interface PropsFromDispatch {
     changeRouteFrom: typeof changeRouteFrom;
     changeAnchor: typeof changeAnchor;
     changePage: typeof changePage;
+    resetPage: typeof resetPage;
     changeNotif: typeof changeNotif;
     changeDrawerLeft: typeof changeDrawerLeft;
     changeDrawerRight: typeof changeDrawerRight;

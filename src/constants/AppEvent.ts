@@ -1,6 +1,7 @@
 enum AppEvent {
   onChangeRoute = 'route.change',
   onChangePage = 'page.change',
+  onResetPage = 'page.reset',
   onChangeAnchor = 'anchor.change',
   onChangeNotif = 'notif.change',
   onChangeSearchComponent = 'search.change',

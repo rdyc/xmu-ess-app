@@ -15,7 +15,7 @@ interface IOwnOption {
   info: IPageInfo;
   primary: (data: any) => JSX.Element;
   secondary?: (data: any) => JSX.Element[];
-  customComponent?: React.ReactNode;
+  appBarComponent?: React.ReactNode;
   onLoadApi: () => void;
   onLoadedApi?: () => void;
 }
@@ -38,8 +38,8 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
       ...this.props.info
     });
 
-    if (this.props.customComponent) {
-      this.props.masterPage.changeCustomComponent(this.props.customComponent);
+    if (this.props.appBarComponent) {
+      this.props.masterPage.changeCustomComponent(this.props.appBarComponent);
     }
 
     // loading data event from config
@@ -47,8 +47,8 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
   },
   componentDidUpdate(prevProps: PreviewPageProps) {
     // handling updated custom component
-    if (this.props.customComponent && this.props.customComponent !== prevProps.customComponent) {
-      this.props.masterPage.changeCustomComponent(this.props.customComponent);
+    if (this.props.appBarComponent && this.props.appBarComponent !== prevProps.appBarComponent) {
+      this.props.masterPage.changeCustomComponent(this.props.appBarComponent);
     }
     
     // handling updated response state
@@ -57,6 +57,10 @@ const lifecycles: ReactLifeCycleFunctions<PreviewPageProps, IOwnState> = {
         this.props.onLoadedApi();
       }
     }
+  },
+  componentWillUnmount() {
+    // reset page
+    this.props.masterPage.resetPage();
   }
 };
 

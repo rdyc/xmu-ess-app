@@ -1,6 +1,7 @@
 import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { IProjectDetail } from '@project/classes/response';
@@ -22,7 +23,6 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
       title: props.intl.formatMessage(projectMessage.approval.page.detailTitle),
       description: props.intl.formatMessage(projectMessage.approval.page.detailTitle)
     }}
-    options={props.pageOptions}
     state={props.projectApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IProjectDetail) => (
@@ -50,13 +50,22 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
             approvalDialogContentText={props.approvalDialogContentText}
             approvalDialogCancelText={props.approvalDialogCancelText}
             approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit} 
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
+            validate={props.handleOnValidate}
+            onSubmit={props.handleOnSubmit} 
+            onSubmitSuccess={props.handleOnSubmitSuccess}
+            onSubmitFail={props.handleOnSubmitFail}
           />
         }
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="project-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

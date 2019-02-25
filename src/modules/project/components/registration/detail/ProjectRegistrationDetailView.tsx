@@ -23,7 +23,6 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
       title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),
       description: props.intl.formatMessage(projectMessage.registration.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.projectRegisterState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IProjectDetail) => (
@@ -38,12 +37,12 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
       <ProjectSite data={data.sites} />,
       <WorkflowHistory data={data.workflow} />
     ])}
-    customComponent={
-      props.pageOptions &&
+    appBarComponent={
+      props.menuOptions &&
       <PopupMenu 
         id="project-request-option"
         selectable={false}
-        menuItems={props.pageOptions} 
+        menuOptions={props.menuOptions} 
         onSelected={props.handleOnSelectedMenu} 
       />
     }
