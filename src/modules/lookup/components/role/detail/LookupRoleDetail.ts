@@ -45,7 +45,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type RoleDetailProps
+export type LookupRoleDetailProps
   = WithUser
   & WithLayout
   & WithLookupRole
@@ -55,25 +55,25 @@ export type RoleDetailProps
   & OwnStateUpdaters
   & OwnHandler;
 
-const createProps: mapper<RoleDetailProps, OwnState> = (props: RoleDetailProps): OwnState => ({
+const createProps: mapper<LookupRoleDetailProps, OwnState> = (props: LookupRoleDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
   dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
 });
 
-const stateUpdaters: StateUpdaters<RoleDetailProps, OwnState, OwnStateUpdaters> = {
+const stateUpdaters: StateUpdaters<LookupRoleDetailProps, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: OwnState, props: RoleDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+  setOptions: (prevState: OwnState, props: LookupRoleDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
     pageOptions: options
   }),
 };
 
-const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
-  handleOnLoadApi: (props: RoleDetailProps) => () => { 
+const handlerCreators: HandleCreators<LookupRoleDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: LookupRoleDetailProps) => () => { 
     if (props.userState.user && props.match.params.roleUid && !props.lookupRoleState.detail.isLoading) {
       props.lookupRoleDispatch.loadDetailRequest({
         companyUid: props.history.location.state ? props.history.location.state.companyUid : '',
@@ -81,7 +81,7 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
       });
     }
   },
-  handleOnOpenDialog: (props: RoleDetailProps) => (action: LookupUserAction) => {
+  handleOnOpenDialog: (props: LookupRoleDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
         action: LookupUserAction.Modify,
@@ -98,12 +98,12 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
       });
     }
   },
-  handleOnCloseDialog: (props: RoleDetailProps) => () => {
+  handleOnCloseDialog: (props: LookupRoleDetailProps) => () => {
     props.stateUpdate({
       dialogOpen: false
     });
   },
-  handleOnConfirm: (props: RoleDetailProps) => () => {
+  handleOnConfirm: (props: LookupRoleDetailProps) => () => {
     const { response } = props.lookupRoleState.detail;
 
     // skipp untracked action or empty response
@@ -135,12 +135,16 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
           break;
       }
 
+      props.stateUpdate({
+        dialogOpen: false
+      });
+
       props.history.push(next, { 
         uid: roleUid 
       });
     }
   },
-  handleDelete: (props: RoleDetailProps) => () => {
+  handleDelete: (props: LookupRoleDetailProps) => () => {
     const { match, intl } = props;
     const { user } = props.userState;
     const { deleteRequest } = props.lookupRoleDispatch;
@@ -164,7 +168,7 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
       });
     });
   },
-  handleDeleteSuccess: (props: RoleDetailProps) => (response: boolean) => {
+  handleDeleteSuccess: (props: LookupRoleDetailProps) => (response: boolean) => {
     props.history.push('/lookup/roles');
 
     props.layoutDispatch.alertAdd({
@@ -172,7 +176,7 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
       message: props.intl.formatMessage(lookupMessage.role.message.deleteSuccess, { uid : props.match.params.roleUid })
     });
   },
-  handleDeleteFail: (props: RoleDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleDeleteFail: (props: LookupRoleDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
@@ -188,8 +192,8 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<RoleDetailProps, OwnState> = {
-  componentDidUpdate(prevProps: RoleDetailProps) {
+const lifecycles: ReactLifeCycleFunctions<LookupRoleDetailProps, OwnState> = {
+  componentDidUpdate(prevProps: LookupRoleDetailProps) {
     // handle updated route params
     if (this.props.match.params.roleUid !== prevProps.match.params.roleUid) {
       this.props.handleOnLoadApi();
@@ -236,7 +240,7 @@ export const LookupRoleDetail = compose(
   withLookupRole,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RoleDetailProps, OwnHandler>(handlerCreators),
+  withHandlers<LookupRoleDetailProps, OwnHandler>(handlerCreators),
   lifecycle(lifecycles),
   setDisplayName('LookupRoleDetail')
 )(LookupRoleDetailView);
