@@ -10,6 +10,9 @@ export const accountNoteField = defineMessages({
   employeeUid: { id: `${prefix}.field.employeeUid`},
   employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder`},
 
+  employeeName: { id: `${prefix}.field.employeeName`},
+  employeeNamePlaceholder: { id: `${prefix}.field.employeeName.placeholder`},
+
   text: { id: `${prefix}.field.text`},
   textPlaceholder: { id: `${prefix}.field.text.placeholder`},
   textRequired: { id: `${prefix}.field.text.required`},

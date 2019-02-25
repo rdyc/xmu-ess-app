@@ -19,11 +19,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeEducationAllFilter } from '@account/classes/filters/employeeEducation';
-import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
-import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeField';
-import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
-import { AccountEmployeeEducationListView } from './AccountEmployeeEducationListView';
+import { IEmployeeAccessAllFilter } from '@account/classes/filters';
+import { IEmployeeAccess } from '@account/classes/response/employeeAccess';
+import { AccountEmployeeField } from '@account/classes/types';
+import { WithAccountEmployeeAccess, withAccountEmployeeAccess } from '@account/hoc/withAccountEmployeeAccess';
+import { AccountEmployeeAccessListView } from './AccountEmployeeAccessListView';
 
 interface IOwnRouteParams {
   employeeUid: string;
@@ -39,20 +39,20 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
-  handleOnBind: (item: IEmployeeEducation, index: number) => IDataBindResult;
+  handleOnBind: (item: IEmployeeAccess, index: number) => IDataBindResult;
 }
 
-export type AccountEmployeeEducationListProps 
+export type AccountEmployeeAccessListProps 
   = IOwnRouteParams
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithAccountEmployeeEducation
+  & WithAccountEmployeeAccess
   & InjectedIntlProps
   & RouteComponentProps<IOwnRouteParams>;
 
-const createProps: mapper<AccountEmployeeEducationListProps, IOwnState> = (props: AccountEmployeeEducationListProps): IOwnState => {  
+const createProps: mapper<AccountEmployeeAccessListProps, IOwnState> = (props: AccountEmployeeAccessListProps): IOwnState => {  
   // default state
   const state: IOwnState = {
     fields: Object.keys(AccountEmployeeField).map(key => ({ 
@@ -64,18 +64,18 @@ const createProps: mapper<AccountEmployeeEducationListProps, IOwnState> = (props
   return state;
 };
 
-const stateUpdaters: StateUpdaters<AccountEmployeeEducationListProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<AccountEmployeeAccessListProps, IOwnState, IOwnStateUpdater> = {
   
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeEducationListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AccountEmployeeEducationListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.accountEmployeeEducationState.all;
-    const { loadAllRequest } = props.accountEmployeeEducationDispatch;
+const handlerCreators: HandleCreators<AccountEmployeeAccessListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: AccountEmployeeAccessListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { isLoading, request } = props.accountEmployeeAccessState.all;
+    const { loadAllRequest } = props.accountEmployeeAccessDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IEmployeeEducationAllFilter = {
+      const filter: IEmployeeAccessAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -96,33 +96,33 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationListProps, IOwnHan
       }
     }
   },
-  handleOnBind: (props: AccountEmployeeEducationListProps) => (item: IEmployeeEducation, index: number) => ({
+  handleOnBind: (props: AccountEmployeeAccessListProps) => (item: IEmployeeAccess, index: number) => ({
     key: index,
     primary: item.uid,
-    secondary: item.institution,
-    tertiary: item.major,
-    quaternary: item.degree ? item.degree.value : 'N/A',
+    secondary: item.company ? item.company.name : 'N/A',
+    tertiary: item.unit ? item.unit.value : 'N/A',
+    quaternary: item.role ? item.role.name : 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationListProps, IOwnState> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessListProps, IOwnState> = {
   componentDidMount() {
-    const { request } = this.props.accountEmployeeEducationState.all;
+    const { request } = this.props.accountEmployeeAccessState.all;
     if (request && request.employeeUid !== this.props.match.params.employeeUid) {
       this.props.handleOnLoadApi(undefined, true, true);
     }
   }
 };
 
-export const AccountEmployeeEducationList = compose(
-  setDisplayName('AccountEmployeeEducationList'),
+export const AccountEmployeeAccessList = compose(
+  setDisplayName('AccountEmployeeAccessList'),
   withUser,
-  withAccountEmployeeEducation,
+  withAccountEmployeeAccess,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
-)(AccountEmployeeEducationListView);
+)(AccountEmployeeAccessListView);
