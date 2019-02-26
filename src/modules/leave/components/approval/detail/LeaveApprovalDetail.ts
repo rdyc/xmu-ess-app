@@ -1,5 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -38,17 +39,9 @@ interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
 interface IOwnState {
   shoulLoad: boolean;
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -61,7 +54,16 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
-  setNextLoad: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 export type LeaveApprovalDetailProps
@@ -91,11 +93,11 @@ const createProps: mapper<LeaveApprovalDetailProps, IOwnState> = (props: LeaveAp
 });
 
 const stateUpdaters: StateUpdaters<LeaveApprovalDetailProps, IOwnState, IOwnStateUpdater> = {
-  setNextLoad: (state: IOwnState, props: LeaveApprovalDetailProps) => (): Partial<IOwnState> => ({
+  setShouldLoad: (state: IOwnState, props: LeaveApprovalDetailProps) => (): Partial<IOwnState> => ({
     shoulLoad: !state.shoulLoad
   }),
   setOptions: (state: IOwnState, props: LeaveApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+    menuOptions: options
   })
 };
 
@@ -107,6 +109,16 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, IOwnHandler> = {
         positionUid: props.userState.user.position.uid,
         leaveUid: props.match.params.leaveUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: LeaveApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case LeaveRequestUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: LeaveApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -175,7 +187,7 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, IOwnHandler> = {
     });
 
     // set next load
-    props.setNextLoad();
+    props.setShouldLoad();
   },
   handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -199,7 +211,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveApprovalDetailProps, IOwnState> =
     // handle updated should load
     if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
       // turn of shoul load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -212,13 +224,12 @@ const lifecycles: ReactLifeCycleFunctions<LeaveApprovalDetailProps, IOwnState> =
 
     // handle updated response state
     if (this.props.leaveApprovalState.detail !== prevProps.leaveApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LeaveRequestUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.leaveApprovalState.detail.isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         }
       ];
 

@@ -1,6 +1,8 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupDiemDeletePayload } from '@lookup/classes/request/diem';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -26,13 +28,13 @@ import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 import { LookupDiemDetailView } from './LookupDiemDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   diemUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;  
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleSubmit: () => void;
@@ -40,9 +42,10 @@ interface OwnHandler {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -52,40 +55,78 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type LookupDiemDetailProps
   = WithUser
+  & WithOidc
   & WithLayout
   & WithLookupDiem
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<LookupDiemDetailProps, OwnState> = (props: LookupDiemDetailProps): OwnState => ({
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-});
+const createProps: mapper<LookupDiemDetailProps, IOwnState> = (props: LookupDiemDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<LookupDiemDetailProps, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+  };
+};
+
+const stateUpdaters: StateUpdaters<LookupDiemDetailProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: OwnState, props: LookupDiemDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: LookupDiemDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: LookupDiemDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: LookupDiemDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'diem value'}),
+  }),
+  setDelete: (prevState: IOwnState, props: LookupDiemDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'diem value'}),
+  })
 };
 
-const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupDiemDetailProps) => () => { 
     if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
       props.lookupDiemDispatch.loadDetailRequest({
@@ -94,26 +135,27 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
       });
     }
   },
-  handleOnOpenDialog: (props: LookupDiemDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Diem Value'}),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Diem Value'}),
-      });
+  handleOnSelectedMenu: (props: LookupDiemDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: LookupDiemDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: LookupDiemDetailProps) => () => {
@@ -206,8 +248,14 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<LookupDiemDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LookupDiemDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: LookupDiemDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.diemUid !== prevProps.match.params.diemUid) {
       this.props.handleOnLoadApi();
@@ -218,27 +266,24 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemDetailProps, OwnState> = {
       const { isLoading } = this.props.lookupDiemState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: true
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+          visible: true
         }
       ];
 
@@ -250,6 +295,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemDetailProps, OwnState> = {
 export const LookupDiemDetail = compose(
   withRouter,
   withUser,
+  withOidc,
   withLayout,
   withLookupDiem,
   injectIntl,

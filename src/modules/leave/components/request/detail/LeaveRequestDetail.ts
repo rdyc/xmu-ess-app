@@ -1,5 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
@@ -29,15 +30,10 @@ interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface IOwnHandler {
-  handleOnModify: () => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
-}
-
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: LeaveRequestUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -48,8 +44,17 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 export type LeaveRequestDetailProps
@@ -81,14 +86,18 @@ const createProps: mapper<LeaveRequestDetailProps, IOwnState> = (props: LeaveReq
 
   return {
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false
   };
 };
 
 const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState, props: LeaveRequestDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
   setOptions: (prevState: IOwnState, props: LeaveRequestDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+    menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: LeaveRequestDetailProps) => (): Partial<IOwnState> => ({
     action: LeaveRequestUserAction.Modify,
@@ -120,8 +129,17 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, IOwnHandler> = {
       });
     }
   },
-  handleOnModify: (props: LeaveRequestDetailProps) => () => {
-    props.setModify();
+  handleOnSelectedMenu: (props: LeaveRequestDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LeaveRequestUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LeaveRequestUserAction.Modify:
+        props.setModify();
+        break;    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: LeaveRequestDetailProps) => () => {
     props.setDefault();
@@ -192,20 +210,18 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestDetailProps, IOwnState> = 
       };
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LeaveRequestUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
         {
           id: LeaveRequestUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
           visible: isContains(_statusType, [WorkflowStatusType.Submitted]),
-          onClick: this.props.handleOnModify
         },
 
       ];

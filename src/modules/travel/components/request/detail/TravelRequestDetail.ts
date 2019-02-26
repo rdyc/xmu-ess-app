@@ -1,7 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { TravelUserAction } from '@travel/classes/types';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
@@ -24,20 +25,21 @@ import {
 import { isNull } from 'util';
 import { TravelRequestDetailView } from './TravelRequestDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   travelUid: string;
 }
 
-interface OwnHandler {
-  handleOnModify: () => void;
-  handleAddSettlement: () => void;
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: TravelUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -47,34 +49,57 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setModify: StateHandler<OwnState>;
-  setAddSettlement: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setAddSettlement: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type TravelRequestDetailProps 
   = WithOidc
   & WithUser
   & WithTravelRequest
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<TravelRequestDetailProps, OwnState> = (props: TravelRequestDetailProps): OwnState => ({ 
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<TravelRequestDetailProps, IOwnState> = (props: TravelRequestDetailProps): IOwnState => { 
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<TravelRequestDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: TravelRequestDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+  };
+};
+
+const stateUpdaters: StateUpdaters<TravelRequestDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: TravelRequestDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: OwnState, props: TravelRequestDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: IOwnState, props: TravelRequestDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: TravelRequestDetailProps) => (): Partial<IOwnState> => ({
     action: TravelUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -83,7 +108,7 @@ const stateUpdaters: StateUpdaters<TravelRequestDetailProps, OwnState, OwnStateU
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setAddSettlement: (prevState: OwnState, props: TravelRequestDetailProps) => (): Partial<OwnState> => ({
+  setAddSettlement: (prevState: IOwnState, props: TravelRequestDetailProps) => (): Partial<IOwnState> => ({
     action: TravelUserAction.AddSettlement,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -92,7 +117,7 @@ const stateUpdaters: StateUpdaters<TravelRequestDetailProps, OwnState, OwnStateU
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -102,7 +127,7 @@ const stateUpdaters: StateUpdaters<TravelRequestDetailProps, OwnState, OwnStateU
   })
 };
 
-const handlerCreators: HandleCreators<TravelRequestDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<TravelRequestDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: TravelRequestDetailProps) => () => { 
     if (props.userState.user && props.match.params.travelUid && !props.travelRequestState.detail.isLoading) {
       props.travelRequestDispatch.loadDetailRequest({
@@ -112,11 +137,21 @@ const handlerCreators: HandleCreators<TravelRequestDetailProps, OwnHandler> = {
       });
     }
   },
-  handleOnModify: (props: TravelRequestDetailProps) => () => { 
-    props.setModify();
-  },
-  handleAddSettlement: (props: TravelRequestDetailProps) => () => { 
-    props.setAddSettlement();
+  handleOnSelectedMenu: (props: TravelRequestDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case TravelUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case TravelUserAction.Modify:
+        props.setModify();
+        break;
+      case TravelUserAction.AddSettlement:
+        props.setAddSettlement();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: TravelRequestDetailProps) => () => { 
     props.setDefault();
@@ -173,8 +208,14 @@ const handlerCreators: HandleCreators<TravelRequestDetailProps, OwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<TravelRequestDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<TravelRequestDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: TravelRequestDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+    
     // handle updated route params
     if (this.props.match.params.travelUid !== prevProps.match.params.travelUid) {
       this.props.handleOnLoadApi();
@@ -197,27 +238,24 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestDetailProps, OwnState> = 
       };
       
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: TravelUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: () => this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: TravelUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
-          onClick: this.props.handleOnModify
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
         },
         {
           id: TravelUserAction.AddSettlement,
           name: this.props.intl.formatMessage(travelMessage.request.option.addSettlement),
           enabled: true,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved]) && isNull(response && response.data.settlement)  ,
-          onClick: this.props.handleAddSettlement
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved]) && isNull(response && response.data.settlement)
         }
       ];
 

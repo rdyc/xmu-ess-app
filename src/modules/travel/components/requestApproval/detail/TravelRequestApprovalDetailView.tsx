@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { Grid } from '@material-ui/core';
 import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
@@ -30,7 +31,6 @@ export const TravelRequestApprovalDetailView: React.SFC<TravelRequestApprovalDet
       title: props.intl.formatMessage(travelMessage.requestApproval.page.detailTitle),
       description: props.intl.formatMessage(travelMessage.requestApproval.page.detailTitle)
     }}
-    options={props.pageOptions}
     state={props.travelApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITravelRequestDetail) => (
@@ -91,5 +91,14 @@ export const TravelRequestApprovalDetailView: React.SFC<TravelRequestApprovalDet
         </Grid>
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="travel-request-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

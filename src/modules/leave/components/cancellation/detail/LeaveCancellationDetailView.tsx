@@ -1,9 +1,11 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import * as React from 'react';
+
 import { LeaveCancellationForm } from '../form/LeaveCancellationForm';
 import { LeaveCancellationDetailProps } from './LeaveCancellationDetail';
 
@@ -16,7 +18,6 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
       title: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle),
       description: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle)
     }}
-    options={props.pageOptions}
     state={props.leaveCancellationState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ILeaveDetail) => (
@@ -40,5 +41,14 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
         }
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="leave-cancellation-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );
