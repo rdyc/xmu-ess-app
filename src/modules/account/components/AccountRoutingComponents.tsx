@@ -9,7 +9,7 @@ import { AccountEmployeeEducationDetail } from './detail/education/AccountEmploy
 import { AccountEmployeeExperienceDetail } from './detail/experience/AccountEmployeeExperienceDetail';
 import { AccountEmployeeFamilyDetail } from './detail/family/AccountEmployeeFamilyDetail';
 import { AccountEmployeeNoteDetail } from './detail/note/AccountEmployeeNoteDetail';
-import { AccountEmployeeRate } from './detail/rate/AccountEmployeeRate';
+import { AccountEmployeeRateDetail } from './detail/rate/AccountEmployeeRateDetail';
 import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployeeTrainingDetail';
 import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
 import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
@@ -17,6 +17,7 @@ import { AccountEmployeeEducationEditor } from './editor/education/AccountEmploy
 import AccountEmployeeExperienceEditor from './editor/experience/AccountEmployeeExperienceEditor';
 import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
+import AccountEmployeeRateEditor from './editor/rate/AccountEmployeeRateEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
@@ -25,6 +26,7 @@ import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEd
 import { AccountEmployeeExperienceList } from './list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeFamilyList } from './list/family/AccountEmployeeFamilyList';
 import { AccountEmployeeNoteList } from './list/note/AccountEmployeeNoteList';
+import { AccountEmployeeRateList } from './list/rate/AccountEmployeeRateList';
 import { AccountEmployeeTrainingList } from './list/training/AccountEmployeeTrainingList';
 import { AccountProfile } from './profile';
 
@@ -49,7 +51,7 @@ const employee = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:employeeUid/experience`} component={employeeExperience} />
     <Route path={`${props.match.path}/:employeeUid/training`} component={employeeTraining} />
     <Route path={`${props.match.path}/:employeeUid/access`} component={employeeMultiAccess} />
-    <Route path={`${props.match.path}/:employeeUid/rate`} component={AccountEmployeeRate} />
+    <Route path={`${props.match.path}/:employeeUid/rate`} component={employeeRate} />
     <Route path={`${props.match.path}/:employeeUid/note`} component={employeeNote} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
@@ -100,6 +102,14 @@ const employeeMultiAccess = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={AccountEmployeeAccessEditor} />    
     <Route path={`${props.match.path}/:accessUid`} component={AccountEmployeeAccessDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeAccessList} />
+  </Switch>
+);
+
+const employeeRate = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeRateEditor} />    
+    <Route path={`${props.match.path}/:rateUid`} component={AccountEmployeeRateDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeRateList} />
   </Switch>
 );
 

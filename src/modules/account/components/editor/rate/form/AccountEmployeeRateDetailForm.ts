@@ -4,7 +4,7 @@ import { FormMode } from '@generic/types';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 import { AccountEmployeeRateDetailFormView } from './AccountEmployeeRateDetailFormView';
 
@@ -67,6 +67,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailFormProps, OwnHan
 };
 
 export const AccountEmployeeRateDetailForm = compose<AccountEmployeeRateDetailFormProps, OwnProps>(
+  setDisplayName('AccountEmployeeRateDetailForm'),
   injectIntl,
   withHandlers<AccountEmployeeRateDetailFormProps, OwnHandlers>(handlerCreators),
 )(AccountEmployeeRateDetailFormView);
