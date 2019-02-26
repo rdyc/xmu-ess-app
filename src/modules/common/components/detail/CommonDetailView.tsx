@@ -3,6 +3,7 @@ import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 import { CommonDetailProps } from './CommonDetail';
 import { CommonInformation } from './shared/CommonInformation';
@@ -12,10 +13,19 @@ export const CommonDetailView: React.SFC<CommonDetailProps> = props => (
     info={{
       uid: AppMenu.Common,
       parentUid: AppMenu.Lookup,
+      parentUrl: `/common/system/${props.match.params.category}`,
       title: props.intl.formatMessage(commonMessage.system.page.detailTitle),
       description : props.intl.formatMessage(commonMessage.system.page.detailSubTitle)
     }}
-    options={props.pageOptions}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="common-system-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
     state={props.commonSystemState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ISystemDetail) => (
