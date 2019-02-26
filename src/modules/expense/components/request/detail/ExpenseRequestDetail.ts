@@ -57,8 +57,8 @@ interface OwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type ExpenseRequestDetailProps 
-  = WithUser
-  & WithOidc
+  = WithOidc
+  & WithUser
   & WithExpenseRequest
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
