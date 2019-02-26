@@ -19,22 +19,25 @@ import {
 } from 'recompose';
 
 import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
 import { ExpenseUserAction } from '@expense/classes/types';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
 import { ExpenseRequestDetailView } from './ExpenseRequestDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   expenseUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isAdmin: boolean;
   action?: ExpenseUserAction;
   dialogFullScreen: boolean;
@@ -43,32 +46,53 @@ interface OwnState {
   dialogContent?: string;
   dialogCancelLabel?: string;
   dialogConfirmLabel?: string;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
+  menuOptions?: IPopupMenuOption[];
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
-  setOptions: StateHandler<OwnState>;
+interface OwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
 }
 
 export type ExpenseRequestDetailProps 
   = WithUser
+  & WithOidc
   & WithExpenseRequest
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
+  & IOwnState
   & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnHandler;
 
-const createProps: mapper<ExpenseRequestDetailProps, OwnState> = (props: ExpenseRequestDetailProps): OwnState => ({ 
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<ExpenseRequestDetailProps, IOwnState> = (props: ExpenseRequestDetailProps): IOwnState => { 
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: ExpenseRequestDetailProps) => (): Partial<OwnState> => ({
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return ({
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+  });
+};
+
+const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, IOwnState, OwnStateUpdaters> = {
+  setModify: (prevState: IOwnState, props: ExpenseRequestDetailProps) => (): Partial<IOwnState> => ({
     action: ExpenseUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -77,7 +101,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnState
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -85,12 +109,15 @@ const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnState
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
   }),
-  setOptions: (prevState: OwnState, props: ExpenseRequestDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: ExpenseRequestDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
+  }),
+  setShouldLoad: (state: IOwnState, props: ExpenseRequestDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
 };
 
-const handlerCreators: HandleCreators<ExpenseRequestDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ExpenseRequestDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: ExpenseRequestDetailProps) => () => { 
     if (props.userState.user && props.match.params.expenseUid && !props.expenseRequestState.detail.isLoading) {
       props.expenseRequestDispatch.loadDetailRequest({
@@ -98,6 +125,19 @@ const handlerCreators: HandleCreators<ExpenseRequestDetailProps, OwnHandler> = {
         positionUid: props.userState.user.position.uid,
         expenseUid: props.match.params.expenseUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: ExpenseRequestDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case ExpenseUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case ExpenseUserAction.Modify:
+        props.setModify();
+        break;
+    
+      default:
+        break;
     }
   },
   handleOnModify: (props: ExpenseRequestDetailProps) => () => { 
@@ -148,8 +188,13 @@ const handlerCreators: HandleCreators<ExpenseRequestDetailProps, OwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<ExpenseRequestDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ExpenseRequestDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ExpenseRequestDetailProps) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     if (this.props.match.params.expenseUid !== prevProps.match.params.expenseUid) {
       this.props.handleOnLoadApi();
     }
@@ -194,6 +239,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestDetailProps, OwnState> =
 export const ExpenseRequestDetail = compose(
   setDisplayName('ExpenseRequestDetail'),
   withRouter,
+  withOidc,
   withUser,
   withExpenseRequest,
   injectIntl,
