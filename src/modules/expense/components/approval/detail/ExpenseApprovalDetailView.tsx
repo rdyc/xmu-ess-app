@@ -3,6 +3,7 @@ import { IExpenseDetail } from '@expense/classes/response';
 import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
@@ -27,7 +28,15 @@ export const ExpenseApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = 
       title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
       description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
     }}
-    options={props.pageOptions}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="expense-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
     state={props.expenseApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IExpenseDetail) => (

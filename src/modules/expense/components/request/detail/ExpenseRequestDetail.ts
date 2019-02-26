@@ -23,7 +23,6 @@ import { AppRole } from '@constants/AppRole';
 import { ExpenseUserAction } from '@expense/classes/types';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
-import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
 import { ExpenseRequestDetailView } from './ExpenseRequestDetailView';
 
 interface IOwnRouteParams {
@@ -214,20 +213,18 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestDetailProps, IOwnState> 
         return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
       };
 
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: ExpenseUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi,
         },
         {
           id: ExpenseUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
           visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress ]),
-          onClick: this.props.handleOnModify
         }
       ];
 
