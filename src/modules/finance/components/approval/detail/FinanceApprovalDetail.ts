@@ -22,8 +22,8 @@ import { DocumentPath } from '@finance/classes/types/DocumentPath';
 import { withFinanceApproval, WithFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -38,6 +38,7 @@ interface OwnRouteParams {
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleToDocument: (moduleUid: string, documentUid: string) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
@@ -46,9 +47,9 @@ interface OwnHandler {
 }
 
 interface OwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   action?: FinanceUserAction;
-  shouldDataReload: boolean;
+  shouldReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -64,7 +65,7 @@ interface OwnState {
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setOptions: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
-  setDataload: StateHandler<OwnState>;
+  setShouldLoad: StateHandler<OwnState>;
 }
 
 export type FinanceApprovalDetailProps 
@@ -81,7 +82,7 @@ const createProps: mapper<FinanceApprovalDetailProps, OwnState> = (props: Financ
   const { intl } = props;
 
   return {
-    shouldDataReload: false,
+    shouldReload: false,
     approvalTitle: intl.formatMessage(financeMessage.approval.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(financeMessage.approval.section.approvalSubTitle),
     approvalChoices: [
@@ -100,15 +101,15 @@ const createProps: mapper<FinanceApprovalDetailProps, OwnState> = (props: Financ
 };
 
 const stateUpdaters: StateUpdaters<FinanceApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: FinanceApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
+    menuOptions: options
   }),
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
-    shouldDataReload: !prevState.shouldDataReload
+  setShouldLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldReload: !prevState.shouldReload
   })
 };
 
@@ -120,6 +121,16 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
         positionUid: props.userState.user.position.uid,
         financeUid: props.match.params.financeUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: FinanceApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case FinanceUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: FinanceApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -187,7 +198,7 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
       time: new Date()
     });
 
-    props.setDataload();
+    props.setShouldLoad();
   },
   handleSubmitFail: (props: FinanceApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -246,9 +257,9 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
 
 const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, OwnState> = {
   componentDidUpdate(prevProps: FinanceApprovalDetailProps) {
-    if (this.props.shouldDataReload && this.props.shouldDataReload !== prevProps.shouldDataReload) {
+    if (this.props.shouldReload && this.props.shouldReload !== prevProps.shouldReload) {
       // turn of shoul load
-      this.props.setDataload();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -259,13 +270,12 @@ const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, OwnState> 
     }
 
     if (this.props.financeApprovalState.detail.response !== prevProps.financeApprovalState.detail.response) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: FinanceUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.financeApprovalState.detail.isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
       ];
 

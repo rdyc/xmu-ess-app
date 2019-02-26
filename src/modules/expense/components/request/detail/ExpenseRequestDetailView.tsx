@@ -14,6 +14,7 @@ export const ExpenseRequestDetailView: React.SFC<ExpenseRequestDetailProps> = pr
     info={{
       uid: AppMenu.ExpenseRequest,
       parentUid: AppMenu.Expense,
+      parentUrl: '/expense/requests',
       title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
       description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
     }}
