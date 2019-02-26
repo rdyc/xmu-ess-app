@@ -1,4 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -28,13 +29,14 @@ interface OwnRouteParams {
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface OwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   action?: PurchaseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -45,6 +47,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setShouldLoad: StateHandler<OwnState>;
   setOptions: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
@@ -62,11 +65,15 @@ export type PurchaseSettlementDetailProps
 const createProps: mapper<PurchaseSettlementDetailProps, OwnState> = (props: PurchaseSettlementDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
+  shouldLoad: false,
 });
 
 const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnStateUpdaters> = {
+  setShouldLoad: (state: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
   setOptions: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+    menuOptions: options
   }),
   setModify: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
     action: PurchaseUserAction.Modify,
@@ -99,8 +106,18 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
       });
     }
   },
-  handleOnModify: (props: PurchaseSettlementDetailProps) => () => {
-    props.setModify();
+  handleOnSelectedMenu: (props: PurchaseSettlementDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case PurchaseUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case PurchaseUserAction.Modify:
+        props.setModify();
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: PurchaseSettlementDetailProps) => () => {
     props.setDefault();
@@ -170,20 +187,18 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
       };
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: PurchaseUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
         {
           id: PurchaseUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
           visible: isContains(_statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded, WorkflowStatusType.Rejected]),
-          onClick: this.props.handleOnModify
         },
       ];
 
