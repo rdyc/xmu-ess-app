@@ -80,6 +80,11 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                 }}
               >
                 {
+                  !props.lookupVersionState.detail.response &&
+                  <div></div>
+                }
+
+                {
                   props.lookupVersionState.detail.response &&
                   props.lookupVersionState.detail.response.data &&
                   <List disablePadding style={{ width: '100%' }}>
