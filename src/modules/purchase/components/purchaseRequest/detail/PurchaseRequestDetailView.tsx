@@ -30,11 +30,11 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
     ])}
     appBarComponent={
       props.menuOptions &&
-      <PopupMenu
+      <PopupMenu 
         id="purchase-request-option"
         selectable={false}
-        menuOptions={props.menuOptions}
-        onSelected={props.handleOnSelectedMenu}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
       />
     }
   >

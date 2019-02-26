@@ -39,7 +39,7 @@ export const TimesheetApprovalHistoryListView: React.SFC<TimesheetApprovalHistor
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => props.history.push(`/timesheet/approvals/${item.uid}`)}
+            onClick={() => props.history.push(`/timesheet/approvals/history/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

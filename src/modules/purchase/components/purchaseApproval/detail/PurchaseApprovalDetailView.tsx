@@ -57,11 +57,11 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
     ])}
     appBarComponent={
       props.menuOptions &&
-      <PopupMenu
+      <PopupMenu 
         id="purchase-approval-option"
         selectable={false}
-        menuOptions={props.menuOptions}
-        onSelected={props.handleOnSelectedMenu}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
       />
     }
   />
