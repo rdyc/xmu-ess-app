@@ -6,11 +6,10 @@ import { InputYearDegree } from '@layout/components/input/yearDegree';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { AccountEmployeeExperienceDetailView } from './AccountEmployeeExperienceDetailView';
+import { AccountEmployeeExperienceDetailFormView } from './AccountEmployeeExperienceDetailFormView';
 
 interface OwnProps {
   formMode: FormMode | undefined;
-  disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
@@ -18,14 +17,14 @@ interface OwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
-export type AccountEmployeeExperienceDetailProps =
+export type AccountEmployeeExperienceDetailFormProps =
   OwnProps
   & OwnHandlers
   & InjectedIntlProps;
 
-const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHandlers> = {
-  generateFieldProps: (props: AccountEmployeeExperienceDetailProps) => (name: string) => {
-    const { intl, disabledControls } = props;
+const handleCreators: HandleCreators<AccountEmployeeExperienceDetailFormProps, OwnHandlers> = {
+  generateFieldProps: (props: AccountEmployeeExperienceDetailFormProps) => (name: string) => {
+    const { intl } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -52,7 +51,6 @@ const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHa
       case 'company':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
@@ -62,7 +60,6 @@ const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHa
       case 'position':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldPlaceholder')),
           component: InputText  
@@ -72,7 +69,6 @@ const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHa
       case 'start':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -82,7 +78,6 @@ const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHa
       case 'end':
         fieldProps = {
           required: true,
-          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.experience.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -103,8 +98,8 @@ const handleCreators: HandleCreators<AccountEmployeeExperienceDetailProps, OwnHa
   }
 };
 
-export const AccountEmployeeExperienceDetail = compose<AccountEmployeeExperienceDetailProps, OwnProps>(
+export const AccountEmployeeExperienceDetailForm = compose<AccountEmployeeExperienceDetailFormProps, OwnProps>(
   setDisplayName('ExperienceDetailForm'),
   injectIntl,
-  withHandlers<AccountEmployeeExperienceDetailProps, OwnHandlers>(handleCreators)
-)(AccountEmployeeExperienceDetailView);
+  withHandlers<AccountEmployeeExperienceDetailFormProps, OwnHandlers>(handleCreators)
+)(AccountEmployeeExperienceDetailFormView);

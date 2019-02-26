@@ -1,8 +1,8 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
+import { compose,  } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
-import { AccountEmployeeExperienceContainerView } from './AccountEmployeeExperienceContainerView';
+import { AccountEmployeeExperienceContainerFormView } from './AccountEmployeeExperienceContainerFormView';
 
 const formName = 'accountEmployeeExperience';
 
@@ -18,16 +18,18 @@ export type AccountEmployeeExperienceFormData = {
 };
 
 interface OwnProps {
-  formMode: FormMode | undefined;
-  formAction: 'update' | 'delete';
-  handleValidity: (valid: boolean) => void;
+  formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
   formName: string;
 }
 
-export type AccountEmployeeExperienceContainerProps
+export type AccountEmployeeExperienceContainerFormProps
   = InjectedFormProps<AccountEmployeeExperienceFormData, OwnProps>
   & FormValueProps 
   & OwnProps;
@@ -38,23 +40,11 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceContainerProps, {}> = {
-  componentDidMount() {
-    this.props.handleValidity(this.props.valid);
-  },
-  componentDidUpdate(prevProps: AccountEmployeeExperienceContainerProps) {
-    if (prevProps.valid !== this.props.valid) {
-      this.props.handleValidity(this.props.valid); 
-    }
-  }
-};
-
 // const connectedView = connect(mapStateToProps)(AccountEmployeeExperienceContainerView);
 
-const enhance = compose<AccountEmployeeExperienceContainerProps, OwnProps & InjectedFormProps<AccountEmployeeExperienceFormData, OwnProps>>(
-  connect(mapStateToProps),
-  lifecycle(lifecycles)
-)(AccountEmployeeExperienceContainerView);
+const enhance = compose<AccountEmployeeExperienceContainerFormProps, OwnProps & InjectedFormProps<AccountEmployeeExperienceFormData, OwnProps>>(
+  connect(mapStateToProps)
+)(AccountEmployeeExperienceContainerFormView);
 
 export const AccountEmployeeExperienceContainerForm = reduxForm<AccountEmployeeExperienceFormData, OwnProps>({
   form: formName,

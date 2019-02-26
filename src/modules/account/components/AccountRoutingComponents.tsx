@@ -6,7 +6,7 @@ import { AccountEmployeeAccessDetail } from './detail/access/AccountEmployeeAcce
 import { AccountEmployeeAccessHistoryDetail } from './detail/accessHistory/AccountEmployeeAccessHistoryDetail';
 import { AccountEmployeeDetail } from './detail/common/AccountEmployeeDetail';
 import { AccountEmployeeEducationDetail } from './detail/education/AccountEmployeeEducationDetail';
-import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
+import { AccountEmployeeExperienceDetail } from './detail/experience/AccountEmployeeExperienceDetail';
 import { AccountEmployeeFamilyDetail } from './detail/family/AccountEmployeeFamilyDetail';
 import { AccountEmployeeNoteDetail } from './detail/note/AccountEmployeeNoteDetail';
 import { AccountEmployeeRate } from './detail/rate/AccountEmployeeRate';
@@ -14,6 +14,7 @@ import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployee
 import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
 import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
 import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
+import AccountEmployeeExperienceEditor from './editor/experience/AccountEmployeeExperienceEditor';
 import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
@@ -21,6 +22,7 @@ import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessLi
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
 import { AccountEmployeeList } from './list/common/AccountEmployeeList';
 import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEducationList';
+import { AccountEmployeeExperienceList } from './list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeFamilyList } from './list/family/AccountEmployeeFamilyList';
 import { AccountEmployeeNoteList } from './list/note/AccountEmployeeNoteList';
 import { AccountEmployeeTrainingList } from './list/training/AccountEmployeeTrainingList';
@@ -79,7 +81,9 @@ const employeeFamily = (props: RouteComponentProps) => (
 
 const employeeExperience = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={AccountEmployeeExperience} />
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeExperienceEditor} />
+    <Route path={`${props.match.path}/:experienceUid`} component={AccountEmployeeExperienceDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeExperienceList} />    
   </Switch>
 );
 
