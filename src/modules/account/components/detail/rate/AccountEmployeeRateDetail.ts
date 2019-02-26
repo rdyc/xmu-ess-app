@@ -151,8 +151,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
       });
 
       props.history.push(next, { 
-        employeeUid,
-        educationUid: rateUid
+        rateUid
       });
     }
   },
@@ -182,8 +181,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnSt
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: true,
-          visible: true,
+          enabled: !isLoading,
+          visible: this.props.accountEmployeeRateState.detail.response && this.props.accountEmployeeRateState.detail.response.data.isActive || false,
           onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
         },
       ];

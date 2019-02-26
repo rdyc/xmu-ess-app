@@ -16,6 +16,7 @@ import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
 import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
 import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
+import AccountEmployeeRateEditor from './editor/rate/AccountEmployeeRateEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
@@ -102,7 +103,7 @@ const employeeMultiAccess = (props: RouteComponentProps) => (
 
 const employeeRate = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={AccountEmployeeAccessEditor} />    
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeRateEditor} />    
     <Route path={`${props.match.path}/:rateUid`} component={AccountEmployeeRateDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeRateList} />
   </Switch>

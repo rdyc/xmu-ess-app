@@ -1,7 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
@@ -40,13 +39,16 @@ export const AccountEmployeeRateListView: React.SFC<AccountEmployeeRateListProps
         )}
         actionComponent={(item: IEmployeeRate) => (
           <React.Fragment>
-            {/* <Button 
-              size="small"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/form`, { rateUid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button> */}
-
+            {
+              item.isActive &&
+              <Button 
+                size="small"
+                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/form`, { rateUid: item.uid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.modify)}
+              </Button>
+            }
+            
             <Button 
               size="small"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/${item.uid}`)}
@@ -55,14 +57,6 @@ export const AccountEmployeeRateListView: React.SFC<AccountEmployeeRateListProps
             </Button>
           </React.Fragment>
         )}
-
-        appBarCustomComponent={
-          <IconButton
-            onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/form`)}
-          >
-            <AddCircle/>
-          </IconButton>
-        }
       />
     </DetailPage>
   </React.Fragment>

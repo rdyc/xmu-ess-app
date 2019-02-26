@@ -2,10 +2,12 @@ import { IEmployeeRatePutPayload } from '@account/classes/request/employeeRate';
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
 import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/withAccountEmployeeRate';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -25,7 +27,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeRateEditorView } from './AccountEmployeeRateEditorView';
-import { AccountEmployeeRateFormData } from './form/rate/AccountEmployeeRateForm';
+import { AccountEmployeeRateFormData } from './form/AccountEmployeeRateForm';
 
 interface OwnHandlers {
   handleValidate: (payload: AccountEmployeeRateFormData) => FormErrors;
@@ -35,17 +37,17 @@ interface OwnHandlers {
   handleValidity: (valid: boolean) => void;
 }
 
-interface OwnProps {
-  formMode?: FormMode;
+interface OwnRouteParams {
   employeeUid: string;
-  rateUid?: string;
-  isOpenDialog: boolean;
-  initialValues?: AccountEmployeeRateFormData;
-  handleDialogClose: () => void;
 }
 
 interface OwnState {
-  validity: boolean;
+  formMode: FormMode;
+  rateUid: string;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -62,7 +64,7 @@ export type AccountEmployeeRateEditorProps
   & InjectedIntlProps
   & OwnHandlers
   & OwnState
-  & OwnProps
+  & RouteComponentProps<OwnRouteParams>
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandlers> = {
@@ -84,7 +86,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     return errors;
   },
   handleSubmit: (props: AccountEmployeeRateEditorProps) => (formData: AccountEmployeeRateFormData) => { 
-    const { formMode, rateUid, intl, employeeUid } = props;
+    const { formMode, rateUid, intl } = props;
     const { user } = props.userState;
     const { updateRequest } = props.accountEmployeeRateDispatch;
 
@@ -101,7 +103,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
 
     const putPayload = {
       ...formData.information,
-      employeeUid,
+      employeeUid: props.match.params.employeeUid,
     };
 
     if (formMode === FormMode.Edit) {
@@ -109,7 +111,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
         updateRequest({
           resolve, 
           reject,
-          employeeUid,
+          employeeUid: props.match.params.employeeUid,
           data: putPayload as IEmployeeRatePutPayload, 
         });
       });
@@ -118,31 +120,20 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeRateEditorProps) => (response: IEmployeeRate) => {
-    const { formMode, intl, employeeUid, handleDialogClose } = props;
+    const { formMode, intl, employeeUid, history } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadAllRequest } = props.accountEmployeeRateDispatch;
     
     let message: string = '';
     if (formMode === FormMode.Edit) {
       message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate'});
     }
 
-    handleDialogClose();
-
     alertAdd({
       message,
       time: new Date()
     });
-
-    loadAllRequest({
-      employeeUid,
-      filter: {
-        orderBy: 'uid',
-        direction: 'descending'
-      }
-    });
     
-    // history.push(`/account/employee/${employeeUid}/access`);
+    history.push(`/account/employee/${employeeUid}/rate/${response.uid}`);
   },
   handleSubmitFail: (props: AccountEmployeeRateEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -176,8 +167,13 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
   }
 };
 
-const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (): OwnState => ({
-  validity: false
+const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (props: AccountEmployeeRateEditorProps): OwnState => ({
+  rateUid: props.history.location.state.rateUid,
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, {state: 'Education'}),
+  submitDialogContentText: props.intl.formatMessage(accountMessage.shared.confirm.createDescription, {state: 'education'}),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -188,14 +184,69 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = {
-  componentWillUnmount() {
-    const { updateDispose } = this.props.accountEmployeeRateDispatch;
+  componentDidMount() {
+    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { loadDetailRequest } = this.props.accountEmployeeRateDispatch;
+    const { user } = this.props.userState;
 
-    updateDispose();
+    const view = {
+      title: accountMessage.shared.page.newTitle,
+      subTitle: accountMessage.shared.page.newSubHeader
+    };
+
+    if (!user) {
+      return;
+    }
+
+    if (!isNullOrUndefined(history.location.state)) {
+      view.title = accountMessage.shared.page.modifyTitle;
+      view.subTitle = accountMessage.shared.page.modifySubHeader;
+
+      stateUpdate({
+        formMode: FormMode.Edit,
+        employeeUid: this.props.match.params.employeeUid,
+        rateUid: history.location.state.rateUid,
+        submitDialogTitle: this.props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, { state: 'Rate'}),
+        submitDialogContentText : this.props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, { state: 'Rate'})
+      });
+
+      loadDetailRequest({
+        employeeUid: this.props.match.params.employeeUid,
+        rateId: history.location.state.rateUid
+      });
+    }
+
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupEmployee,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title, {state: 'Note'}),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/account/employee/${this.props.match.params.employeeUid}/rate`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
+    });
+  },
+  componentWillUnmount() {
+    const { layoutDispatch, appBarDispatch, accountEmployeeRateDispatch } = this.props;
+
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
+    layoutDispatch.moreHide();
+
+    appBarDispatch.dispose();
+
+    accountEmployeeRateDispatch.updateDispose();
   }
 };
 
-export default compose<AccountEmployeeRateEditorProps, OwnProps>(
+export default compose<AccountEmployeeRateEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
