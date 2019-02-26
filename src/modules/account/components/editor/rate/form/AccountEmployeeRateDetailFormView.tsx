@@ -1,4 +1,6 @@
+import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { AccountEmployeeRateDetailFormProps } from './AccountEmployeeRateDetailForm';
@@ -25,9 +27,14 @@ export const AccountEmployeeRateDetailFormView: React.SFC<AccountEmployeeRateDet
   };
 
   const render = (
-    <div>
-      {names.map(name => renderField(name))}
-    </div>
+    <Card square>
+      <CardHeader 
+        title={props.intl.formatMessage(accountMessage.shared.section.infoTitle, {state: 'Rate'})}
+      />
+      <CardContent>
+        {names.map(name => renderField(name))}
+      </CardContent>
+    </Card>
   );
 
   return render;

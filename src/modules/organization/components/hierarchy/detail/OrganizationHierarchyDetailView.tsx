@@ -14,6 +14,7 @@ export const OrganizationHierarchyDetailView: React.SFC<OrganizationHierarchyDet
     info={{
       uid: AppMenu.LookupApprovalHierarchy,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/organization/hierarchy',
       title: props.intl.formatMessage(organizationMessage.hierarchy.page.detailTitle),
       description : props.intl.formatMessage(organizationMessage.hierarchy.page.detailSubHeader)
     }}
