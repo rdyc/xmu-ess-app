@@ -1,5 +1,5 @@
-import { IEmployeeEducationDeletePayload } from '@account/classes/request/employeeEducation';
-import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
+import { IEmployeeTrainingDeletePayload } from '@account/classes/request/employeeTraining';
+import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -14,11 +14,11 @@ import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, se
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
-import { AccountEmployeeEducationDetailView } from './AccountEmployeeEducationDetailView';
+import { AccountEmployeeTrainingDetailView } from './AccountEmployeeTrainingDetailView';
 
 interface IOwnRouteParams {
   employeeUid: string;
-  educationUid: string;
+  trainingUid: string;
 }
 
 interface IOwnState {
@@ -48,7 +48,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
 }
 
-export type AccountEmployeeEducationDetailProps
+export type AccountEmployeeTrainingDetailProps
   = IOwnState
   & IOwnHandler
   & IOwnStateUpdaters
@@ -56,10 +56,10 @@ export type AccountEmployeeEducationDetailProps
   & WithUser
   & WithOidc
   & WithLayout
-  & WithAccountEmployeeEducation
+  & WithAccountEmployeeTraining
   & InjectedIntlProps;
 
-const createProps: mapper<AccountEmployeeEducationDetailProps, IOwnState> = (props: AccountEmployeeEducationDetailProps): IOwnState => {
+const createProps: mapper<AccountEmployeeTrainingDetailProps, IOwnState> = (props: AccountEmployeeTrainingDetailProps): IOwnState => {
   // checking admin status
   const { user } = props.oidcState;
   let isAdmin: boolean = false;
@@ -84,49 +84,49 @@ const createProps: mapper<AccountEmployeeEducationDetailProps, IOwnState> = (pro
   };
 };
 
-const stateUpdaters: StateUpdaters<AccountEmployeeEducationDetailProps, IOwnState, IOwnStateUpdaters> = {
+const stateUpdaters: StateUpdaters<AccountEmployeeTrainingDetailProps, IOwnState, IOwnStateUpdaters> = {
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: IOwnState, props: AccountEmployeeEducationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (prevState: IOwnState, props: AccountEmployeeTrainingDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
     pageOptions: options
   }),
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AccountEmployeeEducationDetailProps) => () => { 
-    if (props.userState.user && props.match.params.employeeUid && props.match.params.educationUid && !props.accountEmployeeEducationState.detail.isLoading) {
-      props.accountEmployeeEducationDispatch.loadDetailRequest({
+const handlerCreators: HandleCreators<AccountEmployeeTrainingDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: AccountEmployeeTrainingDetailProps) => () => { 
+    if (props.userState.user && props.match.params.employeeUid && props.match.params.trainingUid && !props.accountEmployeeTrainingState.detail.isLoading) {
+      props.accountEmployeeTrainingDispatch.loadDetailRequest({
         employeeUid: props.match.params.employeeUid,
-        educationUid: props.match.params.educationUid
+        trainingUid: props.match.params.trainingUid
       });
     }
   },
-  handleOnOpenDialog: (props: AccountEmployeeEducationDetailProps) => (action: LookupUserAction) => {
+  handleOnOpenDialog: (props: AccountEmployeeTrainingDetailProps) => (action: LookupUserAction) => {
     if (action === LookupUserAction.Modify) {
       props.stateUpdate({
         action: LookupUserAction.Modify,
         dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Education'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'education'}),
+        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Training'}),
+        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'training'}),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Education'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'education'}),
+        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Training'}),
+        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'training'}),
       });
     }
   },
-  handleOnCloseDialog: (props: AccountEmployeeEducationDetailProps) => () => {
+  handleOnCloseDialog: (props: AccountEmployeeTrainingDetailProps) => () => {
     props.stateUpdate({
       dialogOpen: false
     });
   },
-  handleOnConfirm: (props: AccountEmployeeEducationDetailProps) => () => {
-    const { response } = props.accountEmployeeEducationState.detail;
+  handleOnConfirm: (props: AccountEmployeeTrainingDetailProps) => () => {
+    const { response } = props.accountEmployeeTrainingState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -135,12 +135,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
 
     // define vars
     let employeeUid: string | undefined;
-    let educationUid: string | undefined;
+    let trainingUid: string | undefined;
 
     // get project uid
     if (response.data) {
       employeeUid = props.match.params.employeeUid;
-      educationUid = response.data.uid;
+      trainingUid = response.data.uid;
     }
 
     // actions with new page
@@ -153,7 +153,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
 
       switch (props.action) {
         case LookupUserAction.Modify:
-          next = `/account/employee/${employeeUid}/education/form`;
+          next = `/account/employee/${employeeUid}/training/form`;
           break;
 
         default:
@@ -166,14 +166,14 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
 
       props.history.push(next, { 
         employeeUid,
-        educationUid
+        trainingUid
       });
     }
   },
-  handleSubmit: (props: AccountEmployeeEducationDetailProps) => () => {
-    const { match, intl, action } = props;
+  handleSubmit: (props: AccountEmployeeTrainingDetailProps) => () => {
+    const { match, intl } = props;
     const { user } = props.userState;
-    const { deleteRequest } = props.accountEmployeeEducationDispatch;
+    const { deleteRequest } = props.accountEmployeeTrainingDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -185,34 +185,29 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
       return Promise.reject(message);
     }
     const payload = {
-      uid: match.params.educationUid,
+      uid: match.params.trainingUid,
       employeeUid: match.params.employeeUid
     };
-
-    if (action === LookupUserAction.Delete) {
-      return new Promise((resolve, reject) => {
-        deleteRequest({
-          resolve,
-          reject,
-          employeeUid: match.params.employeeUid,
-          data: payload as IEmployeeEducationDeletePayload
-        });
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        employeeUid: match.params.employeeUid,
+        data: payload as IEmployeeTrainingDeletePayload
       });
-    }
-
-    return null;
+    });
   },
-  handleSubmitSuccess: (props: AccountEmployeeEducationDetailProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: AccountEmployeeTrainingDetailProps) => (response: boolean) => {
     if (props.action === LookupUserAction.Delete) {
-      props.history.push(`/account/employee/${props.match.params.employeeUid}/education`);
+      props.history.push(`/account/employee/${props.match.params.employeeUid}/training`);
   
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: props.intl.formatMessage(accountMessage.shared.message.deleteSuccess, { uid : props.match.params.educationUid, state: 'Education' })
+        message: props.intl.formatMessage(accountMessage.shared.message.deleteSuccess, { uid : props.match.params.trainingUid, state: 'Training' })
       });
     }
   },
-  handleSubmitFail: (props: AccountEmployeeEducationDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: AccountEmployeeTrainingDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
@@ -230,17 +225,17 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationDetailProps, IOwnState> = {
-  componentDidUpdate(prevProps: AccountEmployeeEducationDetailProps) {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: AccountEmployeeTrainingDetailProps) {
     // handle updated route params
     if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
-        this.props.match.params.educationUid !== prevProps.match.params.educationUid) {
+        this.props.match.params.trainingUid !== prevProps.match.params.trainingUid) {
       this.props.handleOnLoadApi();
     }
 
     // handle updated response state
-    if (this.props.accountEmployeeEducationState.detail.response !== prevProps.accountEmployeeEducationState.detail.response) {
-      const { isLoading } = this.props.accountEmployeeEducationState.detail;
+    if (this.props.accountEmployeeTrainingState.detail.response !== prevProps.accountEmployeeTrainingState.detail.response) {
+      const { isLoading } = this.props.accountEmployeeTrainingState.detail;
 
       // generate option menus
       const options: IAppBarMenu[] = [
@@ -272,15 +267,15 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationDetailProps, I
   }
 };
  
-export const AccountEmployeeEducationDetail = compose<AccountEmployeeEducationDetailProps, {}>(
+export const AccountEmployeeTrainingDetail = compose<AccountEmployeeTrainingDetailProps, {}>(
   withRouter,
   withOidc,
   withUser,
   withLayout,
-  withAccountEmployeeEducation,
+  withAccountEmployeeTraining,
   injectIntl,
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeEducationDetailProps, IOwnHandler>(handlerCreators),
+  withHandlers<AccountEmployeeTrainingDetailProps, IOwnHandler>(handlerCreators),
   lifecycle(lifecycles),
-  setDisplayName('AccountEmployeeEducationDetail')
-)(AccountEmployeeEducationDetailView);
+  setDisplayName('AccountEmployeeTrainingDetail')
+)(AccountEmployeeTrainingDetailView);

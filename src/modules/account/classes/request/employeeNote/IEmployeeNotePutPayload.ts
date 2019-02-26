@@ -1,5 +1,5 @@
 export interface IEmployeeNotePutPayload {
-  id: string;
+  id: number;
   employeeUid: string;
   text: string;
 }

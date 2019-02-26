@@ -33,6 +33,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 interface OwnOption {
   tab: AccountEmployeeTabs;
+  employeeName?: string;
 }
 
 export type DetailPageProps
@@ -66,6 +67,14 @@ const lifecycles: ReactLifeCycleFunctions<DetailPageProps, OwnState> = {
     }));
 
     tabs.map((item, index) => item.name === this.props.tab ? this.props.handleChangeTab(index) : null);
+
+    if (this.props.location.state) {
+      if (this.props.location.state.employeeName) {
+        this.props.stateUpdate({
+          employeeName: this.props.location.state.employeeName
+        });
+      }
+    }
   },
 };
 
