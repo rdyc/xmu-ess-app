@@ -229,17 +229,15 @@ const styles = (theme: Theme) =>
     // SEARCH
     search: {
       position: 'relative',
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: theme.shape.borderRadius + 10,
       backgroundColor: fade(theme.palette.common.white, 0.5),
       '&:hover': {
         backgroundColor: fade(theme.palette.common.white, 0.7),
       },
-      marginLeft: 0,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing.unit,
         width: 'auto',
-      },
+      }
     },
     searchIcon: {
       width: theme.spacing.unit * 9,
@@ -251,7 +249,6 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
     },
     searchRoot: {
-      // color: 'inherit',
       width: '100%',
     },
     searchInput: {
@@ -262,7 +259,7 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        width: 120,
+        width: 80,
         '&:focus': {
           width: 200,
         },

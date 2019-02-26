@@ -32,7 +32,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
           
           <ListItemText
             primary={props.userState.user.fullName}
-            secondary={props.userState.user.company.name}
+            secondary={`${props.userState.user.company.code} - ${props.userState.user.position.name}`}
             primaryTypographyProps={{
               variant: 'body2',
               noWrap: true
