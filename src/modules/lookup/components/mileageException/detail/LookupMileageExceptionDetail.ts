@@ -1,7 +1,7 @@
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { MileageExceptionUserAction } from '@lookup/classes/types';
 import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
@@ -30,14 +30,15 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: MileageExceptionUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -48,6 +49,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
@@ -81,21 +83,25 @@ const createProps: mapper<LookupMileageExceptionDetailProps, IOwnState> = (props
   }
   return {
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
   };
 };
 
 const stateUpdaters: StateUpdaters<LookupMileageExceptionDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setOptions: (prevState: IOwnState, props: LookupMileageExceptionDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setShouldLoad: (state: IOwnState, props: LookupMileageExceptionDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setOptions: (prevState: IOwnState, props: LookupMileageExceptionDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: LookupMileageExceptionDetailProps) => (): Partial<IOwnState> => ({
     action: MileageExceptionUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Mileage Exception'}),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'mileage exception'}),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
@@ -117,9 +123,19 @@ const handlerCreators: HandleCreators<LookupMileageExceptionDetailProps, IOwnHan
         mileageExceptionUid: props.match.params.mileageExceptionUid
       });
     }
-  },  
-  handleOnModify: (props: LookupMileageExceptionDetailProps) => () => {
-    props.setModify();
+  },
+  handleOnSelectedMenu: (props: LookupMileageExceptionDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case MileageExceptionUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case MileageExceptionUserAction.Modify:
+        props.setModify();
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: LookupMileageExceptionDetailProps) => () => {
     props.setDefault();
@@ -168,6 +184,12 @@ const handlerCreators: HandleCreators<LookupMileageExceptionDetailProps, IOwnHan
 
 const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: LookupMileageExceptionDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.mileageExceptionUid !== prevProps.match.params.mileageExceptionUid) {
       this.props.handleOnLoadApi();
@@ -178,20 +200,18 @@ const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionDetailProps, IOw
       const { isLoading } = this.props.mileageExceptionState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: MileageExceptionUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: MileageExceptionUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: this.props.handleOnModify
+          visible: true
         }
       ];
 

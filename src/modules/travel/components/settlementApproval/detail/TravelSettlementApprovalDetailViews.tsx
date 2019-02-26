@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelSettlementDetail } from '@travel/classes/response';
@@ -31,7 +32,6 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
       title: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle),
       description: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle)
     }}
-    options={props.pageOptions}
     state={props.travelSettlementApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITravelSettlementDetail) => (
@@ -76,5 +76,14 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
         }
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="travel-settlement-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

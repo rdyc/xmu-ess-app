@@ -1,6 +1,8 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitDeletePayload } from '@lookup/classes/request';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -34,7 +36,7 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleSubmit: () => void;
@@ -43,7 +45,9 @@ interface IOwnHandler {
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -54,12 +58,16 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type SystemLimitDetailProps
   = WithUser
+  & WithOidc
   & WithLayout
   & WithLookupSystemLimit
   & RouteComponentProps<IOwnRouteParams>
@@ -68,21 +76,56 @@ export type SystemLimitDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<SystemLimitDetailProps, IOwnState> = (props: SystemLimitDetailProps): IOwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-});
+const createProps: mapper<SystemLimitDetailProps, IOwnState> = (props: SystemLimitDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+  };
+};
 
 const stateUpdaters: StateUpdaters<SystemLimitDetailProps, IOwnState, IOwnStateUpdaters> = {
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: IOwnState, props: SystemLimitDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: SystemLimitDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: SystemLimitDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: SystemLimitDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'time limit'}),
+  }),
+  setDelete: (prevState: IOwnState, props: SystemLimitDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'time limit'}),
+  })
 };
 
 const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
@@ -94,26 +137,27 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
       });
     }
   },
-  handleOnOpenDialog: (props: SystemLimitDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
-      });
+  handleOnSelectedMenu: (props: SystemLimitDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: SystemLimitDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: SystemLimitDetailProps) => () => {
@@ -212,6 +256,12 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<SystemLimitDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: SystemLimitDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.systemLimitUid !== prevProps.match.params.systemLimitUid) {
       this.props.handleOnLoadApi();
@@ -222,27 +272,24 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitDetailProps, IOwnState> = {
       const { isLoading } = this.props.systemLimitState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: true
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+          visible: true
         }
       ];
 
@@ -253,6 +300,7 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitDetailProps, IOwnState> = {
 
 export const LookupSystemLimitDetail = compose<SystemLimitDetailProps, {}>(
   withRouter,
+  withOidc,
   withUser,
   withLayout,
   withLookupSystemLimit,

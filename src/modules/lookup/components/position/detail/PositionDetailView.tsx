@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { IPositionDetail } from '@lookup/classes/response';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
@@ -17,15 +18,20 @@ export const PositionDetailView: React.SFC<PositionDetailProps> = props => (
       title: props.intl.formatMessage(lookupMessage.position.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.position.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.lookupPositionState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IPositionDetail) => (
       <PositionInformation data={data} />
     )}
-    secondary={() => ([
-      // 
-    ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-position-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <React.Fragment>
       <DeleteForm
