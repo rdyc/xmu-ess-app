@@ -16,7 +16,7 @@ interface IOwnProps {
 type AllProps = IOwnProps & InjectedIntlProps;
 
 const accountEmployeeRateInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { intl } = props;
 
   const render = (
     <Card square>
@@ -30,11 +30,11 @@ const accountEmployeeRateInformation: React.SFC<AllProps> = props => {
           label={intl.formatMessage(accountMessage.employee.field.uid)}
           value={props.employeeUid}
         />
-        <TextField 
+        <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.rate.field.uid)}
-          value={data.uid}
+          label={props.intl.formatMessage(accountMessage.rate.field.uid)}
+          value={props.data.uid}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

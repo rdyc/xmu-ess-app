@@ -10,7 +10,7 @@ import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { AccountEmployeeRateDetailView } from './AccountEmployeeRateDetailView';
+import { AccountEmployeeRateDetailView } from './AccountRateDetailView';
 
 interface IOwnRouteParams {
   employeeUid: string;
@@ -104,14 +104,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
         dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Rate'}),
         dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'rate'}),
       });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Rate'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'rate'}),
-      });
-    }
+    } 
   },
   handleOnCloseDialog: (props: AccountEmployeeRateDetailProps) => () => {
     props.stateUpdate({
@@ -159,7 +152,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
 
       props.history.push(next, { 
         employeeUid,
-        rateUid
+        educationUid: rateUid
       });
     }
   },
@@ -210,5 +203,5 @@ export const AccountEmployeeRateDetail = compose<AccountEmployeeRateDetailProps,
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeRateDetailProps, IOwnHandler>(handlerCreators),
   lifecycle(lifecycles),
-  setDisplayName('AccountEmployeeRateRate')
+  setDisplayName('AccountEmployeeRateDetail')
 )(AccountEmployeeRateDetailView);
