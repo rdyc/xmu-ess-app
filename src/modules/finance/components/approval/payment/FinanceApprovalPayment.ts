@@ -97,12 +97,27 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
   handleLoadData: (props: FinanceApprovalPaymentProps) => () => {
     const { financeUids, stateUpdate, history } = props;
     const { response } = props.financeApprovalState.all;
+    const { response: detailReponse } = props.financeApprovalState.detail;
+    const { loadDetailRequest } = props.financeApprovalDispatch;
 
     if (response && response.data) {
       const _finances = response.data.filter(finance => 
         financeUids.some(financeUid => 
           financeUid === finance.uid
       ));
+
+      // fool the PreviewPage Component to think the detail is exist (if detail not loaded) lul :p
+      if (!detailReponse) {
+        if (props.userState.user) {
+          loadDetailRequest({
+            companyUid: props.userState.user.company.uid,
+            positionUid: props.userState.user.position.uid,
+            financeUid: _finances[0].uid,
+          });
+        } else {
+          history.push('/finance/approvals');
+        }
+      }
 
       stateUpdate({
         finances: _finances

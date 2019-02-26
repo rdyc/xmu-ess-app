@@ -171,7 +171,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
     }
   },
   handleSubmit: (props: AccountEmployeeEducationDetailProps) => () => {
-    const { match, intl } = props;
+    const { match, intl, action } = props;
     const { user } = props.userState;
     const { deleteRequest } = props.accountEmployeeEducationDispatch;
 
@@ -188,14 +188,19 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationDetailProps, IOwnH
       uid: match.params.educationUid,
       employeeUid: match.params.employeeUid
     };
-    return new Promise((resolve, reject) => {
-      deleteRequest({
-        resolve,
-        reject,
-        employeeUid: match.params.employeeUid,
-        data: payload as IEmployeeEducationDeletePayload
+
+    if (action === LookupUserAction.Delete) {
+      return new Promise((resolve, reject) => {
+        deleteRequest({
+          resolve,
+          reject,
+          employeeUid: match.params.employeeUid,
+          data: payload as IEmployeeEducationDeletePayload
+        });
       });
-    });
+    }
+
+    return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeEducationDetailProps) => (response: boolean) => {
     if (props.action === LookupUserAction.Delete) {

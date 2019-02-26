@@ -109,14 +109,10 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationListProps, IOwnHan
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationListProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-    //   if (this.props.location.state.employeeName) {
-
-    //   }
+    const { request } = this.props.accountEmployeeEducationState.all;
+    if (request && request.employeeUid !== this.props.match.params.employeeUid) {
+      this.props.handleOnLoadApi(undefined, true, true);
     }
-  },
-  componentDidUpdate(prevProps: AccountEmployeeEducationListProps) {
-    //
   }
 };
 
