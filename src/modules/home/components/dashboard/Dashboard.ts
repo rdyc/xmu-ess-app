@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { homeMessage } from '@home/locales/messages';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
@@ -9,34 +9,26 @@ import { DashboardView } from './dashboardView';
 
 export type DashboardProps
   = WithLayout
-  & WithAppBar
+  & WithMasterPage
   & InjectedIntlProps;
 
 const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
   componentDidMount() {
-    const { intl, layoutDispatch } = this.props;
-    
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.Dashboard,
       parentUid: AppMenu.Home,
-      title: intl.formatMessage(homeMessage.dashboard.page.title),
-      subTitle: intl.formatMessage(homeMessage.dashboard.page.subHeader)
+      title: this.props.intl.formatMessage(homeMessage.dashboard.page.title),
+      description: this.props.intl.formatMessage(homeMessage.dashboard.page.subHeader)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    this.props.masterPage.resetPage();
   }
 };
 
 export const Dashboard = compose(
   withLayout,
-  withAppBar,
+  withMasterPage,
   injectIntl,
   lifecycle(lifecycles)
 )(DashboardView);

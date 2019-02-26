@@ -25,19 +25,21 @@ import { NavigationView } from './NavigationView';
 
 interface IOwnOption {
   defaultAnchor: Anchor;
+  defaultHeaderUid?: string;
+  defaultChildUid?: string;
 }
 
-interface OwnState {
+interface IOwnState {
   headerUid?: string;
   childUid?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setHeader: StateHandler<OwnState>;
-  setHeaderAndChild: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setHeader: StateHandler<IOwnState>;
+  setHeaderAndChild: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
   handleOnClickMenuHeader: (uid: string) => void;
   handleOnClickMenuItem: (headerUid: string, childUid: string, closeMenu: boolean) => void;
@@ -45,29 +47,30 @@ interface OwnHandler {
 
 export type NavigationProps 
   = IOwnOption
-  & OwnState 
-  & OwnStateUpdaters
-  & OwnHandler
+  & IOwnState 
+  & IOwnStateUpdaters
+  & IOwnHandler
   & WithUser 
   & WithMasterPage
   & WithWidth
   & WithStyles<typeof styles>;
 
-const createProps: mapper<NavigationProps, OwnState> = (props: NavigationProps) => ({ 
-
+const createProps: mapper<NavigationProps, IOwnState> = (props: NavigationProps) => ({ 
+  headerUid: props.defaultHeaderUid,
+  childUid: props.defaultChildUid
 });
 
-const stateUpdaters: StateUpdaters<NavigationProps, OwnState, OwnStateUpdaters> = {
-  setHeader: (prevState: OwnState) => (uid?: string): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<NavigationProps, IOwnState, IOwnStateUpdaters> = {
+  setHeader: (prevState: IOwnState) => (uid?: string): Partial<IOwnState> => ({
     headerUid: uid
   }),
-  setHeaderAndChild: (prevState: OwnState) => (headerUid: string, childUid: string): Partial<OwnState> => ({
+  setHeaderAndChild: (prevState: IOwnState) => (headerUid: string, childUid: string): Partial<IOwnState> => ({
     headerUid,
     childUid
   })
 };
 
-const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
+const handlerCreator: HandleCreators<NavigationProps, IOwnHandler> = {
   handleOnChangePage: (props: NavigationProps) => (event: CustomEvent<IPageInfo>) => {
     props.setHeaderAndChild(event.detail.parentUid, event.detail.uid);
   },
@@ -94,9 +97,8 @@ const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<NavigationProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<NavigationProps, IOwnState> = {
   componentWillMount() {
-    console.log('Navigation mount');
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
   },
   componentWillUnmount() {
