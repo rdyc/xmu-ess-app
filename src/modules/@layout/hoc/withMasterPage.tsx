@@ -5,6 +5,7 @@ import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+const changeTheme = () => dispatchEvent(new CustomEvent(AppEvent.onChangeTheme));
 const changeRoute = (detail: IRedirection) => dispatchEvent(new CustomEvent(AppEvent.onChangeRoute, { detail }));
 const changeRouteFrom = (module: ModuleDefinitionType, type: NotificationType, uid?: string) => {
   const page = pageHelper.redirectFrom(module, type, uid);
@@ -22,6 +23,7 @@ const changeCustomComponent = (detail: React.ReactNode) => dispatchEvent(new Cus
 
 const mapDispatchToProps = () => ({
   masterPage: {
+    changeTheme,
     changeRoute,
     changeRouteFrom,
     changeAnchor,
@@ -37,6 +39,7 @@ const mapDispatchToProps = () => ({
 
 interface PropsFromDispatch {
   masterPage: {
+    changeTheme: typeof changeTheme;
     changeRoute: typeof changeRoute;
     changeRouteFrom: typeof changeRouteFrom;
     changeAnchor: typeof changeAnchor;

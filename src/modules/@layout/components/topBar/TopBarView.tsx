@@ -1,4 +1,4 @@
-import { AppBar, Badge, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Badge, Divider, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,7 +10,8 @@ import { TopBarProps } from './TopBar';
 
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
-    elevation={1}
+    elevation={0}
+    color="default"
     position="fixed"
     className={classNames(
       props.classes.appBar, 
@@ -32,7 +33,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
       </IconButton>
 
       <Typography 
-        noWrap 
+        noWrap
         variant="h6"
         className={props.classes.flex}
       >
@@ -52,5 +53,6 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       {props.customComponent}
     </Toolbar>
+    <Divider/>
   </AppBar>
 );

@@ -1,5 +1,7 @@
 import AppEvent from '@constants/AppEvent';
+import AppStorage from '@constants/AppStorage';
 import { IPageInfo, IRedirection } from '@generic/interfaces';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { Anchor } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -18,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import * as store from 'store';
 
 import { MasterPageView } from './MasterPageView';
 
@@ -48,9 +51,10 @@ export type MasterPageProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithUser
+  & WithMasterPage
   & RouteComponentProps;
 
-const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+const createProps: mapper<MasterPageProps, IOwnState> = (props: MasterPageProps): IOwnState => ({
   anchor: 'left'
 });
 
@@ -87,6 +91,16 @@ const lifecycles: ReactLifeCycleFunctions<MasterPageProps, {}> = {
     addEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
   },
+  componentDidUpdate(prevProps: MasterPageProps) {
+    if (this.props.userState.user && this.props.userState.user !== prevProps.userState.user) {
+      // get user preference
+      const preference = store.get(`${AppStorage.Preference}:${this.props.userState.user && this.props.userState.user.uid}`);
+      
+      if (preference && preference.anchor === 'right') {
+        this.props.masterPage.changeAnchor();
+      }
+    }
+  },
   componentWillUnmount() {
     removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
     removeEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
@@ -98,6 +112,7 @@ export const MasterPage = compose<MasterPageProps, IOwnOption>(
   setDisplayName('MasterPage'),
   withRouter,
   withUser,
+  withMasterPage,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

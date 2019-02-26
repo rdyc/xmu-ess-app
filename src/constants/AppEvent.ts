@@ -1,4 +1,5 @@
 enum AppEvent {
+  onChangeTheme = 'theme.change',
   onChangeRoute = 'route.change',
   onChangePage = 'page.change',
   onResetPage = 'page.reset',

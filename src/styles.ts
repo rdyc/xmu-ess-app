@@ -28,8 +28,8 @@ const styles = (theme: Theme) =>
     root: {
       width: '100%',
       marginBottom: 0,
-      zIndex: 1,
-      overflow: 'hidden'
+      overflow: 'hidden',
+      zIndex: 1
     },
 
     landingPage: {
@@ -172,14 +172,16 @@ const styles = (theme: Theme) =>
     // Application Bar
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      backgroundColor: theme.palette.primary.main,
-      // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
-        backgroundColor: theme.palette.grey[400],
-        backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
-        width: `calc(100% - ${0}px)`,
-        marginLeft: 0,
-        marginRight: 0,
+        // backgroundColor: theme.palette.grey[100],
+        
+        // dangdut styles
+        // backgroundColor: theme.palette.grey[400],
+        // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
+        
+        // width: `calc(100% - ${0}px)`,
+        // marginLeft: 0,
+        // marginRight: 0,
       },
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -228,9 +230,9 @@ const styles = (theme: Theme) =>
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: fade(theme.palette.common.white, 0.5),
       '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.common.white, 0.7),
       },
       marginLeft: 0,
       width: '100%',
@@ -249,7 +251,7 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
     },
     searchRoot: {
-      color: 'inherit',
+      // color: 'inherit',
       width: '100%',
     },
     searchInput: {
@@ -355,9 +357,13 @@ const styles = (theme: Theme) =>
     },
 
     // avatar
+    avatarPrimary: {
+      color: '#fff',
+      backgroundColor: theme.palette.primary.main
+    },
     avatarSecondary: {
       color: '#fff',
-      backgroundColor: theme.palette.secondary.dark
+      backgroundColor: theme.palette.secondary.main
     },
     avatarRed: {
       color: '#fff',
@@ -445,6 +451,10 @@ const styles = (theme: Theme) =>
     //     fontWeight: 500,
     //   },
     /* Color page end */
+
+    toolbar: {
+      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.background.default
+    },
 
     /* Toolbar Custom */
     toolbarCustom: {

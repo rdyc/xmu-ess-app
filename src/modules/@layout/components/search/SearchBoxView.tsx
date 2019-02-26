@@ -9,7 +9,7 @@ import { SearchBoxProps } from './SearchBox';
 export const SearchBoxView: React.SFC<SearchBoxProps> = props => (
   <div className={props.classes.search}>
     <div className={props.classes.searchIcon}>
-      <SearchIcon />
+      <SearchIcon color="action" />
     </div>
 
     <InputBase
