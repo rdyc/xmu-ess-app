@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { Grid } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelRequestDetail } from '@travel/classes/response';
@@ -20,7 +21,6 @@ export const TravelRequestDetailView: React.SFC<TravelRequestDetailProps> = prop
       title: props.intl.formatMessage(travelMessage.request.page.detailTitle),
       description: props.intl.formatMessage(travelMessage.request.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.travelRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITravelRequestDetail) => (
@@ -45,6 +45,15 @@ export const TravelRequestDetailView: React.SFC<TravelRequestDetailProps> = prop
       <TravelRequestItem data={data.items} />,
       <WorkflowHistory data={data.workflow} />,
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="travel-request-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <DialogConfirmation
       isOpen={props.dialogOpen}
