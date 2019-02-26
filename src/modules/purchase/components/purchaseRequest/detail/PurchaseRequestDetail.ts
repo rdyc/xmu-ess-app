@@ -36,6 +36,7 @@ interface OwnHandler {
 
 interface OwnState {
   menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   action?: PurchaseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -46,6 +47,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setShouldLoad: StateHandler<OwnState>;
   setOptions: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
   setSettle: StateHandler<OwnState>;
@@ -64,9 +66,13 @@ export type PurchaseRequestDetailProps
 const createProps: mapper<PurchaseRequestDetailProps, OwnState> = (props: PurchaseRequestDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
+  shouldLoad: false,
 });
 
 const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStateUpdaters> = {
+  setShouldLoad: (state: OwnState, props: PurchaseRequestDetailProps) => (): Partial<OwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
   setOptions: (prevState: OwnState, props: PurchaseRequestDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
     menuOptions: options
   }),

@@ -41,7 +41,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
       actionComponent={(item: IPurchase) => (
         <React.Fragment><Button
           size="small"
-          onClick={() => props.history.push(`/purchase/approvals/${item.uid}`)}
+          onClick={() => props.history.push(`/purchase/settlement/approvals/${item.uid}`)}
         >
           {props.intl.formatMessage(layoutMessage.action.details)}
         </Button>
