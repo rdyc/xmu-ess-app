@@ -3,7 +3,6 @@ import { AppRole } from '@constants/AppRole';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -101,7 +100,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
   setShouldLoad: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (state: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (state: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
   setModify: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({

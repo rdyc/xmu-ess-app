@@ -39,7 +39,7 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
-  shoulLoad: boolean;
+  shouldLoad: boolean;
   menuOptions?: IPopupMenuOption[];
   approvalTitle: string;
   approvalSubHeader: string;
@@ -77,7 +77,7 @@ export type ProjectApprovalDetailProps
   & IOwnStateUpdater;
 
 const createProps: mapper<ProjectApprovalDetailProps, IOwnState> = (props: ProjectApprovalDetailProps): IOwnState => ({
-  shoulLoad: false,
+  shouldLoad: false,
   approvalTitle: props.intl.formatMessage(projectMessage.registration.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
   approvalChoices: [
@@ -93,7 +93,7 @@ const createProps: mapper<ProjectApprovalDetailProps, IOwnState> = (props: Proje
 
 const stateUpdaters: StateUpdaters<ProjectApprovalDetailProps, IOwnState, IOwnStateUpdater> = {
   setShouldLoad: (state: IOwnState, props: ProjectApprovalDetailProps) => (): Partial<IOwnState> => ({
-    shoulLoad: !state.shoulLoad
+    shouldLoad: !state.shouldLoad
   }),
   setOptions: (state: IOwnState, props: ProjectApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
@@ -111,7 +111,14 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
     }
   },
   handleOnSelectedMenu: (props: ProjectApprovalDetailProps) => (item: IPopupMenuOption) => {
-    props.setShouldLoad();
+    switch (item.id) {
+      case ProjectUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
@@ -201,7 +208,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
 const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
       this.props.setShouldLoad();
 
