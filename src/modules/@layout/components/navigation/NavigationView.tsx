@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Collapse, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as classNames from 'classnames';
@@ -60,7 +60,11 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
               <ListItemSecondaryAction>
                 <ExpandMore 
                   color="action" 
-                  className={classNames(props.classes.expand, props.headerUid === header.uid ? props.classes.expandOpen : '')} 
+                  className={classNames(
+                    props.classes.expand,
+                    props.classes.marginThinRight, 
+                    props.headerUid === header.uid ? props.classes.expandOpen : ''
+                  )} 
                 />
               </ListItemSecondaryAction>
             </ListItem>
@@ -90,26 +94,6 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
           </React.Fragment>
         ))
       }
-
-      <Divider/>
-
-      <ListItem>
-        <ListItemText
-          className={props.classes.drawerPaperFooter}
-          primary={process.env.REACT_APP_WEBSITE_NAME}
-          secondary={process.env.REACT_APP_WEBSITE_FOOTER}
-          primaryTypographyProps={{
-            align: 'center',
-            noWrap: true,
-            variant: 'caption',
-          }}
-          secondaryTypographyProps={{
-            noWrap: true,
-            align: 'center',
-            variant: 'caption',
-          }}
-        />
-      </ListItem>
     </List>
   </React.Fragment>
 );

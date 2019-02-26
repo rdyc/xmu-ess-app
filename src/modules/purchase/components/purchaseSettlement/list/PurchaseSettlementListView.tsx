@@ -49,7 +49,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
         }
         <Button
           size="small"
-          onClick = {() => props.history.push(`/purchase/requests/${item.uid}`)}
+          onClick = {() => props.history.push(`/purchase/settlement/requests/${item.uid}`)}
         >
           { props.intl.formatMessage(layoutMessage.action.details) }
         </Button >

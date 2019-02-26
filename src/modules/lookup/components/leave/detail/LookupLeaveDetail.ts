@@ -1,4 +1,7 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -31,19 +34,10 @@ interface IOwnRouteParams {
   leaveUid: string;
   companyUid: string;
 }
-
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
-  handleSubmit: () => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -54,12 +48,26 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
+  handleSubmit: () => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 export type LeaveDetailProps
   = WithUser
+  & WithOidc
   & WithLayout
   & WithLookupLeave
   & RouteComponentProps<IOwnRouteParams>
@@ -68,12 +76,32 @@ export type LeaveDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<LeaveDetailProps, IOwnState> = (props: LeaveDetailProps): IOwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-});
+const createProps: mapper<LeaveDetailProps, IOwnState> = (props: LeaveDetailProps): IOwnState => {
+   // checking admin status
+   const { user } = props.oidcState;
+   let isAdmin: boolean = false;
+ 
+   if (user) {
+     const role: string | string[] | undefined = user.profile.role;
+ 
+     if (role) {
+       if (Array.isArray(role)) {
+         isAdmin = role.indexOf(AppRole.Admin) !== -1;
+       } else {
+         isAdmin = role === AppRole.Admin;
+       }
+     }
+   }
+   
+   return {
+     isAdmin,
+     shouldLoad: false,
+     dialogFullScreen: false,
+     dialogOpen: false,
+     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+   };
+ };
 
 const stateUpdaters: StateUpdaters<LeaveDetailProps, IOwnState, IOwnStateUpdaters> = {
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
@@ -81,8 +109,23 @@ const stateUpdaters: StateUpdaters<LeaveDetailProps, IOwnState, IOwnStateUpdater
     ...newState
   }),
   setOptions: (prevState: IOwnState, props: LeaveDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: LeaveDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: LeaveDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'time limit'}),
+  }),
+  setDelete: (prevState: IOwnState, props: LeaveDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'time limit'}),
+  })
 };
 
 const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
@@ -94,26 +137,27 @@ const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
       });
     }
   },
-  handleOnOpenDialog: (props: LeaveDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
-      });
+  handleOnSelectedMenu: (props: LeaveDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: LeaveDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: LeaveDetailProps) => () => {
@@ -212,6 +256,12 @@ const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<LeaveDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: LeaveDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.leaveUid !== prevProps.match.params.leaveUid) {
       this.props.handleOnLoadApi();
@@ -222,27 +272,24 @@ const lifecycles: ReactLifeCycleFunctions<LeaveDetailProps, IOwnState> = {
       const { isLoading } = this.props.lookupLeaveState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
           visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
         }
       ];
 
@@ -253,6 +300,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveDetailProps, IOwnState> = {
 
 export const LookupLeaveDetail = compose<LeaveDetailProps, {}>(
   withRouter,
+  withOidc,
   withUser,
   withLayout,
   withLookupLeave,
