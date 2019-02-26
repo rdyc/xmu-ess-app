@@ -1,6 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseRequestDetailView } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetailView';
@@ -22,20 +24,21 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   purchaseUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
-  handleOnSettle: () => void; 
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: PurchaseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -45,32 +48,57 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
-  setSettle: StateHandler<OwnState>;
-  setModify: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
+  setSettle: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
 }
 
 export type PurchaseRequestDetailProps
   = WithUser
+  & WithOidc
   & WithPurchaseRequest
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<PurchaseRequestDetailProps, OwnState> = (props: PurchaseRequestDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<PurchaseRequestDetailProps, IOwnState> = (props: PurchaseRequestDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: PurchaseRequestDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return { 
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
+
+const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: PurchaseRequestDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: OwnState, props: PurchaseRequestDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: IOwnState, props: PurchaseRequestDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: PurchaseRequestDetailProps) => (): Partial<IOwnState> => ({
     action: PurchaseUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -79,7 +107,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setSettle: (prevState: OwnState, props: PurchaseRequestDetailProps) => (): Partial<OwnState> => ({
+  setSettle: (prevState: IOwnState, props: PurchaseRequestDetailProps) => (): Partial<IOwnState> => ({
     action: PurchaseUserAction.Settle,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -88,7 +116,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     ...prevState,
     action: undefined,
     dialogFullScreen: false,
@@ -100,7 +128,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
   })
 };
 
-const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<PurchaseRequestDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: PurchaseRequestDetailProps) => () => {
     if (props.userState.user && props.match.params.purchaseUid && !props.purchaseRequestState.detail.isLoading) {
       props.purchaseRequestDispatch.loadDetailRequest({
@@ -109,12 +137,22 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
         purchaseUid: props.match.params.purchaseUid
       });
     }
-  },  
-  handleOnModify: (props: PurchaseRequestDetailProps) => () => {
-    props.setModify();
   },
-  handleOnSettle: (props: PurchaseRequestDetailProps) => () => {
-    props.setSettle();
+  handleOnSelectedMenu: (props: PurchaseRequestDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case PurchaseUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case PurchaseUserAction.Modify:
+        props.setModify();
+        break;
+      case PurchaseUserAction.Settle:
+        props.setSettle();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: PurchaseRequestDetailProps) => () => {
     props.setDefault();
@@ -162,8 +200,14 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: PurchaseRequestDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.purchaseUid !== prevProps.match.params.purchaseUid) {
       this.props.handleOnLoadApi();
@@ -186,27 +230,24 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> 
       };
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: PurchaseUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
         {
           id: PurchaseUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
           visible: isContains(_statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
-          onClick: this.props.handleOnModify
         },
         {
           id: PurchaseUserAction.Settle,
           name: this.props.intl.formatMessage(purchaseMessage.action.settle),
           enabled: _statusType !== undefined,
           visible: isContains(_statusType, [WorkflowStatusType.Approved]),
-          onClick: this.props.handleOnModify
         },
       ];
 
@@ -218,6 +259,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> 
 export const PurchaseRequestDetail = compose(
   setDisplayName('PurchaseRequestDetail'),
   withUser,
+  withOidc,
   withRouter,
   withPurchaseRequest,
   injectIntl,

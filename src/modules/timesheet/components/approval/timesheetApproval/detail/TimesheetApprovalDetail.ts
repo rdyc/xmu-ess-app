@@ -1,9 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -39,6 +39,7 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -46,8 +47,8 @@ interface IOwnHandler {
 }
 
 interface IOwnState {
-  shoulLoad: boolean;
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -60,7 +61,7 @@ interface IOwnState {
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
-  setNextLoad: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type TimesheetApprovalDetailProps
@@ -75,7 +76,7 @@ export type TimesheetApprovalDetailProps
   & IOwnStateUpdaters;
 
 const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: TimesheetApprovalDetailProps): IOwnState => ({
-  shoulLoad: false,
+  shouldLoad: false,
   approvalTitle: props.intl.formatMessage(timesheetMessage.approval.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(timesheetMessage.approval.section.approvalSubHeader),
   approvalChoices: [
@@ -90,11 +91,11 @@ const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: Tim
 });
 
 const stateUpdaters: StateUpdaters<TimesheetApprovalDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setNextLoad: (state: IOwnState, props: TimesheetApprovalDetailProps) => (): Partial<IOwnState> => ({
-    shoulLoad: !state.shoulLoad
+  setShouldLoad: (state: IOwnState, props: TimesheetApprovalDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
-  setOptions: (state: IOwnState, props: TimesheetApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (state: IOwnState, props: TimesheetApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -106,6 +107,16 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
         positionUid: props.userState.user.position.uid,
         timesheetUid: props.match.params.timesheetUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: TimesheetApprovalDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case TimesheetUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: TimesheetApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
@@ -174,7 +185,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
     });
 
     // set next load
-    props.setNextLoad();
+    props.setShouldLoad();
   },
   handleSubmitFail: (props: TimesheetApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -196,9 +207,9 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
 const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: TimesheetApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -211,13 +222,12 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalDetailProps, IOwnStat
 
     // handle updated response state
     if (this.props.timesheetApprovalState.detail !== prevProps.timesheetApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: TimesheetUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.timesheetApprovalState.detail.isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

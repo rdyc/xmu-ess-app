@@ -6,6 +6,7 @@ import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
 import { WorkflowStatusType } from '@common/classes/types';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { PurchaseInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseInformation';
 import { PurchaseItemContainer } from '@purchase/components/purchaseRequest/detail/shared/PurchaseItemContainer';
@@ -20,7 +21,6 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
       title: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle),
       description: props.intl.formatMessage(purchaseMessage.approval.pages.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.purchaseApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IPurchaseDetail) => (
@@ -55,5 +55,14 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
         }
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="purchase-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

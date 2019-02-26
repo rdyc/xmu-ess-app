@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
@@ -18,7 +19,6 @@ export const TimesheetEntryDetailView: React.SFC<TimesheetEntryDetailProps> = pr
       title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
       description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.timesheetEntryState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITimesheetDetail) => (
@@ -27,6 +27,15 @@ export const TimesheetEntryDetailView: React.SFC<TimesheetEntryDetailProps> = pr
     secondary={(data: ITimesheetDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="timesheet-entry-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <DialogConfirmation 
       isOpen={props.dialogOpen}

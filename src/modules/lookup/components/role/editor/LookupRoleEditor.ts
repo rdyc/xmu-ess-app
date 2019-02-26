@@ -157,7 +157,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
     });
 
     // history.push(`/lookup/roles`);
-    history.push(`/lookup/roles/${response.uid}`);
+    history.push(`/lookup/roles/${response.uid}`, { companyUid: response.companyUid});
   },
   handleSubmitFail: (props: RoleEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

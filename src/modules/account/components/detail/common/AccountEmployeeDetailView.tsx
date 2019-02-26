@@ -5,6 +5,7 @@ import * as React from 'react';
 import { IEmployeeDetail } from '@account/classes/response';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { Delete } from '@lookup/components/shared/Delete';
 import { DetailPage } from '../DetailPage';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
@@ -27,7 +28,6 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
           description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
         }}
-        options={props.pageOptions}
         state={props.accountEmployeeState.detail}
         onLoadApi={props.handleOnLoadApi}
         primary={(data: IEmployeeDetail) => (
@@ -37,6 +37,15 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
           <AccountEmployeeContact data={data}/>,
           <AccountEmployeeBank data={data}/> 
         ])}
+        appBarComponent={
+          props.menuOptions &&
+          <PopupMenu 
+            id="employee-common-option"
+            selectable={false}
+            menuOptions={props.menuOptions} 
+            onSelected={props.handleOnSelectedMenu} 
+          />
+        }
       >
         <Delete 
           action={props.action}

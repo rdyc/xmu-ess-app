@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { ICompanyDetail } from '@lookup/classes/response/company';
 import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -15,15 +16,20 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
       title: props.intl.formatMessage(lookupMessage.company.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.company.page.detailSubHeader),
     }}
-    options={props.pageOptions}
     state={props.lookupCompanyState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ICompanyDetail) => (
       <CompanyInformation data={data}/>
     )}
-    secondary={() => ([
-      //
-    ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-company-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <Delete
       action={props.action}
