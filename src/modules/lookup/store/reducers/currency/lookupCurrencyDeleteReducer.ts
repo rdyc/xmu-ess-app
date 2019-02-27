@@ -5,11 +5,12 @@ import { LookupCurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ICurrencyDeleteRequest, ICurrency> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<ICurrencyDeleteRequest, ICurrency>> = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const reducer: Reducer<IQuerySingleState<ICurrencyDeleteRequest, ICurrency>> = (
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.DELETE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.DELETE_DISPOSE: return initialState;
+    case Action.DELETE_DISPOSE: return { ...state, ...initialState };
 
     default: return state;
   }

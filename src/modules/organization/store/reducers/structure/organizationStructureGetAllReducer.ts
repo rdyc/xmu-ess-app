@@ -5,19 +5,20 @@ import { OrganizationStructureAction as Action } from '@organization/store/actio
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.GET_ALL_STRUCTURE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
-    case Action.GET_ALL_STRUCTURE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
-    case Action.GET_ALL_STRUCTURE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_ALL_STRUCTURE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.GET_ALL_STRUCTURE_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
+    case Action.GET_ALL_STRUCTURE_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
+    case Action.GET_ALL_STRUCTURE_ERROR: return { ...state, isExpired: false, isLoading: false, isError: true, errors: action.payload };
+    case Action.GET_ALL_STRUCTURE_DISPOSE: return { ...state, isExpired: true };
 
     default: { return state; }
   }

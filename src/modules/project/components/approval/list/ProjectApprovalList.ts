@@ -104,7 +104,7 @@ const stateUpdaters: StateUpdaters<ProjectApprovalListProps, IOwnState, IOwnStat
 const handlerCreators: HandleCreators<ProjectApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: ProjectApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { user } = props.userState;
-    const { isLoading, request } = props.projectApprovalState.all;
+    const { isExpired, isLoading, request } = props.projectApprovalState.all;
     const { loadAllRequest } = props.projectApprovalDispatch;
 
     if (user && !isLoading) {
@@ -129,7 +129,7 @@ const handlerCreators: HandleCreators<ProjectApprovalListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

@@ -5,11 +5,12 @@ import { AchievementAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IAchievementPatchRequest, IAchievementResult> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IAchievementPatchRequest, IAchievementResult>> = (state = initialState, action) => {
