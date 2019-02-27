@@ -21,6 +21,7 @@ export type TimesheetFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  isAdmin: boolean;
   submitDialogTitle: string;
   submitDialogContentText: string;
   submitDialogCancelText: string;
@@ -67,5 +68,6 @@ export const TimesheetEntryForm = reduxForm<TimesheetFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: true
 })(connectedView);

@@ -1,6 +1,6 @@
 import { LeaveType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
-import { LeaveRequestFormView } from '@leave/components/request/editor/forms/LeaveRequestFormView';
+import { LeaveRequestContainerFormView } from '@leave/components/request/editor/forms/LeaveRequestFormView';
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
@@ -19,8 +19,9 @@ export type LeaveRequestFormData = {
   },
 };
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
+  isAdmin: boolean;
   submitDialogTitle: string;
   submitDialogContentText: string;
   submitDialogCancelText: string;
@@ -35,9 +36,9 @@ interface FormValueProps {
 }
 
 export type RequestFormProps 
-  = InjectedFormProps<LeaveRequestFormData, OwnProps> 
+  = InjectedFormProps<LeaveRequestFormData, IOwnProps> 
   & FormValueProps
-  & OwnProps;
+  & IOwnProps;
 
 const selector = formValueSelector(formName);
 
@@ -53,11 +54,12 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(LeaveRequestFormView);
+const connectedView = connect(mapStateToProps)(LeaveRequestContainerFormView);
 
-export const RequestForm = reduxForm<LeaveRequestFormData, OwnProps>({
+export const LeaveRequestContainerForm = reduxForm<LeaveRequestFormData, IOwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true,
+  destroyOnUnmount: true
 })(connectedView);
