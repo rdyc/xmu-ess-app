@@ -11,7 +11,6 @@ import { compose } from 'recompose';
 interface IOwnProps {
   data: IEmployeeNote;
   employeeUid: string;
-  employeeName: string;
 }
 
 type AllProps
@@ -27,19 +26,13 @@ const accountEmployeeNoteSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(accountMessage.note.field.employeeUid)}
         value={props.employeeUid}
       />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(accountMessage.note.field.id)}
-        value={props.data.id}
-      />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(accountMessage.note.field.employeeName)}
-        value={props.employeeName}
+        label={props.intl.formatMessage(accountMessage.note.field.id)}
+        value={props.data.id}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>

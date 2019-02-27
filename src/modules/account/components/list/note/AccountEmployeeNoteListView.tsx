@@ -22,6 +22,7 @@ export const AccountEmployeeNoteListView: React.SFC<AccountEmployeeNoteListProps
         info={{
           uid: AppMenu.LookupEmployee,
           parentUid: AppMenu.Lookup,
+          parentUrl: '/account/employee',
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
           description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
         }}
@@ -36,7 +37,7 @@ export const AccountEmployeeNoteListView: React.SFC<AccountEmployeeNoteListProps
         
         // row components
         summaryComponent={(item: IEmployeeNote) => ( 
-          <AccountEmployeeNoteSummary data={item} employeeUid={props.match.params.employeeUid} employeeName={props.location.state.employeeName} />
+          <AccountEmployeeNoteSummary data={item} employeeUid={props.match.params.employeeUid}/>
         )}
         actionComponent={(item: IEmployeeNote) => (
           <React.Fragment>
