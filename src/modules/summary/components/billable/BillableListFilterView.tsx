@@ -1,6 +1,8 @@
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { InputDateWithValue } from '@layout/components/input/date';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
+import { FilterCompany } from '@lookup/components/company/select';
 import {
   AppBar,
   Badge,
@@ -12,6 +14,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Paper,
   Toolbar,
   Tooltip,
   Typography,
@@ -22,11 +25,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
 
-import { AccountEmployeeDialog } from '@account/components/dialog';
-import { FilterCompany } from '@lookup/components/company/select';
-import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { BillableListFilterProps } from './BillableListFilter';
 
 export const BillableListFilterView: React.SFC<BillableListFilterProps> = props => {
@@ -210,51 +211,51 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
   };
 
   return (
-    <Toolbar>
-    <Typography
-      noWrap
-      variant="caption"
-      className={props.className}
-      align="left"
-      component="p"
-    >
-      {props.intl.formatMessage(summaryMessage.billable.note.note)} <br />
-      {props.intl.formatMessage(summaryMessage.billable.note.totalHours)} <br />
-      {props.intl.formatMessage(summaryMessage.billable.note.billablePercentage)} <br />
-      {props.intl.formatMessage(summaryMessage.billable.note.presalesPercentage)}
-    </Typography>
-    
-    <Tooltip
-      placement="bottom"
-      title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-    >
-      <IconButton
-        disabled={props.isLoading}
-        onClick={props.handleFilterVisibility} 
-      >
-        <Badge
-          invisible={!showBadgeWhen()}
-          badgeContent={<CheckCircleIcon color="primary" />}
+    <Paper square>
+      <Toolbar>
+        <Typography
+          noWrap
+          variant="body2"
+          className={props.classes.flex}
         >
-          <TuneIcon />
-        </Badge>
-      </IconButton>
-    </Tooltip>
+          {
+            props.isLoading &&
+            props.intl.formatMessage(layoutMessage.text.loading)
+          }
+        </Typography>
 
-    {filter()}
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
+        >
+          <IconButton
+            disabled={props.isLoading}
+            onClick={props.handleFilterVisibility} 
+          >
+            <Badge
+              invisible={!showBadgeWhen()}
+              badgeContent={<CheckCircleIcon color="primary" />}
+            >
+              <TuneIcon />
+            </Badge>
+          </IconButton>
+        </Tooltip>
 
-    <Tooltip
-      placement="bottom"
-      title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
-    >
-      <IconButton 
-        id="option-sync"
-        disabled={props.isLoading}
-        onClick={props.onClickSync}
-      >
-        <SyncIcon />
-      </IconButton>
-    </Tooltip>
-  </Toolbar>
+        {filter()}
+
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
+        >
+          <IconButton 
+            id="option-sync"
+            disabled={props.isLoading}
+            onClick={props.onClickSync}
+          >
+            <SyncIcon />
+          </IconButton>
+        </Tooltip>
+      </Toolbar>
+    </Paper>
   );
 };

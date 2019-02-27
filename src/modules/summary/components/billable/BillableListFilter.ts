@@ -24,7 +24,6 @@ export type IBillableListFilterResult = Pick<ISummaryBillableFilter, 'companyUid
 
 interface OwnOption {
   isAdmin: boolean;
-  className: string;
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IBillableListFilterResult) => void;
