@@ -5,7 +5,6 @@ import * as React from 'react';
 import { DetailPageProps } from './DetailPage';
 
 export const DetailPageView: React.SFC<DetailPageProps> = props => {
-  const { employeeName } = props;
   const tabs = Object.keys(AccountEmployeeTabs).map((key, index) => ({
     id: key,
     name: AccountEmployeeTabs[key]
@@ -24,7 +23,7 @@ export const DetailPageView: React.SFC<DetailPageProps> = props => {
                   `/account/employee/${props.match.params.employeeUid}/${
                     item.id
                   }`,
-                  { employeeName, employeeUid: props.match.params.employeeUid }
+                  { employeeUid: props.match.params.employeeUid }
                 )
               }
             />

@@ -22,6 +22,7 @@ export const AccountEmployeeAccessListView: React.SFC<AccountEmployeeAccessListP
         info={{
           uid: AppMenu.LookupEmployee,
           parentUid: AppMenu.Lookup,
+          parentUrl: '/account/employee',
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
           description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
         }}
