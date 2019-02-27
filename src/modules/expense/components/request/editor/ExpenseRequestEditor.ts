@@ -245,7 +245,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.expenseRequestDispatch;
     const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
@@ -314,15 +314,11 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
       parentUrl: '/project/request',
       title: intl.formatMessage(view.title),
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, expenseRequestDispatch } = this.props;
+    const { expenseRequestDispatch, masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
+    masterPage.resetPage();
 
     expenseRequestDispatch.createDispose();
     expenseRequestDispatch.updateDispose();

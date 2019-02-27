@@ -5,8 +5,8 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -57,7 +57,7 @@ export type CommonEditorProps
   = WithCommonSystem
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -204,7 +204,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { systemDetailRequest } = this.props.commonDispatch;
     const { user } = this.props.userState;
     
@@ -233,31 +233,17 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
+    this.props.masterPage.changePage({
         uid: AppMenu.Common,
         parentUid: AppMenu.Lookup,
+        parentUrl: `/common/system/${this.props.match.params.category}`,
         title: intl.formatMessage({id: view.title}),
-        subTitle : intl.formatMessage({id: view.subTitle})
-      },
-      parentUrl: `/common/system/${this.props.match.params.category}`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
     }); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, commonDispatch } = this.props;
+    const { masterPage, commonDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     commonDispatch.systemCreateDispose();
     commonDispatch.systemUpdateDispose();
@@ -267,7 +253,7 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
 export default compose<CommonEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withCommonSystem,
   injectIntl,
