@@ -90,7 +90,7 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListProps, IOwnState, IOwnSta
 
 const handlerCreators: HandleCreators<PurchaseApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: PurchaseApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.purchaseApprovalState.all;
+    const { isExpired, isLoading, request } = props.purchaseApprovalState.all;
     const { loadAllRequest } = props.purchaseApprovalDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListProps, IOwnHandler> = 
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });

@@ -96,7 +96,7 @@ const stateUpdaters: StateUpdaters<StructureListProps, IOwnState, IOwnStateUpdat
 
 const handlerCreators: HandleCreators<StructureListProps, IOwnHandler> = {
   handleOnLoadApi: (props: StructureListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.organizationStructureState.all;
+    const { isExpired, isLoading, request } = props.organizationStructureState.all;
     const { loadAllRequest } = props.organizationStructureDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -115,7 +115,7 @@ const handlerCreators: HandleCreators<StructureListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });
