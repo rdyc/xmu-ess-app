@@ -1,7 +1,9 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IOrganizationStructurePostPayload, IOrganizationStructurePutPayload } from '@organization/classes/request/structure';
@@ -16,6 +18,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -54,9 +57,10 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type OrganizationStructureEditorProps
   = WithOrganizationStructure
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -271,7 +275,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.organizationStructureDispatch;
     const { user } = this.props.userState;
     
@@ -282,6 +286,27 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> 
 
     if (!user) {
       return;
+    }
+
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
     }
 
     if (!isNullOrUndefined(history.location.state)) {
@@ -300,30 +325,17 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> 
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupOrganizationStructure,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage({id: view.title}),
-        subTitle : intl.formatMessage({id: view.subTitle})
-      },
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupOrganizationStructure,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/organization/structure',
+      title: intl.formatMessage({id: view.title}),
     }); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, organizationStructureDispatch } = this.props;
+    const { masterPage, organizationStructureDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     organizationStructureDispatch.createDispose();
     organizationStructureDispatch.updateDispose();
@@ -331,9 +343,11 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> 
 };
 
 export default compose<OrganizationStructureEditorProps, {}>(
+  setDisplayName('OrganizationStructureEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withOrganizationStructure,
   injectIntl,
