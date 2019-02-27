@@ -73,7 +73,6 @@ const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
     { ...isWidthDown('sm', props.width) && ({onRendered: () => props.setOpen()}) }
   >
     <Navigation 
-      defaultAnchor={props.anchor}
       defaultHeaderUid={props.headerUid}
       defaultChildUid={props.childUid}
     />

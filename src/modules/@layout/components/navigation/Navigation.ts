@@ -2,7 +2,6 @@ import AppEvent from '@constants/AppEvent';
 import { IPageInfo } from '@generic/interfaces';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { Anchor } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -24,7 +23,6 @@ import {
 import { NavigationView } from './NavigationView';
 
 interface IOwnOption {
-  defaultAnchor: Anchor;
   defaultHeaderUid?: string;
   defaultChildUid?: string;
 }

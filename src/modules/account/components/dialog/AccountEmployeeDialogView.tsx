@@ -27,7 +27,7 @@ export const AccountEmployeeDialogView: React.SFC<AccountEmployeeDialogProps> = 
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
     aria-labelledby="account-employee-dialog-title"
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     onClose={props.onClose}
   >
     <AppBar

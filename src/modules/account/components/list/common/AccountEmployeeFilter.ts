@@ -1,9 +1,9 @@
 import { IEmployeeAllFilter } from '@account/classes/filters';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -19,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { AccountEmployeeFilterView } from './AccountEmployeeFilterView';
 
 export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids'>;
@@ -79,7 +80,7 @@ export type AccountEmployeeFilterFilterProps
   & OwnStateUpdater
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (): OwnState => ({
@@ -182,7 +183,7 @@ export const AccountEmployeeFilter = compose<AccountEmployeeFilterFilterProps, O
   setDisplayName('AccountEmployeeFilter'),
   withLayout,
   withLookupCompany,
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

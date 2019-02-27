@@ -33,7 +33,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       scroll="paper"
       onClose={props.onClose}
     >

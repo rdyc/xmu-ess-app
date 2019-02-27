@@ -1,10 +1,9 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -94,7 +93,7 @@ export type ProjectAssignmentListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -244,12 +243,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListFilterProps, IOwn
 export const ProjectAssignmentListFilter = compose<ProjectAssignmentListFilterProps, IOwnOption>(
   setDisplayName('ProjectAssignmentListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(ProjectAssignmentListFilterView);

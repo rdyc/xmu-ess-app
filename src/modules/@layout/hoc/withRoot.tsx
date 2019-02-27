@@ -95,12 +95,14 @@ type LayoutThemeProps
 
 const createProps: mapper<LayoutThemeProps, IOwnState> = (props: LayoutThemeProps): IOwnState => ({
   theme: createMuiTheme({
+    direction: 'ltr',
     palette: {
       primary: indigo,
       secondary: orange,
       type: 'light'
     },
     typography: {
+      // fontSize: 14,
       useNextVariants: true,
     }, 
     ...themeOverides,
@@ -121,6 +123,7 @@ const handlerCreators: HandleCreators<LayoutThemeProps, IOwnHandler> = {
   handleOnChangeTheme: (props: LayoutThemeProps) => (event: CustomEvent) => {
     // create mui theme
     const theme = createMuiTheme({
+      direction: 'ltr',
       palette: {
         primary: indigo,
         secondary: orange,
@@ -165,6 +168,7 @@ const lifecycles: ReactLifeCycleFunctions<LayoutThemeProps, IOwnState> = {
 
       if (preference) {
         const theme = createMuiTheme({
+          direction: 'ltr',
           palette: {
             primary: indigo,
             secondary: orange,

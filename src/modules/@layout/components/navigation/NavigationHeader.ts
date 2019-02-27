@@ -2,8 +2,7 @@ import { initialName } from '@layout/helper/initialName';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { Anchor } from '@layout/types';
-import { PaletteType, WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -26,23 +25,18 @@ import { IPopupMenuOption } from '../PopupMenu';
 import { NavigationHeaderView } from './NavigationHeaderView';
 
 interface IOwnOption {
-  defaultAnchor: Anchor;
   headerUid?: string;
   onClickHeader: (headerUid: string) => void;
 }
 
 interface IOwnState {
   nameInitial?: string;
-  anchor: Anchor;
   menuOptions?: IPopupMenuOption[];
-  paletteType: PaletteType;
   isDialogAccessOpen: boolean;
   isDialogLogoutOpen: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
-  setAnchor: StateHandler<IOwnState>;
-  setPaletteType: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   setDialogAccess: StateHandler<IOwnState>;
   setDialogLogout: StateHandler<IOwnState>;
@@ -63,6 +57,7 @@ export type NavigationHeaderProps
   & IOwnHandler
   & InjectedIntlProps
   & WithUser
+  & WithTheme
   & WithStyles<typeof styles>
   & WithMasterPage
   & RouteComponentProps;
@@ -76,15 +71,38 @@ const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: Navigation
 });
 
 const stateUpdaters: StateUpdaters<NavigationHeaderProps, IOwnState, IOwnStateUpdaters> = {
-  setAnchor: (state: IOwnState) => (): Partial<IOwnState> => ({
-    anchor: state.anchor === 'left' ? 'right' : 'left'
-  }),
-  setPaletteType: (state: IOwnState) => (): Partial<IOwnState> => ({
-    paletteType: state.paletteType === 'light' ? 'dark' : 'light'
-  }),
-  setOptions: (state: IOwnState) => (options: IPopupMenuOption[]): Partial<IOwnState> => ({
-    menuOptions: options
-  }),
+  setOptions: (state: IOwnState, props: NavigationHeaderProps) => (): Partial<IOwnState> => {
+    const options = [
+      {
+        id: 'theme',
+        name: props.intl.formatMessage(props.theme.palette.type === 'light' ? layoutMessage.label.themeDark : layoutMessage.label.themeLight),
+        enabled: true,
+        visible: true
+      },
+      {
+        id: 'anchor',
+        name: props.intl.formatMessage(props.theme.direction === 'ltr' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft),
+        enabled: true,
+        visible: true
+      },
+      {
+        id: 'switch',
+        name: props.intl.formatMessage(layoutMessage.label.switch),
+        enabled: true,
+        visible: props.userState.user && props.userState.user.access.length > 1 || false
+      },
+      {
+        id: 'logout',
+        name: props.intl.formatMessage(layoutMessage.label.logout),
+        enabled: true,
+        visible: true
+      }
+    ];
+
+    return {
+      menuOptions: options
+    };
+  },
   setDialogAccess: (state: IOwnState) => (): Partial<IOwnState> => ({
     isDialogAccessOpen: !state.isDialogAccessOpen
   }),
@@ -97,11 +115,9 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
   handleOnSelectedMenu: (props: NavigationHeaderProps) => (option: IPopupMenuOption) => {
     switch (option.id) {
       case 'theme':
-        props.setPaletteType();
         props.masterPage.changeTheme();
         break;
       case 'anchor':
-        props.setAnchor();
         props.masterPage.changeAnchor();
         break;
       case 'switch':
@@ -135,34 +151,12 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<NavigationHeaderProps, {}> = {
   componentDidMount() {
-    const options = [
-      {
-        id: 'theme',
-        name: this.props.intl.formatMessage(this.props.paletteType === 'light' ? layoutMessage.label.themeDark : layoutMessage.label.themeLight),
-        enabled: true,
-        visible: true
-      },
-      {
-        id: 'anchor',
-        name: this.props.intl.formatMessage(this.props.anchor === 'left' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft),
-        enabled: true,
-        visible: true
-      },
-      {
-        id: 'switch',
-        name: this.props.intl.formatMessage(layoutMessage.label.switch),
-        enabled: true,
-        visible: this.props.userState.user && this.props.userState.user.access.length > 1 || false
-      },
-      {
-        id: 'logout',
-        name: this.props.intl.formatMessage(layoutMessage.label.logout),
-        enabled: true,
-        visible: true
-      }
-    ];
-
-    this.props.setOptions(options);
+    this.props.setOptions();
+  },
+  componentDidUpdate(prevProps: NavigationHeaderProps) {
+    if (this.props.theme !== prevProps.theme) {
+      this.props.setOptions();
+    }
   }
 };
 
@@ -172,8 +166,8 @@ export const NavigationHeader = compose<NavigationHeaderProps, IOwnOption>(
   withUser,
   withMasterPage,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
   lifecycle(lifecycles),
-  withStyles(styles)
 )(NavigationHeaderView);

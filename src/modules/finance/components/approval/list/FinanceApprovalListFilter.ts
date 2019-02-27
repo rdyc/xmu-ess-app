@@ -1,7 +1,8 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IFinanceApprovalGetAllFilter } from '@finance/classes/filters/approval';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,8 +19,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { FinanceApprovalListFilterView } from './FinanceApprovalListFilterView';
 
 export type IFinanceApprovalListFilterResult = Pick<IFinanceApprovalGetAllFilter, 'moduleType' | 'financeStatusTypes' >;
@@ -80,7 +79,7 @@ export type FinanceApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<FinanceApprovalListFilterProps, IOwnState> = (): IOwnState => ({
@@ -189,10 +188,9 @@ const lifecycles: ReactLifeCycleFunctions<FinanceApprovalListFilterProps, IOwnSt
 export const FinanceApprovalListFilter = compose<FinanceApprovalListFilterProps, IOwnOption>(
   setDisplayName('FinanceApprovalListFilter'),
   withUser,
-  withLayout,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

@@ -1,10 +1,11 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IExpenseApprovalGetAllFilter } from '@expense/classes/filters/approval';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
-import { withLookupCustomer, WithLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { ExpenseApprovalListFilterView } from './ExpenseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -154,7 +153,7 @@ export type ExpenseApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithLookupCustomer
   & WithCommonSystem
   & InjectedIntlProps;
@@ -412,11 +411,10 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
 export const ExpenseApprovalListFilter = compose<ExpenseApprovalListFilterProps, IOwnOption>(
   setDisplayName('ExpenseApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

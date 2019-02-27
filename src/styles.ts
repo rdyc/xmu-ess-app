@@ -25,6 +25,26 @@ const size = {
 
 const styles = (theme: Theme) =>
   createStyles({
+    '@global': {
+      body: {
+        margin: 0
+      },
+      [theme.breakpoints.up('md')]: {
+        '::-webkit-scrollbar': {
+          width: 5
+        },
+        '::-webkit-scrollbar-track': {
+          background: 'rgba(250, 250, 250, 0)'
+        },
+        '::-webkit-scrollbar-thumb': {
+          background: theme.palette.grey[400]
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          background: theme.palette.grey[500]
+        }
+      }
+    },
+
     root: {
       width: '100%',
       marginBottom: 0,

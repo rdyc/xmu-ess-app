@@ -1,8 +1,7 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupCustomerGetAllFilter } from '@lookup/classes/filters/customer';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,6 +17,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupCustomerListFilterView } from './LookupCustomerListFilterView';
 
 export type ILookupCustomerListFilterResult = Pick<ILookupCustomerGetAllFilter,
@@ -64,7 +64,7 @@ export type LookupCustomerListFilterProps
   & WithLookupCompany
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupCustomerListFilterProps, IOwnState> = (): IOwnState => ({
@@ -135,11 +135,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerListFilterProps, IOwnSta
 
 export const LookupCustomerListFilter = compose<LookupCustomerListFilterProps, OwnOption>(
   setDisplayName('LookupCustomerListFilter'),
-  withLayout,
-  withStyles(styles),
   injectIntl,
   withLookupCompany,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(LookupCustomerListFilterView);

@@ -1,5 +1,4 @@
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -15,6 +14,7 @@ import {
   Typography,
   WithStyles,
   withStyles,
+  WithTheme,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styles from '@styles';
@@ -35,7 +35,7 @@ interface IOwnOptions {
 type AllProps 
   = IOwnOptions 
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const DialogValueView: React.SFC<AllProps> = props => (
@@ -43,7 +43,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
     fullScreen
     disableBackdropClick
     hideBackdrop={props.hideBackdrop}
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     open={props.isOpen}
     scroll="paper"
     onClose={props.onClose}
@@ -101,8 +101,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
 export const DialogValue = compose<AllProps, IOwnOptions>(
   setDisplayName('DialogValue'),
-  withLayout,
   injectIntl,
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   lifecycle(lifecycles)
 )(DialogValueView);
