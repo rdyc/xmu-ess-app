@@ -102,7 +102,7 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TimesheetEntryListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.timesheetEntryState.all;
+    const { isExpired, isLoading, request } = props.timesheetEntryState.all;
     const { loadAllRequest } = props.timesheetEntryDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -126,7 +126,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           companyUid: props.userState.user.company.uid,
