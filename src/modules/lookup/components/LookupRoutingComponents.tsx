@@ -109,17 +109,17 @@ const position = (props: RouteComponentProps) => (
 
 const lookupCustomer = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/list`} component={LookupCustomerList} />
     <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
     <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
+    <Route path={`${props.match.path}/`} component={LookupCustomerList} />
   </Switch>
 );
 
 const diem = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
-    <Route path={`${props.match.path}/list`} component={LookupDiemList} />
     <Route path={`${props.match.path}/:diemUid`} component={LookupDiemDetail} />
+    <Route path={`${props.match.path}`} component={LookupDiemList} />
   </Switch>
 );
 
@@ -156,12 +156,12 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
     <Route path={`${props.match.path}/currencies`} component={currency} />
     <Route path={`${props.match.path}/positions`} component={position} />
-    <Route path={`${props.match.path}/diemvalue`} component={diem} />
+    <Route path={`${props.match.path}/diemvalues`} component={diem} />
     <Route path={`${props.match.path}/holidays`} component={holiday} />
     <Route path={`${props.match.path}/leaves`} component={leave} />
     <Route path={`${props.match.path}/calculation`} component={calculation} />
     <Route path={`${props.match.path}/roles`} component={role} />
-    <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
+    <Route path={`${props.match.path}/customers`} component={lookupCustomer} />
     <Route path={`${props.match.path}/achievementchart`} component={achievement} />
     <Route path={`${props.match.path}/cogsupload`} component={cogsUpload} />
     <Route path={`${props.match.path}/imagegalleries`} component={gallery} />

@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCustomerPostPayload, ILookupCustomerPutPayload } from '@lookup/classes/request/customer';
@@ -56,7 +56,7 @@ export type LookupCustomerEditorProps
   = WithLookupCustomer
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -143,7 +143,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       time: new Date()
     });
 
-    history.push(`/lookup/customer/${response.uid}`, { companyuid: response.companyUid });
+    history.push(`/lookup/customers/${response.uid}`, { companyuid: response.companyUid });
   },
   handleSubmitFail: (props: LookupCustomerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -193,7 +193,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupCustomerDispatch;
     const { user } = this.props.userState;
     
@@ -221,23 +221,18 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupCustomer,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/customers',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupCustomerDispatch } = this.props;
+    const { masterPage, lookupCustomerDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupCustomerDispatch.createDispose();
     lookupCustomerDispatch.updateDispose();
@@ -247,7 +242,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
 export default compose<LookupCustomerEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupCustomer,
   injectIntl,

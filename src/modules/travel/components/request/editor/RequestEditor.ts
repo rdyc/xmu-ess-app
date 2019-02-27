@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IDiem } from '@lookup/classes/response';
@@ -52,7 +52,7 @@ export type RequestEditorProps
   & WithLookupDiem
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -264,7 +264,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.travelRequestDispatch;
     const loadDiem = this.props.lookupDiemDispatch.loadAllRequest;
     const { user } = this.props.userState;
@@ -312,23 +312,18 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       filter
     });
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.TravelRequest,
       parentUid: AppMenu.Travel,
+      parentUrl: '/travel/requests',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelRequestDispatch } = this.props;
+    const { masterPage, travelRequestDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     travelRequestDispatch.createDispose();
     travelRequestDispatch.updateDispose();
@@ -338,7 +333,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 export default compose<RequestEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withTravelRequest,
   withLookupDiem,

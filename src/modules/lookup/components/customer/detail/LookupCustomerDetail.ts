@@ -184,7 +184,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = 
 
       switch (props.action) {
         case LookupUserAction.Modify:
-          next = '/lookup/customer/form';
+          next = '/lookup/customers/form';
           break;
 
         default:
@@ -225,7 +225,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = 
     });
   },
   handleSubmitSuccess: (props: LookupCustomerDetailProps) => (response: boolean) => {
-    props.history.push('/lookup/customer/list');
+    props.history.push('/lookup/customers');
 
     props.layoutDispatch.alertAdd({
       time: new Date(),

@@ -184,7 +184,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case LookupUserAction.Modify:
-          next = '/lookup/diemvalue/form';
+          next = '/lookup/diemvalues/form';
           break;
 
         default:
@@ -225,7 +225,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
     });
   },
   handleSubmitSuccess: (props: LookupDiemDetailProps) => (response: boolean) => {
-    props.history.push('/lookup/diemvalue/list');
+    props.history.push('/lookup/diemvalues');
 
     props.layoutDispatch.alertAdd({
       time: new Date(),

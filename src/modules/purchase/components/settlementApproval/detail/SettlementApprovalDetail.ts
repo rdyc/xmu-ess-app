@@ -3,7 +3,6 @@ import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -100,7 +99,7 @@ const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnS
     ...prevState,
     ...newState
   }),
-  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
     menuOptions: options
   })
 };

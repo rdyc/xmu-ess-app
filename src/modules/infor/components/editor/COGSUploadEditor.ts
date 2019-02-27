@@ -2,8 +2,8 @@ import AppMenu from '@constants/AppMenu';
 import { IInforPostPayload } from '@infor/classes/request';
 import { IInforResult } from '@infor/classes/response';
 import { WithInfor, withInfor } from '@infor/hoc/withInfor';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -32,7 +32,7 @@ export type COGSUploadEditorProps
   = WithInfor
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & InjectedIntlProps
   & RouteComponentProps
   & OwnHandlers;
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<COGSUploadEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<COGSUploadEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl } = this.props;
+    const { intl } = this.props;
     const { user } = this.props.userState;
     
     const view = {
@@ -126,21 +126,17 @@ const lifecycles: ReactLifeCycleFunctions<COGSUploadEditorProps, {}> = {
       return;
     }
 
-    layoutDispatch.changeView({
-        uid: AppMenu.COGSUpload,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
+    this.props.masterPage.changePage({
+      uid: AppMenu.COGSUpload,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, inforDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { masterPage, inforDispatch } = this.props;
+    
+    masterPage.resetPage();
 
     inforDispatch.postDispose();
   }
@@ -149,7 +145,7 @@ const lifecycles: ReactLifeCycleFunctions<COGSUploadEditorProps, {}> = {
 export default compose<COGSUploadEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withInfor,
   injectIntl,
