@@ -12,6 +12,7 @@ export const CommonDetailView: React.SFC<CommonDetailProps> = props => (
     info={{
       uid: AppMenu.Common,
       parentUid: AppMenu.Lookup,
+      parentUrl: `/common/system/${props.match.params.category}`,
       title: props.intl.formatMessage(commonMessage.system.page.detailTitle),
       description : props.intl.formatMessage(commonMessage.system.page.detailSubTitle)
     }}
