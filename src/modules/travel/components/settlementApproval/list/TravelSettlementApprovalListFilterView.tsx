@@ -36,7 +36,12 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -61,6 +66,8 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>

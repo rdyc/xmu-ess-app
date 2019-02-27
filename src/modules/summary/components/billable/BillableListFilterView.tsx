@@ -47,7 +47,12 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
         onClose={props.handleFilterVisibility}
       >
-        <AppBar className={props.classes.appBarDialog}>
+        <AppBar 
+          elevation={0}
+          position="fixed" 
+          color="default"
+          className={props.classes.appBarDialog}
+        >
           <Toolbar>
             <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
               <CloseIcon />
@@ -74,8 +79,9 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           </Toolbar>
         </AppBar>
 
-        <List>
+        <Divider/>
 
+        <List>
           <ListItem button onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.billable.field.company)}
