@@ -14,6 +14,7 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { CommonSummaryView } from './CommonSummaryView';
@@ -36,6 +37,7 @@ export type CommonSummaryProps
   & WithCommonSystem
   & OwnState
   & OwnStateUpdater
+  & WithMasterPage
   & InjectedIntlProps
   & OwnHandler
   & RouteComponentProps
@@ -66,25 +68,15 @@ const handlerCreators: HandleCreators<CommonSummaryProps, OwnHandler> = {
 const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> = {
   componentWillMount() {
     const { 
-      layoutDispatch, intl
+      intl
     } = this.props;
     const { systemTypeRequest } = this.props.commonDispatch;
     const { response, isLoading } = this.props.commonSystemState.type;
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.Common,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(commonMessage.system.page.title),
-        subTitle : intl.formatMessage(commonMessage.system.page.title)
-      },
-      status: {
-        isNavBackVisible: false,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.Common,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(commonMessage.system.page.title),
     });
 
     if (!response && !isLoading) {
@@ -92,14 +84,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
     const { systemTypeDispose } = this.props.commonDispatch;
-    
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
+
     systemTypeDispose();
   }
 };
@@ -107,6 +93,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
 export const CommonSummary = compose<CommonSummaryProps, {}>(
   withLayout,
   withCommonSystem,
+  withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

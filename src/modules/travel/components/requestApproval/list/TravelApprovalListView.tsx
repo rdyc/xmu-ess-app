@@ -42,7 +42,7 @@ export const TravelApprovalListView: React.SFC<TravelApprovalListProps> = props 
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => props.history.push(`/travel/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/travel/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
