@@ -3,7 +3,6 @@ import { AppRole } from '@constants/AppRole';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
@@ -96,7 +95,7 @@ const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, IOwnState, IOwnState
   setShouldLoad: (state: IOwnState, props: LeaveRequestDetailProps) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: IOwnState, props: LeaveRequestDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (prevState: IOwnState, props: LeaveRequestDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: LeaveRequestDetailProps) => (): Partial<IOwnState> => ({
@@ -189,6 +188,11 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<LeaveRequestDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: LeaveRequestDetailProps) {
     // handle updated route params
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     if (this.props.match.params.leaveUid !== prevProps.match.params.leaveUid) {
       this.props.handleOnLoadApi();
     }

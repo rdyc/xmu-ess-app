@@ -25,6 +25,7 @@ interface OwnProps {
   projectUidValue: string | undefined;
   showSiteProject: boolean;
   minDate: Date;
+  isAdmin: boolean;
 }
 
 interface OwnHandlers {
