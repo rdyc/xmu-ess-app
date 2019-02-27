@@ -254,6 +254,8 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestEditorProps, {}> = {
       stateUpdate({
         formMode: FormMode.Edit,
         leaveUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(leaveMessage.request.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(leaveMessage.request.dialog.editDescription)
       });
 
       loadDetailRequest({
