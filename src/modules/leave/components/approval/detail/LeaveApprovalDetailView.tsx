@@ -13,7 +13,7 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
   <PreviewPage
     info={{
       uid: AppMenu.LeaveApproval,
-      parentUid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
       parentUrl: '/leave/approvals',
       title: props.intl.formatMessage(leaveMessage.approval.page.detailTitle),
       description: props.intl.formatMessage(leaveMessage.approval.page.detailTitle)

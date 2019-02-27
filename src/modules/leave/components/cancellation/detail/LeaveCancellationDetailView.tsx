@@ -13,7 +13,7 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
   <PreviewPage
     info={{
       uid: AppMenu.LeaveCancelation,
-      parentUid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
       parentUrl: '/leave/cancellations',
       title: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle),
       description: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle)

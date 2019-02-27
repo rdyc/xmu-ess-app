@@ -18,7 +18,7 @@ export const LeaveApprovalListView: React.SFC<LeaveApprovalListProps> = props =>
       // page info
       info={{
         uid: AppMenu.LeaveApproval,
-        parentUid: AppMenu.LeaveRequest,
+        parentUid: AppMenu.Leave,
         title: props.intl.formatMessage(leaveMessage.approval.page.listTitle),
         description: props.intl.formatMessage(leaveMessage.approval.page.listSubHeader),
       }}
