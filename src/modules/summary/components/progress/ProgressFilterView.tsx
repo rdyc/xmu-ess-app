@@ -45,7 +45,12 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
           scroll="paper"
           onClose={props.handleFilterVisibility}
         >
-          <AppBar position="fixed" className={props.classes.appBarDialog}>
+          <AppBar 
+            elevation={0}
+            position="fixed" 
+            color="default"
+            className={props.classes.appBarDialog}
+          >
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -77,6 +82,8 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
               }
             </Toolbar>
           </AppBar>
+
+          <Divider/>
           
           <DialogContent className={props.classes.paddingDisabled}>
             <List>

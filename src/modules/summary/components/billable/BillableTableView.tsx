@@ -161,6 +161,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                   cat.assignments && ((
                   cat.assignments.length >= 1 &&
                   <Tooltip
+                    key={cat.name}
                     title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
                     disableFocusListener
                   >
@@ -192,6 +193,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                   cat.assignments && ((
                   cat.assignments.length >= 1 &&
                   <Tooltip
+                    key={cat.name}
                     title={props.intl.formatMessage(summaryMessage.billable.hover.presales)}
                     disableFocusListener
                   >

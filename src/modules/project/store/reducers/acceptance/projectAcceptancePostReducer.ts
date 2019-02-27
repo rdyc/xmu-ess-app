@@ -4,11 +4,12 @@ import { ProjectAcceptanceAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IProjectAcceptancePostRequest, boolean> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IProjectAcceptancePostRequest, boolean>> = (state = initialState, action) => {

@@ -53,6 +53,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       {props.customComponent}
     </Toolbar>
+    
     <Divider/>
   </AppBar>
 );
