@@ -18,6 +18,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -341,6 +342,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyEditorProps, {}> 
 };
 
 export default compose<OrganizationHierarchyEditorProps, {}>(
+  setDisplayName('OrganizationHierarchyEditor'),
   withOidc,
   withUser,
   withLayout,

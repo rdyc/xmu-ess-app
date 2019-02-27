@@ -17,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -251,6 +252,7 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
 };
 
 export default compose<CommonEditorProps, {}>(
+  setDisplayName('CommonSystemEditor'),
   withUser,
   withLayout,
   withMasterPage,

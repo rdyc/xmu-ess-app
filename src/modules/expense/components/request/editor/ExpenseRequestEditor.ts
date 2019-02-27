@@ -28,6 +28,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -326,6 +327,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
 };
 
 export default compose<ExpenseRequestEditorProps, {}>(
+  setDisplayName('ExpenseRequestEditor'),
   withOidc,
   withUser,
   withLayout,
