@@ -22,6 +22,7 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
         info={{
           uid: AppMenu.LookupEmployee,
           parentUid: AppMenu.Lookup,
+          parentUrl: '/account/employee',
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
           description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
         }}
