@@ -43,7 +43,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
           {
             <Button
               size="small"
-              onClick={() => props.history.push(`/lookup/customer/form`, { uid: item.uid, companyUid: item.companyUid })}
+              onClick={() => props.history.push(`/lookup/customers/form`, { uid: item.uid, companyUid: item.companyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -51,7 +51,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
 
           <Button
             size="small"
-            onClick={() => props.history.push(`/lookup/customer/${item.uid}`, { companyUid: item.companyUid })}
+            onClick={() => props.history.push(`/lookup/customers/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -69,7 +69,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/lookup/customer/form')}
+          onClick={() => props.history.push('/lookup/customers/form')}
         >
           <AddCircle />
         </IconButton>

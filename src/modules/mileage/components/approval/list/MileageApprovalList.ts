@@ -20,7 +20,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
 import { IMileageRequest } from '@mileage/classes/response';
@@ -77,12 +76,6 @@ const createProps: mapper<MileageApprovalListProps, IOwnState> = (props: Mileage
   if (props.location.state) {
     state.status = props.location.state.status;
     state.isNotify = props.location.state.isNotify;
-    if (props.location.state.isReload && request && request.filter) {
-      state.year = request.filter.year,
-      state.month = request.filter.month,
-      state.statusType = request.filter.statusType,
-      state.status = request.filter.status;
-    }
   } else {
     // fill from previous request if any
     if (request && request.filter) {
@@ -109,18 +102,17 @@ const stateUpdaters: StateUpdaters<MileageApprovalListProps, IOwnState, IOwnStat
 
 const handlerCreators: HandleCreators<MileageApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MileageApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.mileageApprovalState.all;
+    const { isExpired, isLoading, request } = props.mileageApprovalState.all;
     const { loadAllRequest } = props.mileageApprovalDispatch;
     const { user } = props.userState;
-    const { state } = props.location;
 
     if (user && !isLoading) {
       // predefined filter
       const filter: IMileageApprovalGetAllFilter = {
-        month: !isNullOrUndefined(state) ? (state.isReload ? request && request.filter && request.filter.month : props.month) : props.month,
-        year: !isNullOrUndefined(state) ? (state && state.isReload ? request && request.filter && request.filter.year : props.year) : props.year,
-        statusType: !isNullOrUndefined(state) ? (state.isReload ? request && request.filter && request.filter.statusType : props.statusType) : props.statusType,
-        status: !isNullOrUndefined(state) ? (state.isReload ? request && request.filter && request.filter.status : props.status) : props.status,
+        month: request && request.filter ? request.filter.month : props.month,
+        year: request && request.filter ? request.filter.year : props.year,
+        statusType: request && request.filter ? request.filter.statusType : props.statusType,
+        status: request && request.filter ? request.filter.status : props.status,
         isNotify : props.isNotify,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -136,7 +128,7 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

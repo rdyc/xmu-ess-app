@@ -232,6 +232,7 @@ const handlerCreators: HandleCreators<
     const { match, intl, history, mileageItemUids, itemsNeedApprove } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
+    const { loadAllDispose } = props.mileageApprovalDispatch;
 
     alertAdd({
       time: new Date(),
@@ -239,12 +240,11 @@ const handlerCreators: HandleCreators<
         uid: detail.response && detail.response.data.uid
       })
     });
-    // props.setDataload();
-    // mileageItemUids.splice(0, mileageItemUids.length);
 
     // back to approval list
     if (mileageItemUids.length === itemsNeedApprove) {
-      history.push('/mileage/approvals', {isReload: true});
+
+      loadAllDispose();
 
       // notification: mark as complete
       props.notificationDispatch.markAsComplete({
@@ -252,9 +252,9 @@ const handlerCreators: HandleCreators<
         detailType: NotificationType.Approval,
         itemUid: match.params.mileageUid
       });
-    } else {
-      history.push('/mileage/approvals');
     }
+        
+    history.push('/mileage/approvals');
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (

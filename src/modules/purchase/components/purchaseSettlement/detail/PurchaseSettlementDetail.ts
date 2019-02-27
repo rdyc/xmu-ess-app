@@ -1,7 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSettlementDetailView } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetailView';
@@ -72,7 +71,7 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
   setShouldLoad: (state: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
+  setOptions: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
     menuOptions: options
   }),
   setModify: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({

@@ -373,7 +373,9 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     }
   },
   componentWillUnmount() {
-    const { projectRegisterDispatch } = this.props;
+    const { projectRegisterDispatch, masterPage } = this.props;
+    
+    masterPage.resetPage();
 
     projectRegisterDispatch.createDispose();
     projectRegisterDispatch.updateDispose();

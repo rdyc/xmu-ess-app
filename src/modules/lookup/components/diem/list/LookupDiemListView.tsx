@@ -43,7 +43,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
           {
             <Button
               size="small"
-              onClick={() => props.history.push(`/lookup/diemvalue/form`, { uid: item.uid, company: item.companyUid })}
+              onClick={() => props.history.push(`/lookup/diemvalues/form`, { uid: item.uid, company: item.companyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -51,7 +51,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
 
           <Button
             size="small"
-            onClick={() => props.history.push(`/lookup/diemvalue/${item.uid}`, { company: item.companyUid })}
+            onClick={() => props.history.push(`/lookup/diemvalues/${item.uid}`, { company: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -69,7 +69,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
-          onClick={() => props.history.push('/lookup/diemvalue/form')}
+          onClick={() => props.history.push('/lookup/diemvalues/form')}
         >
           <AddCircle />
         </IconButton>

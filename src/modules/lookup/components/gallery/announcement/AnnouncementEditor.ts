@@ -3,6 +3,7 @@ import { IAnnouncementPatchPayload } from '@home/classes/request/announcement';
 import { IAnnouncement } from '@home/classes/response/announcement';
 import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { IGallery } from '@lookup/classes/response/gallery';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -70,6 +71,7 @@ export type AnnouncementEditorProps
   & OwnHandlers
   & WithAnnouncement
   & WithImageGallery
+  & WithMasterPage
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -240,24 +242,16 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnState> = {
   componentWillMount() {
-    const { layoutDispatch } = this.props;
+    const { intl } = this.props;
     const { loadRequest } = this.props.announcementDispatch;
     const { response, isLoading } = this.props.announcementState.all;
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.ImageGallery,
-        parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.gallery.page.modifyAnnouncementTitle),
-        subTitle : '' // intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
-      },
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.ImageGallery,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/imagegalleries/',
+      title: intl.formatMessage(lookupMessage.gallery.page.modifyAnnouncementTitle),
+      description : intl.formatMessage(lookupMessage.gallery.page.listSubHeader)
     });
 
     if (!response && !isLoading) {
@@ -275,22 +269,20 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnSt
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
+    const { masterPage } = this.props;
     const { loadDispose } = this.props.announcementDispatch;
     
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
+    masterPage.resetPage();
+    
     loadDispose();
-    this.props.imageGalleryDispatch.loadAllDispose();
+    // this.props.imageGalleryDispatch.loadAllDispose();
   }
 };
 
 export const AnnouncementEditor = compose<AnnouncementEditorProps, {}>(
   withLayout,
   withImageGallery,
+  withMasterPage,
   withAnnouncement,
   injectIntl,
   withStyles(styles),

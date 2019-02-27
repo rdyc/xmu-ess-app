@@ -4,8 +4,8 @@ import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@acc
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { withAppBar, WithAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
@@ -62,7 +62,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type AccountEmployeeEducationEditorProps
   = WithAccountEmployeeEducation
   & WithUser
-  & WithAppBar
+  & WithMasterPage
   & WithLayout
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
@@ -206,7 +206,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, match } = this.props;
+    const { intl, history, stateUpdate, match } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeEducationDispatch;
     const { user } = this.props.userState;
 
@@ -237,31 +237,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupEmployee,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title, {state: 'Education'}),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupEmployee,
+      parentUid: AppMenu.Lookup,
       parentUrl: `/account/employee/${match.params.employeeUid}/education`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+      title: intl.formatMessage(view.title, {state: 'Education'}),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeEducationDispatch } = this.props;
+    const { masterPage, accountEmployeeEducationDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     accountEmployeeEducationDispatch.createDispose();
     accountEmployeeEducationDispatch.updateDispose();
@@ -271,7 +258,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
 export const AccountEmployeeEducationEditor = compose<AccountEmployeeEducationEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withWidth(),
   withAccountEmployeeEducation,
