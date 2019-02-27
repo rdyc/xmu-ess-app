@@ -111,7 +111,7 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalListProps, IOwnState, IOwnSt
 const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TimesheetApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { user } = props.userState;
-    const { isLoading, request } = props.timesheetApprovalState.all;
+    const { isExpired, isLoading, request } = props.timesheetApprovalState.all;
     const { loadAllRequest } = props.timesheetApprovalDispatch;
 
     if (user && !isLoading) {
@@ -135,7 +135,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

@@ -29,7 +29,12 @@ export const LookupDiemListFilterView: React.SFC<LookupDiemListFilterProps> = pr
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -55,6 +60,8 @@ export const LookupDiemListFilterView: React.SFC<LookupDiemListFilterProps> = pr
         </Toolbar>
       </AppBar>
       
+      <Divider/>
+
       <List>        
         <ListItem button onClick={props.handleFilterProjectTypeVisibility}>
           <ListItemText 

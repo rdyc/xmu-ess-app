@@ -90,7 +90,7 @@ const stateUpdaters: StateUpdaters<LookupRoleListProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<LookupRoleListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupRoleListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupRoleState.all;
+    const { isExpired, isLoading, request } = props.lookupRoleState.all;
     const { loadAllRequest } = props.lookupRoleDispatch;
     const { user } = props.userState;
 
@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<LookupRoleListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

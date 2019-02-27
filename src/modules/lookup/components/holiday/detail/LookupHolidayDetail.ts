@@ -3,7 +3,6 @@ import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupHolidayDeletePayload } from '@lookup/classes/request';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -108,7 +107,7 @@ const stateUpdaters: StateUpdaters<HolidayDetailProps, IOwnState, IOwnStateUpdat
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: IOwnState, props: HolidayDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (prevState: IOwnState, props: HolidayDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
   setShouldLoad: (state: IOwnState, props: HolidayDetailProps) => (): Partial<IOwnState> => ({

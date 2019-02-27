@@ -6,7 +6,7 @@ import { LeaveRequestDetailFormView } from '@leave/components/request/editor/for
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InputLeave } from '@lookup/components/leave/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 
 interface OwnProps {
@@ -14,6 +14,7 @@ interface OwnProps {
   context: BaseFieldsProps;
   formRegularType: string | null | undefined;
   isRegularType: boolean;
+  isAdmin: boolean;
   onChangeEnd: (event: any, newValue: string, oldValue: string) => void;
   onChangeRegular: (event: any, newValue: string, oldValue: string) => void;
 }
@@ -132,6 +133,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 };
 
 export const LeaveRequestDetailForm = compose<RequestDetailFormProps, OwnProps>(
+  setDisplayName('LeaveRequestDetailForm'),
   injectIntl,
   withHandlers<RequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(LeaveRequestDetailFormView);

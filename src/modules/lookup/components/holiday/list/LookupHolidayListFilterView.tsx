@@ -32,7 +32,12 @@ export const LookupHolidayListFilterView: React.SFC<LookupHolidayListFilterProps
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -57,6 +62,8 @@ export const LookupHolidayListFilterView: React.SFC<LookupHolidayListFilterProps
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>

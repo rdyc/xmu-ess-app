@@ -1,21 +1,19 @@
 import { FormMode } from '@generic/types';
-import {
-  LeaveRequestFormData,
-  RequestForm,
-} from '@leave/components/request/editor/forms/LeaveRequestForm';
-import { RequestEditorProps } from '@leave/components/request/editor/LeaveRequestEditor';
+import { layoutMessage } from '@layout/locales/messages';
+import { LeaveRequestContainerForm, LeaveRequestFormData } from '@leave/components/request/editor/forms/LeaveRequestForm';
+import { LeaveRequestEditorProps } from '@leave/components/request/editor/LeaveRequestEditor';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export const LeaveRequestEditorView: React.SFC<RequestEditorProps> = props => {
+export const LeaveRequestEditorView: React.SFC<LeaveRequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
     submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.leaveRequestState.detail;
 
   const renderForm = (formData: LeaveRequestFormData) => (
-    <RequestForm 
+    <LeaveRequestContainerForm 
       formMode={formMode}
+      isAdmin={props.isAdmin}
       initialValues={formData}
       validate={handleValidate}
       onSubmit={handleSubmit} 
@@ -52,7 +50,7 @@ export const LeaveRequestEditorView: React.SFC<RequestEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }

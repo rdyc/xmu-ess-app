@@ -30,7 +30,12 @@ export const AccountEmployeeDialogView: React.SFC<AccountEmployeeDialogProps> = 
     className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     onClose={props.onClose}
   >
-    <AppBar position="fixed" className={props.classes.appBarDialog}>
+    <AppBar
+      elevation={0}
+      position="fixed" 
+      color="default"
+      className={props.classes.appBarDialog}
+    >
       <Toolbar>
         <IconButton color="inherit" onClick={() => props.onClose()} aria-label="Close">
           <ArrowBackIcon />
@@ -63,6 +68,8 @@ export const AccountEmployeeDialogView: React.SFC<AccountEmployeeDialogProps> = 
       </Toolbar>
     </AppBar>
     
+    <Divider/>
+
     <DialogContent className={props.classes.paddingDisabled}>        
       <List>
         <ListItem button onClick={() => props.onSelected()}>

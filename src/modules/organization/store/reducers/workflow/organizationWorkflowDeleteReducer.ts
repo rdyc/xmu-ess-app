@@ -4,11 +4,12 @@ import { OrganizationWorkflowAction as Action } from '@organization/store/action
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IOrganizationWorkflowDeleteRequest, boolean> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IOrganizationWorkflowDeleteRequest, boolean>> = (state = initialState, action) => {
@@ -16,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IOrganizationWorkflowDeleteRequest, boo
     case Action.DELETE_REQUEST: return { ...state, isLoading: true,  isError: false, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.DELETE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.DELETE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.DELETE_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }

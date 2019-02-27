@@ -2,7 +2,6 @@ import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { ILeaveCancellationPostPayload } from '@leave/classes/request';
@@ -87,7 +86,7 @@ const stateUpdaters: StateUpdaters<LeaveCancellationDetailProps, IOwnState, IOwn
   setShouldLoad: (state: IOwnState, props: LeaveCancellationDetailProps) => (): Partial<IOwnState> => ({
     shoulLoad: !state.shoulLoad
   }),
-  setOptions: (state: IOwnState, props: LeaveCancellationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (state: IOwnState, props: LeaveCancellationDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   })
 };
