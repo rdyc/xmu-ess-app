@@ -1,5 +1,8 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -17,6 +20,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -57,9 +61,11 @@ export type FilterProfitabilityData = {
 
 export type ProfitabilityProps
   = WithSummary
+  & WithOidc
   & WithWidth
   & WithUser
   & WithLayout
+  & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
   & OwnOptions
@@ -133,16 +139,35 @@ const handlerCreators: HandleCreators<ProfitabilityProps, Handlers> = {
 const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
   componentDidMount() {
     const {
-      layoutDispatch, intl, customerUid, projectUid
+      intl, customerUid, projectUid, stateUpdate
     } = this.props;
 
     const { isLoading, response } = this.props.summaryState.profitability;
 
-    layoutDispatch.changeView({
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
+    }
+
+    this.props.masterPage.changePage({
       uid: AppMenu.ReportProfitability,
       parentUid: AppMenu.Report,
       title: intl.formatMessage(summaryMessage.profitability.page.title),
-      subTitle: intl.formatMessage(summaryMessage.profitability.page.subTitle)
     });
 
     // only load data when response are empty
@@ -166,15 +191,8 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
     const { view } = this.props.layoutState;
     const { loadProfitabilityDispose } = this.props.summaryDispatch;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
     if (view && view.uid !== AppMenu.ReportProfitability) {
@@ -204,9 +222,12 @@ const loadData = (props: ProfitabilityProps): void => {
 
 export const Profitability = compose<ProfitabilityProps, OwnOptions>(
   connect(),
+  setDisplayName('SummaryProfitabilityEditor'),
+  withOidc,
   withSummary,
   withUser,
   withLayout,
+  withMasterPage,
   withRouter,
   injectIntl,
   withWidth(),

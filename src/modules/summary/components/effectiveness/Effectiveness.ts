@@ -1,5 +1,8 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -15,6 +18,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -42,9 +46,11 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type EffectivenessProps 
   = WithSummary
+  & WithOidc
   & WithWidth
   & WithUser
   & WithLayout
+  & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
   & OwnOptions
@@ -82,17 +88,34 @@ const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
     componentDidMount() { 
-      const { 
-        layoutDispatch, intl 
-      } = this.props;
-      
+      const { intl, stateUpdate } = this.props;
       const { isLoading, response } = this.props.summaryState.effectiveness;
+
+      // checking admin status
+      const { user: oidc } = this.props.oidcState;
+      let result: boolean = false;
+      if (oidc) {
+        const role: string | string[] | undefined = oidc.profile.role;
+
+        if (role) {
+          if (Array.isArray(role)) {
+            result = role.indexOf(AppRole.Admin) !== -1;
+          } else {
+            result = role === AppRole.Admin;
+          }
+        }
+
+        if (result) {
+          stateUpdate({ 
+            isAdmin: true
+          });
+        }
+      }
   
-      layoutDispatch.changeView({
+      this.props.masterPage.changePage({
         uid: AppMenu.ReportEffectiveness,
         parentUid: AppMenu.Report,
         title: intl.formatMessage(summaryMessage.effectiveness.page.title),
-        subTitle : intl.formatMessage(summaryMessage.effectiveness.page.subTitle)
       });
     
       // only load data when response are empty
@@ -114,15 +137,8 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       }
     },
     componentWillUnmount() {
-      const { layoutDispatch } = this.props;
       const { view } = this.props.layoutState;
       const { loadEffectivenessDispose } = this.props.summaryDispatch;
-  
-      layoutDispatch.changeView(null);
-      layoutDispatch.modeListOff();
-      layoutDispatch.searchHide();
-      layoutDispatch.modeSearchOff();
-      layoutDispatch.moreHide();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
       if (view && view.uid !== AppMenu.ReportEffectiveness) {
@@ -152,9 +168,12 @@ const loadData = (props: EffectivenessProps): void => {
   };
 
 export const Effectiveness = compose<EffectivenessProps, OwnOptions>(
+    setDisplayName('SummaryEffectiveness'),
+    withOidc,
     withSummary,
     withUser,
     withLayout,
+    withMasterPage,
     withRouter,
     injectIntl,
     withWidth(),

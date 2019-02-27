@@ -189,7 +189,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       time: new Date()
     });
 
-    props.setDataload();
+    props.setNextLoad();
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({

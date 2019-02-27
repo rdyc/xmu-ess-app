@@ -103,7 +103,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
   handleOnLoadApi: (props: ExpenseRequestListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.expenseRequestState.all;
+    const { isExpired, isLoading, request } = props.expenseRequestState.all;
     const { loadAllRequest } = props.expenseRequestDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });
