@@ -1,11 +1,12 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import {
   AppBar,
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Table,
   TableBody,
@@ -14,8 +15,8 @@ import {
   TableRow,
   Toolbar,
   Typography,
-  withStyles,
   WithStyles,
+  withStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
@@ -23,7 +24,7 @@ import { ISummaryWinning } from '@summary/classes/response/winning';
 import {
   WinningRatioHeaderDetailClosed,
   WinningRatioHeaderDetailOnProgress,
-  WinningRatioHeaderDetailWin
+  WinningRatioHeaderDetailWin,
 } from '@summary/classes/types/winningRatio/WinningRatioHeaderDetail';
 import { WinningRatioType } from '@summary/classes/types/winningRatio/WinningRatioType';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
@@ -77,7 +78,12 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
               fullScreen
               disableBackdropClick
             >
-              <AppBar className={props.classes.appBarDialog}>
+              <AppBar 
+                elevation={0}
+                position="fixed" 
+                color="default"
+                className={props.classes.appBarDialog}
+              >
                 <Toolbar>
                   <IconButton color="inherit" onClick={handleDialogDetail} aria-label="Close">
                     <CloseIcon />
@@ -89,9 +95,13 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
 
                 </Toolbar>
               </AppBar>
+
+              <Divider/>
+
               <DialogTitle>
                 {type}
               </DialogTitle>
+
               <DialogContent>
                 <Table>
                   <TableHead>
