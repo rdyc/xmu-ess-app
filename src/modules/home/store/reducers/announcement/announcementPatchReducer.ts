@@ -5,11 +5,12 @@ import { AnnouncementAction as Action } from '@home/store/actions/announcementAc
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IAnnouncementPatchRequest, IAnnouncement> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQueryCollectionState<IAnnouncementPatchRequest, IAnnouncement>> = (state = initialState, action) => {

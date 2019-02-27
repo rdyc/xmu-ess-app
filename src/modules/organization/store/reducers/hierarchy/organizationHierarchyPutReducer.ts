@@ -5,11 +5,12 @@ import { OrganizationHierarchyAction as Action } from '@organization/store/actio
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IOrganizationHierarchyPutRequest, IHierarchy> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyPutRequest, IHierarchy>> = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyPutRequest, IHier
     case Action.PUT_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.PUT_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.PUT_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }
