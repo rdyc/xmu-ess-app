@@ -6,6 +6,7 @@ import {
   AppBar,
   Dialog,
   DialogContent,
+  Divider,
   GridList,
   GridListTile,
   GridListTileBar,
@@ -19,6 +20,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { AddImageEditorProps } from './AddImageEditor';
 
 export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => { 
@@ -114,7 +116,12 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
         onClose={props.onClose}
         className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       >
-        <AppBar className={props.classes.appBarDialog}>
+        <AppBar 
+          elevation={0}
+          position="fixed" 
+          color="default"
+          className={props.classes.appBarDialog}
+        >
           <Toolbar>
             <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
               <CloseIcon />
@@ -126,6 +133,9 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
 
           </Toolbar>
         </AppBar>
+        
+        <Divider/>
+
         <DialogContent style={{ paddingTop : 8 }}>
           {
             isLoading &&

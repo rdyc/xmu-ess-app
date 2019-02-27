@@ -36,7 +36,7 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
 
   const filterDialog = () => {
     return (
-      <div>
+      <React.Fragment>
         <Dialog
           fullScreen
           disableBackdropClick
@@ -45,7 +45,12 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
           scroll="paper"
           onClose={props.handleFilterVisibility}
         >
-          <AppBar position="fixed" className={props.classes.appBarDialog}>
+          <AppBar  
+            elevation={0}
+            position="fixed" 
+            color="default"
+            className={props.classes.appBarDialog}
+          >
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -71,6 +76,8 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
             </Toolbar>
           </AppBar>
           
+          <Divider/>
+
           <DialogContent className={props.classes.paddingDisabled}>
             <List>
               <ListItem button onClick={props.handleFilterEmployeeVisibility}>
@@ -141,7 +148,7 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
           onSelected={props.handleFilterProjectOnSelected} 
           onClose={props.handleFilterProjectOnClose}
         />
-      </div>
+      </React.Fragment>
     );
   };
 

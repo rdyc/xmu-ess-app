@@ -31,7 +31,12 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -56,31 +61,33 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
           </Button>
         </Toolbar>
       </AppBar>
-      
+
+      <Divider/>
+            
       <DialogContent className={props.classes.paddingDisabled}>
-      <List>
-        <ListItem button onClick={props.handleFilterCompanyVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
-            secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterCompany &&
-              <IconButton onClick={props.handleFilterCompanyOnClear}>
-                <ClearIcon />
+        <List>
+          <ListItem button onClick={props.handleFilterCompanyVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
+              secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              { 
+                props.filterCompany &&
+                <IconButton onClick={props.handleFilterCompanyOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterCompanyVisibility}>
+                <ChevronRightIcon />
               </IconButton> 
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton onClick={props.handleFilterCompanyVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-      </List>
-        </DialogContent>
+        </List>
+      </DialogContent>
     </Dialog>
 
     <FilterCompany

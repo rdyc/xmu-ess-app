@@ -30,7 +30,12 @@ export const LookupSystemDialogView: React.SFC<LookupSystemDialogProps> = props 
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <ArrowBackIcon />
@@ -41,6 +46,8 @@ export const LookupSystemDialogView: React.SFC<LookupSystemDialogProps> = props 
           </Typography>
         </Toolbar>
       </AppBar>
+      
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
