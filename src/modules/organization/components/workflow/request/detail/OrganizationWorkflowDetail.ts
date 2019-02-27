@@ -1,6 +1,12 @@
+import { IBasePagingFilter } from '@generic/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { IDataBindResult } from '@layout/components/pages';
+import { WithUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
+import { IOrganizationWorkflowAllFilter } from '@organization/classes/filters/workflow';
+import { IWorkflow } from '@organization/classes/response/workflow';
 import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -11,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -25,12 +32,15 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
+  handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
+  handleOnBind: (item: IWorkflow, index: number) => IDataBindResult;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface OwnState {
+  fields: ICollectionValue[];
   isAdmin: boolean;
   action?: DiemUserAction;
   dialogFullScreen: boolean;
@@ -47,7 +57,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type OrganizationWorkflowDetailProps
-  = WithOrganizationWorkflow
+  = WithUser
+  & WithOrganizationWorkflow
   & WithLookupMenu
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -59,6 +70,7 @@ const createProps: mapper<OrganizationWorkflowDetailProps, OwnState> = (props: O
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
+  fields: []
 });
 
 const stateUpdaters: StateUpdaters<OrganizationWorkflowDetailProps, OwnState, OwnStateUpdaters> = {
@@ -82,6 +94,36 @@ const stateUpdaters: StateUpdaters<OrganizationWorkflowDetailProps, OwnState, Ow
 };
 
 const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandler> = {
+  handleOnLoadApi: (props: OrganizationWorkflowDetailProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { isLoading, request } = props.organizationWorkflowState.all;
+    const { loadAllRequest } = props.organizationWorkflowDispatch;
+
+    if (!isLoading) {
+      const filter: IOrganizationWorkflowAllFilter = {
+        menuUid: props.match.params.menuUid,
+        companyUid: props.match.params.companyUid,
+        orderBy: 'priority',
+        direction: 'ascending'
+      };
+
+      const shouldLoad = !shallowEqual(filter, request && request.filter || {});
+
+      if (shouldLoad || isRetry) {
+        loadAllRequest({
+          filter
+        });
+      }
+    }
+  },
+  handleOnBind: (props: OrganizationWorkflowDetailProps) => (item: IWorkflow, index: number) => ({
+    key: index,
+    primary: item.priority,
+    secondary: item.hierarchy ? item.hierarchy.name : 'N/A',
+    tertiary: item.menuUid,
+    quaternary: item.uid,
+    quinary: item.hierarchyUid,
+    senary: ''
+  }),
   handleOnModify: (props: OrganizationWorkflowDetailProps) => () => {
     props.setModify();
   },
@@ -89,7 +131,7 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
     props.setDefault();
   },
   handleOnConfirm: (props: OrganizationWorkflowDetailProps) => () => {
-    const { response } = props.organizationWorkflowState.list;
+    const { response } = props.organizationWorkflowState.all;
     // const menuResponse = props.lookupMenuState.detail.response;
 
     // skipp untracked action or empty response
@@ -131,22 +173,28 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
 };
 
 const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowDetailProps, OwnState> = {
-  componentWillReceiveProps(nextProps: OrganizationWorkflowDetailProps) {
-    if (nextProps.organizationWorkflowState.list.response !== this.props.organizationWorkflowState.list.response) {
-      const { loadDetailRequest } = this.props.lookupMenuDispatch;
+  // componentWillReceiveProps(nextProps: OrganizationWorkflowDetailProps) {
+  //   if (nextProps.organizationWorkflowState.list.response !== this.props.organizationWorkflowState.list.response) {
+  //     const { loadDetailRequest } = this.props.lookupMenuDispatch;
 
-      if (this.props.match.params.menuUid) {
-        loadDetailRequest({
-          menuUid: this.props.match.params.menuUid
-        });
-      }
+  //     if (this.props.match.params.menuUid) {
+  //       loadDetailRequest({
+  //         menuUid: this.props.match.params.menuUid
+  //       });
+  //     }
+  //   }
+  // },
+  // componentWillUnmount() {
+  //   const { organizationWorkflowDispatch } = this.props;
+
+  //   // lookupMenuDispatch.loadDetailDispose();
+  //   organizationWorkflowDispatch.loadListDispose();
+  // }
+  componentDidMount() {
+    const { request } = this.props.organizationWorkflowState.all;
+    if ((request && request.filter && request.filter.menuUid !== this.props.match.params.menuUid) && (request && request.filter && request.filter.companyUid !== this.props.match.params.companyUid)) {
+      this.props.handleOnLoadApi();
     }
-  },
-  componentWillUnmount() {
-    const { organizationWorkflowDispatch } = this.props;
-
-    // lookupMenuDispatch.loadDetailDispose();
-    organizationWorkflowDispatch.loadListDispose();
   }
 };
 

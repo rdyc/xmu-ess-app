@@ -6,6 +6,6 @@ export interface IWorkflow {
   menuUid: string;  
   hierarchyUid: string;  
   hierarchy: IHierarchy | null;
-  priority: number;  
+  priority: string;  
   changes?: IBaseChanges | null;
 }
