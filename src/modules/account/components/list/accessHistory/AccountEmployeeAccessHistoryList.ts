@@ -70,7 +70,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAccessHistoryListProps, IOwnSt
 
 const handlerCreators: HandleCreators<AccountEmployeeAccessHistoryListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeAccessHistoryListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.accountEmployeeAccessHistoryState.all;
+    const { isExpired, isLoading, request } = props.accountEmployeeAccessHistoryState.all;
     const { loadAllRequest } = props.accountEmployeeAccessHistoryDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -88,7 +88,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessHistoryListProps, IOw
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           employeeUid: props.match.params.employeeUid,

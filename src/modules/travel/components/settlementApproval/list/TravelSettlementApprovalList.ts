@@ -109,7 +109,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListProps, IOwnState,
 
 const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TravelSettlementApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.travelSettlementApprovalState.all;
+    const { isExpired, isLoading, request } = props.travelSettlementApprovalState.all;
     const { loadAllRequest } = props.travelSettlementApprovalDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -131,7 +131,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, IOwnHan
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

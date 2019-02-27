@@ -104,7 +104,7 @@ const stateUpdaters: StateUpdaters<FinanceApprovalListProps, IOwnState, IOwnStat
 
 const handlerCreators: HandleCreators<FinanceApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: FinanceApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.financeApprovalState.all;
+    const { isExpired, isLoading, request } = props.financeApprovalState.all;
     const { loadAllRequest } = props.financeApprovalDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -127,7 +127,7 @@ const handlerCreators: HandleCreators<FinanceApprovalListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           companyUid: props.userState.user.company.uid,
