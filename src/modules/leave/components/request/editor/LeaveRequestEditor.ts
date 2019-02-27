@@ -1,17 +1,14 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import {
-  ILeaveRequestPostPayload,
-  ILeaveRequestPutPayload,
-} from '@leave/classes/request/';
+import { ILeaveRequestPostPayload, ILeaveRequestPutPayload } from '@leave/classes/request/';
 import { ILeave } from '@leave/classes/response';
-import {
-  LeaveRequestFormData,
-} from '@leave/components/request/editor/forms/LeaveRequestForm';
+import { LeaveRequestFormData } from '@leave/components/request/editor/forms/LeaveRequestForm';
 import { LeaveRequestEditorView } from '@leave/components/request/editor/LeaveRequestEditorView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
@@ -24,6 +21,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -34,18 +32,18 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: LeaveRequestFormData) => FormErrors;
   handleSubmit: (payload: LeaveRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -54,29 +52,40 @@ interface OwnState {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  isAdmin: boolean;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
-export type RequestEditorProps
+export type LeaveRequestEditorProps
   = WithLeaveRequest
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
-  handleValidate: (props: RequestEditorProps) => (formData: LeaveRequestFormData) => { 
+const createProps: mapper<LeaveRequestEditorProps, IOwnState> = (props: LeaveRequestEditorProps): IOwnState => ({
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(leaveMessage.request.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  isAdmin: false
+});
+
+const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
+  handleValidate: (props: LeaveRequestEditorProps) => (formData: LeaveRequestFormData) => {
     const errors = {
       information: {}
     };
-  
+
     const requiredFields = [
       'leaveType', 'start',
       'address', 'contactNumber', 'reason'
@@ -87,10 +96,10 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
         errors.information[field] = props.intl.formatMessage(leaveMessage.request.fieldFor(field, 'fieldRequired'));
       }
     });
-    
+
     return errors;
   },
-  handleSubmit: (props: RequestEditorProps) => (formData: LeaveRequestFormData) => { 
+  handleSubmit: (props: LeaveRequestEditorProps) => (formData: LeaveRequestFormData) => {
     const { formMode, leaveUid, intl } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.leaveRequestDispatch;
@@ -107,7 +116,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
         createRequest({
-          resolve, 
+          resolve,
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
@@ -126,22 +135,22 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         updateRequest({
-          leaveUid, 
-          resolve, 
+          leaveUid,
+          resolve,
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as ILeaveRequestPutPayload, 
+          data: payload as ILeaveRequestPutPayload,
         });
       });
     }
 
     return null;
   },
-  handleSubmitSuccess: (props: RequestEditorProps) => (response: ILeave) => {
+  handleSubmitSuccess: (props: LeaveRequestEditorProps) => (response: ILeave) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
-    
+
     let message: string = '';
 
     if (formMode === FormMode.New) {
@@ -159,10 +168,10 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     history.push('/leave/requests/');
   },
-  handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: LeaveRequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
-    
+
     if (errors) {
       // validation errors from server (400: Bad Request)
       alertAdd({
@@ -190,27 +199,19 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.createTitle),
-  submitDialogContentText: props.intl.formatMessage(leaveMessage.request.dialog.createDescription),
-  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveRequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.leaveRequestDispatch;
     const { user } = this.props.userState;
-    
+
     const view = {
       title: leaveMessage.request.page.newTitle,
       subTitle: leaveMessage.request.page.newSubHeader,
@@ -220,20 +221,39 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       return;
     }
 
-    stateUpdate({ 
+    stateUpdate({
       companyUid: user.company.uid,
       positionUid: user.position.uid
     });
+
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({
+          isAdmin: true
+        });
+      }
+    }
 
     if (!isNullOrUndefined(history.location.state)) {
       view.title = leaveMessage.request.page.modifyTitle;
       view.subTitle = leaveMessage.request.page.modifySubHeader;
 
-      stateUpdate({ 
+      stateUpdate({
         formMode: FormMode.Edit,
         leaveUid: history.location.state.uid,
-        submitDialogTitle: this.props.intl.formatMessage(leaveMessage.request.dialog.editTitle),
-        submitDialogContentText: this.props.intl.formatMessage(leaveMessage.request.dialog.editDescription),
       });
 
       loadDetailRequest({
@@ -243,37 +263,46 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LeaveRequest,
       parentUid: AppMenu.Leave,
+      parentUrl: '/leave/requests',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
+  },
+  componentDidUpdate(prevProps: LeaveRequestEditorProps) {
+    if (this.props.formMode === FormMode.Edit && prevProps.leaveRequestState.detail !== this.props.leaveRequestState.detail) {
+      const { response } = this.props.leaveRequestState.detail;
 
-    layoutDispatch.navBackShow(); 
+      if (this.props.userState.user && response && response.data && response.data.changes) {
+        if (this.props.userState.user.uid !== response.data.changes.createdBy) {
+          this.props.stateUpdate({
+            isRequestor: false
+          });
+        }
+      }
+    }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, leaveRequestDispatch } = this.props;
+    const { leaveRequestDispatch, masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
-
+    masterPage.resetPage();
     leaveRequestDispatch.createDispose();
     leaveRequestDispatch.updateDispose();
   }
 };
 
-export default compose<RequestEditorProps, {}>(
+export default compose<LeaveRequestEditorProps, {}>(
+  setDisplayName('LeaveRequestEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLeaveRequest,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<RequestEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(LeaveRequestEditorView);

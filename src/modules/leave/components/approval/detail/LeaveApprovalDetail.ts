@@ -4,7 +4,6 @@ import { IPopupMenuOption } from '@layout/components/PopupMenu/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { LeaveRequestUserAction } from '@leave/classes/types';
@@ -96,7 +95,7 @@ const stateUpdaters: StateUpdaters<LeaveApprovalDetailProps, IOwnState, IOwnStat
   setShouldLoad: (state: IOwnState, props: LeaveApprovalDetailProps) => (): Partial<IOwnState> => ({
     shoulLoad: !state.shoulLoad
   }),
-  setOptions: (state: IOwnState, props: LeaveApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
+  setOptions: (state: IOwnState, props: LeaveApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   })
 };
