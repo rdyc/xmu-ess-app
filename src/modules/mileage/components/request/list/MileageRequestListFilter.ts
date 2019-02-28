@@ -292,7 +292,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnStat
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { year, month, statusType } = this.props.initialProps;
+      const { year, month, statusType, status } = this.props.initialProps;
 
       // filter year
       if (year) {
@@ -316,6 +316,13 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnStat
           
           this.props.setFilterStatus(selected);
         }
+      }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
     }
   }
