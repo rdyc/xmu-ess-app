@@ -198,10 +198,10 @@ const styles = (theme: Theme) =>
         // dangdut styles
         // backgroundColor: theme.palette.grey[400],
         // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
-        
-        // width: `calc(100% - ${0}px)`,
-        // marginLeft: 0,
-        // marginRight: 0,
+
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
+        marginRight: theme.direction === 'rtl' ? drawerWidth : 0
       },
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -324,7 +324,7 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      }),
+      })
     },
     drawerPaperBackground: {
       // backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900],
@@ -341,9 +341,6 @@ const styles = (theme: Theme) =>
       height: '100%',
       content: '""',
       display: 'block'
-    },
-    drawerPaperAdditional: {
-      width: drawerWidth
     },
     drawerPaperClose: {
       width: 60,
@@ -398,12 +395,20 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
       [theme.breakpoints.up('md')]: {
+        marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
+        marginRight: theme.direction === 'rtl' ? drawerWidth : 0,
         marginTop: theme.spacing.unit * 8.5,
       },
       [theme.breakpoints.down('sm')]: {
         padding: 0,
         marginTop: theme.spacing.unit * 7,
       }
+    },
+    shift: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
+        marginRight: theme.direction === 'rtl' ? drawerWidth : 0
+      },
     },
     contentShiftLeft: {
       [theme.breakpoints.up('md')]: {
