@@ -28,34 +28,37 @@ export const organizationWorkflowSetupDialog = defineMessages({
 
 // section
 export const organizationWorkflowSetupSection = defineMessages({
-  menuTitle: { id: `${prefix}.section.menu.title`},
-  menuSubHeader: { id: `${prefix}.section.menu.subHeader`},
-  hierarchyTitle: { id: `${prefix}.section.hierarchy.title`},
-  hierarchySubHeader: { id: `${prefix}.section.hierarchy.subHeader`},
+  menuTitle: { id: `${prefix}.section.menu.title` },
+  menuSubHeader: { id: `${prefix}.section.menu.subHeader` },
+  hierarchyTitle: { id: `${prefix}.section.hierarchy.title` },
+  hierarchySubHeader: { id: `${prefix}.section.hierarchy.subHeader` },
 });
 
 // option
 export const organizationWorkflowSetupOption = defineMessages({
-  modify: { id: `${prefix}.option.modify`},
-  remove: { id: `${prefix}.option.remove`},
+  modify: { id: `${prefix}.option.modify` },
+  remove: { id: `${prefix}.option.remove` },
 });
 
 // fields
 export const organizationWorkflowSetupField = defineMessages({
-  uid: { id: `${prefix}.field.uid`},
+  uid: { id: `${prefix}.field.uid` },
 
-  menuUid: { id: `${prefix}.field.menuUid`},
-  menuName: { id: `${prefix}.field.menuUid`},
-  menuUidRequired: { id: `${prefix}.field.menuUid.required`},
-  menuUidPlaceholder: { id: `${prefix}.field.menuUid.placeholder`},
+  menuUid: { id: `${prefix}.field.menuUid` },
+  menuName: { id: `${prefix}.field.menuUid` },
+  menuUidRequired: { id: `${prefix}.field.menuUid.required` },
+  menuUidPlaceholder: { id: `${prefix}.field.menuUid.placeholder` },
 
-  hierarchyUid: { id: `${prefix}.field.hierarchyUid`},
-  hierarchyUidRequired: { id: `${prefix}.field.hierarchyUid.required`},
-  hierarchyUidPlaceholder: { id: `${prefix}.field.hierarchyUid.placeholder`},
-  
-  priority: { id: `${prefix}.field.priority`},
-  priorityRequired: { id: `${prefix}.field.priority.required`},
-  priorityPlaceholder: { id: `${prefix}.field.priority.placeholder`},
+  hierarchyUid: { id: `${prefix}.field.hierarchyUid` },
+  hierarchyUidRequired: { id: `${prefix}.field.hierarchyUid.required` },
+  hierarchyUidPlaceholder: { id: `${prefix}.field.hierarchyUid.placeholder` },
+
+  priority: { id: `${prefix}.field.priority` },
+  priorityRequired: { id: `${prefix}.field.priority.required` },
+  priorityPlaceholder: { id: `${prefix}.field.priority.placeholder` },
+
+  hierarchyName: { id: `${prefix}.field.hierarchyName` },
+  company: { id: `${prefix}.field.company` }
 
 });
 
@@ -65,9 +68,11 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'uid': return organizationWorkflowSetupField.uid;
       case 'menuUid': return organizationWorkflowSetupField.menuUid;
       case 'hierarchyUid': return organizationWorkflowSetupField.hierarchyUid;
+      case 'hierarchyName': return organizationWorkflowSetupField.hierarchyName;
+      case 'company': return organizationWorkflowSetupField.company;
       case 'priority': return organizationWorkflowSetupField.priority;
-    
-      default: return {id: field};
+
+      default: return { id: field };
     }
   }
 
@@ -76,8 +81,8 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'menuUid': return organizationWorkflowSetupField.menuUidRequired;
       case 'hierarchyUid': return organizationWorkflowSetupField.hierarchyUidRequired;
       case 'priority': return organizationWorkflowSetupField.priorityRequired;
-  
-      default: return {id: field};
+
+      default: return { id: field };
     }
   }
 
@@ -86,12 +91,12 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'menuUid': return organizationWorkflowSetupField.menuUidPlaceholder;
       case 'hierarchyUid': return organizationWorkflowSetupField.hierarchyUidPlaceholder;
       case 'priority': return organizationWorkflowSetupField.priorityPlaceholder;
-    
-      default: return {id: field};
+
+      default: return { id: field };
     }
   }
 
-  return {id: field};
+  return { id: field };
 };
 
 // message

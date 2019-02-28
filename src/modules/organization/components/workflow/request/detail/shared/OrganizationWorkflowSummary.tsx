@@ -3,6 +3,7 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField } from '@material-ui/core';
 import { IWorkflow } from '@organization/classes/response/workflow';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -21,13 +22,7 @@ const organizationWorkflowSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={'Uid'}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={'Priority'}
+        label={props.intl.formatMessage(organizationMessage.workflowSetup.field.priority)}
         value={props.data.priority}
       />
     </Grid>
@@ -35,14 +30,16 @@ const organizationWorkflowSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={'Hierarchy'}
+        label={props.intl.formatMessage(organizationMessage.workflowSetup.field.hierarchyName)}
         value={props.data.hierarchy ? props.data.hierarchy.name : 'N/A'}
       />
+    </Grid>
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={'Menu Uid'}
-        value={props.data.menuUid}
+        label={props.intl.formatMessage(organizationMessage.workflowSetup.field.company)}
+        value={props.data.hierarchy && props.data.hierarchy.company &&  props.data.hierarchy.company.name || 'N/A'}
       />
     </Grid>
     {
