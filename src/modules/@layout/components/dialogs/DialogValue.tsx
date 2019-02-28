@@ -30,6 +30,7 @@ interface IOwnOptions {
   value: string; 
   onSelected: (data?: ICollectionValue) => void;
   onClose: () => void;
+  isCompletion?: boolean;
 }
 
 type AllProps 
@@ -69,11 +70,17 @@ const DialogValueView: React.SFC<AllProps> = props => (
 
     <DialogContent className={props.classes.paddingDisabled}>
       <List>
-        <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="secondary" checked={!props.value} />
-          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
-        </ListItem>
-        <Divider/>
+        {
+          !props.isCompletion && (
+            <React.Fragment>
+              <ListItem button onClick={() => props.onSelected()}>
+                <Radio color="secondary" checked={!props.value} />
+                <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
+              </ListItem>
+              <Divider/>
+            </React.Fragment>
+          )
+        }
 
         {
           props.items.map((item, index) => 
@@ -86,6 +93,19 @@ const DialogValueView: React.SFC<AllProps> = props => (
             </React.Fragment>
           )
         }
+
+        {
+          props.isCompletion && (
+            <React.Fragment>
+              <ListItem button onClick={() => props.onSelected()}>
+                <Radio color="secondary" checked={!props.value} />
+                <ListItemText primary={props.intl.formatMessage(layoutMessage.text.all)} />
+              </ListItem>
+              <Divider/>
+            </React.Fragment>
+          )
+        }
+
       </List>
     </DialogContent>
   </Dialog>

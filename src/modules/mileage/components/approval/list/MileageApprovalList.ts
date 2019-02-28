@@ -66,6 +66,7 @@ const createProps: mapper<MileageApprovalListProps, IOwnState> = (props: Mileage
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(MileageRequestField).map(key => ({
       value: key,
       name: MileageRequestField[key]
@@ -109,10 +110,10 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, IOwnHandler> = {
     if (user && !isLoading) {
       // predefined filter
       const filter: IMileageApprovalGetAllFilter = {
-        month: request && request.filter ? request.filter.month : props.month,
-        year: request && request.filter ? request.filter.year : props.year,
-        statusType: request && request.filter ? request.filter.statusType : props.statusType,
-        status: request && request.filter ? request.filter.status : props.status,
+        month: props.month,
+        year: props.year,
+        statusType: props.statusType,
+        status: props.status,
         isNotify : props.isNotify,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -179,20 +180,12 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, IOwnHandler> = {
     return props.year !== undefined ||
       props.month !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      props.status !== 'pending' ||
       props.isNotify === true;
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<MileageApprovalListProps, IOwnState> = {
-  componentDidMount() {
-    if (this.props.location.state) {
-      if (this.props.location.state.isReload) {
-        this.props.handleOnLoadApi(undefined, true, true);
-        this.props.location.state.isReload = false;
-      }
-    }
-  },
   componentDidUpdate(prevProps: MileageApprovalListProps) {
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
