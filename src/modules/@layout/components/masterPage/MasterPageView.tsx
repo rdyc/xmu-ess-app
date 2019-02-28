@@ -1,5 +1,4 @@
 import { LayoutTheme } from '@layout/hoc/withRoot';
-import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { ErrorBoundary } from '../base/ErrorBoundary';
@@ -7,7 +6,15 @@ import { DrawerLeft } from '../drawer/DrawerLeft';
 import { DrawerRight } from '../drawer/DrawerRight';
 import { SnackbarAlert } from '../snackbar/SnackbarAlert';
 import { TopBar } from '../topBar/TopBar';
-import { MasterPageProps } from './MasterPage';
+import { ChildPage, ChildPageProps, MasterPageProps } from './MasterPage';
+
+export const ChildPageView: React.SFC<ChildPageProps> = props => (
+  <main className={props.classes.content}>
+    <ErrorBoundary>
+      {props.children}
+    </ErrorBoundary>
+  </main>
+);
 
 export const MasterPageView: React.SFC<MasterPageProps> = props => (
   <LayoutTheme>
@@ -15,21 +22,15 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
       { 
         props.userState.user &&
         <React.Fragment>
-          <TopBar defaultAnchor={props.anchor} />
+          <TopBar/>
 
-          <DrawerRight defaultAnchor={props.anchor} />
+          <DrawerRight/>
           
-          <DrawerLeft defaultAnchor={props.anchor} />
+          <DrawerLeft/>
           
-          <main className={classNames(
-            props.classes.content, 
-            props.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft
-            )}
-          >
-            <ErrorBoundary>
-              {props.children}
-            </ErrorBoundary>
-          </main>
+          <ChildPage>
+            {props.children}
+          </ChildPage>
 
           <SnackbarAlert/>
         </React.Fragment>

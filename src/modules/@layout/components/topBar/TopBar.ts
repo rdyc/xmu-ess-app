@@ -1,7 +1,6 @@
 import AppEvent from '@constants/AppEvent';
 import { IPageInfo } from '@generic/interfaces';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
-import { Anchor } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -22,11 +21,10 @@ import {
 import { TopBarView } from './TopBarView';
 
 interface IOwnOption {
-  defaultAnchor: Anchor;
+
 }
 
 interface IOwnState {
-  anchor: Anchor;
   title?: string;
   parentUrl?: string;
   totalNotif: number;
@@ -35,7 +33,6 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setAnchor: StateHandler<IOwnState>;
   setPage: StateHandler<IOwnState>;
   setPageDefault: StateHandler<IOwnState>;
   setNotif: StateHandler<IOwnState>;
@@ -46,7 +43,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
   handleOnResetPage: (event: CustomEvent) => void;
-  handleOnChangeAnchor: (event: CustomEvent) => void;
   handleOnChangeNotif: (event: CustomEvent<number>) => void;
   handleOnChangeSearch: (event: CustomEvent<React.ReactNode>) => void;
   handleOnChangeCustom: (event: CustomEvent<React.ReactNode>) => void;
@@ -65,14 +61,10 @@ export type TopBarProps
   & IOwnHandler;
 
 const createProps: mapper<TopBarProps, IOwnState> = (props: TopBarProps): IOwnState => ({
-  anchor: props.defaultAnchor,
   totalNotif: 0
 });
 
 const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
-  setAnchor: (state: IOwnState) => (): Partial<IOwnState> => ({
-    anchor: state.anchor === 'left' ? 'right' : 'left'
-  }),
   setPage: (state: IOwnState) => (title?: string, parentUrl?: string): Partial<IOwnState> => ({
     title,
     parentUrl,
@@ -103,9 +95,6 @@ const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
   handleOnResetPage: (props: TopBarProps) => (event: CustomEvent) => {
     props.setPageDefault();
   },
-  handleOnChangeAnchor: (props: TopBarProps) => (event: CustomEvent) => {
-    props.setAnchor();
-  },
   handleOnChangeNotif: (props: TopBarProps) => (event: CustomEvent<number>) => {
     props.setNotif(event.detail);
   },
@@ -132,7 +121,6 @@ const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
 
 const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
   componentWillMount() {
-    addEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
     addEventListener(AppEvent.onResetPage, this.props.handleOnResetPage);
     addEventListener(AppEvent.onChangeNotif, this.props.handleOnChangeNotif);
@@ -140,7 +128,6 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
     addEventListener(AppEvent.onChangeCustomComponent, this.props.handleOnChangeCustom);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
     removeEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
     removeEventListener(AppEvent.onResetPage, this.props.handleOnResetPage);
     removeEventListener(AppEvent.onChangeNotif, this.props.handleOnChangeNotif);
