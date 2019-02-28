@@ -23,6 +23,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
 export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListFilterProps> = props => (
@@ -51,7 +52,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterStatus || (props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterRejected) &&
+            (props.filterCustomer || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -171,6 +172,17 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
+    />
+
+    <DialogValue
+      title={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+      isOpen={props.isFilterCompletionOpen}
+      hideBackdrop={true}
+      items={props.completionStatus}
+      value={props.filterCompletion && props.filterCompletion.value}
+      onSelected={props.handleFilterCompletionOnSelected}
+      onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );
