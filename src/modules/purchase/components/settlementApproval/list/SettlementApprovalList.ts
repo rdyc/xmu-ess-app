@@ -54,7 +54,7 @@ const createProps: mapper<SettlementApprovalListProps, IOwnState> = (props: Sett
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
+    status: 'pending',
     fields: Object.keys(SettlementField).map(key => ({
       value: key,
       name: SettlementField[key]
@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListProps, IOwnHandler> 
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
       props.isNotify === true ||
-      props.status !== undefined;
+      props.status !== 'pending';
   },
 };
 

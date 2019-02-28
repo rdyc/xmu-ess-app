@@ -130,7 +130,7 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterStatus: undefined
   }),
@@ -218,7 +218,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: PurchaseApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();

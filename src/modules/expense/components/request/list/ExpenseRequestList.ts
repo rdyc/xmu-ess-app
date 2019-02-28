@@ -117,7 +117,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
         start: props.start,
         end: props.end,
         statusType: props.statusType,
-        status: props.isRejected ? 'complete' : props.status,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
