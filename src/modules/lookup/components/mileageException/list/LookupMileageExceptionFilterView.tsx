@@ -28,7 +28,7 @@ export const LookupMileageExceptionFilterView: React.SFC<LookupMileageExceptionF
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       onClose={props.onClose}
     >
       <AppBar 

@@ -1,11 +1,10 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelSettlementGetAllFilter } from '@travel/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,6 +21,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { TravelSettlementListFilterView } from './TravelSettlementListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -120,14 +120,14 @@ interface IOwnHandler {
 
 export type TravelSettlementListFilterProps 
   = IOwnOption
-  & WithUser
-  & WithLookupCustomer
-  & WithCommonSystem
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<TravelSettlementListFilterProps, IOwnState> = (props: TravelSettlementListFilterProps): IOwnState => ({
@@ -312,10 +312,9 @@ export const TravelSettlementListFilter = compose<TravelSettlementListFilterProp
   withUser,  
   withLookupCustomer,
   withCommonSystem,
-  withLayout,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(TravelSettlementListFilterView);

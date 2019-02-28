@@ -1,8 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IDiemAllFilter } from '@lookup/classes/filters';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,6 +17,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupDiemListFilterView } from './LookupDiemListFilterView';
 
 export type ILookupDiemListFilterResult = Pick<IDiemAllFilter,
@@ -92,7 +92,7 @@ export type LookupDiemListFilterProps
   & WithCommonSystem
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupDiemListFilterProps, IOwnState> = (): IOwnState => ({
@@ -202,11 +202,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemListFilterProps, IOwnState> 
 
 export const LookupDiemListFilter = compose<LookupDiemListFilterProps, OwnOption>(
   setDisplayName('LookupDiemListFilter'),
-  withLayout,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(LookupDiemListFilterView);

@@ -1,8 +1,9 @@
 import { ISystemList } from '@common/classes/response';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -20,8 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
 
 export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
@@ -103,7 +102,7 @@ export type TimesheetEntryListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -267,7 +266,6 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnSta
 export const TimesheetEntryListFilter = compose<TimesheetEntryListFilterProps, IOwnOption>(
   setDisplayName('TimesheetEntryListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
@@ -275,5 +273,5 @@ export const TimesheetEntryListFilter = compose<TimesheetEntryListFilterProps, I
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles)
+  withStyles(styles, { withTheme: true })
 )(TimesheetEntryListFilterView);

@@ -29,9 +29,6 @@ interface PropsFromDispatch {
     alertAdd: typeof layoutAlertAdd;
     alertDismiss: typeof layoutAlertDismiss;
     changeView: typeof layoutChangeView;
-    /**
-     * @deprecated Use masterPage.changePage() 
-     */
     setupView: typeof layoutSetupView;
     alertDialogShow: typeof layoutAlertDialogShow;
     alertDialogHide: typeof layoutAlertDialogHide;

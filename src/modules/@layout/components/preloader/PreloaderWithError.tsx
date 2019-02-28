@@ -92,7 +92,7 @@ const LoaderView: React.SFC<AllProps> = props => (
             <ListItemSecondaryAction>
               <Button 
                 size="small"
-                color="primary" 
+                color="secondary" 
                 onClick={props.onRetry}
               >
                 {props.intl.formatMessage(layoutMessage.text.retry)}

@@ -1,8 +1,6 @@
-
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IGallery } from '@lookup/classes/response/gallery';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,6 +16,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { AddImageEditorView } from './AddImageEditorView';
 
 interface OwnOption {
@@ -46,7 +45,7 @@ export type AddImageEditorProps
   & OwnStateUpdater
   & OwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithImageGallery
   & InjectedIntlProps;
 
@@ -111,10 +110,9 @@ const lifecycles: ReactLifeCycleFunctions<AddImageEditorProps, OwnState> = {
 
 export const AddImageEditor = compose<AddImageEditorProps, OwnOption>(
   setDisplayName('AddImageEditor'),
-  withLayout,
   withImageGallery,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -70,7 +70,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
     <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="primary" checked={!props.value} />
+          <Radio color="secondary" checked={!props.value} />
           <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
         </ListItem>
         <Divider/>
@@ -79,7 +79,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
           props.items.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
-                <Radio color="primary" checked={props.value && props.value === item.value || false} />
+                <Radio color="secondary" checked={props.value && props.value === item.value || false} />
                 <ListItemText primary={item.name} />
               </ListItem>
               <Divider/>

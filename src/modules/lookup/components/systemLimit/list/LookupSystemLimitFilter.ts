@@ -1,10 +1,9 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { ISystemLimitAllFilter } from '@lookup/classes/filters';
-import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -20,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupSystemLimitFilterView } from './LookupSystemLimitFilterView';
 
 export type ILookupSystemLimitFilterResult = Pick<ISystemLimitAllFilter,
@@ -81,7 +81,7 @@ export type LookupSystemLimitFilterProps
   & WithLookupCompany
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupSystemLimitFilterProps, OwnState> = (): OwnState => ({
@@ -188,11 +188,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemLimitFilterProps, OwnState
 
 export const LookupSystemLimitFilter = compose<LookupSystemLimitFilterProps, OwnOption>(
   setDisplayName('LookupSystemLimitFilter'),
-  withLayout,
   withLookupCompany,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
