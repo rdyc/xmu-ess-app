@@ -67,6 +67,7 @@ const createProps: mapper<ExpenseRequestListProps, IOwnState> = (props: ExpenseR
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(ExpenseField).map(key => ({ 
       value: key, 
       name: ExpenseField[key] 
@@ -116,7 +117,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
         start: props.start,
         end: props.end,
         statusType: props.statusType,
-        status: props.isRejected ? 'complete' : undefined, // this.props.status,
+        status: props.isRejected ? 'complete' : props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -184,7 +185,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
       props.expenseType !== undefined ||
       props.start !== undefined ||
       props.end !== undefined ||
-      props.status !== undefined || 
+      props.status !== 'pending' || 
       props.isRejected === true;
   },
 };
