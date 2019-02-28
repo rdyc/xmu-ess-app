@@ -66,6 +66,7 @@ const createProps: mapper<MileageRequestListProps, IOwnState> = (props: MileageR
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(MileageRequestField).map(key => ({
       value: key,
       name: MileageRequestField[key]
@@ -81,6 +82,7 @@ const createProps: mapper<MileageRequestListProps, IOwnState> = (props: MileageR
       state.year = request.filter.year,
       state.month = request.filter.month,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
     }
   }
@@ -178,7 +180,7 @@ const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
     return props.year !== undefined ||
       props.month !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true;
   },
 };

@@ -182,7 +182,7 @@ const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, Own
     filterMonth: undefined,
     filterYear: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNotify: undefined
   }),
 
@@ -317,7 +317,7 @@ const handlerCreators: HandleCreators<MileageApprovalListFilterProps, OwnHandler
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
