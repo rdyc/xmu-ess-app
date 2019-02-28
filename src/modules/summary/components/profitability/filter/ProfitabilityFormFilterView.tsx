@@ -41,7 +41,7 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
           fullScreen
           disableBackdropClick
           open={props.isFilterDialogOpen}
-          className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+          className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
           onClose={props.handleFilterVisibility}
           scroll="paper"
         >

@@ -1,12 +1,24 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupRoleGetAllFilter } from '@lookup/classes/filters/role';
 import { ICompanyList } from '@lookup/classes/response';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { LookupRoleListFilterView } from './LookupRoleListFilterView';
 
 export type ILookupRoleListFilterResult = Pick<ILookupRoleGetAllFilter, 'companyUid'>;
@@ -48,7 +60,7 @@ export type LookupRoleListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithUser
   & WithLookupCompany
   & InjectedIntlProps;
@@ -122,11 +134,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupRoleListFilterProps, IOwnState> 
 export const LookupRoleListFilter = compose<LookupRoleListFilterProps, IOwnOption>(
   setDisplayName('LookupRoleListFilter'),
   withUser,
-  withLayout,
   withLookupCompany,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(LookupRoleListFilterView);

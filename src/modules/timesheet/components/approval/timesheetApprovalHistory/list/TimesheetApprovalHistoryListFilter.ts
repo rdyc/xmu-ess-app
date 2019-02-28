@@ -1,9 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TimesheetApprovalHistoryListFilterView } from './TimesheetApprovalHistoryListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -125,7 +124,7 @@ export type TimesheetApprovalHistoryListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -323,12 +322,11 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProp
 export const TimesheetApprovalHistoryListFilter = compose<TimesheetApprovalHistoryListFilterProps, IOwnOption>(
   setDisplayName('TimesheetApprovalHistoryListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
 )(TimesheetApprovalHistoryListFilterView);

@@ -1,4 +1,3 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
   AppBar,
@@ -16,6 +15,7 @@ import {
   Typography,
   WithStyles,
   withStyles,
+  WithTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
@@ -38,7 +38,12 @@ interface OwnProps {
   handleDialogDetail: () => void;
 }
 
-type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
+type AllProps 
+  = OwnProps 
+  & WithUser 
+  & WithTheme 
+  & WithStyles<typeof styles>
+  & InjectedIntlProps;
 
 const billableDetail: React.SFC<AllProps> = props => {
   const { uid, type, isDetailOpen, data, handleDialogDetail, classes } = props;
@@ -63,7 +68,7 @@ const billableDetail: React.SFC<AllProps> = props => {
               open={isDetailOpen}
               onClose={handleDialogDetail}
               scroll="paper"
-              className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+              className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
               fullScreen
               disableBackdropClick
             >
@@ -148,8 +153,7 @@ const billableDetail: React.SFC<AllProps> = props => {
 };
 
 export const BillableDetail = compose<AllProps, OwnProps>(
-  withUser, 
-  withLayout,  
+  withUser,
   injectIntl,
-  withStyles(styles)
+  withStyles(styles, { withTheme: true })
 )(billableDetail);

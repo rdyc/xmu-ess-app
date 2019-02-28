@@ -1,10 +1,9 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { IMileageExceptionAllFilter } from '@lookup/classes/filters';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -83,7 +82,7 @@ export type LookupMileageExceptionFilterProps
   & WithStyles<typeof styles>
   & WithLookupCompany
   & WithLookupRole
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupMileageExceptionFilterProps, OwnState> = (): OwnState => ({
@@ -193,12 +192,11 @@ const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionFilterProps, Own
 
 export const LookupMileageExceptionFilter = compose<LookupMileageExceptionFilterProps, OwnOption>(
   setDisplayName('LookupMileageExceptionFilter'),
-  withLayout,
   withLookupCompany,
   withLookupRole,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles),
+  lifecycle(lifecycles)
 )(LookupMileageExceptionFilterView);

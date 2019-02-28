@@ -35,7 +35,7 @@ export const FilterCompanyView: React.SFC<FilterCompanyProps> = props => {
     <Dialog
       fullScreen
       disableBackdropClick
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       open={props.isOpen}
       onClose={props.onClose}
     >

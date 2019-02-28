@@ -1,9 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
-import { withLookupCustomer, WithLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { PurchaseApprovalListFilterView } from './PurchaseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -114,7 +113,7 @@ export type PurchaseApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<PurchaseApprovalListFilterProps, IOwnState> = (props: PurchaseApprovalListFilterProps): IOwnState => ({
@@ -276,12 +275,11 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalListFilterProps, IOwnS
 export const PurchaseApprovalListFilter = compose<PurchaseApprovalListFilterProps, IOwnOption>(
   setDisplayName('PurchaseApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles),
+  lifecycle(lifecycles)
 )(PurchaseApprovalListFilterView);

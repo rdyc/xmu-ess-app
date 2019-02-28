@@ -1,6 +1,8 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { ICompanyList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IOrganizationHierarchyAllFilter } from '@organization/classes/filters/hierarchy';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,9 +20,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { OrganizationHierarchyListFilterView } from './OrganizationHierarchyListFilterView';
 
 export type IOrganizationHierarchyListFilterResult = Pick<IOrganizationHierarchyAllFilter, 'companyUid' >;
@@ -70,7 +69,7 @@ export type OrganizationHierarchyListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<OrganizationHierarchyListFilterProps, IOwnState> = (): IOwnState => ({
@@ -147,11 +146,10 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyListFilterProps, 
 export const OrganizationHierarchyListFilter = compose<OrganizationHierarchyListFilterProps, IOwnOption>(
   setDisplayName('OrganizationHierarchyListFilter'),
   withUser,
-  withLayout,
   withLookupCompany,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(OrganizationHierarchyListFilterView);

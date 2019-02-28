@@ -1,9 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { ISettlementApprovalGetAllFilter } from '@purchase/classes/filters/settlementApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { SettlementApprovalListFilterView } from './SettlementApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -114,7 +113,7 @@ export type SettlementApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<SettlementApprovalListFilterProps, IOwnState> = (props: SettlementApprovalListFilterProps): IOwnState => ({
@@ -277,12 +276,11 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalListFilterProps, IOw
 export const SettlementApprovalListFilter = compose<SettlementApprovalListFilterProps, IOwnOption>(
   setDisplayName('SettlementApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(SettlementApprovalListFilterView);

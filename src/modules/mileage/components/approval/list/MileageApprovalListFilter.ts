@@ -1,9 +1,9 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
+import { IMileageRequest } from '@mileage/classes/response';
 import styles from '@styles';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,7 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalListFilterView } from './MileageApprovalListFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
@@ -158,7 +157,7 @@ export type MileageApprovalListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -373,11 +372,10 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListFilterProps, OwnSta
 
 export const MileageApprovalListFilter = compose<MileageApprovalListFilterProps, OwnOption>(
   setDisplayName('MileageApprovalListFilter'),
-  withLayout,
   withCommonSystem,
   injectIntl,
+  withStyles(styles, { withTheme: true}),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles),
+  lifecycle(lifecycles)
   )(MileageApprovalListFilterView);

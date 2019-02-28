@@ -29,7 +29,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"

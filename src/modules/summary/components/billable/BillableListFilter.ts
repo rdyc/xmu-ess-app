@@ -1,8 +1,7 @@
 import { IEmployee } from '@account/classes/response';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { ISummaryBillableFilter } from '@summary/classes/filters';
 import * as moment from 'moment';
@@ -16,8 +15,9 @@ import {
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
+
 import { BillableListFilterView } from './BillableListFilterView';
 
 export type IBillableListFilterResult = Pick<ISummaryBillableFilter, 'companyUid' | 'employeeUid' | 'start' | 'end'>;
@@ -114,7 +114,7 @@ export type BillableListFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithStyles<typeof styles> 
-  & WithLayout 
+  & WithTheme
   & WithUser 
   & InjectedIntlProps;
 
@@ -270,10 +270,9 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
 
 export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
   setDisplayName('BillableListFilter'),
-  withLayout,
   withUser,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   injectIntl
 )(BillableListFilterView);
