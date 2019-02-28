@@ -24,6 +24,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { ExpenseRequestListFilterProps } from './ExpenseRequestListFilter';
 
 // import { DialogValue } from '@layout/components/dialogs/DialogValue';
@@ -53,7 +54,8 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || 
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -152,14 +154,14 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           </ListItem>
           <Divider /> */}
 
-          {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
               secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
             />
             <ListItemSecondaryAction>
             { 
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton> 
@@ -170,7 +172,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
               </IconButton> 
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider /> */}
+          <Divider />
 
           <ListItem button onClick={props.handleFilterStatusVisibility}>
             <ListItemText 
@@ -199,7 +201,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -261,7 +263,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       onClose={props.handleFilterEndOnClose}
     />
 
-    {/* <DialogValue
+    <DialogValue
       title={props.intl.formatMessage(expenseMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
@@ -269,6 +271,6 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    /> */}
+    />
   </React.Fragment>
 );

@@ -1,8 +1,7 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupHolidayGetAllFilter } from '@lookup/classes/filters/holiday/ILookupHolidayGetAllFilter';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -16,6 +15,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupHolidayListFilterView } from './LookupHolidayListFilterView';
 
 export type ILookupHolidayListFilterResult = Pick<ILookupHolidayGetAllFilter, 'companyUid' >;
@@ -62,7 +62,7 @@ export type LookupHolidayListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupHolidayListFilterProps, IOwnState> = (props: LookupHolidayListFilterProps): IOwnState => ({
@@ -115,9 +115,8 @@ const handlerCreators: HandleCreators<LookupHolidayListFilterProps, IOwnHandler>
 export const LookupHolidayListFilter = compose<LookupHolidayListFilterProps, IOwnOption>(
   setDisplayName('LookupHolidayListFilter'),
   withUser,
-  withLayout,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(LookupHolidayListFilterView);

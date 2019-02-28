@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IPositionPostPayload, IPositionPutPayload } from '@lookup/classes/request';
@@ -46,7 +46,7 @@ export type PositionEditorProps
   = WithLookupPosition
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -206,13 +206,13 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupPositionDispatch;
     const { user } = this.props.userState;
 
     const view = {
-      title: intl.formatMessage(lookupMessage.position.form.newTitle),
-      subTitle: intl.formatMessage(lookupMessage.position.form.newSubTitle),
+      title: lookupMessage.position.form.newTitle,
+      subTitle: lookupMessage.position.form.newSubTitle,
     };
 
     if (!user) {
@@ -221,8 +221,8 @@ const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
 
     if (!isNullOrUndefined(history.location.state)) {
 
-        view.title = intl.formatMessage(lookupMessage.position.form.editTitle),
-        view.subTitle = intl.formatMessage(lookupMessage.position.form.editSubTitle),
+        view.title = lookupMessage.position.form.editTitle,
+        view.subTitle = lookupMessage.position.form.editSubTitle,
 
         stateUpdate({
           formMode: FormMode.Edit,
@@ -236,23 +236,18 @@ const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
       
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupPosition,
       parentUid: AppMenu.Lookup,
-      title: view.title,
-      subTitle: view.subTitle
+      parentUrl: '/lookup/positions',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupPositionDispatch } = this.props;
+    const { masterPage, lookupPositionDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupPositionDispatch.createDispose();
     lookupPositionDispatch.updateDispose();
@@ -262,7 +257,7 @@ const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
 export const PositionEditor = compose<PositionEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupPosition,
   injectIntl,

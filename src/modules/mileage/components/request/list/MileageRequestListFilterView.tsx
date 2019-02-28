@@ -30,7 +30,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       onClose={props.onClose}
     >
       <AppBar 
@@ -155,7 +155,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectedOnChange}
             />

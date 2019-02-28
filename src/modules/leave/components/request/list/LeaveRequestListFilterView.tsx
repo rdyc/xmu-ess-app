@@ -30,7 +30,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       scroll="paper"
       onClose={props.onClose}
     >
@@ -136,7 +136,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />

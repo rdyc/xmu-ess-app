@@ -30,7 +30,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"
@@ -138,7 +138,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />

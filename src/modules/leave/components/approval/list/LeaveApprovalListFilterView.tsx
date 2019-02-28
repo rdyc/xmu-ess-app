@@ -137,7 +137,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />
