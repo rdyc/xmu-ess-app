@@ -48,6 +48,7 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+  
   // filter completion
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;

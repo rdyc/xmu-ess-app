@@ -51,7 +51,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterStatus || props.filterProject || props.filterRejected) &&
+            (props.filterCustomer || props.filterStatus || (props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -67,6 +67,26 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       </AppBar>
       
       <Divider/>
+
+      <ListItem button onClick={props.handleFilterCompletionVisibility}>
+        <ListItemText
+          primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+          secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+        />
+        <ListItemSecondaryAction>
+          {
+            (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+            <IconButton onClick={props.handleFilterCompletionOnClear}>
+              <ClearIcon />
+            </IconButton>
+          }
+
+          <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <ChevronRightIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+      <Divider />
       
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
