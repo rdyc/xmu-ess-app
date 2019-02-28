@@ -178,7 +178,7 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterProject: undefined,
     filterStart: undefined,
@@ -348,7 +348,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: ExpenseApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();

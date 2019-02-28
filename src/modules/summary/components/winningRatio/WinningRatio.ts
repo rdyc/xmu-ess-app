@@ -164,13 +164,6 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
 
     const { isLoading, response } = this.props.summaryState.winning;
 
-    // layoutDispatch.changeView({
-    //   uid: AppMenu.ReportWinningRatio,
-    //   parentUid: AppMenu.Report,
-    //   title: intl.formatMessage(summaryMessage.winningRatio.page.title),
-    //   subTitle: intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
-    // });
-
     this.props.masterPage.changePage({
       uid: AppMenu.ReportWinningRatio,
       parentUid: AppMenu.Report,
@@ -206,20 +199,11 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
   },
   componentWillUnmount() {
     const { masterPage } = this.props;
-    const { view } = this.props.layoutState;
     const { loadWinningDispose } = this.props.summaryDispatch;
 
     masterPage.resetPage();
 
-    // layoutDispatch.changeView(null);
-    // layoutDispatch.modeListOff();
-    // layoutDispatch.modeSearchOff();
-    // layoutDispatch.moreHide();
-
-    // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
-    if (view && view.uid !== AppMenu.ReportWinningRatio) {
-      loadWinningDispose();
-    }
+    loadWinningDispose();
   }
 };
 

@@ -232,7 +232,6 @@ const handlerCreators: HandleCreators<
     const { match, intl, history, mileageItemUids, itemsNeedApprove } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
-    const { loadAllDispose } = props.mileageApprovalDispatch;
 
     alertAdd({
       time: new Date(),
@@ -243,9 +242,6 @@ const handlerCreators: HandleCreators<
 
     // back to approval list
     if (mileageItemUids.length === itemsNeedApprove) {
-
-      loadAllDispose();
-
       // notification: mark as complete
       props.notificationDispatch.markAsComplete({
         moduleUid: ModuleDefinitionType.Mileage,

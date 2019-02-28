@@ -302,7 +302,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.purchaseSettlementDispatch;
     const { user } = this.props.userState;
 
@@ -369,8 +369,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
       parentUrl: `/purchase/requests/${this.props.history.location.state.uid}`,
       title: intl.formatMessage({ id: purchase.title }),
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
     const { masterPage, purchaseSettlementDispatch } = this.props;
