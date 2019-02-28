@@ -4,5 +4,6 @@ export interface ISettlementGetAllFilter extends IBaseFilter, IBasePagingFilter,
   customerUid?: string;
   projectUid?: string; 
   isRejected?: boolean;
+  status?: 'pending' | 'complete' | string;
   statusType?: string;
 }

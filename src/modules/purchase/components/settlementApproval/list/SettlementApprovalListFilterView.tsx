@@ -52,7 +52,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || props.filterProject || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -118,7 +118,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
             />
             <ListItemSecondaryAction>
             { 
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton> 

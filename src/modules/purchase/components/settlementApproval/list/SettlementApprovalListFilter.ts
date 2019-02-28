@@ -131,7 +131,7 @@ const stateUpdaters: StateUpdaters<SettlementApprovalListFilterProps, IOwnState,
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterProject: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterStatus: undefined
   }),
@@ -219,7 +219,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListFilterProps, IOwnHan
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: SettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: SettlementApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();

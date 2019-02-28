@@ -21,9 +21,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { ICollectionValue } from '@layout/classes/core';
 import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
 
-export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' >;
+export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' | 'status' >;
+
+const completionStatus: ICollectionValue[] = [
+  { value: 'pending', name: 'Pending' },
+  { value: 'complete', name: 'Complete' }
+]; 
 
 interface IOwnOption {
   isOpen: boolean;
@@ -33,6 +39,8 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  completionStatus: ICollectionValue[];
+
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -40,6 +48,9 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
 
   // filter settlement
   filterSettlement?: boolean;
@@ -59,6 +70,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
 
   // filter settlement
   setFilterSettlement: StateHandler<IOwnState>;
@@ -84,6 +99,12 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
+
   // filter settlement
   handleFilterSettlementOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   
@@ -104,6 +125,8 @@ export type PurchaseRequestListFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<PurchaseRequestListFilterProps, IOwnState> = (props: PurchaseRequestListFilterProps): IOwnState => ({
+  completionStatus,
+  isFilterCompletionOpen: false,
   isFilterCustomerOpen: false,
   isFilterStatusOpen: false,
 
@@ -118,6 +141,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
     filterCustomer: undefined,
     filterSettlement: undefined,
     filterRejected: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterStatus: undefined
   }),
 
@@ -137,6 +161,15 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
   setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
+  }),
+
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
   }),
 
   // filter settlement
@@ -159,6 +192,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       statusType: props.filterStatus && props.filterStatus.type,
+      status: props.filterCompletion && props.filterCompletion.value,
       isSettlement: props.filterSettlement,
       isRejected: props.filterRejected,
     });
@@ -191,7 +225,21 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   handleFilterStatusOnClose: (props: PurchaseRequestListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
-  
+
+  // filter completion
+  handleFilterCompletionVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: PurchaseRequestListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
+  },
+  handleFilterCompletionOnClose: (props: PurchaseRequestListFilterProps) => () => {
+    props.setFilterCompletionVisibility();
+  },
+
   // filter settlement
   handleFilterSettlementOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSettlement(checked);
@@ -228,6 +276,13 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListFilterProps, IOwnSt
 
           this.props.setFilterStatus(selected);
         }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
 
       if (isSettlement) {

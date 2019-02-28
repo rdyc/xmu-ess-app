@@ -51,7 +51,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterStatus || props.filterSettlement || props.filterRejected) &&
+            (props.filterCustomer || props.filterProject || props.filterStatus || (props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterSettlement || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -89,7 +89,25 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.statusType)}

@@ -23,7 +23,7 @@ import {
 
 import { PurchaseSettlementListFilterView } from './PurchaseSettlementListFilterView';
 
-export type IPurchaseSettlementListFilterResult = Pick<ISettlementGetAllFilter, 'customerUid' | 'isRejected' | 'statusType' >;
+export type IPurchaseSettlementListFilterResult = Pick<ISettlementGetAllFilter, 'customerUid' | 'isRejected' | 'statusType' | 'status' >;
 
 interface IOwnOption {
   isOpen: boolean;
