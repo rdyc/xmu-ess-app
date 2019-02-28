@@ -1,6 +1,5 @@
 import { AccountLeaveView } from '@account/components/leave/AccountLeaveView';
 import { WithAccountEmployeeLeave, withAccountEmployeeLeave } from '@account/hoc/withAccountEmployeeLeave';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,7 +15,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface OwnState {
+interface IOwnState {
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
@@ -25,11 +24,11 @@ interface OwnState {
   dialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   year: string;
 }
 
@@ -37,36 +36,26 @@ export type AccountLeaveDetailProps
   = WithAccountEmployeeLeave
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams> 
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<AccountLeaveDetailProps, OwnState> = (props: AccountLeaveDetailProps): OwnState => ({ 
+const createProps: mapper<AccountLeaveDetailProps, IOwnState> = (props: AccountLeaveDetailProps): IOwnState => ({ 
     dialogFullScreen: false,
     dialogOpen: false,
     dialogCancelText: 'global.action.cancel',
     dialogConfirmedText: 'global.action.ok',
   });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-    stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+    stateUpdate: (prevState: IOwnState) => (newState: any) => ({
       ...prevState,
       ...newState
     }),
-    stateReset: (prevState: OwnState) => () => ({
-      ...prevState,
-      dialogFullScreen: false,
-      dialogOpen: false,
-      dialogTitle: undefined,
-      dialogDescription: undefined,
-      dialogCancelText: 'global.action.cancel',
-      dialogConfirmedText: 'global.action.ok',
-    })
   };
 
-const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, IOwnState> = {
     componentDidMount() {
       const { 
         layoutDispatch 
@@ -90,13 +79,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, OwnState> = {
     },
 
     componentWillUnmount() {
-      const { layoutDispatch, appBarDispatch, accountEmployeeLeaveDispatch } = this.props;
-  
-      layoutDispatch.changeView(null);
-      layoutDispatch.navBackHide();
-      layoutDispatch.moreHide();
-  
-      appBarDispatch.dispose();
+      const { accountEmployeeLeaveDispatch } = this.props;
   
       accountEmployeeLeaveDispatch.loadDetailDispose();
     }
@@ -105,11 +88,10 @@ const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, OwnState> = {
 export const AccountLeave = compose<AccountLeaveDetailProps, {}>(
     withUser,
     withLayout,
-    withAppBar,
     withRouter,
     withAccountEmployeeLeave,
     injectIntl,
-    withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-    lifecycle<AccountLeaveDetailProps, OwnState>(lifecycles),
+    withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters), 
+    lifecycle<AccountLeaveDetailProps, IOwnState>(lifecycles),
   )(AccountLeaveView);
   
