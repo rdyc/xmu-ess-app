@@ -157,7 +157,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
             />
             <ListItemSecondaryAction>
             { 
@@ -268,9 +268,10 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );
