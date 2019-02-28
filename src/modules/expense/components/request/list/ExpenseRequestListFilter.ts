@@ -177,7 +177,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterRejected: undefined,
     filterStart: undefined,
     filterEnd: undefined,
@@ -346,7 +346,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: ExpenseRequestListFilterProps) => () => {
     props.setFilterCompletionVisibility();
