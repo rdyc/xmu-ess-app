@@ -67,6 +67,7 @@ const createProps: mapper<ExpenseApprovalListProps, IOwnState> = (props: Expense
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(ExpenseField).map(key => ({ 
       value: key, 
       name: ExpenseField[key] 
@@ -185,7 +186,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListProps, IOwnHandler> = {
       props.expenseType !== undefined ||
       props.start !== undefined ||
       props.end !== undefined ||
-      props.status !== undefined || 
+      props.status !== 'pending' || 
       props.isNotify === true;
   },
 };
