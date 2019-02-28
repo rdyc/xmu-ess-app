@@ -51,7 +51,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
           </Typography>
           
           {
-            (props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterType || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -118,6 +118,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
             <ListItemSecondaryAction>
               {
                 props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton>

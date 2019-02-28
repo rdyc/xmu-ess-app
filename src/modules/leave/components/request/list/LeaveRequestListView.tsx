@@ -109,6 +109,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
       initialProps={{
         leaveType: props.leaveType,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
       }}
       onClose={props.handleFilterVisibility}
