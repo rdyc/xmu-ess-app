@@ -1,6 +1,8 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyDeletePayload } from '@lookup/classes/request/company';
 import { LookupUserAction } from '@lookup/classes/types';
@@ -15,23 +17,24 @@ import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 import { LookupCompanyDetailView } from './LookupCompanyDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   companyUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleDelete: (payload: DeleteFormData) => void;
   handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
-
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -41,39 +44,78 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type CompanyDetailProps
   = WithUser
+  & WithOidc
   & WithLayout
   & WithLookupCompany
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<CompanyDetailProps, OwnState> = (props: CompanyDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-});
+const createProps: mapper<CompanyDetailProps, IOwnState> = (props: CompanyDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<CompanyDetailProps, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+  };
+};
+
+const stateUpdaters: StateUpdaters<CompanyDetailProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: OwnState, props: CompanyDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: CompanyDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: CompanyDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: CompanyDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'company'}),
+  }),
+  setDelete: (prevState: IOwnState, props: CompanyDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'company'}),
+  })
 };
 
-const handlerCreators: HandleCreators<CompanyDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<CompanyDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: CompanyDetailProps) => () => { 
     if (props.userState.user && props.match.params.companyUid && !props.lookupCompanyState.detail.isLoading) {
       props.lookupCompanyDispatch.loadDetailRequest({
@@ -81,21 +123,20 @@ const handlerCreators: HandleCreators<CompanyDetailProps, OwnHandler> = {
       });
     }
   },
-  handleOnOpenDialog: (props: CompanyDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.company.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.company.confirm.modifyDescription),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.company.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.company.confirm.deleteDescription),
-      });
+  handleOnSelectedMenu: (props: CompanyDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: CompanyDetailProps) => () => {
@@ -189,8 +230,14 @@ const handlerCreators: HandleCreators<CompanyDetailProps, OwnHandler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<CompanyDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<CompanyDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: CompanyDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.companyUid !== prevProps.match.params.companyUid) {
       this.props.handleOnLoadApi();
@@ -201,27 +248,24 @@ const lifecycles: ReactLifeCycleFunctions<CompanyDetailProps, OwnState> = {
       const { isLoading } = this.props.lookupCompanyState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: true
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+          visible: true
         }
       ];
 
@@ -233,11 +277,12 @@ const lifecycles: ReactLifeCycleFunctions<CompanyDetailProps, OwnState> = {
 export const LookupCompanyDetail = compose(
   setDisplayName('LookupCompanyDetail'),
   withRouter,
+  withOidc,
   withUser,
   withLayout,
   withLookupCompany,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<CompanyDetailProps, OwnHandler>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<CompanyDetailProps, IOwnHandler>(handlerCreators),
   lifecycle(lifecycles),
 )(LookupCompanyDetailView);

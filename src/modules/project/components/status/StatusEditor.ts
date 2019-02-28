@@ -1,8 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectStatusPutPayload } from '@project/classes/request/status';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -39,7 +39,7 @@ interface IOwnHandlers {
 }
 
 interface IOwnRouteParams {
-  projectUid: string;
+
 }
 
 interface IOwnState {
@@ -59,7 +59,7 @@ export type StatusEditorProps
   & WithProjectRegistration
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnHandlers
@@ -179,21 +179,19 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history } = this.props;
+    const { intl, history } = this.props;
     const { user } = this.props.userState;
-    const { response } = this.props.projectRegisterState.detail;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.registration.page.statusModifyTitle),
-      subTitle : intl.formatMessage(projectMessage.registration.page.statusModifySubHeader)
-    });
-    
-    layoutDispatch.navBackShow();
+    if (!isNullOrUndefined(history.location.state) && user) {
+      this.props.masterPage.changePage({
+        uid: AppMenu.ProjectRegistrationRequest,
+        parentUid: AppMenu.ProjectRegistration,
+        parentUrl: `/project/requests/${history.location.state.uid}`,
+        title: intl.formatMessage(projectMessage.registration.page.statusModifyTitle),
+        description : intl.formatMessage(projectMessage.registration.page.statusModifySubHeader)
+      });
 
-    if (!isNullOrUndefined(history.location.state) && !response && user) {
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -202,13 +200,7 @@ const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectStatusDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectStatusDispatch } = this.props;
 
     projectStatusDispatch.updateDispose();
   }
@@ -218,7 +210,7 @@ export const StatusEditor = compose<StatusEditorProps, {}>(
   setDisplayName('StatusEditor'),
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withProjectRegistration,
   withProjectStatus,

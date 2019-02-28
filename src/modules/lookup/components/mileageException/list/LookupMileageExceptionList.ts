@@ -92,7 +92,7 @@ const stateUpdaters: StateUpdaters<LookupMileageExceptionProps, IOwnState, IOwnS
 
 const handlerCreators: HandleCreators<LookupMileageExceptionProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupMileageExceptionProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.mileageExceptionState.all;
+    const { isExpired, isLoading, request } = props.mileageExceptionState.all;
     const { loadAllRequest } = props.mileageExceptionDispatch;
     const { user } = props.userState;
 
@@ -113,7 +113,7 @@ const handlerCreators: HandleCreators<LookupMileageExceptionProps, IOwnHandler> 
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

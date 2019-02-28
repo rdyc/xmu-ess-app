@@ -35,7 +35,12 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -60,6 +65,8 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>

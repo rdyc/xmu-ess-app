@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { IMileageRequestDetail } from '@mileage/classes/response';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
@@ -18,7 +19,6 @@ export const MileageRequestDetailView: React.SFC<MileageRequestDetailProps> = pr
       title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
       description: props.intl.formatMessage(mileageMessage.request.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.mileageRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IMileageRequestDetail) => (
@@ -29,5 +29,14 @@ export const MileageRequestDetailView: React.SFC<MileageRequestDetailProps> = pr
       <TimesheetItem data={data.timesheets} />,
       <WorkflowHistory data={data.workflow} />
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu
+        id="mileage-request-option"
+        selectable={false}
+        menuOptions={props.menuOptions}
+        onSelected={props.handleOnSelectedMenu}
+      />
+    }
   />
 );

@@ -1,7 +1,6 @@
 import { IAlert, ILayoutState } from '@layout/interfaces';
 import { LayoutAction as Action } from '@layout/store/actions';
-import indigo from '@material-ui/core/colors/indigo';
-import orange from '@material-ui/core/colors/orange';
+import { brown, indigo, orange } from '@material-ui/core/colors';
 import { Reducer } from 'redux';
 
 const initialState: ILayoutState = {
@@ -9,6 +8,9 @@ const initialState: ILayoutState = {
     palette: {
       primary: indigo,
       secondary: orange,
+      background: {
+        default: brown[50]
+      },
       type: 'light'
     },
     typography: {

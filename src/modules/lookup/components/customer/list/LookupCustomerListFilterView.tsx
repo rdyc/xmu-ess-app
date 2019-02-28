@@ -27,10 +27,15 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -57,8 +62,9 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
         </Toolbar>
       </AppBar>
 
+      <Divider/>
+      
       <List>
-
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(lookupMessage.mileageException.field.company)}

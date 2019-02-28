@@ -4,8 +4,8 @@ import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/w
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
@@ -59,7 +59,7 @@ export type AccountEmployeeRateEditorProps
   & WithUser
   & WithLayout
   & WithWidth
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
   & OwnHandlers
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     
     let message: string = '';
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate'});
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate', uid: response.uid});
     }
 
     alertAdd({
@@ -185,7 +185,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { match, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeRateDispatch;
     const { user } = this.props.userState;
 
@@ -216,31 +216,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = 
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupEmployee,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title, {state: 'Note'}),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/account/employee/${this.props.match.params.employeeUid}/rate`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupEmployee,
+      parentUid: AppMenu.Lookup,
+      parentUrl: `/account/employee/${match.params.employeeUid}/rate`,
+      title: intl.formatMessage(view.title, {state: 'Rate'}),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeRateDispatch } = this.props;
+    const { masterPage, accountEmployeeRateDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     accountEmployeeRateDispatch.updateDispose();
   }
@@ -249,7 +236,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = 
 export default compose<AccountEmployeeRateEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withWidth(),
   withAccountEmployeeRate,

@@ -5,11 +5,12 @@ import { IInforResult } from 'modules/infor/classes/response';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IInforPostRequest, IInforResult> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IInforPostRequest, IInforResult>> = (state = initialState, action) => {

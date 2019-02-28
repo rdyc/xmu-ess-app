@@ -60,6 +60,7 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'gradeType':
         fieldProps = {
+          required: true,
           category: 'grade',
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),

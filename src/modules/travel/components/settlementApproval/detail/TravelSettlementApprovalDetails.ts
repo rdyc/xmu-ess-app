@@ -1,9 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -37,6 +37,7 @@ import { TravelSettlementApprovalDetailViews } from './TravelSettlementApprovalD
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -49,7 +50,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   shouldLoad: boolean;
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];  
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -62,7 +63,7 @@ interface OwnState {
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setOptions: StateHandler<OwnState>;
-  setNextLoad: StateHandler<OwnState>;
+  setShouldLoad: StateHandler<OwnState>;
 }
 
 export type TravelSettlementApprovalDetailProps
@@ -93,11 +94,11 @@ const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (prop
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
-  setNextLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setShouldLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldLoad: !prevState.shouldLoad
   }),
-  setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -117,6 +118,16 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
         });
       }
       
+    }
+  },
+  handleOnSelectedMenu: (props: TravelSettlementApprovalDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case TravelUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -188,7 +199,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
       itemUid: match.params.travelSettlementUid
     });
 
-    props.setNextLoad();
+    props.setShouldLoad();
     // history.push('/travel/approvals/settlement');    
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -216,7 +227,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
     // handle updated should load
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -229,13 +240,12 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
 
     // handle updated response state
     if (this.props.travelSettlementApprovalState.detail !== prevProps.travelSettlementApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: TravelUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.travelSettlementApprovalState.detail.isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

@@ -40,7 +40,12 @@ export const FilterCompanyView: React.SFC<FilterCompanyProps> = props => {
       onClose={props.onClose}
     >
       
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <ArrowBackIcon />
@@ -51,6 +56,8 @@ export const FilterCompanyView: React.SFC<FilterCompanyProps> = props => {
           </Typography>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <List>
         <ListItem button onClick={() => props.onSelected()}>

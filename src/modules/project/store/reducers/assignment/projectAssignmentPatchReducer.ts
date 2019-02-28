@@ -4,11 +4,12 @@ import { ProjectAssignmentAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IProjectAssignmentPatchRequest, undefined> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IProjectAssignmentPatchRequest, undefined>> = (state = initialState, action) => {

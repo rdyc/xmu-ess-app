@@ -93,7 +93,8 @@
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
-  "layout.label.theme": "Dark Mode",
+  "layout.label.theme.dark": "Dark Mode",
+  "layout.label.theme.light": "Light Mode",
   "layout.label.anchor.right": "Right Handed",
   "layout.label.anchor.left": "Left Handed",
   "layout.label.switch": "Switch Access",

@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
 
@@ -17,15 +18,20 @@ export const LookupSystemLimitDetailView: React.SFC<SystemLimitDetailProps> = pr
       title: props.intl.formatMessage(lookupMessage.systemLimit.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.systemLimit.page.detailSubHeader),
     }}
-    options={props.pageOptions}
     state={props.systemLimitState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ISystemLimitDetail) => (
       <LookupSystemLimitInformation data={data} />
     )}
-    secondary={() => ([
-      //
-    ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-systemlimit-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <Delete 
       action={props.action}

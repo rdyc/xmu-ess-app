@@ -5,11 +5,12 @@ import { SystemLimitAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>> = (state = initialState, action) => {

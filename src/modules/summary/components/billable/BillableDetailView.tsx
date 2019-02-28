@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Table,
   TableBody,
@@ -13,15 +14,15 @@ import {
   TableRow,
   Toolbar,
   Typography,
-  withStyles,
   WithStyles,
+  withStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import {
   BillableHeaderDetailNonPresales,
-  BillableHeaderDetailPresales
+  BillableHeaderDetailPresales,
 } from '@summary/classes/types/billable/BillableHeaderDetail';
 import { BillableType } from '@summary/classes/types/billable/BillableType';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
@@ -66,7 +67,12 @@ const billableDetail: React.SFC<AllProps> = props => {
               fullScreen
               disableBackdropClick
             >
-              <AppBar className={props.classes.appBarDialog}>
+              <AppBar 
+                elevation={0}
+                position="fixed" 
+                color="default"
+                className={props.classes.appBarDialog}
+              >
                 <Toolbar>
                   <IconButton color="inherit" onClick={handleDialogDetail} aria-label="Close">
                     <CloseIcon />
@@ -78,55 +84,59 @@ const billableDetail: React.SFC<AllProps> = props => {
 
                 </Toolbar>
               </AppBar>
+
+              <Divider/>
+
               <DialogTitle>
                 {item.employee.fullName} &bull; {user && user.company.name}
               </DialogTitle>
+
               <DialogContent>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        {type === BillableType.Presales
-                          ? headerPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
-                                {headerItem.name}
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {type === BillableType.Presales
+                        ? headerPresales.map(headerItem => (
+                            <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
+                              {headerItem.name}
+                            </TableCell>
+                          ))
+                        : headerNonPresales.map(headerItem => (
+                            <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
+                              {headerItem.name}
+                            </TableCell>
+                          ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                  {item.categories &&
+                    item.categories.map(cat =>
+                      cat.name === type
+                        ? cat.assignments &&
+                          cat.assignments.map((asign) => (
+                            <TableRow key={asign.projectUid}>
+                              <TableCell>
+                                {asign.project &&
+                                  asign.project.customer &&
+                                  asign.project.customer.name}
                               </TableCell>
-                            ))
-                          : headerNonPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
-                                {headerItem.name}
+                              <TableCell>
+                                {asign.projectUid} &bull; {asign.project && asign.project.name}
                               </TableCell>
-                            ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === type
-                          ? cat.assignments &&
-                            cat.assignments.map((asign) => (
-                              <TableRow key={asign.projectUid}>
-                                <TableCell>
-                                  {asign.project &&
-                                    asign.project.customer &&
-                                    asign.project.customer.name}
-                                </TableCell>
-                                <TableCell>
-                                  {asign.projectUid} &bull; {asign.project && asign.project.name}
-                                </TableCell>
-                                <TableCell>
-                                  {asign.position && asign.position.name}
-                                </TableCell>
-                                <TableCell><FormattedNumber value={Number(asign.allocatedHours.toFixed(2))} /></TableCell>
-                                <TableCell><FormattedNumber value={Number(asign.actualHours.toFixed(2))} /></TableCell>
-                                <TableCell>
-                                  <FormattedNumber value={Number(asign.actualPercentage.toFixed(2))} /> %
-                                </TableCell>
-                              </TableRow>
-                            ))
-                          : null
-                      )}
-                    </TableBody>
-                  </Table>
+                              <TableCell>
+                                {asign.position && asign.position.name}
+                              </TableCell>
+                              <TableCell><FormattedNumber value={Number(asign.allocatedHours.toFixed(2))} /></TableCell>
+                              <TableCell><FormattedNumber value={Number(asign.actualHours.toFixed(2))} /></TableCell>
+                              <TableCell>
+                                <FormattedNumber value={Number(asign.actualPercentage.toFixed(2))} /> %
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        : null
+                    )}
+                  </TableBody>
+                </Table>
               </DialogContent>
             </Dialog>
           ) : null

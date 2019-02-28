@@ -5,11 +5,12 @@ import { MileageExceptionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IMileageExceptionPostRequest, IMileageException> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IMileageExceptionPostRequest, IMileageException>> = (state = initialState, action) => {

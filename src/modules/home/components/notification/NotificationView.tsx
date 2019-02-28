@@ -75,10 +75,15 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                 style={{
                   padding: 0,
                   maxHeight: 300, 
-                  backgroundColor: props.theme.palette.background.default,
-                  overflowY: 'scroll'
+                  // backgroundColor: props.theme.palette.background.default,
+                  overflowY: 'auto'
                 }}
               >
+                {
+                  !props.lookupVersionState.detail.response &&
+                  <div></div>
+                }
+
                 {
                   props.lookupVersionState.detail.response &&
                   props.lookupVersionState.detail.response.data &&
@@ -86,7 +91,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                     <ListItem
                       button
                       onClick={props.handleDownloadClick}
-                      >
+                    >
                       <ListItemText
                         primary="Download APK"
                         secondary={`Update notes: ${props.lookupVersionState.detail.response.data.notes}`}
@@ -136,8 +141,8 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                     style={{
                       padding: 0,
                       maxHeight: 300, 
-                      backgroundColor: props.theme.palette.background.default,
-                      overflowY: 'scroll'
+                      // backgroundColor: props.theme.palette.background.default,
+                      overflowY: 'auto'
                     }}
                   >
                     <List disablePadding style={{ width: '100%' }}>

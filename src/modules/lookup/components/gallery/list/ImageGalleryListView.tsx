@@ -1,12 +1,25 @@
 import { DataContainer } from '@layout/components/pages/dataContainer/DataContainer';
 import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
-import { Grid, GridList, GridListTile, GridListTileBar, Typography } from '@material-ui/core';
+import { Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import * as React from 'react';
 import { ImageGalleryListProps } from './ImageGalleryList';
 
 export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
   const { isLoading, response } = props.imageGalleryState.all;
+
+  const cusCompt: React.ReactNode = (
+    <div>
+      <IconButton onClick={() => props.history.push('/lookup/imagegalleries/announcement')}>
+        <PictureInPictureIcon/>
+      </IconButton>
+      <IconButton onClick={() => props.history.push('/lookup/imagegalleries/form')}>
+        <AddCircleIcon/>
+      </IconButton>
+    </div>
+  );
 
   const RenderImageList = (images: IGallery[]) => {
 
@@ -65,5 +78,14 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
       </Grid>
     </React.Fragment>
   );
-  return render;
+
+  return (
+    <React.Fragment>
+      {
+        props.customComponentFlag &&
+        props.setCustomComponent(cusCompt)
+      }
+      {render}
+    </React.Fragment>
+  );
 };

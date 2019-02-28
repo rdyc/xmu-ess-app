@@ -25,11 +25,31 @@ const size = {
 
 const styles = (theme: Theme) =>
   createStyles({
+    '@global': {
+      body: {
+        margin: 0
+      },
+      [theme.breakpoints.up('md')]: {
+        '::-webkit-scrollbar': {
+          width: 5
+        },
+        '::-webkit-scrollbar-track': {
+          background: 'rgba(250, 250, 250, 0)'
+        },
+        '::-webkit-scrollbar-thumb': {
+          background: theme.palette.grey[400]
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          background: theme.palette.grey[500]
+        }
+      }
+    },
+
     root: {
       width: '100%',
       marginBottom: 0,
-      zIndex: 1,
-      overflow: 'hidden'
+      overflow: 'hidden',
+      zIndex: 1
     },
 
     landingPage: {
@@ -172,14 +192,16 @@ const styles = (theme: Theme) =>
     // Application Bar
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      backgroundColor: theme.palette.primary.main,
-      // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
-        backgroundColor: theme.palette.grey[400],
-        backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
-        width: `calc(100% - ${0}px)`,
-        marginLeft: 0,
-        marginRight: 0,
+        // backgroundColor: theme.palette.grey[100],
+        
+        // dangdut styles
+        // backgroundColor: theme.palette.grey[400],
+        // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
+        
+        // width: `calc(100% - ${0}px)`,
+        // marginLeft: 0,
+        // marginRight: 0,
       },
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -227,17 +249,15 @@ const styles = (theme: Theme) =>
     // SEARCH
     search: {
       position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      borderRadius: theme.shape.borderRadius + 10,
+      backgroundColor: fade(theme.palette.common.white, 0.5),
       '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.common.white, 0.7),
       },
-      marginLeft: 0,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing.unit,
         width: 'auto',
-      },
+      }
     },
     searchIcon: {
       width: theme.spacing.unit * 9,
@@ -249,7 +269,6 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
     },
     searchRoot: {
-      color: 'inherit',
       width: '100%',
     },
     searchInput: {
@@ -260,7 +279,7 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        width: 120,
+        width: 80,
         '&:focus': {
           width: 200,
         },
@@ -355,9 +374,13 @@ const styles = (theme: Theme) =>
     },
 
     // avatar
+    avatarPrimary: {
+      color: '#fff',
+      backgroundColor: theme.palette.primary.main
+    },
     avatarSecondary: {
       color: '#fff',
-      backgroundColor: theme.palette.secondary.dark
+      backgroundColor: theme.palette.secondary.main
     },
     avatarRed: {
       color: '#fff',
@@ -445,6 +468,10 @@ const styles = (theme: Theme) =>
     //     fontWeight: 500,
     //   },
     /* Color page end */
+
+    toolbar: {
+      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.background.default
+    },
 
     /* Toolbar Custom */
     toolbarCustom: {

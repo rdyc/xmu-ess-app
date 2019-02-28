@@ -50,7 +50,7 @@ const stateUpdaters: StateUpdaters<LookupCompanyListProps, IOwnState, {}> = {
 
 const handlerCreators: HandleCreators<LookupCompanyListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupCompanyListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupCompanyState.all;
+    const { isExpired, isLoading, request } = props.lookupCompanyState.all;
     const { loadAllRequest } = props.lookupCompanyDispatch;
     const { user } = props.userState;
 
@@ -69,7 +69,7 @@ const handlerCreators: HandleCreators<LookupCompanyListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

@@ -7,7 +7,6 @@ import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -31,6 +30,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { ExpenseApprovalDetailView } from './ExpenseApprovalDetailView';
 
 interface OwnRouteParams {
@@ -39,14 +39,16 @@ interface OwnRouteParams {
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isApprove?: boolean | undefined;
+  menuOptions?: IPopupMenuOption[];
   shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -56,13 +58,12 @@ interface OwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
-  pageOptions?: IAppBarMenu[];
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-  setDataload: StateHandler<OwnState>;
-  setOptions: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
+  setDataLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
 }
 
 export type ExpenseApprovalDetailProps 
@@ -72,11 +73,11 @@ export type ExpenseApprovalDetailProps
   & WithNotification
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
-  & OwnState
+  & IOwnState
   & OwnHandler
-  & OwnStateUpdaters;
+  & IOwnStateUpdaters;
 
-const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: ExpenseApprovalDetailProps): OwnState => { 
+const createProps: mapper<ExpenseApprovalDetailProps, IOwnState> = (props: ExpenseApprovalDetailProps): IOwnState => { 
   const { intl } = props;
 
   return {
@@ -95,16 +96,16 @@ const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: Expens
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDataLoad: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     shouldDataReload: !prevState.shouldDataReload
   }),
-  setOptions: (prevState: OwnState, props: ExpenseApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
 };
 
@@ -116,6 +117,16 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
         positionUid: props.userState.user.position.uid,
         expenseUid: props.match.params.expenseUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: ExpenseApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case ExpenseUserAction.Refresh:
+        props.setDataLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: ExpenseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -187,7 +198,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
       time: new Date()
     });
 
-    props.setDataload();
+    props.setDataLoad();
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
@@ -216,11 +227,11 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ExpenseApprovalDetailProps) {
     if (this.props.shouldDataReload && this.props.shouldDataReload !== prevProps.shouldDataReload) {
       // turn of shoul load
-      this.props.setDataload();
+      this.props.setDataLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -233,13 +244,12 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, OwnState> 
     if (this.props.expenseApprovalState.detail.response !== prevProps.expenseApprovalState.detail.response) {
       const { isLoading } = this.props.expenseApprovalState.detail;
 
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: ExpenseUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi,
         },
       ];
 

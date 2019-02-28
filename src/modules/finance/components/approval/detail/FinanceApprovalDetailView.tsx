@@ -5,6 +5,7 @@ import { FinanceStatusType } from '@common/classes/types';
 import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { FinanceApprovalDetailProps } from './FinanceApprovalDetail';
 import { FinanceInformation } from './shared/FinanceInformation';
@@ -28,7 +29,15 @@ export const FinanceApprovalDetailView: React.SFC<FinanceApprovalDetailProps> = 
       title: props.intl.formatMessage(financeMessage.approval.page.detailTitle),
       description: props.intl.formatMessage(financeMessage.approval.page.detailSubTitle)
     }}
-    options={props.pageOptions}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="finance-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
     state={props.financeApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IFinanceDetail) => (

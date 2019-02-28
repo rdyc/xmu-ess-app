@@ -2,8 +2,8 @@ import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
@@ -68,7 +68,7 @@ export type ProjectRegistrationEditorProps
   & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnHandlers
@@ -296,7 +296,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
     const { user } = this.props.userState;
     
@@ -351,14 +351,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
+      parentUrl: '/project/requests',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentDidUpdate(prevProps: ProjectRegistrationEditorProps) {
     if (this.props.formMode === FormMode.Edit && prevProps.projectRegisterState.detail !== this.props.projectRegisterState.detail) {
@@ -374,13 +373,9 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectRegisterDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectRegisterDispatch, masterPage } = this.props;
+    
+    masterPage.resetPage();
 
     projectRegisterDispatch.createDispose();
     projectRegisterDispatch.updateDispose();
@@ -392,7 +387,7 @@ export const ProjectRegistrationEditor = compose<ProjectRegistrationEditorProps,
   withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withProjectRegistration,
   injectIntl,

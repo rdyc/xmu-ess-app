@@ -1,12 +1,7 @@
-import AppEvent from '@constants/AppEvent';
 import { IRedirection } from '@generic/interfaces';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 
-const redirect = (redirection: IRedirection): void => {
-  dispatchEvent(new CustomEvent(AppEvent.Redirection, { detail: redirection }));
-};
-
-const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?: string): void => {
+const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?: string): IRedirection => {
   let path: string = '/';
 
   let state: any = { 
@@ -241,13 +236,12 @@ const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?
       break;
   }
     
-  redirect({
+  return({
     path,
     state
   });
 };
 
 export const pageHelper = {
-  redirect,
   redirectFrom
 };

@@ -5,11 +5,12 @@ import { LookupLeaveAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ILookupLeaveDeleteRequest, ILookupLeave> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<ILookupLeaveDeleteRequest, ILookupLeave>> = (state = initialState, action) => {

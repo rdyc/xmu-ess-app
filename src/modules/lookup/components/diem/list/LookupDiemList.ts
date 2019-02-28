@@ -100,7 +100,7 @@ const stateUpdaters: StateUpdaters<LookupDiemListProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<LookupDiemListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupDiemListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupDiemState.all;
+    const { isExpired, isLoading, request } = props.lookupDiemState.all;
     const { loadAllRequest } = props.lookupDiemDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<LookupDiemListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

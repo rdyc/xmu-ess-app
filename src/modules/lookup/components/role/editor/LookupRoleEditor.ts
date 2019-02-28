@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupRolePostPayload, ILookupRolePutPayload } from '@lookup/classes/request/role';
@@ -11,25 +11,37 @@ import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupRoleFormData, LookupRoleMenuFormData } from './forms/LookupRoleForm';
 import { LookupRoleEditorView } from './LookupRoleEditorView';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: LookupRoleFormData) => FormErrors;
   handleSubmit: (payload: LookupRoleFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   roleUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   roleUid?: string | undefined;
@@ -40,22 +52,22 @@ interface OwnState {
   isCheckedMenus: Menus[];
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type RoleEditorProps
   = WithLookupRole
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<RoleEditorProps, IOwnHandlers> = {
   handleValidate: (props: RoleEditorProps) => (formData: LookupRoleFormData) => {
     const errors = {
       information: {}
@@ -157,7 +169,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
     });
 
     // history.push(`/lookup/roles`);
-    history.push(`/lookup/roles/${response.uid}`);
+    history.push(`/lookup/roles/${response.uid}`, { companyUid: response.companyUid});
   },
   handleSubmitFail: (props: RoleEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -190,7 +202,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RoleEditorProps, OwnState> = (props: RoleEditorProps): OwnState => ({ 
+const createProps: mapper<RoleEditorProps, IOwnState> = (props: RoleEditorProps): IOwnState => ({ 
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(lookupMessage.role.dialog.createTitle),
   submitDialogContentText: props.intl.formatMessage(lookupMessage.role.dialog.createDescription),
@@ -199,8 +211,8 @@ const createProps: mapper<RoleEditorProps, OwnState> = (props: RoleEditorProps):
   isCheckedMenus: []
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -208,7 +220,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<RoleEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupRoleDispatch;
     const { user } = this.props.userState;
     
@@ -236,23 +248,18 @@ const lifecycles: ReactLifeCycleFunctions<RoleEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupRole,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/roles',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupRoleDispatch } = this.props;
+    const { masterPage, lookupRoleDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupRoleDispatch.createDispose();
     lookupRoleDispatch.updateDispose();
@@ -262,11 +269,11 @@ const lifecycles: ReactLifeCycleFunctions<RoleEditorProps, {}> = {
 export default compose<RoleEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupRole,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RoleEditorProps, OwnHandlers>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<RoleEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<RoleEditorProps, {}>(lifecycles),
 )(LookupRoleEditorView);

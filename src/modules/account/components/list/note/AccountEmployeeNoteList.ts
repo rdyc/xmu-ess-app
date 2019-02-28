@@ -2,6 +2,7 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -70,7 +71,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeNoteListProps, IOwnState, IOwn
 
 const handlerCreators: HandleCreators<AccountEmployeeNoteListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeNoteListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.accountEmployeeNoteState.all;
+    const { isExpired, isLoading, request } = props.accountEmployeeNoteState.all;
     const { loadAllRequest } = props.accountEmployeeNoteDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -88,7 +89,7 @@ const handlerCreators: HandleCreators<AccountEmployeeNoteListProps, IOwnHandler>
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           employeeUid: props.match.params.employeeUid,
@@ -100,8 +101,8 @@ const handlerCreators: HandleCreators<AccountEmployeeNoteListProps, IOwnHandler>
     key: index,
     primary: props.match.params.employeeUid,
     secondary: item.id.toString(),
-    tertiary: props.location.state.employeeName,
-    quaternary: item.text,
+    tertiary: item.text,
+    quaternary: item.changes && props.intl.formatDate(item.changes.createdAt, GlobalFormat.Date) || 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   })

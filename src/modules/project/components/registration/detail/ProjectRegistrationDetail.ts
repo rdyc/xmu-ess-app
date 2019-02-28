@@ -1,8 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -29,21 +29,10 @@ interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleOnModify: () => void;
-  handleOnChangeStatus: () => void;
-  handleOnChangeOwner: () => void;
-  handleOnAdjustHour: () => void;
-  handleOnReOpen: () => void;
-  handleOnManageSite: () => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
-}
-
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: ProjectUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -54,6 +43,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setClose: StateHandler<IOwnState>;
@@ -62,6 +52,13 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setAdjustHour: StateHandler<IOwnState>;
   setManageSite: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 export type ProjectRegistrationDetailProps 
@@ -93,16 +90,20 @@ const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: P
   
   return { 
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false
   };
 };
 
 const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setOptions: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setShouldLoad: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
-  setModify: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setOptions: (state: IOwnState, props: ProjectRegistrationDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
+  }),
+  setModify: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -111,7 +112,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setClose: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setClose: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Close,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -120,7 +121,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setReopen: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setReopen: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ReOpen,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -138,7 +139,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setAdjustHour: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setAdjustHour: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.AdjustHour,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -147,7 +148,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setManageSite: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+  setManageSite: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ManageSites,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -156,7 +157,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+  setDefault: (state: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -177,23 +178,33 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
       });
     }
   },
-  handleOnModify: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setModify();
-  },
-  handleOnChangeStatus: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setClose();
-  },
-  handleOnReOpen: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setReopen();
-  },
-  handleOnChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setChangeOwner();
-  },
-  handleOnAdjustHour: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setAdjustHour();
-  },
-  handleOnManageSite: (props: ProjectRegistrationDetailProps) => () => { 
-    props.setManageSite();
+  handleOnSelectedMenu: (props: ProjectRegistrationDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case ProjectUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case ProjectUserAction.Modify:
+        props.setModify();
+        break;
+      case ProjectUserAction.Close:
+        props.setClose();
+        break;
+      case ProjectUserAction.ReOpen:
+        props.setReopen();
+        break;
+      case ProjectUserAction.AdjustHour:
+        props.setAdjustHour();
+        break;
+      case ProjectUserAction.ChangeOwner:
+        props.setChangeOwner();
+        break;
+      case ProjectUserAction.ManageSites:
+        props.setManageSite();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: ProjectRegistrationDetailProps) => () => { 
     props.setDefault();
@@ -270,6 +281,12 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
 
 const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectRegistrationDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.projectUid !== prevProps.match.params.projectUid) {
       this.props.handleOnLoadApi();
@@ -300,55 +317,48 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
       }
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: ProjectUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: ProjectUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner,
-          onClick: this.props.handleOnModify
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner
         },
         {
           id: ProjectUserAction.Close,
           name: this.props.intl.formatMessage(projectMessage.registration.option.close),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin),
-          onClick: this.props.handleOnChangeStatus
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.ReOpen,
           name: this.props.intl.formatMessage(projectMessage.registration.option.reOpen),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Closed ]) && this.props.isAdmin,
-          onClick: this.props.handleOnReOpen
+          visible: isContains(_statusType, [ WorkflowStatusType.Closed ]) && this.props.isAdmin
         },
         {
           id: ProjectUserAction.AdjustHour,
           name: this.props.intl.formatMessage(projectMessage.registration.option.hour),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin,
-          onClick: this.props.handleOnAdjustHour
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin
         },
         {
           id: ProjectUserAction.ChangeOwner,
           name: this.props.intl.formatMessage(projectMessage.registration.option.owner),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin),
-          onClick: this.props.handleOnChangeOwner
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.ManageSites,
           name: this.props.intl.formatMessage(projectMessage.registration.option.site),
           enabled: !isLoading,
-          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && this.props.isAdmin,
-          onClick: this.props.handleOnManageSite
+          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && this.props.isAdmin
         }
       ];
 

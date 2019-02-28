@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageExceptionPostPayload } from '@lookup/classes/request/mileageException/IMileageExceptionPostPayload';
@@ -57,7 +57,7 @@ export type MileageExceptionEditorProps
   = WithLookupMileageException
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -195,7 +195,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.mileageExceptionDispatch;
     const { user } = this.props.userState;
     
@@ -224,31 +224,18 @@ const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupMileageException,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/mileageexceptions`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupMileageException,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/mileageexceptions',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, mileageExceptionDispatch } = this.props;
+    const { masterPage, mileageExceptionDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     mileageExceptionDispatch.createDispose();
     mileageExceptionDispatch.updateDispose();
@@ -258,7 +245,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
 export default compose<MileageExceptionEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupMileageException,
   injectIntl,

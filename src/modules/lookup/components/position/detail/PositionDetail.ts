@@ -1,6 +1,8 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IPositionDeletePayload } from '@lookup/classes/request';
 import { PositionUserAction } from '@lookup/classes/types';
@@ -26,21 +28,25 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   positionUid: string;
   companyUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
-  handleOnDelete: () => void;
+  handleSubmit: () => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: PositionUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -50,33 +56,57 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
-  setModify: StateHandler<OwnState>;
-  setDelete: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type PositionDetailProps
   = WithLookupPosition
   & WithUser
+  & WithOidc
   & WithLayout
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<PositionDetailProps, OwnState> = (props: PositionDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<PositionDetailProps, IOwnState> = (props: PositionDetailProps): IOwnState => {
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: PositionDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
+
+const stateUpdaters: StateUpdaters<PositionDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: PositionDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: OwnState, props: PositionDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: IOwnState, props: PositionDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: PositionDetailProps) => (): Partial<IOwnState> => ({
     action: PositionUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -85,7 +115,7 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdate
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDelete: (prevState: OwnState, props: PositionDetailProps) => (): Partial<OwnState> => ({
+  setDelete: (prevState: IOwnState, props: PositionDetailProps) => (): Partial<IOwnState> => ({
     action: PositionUserAction.Delete,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -94,7 +124,7 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdate
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     ...prevState,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -105,7 +135,7 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, OwnState, OwnStateUpdate
   })
 };
 
-const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<PositionDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: PositionDetailProps) => () => {
     if (props.userState.user && props.match.params.companyUid && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
       // if (props.history.location.state.companyUid) {
@@ -118,12 +148,22 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
       //   props.history.push('/lookup/positions');
       // }
     // }
-  }, 
-  handleOnModify: (props: PositionDetailProps) => () => {
-    props.setModify();
   },
-  handleOnDelete: (props: PositionDetailProps) => () => {
-    props.setDelete();
+  handleOnSelectedMenu: (props: PositionDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case PositionUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case PositionUserAction.Modify:
+        props.setModify();        
+        break;
+      case PositionUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: PositionDetailProps) => () => {
     props.setDefault();
@@ -214,8 +254,14 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<PositionDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<PositionDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: PositionDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.positionUid !== prevProps.match.params.positionUid) {
       this.props.handleOnLoadApi();
@@ -226,27 +272,24 @@ const lifecycles: ReactLifeCycleFunctions<PositionDetailProps, OwnState> = {
       const { isLoading } = this.props.lookupPositionState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: PositionUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: PositionUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnModify
+          visible: true
         },
         {
           id: PositionUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnDelete
+          visible: true
         },
       ];
 
@@ -258,6 +301,7 @@ const lifecycles: ReactLifeCycleFunctions<PositionDetailProps, OwnState> = {
 export const PositionDetail = compose(
   setDisplayName('LookupPositionDetail'),
   withUser,
+  withOidc,
   withLayout,
   withRouter,
   withLookupPosition,

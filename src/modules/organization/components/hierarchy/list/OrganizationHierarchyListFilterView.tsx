@@ -1,9 +1,11 @@
 import { layoutMessage } from '@layout/locales/messages';
+import { FilterCompany } from '@lookup/components/company/select';
 import {
   AppBar,
   Button,
   Dialog,
   DialogContent,
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -15,10 +17,9 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 
-import { FilterCompany } from '@lookup/components/company/select';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { OrganizationHierarchyListFilterProps } from './OrganizationHierarchyListFilter';
 
 export const OrganizationHierarchyListFilterView: React.SFC<OrganizationHierarchyListFilterProps> = props => (
@@ -31,7 +32,12 @@ export const OrganizationHierarchyListFilterView: React.SFC<OrganizationHierarch
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -56,6 +62,8 @@ export const OrganizationHierarchyListFilterView: React.SFC<OrganizationHierarch
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
       
       <DialogContent className={props.classes.paddingDisabled}>
         <List>

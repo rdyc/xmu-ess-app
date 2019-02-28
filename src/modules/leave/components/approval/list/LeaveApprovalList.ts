@@ -102,7 +102,7 @@ const stateUpdaters: StateUpdaters<LeaveApprovalListProps, IOwnState, IOwnStateU
 const handlerCreators: HandleCreators<LeaveApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LeaveApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { user } = props.userState;
-    const { isLoading, request } = props.leaveApprovalState.all;
+    const { isExpired, isLoading, request } = props.leaveApprovalState.all;
     const { loadAllRequest } = props.leaveApprovalDispatch;
 
     if (user && !isLoading) {
@@ -126,7 +126,7 @@ const handlerCreators: HandleCreators<LeaveApprovalListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });
