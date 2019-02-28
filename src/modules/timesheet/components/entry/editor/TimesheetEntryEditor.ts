@@ -233,7 +233,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<TimeEntryEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.timesheetEntryDispatch;
     const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
@@ -301,8 +301,6 @@ const lifecycles: ReactLifeCycleFunctions<TimeEntryEditorProps, {}> = {
       title: intl.formatMessage(view.title),
       description: intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow();
   },
   componentDidUpdate(prevProps: TimeEntryEditorProps) {
     if (this.props.formMode === FormMode.Edit && prevProps.timesheetEntryState.detail !== this.props.timesheetEntryState.detail) {
