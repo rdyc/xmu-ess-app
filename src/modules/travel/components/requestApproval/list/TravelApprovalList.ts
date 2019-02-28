@@ -73,6 +73,7 @@ const createProps: mapper<TravelApprovalListProps, IOwnState> = (props: TravelAp
   const state: IOwnState = {
     isFilterOpen: false,
     selected: [],
+    status: 'pending',
     fields: Object.keys(TravelRequestField).map(key => ({
       value: key,
       name: TravelRequestField[key]
@@ -183,7 +184,7 @@ const handlerCreators: HandleCreators<TravelApprovalListProps, IOwnHandler> = {
   handleFilterBadge: (props: TravelApprovalListProps) => () => {
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      props.status !== 'pending' ||
       props.isNotify === true;
   },
   // handleSelection: (props: ProjectRegistrationListProps) => (values: string[]) => {

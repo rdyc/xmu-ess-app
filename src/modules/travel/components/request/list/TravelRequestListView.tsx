@@ -108,6 +108,7 @@ export const TravelRequestListView: React.SFC<TravelRequestListProps> = props =>
       initialProps={{
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         isSettlement: props.isSettlement
       }}
