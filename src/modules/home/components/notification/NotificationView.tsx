@@ -12,6 +12,7 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   Toolbar,
   Typography,
@@ -50,25 +51,25 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
           <Grid item xs={12} sm={12} md={4} lg={3} xl={2}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <div>
-                  <Avatar className={props.classes.backgroundColorSecondary}>
-                    <Android />
-                  </Avatar>
-                </div>
-                
-                <div className={props.classes.marginFarLeft}>
-                  <Typography variant="body2" noWrap>
-                    TESSA Mobile
-                  </Typography>
-
-                  {
-                    props.lookupVersionState.detail.response &&
-                    props.lookupVersionState.detail.response.data &&
-                    <Typography variant="caption" noWrap>
-                      Version {props.lookupVersionState.detail.response.data.version}
-                    </Typography>
-                  }
-                </div>
+                <ListItem disableGutters>
+                  <ListItemAvatar>
+                    <Avatar className={props.classes.backgroundColorSecondary}>
+                      <Android />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                    primary="TESSA Mobile"
+                    secondary={`Version ${props.lookupVersionState.detail.response && props.lookupVersionState.detail.response.data.version}`}
+                    primaryTypographyProps={{
+                      variant: 'body2',
+                      noWrap: true
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'caption',
+                      noWrap: true
+                    }}
+                  />
+                </ListItem>
               </ExpansionPanelSummary>
               
               <ExpansionPanelDetails 
@@ -88,6 +89,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                   props.lookupVersionState.detail.response &&
                   props.lookupVersionState.detail.response.data &&
                   <List disablePadding style={{ width: '100%' }}>
+                    <Divider/>
                     <ListItem
                       button
                       onClick={props.handleDownloadClick}
@@ -121,20 +123,25 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
               <Grid key={`${c}${d}`} item xs={12} sm={12} md={4} lg={3} xl={2}>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <div>
-                      <Avatar className={props.classes.backgroundColorSecondary}>
-                        <ModuleIcon module={category.moduleUid} />
-                      </Avatar>
-                    </div>
-                    
-                    <div className={props.classes.marginFarLeft}>
-                      <Typography variant="body2" noWrap>
-                        {category.name}
-                      </Typography>
-                      <Typography variant="caption" noWrap>
-                        {`${detail.total} ${detail.type}`}
-                      </Typography>
-                    </div>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={props.classes.backgroundColorSecondary}>
+                          <ModuleIcon module={category.moduleUid} />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText 
+                        primary={category.name}
+                        secondary={`${detail.total} ${detail.type}`}
+                        primaryTypographyProps={{
+                          variant: 'body2',
+                          noWrap: true
+                        }}
+                        secondaryTypographyProps={{
+                          variant: 'caption',
+                          noWrap: true
+                        }}
+                      />
+                    </ListItem>
                   </ExpansionPanelSummary>
                   
                   <ExpansionPanelDetails 
@@ -148,21 +155,25 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                     <List disablePadding style={{ width: '100%' }}>
                       {
                         detail.items.length > 1 &&
-                        <ListItem
-                          button
-                          onClick={() => props.handleNotifClick(category.moduleUid, detail.type)}
-                        >
-                          <ListItemText
-                            primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
-                            secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
-                            primaryTypographyProps={{
-                              variant: 'body2'
-                            }}
-                            secondaryTypographyProps={{
-                              variant: 'caption'
-                            }}
-                          />
-                        </ListItem>
+                        <React.Fragment>
+                          <Divider/>
+                          <ListItem
+                            button
+                            onClick={() => props.handleNotifClick(category.moduleUid, detail.type)}
+                          >
+                            <ListItemText
+                              primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
+                              secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
+                              primaryTypographyProps={{
+                                variant: 'body1',
+                                color: 'secondary'
+                              }}
+                              secondaryTypographyProps={{
+                                variant: 'caption'
+                              }}
+                            />
+                          </ListItem>
+                        </React.Fragment>
                       }
 
                       {

@@ -1,11 +1,11 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IMileageRequest } from '@mileage/classes/response';
 import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
+
 import { EmployeeFilterView } from './EmployeeFilterView';
 
 interface OwnOptions {
@@ -21,7 +21,7 @@ export type EmployeeFilterProps
   = WithMileageApproval
   & WithUser
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps
   & OwnOptions;
 
@@ -53,8 +53,7 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
 export const EmployeeFilter = compose<EmployeeFilterProps, OwnOptions>(
   withMileageApproval,
   withUser,
-  withLayout,
   injectIntl,
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   lifecycle(lifecycles)
 )(EmployeeFilterView);

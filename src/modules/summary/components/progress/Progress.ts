@@ -1,10 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { AppRole } from '@constants/AppRole';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
@@ -27,6 +26,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { IProgressFilterResult } from './ProgressFilter';
 
 export interface Handlers {
@@ -64,7 +64,7 @@ export type ProgressProps
   & WithOidc
   & WithWidth
   & WithUser
-  & WithLayout
+  & WithTheme
   & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
@@ -192,20 +192,13 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       }
     },
     componentWillUnmount() {
-      const { view } = this.props.layoutState;
-      const { loadProgressDispose } = this.props.summaryDispatch;
-  
-      // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.uid !== AppMenu.ReportProgress) {
-        loadProgressDispose();
-      }
+      this.props.summaryDispatch.loadProgressDispose();
     }
   };
 
 const loadData = (props: ProgressProps): void => {
     const { user } = props.userState;
     const { loadProgressRequest } = props.summaryDispatch;
-    const { alertAdd } = props.layoutDispatch;
     const { customerUid, projectUid } = props;
 
     if (user) {
@@ -213,11 +206,6 @@ const loadData = (props: ProgressProps): void => {
         customerUid,
         projectUid
       }); 
-    } else {
-      alertAdd({
-        time: new Date(),
-        message: 'Unable to find current user state'
-      });
     }
   };
 
@@ -227,13 +215,12 @@ export const Progress = compose<ProgressProps, OwnOptions>(
     withOidc,
     withSummary,
     withUser,
-    withLayout,
     withMasterPage,
     withRouter,
     injectIntl,
     withWidth(),
-    withStyles(styles),
-    withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-    withHandlers<ProgressProps, Handlers>(handlerCreators),
-    lifecycle<ProgressProps, OwnState>(lifecycles),
+    withStyles(styles, { withTheme: true }),
+    withStateHandlers(createProps, stateUpdaters), 
+    withHandlers(handlerCreators),
+    lifecycle(lifecycles)
   )(ProgressView);

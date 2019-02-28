@@ -1,11 +1,10 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelApprovalgetAllFilter } from '@travel/classes/filters/ITravelApprovalGetAlFilter';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,6 +21,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { TravelApprovalListFilterView } from './TravelApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -141,7 +141,7 @@ export type TravelApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<TravelApprovalListFilterProps, IOwnState> = (props: TravelApprovalListFilterProps): IOwnState => ({
@@ -349,12 +349,11 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalListFilterProps, IOwnSta
 export const TravelApprovalListFilter = compose<TravelApprovalListFilterProps, IOwnOption>(
   setDisplayName('TravelApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(TravelApprovalListFilterView);

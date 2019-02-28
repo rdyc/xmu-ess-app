@@ -35,7 +35,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
             title={intl.formatMessage(financeMessage.approval.field.goToDocument)}
             >
             <IconButton
-              color="primary"
+              color="secondary"
               onClick={() => handleToDocument(data.moduleUid, data.documentUid)}
             >
               <Description />

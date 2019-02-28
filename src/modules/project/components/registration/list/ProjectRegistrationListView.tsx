@@ -93,7 +93,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune/>

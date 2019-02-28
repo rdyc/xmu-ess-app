@@ -32,7 +32,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       scroll="paper"
       onClose={props.onClose}
     >
@@ -158,7 +158,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />

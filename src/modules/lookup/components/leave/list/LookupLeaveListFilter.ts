@@ -1,8 +1,7 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupLeaveGetAllFilter } from '@lookup/classes/filters/leave/ILookupLeaveGetAllFilter';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -16,6 +15,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupLeaveListFilterView } from './LookupLeaveListFilterView';
 
 export type ILookupLeaveListFilterResult = Pick<ILookupLeaveGetAllFilter, 'companyUid' >;
@@ -62,7 +62,7 @@ export type LookupLeaveListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupLeaveListFilterProps, IOwnState> = (props: LookupLeaveListFilterProps): IOwnState => ({
@@ -115,9 +115,8 @@ const handlerCreators: HandleCreators<LookupLeaveListFilterProps, IOwnHandler> =
 export const LookupLeaveListFilter = compose<LookupLeaveListFilterProps, IOwnOption>(
   setDisplayName('LookupLeaveListFilter'),
   withUser,
-  withLayout,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(LookupLeaveListFilterView);

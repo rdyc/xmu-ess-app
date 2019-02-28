@@ -51,7 +51,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
               >
                 <Badge
                   invisible={!item.showBadgeWhen()}
-                  badgeContent={<CheckCircleIcon color="primary" />}
+                  badgeContent={<CheckCircleIcon color="secondary" />}
                 >
                   <item.icon/>
                 </Badge>

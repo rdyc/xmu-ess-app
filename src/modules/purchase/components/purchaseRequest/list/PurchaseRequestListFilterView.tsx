@@ -29,7 +29,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"
@@ -117,7 +117,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterSettlement || false}
               onChange={props.handleFilterSettlementOnChange}
             />
@@ -132,7 +132,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectOnChange}
             />

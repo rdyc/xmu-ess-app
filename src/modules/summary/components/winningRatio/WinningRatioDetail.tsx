@@ -1,4 +1,3 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import {
@@ -17,6 +16,7 @@ import {
   Typography,
   WithStyles,
   withStyles,
+  WithTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
@@ -40,7 +40,12 @@ interface OwnProps {
   handleDialogDetail: () => void;
 }
 
-type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
+type AllProps 
+  = OwnProps 
+  & WithUser 
+  & WithTheme
+  & WithStyles<typeof styles>
+  & InjectedIntlProps;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
   const { uid, type, isDetailOpen, data, handleDialogDetail, intl, classes } = props;
@@ -74,7 +79,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
               open={isDetailOpen}
               onClose={handleDialogDetail}
               scroll="paper"
-              className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+              className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
               fullScreen
               disableBackdropClick
             >
@@ -155,6 +160,5 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
 export const WinningRatioDetail = compose<AllProps, OwnProps>(
   injectIntl,
   withUser,
-  withLayout,
-  withStyles(styles)
+  withStyles(styles, { withTheme: true })
 )(winningRatioDetail);

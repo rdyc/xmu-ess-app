@@ -71,7 +71,7 @@ export const ProjectApprovalListView: React.SFC<ProjectApprovalListProps> = prop
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune/>
