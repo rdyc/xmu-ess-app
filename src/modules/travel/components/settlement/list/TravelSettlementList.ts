@@ -71,6 +71,7 @@ const createProps: mapper<TravelSettlementListProps, IOwnState> = (props: Travel
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
+    status: 'pending',
     fields: Object.keys(TravelRequestField).map(key => ({ 
       value: key, 
       name: TravelRequestField[key] 
@@ -115,6 +116,7 @@ const handlerCreators: HandleCreators<TravelSettlementListProps, IOwnHandler> = 
       const filter: ITravelSettlementGetAllFilter = {
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -194,11 +196,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementListProps, IOwnState> 
       {
         customerUid: this.props.customerUid,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected
       },
       {
         customerUid: prevProps.customerUid,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected
       }
     );

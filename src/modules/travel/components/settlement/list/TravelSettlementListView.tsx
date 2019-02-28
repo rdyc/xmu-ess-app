@@ -109,6 +109,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
       initialProps={{
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
       }}
       onClose={props.handleFilterVisibility}

@@ -162,8 +162,8 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterProject: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNotify: undefined,
-    filterCompletion: undefined
   }),
 
   // filter customer
@@ -267,7 +267,7 @@ const handlerCreators: HandleCreators<TravelApprovalListFilterProps, IOwnHandler
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: TravelApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: TravelApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -319,7 +319,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalListFilterProps, IOwnSta
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, statusType } = this.props.initialProps;
+      const { customerUid, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -341,6 +341,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalListFilterProps, IOwnSta
           
           this.props.setFilterStatus(selected);
         }
+      }
+      
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
     }
   }
