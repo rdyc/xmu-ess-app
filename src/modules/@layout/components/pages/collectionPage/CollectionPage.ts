@@ -1,10 +1,7 @@
-import AppMenu from '@constants/AppMenu';
-import { IBasePagingFilter, IQueryCollectionState } from '@generic/interfaces';
+import { IBasePagingFilter, IPageInfo, IQueryCollectionState } from '@generic/interfaces';
 import { DirectionType } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithPage, withPage } from '@layout/hoc/withPage';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -38,14 +35,7 @@ export interface IDataBindResult {
 
 interface IOwnOption {
   state: IQueryCollectionState<any, any>;
-  info: {
-    uid: AppMenu | string;
-    parentUid?: AppMenu | string;
-    title: string;
-    description: string;
-    parentUrl?: string;
-    enableNavBack?: boolean;
-  };
+  info: IPageInfo;
   fields: ICollectionValue[];
   onLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   onLoadedApi?: () => void;
@@ -92,11 +82,9 @@ export type CollectionPageProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithMasterPage
   & WithStyles<typeof styles>
   & WithWidth
-  & WithLayout
-  & WithAppBar
-  & WithPage
   & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
@@ -184,33 +172,19 @@ const handlerCreators: HandleCreators<CollectionPageProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
   componentDidMount() {
-    // get page config
-    const page = this.props.info;
-
     // configure view
-    this.props.layoutDispatch.setupView({
-      view: {
-        uid: page.uid,
-        parentUid: page.parentUid,
-        title: page.title,
-        subTitle: page.description,
-      },
-      parentUrl: page.parentUrl,
-      status: {
-        isNavBackVisible: page.enableNavBack || false,
-        isMoreVisible: false,
-        isModeList: true
-      }
+    this.props.masterPage.changePage({
+      ...this.props.info
     });
 
     // assign search component
     if (this.props.appBarSearchComponent) {
-      this.props.appBarDispatch.assignSearchComponent(this.props.appBarSearchComponent);
+      this.props.masterPage.changeSearchComponent(this.props.appBarSearchComponent);
     }
 
     // assign custom component
     if (this.props.appBarCustomComponent) {
-      this.props.appBarDispatch.assignCustomComponent(this.props.appBarCustomComponent);
+      this.props.masterPage.changeCustomComponent(this.props.appBarCustomComponent);
     }
 
     // loading data
@@ -250,15 +224,13 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
     }
   },
   componentWillUnmount() {
-    // reset top bar back to default 
-    this.props.appBarDispatch.dispose();
+    // reset page
+    this.props.masterPage.resetPage();
   }
 };
 
 export const CollectionPage = compose<CollectionPageProps, IOwnOption>(
-  withLayout,
-  withAppBar,
-  withPage,
+  withMasterPage,
   setDisplayName('CollectionPage'),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

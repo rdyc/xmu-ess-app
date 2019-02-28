@@ -54,7 +54,7 @@ const createProps: mapper<SettlementApprovalListProps, IOwnState> = (props: Sett
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
+    status: 'pending',
     fields: Object.keys(SettlementField).map(key => ({
       value: key,
       name: SettlementField[key]
@@ -90,7 +90,7 @@ const stateUpdaters: StateUpdaters<SettlementApprovalListProps, IOwnState, IOwnS
 
 const handlerCreators: HandleCreators<SettlementApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: SettlementApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.settlementApprovalState.all;
+    const { isExpired, isLoading, request } = props.settlementApprovalState.all;
     const { loadAllRequest } = props.settlementApprovalDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListProps, IOwnHandler> 
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });
@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListProps, IOwnHandler> 
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
       props.isNotify === true ||
-      props.status !== undefined;
+      props.status !== 'pending';
   },
 };
 

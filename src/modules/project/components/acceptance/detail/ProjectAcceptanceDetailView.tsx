@@ -1,12 +1,10 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
-import { IAppBarMenu } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
+import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { TextField } from '@material-ui/core';
 import { IProjectAssignmentDetail } from '@project/classes/response';
-import { ProjectUserAction } from '@project/classes/types';
 import { ProjectAssignment } from '@project/components/assignment/detail/shared/ProjectAssignment';
 import { ProjectAssignmentItem } from '@project/components/assignment/detail/shared/ProjectAssignmentItem';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -14,6 +12,7 @@ import * as React from 'react';
 
 import { ProjectAcceptanceDetailProps } from './ProjectAcceptanceDetail';
 
+/*
 const config: SingleConfig<IProjectAssignmentDetail, ProjectAcceptanceDetailProps> = {
   // page info
   page: (props: ProjectAcceptanceDetailProps) => ({
@@ -122,10 +121,71 @@ const config: SingleConfig<IProjectAssignmentDetail, ProjectAcceptanceDetailProp
     return components;
   }
 };
+*/
 
 export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps> = props => (
-  <SinglePage
-    config={config}
-    connectedProps={props}
+  <PreviewPage
+    info={{
+      uid: AppMenu.ProjectAssignmentAcceptance,
+      parentUid: AppMenu.ProjectAssignment,
+      parentUrl: '/project/acceptances',
+      title: props.intl.formatMessage(projectMessage.assignment.page.detailTitle),
+      description: props.intl.formatMessage(projectMessage.assignment.page.detailSubHeader)
+    }}
+    state={props.projectAssignmentState.detail}
+    onLoadApi={props.handleOnLoadApi}
+    primary={(data: IProjectAssignmentDetail) => (
+      <ProjectAssignment 
+        formMode={FormMode.View} 
+        data={data}
+      >
+        {
+          props.newMandays !== 0 &&
+          <React.Fragment>
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.newMandays)}
+              value={props.intl.formatNumber(props.newMandays)}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.newHours)}
+              value={props.intl.formatNumber(props.newMandays * 8)}
+            />
+          </React.Fragment>
+        }
+      </ProjectAssignment>
+    )}
+    secondary={(data: IProjectAssignmentDetail) => {
+      const components: JSX.Element[] = [];
+
+      if (data.items) {
+        data.items
+          .filter(item => item.employeeUid === (props.userState.user ? props.userState.user.uid : undefined))
+          .forEach((item, index) => {
+            const element: JSX.Element = (
+              <ProjectAssignmentItem 
+                data={item} 
+                title={`Assignment #${index + 1}`} 
+                subHeader={item.status && item.status.value || 'N/A'}
+                onClickItem={() => props.handleOnClickItem(item.uid)}
+              />
+            );
+              
+            components.push(element);
+        });
+      }
+          
+      return components;
+    }}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="project-acceptance-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

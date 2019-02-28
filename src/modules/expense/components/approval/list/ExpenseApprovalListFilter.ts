@@ -1,9 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IExpenseApprovalGetAllFilter } from '@expense/classes/filters/approval';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
-import { withLookupCustomer, WithLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { ExpenseApprovalListFilterView } from './ExpenseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -154,7 +153,6 @@ export type ExpenseApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithLookupCustomer
   & WithCommonSystem
   & InjectedIntlProps;
@@ -179,7 +177,7 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterProject: undefined,
     filterStart: undefined,
@@ -349,7 +347,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: ExpenseApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -371,7 +369,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, expenseType, statusType } = this.props.initialProps;
+      const { customerUid, expenseType, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -405,6 +403,13 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
           this.props.setFilterStatus(selected);
         }
       }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
@@ -412,11 +417,10 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
 export const ExpenseApprovalListFilter = compose<ExpenseApprovalListFilterProps, IOwnOption>(
   setDisplayName('ExpenseApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

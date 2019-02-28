@@ -5,11 +5,12 @@ import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IEmployeeNotePostRequest, IEmployeeNote> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IEmployeeNotePostRequest, IEmployeeNote>> = (state = initialState, action) => {

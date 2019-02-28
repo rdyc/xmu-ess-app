@@ -5,11 +5,12 @@ import { ProjectRegistrationAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IProjectRegistrationPatchRequest, IProject> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IProjectRegistrationPatchRequest, IProject>> = (state = initialState, action) => {

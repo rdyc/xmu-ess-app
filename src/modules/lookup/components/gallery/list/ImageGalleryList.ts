@@ -1,16 +1,14 @@
 import AppMenu from '@constants/AppMenu';
 import { DirectionType } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ImageGalleryField } from '@lookup/classes/types/gallery/ImageGalleryField';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -52,6 +50,9 @@ interface OwnState {
   size: number;
 
   fields: ICollectionValue[];
+
+  customComponent?: React.ReactNode;
+  customComponentFlag: boolean;
 }
 
 interface OwnHandler {
@@ -68,12 +69,15 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setSize: StateHandler<OwnState>;
   setSearchDefault: StateHandler<OwnState>;
   setSearchResult: StateHandler<OwnState>;
+  setCustomComponent: StateHandler<OwnState>;
+  setCustomComponentFlag: StateHandler<OwnState>;
 }
 
 export type ImageGalleryListProps
   = OwnOption
   & WithImageGallery
   & WithUser
+  & WithMasterPage
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -81,10 +85,10 @@ export type ImageGalleryListProps
   & OwnHandler
   & WithLayout
   & WithStyles<typeof styles>
-  & WithAppBar
   & WithWidth;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
+  customComponentFlag: true,
   forceReload: false,
   isLoading: false,
   page: 1,
@@ -106,6 +110,9 @@ const handlerCreators: HandleCreators<ImageGalleryListProps, OwnHandler> = {
       // set search state props to default
       props.setSearchDefault();
     }
+  },
+  handleCustomComponent: (props: ImageGalleryListProps) => (item: any) => {
+    // props.setCustomComponent(item);
   }
 };
 
@@ -157,55 +164,34 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
+  setCustomComponent: (prevState: OwnState) => (customComponent: React.ReactNode) => ({
+    customComponent
+  }),
+  setCustomComponentFlag: (prevState: OwnState) => () => ({
+    customComponentFlag: false
+  })
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnState> = {
   componentDidMount() {
-    const {
-      layoutDispatch } = this.props;
+    const { intl } = this.props;
     const { response, isLoading } = this.props.imageGalleryState.all;
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.ImageGallery,
-        parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.gallery.page.listTitle),
-        subTitle: this.props.intl.formatMessage(lookupMessage.gallery.page.listSubHeader) 
-      },
-      status: {
-        isNavBackVisible: false,
-        isSearchVisible: true,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      },
-      
+    this.props.masterPage.changePage({
+      uid: AppMenu.ImageGallery,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(lookupMessage.gallery.page.listTitle),
+      description : intl.formatMessage(lookupMessage.gallery.page.listTitle)
     });
 
     if ((!response && !isLoading) || this.props.forceReload) {
       loadData(this.props);
     }
-
-     // assign search callback
-    this.props.appBarDispatch.assignSearchCallback(this.props.handleOnSearch);    
-
-    this.props.appBarDispatch.assignControls([
-      {
-        icon: PictureInPictureIcon ,
-        onClick: () => { 
-          this.props.history.push('/lookup/imagegalleries/announcement'); 
-        }
-      },
-      {
-        icon: AddCircleIcon,
-        onClick: () => { 
-          this.props.history.push('/lookup/imagegalleries/form'); 
-        }
-      }
-    ],
-    );
   },
   componentDidUpdate(props: ImageGalleryListProps, state: OwnState) {
+    // if (this.props.forceReload) {
+    //   loadData(this.props);
+    // }
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -220,17 +206,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     if (this.props.find !== props.find || this.props.findBy !== props.findBy) {
       loadData(this.props);
     }
+
+    //  custom component
+    if (this.props.customComponent && this.props.customComponentFlag) {
+      this.props.masterPage.changeCustomComponent(this.props.customComponent);
+      this.props.setCustomComponentFlag();
+    }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
+    // const { masterPage } = this.props;
     // const { loadAllDispose } = this.props.imageGalleryDispatch;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
-    this.props.appBarDispatch.dispose();
+    // masterPage.resetPage();
+
     // loadAllDispose();
   }
 };
@@ -261,7 +249,7 @@ const loadData = (props: ImageGalleryListProps): void => {
 export const ImageGalleryList = compose<ImageGalleryListProps, {}>(
   withLayout,
   withUser,
-  withAppBar,
+  withMasterPage,
   withImageGallery,
   withStyles(styles),
   injectIntl,

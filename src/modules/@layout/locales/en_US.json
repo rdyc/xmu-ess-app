@@ -32,7 +32,7 @@
 
   "layout.text.loading": "Loading...",
   "layout.text.processing": "Processing...",
-  "layout.text.waiting": "Please wait...",
+  "layout.text.waiting": "Please Wait...",
   "layout.text.retry": "Retry",
   "layout.text.none": "None",
   "layout.text.dataInfo": "{total} Record(s)",
@@ -41,7 +41,8 @@
   "layout.text.inactive": "Inactive",
   "layout.text.find": "Find",
   "layout.text.search": "Search",
-  "layout.text.selection": "{count} selected",
+  "layout.text.selection": "{count} Selected",
+  "layout.text.all": "All",
 
   "layout.tooltip.more": "More options",
   "layout.tooltip.filter": "Filter",
@@ -93,7 +94,8 @@
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
-  "layout.label.theme": "Dark Mode",
+  "layout.label.theme.dark": "Dark Mode",
+  "layout.label.theme.light": "Light Mode",
   "layout.label.anchor.right": "Right Handed",
   "layout.label.anchor.left": "Left Handed",
   "layout.label.switch": "Switch Access",

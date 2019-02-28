@@ -32,11 +32,16 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -47,7 +52,13 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || 
+              props.filterProject || 
+              props.filterType || 
+              props.filterStatus ||
+              !props.filterCompletion ||
+              props.filterCompletion && props.filterCompletion.value !== 'pending' || 
+              props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -61,6 +72,8 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
@@ -107,11 +120,11 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(travelMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
             />
             <ListItemSecondaryAction>
               {
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -131,7 +144,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />
@@ -175,6 +188,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
 
   </React.Fragment>

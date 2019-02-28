@@ -42,13 +42,13 @@ const languages = AppLocale[
   getCurrentLanguage(config.defaultLanguage || 'english').locale
 ];
 
-interface OwnProps {
+interface IOwnProps {
   store: Store<IAppState>;
   history: History;
 }
 
 type AllProps 
-  = OwnProps 
+  = IOwnProps 
   & WithUser 
   & WithOidc;
 
@@ -118,7 +118,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     AppUserManager.events.addAccessTokenExpired(() => {
       console.warn('token expired');
 
-      store.clearAll();
+      store.remove(AppStorage.Profile);
+      store.remove(AppStorage.Access);
       
       this.props.history.push('/');
     });
@@ -130,7 +131,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     AppUserManager.events.addUserSignedOut(() => {
       console.info('user signed out');
 
-      store.clearAll();
+      store.remove(AppStorage.Profile);
+      store.remove(AppStorage.Access);
 
       this.props.history.push('/');
     });
@@ -161,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   }
 };
 
-export const App = compose<AllProps, OwnProps>(
+export const App = compose<AllProps, IOwnProps>(
   withOidc,
   withUser,
   lifecycle(lifecycles)

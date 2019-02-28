@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelSettlementDetail } from '@travel/classes/response';
 import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
@@ -22,7 +23,6 @@ export const TravelSettlementDetailViews: React.SFC<TravelSettlementDetailProps>
       description: props.intl.formatMessage(travelMessage.settlement.page.detailSubHeader)
 
     }}
-    options={props.pageOptions}
     state={props.travelSettlementState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITravelSettlementDetail) => (
@@ -44,6 +44,15 @@ export const TravelSettlementDetailViews: React.SFC<TravelSettlementDetailProps>
       <WorkflowHistory data={data.workflow} />,
 
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="travel-settlement-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <DialogConfirmation
       isOpen={props.dialogOpen}

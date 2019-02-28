@@ -1,5 +1,4 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -88,7 +87,6 @@ export type SummaryProfitabilityFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: SummaryProfitabilityFilterProps): IOwnState => ({
@@ -186,10 +184,9 @@ const handlerCreators: HandleCreators<SummaryProfitabilityFilterProps, IOwnHandl
 export const ProfitabilityFormFilter = compose<SummaryProfitabilityFilterProps, IOwnOption>(
   setDisplayName('ProfitabilityFormFilter'),
   withUser,
-  withLayout,
   withForm,
-  withStyles(styles),
   injectIntl,
-  withStateHandlers<IOwnState, IOwnStateUpdater>(createProps, stateUpdaters),
-  withHandlers<SummaryProfitabilityFilterProps, IOwnHandler>(handlerCreators)
+  withStyles(styles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators)
 )(ProfitabilityFormFilterView);

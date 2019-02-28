@@ -94,7 +94,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListProps, IOwnState, IOwnSt
 
 const handlerCreators: HandleCreators<ProjectAssignmentListProps, IOwnHandler> = {
   handleOnLoadApi: (props: ProjectAssignmentListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.projectAssignmentState.all;
+    const { isExpired, isLoading, request } = props.projectAssignmentState.all;
     const { loadAllRequest } = props.projectAssignmentDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -115,7 +115,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentListProps, IOwnHandler> =
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

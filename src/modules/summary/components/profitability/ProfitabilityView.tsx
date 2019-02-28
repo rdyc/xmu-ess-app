@@ -106,8 +106,6 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
         handleDialogClose={handleDialogClose}
         classes={classes}
         intl={intl}
-        layoutDispatch={props.layoutDispatch}
-        layoutState={props.layoutState}
       />
     </React.Fragment>
   );

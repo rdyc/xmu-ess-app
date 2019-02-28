@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { IRoleDetail } from '@lookup/classes/response';
 import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -17,7 +18,6 @@ export const LookupRoleDetailView: React.SFC<LookupRoleDetailProps> = props => (
       title: props.intl.formatMessage(lookupMessage.role.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.role.page.detailSubHeader),
     }}
-    options={props.pageOptions}
     state={props.lookupRoleState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IRoleDetail) => (
@@ -30,6 +30,15 @@ export const LookupRoleDetailView: React.SFC<LookupRoleDetailProps> = props => (
       // subHeader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
       />
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-role-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <Delete
       action={props.action}

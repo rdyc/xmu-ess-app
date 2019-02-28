@@ -1,5 +1,4 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomer } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -12,6 +11,7 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -82,14 +82,13 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type ProgressFilterProps 
   = WithForm
-  & WithLayout
-  & InjectedIntlProps
+  & WithStyles<typeof styles>
+  & WithUser
+  & OwnStateUpdaters
   & OwnOption
   & OwnHandler
   & OwnState
-  & WithUser
-  & OwnStateUpdaters
-  & WithStyles<typeof styles>;
+  & InjectedIntlProps;
   
 const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilterProps): OwnState => {
   return { 
@@ -192,11 +191,11 @@ const handlerCreators: HandleCreators<ProgressFilterProps, OwnHandler> = {
 };
 
 export const ProgressFilter = compose<ProgressFilterProps, OwnOption>(
+  setDisplayName('ProgressFilter'),
   withUser,
-  withLayout,
   withForm,
   injectIntl,
   withStyles(styles),
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<ProgressFilterProps, OwnHandler>(handlerCreators)
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators)
 )(ProgressFilterView);

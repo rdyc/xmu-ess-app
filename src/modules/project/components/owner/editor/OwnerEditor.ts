@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectOwnerPutPayload } from '@project/classes/request/owner';
 import { WithProjectOwner, withProjectOwner } from '@project/hoc/withProjectOwner';
@@ -38,7 +38,7 @@ interface IOwnHandlers {
 }
 
 interface IOwnRouteParams {
-  projectUid: string;
+
 }
 
 interface IOwnState {
@@ -57,7 +57,7 @@ export type OwnerEditorProps
   & WithProjectRegistration
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnHandlers
@@ -172,21 +172,19 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history } = this.props;
+    const { intl, history } = this.props;
     const { user } = this.props.userState;
-    const { response } = this.props.projectRegisterState.detail;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.registration.page.ownerModifyTitle),
-      subTitle : intl.formatMessage(projectMessage.registration.page.ownerModifySubHeader)
-    });
-    
-    layoutDispatch.navBackShow(); 
+    if (!isNullOrUndefined(history.location.state) && user) {
+      this.props.masterPage.changePage({
+        uid: AppMenu.ProjectRegistrationRequest,
+        parentUid: AppMenu.ProjectRegistration,
+        parentUrl: `/project/requests/${history.location.state.uid}`,
+        title: intl.formatMessage(projectMessage.registration.page.ownerModifyTitle),
+        description: intl.formatMessage(projectMessage.registration.page.ownerModifySubHeader)
+      });
 
-    if (!isNullOrUndefined(history.location.state) && !response && user) {
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -195,13 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectOwnerDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectOwnerDispatch } = this.props;
 
     projectOwnerDispatch.updateDispose();
   }
@@ -209,14 +201,14 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
 
 export const OwnerEditor = compose<OwnerEditorProps, {}>(
   setDisplayName('OwnerEditor'),
+  withRouter,
   withUser,
   withLayout,
-  withAppBar,
-  withRouter,
+  withMasterPage,
   withProjectRegistration,
   withProjectOwner,
   injectIntl,
-  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<OwnerEditorProps, IOwnHandlers>(handlerCreators),
-  lifecycle<OwnerEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(OwnerEditorView);

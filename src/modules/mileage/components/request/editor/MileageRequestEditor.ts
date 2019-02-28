@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageRequestPostPayload } from '@mileage/classes/request/';
@@ -59,7 +59,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type MileageRequestEditorProps = WithMileageRequest &
   WithUser &
   WithLayout &
-  WithAppBar &
+  WithMasterPage &
   RouteComponentProps &
   InjectedIntlProps &
   OwnHandlers &
@@ -190,12 +190,12 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, stateUpdate } = this.props;
+    const { intl, stateUpdate } = this.props;
     const { user } = this.props.userState;
 
     const view = {
-      title: intl.formatMessage(mileageMessage.request.page.newTitle),
-      subTitle: intl.formatMessage(mileageMessage.request.page.newSubHeader),
+      title: mileageMessage.request.page.newTitle,
+      subTitle: mileageMessage.request.page.newSubHeader,
     };
 
     if (!user) {
@@ -209,31 +209,18 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
       submitDialogContentText : this.props.intl.formatMessage(mileageMessage.request.confirm.createDescription)
     });
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.MileageRequest,
-        parentUid: AppMenu.Mileage,
-        title: intl.formatMessage({id: view.title}),
-        subTitle : intl.formatMessage({id: view.subTitle})
-      },
-      parentUrl: `/mileage/requests`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.MileageRequest,
+      parentUid: AppMenu.Mileage,
+      parentUrl: '/mileage/requests',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, mileageRequestDispatch } = this.props;
+    const { mileageRequestDispatch, masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     mileageRequestDispatch.createDispose();
   }
@@ -242,7 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
 export default compose<MileageRequestEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withMileageRequest,
   injectIntl,

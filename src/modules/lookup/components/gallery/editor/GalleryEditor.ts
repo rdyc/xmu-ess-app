@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IGalleryPostPayload } from '@lookup/classes/request/gallery';
 import { IGallery } from '@lookup/classes/response/gallery';
@@ -32,7 +32,7 @@ export type GalleryEditorProps
   = WithImageGallery
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & InjectedIntlProps
   & RouteComponentProps
   & OwnHandlers;
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl } = this.props;
+    const { intl } = this.props;
     const { user } = this.props.userState;
     
     const view = {
@@ -126,31 +126,18 @@ const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
       return;
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupGallery,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/imagegalleries`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupGallery,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/imagegalleries',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, imageGalleryDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { masterPage, imageGalleryDispatch } = this.props;
+    
+    masterPage.resetPage();
 
     imageGalleryDispatch.createDispose();
   }
@@ -159,7 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
 export default compose<GalleryEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withImageGallery,
   injectIntl,

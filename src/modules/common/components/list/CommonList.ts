@@ -98,7 +98,7 @@ const stateUpdaters: StateUpdaters<CommonListProps, IOwnState, IOwnStateUpdater>
 
 const handlerCreators: HandleCreators<CommonListProps, IOwnHandler> = {
   handleOnLoadApi: (props: CommonListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.commonSystemState.all;
+    const { isExpired, isLoading, request } = props.commonSystemState.all;
     const { systemAllRequest } = props.commonDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -117,7 +117,7 @@ const handlerCreators: HandleCreators<CommonListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         systemAllRequest({
           filter,
           category: categoryTypeTranslator(props.match.params.category),

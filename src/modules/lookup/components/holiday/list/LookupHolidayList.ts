@@ -92,7 +92,7 @@ const stateUpdaters: StateUpdaters<LookupHolidayListProps, IOwnState, IOwnStateU
 
 const handlerCreators: HandleCreators<LookupHolidayListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupHolidayListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupHolidayState.all;
+    const { isExpired, isLoading, request } = props.lookupHolidayState.all;
     const { loadAllRequest } = props.lookupHolidayDispatch;
     const { user } = props.userState;
 
@@ -112,7 +112,7 @@ const handlerCreators: HandleCreators<LookupHolidayListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

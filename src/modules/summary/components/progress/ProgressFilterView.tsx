@@ -41,11 +41,16 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
           fullScreen
           disableBackdropClick
           open={props.isFilterDialogOpen}
-          className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+          className={props.classes.shift}
           scroll="paper"
           onClose={props.handleFilterVisibility}
         >
-          <AppBar position="fixed" className={props.classes.appBarDialog}>
+          <AppBar 
+            elevation={0}
+            position="fixed" 
+            color="default"
+            className={props.classes.appBarDialog}
+          >
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -77,6 +82,8 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
               }
             </Toolbar>
           </AppBar>
+
+          <Divider/>
           
           <DialogContent className={props.classes.paddingDisabled}>
             <List>
@@ -171,7 +178,7 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
         >
           <Badge
             invisible={!showBadgeWhen()}
-            badgeContent={<CheckCircleIcon color="primary" />}
+            badgeContent={<CheckCircleIcon color="secondary" />}
           >
             <TuneIcon />
           </Badge>

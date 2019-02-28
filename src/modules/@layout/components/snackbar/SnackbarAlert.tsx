@@ -100,7 +100,7 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button onClick={handleClose} color="secondary" autoFocus>
           <FormattedMessage id="global.action.close" />
         </Button>
       </DialogActions>

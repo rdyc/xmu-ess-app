@@ -5,10 +5,10 @@ import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 
-export const LeaveRequestFormView: React.SFC<RequestFormProps> = props => {
+export const LeaveRequestContainerFormView: React.SFC<RequestFormProps> = props => {
   
   const { 
-    formMode, formIsRegularType, formRegularType, formValue, initialValues,
+    formMode, isAdmin, formIsRegularType, formRegularType, formValue, initialValues,
     change
   } = props;
 
@@ -31,6 +31,7 @@ export const LeaveRequestFormView: React.SFC<RequestFormProps> = props => {
       formMode={formMode}
       context={context}
       isRegularType={formIsRegularType}
+      isAdmin={isAdmin}
       formRegularType={formRegularType}
       onChangeRegular={onChangeRegular}
       onChangeEnd={onChangeEnd}

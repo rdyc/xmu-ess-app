@@ -1,7 +1,6 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -50,8 +49,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type AccountEmployeeDialogProps
-  = WithLayout
-  & WithStyles<typeof styles>
+  = WithStyles<typeof styles>
   & WithAccountEmployee
   & InjectedIntlProps
   & IOwnOptions
@@ -150,7 +148,6 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState>
 
 export const AccountEmployeeDialog = compose<AccountEmployeeDialogProps, IOwnOptions>(
   setDisplayName('AccountEmployeeDialog'),
-  withLayout,
   withAccountEmployee,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),

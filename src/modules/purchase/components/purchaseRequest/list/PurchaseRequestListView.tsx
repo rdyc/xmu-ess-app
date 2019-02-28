@@ -103,7 +103,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune />
@@ -118,6 +118,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
       isOpen={props.isFilterOpen}
       initialProps={{
         customerUid: props.customerUid,
+        status: props.status,
         statusType: props.statusType,
         isRejected: props.isRejected,
         isSettlement: props.isSettlement

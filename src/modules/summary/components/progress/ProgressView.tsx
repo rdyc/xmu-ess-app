@@ -111,8 +111,6 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         handleDialogClose={handleDialogClose}
         classes={props.classes}
         intl={intl}
-        layoutDispatch={props.layoutDispatch}
-        layoutState={props.layoutState}
       />
     </React.Fragment>
   );

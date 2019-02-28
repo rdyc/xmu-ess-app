@@ -27,11 +27,16 @@ export const LookupRoleListFilterView: React.SFC<LookupRoleListFilterProps> = pr
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -56,6 +61,8 @@ export const LookupRoleListFilterView: React.SFC<LookupRoleListFilterProps> = pr
           </Button>
         </Toolbar>
       </AppBar>
+      
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>

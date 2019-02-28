@@ -91,7 +91,7 @@ const stateUpdaters: StateUpdaters<LeaveCancellationListProps, IOwnState, IOwnSt
 const handlerCreators: HandleCreators<LeaveCancellationListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LeaveCancellationListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { user } = props.userState;
-    const { isLoading, request } = props.leaveCancellationState.all;
+    const { isExpired, isLoading, request } = props.leaveCancellationState.all;
     const { loadAllRequest } = props.leaveCancellationDispatch;
 
     if (user && !isLoading) {
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<LeaveCancellationListProps, IOwnHandler> =
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

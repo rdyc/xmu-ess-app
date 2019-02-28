@@ -1,4 +1,3 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { IPositionGetAllFilter } from '@lookup/classes/filters/position/IPositionGetAllFilter';
@@ -19,6 +18,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { PositionListFilterView } from './PositionListFilterView';
 
 export type IPositionListFilterResult = Pick<IPositionGetAllFilter, 'companyUid' >;
@@ -66,7 +66,6 @@ export type PositionListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<PositionListFilterProps, IOwnState> = (props: PositionListFilterProps): IOwnState => ({
@@ -139,11 +138,10 @@ const lifecycles: ReactLifeCycleFunctions<PositionListFilterProps, IOwnState> = 
 export const PositionListFilter = compose<PositionListFilterProps, IOwnOption>(
   setDisplayName('PositionListFilter'),
   withUser,
-  withLayout,
-  withStyles(styles),
-  injectIntl,
   withLookupCompany,
+  injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(PositionListFilterView);

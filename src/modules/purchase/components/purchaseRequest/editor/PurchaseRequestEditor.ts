@@ -1,7 +1,9 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import {
@@ -26,6 +28,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -64,9 +67,10 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type PurchaseRequestEditorProps
   = WithPurchaseRequest
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -293,7 +297,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.purchaseRequestDispatch;
     const { user } = this.props.userState;
 
@@ -310,6 +314,26 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
       companyUid: user.company.uid,
       positionUid: user.position.uid,
     });
+
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
+    }
 
     if (!isNullOrUndefined(history.location.state)) {
       
@@ -332,23 +356,17 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
       
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.PurchaseRequest,
       parentUid: AppMenu.Purchase,
+      parentUrl: '/purchase/requests',
       title: purchase.title,
-      subTitle: purchase.subTitle
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, purchaseRequestDispatch } = this.props;
+    const { masterPage, purchaseRequestDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     purchaseRequestDispatch.createDispose();
     purchaseRequestDispatch.updateDispose();
@@ -356,9 +374,11 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 };
 
 export const PurchaseRequestEditor = compose<PurchaseRequestEditorProps, {}>(
+  setDisplayName('PurchaseRequestEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withPurchaseRequest,
   injectIntl,

@@ -5,11 +5,12 @@ import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IEmployeeRatePutRequest, IEmployeeRate> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IEmployeeRatePutRequest, IEmployeeRate>> = (state = initialState, action) => {

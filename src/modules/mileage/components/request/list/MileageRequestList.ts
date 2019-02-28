@@ -66,6 +66,7 @@ const createProps: mapper<MileageRequestListProps, IOwnState> = (props: MileageR
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(MileageRequestField).map(key => ({
       value: key,
       name: MileageRequestField[key]
@@ -81,6 +82,7 @@ const createProps: mapper<MileageRequestListProps, IOwnState> = (props: MileageR
       state.year = request.filter.year,
       state.month = request.filter.month,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
     }
   }
@@ -100,7 +102,7 @@ const stateUpdaters: StateUpdaters<MileageRequestListProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MileageRequestListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.mileageRequestState.all;
+    const { isExpired, isLoading, request } = props.mileageRequestState.all;
     const { loadAllRequest } = props.mileageRequestDispatch;
     const { user } = props.userState;
 
@@ -126,7 +128,7 @@ const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });
@@ -178,7 +180,7 @@ const handlerCreators: HandleCreators<MileageRequestListProps, IOwnHandler> = {
     return props.year !== undefined ||
       props.month !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true;
   },
 };

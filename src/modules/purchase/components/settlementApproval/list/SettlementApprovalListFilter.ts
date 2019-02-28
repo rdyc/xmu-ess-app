@@ -1,8 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { ISettlementApprovalGetAllFilter } from '@purchase/classes/filters/settlementApproval';
 import styles from '@styles';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { SettlementApprovalListFilterView } from './SettlementApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -114,7 +113,6 @@ export type SettlementApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<SettlementApprovalListFilterProps, IOwnState> = (props: SettlementApprovalListFilterProps): IOwnState => ({
@@ -132,7 +130,7 @@ const stateUpdaters: StateUpdaters<SettlementApprovalListFilterProps, IOwnState,
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterProject: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterStatus: undefined
   }),
@@ -220,7 +218,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListFilterProps, IOwnHan
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: SettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: SettlementApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -277,12 +275,11 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalListFilterProps, IOw
 export const SettlementApprovalListFilter = compose<SettlementApprovalListFilterProps, IOwnOption>(
   setDisplayName('SettlementApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(SettlementApprovalListFilterView);

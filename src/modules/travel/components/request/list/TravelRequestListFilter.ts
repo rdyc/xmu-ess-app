@@ -1,8 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelRequestGetAllFilter } from '@travel/classes/filters';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TravelRequestListFilterView } from './TravelRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -30,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelRequestListFilterResult = Pick<ITravelRequestGetAllFilter, 'customerUid' | 'statusType' | 'isRejected' | 'isSettlement'>;
+export type ITravelRequestListFilterResult = Pick<ITravelRequestGetAllFilter, 'customerUid' | 'statusType' | 'isRejected' | 'isSettlement' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -49,6 +48,10 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
 
   // filter start
   isFilterStartOpen: boolean;
@@ -76,6 +79,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
 
   // filter Start
   setFilterStartVisibility: StateHandler<IOwnState>;
@@ -109,6 +116,12 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
+
   // filter Start
   handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStartOnSelected: (data: string) => void;
@@ -138,13 +151,13 @@ export type TravelRequestListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<TravelRequestListFilterProps, IOwnState> = (props: TravelRequestListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterStatusOpen: false,
+  isFilterCompletionOpen: false,
   isFilterStartOpen: false,
   isFilterEndOpen: false,
 
@@ -159,6 +172,7 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterSettlement: undefined,
     filterRejected: undefined
   }),
@@ -179,6 +193,15 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
   setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
+  }),
+
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
   }),
 
   // filter Start
@@ -219,6 +242,7 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       statusType: props.filterStatus && props.filterStatus.type,
+      status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
       isSettlement: props.filterSettlement
     });
@@ -250,6 +274,20 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
   },
   handleFilterStatusOnClose: (props: TravelRequestListFilterProps) => () => {
     props.setFilterStatusVisibility();
+  },
+
+  // filter completion
+  handleFilterCompletionVisibility: (props: TravelRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: TravelRequestListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: TravelRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
+  },
+  handleFilterCompletionOnClose: (props: TravelRequestListFilterProps) => () => {
+    props.setFilterCompletionVisibility();
   },
 
   // filter Start
@@ -303,7 +341,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestListFilterProps, IOwnStat
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, statusType } = this.props.initialProps;
+      const { customerUid, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -326,6 +364,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestListFilterProps, IOwnStat
           this.props.setFilterStatus(selected);
         }
       }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
@@ -333,7 +378,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestListFilterProps, IOwnStat
 export const TravelRequestListFilter = compose<TravelRequestListFilterProps, IOwnOption>(
   setDisplayName('TravelRequestListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,

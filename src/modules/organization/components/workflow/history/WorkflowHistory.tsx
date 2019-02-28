@@ -89,7 +89,7 @@ const workflowHistoryView: React.SFC<AllProps> = props => {
               <StepLabel 
                 StepIconComponent={() => 
                   <React.Fragment>
-                    {item.isComplete ? <CheckCircle color="primary"/> : item.employees && item.employees.length > 1 ? <PeopleIcon color="action"/> : <PersonIcon color="action"/>}
+                    {item.isComplete ? <CheckCircle color="secondary"/> : item.employees && item.employees.length > 1 ? <PeopleIcon color="action"/> : <PersonIcon color="action"/>}
                   </React.Fragment>
                 }
                 optional={

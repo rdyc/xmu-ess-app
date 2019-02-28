@@ -71,6 +71,7 @@ const createProps: mapper<TravelSettlementListProps, IOwnState> = (props: Travel
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
+    status: 'pending',
     fields: Object.keys(TravelRequestField).map(key => ({ 
       value: key, 
       name: TravelRequestField[key] 
@@ -107,7 +108,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementListProps, IOwnState, IOwnSta
 
 const handlerCreators: HandleCreators<TravelSettlementListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TravelSettlementListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.travelSettlementState.all;
+    const { isExpired, isLoading, request } = props.travelSettlementState.all;
     const { loadAllRequest } = props.travelSettlementDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -115,6 +116,7 @@ const handlerCreators: HandleCreators<TravelSettlementListProps, IOwnHandler> = 
       const filter: ITravelSettlementGetAllFilter = {
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -128,7 +130,7 @@ const handlerCreators: HandleCreators<TravelSettlementListProps, IOwnHandler> = 
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });
@@ -194,11 +196,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementListProps, IOwnState> 
       {
         customerUid: this.props.customerUid,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected
       },
       {
         customerUid: prevProps.customerUid,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected
       }
     );

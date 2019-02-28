@@ -1,7 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveApprovalGetAllFilter } from '@leave/classes/filters/approval';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -109,7 +108,6 @@ export type LeaveApprovalListFilterProps
 & IOwnStateUpdater
 & IOwnHandler
 & WithStyles<typeof styles>
-& WithLayout
 & WithUser
 & WithCommonSystem
 & InjectedIntlProps;
@@ -269,11 +267,10 @@ const lifecycles: ReactLifeCycleFunctions<LeaveApprovalListFilterProps, IOwnStat
 export const LeaveApprovalListFilter = compose<LeaveApprovalListFilterProps, IOwnOption>(
   setDisplayName('LeaveApprovalListFilter'),
   withUser,
-  withLayout,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(LeaveApprovalListFilterView);

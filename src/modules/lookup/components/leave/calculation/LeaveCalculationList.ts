@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithLeaveCalculation, withLeaveCalculation } from '@lookup/hoc/withLeaveCalculation';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -73,6 +74,7 @@ export type FilterProgressData = {
 export type LeaveCalculationListProps = WithLeaveCalculation &
   WithUser &
   WithLayout &
+  WithMasterPage &
   RouteComponentProps &
   InjectedIntlProps &
   OwnOptions &
@@ -166,24 +168,24 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, OwnHandlers> = 
 const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> = {
   componentDidMount() {
     const {
-      layoutDispatch,
       intl, companyUid, year
     } = this.props;
 
     const { isLoading, response } = this.props.leaveCalculationState.all;
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupLeave,
       parentUid: AppMenu.Leave,
+      parentUrl: '/leave/calculations',
       title: intl.formatMessage(lookupMessage.calculation.page.title),
-      subTitle: intl.formatMessage(lookupMessage.calculation.page.subHeader)
+      description: intl.formatMessage(lookupMessage.calculation.page.subHeader)
     });
 
-      // only load data when response are empty
+    // only load data when response are empty
     if (!isLoading && !response) {
-        if (companyUid !== '' && year !== 0) {
-          loadData(this.props);
-        }
+      if (companyUid !== '' && year !== 0) {
+        loadData(this.props);
+      }
     }
   },
   componentDidUpdate(props: LeaveCalculationListProps, state: OwnState) {
@@ -204,16 +206,11 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> =
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
-    const { view } = this.props.layoutState;
+    const { masterPage } = this.props;
     const { loadAllDispose } = this.props.leaveCalculationDispatch;
 
-    layoutDispatch.changeView(null);
-
-    // dispose 'get all' from 'redux store' when the page is 'out of leave calculation' context
-    if (view && view.parentUid !== AppMenu.Leave) {
-      loadAllDispose();
-    }
+    masterPage.resetPage();
+    loadAllDispose();
   }
 };
 
@@ -223,7 +220,7 @@ const loadData = (props: LeaveCalculationListProps): void => {
   const { loadAllRequest } = props.leaveCalculationDispatch;
   const { alertAdd } = props.layoutDispatch;
   const { companyUid, year } = props;
-    
+
   if (user) {
     loadAllRequest({
       companyUid,
@@ -249,6 +246,7 @@ export const LeaveCalculationList = compose<LeaveCalculationListProps, OwnOption
   withLeaveCalculation,
   withUser,
   withLayout,
+  withMasterPage,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(

@@ -50,7 +50,7 @@ const LoaderView: React.SFC<AllProps> = props => (
       props.state.isLoading &&
       <div className={props.classes.preloader}>
         <div className={props.classes.preloaderContent}>
-          <CircularProgress style={{margin: 'auto'}} color="primary" />
+          <CircularProgress style={{margin: 'auto'}} color="secondary" />
 
           <Typography className={props.classes.marginFarTop}>{props.waitingText}</Typography>
         </div>    
@@ -92,7 +92,7 @@ const LoaderView: React.SFC<AllProps> = props => (
             <ListItemSecondaryAction>
               <Button 
                 size="small"
-                color="primary" 
+                color="secondary" 
                 onClick={props.onRetry}
               >
                 {props.intl.formatMessage(layoutMessage.text.retry)}

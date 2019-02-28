@@ -25,3 +25,4 @@ export * from './IUserAccount';
 export * from './IBaseQueryFilter';
 export * from './IBaseQueryPagingFilter';
 export * from './IRedirection';
+export * from './IPageInfo';

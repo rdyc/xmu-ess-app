@@ -33,11 +33,16 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -48,7 +53,8 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || 
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -62,6 +68,8 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
       
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
@@ -148,11 +156,11 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
             />
             <ListItemSecondaryAction>
             { 
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton> 
@@ -192,7 +200,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />
@@ -259,9 +267,10 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

@@ -1,8 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TimesheetApprovalListFilterView } from './TimesheetApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -125,7 +124,6 @@ export type TimesheetApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -323,7 +321,6 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalListFilterProps, IOwn
 export const TimesheetApprovalListFilter = compose<TimesheetApprovalListFilterProps, IOwnOption>(
   setDisplayName('TimesheetApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,

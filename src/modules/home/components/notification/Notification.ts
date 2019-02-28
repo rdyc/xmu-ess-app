@@ -1,9 +1,9 @@
-import { pageHelper } from '@layout/helper/pageHelper';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WithLookupVersion, withLookupVersion } from '@lookup/hoc/withLookupVersion';
-import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -55,10 +55,10 @@ export type NotificationProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
+  & WithMasterPage
   & WithNotification
   & WithLookupVersion
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -122,7 +122,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     }
   },
   handleNotifClick: (props: NotificationProps) => (category: ModuleDefinitionType, type: NotificationType, uid?: string) => {
-    pageHelper.redirectFrom(category, type, uid);
+    props.masterPage.changeRouteFrom(category, type, uid);
   },
   handleDownloadClick: (props: NotificationProps) => () => {
     const cdn = process.env.REACT_APP_CDN_HOST || window.location.origin;
@@ -150,12 +150,12 @@ export const Notification = compose<NotificationProps, IOwnOption>(
   setDisplayName('Notification'),
   withUser,
   withRouter,
+  withMasterPage,
   withNotification,
   withLookupVersion,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles),
-  withTheme()
+  withStyles(styles)
 )(NotificationView);

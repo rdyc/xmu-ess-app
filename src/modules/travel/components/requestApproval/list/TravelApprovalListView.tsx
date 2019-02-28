@@ -42,7 +42,7 @@ export const TravelApprovalListView: React.SFC<TravelApprovalListProps> = props 
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => props.history.push(`/travel/requests/${item.uid}`)}
+            onClick={() => props.history.push(`/travel/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -74,7 +74,7 @@ export const TravelApprovalListView: React.SFC<TravelApprovalListProps> = props 
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune />

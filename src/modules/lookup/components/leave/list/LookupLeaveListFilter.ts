@@ -1,4 +1,3 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupLeaveGetAllFilter } from '@lookup/classes/filters/leave/ILookupLeaveGetAllFilter';
@@ -16,6 +15,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { LookupLeaveListFilterView } from './LookupLeaveListFilterView';
 
 export type ILookupLeaveListFilterResult = Pick<ILookupLeaveGetAllFilter, 'companyUid' >;
@@ -62,7 +62,6 @@ export type LookupLeaveListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<LookupLeaveListFilterProps, IOwnState> = (props: LookupLeaveListFilterProps): IOwnState => ({
@@ -115,9 +114,8 @@ const handlerCreators: HandleCreators<LookupLeaveListFilterProps, IOwnHandler> =
 export const LookupLeaveListFilter = compose<LookupLeaveListFilterProps, IOwnOption>(
   setDisplayName('LookupLeaveListFilter'),
   withUser,
-  withLayout,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(LookupLeaveListFilterView);

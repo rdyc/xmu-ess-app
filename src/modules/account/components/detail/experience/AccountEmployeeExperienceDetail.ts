@@ -2,10 +2,10 @@ import { IEmployeeExperienceDeletePayload } from '@account/classes/request/emplo
 import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,8 +22,9 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -35,7 +36,7 @@ interface IOwnState {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleSubmit: () => void;
@@ -44,8 +45,11 @@ interface IOwnHandler {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeExperienceDetailProps
@@ -77,6 +81,7 @@ const createProps: mapper<AccountEmployeeExperienceDetailProps, IOwnState> = (pr
   }
   return {
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
@@ -89,9 +94,24 @@ const stateUpdaters: StateUpdaters<AccountEmployeeExperienceDetailProps, IOwnSta
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: IOwnState, props: AccountEmployeeExperienceDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: AccountEmployeeExperienceDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: AccountEmployeeExperienceDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: AccountEmployeeExperienceDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Experience'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'experience'}),
+  }),
+  setDelete: (prevState: IOwnState, props: AccountEmployeeExperienceDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Experience'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'experience'}),
+  })
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeExperienceDetailProps, IOwnHandler> = {
@@ -103,26 +123,27 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceDetailProps, IOwn
       });
     }
   },
-  handleOnOpenDialog: (props: AccountEmployeeExperienceDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Experience'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'experience'}),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Experience'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'experience'}),
-      });
+  handleOnSelectedMenu: (props: AccountEmployeeExperienceDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: AccountEmployeeExperienceDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: AccountEmployeeExperienceDetailProps) => () => {
@@ -227,6 +248,12 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceDetailProps, IOwn
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: AccountEmployeeExperienceDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
         this.props.match.params.experienceUid !== prevProps.match.params.experienceUid) {
@@ -238,27 +265,24 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceDetailProps, 
       const { isLoading } = this.props.accountEmployeeExperienceState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: true
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+          visible: true
         }
       ];
 

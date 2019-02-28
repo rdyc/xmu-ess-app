@@ -1,7 +1,7 @@
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { TimesheetUserAction } from '@timesheet/classes/types';
 import { WithTimesheetApprovalHistory, withTimesheetApprovalHistory } from '@timesheet/hoc/withTimesheetApprovalHistory';
@@ -29,17 +29,19 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   isAdmin: boolean;
   action?: TimesheetUserAction;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
-  setDefault: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type TimesheetApprovalHistoryDetailProps
@@ -70,17 +72,18 @@ const createProps: mapper<TimesheetApprovalHistoryDetailProps, IOwnState> = (pro
   }
 
   return {
-    isAdmin
+    isAdmin,
+    shouldLoad: false,
   };
 };
 
 const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setOptions: (prevState: IOwnState, props: TimesheetApprovalHistoryDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: TimesheetApprovalHistoryDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    action: undefined
-  })
+  setShouldLoad: (state: IOwnState, props: TimesheetApprovalHistoryDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
 };
 
 const handlerCreators: HandleCreators<TimesheetApprovalHistoryDetailProps, IOwnHandler> = {
@@ -92,11 +95,30 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryDetailProps, IOwnH
         timesheetUid: props.match.params.timesheetUid
       });
     }
-  }
+  },
+  handleOnSelectedMenu: (props: TimesheetApprovalHistoryDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case TimesheetUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
+    }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: TimesheetApprovalHistoryDetailProps) {
+    // handle updated should load
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      // turn of shoul load
+      this.props.setShouldLoad();
+
+      // load from api
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.timesheetUid !== prevProps.match.params.timesheetUid) {
       this.props.handleOnLoadApi();
@@ -107,13 +129,12 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryDetailProps, I
       const { isLoading } = this.props.timesheetApprovalHistoryState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: TimesheetUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

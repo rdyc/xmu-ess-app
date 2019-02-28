@@ -1,7 +1,6 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
-import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationStructureAllFilter } from '@organization/classes/filters/structure';
 import styles from '@styles';
@@ -19,6 +18,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { StructureListFilterView } from './StructureListFilterView';
 
 export type IStructureListFilterResult = Pick<IOrganizationStructureAllFilter, 'companyUid' >;
@@ -66,7 +66,6 @@ export type StructureListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<StructureListFilterProps, IOwnState> = (props: StructureListFilterProps): IOwnState => ({
@@ -139,10 +138,9 @@ const lifecycles: ReactLifeCycleFunctions<StructureListFilterProps, IOwnState> =
 export const StructureListFilter = compose<StructureListFilterProps, IOwnOption>(
   setDisplayName('StructureListFilter'),
   withUser,
-  withLayout,
-  withStyles(styles),
-  injectIntl,
   withLookupCompany,
+  injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

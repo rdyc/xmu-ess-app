@@ -1,6 +1,5 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveRequestGetAllFilter } from '@leave/classes/filters/request';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -88,7 +87,6 @@ export type LeaveRequestListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithUser
   & WithCommonSystem
   & InjectedIntlProps;
@@ -214,11 +212,10 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestListFilterProps, IOwnState
 export const LeaveRequestListFilter = compose<LeaveRequestListFilterProps, IOwnOption>(
   setDisplayName('LeaveRequestListFilter'),
   withUser,
-  withLayout,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(LeaveRequestListFilterView);

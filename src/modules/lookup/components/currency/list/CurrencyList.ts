@@ -67,7 +67,7 @@ const stateUpdaters: StateUpdaters<CurrencyListProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<CurrencyListProps, IOwnHandler> = {
   handleOnLoadApi: (props: CurrencyListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupCurrencyState.all;
+    const { isExpired, isLoading, request } = props.lookupCurrencyState.all;
     const { loadAllRequest } = props.lookupCurrencyDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -85,7 +85,7 @@ const handlerCreators: HandleCreators<CurrencyListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });

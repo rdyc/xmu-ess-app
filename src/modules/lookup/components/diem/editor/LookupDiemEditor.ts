@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupDiemPostPayload, ILookupDiemPutPayload } from '@lookup/classes/request/diem';
@@ -56,7 +56,7 @@ export type LookupDiemEditorProps
   = WithLookupDiem
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -142,7 +142,7 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/diemvalue/${response.uid}`, { companyuid: response.companyUid });
+    history.push(`/lookup/diemvalues/${response.uid}`, { companyuid: response.companyUid });
   },
   handleSubmitFail: (props: LookupDiemEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -192,7 +192,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupDiemDispatch;
     const { user } = this.props.userState;
     
@@ -220,23 +220,18 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupDiem,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/diemvalues',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupDiemDispatch } = this.props;
+    const { masterPage, lookupDiemDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupDiemDispatch.createDispose();
     lookupDiemDispatch.updateDispose();
@@ -246,7 +241,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
 export default compose<LookupDiemEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupDiem,
   injectIntl,

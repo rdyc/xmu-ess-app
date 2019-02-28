@@ -1,8 +1,8 @@
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,15 +18,18 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
@@ -59,7 +62,8 @@ const createProps: mapper<AccountEmployeeAccessHistoryDetailProps, IOwnState> = 
     }
   }
   return {
-    isAdmin
+    isAdmin,
+    shouldLoad: false,
   };
 };
 
@@ -68,8 +72,11 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAccessHistoryDetailProps, IOwn
     ...prevState,
     ...newState
   }),
-  setOptions: () => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
+  }),
+  setShouldLoad: (state: IOwnState, props: AccountEmployeeAccessHistoryDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
 };
 
@@ -81,11 +88,27 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessHistoryDetailProps, I
         historyUid: props.match.params.historyUid
       });
     }
-  }
+  },
+  handleOnSelectedMenu: (props: AccountEmployeeAccessHistoryDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+
+      default:
+        break;
+    }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessHistoryDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: AccountEmployeeAccessHistoryDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
         this.props.match.params.historyUid !== prevProps.match.params.historyUid) {
@@ -97,13 +120,12 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessHistoryDetailProp
       const { isLoading } = this.props.accountEmployeeAccessHistoryState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

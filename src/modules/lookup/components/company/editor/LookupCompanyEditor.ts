@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyPostPayload, ILookupCompanyPutPayload } from '@lookup/classes/request/company';
@@ -10,36 +10,37 @@ import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupComp
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
-  withHandlers, 
-  withStateHandlers 
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupCompanyFormData } from './form/LookupCompanyForm';
 import { LookupCompanyEditorView } from './LookupCompanyEditorView';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: LookupCompanyFormData) => FormErrors;
   handleSubmit: (payload: LookupCompanyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   companyUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   submitDialogTitle: string;
@@ -48,22 +49,22 @@ interface OwnState {
   submitDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type CompanyEditorProps
   = WithLookupCompany
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<CompanyEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<CompanyEditorProps, IOwnHandlers> = {
   handleValidate: (props: CompanyEditorProps) => (formData: LookupCompanyFormData) => {
     const errors = {
       information: {}
@@ -172,7 +173,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<CompanyEditorProps, OwnState> = (props: CompanyEditorProps): OwnState => ({ 
+const createProps: mapper<CompanyEditorProps, IOwnState> = (props: CompanyEditorProps): IOwnState => ({ 
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(lookupMessage.company.dialog.createTitle),
   submitDialogContentText: props.intl.formatMessage(lookupMessage.company.dialog.createDescription),
@@ -180,8 +181,8 @@ const createProps: mapper<CompanyEditorProps, OwnState> = (props: CompanyEditorP
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -189,7 +190,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<CompanyEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupCompanyDispatch;
     const { user } = this.props.userState;
     
@@ -216,23 +217,18 @@ const lifecycles: ReactLifeCycleFunctions<CompanyEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupCompany,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/company',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupCompanyDispatch } = this.props;
+    const { masterPage, lookupCompanyDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupCompanyDispatch.createDispose();
     lookupCompanyDispatch.updateDispose();
@@ -242,11 +238,11 @@ const lifecycles: ReactLifeCycleFunctions<CompanyEditorProps, {}> = {
 export default compose<CompanyEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupCompany,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<CompanyEditorProps, OwnHandlers>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<CompanyEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<CompanyEditorProps, {}>(lifecycles),
 )(LookupCompanyEditorView);

@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { IAchievementPatchPayload } from '@lookup/classes/request/achievement';
 import { IAchievementResult } from '@lookup/classes/response/achievement';
 import { WithAchievement, withAchievement } from '@lookup/hoc/withAchievement';
@@ -24,7 +24,7 @@ interface OwnHandlers {
 export type AchievementEditorProps 
   = OwnHandlers
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & InjectedIntlProps
   & RouteComponentProps
   & WithAchievement;
@@ -100,44 +100,30 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<AchievementEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl } = this.props;
+    const { intl } = this.props;
     
     const view = {
       title: lookupMessage.achievement.page.newTitle,
       subTitle: lookupMessage.achievement.page.newSubHeader,
     };
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.AchievementChart,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/achievementchart`,
-      status: {
-        isNavBackVisible: false,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.AchievementChart,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
+    const { masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
   }
 };
 
 export const AchievementEditor = compose<AchievementEditorProps, {}>(
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withAchievement,
   injectIntl,

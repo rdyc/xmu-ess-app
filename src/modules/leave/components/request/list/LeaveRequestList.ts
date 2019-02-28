@@ -107,7 +107,7 @@ const stateUpdaters: StateUpdaters<LeaveRequestListProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<LeaveRequestListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LeaveRequestListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.leaveRequestState.all;
+    const { isExpired, isLoading, request } = props.leaveRequestState.all;
     const { loadAllRequest } = props.leaveRequestDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -128,7 +128,7 @@ const handlerCreators: HandleCreators<LeaveRequestListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           companyUid: props.userState.user.company.uid,

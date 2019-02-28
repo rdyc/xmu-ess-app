@@ -27,7 +27,7 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
       return (
         <React.Fragment key={item.uid}>
           <ListItem button onClick={() => props.onSelected(item)}>
-            <Radio color="primary" checked={props.value && props.value === item.employeeUid || false} />
+            <Radio color="secondary" checked={props.value && props.value === item.employeeUid || false} />
             <ListItemText primary={item.employee && item.employee.fullName} />
           </ListItem>
           <Divider/>
@@ -41,11 +41,16 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
     <Dialog
       fullScreen
       disableBackdropClick
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       open={props.isOpen}
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <ArrowBackIcon />
@@ -57,9 +62,11 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
         </Toolbar>
       </AppBar>
 
+      <Divider/>
+
       <List>
         <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="primary" checked={!props.value} />
+          <Radio color="secondary" checked={!props.value} />
           <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
         </ListItem>
         <Divider />
