@@ -1,19 +1,16 @@
 import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
-import {
-  ITimesheetPostPayload,
-  ITimesheetPutPayload,
-} from '@timesheet/classes/request/entry';
+import { ITimesheetPostPayload, ITimesheetPutPayload } from '@timesheet/classes/request/entry';
 import { ITimesheet } from '@timesheet/classes/response';
-import {
-  TimesheetFormData,
-} from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
+import { TimesheetFormData } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
@@ -26,6 +23,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -36,7 +34,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleValidate: (payload: TimesheetFormData) => FormErrors;
   handleSubmit: (payload: TimesheetFormData) => void;
@@ -44,11 +42,11 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   timesheetUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -58,26 +56,38 @@ interface OwnState {
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
   minDate: Date;
+  isAdmin: boolean;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
-export type EntryEditorProps
+export type TimeEntryEditorProps
   = WithTimesheetEntry
   & WithLookupSystemLimit
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
-  handleSetMinDate: (props: EntryEditorProps) => (days: number, fromDate?: Date | null) => {
+const createProps: mapper<TimeEntryEditorProps, IOwnState> = (props: TimeEntryEditorProps): IOwnState => ({
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(timesheetMessage.entry.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(timesheetMessage.entry.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  isAdmin: false,
+  minDate: new Date()
+});
+
+const handlerCreators: HandleCreators<TimeEntryEditorProps, IOwnHandlers> = {
+  handleSetMinDate: (props: TimeEntryEditorProps) => (days: number, fromDate?: Date | null) => {
     let today = moment(); // create date today
 
     if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
@@ -92,7 +102,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       });
     }
   },
-  handleValidate: (props: EntryEditorProps) => (formData: TimesheetFormData) => {
+  handleValidate: (props: TimeEntryEditorProps) => (formData: TimesheetFormData) => {
     const errors = {
       information: {}
     };
@@ -110,7 +120,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     return errors;
   },
-  handleSubmit: (props: EntryEditorProps) => (formData: TimesheetFormData) => {
+  handleSubmit: (props: TimeEntryEditorProps) => (formData: TimesheetFormData) => {
     const { formMode, timesheetUid, intl } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.timesheetEntryDispatch;
@@ -162,7 +172,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     return null;
   },
-  handleSubmitSuccess: (props: EntryEditorProps) => (response: ITimesheet) => {
+  handleSubmitSuccess: (props: TimeEntryEditorProps) => (response: ITimesheet) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -183,7 +193,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     history.push(`/timesheet/requests/${response.uid}`);
   },
-  handleSubmitFail: (props: EntryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: TimeEntryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -214,29 +224,20 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<EntryEditorProps, OwnState> = (props: EntryEditorProps): OwnState => ({ 
-  formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(timesheetMessage.entry.dialog.createTitle),
-  submitDialogContentText: props.intl.formatMessage(timesheetMessage.entry.dialog.createDescription),
-  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
-  minDate: new Date(),
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<TimeEntryEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.timesheetEntryDispatch;
     const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
-    
+
     const view = {
       title: timesheetMessage.entry.page.newTitle,
       subTitle: timesheetMessage.entry.page.newSubHeader,
@@ -251,16 +252,37 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
       categoryType: SystemLimitType.Timesheet
     });
 
-    stateUpdate({ 
+    stateUpdate({
       companyUid: user.company.uid,
       positionUid: user.position.uid
     });
+
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({
+          isAdmin: true
+        });
+      }
+    }
 
     if (!isNullOrUndefined(history.location.state)) {
       view.title = timesheetMessage.entry.page.modifyTitle;
       view.subTitle = timesheetMessage.entry.page.modifySubHeader;
 
-      stateUpdate({ 
+      stateUpdate({
         formMode: FormMode.Edit,
         timesheetUid: history.location.state.uid,
         submitDialogTitle: this.props.intl.formatMessage(timesheetMessage.entry.dialog.editTitle),
@@ -272,38 +294,48 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.TimesheetRequest,
       parentUid: AppMenu.Timesheet,
+      parentUrl: '/timesheet/requests',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description: intl.formatMessage(view.subTitle)
     });
+  },
+  componentDidUpdate(prevProps: TimeEntryEditorProps) {
+    if (this.props.formMode === FormMode.Edit && prevProps.timesheetEntryState.detail !== this.props.timesheetEntryState.detail) {
+      const { response } = this.props.timesheetEntryState.detail;
 
-    layoutDispatch.navBackShow(); 
+      if (this.props.userState.user && response && response.data && response.data.changes) {
+        if (this.props.userState.user.uid !== response.data.changes.createdBy) {
+          this.props.stateUpdate({
+            isRequestor: false
+          });
+        }
+      }
+    }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, timesheetEntryDispatch } = this.props;
+    const { timesheetEntryDispatch, masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     timesheetEntryDispatch.createDispose();
     timesheetEntryDispatch.updateDispose();
   }
 };
 
-export default compose<EntryEditorProps, {}>(
+export default compose<TimeEntryEditorProps, {}>(
+  setDisplayName('TimesheetEntryEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withTimesheetEntry,
   withLookupSystemLimit,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<EntryEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<EntryEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(TimesheetEntryEditorView);

@@ -1,8 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
 import styles from '@styles';
 import * as moment from 'moment';
@@ -20,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { MileageRequestListFilterView } from './MileageRequestListFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
@@ -142,7 +142,7 @@ export type MileageRequestListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -323,11 +323,10 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnStat
 
 export const MileageRequestListFilter = compose<MileageRequestListFilterProps, OwnOption>(
   setDisplayName('MileageRequestListFilter'),
-  withLayout,
   withCommonSystem,
   injectIntl,
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(MileageRequestListFilterView);

@@ -7,7 +7,6 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
-  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -28,20 +27,20 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
 
   return (
     <React.Fragment>
-      <Paper square>
-        <Toolbar>
-          <Typography variant="body1" className={props.classes.flex}>
-            <FormattedMessage id="layout.notification.title"/>
-          </Typography>
+      <Toolbar className={props.classes.toolbar}>
+        <Typography variant="body2" className={props.classes.flex}>
+          <FormattedMessage id="layout.notification.title"/>
+        </Typography>
 
-          <IconButton
-            disabled={props.notificationState.isLoading}
-            onClick={() => props.handleOnClickReload()}
-          >
-            <SyncIcon/>
-          </IconButton>
-        </Toolbar>
-      </Paper>
+        <IconButton
+          disabled={props.notificationState.isLoading}
+          onClick={() => props.handleOnClickReload()}
+        >
+          <SyncIcon/>
+        </IconButton>
+      </Toolbar>
+
+      <Divider/>
     
       <SwipeableViews 
         index={props.index}

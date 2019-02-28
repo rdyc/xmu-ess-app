@@ -1,8 +1,7 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
@@ -88,7 +87,7 @@ export type SummaryProfitabilityFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: SummaryProfitabilityFilterProps): IOwnState => ({
@@ -186,10 +185,9 @@ const handlerCreators: HandleCreators<SummaryProfitabilityFilterProps, IOwnHandl
 export const ProfitabilityFormFilter = compose<SummaryProfitabilityFilterProps, IOwnOption>(
   setDisplayName('ProfitabilityFormFilter'),
   withUser,
-  withLayout,
   withForm,
-  withStyles(styles),
   injectIntl,
-  withStateHandlers<IOwnState, IOwnStateUpdater>(createProps, stateUpdaters),
-  withHandlers<SummaryProfitabilityFilterProps, IOwnHandler>(handlerCreators)
+  withStyles(styles, { withTheme: true }),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators)
 )(ProfitabilityFormFilterView);

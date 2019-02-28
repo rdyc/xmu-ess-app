@@ -31,11 +31,16 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -60,6 +65,8 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
@@ -110,7 +117,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -125,7 +132,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterSettlement || false}
                 onChange={props.handleFilterSettlementOnChange}
               />

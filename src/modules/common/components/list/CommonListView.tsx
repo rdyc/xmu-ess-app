@@ -21,7 +21,6 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
         uid: AppMenu.Common,
         parentUid: AppMenu.Lookup,
         parentUrl: '/common/system',
-        enableNavBack: true,
         title: `${props.intl.formatMessage(commonMessage.system.page.title)} ${CommonCategory[props.match.params.category]}`,
         description: props.intl.formatMessage(commonMessage.system.page.subTitle),
       }}
@@ -95,7 +94,7 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune/>

@@ -1,11 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
-import { AppRole } from '@constants/AppRole';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
@@ -34,11 +31,13 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { MileageApprovalDetailView } from './MileageApprovalDetailView';
 import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleCheckbox: (mileageItemUid: string) => void;
   handleValidate: (payload: WorkflowApprovalMileageFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalMileageFormData) => void;
@@ -55,8 +54,8 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
-  isAdmin: boolean;
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   action?: MileageApprovalUserAction;
   shouldDataReload: boolean;
   mileageItemUids: string[];
@@ -74,8 +73,8 @@ interface IOwnState {
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateApprovalItem: StateHandler<IOwnState>;
   stateCheckbox: StateHandler<IOwnState>;
-  setDataload: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type MileageApprovalDetailProps 
@@ -83,7 +82,6 @@ export type MileageApprovalDetailProps
   & WithUser 
   & WithLayout 
   & WithNotification
-  & WithOidc
   & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps 
   & IOwnState 
@@ -94,23 +92,9 @@ const createProps: mapper<MileageApprovalDetailProps, IOwnState> = (
   props: MileageApprovalDetailProps
 ): IOwnState => {
   const { intl } = props;
-  const { user } = props.oidcState;
-  let isAdmin: boolean = false;
 
-  if (user) {
-    const role: string | string[] | undefined = user.profile.role;
-
-    if (role) {
-      if (Array.isArray(role)) {
-        isAdmin = role.indexOf(AppRole.Admin) !== -1;
-      } else {
-        isAdmin = role === AppRole.Admin;
-      }
-    }
-  }
-  
   return {
-    isAdmin,
+    shouldLoad: false,
     mileageItemUids: [],
     itemsNeedApprove: 0,
     shouldDataReload: false,
@@ -132,11 +116,11 @@ const stateUpdaters: StateUpdaters<MileageApprovalDetailProps, IOwnState, IOwnSt
   stateCheckbox: (prevState: IOwnState) => (mileageItemUids: string[]) => ({
     mileageItemUids
   }),
-  setDataload: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    shouldDataReload: !prevState.shouldDataReload
+  setOptions: (prevState: IOwnState, props: MileageApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setOptions: (prevState: IOwnState, props: MileageApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setShouldLoad: (state: IOwnState, props: MileageApprovalDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
   stateApprovalItem: (prevState: IOwnState) => () => ({
     itemsNeedApprove: prevState.itemsNeedApprove + 1
@@ -154,6 +138,16 @@ const handlerCreators: HandleCreators<
         positionUid: props.userState.user.position.uid,
         mileageUid: props.match.params.mileageUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: MileageApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case MileageUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+
+      default:
+        break;
     }
   },
   handleCheckbox: (props: MileageApprovalDetailProps) => (
@@ -238,6 +232,7 @@ const handlerCreators: HandleCreators<
     const { match, intl, history, mileageItemUids, itemsNeedApprove } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
+    const { loadAllDispose } = props.mileageApprovalDispatch;
 
     alertAdd({
       time: new Date(),
@@ -245,12 +240,11 @@ const handlerCreators: HandleCreators<
         uid: detail.response && detail.response.data.uid
       })
     });
-    // props.setDataload();
-    // mileageItemUids.splice(0, mileageItemUids.length);
 
     // back to approval list
     if (mileageItemUids.length === itemsNeedApprove) {
-      history.push('/mileage/approvals', {isReload: true});
+
+      loadAllDispose();
 
       // notification: mark as complete
       props.notificationDispatch.markAsComplete({
@@ -258,9 +252,9 @@ const handlerCreators: HandleCreators<
         detailType: NotificationType.Approval,
         itemUid: match.params.mileageUid
       });
-    } else {
-      history.push('/mileage/approvals');
     }
+        
+    history.push('/mileage/approvals');
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -289,6 +283,12 @@ const handlerCreators: HandleCreators<
 
 const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: MileageApprovalDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+    
     // handle updated route params
     if (this.props.match.params.mileageUid !== prevProps.match.params.mileageUid) {
       this.props.handleOnLoadApi();
@@ -298,13 +298,12 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, IOwnState>
     if (this.props.mileageApprovalState.detail.response !== prevProps.mileageApprovalState.detail.response) {
       const { isLoading } = this.props.mileageApprovalState.detail;
 
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: MileageUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 
@@ -329,7 +328,6 @@ export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   setDisplayName('MileageApprovalDetail'),
   withUser,
   withLayout,
-  withOidc,
   withRouter,
   withMileageApproval,
   withNotification,

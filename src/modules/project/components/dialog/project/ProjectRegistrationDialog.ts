@@ -1,5 +1,4 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -50,7 +49,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type ProjectRegistrationDialogProps
-  = WithLayout
+  = WithTheme
   & WithStyles<typeof styles>
   & WithProjectRegistration
   & InjectedIntlProps
@@ -162,11 +161,10 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDialogProps, IOwnSt
 
 export const ProjectRegistrationDialog = compose<ProjectRegistrationDialogProps, IOwnOptions>(
   setDisplayName('ProjectRegistrationDialog'),
-  withLayout,
   withProjectRegistration,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles),
   injectIntl
 )(ProjectRegistrationDialogView);

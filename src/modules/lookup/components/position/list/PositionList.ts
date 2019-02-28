@@ -81,7 +81,7 @@ const stateUpdaters: StateUpdaters<PositionListProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<PositionListProps, IOwnHandler> = {
   handleOnLoadApi: (props: PositionListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.lookupPositionState.all;
+    const { isExpired, isLoading, request } = props.lookupPositionState.all;
     const { loadAllRequest } = props.lookupPositionDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -100,7 +100,7 @@ const handlerCreators: HandleCreators<PositionListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });

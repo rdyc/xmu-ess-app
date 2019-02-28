@@ -1,5 +1,6 @@
 import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import {
   IExpenseRequestPostPayload,
   IExpenseRequestPutPayload,
@@ -12,8 +13,9 @@ import {
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
@@ -26,6 +28,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -67,9 +70,10 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type ExpenseRequestEditorProps
   = WithExpenseRequest
   & WithLookupSystemLimit
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -242,7 +246,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.expenseRequestDispatch;
     const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
@@ -266,6 +270,27 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
       positionUid: user.position.uid
     });
 
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
+    }
+
     if (!isNullOrUndefined(history.location.state)) {
       view.title = expenseMessage.request.page.editTitle;
       view.subTitle = expenseMessage.request.page.editSubTitle;
@@ -284,23 +309,17 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.ExpenseRequest,
       parentUid: AppMenu.Expense,
+      parentUrl: '/project/request',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, expenseRequestDispatch } = this.props;
+    const { expenseRequestDispatch, masterPage } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     expenseRequestDispatch.createDispose();
     expenseRequestDispatch.updateDispose();
@@ -308,9 +327,11 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
 };
 
 export default compose<ExpenseRequestEditorProps, {}>(
+  setDisplayName('ExpenseRequestEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withExpenseRequest,
   withLookupSystemLimit,

@@ -1,8 +1,8 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { TimesheetUserAction } from '@timesheet/classes/types';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
@@ -31,14 +31,15 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
+  shouldLoad: boolean;
   action?: TimesheetUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -49,6 +50,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
@@ -83,14 +85,18 @@ const createProps: mapper<TimesheetEntryDetailProps, IOwnState> = (props: Timesh
   
   return { 
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false
   };
 };
 
 const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setOptions: (prevState: IOwnState, props: TimesheetEntryDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: TimesheetEntryDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
+  }),
+  setShouldLoad: (state: IOwnState, props: TimesheetEntryDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
   setModify: (prevState: IOwnState, props: TimesheetEntryDetailProps) => (): Partial<IOwnState> => ({
     action: TimesheetUserAction.Modify,
@@ -120,8 +126,18 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, IOwnHandler> = 
       });
     }
   },
-  handleOnModify: (props: TimesheetEntryDetailProps) => () => {
-    props.setModify();
+  handleOnSelectedMenu: (props: TimesheetEntryDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case TimesheetUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case TimesheetUserAction.Modify:
+        props.setModify();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: TimesheetEntryDetailProps) => () => {
     props.setDefault();
@@ -170,6 +186,12 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, IOwnHandler> = 
 
 const lifecycles: ReactLifeCycleFunctions<TimesheetEntryDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: TimesheetEntryDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.timesheetUid !== prevProps.match.params.timesheetUid) {
       this.props.handleOnLoadApi();
@@ -192,20 +214,18 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryDetailProps, IOwnState> 
       };
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: TimesheetUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: TimesheetUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted ]),
-          onClick: this.props.handleOnModify
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted ])
         }
       ];
 

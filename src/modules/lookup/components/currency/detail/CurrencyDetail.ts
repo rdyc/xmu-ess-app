@@ -1,13 +1,14 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencyDetailView } from '@lookup/components/currency/detail/CurrencyDetailView';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-// import { currencyMessage } from '@lookup/locales/messages/currency/currencyMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -26,20 +27,24 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   currencyUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
-  handleOnDelete: () => void;
+  handleSubmit: () => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
+  isAdmin: boolean;
+  shouldLoad: boolean;
   action?: CurrencyUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -49,33 +54,58 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
-  setModify: StateHandler<OwnState>;
-  setDelete: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type CurrencyDetailProps
   = WithLookupCurrency
   & WithUser
+  & WithOidc
   & WithLayout
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<CurrencyDetailProps, OwnState> = (props: CurrencyDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<CurrencyDetailProps, IOwnState> = (props: CurrencyDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: CurrencyDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false,
+  };
+};
+
+const stateUpdaters: StateUpdaters<CurrencyDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: CurrencyDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: IOwnState, props: CurrencyDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: CurrencyDetailProps) => (): Partial<IOwnState> => ({
     action: CurrencyUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -84,7 +114,7 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDelete: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
+  setDelete: (prevState: IOwnState, props: CurrencyDetailProps) => (): Partial<IOwnState> => ({
     action: CurrencyUserAction.Delete,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -93,7 +123,7 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     ...prevState,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -104,19 +134,29 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
   })
 };
 
-const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<CurrencyDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: CurrencyDetailProps) => () => {
     if (props.userState.user && props.match.params.currencyUid && !props.lookupCurrencyState.detail.isLoading) {
       props.lookupCurrencyDispatch.loadDetailRequest({
         currencyUid: props.match.params.currencyUid
       });
     }
-  },  
-  handleOnModify: (props: CurrencyDetailProps) => () => {
-    props.setModify();
   },
-  handleOnDelete: (props: CurrencyDetailProps) => () => {
-    props.setDelete();
+  handleOnSelectedMenu: (props: CurrencyDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case CurrencyUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case CurrencyUserAction.Modify:
+        props.setModify();        
+        break;
+      case CurrencyUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: CurrencyDetailProps) => () => {
     props.setDefault();
@@ -203,8 +243,14 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: CurrencyDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.currencyUid !== prevProps.match.params.currencyUid) {
       this.props.handleOnLoadApi();
@@ -215,27 +261,24 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, OwnState> = {
       const { isLoading } = this.props.lookupCurrencyState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {              
           id: CurrencyUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         },
         {
           id: CurrencyUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnModify
         },
         {
           id: CurrencyUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnDelete
         },
       ];
 
@@ -246,6 +289,7 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyDetailProps, OwnState> = {
 
 export const CurrencyDetail = compose(
   withUser,
+  withOidc,
   withLayout,
   withRouter,
   withLookupCurrency,

@@ -1,7 +1,7 @@
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { MileageUserAction } from '@mileage/classes/types';
 import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
@@ -29,16 +29,19 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
 }
 
 interface IOwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
   isAdmin: boolean;
   action?: MileageUserAction;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type MileageRequestDetailProps
@@ -69,13 +72,17 @@ const createProps: mapper<MileageRequestDetailProps, IOwnState> = (props: Mileag
     }
     
     return { 
-      isAdmin
-    };
+      isAdmin,
+      shouldLoad: false
+  };
 };
 
 const stateUpdaters: StateUpdaters<MileageRequestDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setOptions: (prevState: IOwnState, props: MileageRequestDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setShouldLoad: (state: IOwnState, props: MileageRequestDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setOptions: (prevState: IOwnState, props: MileageRequestDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -88,11 +95,27 @@ const handlerCreators: HandleCreators<MileageRequestDetailProps, IOwnHandler> = 
         mileageUid: props.match.params.mileageUid
       });
     }
+  },
+  handleOnSelectedMenu: (props: MileageRequestDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case MileageUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+
+      default:
+        break;
+    }
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<MileageRequestDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: MileageRequestDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+    
     // handle updated route params
     if (this.props.match.params.mileageUid !== prevProps.match.params.mileageUid) {
       this.props.handleOnLoadApi();
@@ -102,13 +125,12 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestDetailProps, IOwnState> 
     if (this.props.mileageRequestState.detail.response !== prevProps.mileageRequestState.detail.response) {
       const { isLoading } = this.props.mileageRequestState.detail;
 
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: MileageUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         }
       ];
 

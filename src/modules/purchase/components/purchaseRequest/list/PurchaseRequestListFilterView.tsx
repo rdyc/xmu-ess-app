@@ -29,13 +29,18 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -60,6 +65,8 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
       
       <DialogContent className={props.classes.paddingDisabled}>
       <List>
@@ -110,7 +117,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterSettlement || false}
               onChange={props.handleFilterSettlementOnChange}
             />
@@ -125,7 +132,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectOnChange}
             />

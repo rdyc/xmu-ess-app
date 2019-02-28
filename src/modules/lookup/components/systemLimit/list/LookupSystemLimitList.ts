@@ -92,7 +92,7 @@ const stateUpdaters: StateUpdaters<LookupSystemLimitListProps, IOwnState, IOwnSt
 
 const handlerCreators: HandleCreators<LookupSystemLimitListProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupSystemLimitListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.systemLimitState.all;
+    const { isExpired, isLoading, request } = props.systemLimitState.all;
     const { loadAllRequest } = props.systemLimitDispatch;
     const { user } = props.userState;
 
@@ -113,7 +113,7 @@ const handlerCreators: HandleCreators<LookupSystemLimitListProps, IOwnHandler> =
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });

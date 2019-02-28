@@ -74,7 +74,7 @@ export const TravelSettlementApprovalListView: React.SFC<TravelSettlementApprova
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune />

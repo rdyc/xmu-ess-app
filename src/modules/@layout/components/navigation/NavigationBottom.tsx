@@ -1,6 +1,5 @@
 import { SortDirection } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
@@ -17,16 +16,11 @@ import { compose, setDisplayName } from 'recompose';
 
 type AllProps
   = WithNavBottom
-  & WithLayout
   & WithWidth
   & WithStyles<typeof styles>;
 
 const component: React.SFC<AllProps> = props => {
-  const { layoutState, navBottomState, navBottomDispatch, classes, width } = props;
-
-  if (!layoutState.isModeList) {
-    return null;
-  }
+  const { navBottomState, navBottomDispatch, classes, width } = props;
 
   const sizes = [
     { id: 5, name: '5' },
@@ -243,7 +237,6 @@ const component: React.SFC<AllProps> = props => {
 const NavigationBottom = compose<AllProps, {}>(
   setDisplayName('NavigationBottom'),
   withNavBottom,
-  withLayout,
   withWidth(),
   withStyles(styles)
 )(component);

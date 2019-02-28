@@ -1,7 +1,9 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import {
@@ -26,6 +28,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -65,9 +68,10 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type PurchaseSettlementEditorProps
   = WithPurchaseSettlement
+  & WithOidc
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -298,7 +302,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.purchaseSettlementDispatch;
     const { user } = this.props.userState;
 
@@ -309,6 +313,26 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
     if (!user) {
       return;
+    }
+
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
     }
 
     stateUpdate({
@@ -339,23 +363,17 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
       
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.PurchaseSettlementRequest,
       parentUid: AppMenu.Purchase,
+      parentUrl: `/purchase/requests/${this.props.history.location.state.uid}`,
       title: intl.formatMessage({ id: purchase.title }),
-      subTitle: intl.formatMessage({ id: purchase.subTitle })
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, purchaseSettlementDispatch } = this.props;
+    const { masterPage, purchaseSettlementDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     purchaseSettlementDispatch.createDispose();
     purchaseSettlementDispatch.updateDispose();
@@ -363,9 +381,11 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 };
 
 export const PurchaseSettlementEditor = compose<PurchaseSettlementEditorProps, {}>(
+  setDisplayName('PurchaseSettlementEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withPurchaseSettlement,
   injectIntl,

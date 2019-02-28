@@ -1,8 +1,8 @@
-import AppStorage from '@constants/AppStorage';
 import { initialName } from '@layout/helper/initialName';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -10,7 +10,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,8 +20,8 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import * as store from 'store';
 
+import { IPopupMenuOption } from '../PopupMenu';
 import { NavigationHeaderView } from './NavigationHeaderView';
 
 interface IOwnOption {
@@ -29,18 +31,19 @@ interface IOwnOption {
 
 interface IOwnState {
   nameInitial?: string;
+  menuOptions?: IPopupMenuOption[];
   isDialogAccessOpen: boolean;
   isDialogLogoutOpen: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
   setDialogAccess: StateHandler<IOwnState>;
   setDialogLogout: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnClickTheme: () => void;
-  handleOnClickAnchor: () => void;
+  handleOnSelectedMenu: (option: IPopupMenuOption) => void;
   handleOnClickAccess: (event: React.MouseEvent) => void;
   handleOnClickAccessConfirmed: (event: React.MouseEvent) => void;
   handleOnClickLogout: (event: React.MouseEvent) => void;
@@ -54,44 +57,78 @@ export type NavigationHeaderProps
   & IOwnHandler
   & InjectedIntlProps
   & WithUser
+  & WithTheme
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithMasterPage
   & RouteComponentProps;
 
-const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({ 
+const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({
+  anchor: props.defaultAnchor,
+  paletteType: 'light',
   nameInitial: props.userState.user && initialName(props.userState.user.fullName),
   isDialogAccessOpen: false,
   isDialogLogoutOpen: false
 });
 
 const stateUpdaters: StateUpdaters<NavigationHeaderProps, IOwnState, IOwnStateUpdaters> = {
-  setDialogAccess: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isDialogAccessOpen: !prevState.isDialogAccessOpen
+  setOptions: (state: IOwnState, props: NavigationHeaderProps) => (): Partial<IOwnState> => {
+    const options = [
+      {
+        id: 'theme',
+        name: props.intl.formatMessage(props.theme.palette.type === 'light' ? layoutMessage.label.themeDark : layoutMessage.label.themeLight),
+        enabled: true,
+        visible: true
+      },
+      {
+        id: 'anchor',
+        name: props.intl.formatMessage(props.theme.direction === 'ltr' ? layoutMessage.label.anchorRight : layoutMessage.label.anchorLeft),
+        enabled: true,
+        visible: true
+      },
+      {
+        id: 'switch',
+        name: props.intl.formatMessage(layoutMessage.label.switch),
+        enabled: true,
+        visible: props.userState.user && props.userState.user.access.length > 1 || false
+      },
+      {
+        id: 'logout',
+        name: props.intl.formatMessage(layoutMessage.label.logout),
+        enabled: true,
+        visible: true
+      }
+    ];
+
+    return {
+      menuOptions: options
+    };
+  },
+  setDialogAccess: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isDialogAccessOpen: !state.isDialogAccessOpen
   }),
-  setDialogLogout: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isDialogLogoutOpen: !prevState.isDialogLogoutOpen
+  setDialogLogout: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isDialogLogoutOpen: !state.isDialogLogoutOpen
   })
 };
 
 const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
-  handleOnClickTheme: (props: NavigationHeaderProps) => () => {
-    props.layoutDispatch.themeChange();
-
-    if (props.userState.user) {
-      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
-        theme: props.layoutState.theme,
-        anchor: props.layoutState.anchor
-      });
-    }
-  },
-  handleOnClickAnchor: (props: NavigationHeaderProps) => () => {
-    props.layoutDispatch.changeAnchor(props.layoutState.anchor === 'right' ? 'left' : 'right');
-
-    if (props.userState.user) {
-      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
-        theme: props.layoutState.theme,
-        anchor: props.layoutState.anchor
-      });
+  handleOnSelectedMenu: (props: NavigationHeaderProps) => (option: IPopupMenuOption) => {
+    switch (option.id) {
+      case 'theme':
+        props.masterPage.changeTheme();
+        break;
+      case 'anchor':
+        props.masterPage.changeAnchor();
+        break;
+      case 'switch':
+        props.setDialogAccess();
+        break;
+      case 'logout':
+        props.setDialogLogout();
+        break;
+    
+      default:
+        break;
     }
   },
   handleOnClickAccess: (props: NavigationHeaderProps) => (event: React.MouseEvent) => {
@@ -104,13 +141,6 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
     props.setDialogLogout();
   },
   handleOnClickLogoutConfirmed: (props: NavigationHeaderProps) => (event: React.MouseEvent) => {
-    // AppUserManager
-    //   .signoutRedirect()
-    //   .then(() => {
-    //     store.remove(AppStorage.Profile);
-    //     store.remove(AppStorage.Access);
-    //   });
-
     AppUserManager
       .signoutRedirect()
       .catch(error => { 
@@ -119,33 +149,25 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
   }
 };
 
-// const lifecycles: ReactLifeCycleFunctions<NavigationHeaderProps, IOwnOption> = {
-//   componentDidMount() {
-//     if (this.props.userState.user) {
-//       // read previous saved personalization
-//       const personalization = store.get(`${AppStorage.Personalization}:${this.props.userState.user.uid}`);
-
-//       if (personalization) {
-//         // set previous anchor
-//         this.props.layoutDispatch.changeAnchor(personalization.theme.anchor);
-        
-//         // check dark type
-//         if (personalization.theme.palette.type === 'dark') {
-//           this.props.layoutDispatch.themeChange();
-//         }
-//       }
-//     }
-//   }
-// };
+const lifecycles: ReactLifeCycleFunctions<NavigationHeaderProps, {}> = {
+  componentDidMount() {
+    this.props.setOptions();
+  },
+  componentDidUpdate(prevProps: NavigationHeaderProps) {
+    if (this.props.theme !== prevProps.theme) {
+      this.props.setOptions();
+    }
+  }
+};
 
 export const NavigationHeader = compose<NavigationHeaderProps, IOwnOption>(
   setDisplayName('NavigationHeader'),
-  injectIntl,
-  withUser,
-  withStyles(styles),
-  withLayout,
   withRouter,
+  withUser,
+  withMasterPage,
+  injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
-  // lifecycle(lifecycles)
+  lifecycle(lifecycles),
 )(NavigationHeaderView);

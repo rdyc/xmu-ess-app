@@ -1,10 +1,11 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IExpenseRequestGetAllFilter } from '@expense/classes/filters/request';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { ExpenseRequestListFilterView } from './ExpenseRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -154,7 +153,7 @@ export type ExpenseRequestListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithLookupCustomer
   & WithCommonSystem
   & InjectedIntlProps;
@@ -178,7 +177,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterRejected: undefined,
     filterStart: undefined,
     filterEnd: undefined,
@@ -347,7 +346,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: ExpenseRequestListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -404,11 +403,10 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestListFilterProps, IOwnSta
 export const ExpenseRequestListFilter = compose<ExpenseRequestListFilterProps, IOwnOption>(
   setDisplayName('ExpenseRequestListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
-  withStyles(styles),
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

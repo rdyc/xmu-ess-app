@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -58,6 +59,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type WinningRatioProps = WithSummary &
   WithWidth &
   WithUser &
+  WithMasterPage &
   WithLayout &
   RouteComponentProps &
   InjectedIntlProps &
@@ -158,15 +160,15 @@ const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
   componentDidMount() {
-    const { layoutDispatch, intl } = this.props;
+    const { intl } = this.props;
 
     const { isLoading, response } = this.props.summaryState.winning;
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.ReportWinningRatio,
       parentUid: AppMenu.Report,
       title: intl.formatMessage(summaryMessage.winningRatio.page.title),
-      subTitle: intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
+      description : intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
     });
 
     // only load data when response are empty
@@ -196,19 +198,12 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
-    const { view } = this.props.layoutState;
+    const { masterPage } = this.props;
     const { loadWinningDispose } = this.props.summaryDispatch;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
+    masterPage.resetPage();
 
-    // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
-    if (view && view.uid !== AppMenu.ReportWinningRatio) {
-      loadWinningDispose();
-    }
+    loadWinningDispose();
   }
 };
 
@@ -243,6 +238,7 @@ const loadData = (props: WinningRatioProps): void => {
 export const WinningRatio = compose<WinningRatioProps, {}>(
   withSummary,
   withUser,
+  withMasterPage,
   withLayout,
   withRouter,
   injectIntl,

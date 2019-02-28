@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitPostPayload, ISystemLimitPutPayload } from '@lookup/classes/request';
@@ -57,7 +57,7 @@ export type SystemLimitEditorProps
   = WithLookupSystemLimit
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -197,7 +197,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
     
@@ -228,31 +228,18 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupSystemLimit,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/systemlimits`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupSystemLimit,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/systemlimits',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, systemLimitDispatch } = this.props;
+    const { masterPage, systemLimitDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     systemLimitDispatch.createDispose();
     systemLimitDispatch.updateDispose();
@@ -262,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
 export default compose<SystemLimitEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupSystemLimit,
   injectIntl,

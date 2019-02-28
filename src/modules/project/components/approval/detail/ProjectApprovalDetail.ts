@@ -1,9 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
@@ -38,17 +38,9 @@ interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
 interface IOwnState {
-  shoulLoad: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
+  menuOptions?: IPopupMenuOption[];
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -61,7 +53,16 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
-  setNextLoad: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnValidate: (payload: WorkflowApprovalFormData) => FormErrors;
+  handleOnSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleOnSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleOnSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 export type ProjectApprovalDetailProps
@@ -76,7 +77,7 @@ export type ProjectApprovalDetailProps
   & IOwnStateUpdater;
 
 const createProps: mapper<ProjectApprovalDetailProps, IOwnState> = (props: ProjectApprovalDetailProps): IOwnState => ({
-  shoulLoad: false,
+  shouldLoad: false,
   approvalTitle: props.intl.formatMessage(projectMessage.registration.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
   approvalChoices: [
@@ -91,11 +92,11 @@ const createProps: mapper<ProjectApprovalDetailProps, IOwnState> = (props: Proje
 });
 
 const stateUpdaters: StateUpdaters<ProjectApprovalDetailProps, IOwnState, IOwnStateUpdater> = {
-  setNextLoad: (state: IOwnState, props: ProjectApprovalDetailProps) => (): Partial<IOwnState> => ({
-    shoulLoad: !state.shoulLoad
+  setShouldLoad: (state: IOwnState, props: ProjectApprovalDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
   }),
-  setOptions: (state: IOwnState, props: ProjectApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (state: IOwnState, props: ProjectApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -109,7 +110,17 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
       });
     }
   },
-  handleValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleOnSelectedMenu: (props: ProjectApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case ProjectUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
+    }
+  },
+  handleOnValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
     const requiredFields = ['isApproved', 'remark'];
@@ -122,7 +133,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
     
     return errors;
   },
-  handleSubmit: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleOnSubmit: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const { match, intl } = props;
     const { user } = props.userState;
     const { createRequest } = props.projectApprovalDispatch;
@@ -160,7 +171,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
       });
     });
   },
-  handleSubmitSuccess: (props: ProjectApprovalDetailProps) => (response: boolean) => {
+  handleOnSubmitSuccess: (props: ProjectApprovalDetailProps) => (response: boolean) => {
     // add success alert
     props.layoutDispatch.alertAdd({
       time: new Date(),
@@ -175,9 +186,9 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
     });
 
     // set next load
-    props.setNextLoad();
+    props.setShouldLoad();
   },
-  handleSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleOnSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
       // validation errors from server (400: Bad Request)
       props.layoutDispatch.alertAdd({
@@ -197,9 +208,9 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
 const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectApprovalDetailProps) {
     // handle updated should load
-    if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of shoul load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -212,13 +223,12 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, IOwnState>
 
     // handle updated response state
     if (this.props.projectApprovalState.detail !== prevProps.projectApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: ProjectUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.projectApprovalState.detail.isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

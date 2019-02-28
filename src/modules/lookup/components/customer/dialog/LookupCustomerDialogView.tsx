@@ -28,10 +28,15 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
     aria-labelledby="lookup-customer-dialog-title"
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     onClose={props.onClose}
   >
-    <AppBar position="fixed" className={props.classes.appBarDialog}>
+    <AppBar 
+      elevation={0}
+      position="fixed" 
+      color="default"
+      className={props.classes.appBarDialog}
+    >
       <Toolbar>
         <IconButton color="inherit" onClick={() => props.onClose()} aria-label="Close">
           <ArrowBackIcon />
@@ -64,10 +69,12 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
       </Toolbar>
     </AppBar>
     
+    <Divider/>
+    
     <DialogContent className={props.classes.paddingDisabled}>        
       <List>
         <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="primary" checked={!props.value} />
+          <Radio color="secondary" checked={!props.value} />
           <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
         </ListItem>
         <Divider/>
@@ -77,7 +84,7 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
           props.customers.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
-                <Radio color="primary" checked={props.value && props.value === item.uid || false} />
+                <Radio color="secondary" checked={props.value && props.value === item.uid || false} />
                 <ListItemText 
                   primary={item.name} 
                   secondary={item.address || '-'}

@@ -21,6 +21,7 @@ export const AccountEmployeeRateListView: React.SFC<AccountEmployeeRateListProps
         info={{
           uid: AppMenu.LookupEmployee,
           parentUid: AppMenu.Lookup,
+          parentUrl: '/account/employee',
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Rate'}),
           description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
         }}

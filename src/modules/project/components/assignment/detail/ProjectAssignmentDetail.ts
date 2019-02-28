@@ -1,5 +1,4 @@
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
@@ -11,7 +10,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -27,7 +28,9 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
-  action?: ProjectUserAction | undefined;
+  menuOptions?: IPopupMenuOption[];
+  shouldLoad: boolean;
+  action?: ProjectUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -37,12 +40,15 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnModify: () => void;
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
@@ -51,8 +57,6 @@ export type ProjectAssignmentDetailProps
   = WithProjectAssignment
   & WithOidc
   & WithUser
-  & WithLayout
-  & WithAppBar
   & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
   & IOwnState
@@ -60,12 +64,19 @@ export type ProjectAssignmentDetailProps
   & IOwnHandler;
 
 const createProps: mapper<ProjectAssignmentDetailProps, IOwnState> = (props: ProjectAssignmentDetailProps): IOwnState => ({ 
+  shouldLoad: false,
   dialogFullScreen: false,
   dialogOpen: false
 });
 
-const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
-  setModify: (prevState: IOwnState, props: ProjectAssignmentDetailProps) => (): Partial<IOwnState> => ({
+const stateUpdaters: StateUpdaters<ProjectAssignmentDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setOptions: (state: IOwnState) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
+  }),
+  setModify: (state: IOwnState, props: ProjectAssignmentDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -74,7 +85,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+  setDefault: (state: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -86,8 +97,26 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, IOwnHandler> = {
-  handleOnModify: (props: ProjectAssignmentDetailProps) => () => { 
-    props.setModify();
+  handleOnLoadApi: (props: ProjectAssignmentDetailProps) => () => { 
+    if (props.userState.user && props.match.params.assignmentUid && !props.projectAssignmentState.detail.isLoading) {
+      props.projectAssignmentDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        assignmentUid: props.match.params.assignmentUid
+      });
+    }
+  },
+  handleOnSelectedMenu: (props: ProjectAssignmentDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case ProjectUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case ProjectUserAction.Modify:
+        props.setModify();
+        break;
+    
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: ProjectAssignmentDetailProps) => () => { 
     props.setDefault();
@@ -144,15 +173,52 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, IOwnHandler>
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: ProjectAssignmentDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated route params
+    if (this.props.match.params.assignmentUid !== prevProps.match.params.assignmentUid) {
+      this.props.handleOnLoadApi();
+    }
+
+    // handle updated response state
+    if (this.props.projectAssignmentState.detail.response !== prevProps.projectAssignmentState.detail.response) {
+      const { isLoading } = this.props.projectAssignmentState.detail;
+
+      // generate option menus
+      const options: IPopupMenuOption[] = [
+        {
+          id: ProjectUserAction.Refresh,
+          name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+          enabled: !isLoading,
+          visible: true
+        },
+        {
+          id: ProjectUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
+          visible: true
+        }
+      ];
+
+      this.props.setOptions(options);
+    }
+  }
+};
+
 export const ProjectAssignmentDetail = compose<ProjectAssignmentDetailProps, {}>(
   setDisplayName('ProjectAssignmentDetail'),
+  withRouter,
   withOidc,
   withUser,
-  withLayout,
-  withAppBar,
-  withRouter,
   withProjectAssignment,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(ProjectAssignmentDetailView);

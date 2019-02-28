@@ -1,10 +1,10 @@
 import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/withAccountEmployeeRate';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,8 +18,9 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -31,14 +32,16 @@ interface IOwnState {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeRateDetailProps
@@ -70,6 +73,7 @@ const createProps: mapper<AccountEmployeeRateDetailProps, IOwnState> = (props: A
   }
   return {
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
@@ -82,9 +86,18 @@ const stateUpdaters: StateUpdaters<AccountEmployeeRateDetailProps, IOwnState, IO
     ...prevState,
     ...newState
   }),
-  setOptions: () => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: AccountEmployeeRateDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: AccountEmployeeRateDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Rate'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'rate'}),
+  })
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandler> = {
@@ -96,19 +109,24 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
       });
     }
   },
-  handleOnOpenDialog: (props: AccountEmployeeRateDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Rate'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'rate'}),
-      });
-    } 
+  handleOnSelectedMenu: (props: AccountEmployeeRateDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: AccountEmployeeRateDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: AccountEmployeeRateDetailProps) => () => {
@@ -159,6 +177,12 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: AccountEmployeeRateDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
         this.props.match.params.rateUid !== prevProps.match.params.rateUid) {
@@ -170,20 +194,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnSt
       const { isLoading } = this.props.accountEmployeeRateState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: this.props.accountEmployeeRateState.detail.response && this.props.accountEmployeeRateState.detail.response.data.isActive || false,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: this.props.accountEmployeeRateState.detail.response && this.props.accountEmployeeRateState.detail.response.data.isActive || false
         },
       ];
 

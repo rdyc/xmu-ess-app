@@ -29,11 +29,16 @@ export const LeaveCancellationListFilterView: React.SFC<LeaveCancellationListFil
     fullScreen
     disableBackdropClick
     open={props.isOpen}
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     scroll="paper"
     onClose={props.onClose}
   >
-    <AppBar className={props.classes.appBarDialog}>
+    <AppBar 
+      elevation={0}
+      position="fixed" 
+      color="default"
+      className={props.classes.appBarDialog}
+    >
       <Toolbar>
         <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
           <CloseIcon />
@@ -58,6 +63,8 @@ export const LeaveCancellationListFilterView: React.SFC<LeaveCancellationListFil
         </Button>
       </Toolbar>
     </AppBar>
+
+    <Divider/>
 
     <DialogContent className={props.classes.paddingDisabled}>
       <List>

@@ -5,11 +5,12 @@ import { TimesheetEntryAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ITimesheetPutRequest, ITimesheet> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<ITimesheetPutRequest, ITimesheet>> = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const reducer: Reducer<IQuerySingleState<ITimesheetPutRequest, ITimesheet>> = (s
     case Action.PUT_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.PUT_DISPOSE: return initialState;
+    case Action.PUT_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }

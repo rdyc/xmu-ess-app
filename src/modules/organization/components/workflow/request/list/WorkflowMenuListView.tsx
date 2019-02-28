@@ -103,7 +103,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
             >
               <Badge
                   invisible={!props.companyUid}
-                  badgeContent={<CheckCircleIcon color="primary" />}
+                  badgeContent={<CheckCircleIcon color="secondary" />}
               >
                 <TuneIcon />
               </Badge>

@@ -1,5 +1,4 @@
-import AppEvent from '@constants/AppEvent';
-import { pageHelper } from '@layout/helper/pageHelper';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { INotificationDetailItem } from '@layout/interfaces';
@@ -62,6 +61,7 @@ export type NotificationProps
   & OwnStateUpdater
   & OwnHandler
   & WithUser
+  & WithMasterPage
   & WithNotification
   & WithStyles<typeof styles>;
 
@@ -106,12 +106,10 @@ const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
     props.setIndex(index, module, name, type);
   },
   handleRedirection: (props: NotificationProps) => (uid: string, module?: ModuleDefinitionType, type?: NotificationType) => {
+    props.masterPage.changeDrawerRight();
+    
     if (module && type) {
-      // open/close drawer event
-      dispatchEvent(new CustomEvent(AppEvent.DrawerRight));
-      
-      // redirection
-      pageHelper.redirectFrom(module, type, uid);
+      props.masterPage.changeRouteFrom(module, type, uid);
     }
   }
 };
@@ -133,6 +131,24 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, OwnState> =
         this.props.setTimer(timerId);
       }
     }
+
+    if (prevProps.notificationState.response !== this.props.notificationState.response) {
+      const { response } = this.props.notificationState;
+
+      let count: number = 0;
+      
+      if (response && response.data) {
+        if (Array.isArray(response.data)) {
+          response.data.forEach(element =>
+            element.details.forEach(detail => {
+              count = count + detail.total;
+            })
+          );
+        }
+      }
+
+      this.props.masterPage.changeNotif(count);
+    }
   }
 };
 
@@ -140,8 +156,9 @@ export const Notification = compose<NotificationProps, OwnOption>(
   setDisplayName('Notification'),
   withUser,
   withNotification,
-  withStyles(styles),
+  withMasterPage,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifeCycleFunctions)
+  lifecycle(lifeCycleFunctions),
+  withStyles(styles)
 )(NotificationView);

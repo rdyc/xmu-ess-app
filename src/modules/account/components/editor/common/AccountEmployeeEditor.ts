@@ -4,8 +4,8 @@ import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccou
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -56,7 +56,7 @@ export type AccountEmployeeEditorProps
   = WithAccountEmployee
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -221,7 +221,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeDispatch;
     const { user } = this.props.userState;
     
@@ -250,31 +250,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.Account,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title, { state: 'Employee' }),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/account/employee`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupEmployee,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/account/employee',
+      title: intl.formatMessage(view.title, { state: 'Employee' }),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeDispatch } = this.props;
+    const { masterPage, accountEmployeeDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     accountEmployeeDispatch.createDispose();
     accountEmployeeDispatch.updateDispose();
@@ -284,7 +271,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
 export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withAccountEmployee,
   injectIntl,

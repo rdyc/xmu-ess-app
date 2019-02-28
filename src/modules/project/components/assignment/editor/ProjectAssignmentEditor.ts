@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
 import { IProjectAssignmentDetail } from '@project/classes/response';
@@ -55,7 +55,7 @@ export type ProjectAssignmentEditorProps
   & WithProjectRegistration
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
   & IOwnHandlers
@@ -236,18 +236,19 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, formMode, companyUid, assignmentUid } = this.props;
+    const { intl, formMode, companyUid, assignmentUid } = this.props;
     const { response } = this.props.projectAssignmentState.detail;
     const { loadDetailRequest, loadDetailDispose } = this.props.projectAssignmentDispatch;
 
-    const view: any = {};
+    const view = {
+      title: projectMessage.assignment.page.newTitle,
+      description: projectMessage.assignment.page.newSubHeader
+    };
 
     switch (formMode) {
       case FormMode.Edit:
-        Object.assign(view, {
-          title: intl.formatMessage(projectMessage.assignment.page.modifyTitle),
-          subTitle: intl.formatMessage(projectMessage.assignment.page.modifySubHeader)
-        });
+        view.title = projectMessage.assignment.page.modifyTitle;
+        view.description = projectMessage.assignment.page.modifySubHeader;
 
         // editing mode: load detail if not exist
         if (companyUid && assignmentUid && !response) {
@@ -259,32 +260,21 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
         break;
     
       default:
-        Object.assign(view, {
-          title: intl.formatMessage(projectMessage.assignment.page.newTitle),
-          subTitle: intl.formatMessage(projectMessage.assignment.page.newSubHeader)
-        });
-
         // new mode
         loadDetailDispose();
         break;
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectAssignment,
-      ...view
+      parentUrl: '/project/assignments',
+      title: intl.formatMessage(view.title),
+      description: intl.formatMessage(view.description)
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectAssignmentDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    const { projectAssignmentDispatch } = this.props;
 
     projectAssignmentDispatch.loadDetailDispose();
     projectAssignmentDispatch.patchDispose();
@@ -295,7 +285,7 @@ export const ProjectAssignmentEditorForm = compose<ProjectAssignmentEditorProps,
   setDisplayName('ProjectAssignmentEditorForm'),
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withProjectRegistration,
   withProjectAssignment,

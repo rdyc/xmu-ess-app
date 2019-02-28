@@ -1,5 +1,4 @@
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -15,6 +14,7 @@ import {
   Typography,
   WithStyles,
   withStyles,
+  WithTheme,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styles from '@styles';
@@ -35,7 +35,7 @@ interface IOwnOptions {
 type AllProps 
   = IOwnOptions 
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & InjectedIntlProps;
 
 const DialogValueView: React.SFC<AllProps> = props => (
@@ -43,12 +43,17 @@ const DialogValueView: React.SFC<AllProps> = props => (
     fullScreen
     disableBackdropClick
     hideBackdrop={props.hideBackdrop}
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     open={props.isOpen}
     scroll="paper"
     onClose={props.onClose}
   >
-    <AppBar position="fixed" className={props.classes.appBarDialog}>
+    <AppBar 
+      elevation={0}
+      position="fixed" 
+      color="default"
+      className={props.classes.appBarDialog}
+    >
       <Toolbar>
         <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
           <ArrowBackIcon />
@@ -60,10 +65,12 @@ const DialogValueView: React.SFC<AllProps> = props => (
       </Toolbar>
     </AppBar>
 
+    <Divider/>
+
     <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="primary" checked={!props.value} />
+          <Radio color="secondary" checked={!props.value} />
           <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
         </ListItem>
         <Divider/>
@@ -72,7 +79,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
           props.items.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
-                <Radio color="primary" checked={props.value && props.value === item.value || false} />
+                <Radio color="secondary" checked={props.value && props.value === item.value || false} />
                 <ListItemText primary={item.name} />
               </ListItem>
               <Divider/>
@@ -94,8 +101,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
 export const DialogValue = compose<AllProps, IOwnOptions>(
   setDisplayName('DialogValue'),
-  withLayout,
   injectIntl,
-  withStyles(styles),
+  withStyles(styles, { withTheme: true }),
   lifecycle(lifecycles)
 )(DialogValueView);

@@ -1,10 +1,9 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -112,7 +111,7 @@ export type ProjectRegistrationListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
+  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -289,12 +288,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListFilterProps, IO
 export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilterProps, IOwnOption>(
   setDisplayName('ProjectRegistrationListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles, { withTheme: true }),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(ProjectRegistrationListFilterView);

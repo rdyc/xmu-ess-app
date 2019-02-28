@@ -1,6 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageRequestDetail } from '@mileage/classes/response';
 import { MileageApprovalItem } from '@mileage/components/approval/detail/MileageApprovalItem';
@@ -34,7 +35,6 @@ export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = 
       title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
       description: props.intl.formatMessage(mileageMessage.request.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.mileageApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IMileageRequestDetail) => (
@@ -76,5 +76,14 @@ export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = 
           />}
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu
+        id="mileage-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions}
+        onSelected={props.handleOnSelectedMenu}
+      />
+    }
   />
 );
