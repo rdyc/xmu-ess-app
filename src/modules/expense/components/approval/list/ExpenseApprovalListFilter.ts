@@ -370,7 +370,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, expenseType, statusType } = this.props.initialProps;
+      const { customerUid, expenseType, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -403,6 +403,13 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
           
           this.props.setFilterStatus(selected);
         }
+      }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
     }
   }
