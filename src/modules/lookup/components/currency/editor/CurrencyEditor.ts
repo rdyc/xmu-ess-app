@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCurrencyPostPayload, ILookupCurrencyPutPayload } from '@lookup/classes/request/currency';
@@ -44,7 +44,7 @@ export type CurrencyEditorProps
   = WithLookupCurrency
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -189,13 +189,13 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupCurrencyDispatch;
     const { user } = this.props.userState;
 
     const view = {
-      title: intl.formatMessage(lookupMessage.currency.form.newTitle),
-      subTitle: intl.formatMessage(lookupMessage.currency.form.newSubTitle),
+      title: lookupMessage.currency.form.newTitle,
+      subTitle: lookupMessage.currency.form.newSubTitle,
     };
 
     if (!user) {
@@ -204,8 +204,8 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
 
     if (!isNullOrUndefined(history.location.state)) {
 
-        view.title = intl.formatMessage(lookupMessage.currency.form.editTitle),
-        view.subTitle = intl.formatMessage(lookupMessage.currency.form.editSubTitle),
+        view.title = lookupMessage.currency.form.editTitle,
+        view.subTitle = lookupMessage.currency.form.editSubTitle,
 
         stateUpdate({
           formMode: FormMode.Edit,
@@ -218,23 +218,18 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
       
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupCurrency,
       parentUid: AppMenu.Lookup,
-      title: view.title,
-      subTitle: view.subTitle
+      parentUrl: '/lookup/currencies/',
+      title: intl.formatMessage(view.title),
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupCurrencyDispatch } = this.props;
+    const { masterPage, lookupCurrencyDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupCurrencyDispatch.createDispose();
     lookupCurrencyDispatch.updateDispose();
@@ -244,7 +239,7 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
 export const CurrencyEditor = compose<CurrencyEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupCurrency,
   injectIntl,
