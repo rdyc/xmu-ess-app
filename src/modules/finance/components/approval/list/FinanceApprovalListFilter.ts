@@ -2,7 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IFinanceApprovalGetAllFilter } from '@finance/classes/filters/approval';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -79,7 +79,6 @@ export type FinanceApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<FinanceApprovalListFilterProps, IOwnState> = (): IOwnState => ({
@@ -190,7 +189,7 @@ export const FinanceApprovalListFilter = compose<FinanceApprovalListFilterProps,
   withUser,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

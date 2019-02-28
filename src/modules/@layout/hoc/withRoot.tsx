@@ -50,15 +50,14 @@ const themeOverides: Partial<Theme> =  {
   overrides: { 
     // MuiAppBar: {
     //   colorDefault: {
-    //     backgroundColor: grey[700],
-    //     colorInterpolation: 'auto'
+    //     backgroundColor: grey[400]
     //   }
     // },
-    MuiCardHeader: {
-      subheader: {
-        fontSize: '85%'
-      }
-    },
+    // MuiCardHeader: {
+    //   subheader: {
+    //     fontSize: '85%'
+    //   }
+    // },
     MuiExpansionPanelSummary: {
       expanded: {
         margin: 0
@@ -75,9 +74,10 @@ const customMuiTheme = (direction?: Direction, type?: PaletteType): Theme => cre
     type: type || 'light'
   },
   typography: {
-    useNextVariants: true,
+    fontSize: 13, 
+    useNextVariants: true
   }, 
-  ...themeOverides,
+  ...themeOverides
 });
 
 interface IOwnOption {
@@ -130,8 +130,8 @@ const handlerCreators: HandleCreators<LayoutThemeProps, IOwnHandler> = {
 
     // save local preference
     store.set(`${AppStorage.Preference}:${props.userState.user && props.userState.user.uid}`, {
-      theme: type,
-      anchor: direction
+      type,
+      direction
     });
   },
   handleOnChangeAnchor: (props: LayoutThemeProps) => (event: CustomEvent) => {
@@ -143,8 +143,8 @@ const handlerCreators: HandleCreators<LayoutThemeProps, IOwnHandler> = {
 
     // save local preference
     store.set(`${AppStorage.Preference}:${props.userState.user && props.userState.user.uid}`, {
-      theme: type,
-      anchor: direction
+      type,
+      direction
     });
   }
 };
@@ -161,7 +161,7 @@ const lifecycles: ReactLifeCycleFunctions<LayoutThemeProps, IOwnState> = {
 
       if (preference) {
         // set theme state
-        this.props.setTheme(preference.anchor, preference.theme);
+        this.props.setTheme(preference.direction, preference.type);
       }
     }
   },

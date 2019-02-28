@@ -1,7 +1,7 @@
 import { IEmployee } from '@account/classes/response';
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ISummaryEffectivenessFilter } from '@summary/classes/filters';
@@ -77,7 +77,6 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 export type EffectivenessFilterProps 
   = WithForm
   & WithUser
-  & WithTheme
   & WithStyles<typeof styles>
   & InjectedIntlProps
   & IOwnOption
@@ -175,6 +174,6 @@ export const EffectivenessFilter = compose<EffectivenessFilterProps, IOwnOption>
   withForm,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   injectIntl
 )(EffectivenessFilterView);

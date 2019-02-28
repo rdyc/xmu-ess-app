@@ -3,7 +3,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { ICompanyList } from '@lookup/classes/response';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -69,7 +69,6 @@ export type CommonListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<CommonListFilterProps, IOwnState> = (): IOwnState => ({
@@ -147,7 +146,7 @@ export const CommonListFilter = compose<CommonListFilterProps, IOwnOption>(
   setDisplayName('CommonListFilter'),
   withUser,
   withLookupCompany,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

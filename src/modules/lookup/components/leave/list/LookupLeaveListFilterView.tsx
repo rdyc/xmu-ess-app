@@ -26,7 +26,7 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"

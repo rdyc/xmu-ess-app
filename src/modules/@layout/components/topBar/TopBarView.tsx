@@ -3,6 +3,7 @@ import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
+import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { TopBarProps } from './TopBar';
@@ -12,7 +13,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
     elevation={0}
     color="default"
     position="fixed"
-    className={props.classes.appBar}
+    className={classNames(props.classes.appBar, props.classes.shift)}
   >
     <Toolbar>
       <IconButton

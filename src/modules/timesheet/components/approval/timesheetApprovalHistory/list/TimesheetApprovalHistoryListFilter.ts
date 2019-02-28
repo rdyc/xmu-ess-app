@@ -4,7 +4,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -124,7 +124,6 @@ export type TimesheetApprovalHistoryListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -328,5 +327,5 @@ export const TimesheetApprovalHistoryListFilter = compose<TimesheetApprovalHisto
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles)
 )(TimesheetApprovalHistoryListFilterView);

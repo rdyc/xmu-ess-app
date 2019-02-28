@@ -28,7 +28,7 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
     aria-labelledby="lookup-customer-dialog-title"
-    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.classes.shift}
     onClose={props.onClose}
   >
     <AppBar 

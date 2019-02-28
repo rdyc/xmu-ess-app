@@ -27,7 +27,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
     aria-labelledby="project-registration-dialog-title"
-    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.classes.shift}
     onClose={props.onClose}
   >
     <AppBar 

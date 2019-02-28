@@ -1,4 +1,5 @@
 import { LayoutTheme } from '@layout/hoc/withRoot';
+import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { ErrorBoundary } from '../base/ErrorBoundary';
@@ -9,7 +10,7 @@ import { TopBar } from '../topBar/TopBar';
 import { ChildPage, ChildPageProps, MasterPageProps } from './MasterPage';
 
 export const ChildPageView: React.SFC<ChildPageProps> = props => (
-  <main className={props.classes.content}>
+  <main className={classNames(props.classes.content, props.classes.shift)}>
     <ErrorBoundary>
       {props.children}
     </ErrorBoundary>

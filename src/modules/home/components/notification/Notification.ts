@@ -3,7 +3,7 @@ import { WithNotification, withNotification } from '@layout/hoc/withNotification
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WithLookupVersion, withLookupVersion } from '@lookup/hoc/withLookupVersion';
-import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -59,7 +59,6 @@ export type NotificationProps
   & WithNotification
   & WithLookupVersion
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -158,6 +157,5 @@ export const Notification = compose<NotificationProps, IOwnOption>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  withStyles(styles),
-  withTheme()
+  withStyles(styles)
 )(NotificationView);

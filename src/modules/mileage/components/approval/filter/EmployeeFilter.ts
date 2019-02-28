@@ -1,5 +1,5 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IMileageRequest } from '@mileage/classes/response';
 import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
 import styles from '@styles';
@@ -21,7 +21,6 @@ export type EmployeeFilterProps
   = WithMileageApproval
   & WithUser
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps
   & OwnOptions;
 
@@ -54,6 +53,6 @@ export const EmployeeFilter = compose<EmployeeFilterProps, OwnOptions>(
   withMileageApproval,
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   lifecycle(lifecycles)
 )(EmployeeFilterView);

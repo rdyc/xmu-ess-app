@@ -25,7 +25,7 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"

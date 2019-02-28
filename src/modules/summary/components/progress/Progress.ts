@@ -3,7 +3,7 @@ import { AppRole } from '@constants/AppRole';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles, WithTheme, withWidth } from '@material-ui/core';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
@@ -64,7 +64,6 @@ export type ProgressProps
   & WithOidc
   & WithWidth
   & WithUser
-  & WithTheme
   & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
@@ -219,7 +218,7 @@ export const Progress = compose<ProgressProps, OwnOptions>(
     withRouter,
     injectIntl,
     withWidth(),
-    withStyles(styles, { withTheme: true }),
+    withStyles(styles),
     withStateHandlers(createProps, stateUpdaters), 
     withHandlers(handlerCreators),
     lifecycle(lifecycles)

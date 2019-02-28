@@ -1,7 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
 import styles from '@styles';
 import * as moment from 'moment';
@@ -142,7 +142,6 @@ export type MileageRequestListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithTheme
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -332,7 +331,7 @@ export const MileageRequestListFilter = compose<MileageRequestListFilterProps, O
   setDisplayName('MileageRequestListFilter'),
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

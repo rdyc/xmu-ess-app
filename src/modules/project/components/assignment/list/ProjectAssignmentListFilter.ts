@@ -3,7 +3,7 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -93,7 +93,6 @@ export type ProjectAssignmentListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -246,7 +245,7 @@ export const ProjectAssignmentListFilter = compose<ProjectAssignmentListFilterPr
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -3,7 +3,7 @@ import { IMileageExceptionAllFilter } from '@lookup/classes/filters';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -82,7 +82,6 @@ export type LookupMileageExceptionFilterProps
   & WithStyles<typeof styles>
   & WithLookupCompany
   & WithLookupRole
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupMileageExceptionFilterProps, OwnState> = (): OwnState => ({
@@ -195,7 +194,7 @@ export const LookupMileageExceptionFilter = compose<LookupMileageExceptionFilter
   withLookupCompany,
   withLookupRole,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -28,7 +28,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
   return (
     <React.Fragment>
       <Toolbar className={props.classes.toolbar}>
-        <Typography variant="body2" className={props.classes.flex}>
+        <Typography variant="h6" className={props.classes.flex}>
           <FormattedMessage id="layout.notification.title"/>
         </Typography>
 
@@ -54,7 +54,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
               <ListItemText 
                 primary={<FormattedMessage id="global.loading"/>}
                 primaryTypographyProps={{
-                  variant: 'body2'
+                  // variant: 'body2'
                 }}
               />
             </ListItem>
@@ -68,7 +68,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                   <FormattedMessage id="global.notification.emptySubTitle"/>
                 }
                 primaryTypographyProps={{
-                  variant: 'body2'
+                  // variant: 'body2'
                 }}
               />
             </ListItem>  
@@ -91,7 +91,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                     <ListItemText
                       primary={category.name}
                       primaryTypographyProps={{
-                        variant: 'body2',
+                        // variant: 'body2',
                         noWrap: true
                       }}
                     />
@@ -128,7 +128,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                     <ListItemText 
                       primary={`${detail.total} ${detail.type}`}
                       primaryTypographyProps={{
-                        variant: 'body2'
+                        // variant: 'body2'
                       }}
                     />
                     <ListItemSecondaryAction>
@@ -152,7 +152,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                 inset={true}
                 primary={props.type} 
                 primaryTypographyProps={{
-                  variant: 'body2',
+                  // variant: 'body2',
                   noWrap: true
                 }}  
               />
@@ -173,7 +173,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                       primary={item.name}
                       secondary={`${item.uid} - ${moment(item.date).fromNow()}`} 
                       primaryTypographyProps={{
-                        variant: 'body2'
+                        // variant: 'body2'
                       }}
                       secondaryTypographyProps={{
                         variant: 'caption'

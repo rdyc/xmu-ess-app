@@ -3,7 +3,7 @@ import { withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -80,7 +80,6 @@ export type AccountEmployeeFilterFilterProps
   & OwnStateUpdater
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (): OwnState => ({
@@ -183,7 +182,7 @@ export const AccountEmployeeFilter = compose<AccountEmployeeFilterFilterProps, O
   setDisplayName('AccountEmployeeFilter'),
   withLayout,
   withLookupCompany,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

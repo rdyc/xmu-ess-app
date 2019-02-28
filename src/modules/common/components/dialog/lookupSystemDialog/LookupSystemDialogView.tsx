@@ -25,7 +25,7 @@ export const LookupSystemDialogView: React.SFC<LookupSystemDialogProps> = props 
       fullScreen
       disableBackdropClick
       hideBackdrop={props.hideBackdrop}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       open={props.isOpen}
       scroll="paper"
       onClose={props.onClose}

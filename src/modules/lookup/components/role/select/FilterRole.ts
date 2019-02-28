@@ -2,7 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { IRoleList } from '@lookup/classes/response';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
@@ -23,7 +23,6 @@ export type FilterRoleProps
   = WithLookupRole
   & WithUser
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps
   & OwnOptions;
 
@@ -52,6 +51,6 @@ export const FilterRole = compose<FilterRoleProps, OwnOptions>(
   withLookupRole,
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   lifecycle(lifecycles)
 )(FilterRoleView);

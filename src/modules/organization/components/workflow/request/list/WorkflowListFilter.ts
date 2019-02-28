@@ -1,6 +1,6 @@
 import { ILookupCompany } from '@lookup/classes';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationWorkflowAllFilter } from '@organization/classes/filters/workflow';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -64,7 +64,6 @@ export type WorkflowListFilterProps
   & WithLookupCompany
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<WorkflowListFilterProps, IOwnState> = (): IOwnState => ({
@@ -135,7 +134,7 @@ export const WorkflowListFilter = compose<WorkflowListFilterProps, OwnOption>(
   setDisplayName('WorkflowListFilter'),
   withLookupCompany,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
