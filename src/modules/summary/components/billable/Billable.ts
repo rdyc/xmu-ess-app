@@ -162,13 +162,6 @@ const lifecycles: ReactLifeCycleFunctions<BillableProps, OwnState> = {
 
     const { isLoading, response } = this.props.summaryState.billable;
 
-    // layoutDispatch.changeView({
-    //   uid: AppMenu.ReportBillable,
-    //   parentUid: AppMenu.Report,
-    //   title: intl.formatMessage(summaryMessage.billable.page.title),
-    //   subTitle: intl.formatMessage(summaryMessage.billable.page.subHeader)
-    // });
-
     this.props.masterPage.changePage({
       uid: AppMenu.ReportBillable,
       parentUid: AppMenu.Report,
@@ -204,20 +197,11 @@ const lifecycles: ReactLifeCycleFunctions<BillableProps, OwnState> = {
   },
   componentWillUnmount() {
     const { masterPage } = this.props;
-    const { view } = this.props.layoutState;
     const { loadBillableDispose } = this.props.summaryDispatch;
 
     masterPage.resetPage();
 
-    // layoutDispatch.changeView(null);
-    // layoutDispatch.modeListOff();
-    // layoutDispatch.modeSearchOff();
-    // layoutDispatch.moreHide();
-
-    // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
-    if (view && view.uid !== AppMenu.ReportBillable) {
-      loadBillableDispose();
-    }
+    loadBillableDispose();
   }
 };
 
