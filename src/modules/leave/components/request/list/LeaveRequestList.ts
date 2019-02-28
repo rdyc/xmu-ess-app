@@ -69,7 +69,7 @@ const createProps: mapper<LeaveRequestListProps, IOwnState> = (props: LeaveReque
   
   // default state
   const state: IOwnState = {
-    status: props.isRejected ? 'complete' : props.status,
+    status: 'pending',
     isFilterOpen: false,
     // selected: [],
     fields: Object.keys(LeaveRequestField).map(key => ({ 

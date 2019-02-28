@@ -67,6 +67,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
 
   // default state
   const state: IOwnState = {
+    status: 'pending',
     isFilterOpen: false,
     fields: Object.keys(TimesheetEntryField).map(key => ({
       value: key,
@@ -76,6 +77,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
 
   // When location state are present (ex: redirection from dashboard) then don't use redux state
   if (props.location.state) {
+    state.status = props.location.state.status;
     state.isRejected = props.location.state.isRejected;
   } else {
     // fill from previous request if any
@@ -179,6 +181,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
   handleFilterBadge: (props: TimesheetEntryListProps) => () => {
     return props.customerUid !== undefined ||
       props.activityType !== undefined ||
+      props.status !== 'pending' ||
       props.statusType !== undefined ||
       props.isRejected === true;
   },
@@ -192,12 +195,14 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
       },
       {
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected,
       }
     );
