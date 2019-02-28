@@ -136,7 +136,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />

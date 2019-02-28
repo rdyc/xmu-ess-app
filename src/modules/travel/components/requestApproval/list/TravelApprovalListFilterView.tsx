@@ -138,7 +138,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />

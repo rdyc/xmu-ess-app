@@ -137,7 +137,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -152,7 +152,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNewOwner || false}
                 onChange={props.handleFilterNewOwnerOnChange}
               />

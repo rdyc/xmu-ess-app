@@ -27,7 +27,7 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
       return (
         <React.Fragment key={item.uid}>
           <ListItem button onClick={() => props.onSelected(item)}>
-            <Radio color="primary" checked={props.value && props.value === item.employeeUid || false} />
+            <Radio color="secondary" checked={props.value && props.value === item.employeeUid || false} />
             <ListItemText primary={item.employee && item.employee.fullName} />
           </ListItem>
           <Divider/>
@@ -66,7 +66,7 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
 
       <List>
         <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="primary" checked={!props.value} />
+          <Radio color="secondary" checked={!props.value} />
           <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
         </ListItem>
         <Divider />

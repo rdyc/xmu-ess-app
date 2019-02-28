@@ -178,7 +178,7 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
         >
           <Badge
             invisible={!showBadgeWhen()}
-            badgeContent={<CheckCircleIcon color="primary" />}
+            badgeContent={<CheckCircleIcon color="secondary" />}
           >
             <TuneIcon />
           </Badge>

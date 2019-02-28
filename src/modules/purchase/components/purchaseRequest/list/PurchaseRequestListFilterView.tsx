@@ -117,7 +117,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterSettlement || false}
               onChange={props.handleFilterSettlementOnChange}
             />
@@ -132,7 +132,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectOnChange}
             />

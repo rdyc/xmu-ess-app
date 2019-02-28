@@ -69,7 +69,7 @@ export const MileageApprovalListView: React.SFC<MileageApprovalListProps> = prop
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune/>

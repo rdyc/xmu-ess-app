@@ -158,7 +158,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />

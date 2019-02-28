@@ -137,7 +137,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />

@@ -117,7 +117,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -132,7 +132,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterSettlement || false}
                 onChange={props.handleFilterSettlementOnChange}
               />

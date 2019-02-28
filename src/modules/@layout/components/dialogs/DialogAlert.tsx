@@ -26,7 +26,7 @@ export const DialogAlert: React.SFC<OwnProps> = props => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={props.onClickOk} color="primary" autoFocus>
+      <Button onClick={props.onClickOk} color="secondary" autoFocus>
         {props.labelOk}
       </Button>
     </DialogActions>

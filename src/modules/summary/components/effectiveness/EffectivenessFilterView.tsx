@@ -175,7 +175,7 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
         >
           <Badge
             invisible={!showBadgeWhen()}
-            badgeContent={<CheckCircleIcon color="primary" />}
+            badgeContent={<CheckCircleIcon color="secondary" />}
           >
             <TuneIcon />
           </Badge>

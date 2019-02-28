@@ -178,7 +178,7 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
         >
           <Badge
             invisible={!showBadgeWhen()}
-            badgeContent={<CheckCircleIcon color="primary" />}
+            badgeContent={<CheckCircleIcon color="secondary" />}
           >
             <TuneIcon />
           </Badge>

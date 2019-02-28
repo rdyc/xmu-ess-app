@@ -155,7 +155,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectedOnChange}
             />

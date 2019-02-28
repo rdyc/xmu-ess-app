@@ -176,7 +176,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterNotify || false}
               onChange={props.handleFilterNotifyOnChange}
             />

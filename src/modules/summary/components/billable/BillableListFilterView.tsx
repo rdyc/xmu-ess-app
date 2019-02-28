@@ -234,7 +234,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           >
             <Badge
               invisible={!showBadgeWhen()}
-              badgeContent={<CheckCircleIcon color="primary" />}
+              badgeContent={<CheckCircleIcon color="secondary" />}
             >
               <TuneIcon />
             </Badge>

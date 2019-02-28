@@ -158,7 +158,7 @@ export const ProjectApprovalListFilterView: React.SFC<ProjectApprovalListFilterP
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNotify || false}
                 onChange={props.handleFilterNotifyOnChange}
               />
