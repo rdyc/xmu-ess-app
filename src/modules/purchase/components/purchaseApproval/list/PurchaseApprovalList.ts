@@ -54,7 +54,7 @@ const createProps: mapper<PurchaseApprovalListProps, IOwnState> = (props: Purcha
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
+    status: 'pending',
     fields: Object.keys(PurchaseField).map(key => ({
       value: key,
       name: PurchaseField[key]
@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListProps, IOwnHandler> = 
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
       props.isNotify === true ||
-      props.status !== undefined;
+      props.status !== 'pending';
   },
 };
 
