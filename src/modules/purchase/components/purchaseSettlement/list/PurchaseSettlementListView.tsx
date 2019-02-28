@@ -106,6 +106,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
         customerUid: props.customerUid,
         statusType: props.statusType,
         isRejected: props.isRejected,
+        status: props.status,
       }}
       onClose = { props.handleFilterVisibility }
       onApply = { props.handleFilterApplied }

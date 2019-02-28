@@ -69,26 +69,6 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       
       <Divider/>
 
-      <ListItem button onClick={props.handleFilterCompletionVisibility}>
-        <ListItemText
-          primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-          secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
-        />
-        <ListItemSecondaryAction>
-          {
-            (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
-            <IconButton onClick={props.handleFilterCompletionOnClear}>
-              <ClearIcon />
-            </IconButton>
-          }
-
-          <IconButton onClick={props.handleFilterCompletionVisibility}>
-            <ChevronRightIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-      <Divider />
-      
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
           <ListItem button onClick={props.handleFilterCustomerVisibility}>
@@ -130,6 +110,26 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
+
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
+            />
+            <ListItemSecondaryAction>
+              {
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
         <ListItem>
           <ListItemText 

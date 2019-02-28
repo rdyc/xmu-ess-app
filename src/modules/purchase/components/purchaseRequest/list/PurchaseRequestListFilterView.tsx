@@ -93,7 +93,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
             />
             <ListItemSecondaryAction>
               {

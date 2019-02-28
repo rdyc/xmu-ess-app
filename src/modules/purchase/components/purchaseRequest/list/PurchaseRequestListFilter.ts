@@ -255,7 +255,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
 const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListFilterProps, IOwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
-      const {customerUid, statusType, isSettlement, isRejected} = this.props.initialProps;
+      const {customerUid, statusType, status, isSettlement, isRejected} = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
