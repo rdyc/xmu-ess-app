@@ -171,5 +171,7 @@
   "organization.workflow.field.hierarchyUid.required": "Hierarchy is Required",
   "organization.workflow.field.priority": "Priority",
   "organization.workflow.field.priority.placeholder": "Type a Priority",
-  "organization.workflow.field.priority.required": "priority is Required"
+  "organization.workflow.field.priority.required": "priority is Required",
+
+  "organization.workflow.text.selectCompany": "Select the Company"
 }

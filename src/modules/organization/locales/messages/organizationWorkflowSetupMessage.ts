@@ -34,6 +34,11 @@ export const organizationWorkflowSetupSection = defineMessages({
   hierarchySubHeader: { id: `${prefix}.section.hierarchy.subHeader`},
 });
 
+// text
+export const organizationWorkflowSetupText = defineMessages({
+  selectCompany: { id: `${prefix}.text.selectCompany`},
+});
+
 // option
 export const organizationWorkflowSetupOption = defineMessages({
   modify: { id: `${prefix}.option.modify`},
