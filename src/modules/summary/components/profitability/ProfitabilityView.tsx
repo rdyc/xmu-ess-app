@@ -105,8 +105,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
         expenseProjectUid={expenseProjectUid}
         handleDialogClose={handleDialogClose}
         classes={classes}
-        intl={intl} 
-        theme={props.theme}
+        intl={intl}
       />
     </React.Fragment>
   );

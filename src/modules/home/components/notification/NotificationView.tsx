@@ -35,7 +35,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
             {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
           </Typography>
           <IconButton color="inherit" onClick={() => props.handleSyncClick()}>
-            <SyncIcon />
+            <SyncIcon fontSize="small" />
           </IconButton>
         </React.Fragment>
       </Toolbar>

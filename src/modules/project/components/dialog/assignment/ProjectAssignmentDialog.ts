@@ -1,4 +1,4 @@
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
 import { IProjectAssignmentList } from '@project/classes/response';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
@@ -49,8 +49,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type ProjectAssignmentDialogProps
-  = WithTheme
-  & WithStyles<typeof styles>
+  = WithStyles<typeof styles>
   & WithProjectAssignment
   & InjectedIntlProps
   & IOwnOptions
@@ -145,7 +144,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDialogProps, IOwnStat
 export const ProjectAssignmentDialog = compose<ProjectAssignmentDialogProps, IOwnOptions>(
   setDisplayName('ProjectAssignmentDialog'),
   withProjectAssignment,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

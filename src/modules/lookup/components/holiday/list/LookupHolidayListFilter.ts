@@ -1,7 +1,7 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupHolidayGetAllFilter } from '@lookup/classes/filters/holiday/ILookupHolidayGetAllFilter';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -62,7 +62,6 @@ export type LookupHolidayListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupHolidayListFilterProps, IOwnState> = (props: LookupHolidayListFilterProps): IOwnState => ({
@@ -116,7 +115,7 @@ export const LookupHolidayListFilter = compose<LookupHolidayListFilterProps, IOw
   setDisplayName('LookupHolidayListFilter'),
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(LookupHolidayListFilterView);

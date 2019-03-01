@@ -1,7 +1,7 @@
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -48,8 +48,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 export type LookupCustomerDialogProps
-  = WithTheme
-  & WithStyles<typeof styles>
+  = WithStyles<typeof styles>
   & WithLookupCustomer
   & InjectedIntlProps
   & IOwnOptions
@@ -148,7 +147,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, IOwnState> 
 export const LookupCustomerDialog = compose<LookupCustomerDialogProps, IOwnOptions>(
   setDisplayName('LookupCustomerDialog'),
   withLookupCustomer,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

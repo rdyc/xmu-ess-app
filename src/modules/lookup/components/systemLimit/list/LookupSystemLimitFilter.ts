@@ -3,7 +3,7 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { ILookupCompany } from '@lookup/classes';
 import { ISystemLimitAllFilter } from '@lookup/classes/filters';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -81,7 +81,6 @@ export type LookupSystemLimitFilterProps
   & WithLookupCompany
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupSystemLimitFilterProps, OwnState> = (): OwnState => ({
@@ -191,7 +190,7 @@ export const LookupSystemLimitFilter = compose<LookupSystemLimitFilterProps, Own
   withLookupCompany,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

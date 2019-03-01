@@ -32,7 +32,7 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
@@ -52,7 +52,11 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || 
+              props.filterStatus || 
+              !props.filterCompletion || 
+              props.filterCompletion && props.filterCompletion.value !== 'pending' || 
+              props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -114,11 +118,11 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(travelMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
             />
             <ListItemSecondaryAction>
               {
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -182,6 +186,7 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
 
   </React.Fragment>

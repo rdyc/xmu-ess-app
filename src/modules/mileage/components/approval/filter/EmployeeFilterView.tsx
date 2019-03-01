@@ -41,7 +41,7 @@ export const EmployeeFilterView: React.SFC<EmployeeFilterProps> = props => {
     <Dialog
       fullScreen
       disableBackdropClick
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       open={props.isOpen}
       onClose={props.onClose}
     >

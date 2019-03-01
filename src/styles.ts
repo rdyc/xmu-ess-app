@@ -12,7 +12,6 @@ import NewsIcon from './image/icons/news.png';
 import EquineLogo from './image/logo/etg.svg';
 import TessaLogo from './image/logo/tessa.svg';
 import Pattern2 from './image/pattern/pattern2.svg';
-import Pattern1 from './image/pattern/pattern5.svg';
 
 // import sidebar from './image/sidebar/satrio-tower.jpg';
 const drawerWidth = 300;
@@ -37,10 +36,10 @@ const styles = (theme: Theme) =>
           background: 'rgba(250, 250, 250, 0)'
         },
         '::-webkit-scrollbar-thumb': {
-          background: theme.palette.grey[400]
+          background: theme.palette.grey[200]
         },
         '::-webkit-scrollbar-thumb:hover': {
-          background: theme.palette.grey[500]
+          background: theme.palette.grey[300]
         }
       }
     },
@@ -191,17 +190,10 @@ const styles = (theme: Theme) =>
 
     // Application Bar
     appBar: {
+      background: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[900],
       zIndex: theme.zIndex.drawer + 1,
       [theme.breakpoints.up('md')]: {
-        // backgroundColor: theme.palette.grey[100],
-        
-        // dangdut styles
-        // backgroundColor: theme.palette.grey[400],
-        // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
-
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
-        marginRight: theme.direction === 'rtl' ? drawerWidth : 0
+        width: `calc(100% - ${drawerWidth}px)`
       },
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -213,34 +205,6 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
-    },
-    appBarSearch: {
-      backgroundColor: theme.palette.background.paper
-    },
-    appBarSearchField: {
-      backgroundColor: theme.palette.background.paper
-    },
-    appBarShiftLeft: {
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        marginRight: 0,
-      },
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      })
-    },
-    appBarShiftRight: {
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: 0,
-        marginRight: drawerWidth
-      },
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      })
     },
     appBarDialog: {
       position: 'relative'
@@ -395,8 +359,6 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
       [theme.breakpoints.up('md')]: {
-        marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
-        marginRight: theme.direction === 'rtl' ? drawerWidth : 0,
         marginTop: theme.spacing.unit * 8.5,
       },
       [theme.breakpoints.down('sm')]: {
@@ -408,16 +370,6 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
         marginRight: theme.direction === 'rtl' ? drawerWidth : 0
-      },
-    },
-    contentShiftLeft: {
-      [theme.breakpoints.up('md')]: {
-        marginLeft: drawerWidth
-      },
-    },
-    contentShiftRight: {
-      [theme.breakpoints.up('md')]: {
-        marginRight: drawerWidth
       },
     },
     contentWithBottomNav: {
@@ -468,21 +420,18 @@ const styles = (theme: Theme) =>
       color: 'inherit',
       fontWeight: 'inherit'
     },
-    //   themeInherit: {
-    //     ...theme.typography,
-    //     fontWeight: 500,
-    //   },
+
     /* Color page end */
 
     toolbar: {
-      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.background.default
+      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[900],
     },
 
     /* Toolbar Custom */
     toolbarCustom: {
+      minHeight: 40,
       backgroundColor: theme.palette.secondary.main,
-      backgroundImage: `linear-gradient(200deg, rgba(0,0,0,0), ${theme.palette.secondary.main}), url(${Pattern1})`,
-      color: '#FFF',
+      color: theme.palette.grey[50],
       marginBottom: theme.spacing.unit * 2
     },
 

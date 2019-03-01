@@ -27,7 +27,7 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       onClose={props.onClose}
     >
       <AppBar 

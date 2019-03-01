@@ -41,7 +41,7 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
           fullScreen
           disableBackdropClick
           open={props.isFilterDialogOpen}
-          className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+          className={props.classes.shift}
           scroll="paper"
           onClose={props.handleFilterVisibility}
         >

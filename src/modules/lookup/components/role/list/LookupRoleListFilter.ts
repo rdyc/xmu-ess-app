@@ -2,7 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupRoleGetAllFilter } from '@lookup/classes/filters/role';
 import { ICompanyList } from '@lookup/classes/response';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -60,7 +60,6 @@ export type LookupRoleListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser
   & WithLookupCompany
   & InjectedIntlProps;
@@ -136,7 +135,7 @@ export const LookupRoleListFilter = compose<LookupRoleListFilterProps, IOwnOptio
   withUser,
   withLookupCompany,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

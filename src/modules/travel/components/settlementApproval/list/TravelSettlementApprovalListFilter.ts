@@ -4,7 +4,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelApprovalgetAllFilter } from '@travel/classes/filters/ITravelApprovalGetAlFilter';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -141,7 +141,6 @@ export type TravelSettlementApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<TravelSettlementApprovalListFilterProps, IOwnState> = (props: TravelSettlementApprovalListFilterProps): IOwnState => ({
@@ -162,8 +161,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
     filterCustomer: undefined,
     filterProject: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNotify: undefined,
-    filterCompletion: undefined
   }),
 
   // filter customer
@@ -267,7 +266,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListFilterProps, I
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: TravelSettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: TravelSettlementApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -319,7 +318,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListFilterProp
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, statusType } = this.props.initialProps;
+      const { customerUid, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -342,6 +341,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListFilterProp
           this.props.setFilterStatus(selected);
         }
       }
+      
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
@@ -352,7 +358,7 @@ export const TravelSettlementApprovalListFilter = compose<TravelSettlementApprov
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

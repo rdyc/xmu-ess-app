@@ -4,7 +4,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITravelSettlementGetAllFilter } from '@travel/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelSettlementListFilterResult = Pick<ITravelSettlementGetAllFilter, 'customerUid' | 'statusType' |'isRejected'>;
+export type ITravelSettlementListFilterResult = Pick<ITravelSettlementGetAllFilter, 'customerUid' | 'statusType' |'isRejected' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -48,6 +48,10 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
 
   // filter start
   isFilterStartOpen: boolean;
@@ -72,6 +76,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
 
   // filter Start
   setFilterStartVisibility: StateHandler<IOwnState>;
@@ -102,6 +110,12 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
+
   // filter Start
   handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStartOnSelected: (data: string) => void;
@@ -127,13 +141,13 @@ export type TravelSettlementListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<TravelSettlementListFilterProps, IOwnState> = (props: TravelSettlementListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterStatusOpen: false,
+  isFilterCompletionOpen: false,
   isFilterStartOpen: false,
   isFilterEndOpen: false,
 
@@ -147,6 +161,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementListFilterProps, IOwnState, I
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterRejected: undefined
   }),
 
@@ -166,6 +181,15 @@ const stateUpdaters: StateUpdaters<TravelSettlementListFilterProps, IOwnState, I
   setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
+  }),
+
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
   }),
 
   // filter Start
@@ -201,6 +225,7 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       statusType: props.filterStatus && props.filterStatus.type,
+      status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
     });
   },
@@ -231,6 +256,20 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
   },
   handleFilterStatusOnClose: (props: TravelSettlementListFilterProps) => () => {
     props.setFilterStatusVisibility();
+  },
+
+  // filter completion
+  handleFilterCompletionVisibility: (props: TravelSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: TravelSettlementListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: TravelSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
+  },
+  handleFilterCompletionOnClose: (props: TravelSettlementListFilterProps) => () => {
+    props.setFilterCompletionVisibility();
   },
 
   // filter Start
@@ -280,7 +319,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementListFilterProps, IOwnS
 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, statusType } = this.props.initialProps;
+      const { customerUid, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -303,6 +342,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementListFilterProps, IOwnS
           this.props.setFilterStatus(selected);
         }
       }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
@@ -313,7 +359,7 @@ export const TravelSettlementListFilter = compose<TravelSettlementListFilterProp
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -31,7 +31,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >

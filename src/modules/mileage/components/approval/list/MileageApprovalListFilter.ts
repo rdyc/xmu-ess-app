@@ -1,7 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
 import { IMileageRequest } from '@mileage/classes/response';
 import styles from '@styles';
@@ -157,7 +157,6 @@ export type MileageApprovalListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithTheme
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -374,7 +373,7 @@ export const MileageApprovalListFilter = compose<MileageApprovalListFilterProps,
   setDisplayName('MileageApprovalListFilter'),
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true}),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -15,7 +15,6 @@ import {
   Typography,
   WithStyles,
   withStyles,
-  WithTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
@@ -40,8 +39,7 @@ interface OwnProps {
 
 type AllProps 
   = OwnProps 
-  & WithUser 
-  & WithTheme 
+  & WithUser
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
@@ -68,7 +66,7 @@ const billableDetail: React.SFC<AllProps> = props => {
               open={isDetailOpen}
               onClose={handleDialogDetail}
               scroll="paper"
-              className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+              className={props.classes.shift}
               fullScreen
               disableBackdropClick
             >
@@ -155,5 +153,5 @@ const billableDetail: React.SFC<AllProps> = props => {
 export const BillableDetail = compose<AllProps, OwnProps>(
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true })
+  withStyles(styles)
 )(billableDetail);

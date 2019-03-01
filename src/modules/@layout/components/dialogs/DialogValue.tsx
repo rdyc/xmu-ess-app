@@ -13,8 +13,7 @@ import {
   Toolbar,
   Typography,
   WithStyles,
-  withStyles,
-  WithTheme,
+  withStyles
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styles from '@styles';
@@ -36,7 +35,6 @@ interface IOwnOptions {
 type AllProps 
   = IOwnOptions 
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const DialogValueView: React.SFC<AllProps> = props => (
@@ -44,7 +42,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
     fullScreen
     disableBackdropClick
     hideBackdrop={props.hideBackdrop}
-    className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    className={props.classes.shift}
     open={props.isOpen}
     scroll="paper"
     onClose={props.onClose}
@@ -122,6 +120,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 export const DialogValue = compose<AllProps, IOwnOptions>(
   setDisplayName('DialogValue'),
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   lifecycle(lifecycles)
 )(DialogValueView);

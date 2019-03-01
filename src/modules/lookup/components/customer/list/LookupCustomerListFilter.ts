@@ -1,7 +1,7 @@
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupCustomerGetAllFilter } from '@lookup/classes/filters/customer';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -64,7 +64,6 @@ export type LookupCustomerListFilterProps
   & WithLookupCompany
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupCustomerListFilterProps, IOwnState> = (): IOwnState => ({
@@ -137,7 +136,7 @@ export const LookupCustomerListFilter = compose<LookupCustomerListFilterProps, O
   setDisplayName('LookupCustomerListFilter'),
   injectIntl,
   withLookupCompany,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -2,7 +2,7 @@ import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveCancellationGetAllFilter } from '@leave/classes/filters/cancellation';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -65,7 +65,6 @@ export type LeaveCancellationListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser 
   & WithAccountEmployee
   & InjectedIntlProps;
@@ -144,10 +143,9 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListFilterProps, IOwn
 
 export const LeaveCancellationListFilter = compose<LeaveCancellationListFilterProps, IOwnOption>(
   setDisplayName('LeaveCancellationListFilter'),
-  withStyles(styles),
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
