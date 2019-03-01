@@ -7,7 +7,7 @@
   "global.date.today": "Today",
   "global.date.empty": "Empty",
   
-  "global.dialog.alertTitle": "Alert Details",
+  "global.dialog.alertTitle": "Message Details",
   
   "global.form.submit.title": "Submission",
   "global.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

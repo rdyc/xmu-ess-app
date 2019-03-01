@@ -84,7 +84,8 @@ const createProps: mapper<ProjectRegistrationEditorProps, IOwnState> = (props: P
 const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandlers> = {
   handleValidate: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
     const errors = {
-      information: {}
+      information: {},
+      sales: {}
     };
   
     const requiredFields = [
@@ -97,6 +98,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
         errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
+
+    // sales must be have values
+    // if (formData.sales.employees.length === 0) {
+    //   errors.sales = props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired'));
+    // }
     
     return errors;
   },
@@ -161,9 +167,9 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       return documents;
     };
 
-    const parsedSales = () => {
+    const parsedSales = (): IProjectRegistrationPutSales[] | undefined => {
       if (!formData.sales) {
-        return null;
+        return undefined;
       }
   
       const _sales: IProjectRegistrationPutSales[] = [];
@@ -178,10 +184,17 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       return _sales;
     };
 
+    // checking sales must be have values
+    const sales = parsedSales();
+
+    if (!sales || sales.length === 0) {
+      return Promise.reject(props.intl.formatMessage(projectMessage.registration.message.undefinedSales));
+    }
+
     const payload = {
       ...formData.information,
-      documents: parsedDocuments(),
-      sales: parsedSales()
+      sales,
+      documents: parsedDocuments()
     };
 
     // creating
@@ -267,7 +280,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
-      // another errors from server
+      // another errors
       let message: string = '';
 
       if (formMode === FormMode.New) {

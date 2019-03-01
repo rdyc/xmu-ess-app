@@ -106,6 +106,7 @@
   "project.registration.message.emptySite": "Site not found",
   "project.registration.message.emptyDocument": "Document not found",
   "project.registration.message.duplicateSales": "Sales person already added",
+  "project.registration.message.undefinedSales": "Please add one ore more project sales",
   "project.registration.message.create.success": "A new PID {uid} has been created",
   "project.registration.message.create.failure": "Unable to process your submission",
   "project.registration.message.update.success": "Existing PID {uid} has been updated",
