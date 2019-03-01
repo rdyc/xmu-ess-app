@@ -10,150 +10,156 @@ import { LandingPageProps } from './LandingPage';
 
 export const LandingPageView: React.SFC<LandingPageProps> = props => (
   <LayoutTheme>
-    <header className={props.classes.heroHeader}>
-      <Typography variant="headline" color="inherit" className={props.classes.flex}>
-        {props.title}
-      </Typography>
-
-      {
-        !props.oidcState.isLoadingUser &&
-        !props.oidcState.user &&
-        <Button
-          color="inherit"
-          size="small"
-          onClick={() => props.handleOnClickLogin()}
+    <div className={props.classes.root}>
+      <header className={props.classes.heroHeader}>
+        <Typography 
+          variant="body1" 
+          color="inherit" 
+          className={props.classes.flex}
         >
-          Login
-        </Button>
-      }
+          {props.title}
+        </Typography>
 
-      {
-        !props.oidcState.isLoadingUser &&
-        props.oidcState.user &&
-        props.userState.user &&
-        <React.Fragment>
+        {
+          !props.oidcState.isLoadingUser &&
+          !props.oidcState.user &&
           <Button
             color="inherit"
             size="small"
             onClick={() => props.handleOnClickLogin()}
           >
-            Start
+            Login
           </Button>
-          <Button
-            color="inherit"
-            size="small"
-            onClick={() => props.handleOnClickLogout()}
-          >
-            Logout
-          </Button>
-        </React.Fragment>
-      }
-    </header>
+        }
 
-    <main className={props.classes.landingPage}>
-      <div className={props.classes.heroUnit}>
-        <div className={props.classes.heroContent}>
-          <div className={props.classes.heroText}>
-            <div className={props.classes.logoTessa} />
-
-            <Typography
-              variant="h6"
+        {
+          !props.oidcState.isLoadingUser &&
+          props.oidcState.user &&
+          props.userState.user &&
+          <React.Fragment>
+            <Button
               color="inherit"
-              paragraph
+              size="small"
+              onClick={() => props.handleOnClickLogin()}
             >
-              Manage and collaborate your daily professional activities through the Employee Self Service application
-            </Typography>
+              Start
+            </Button>
+            <Button
+              color="inherit"
+              size="small"
+              onClick={() => props.handleOnClickLogout()}
+            >
+              Logout
+            </Button>
+          </React.Fragment>
+        }
+      </header>
 
-            {
-              props.oidcState.isLoadingUser &&
-              <Typography variant="body2">
-                <FormattedMessage id="layout.text.loading" />
+      <main className={props.classes.landingPage}>
+        <div className={props.classes.heroUnit}>
+          <div className={props.classes.heroContent}>
+            <div className={props.classes.heroText}>
+              <div className={props.classes.logoTessa} />
+
+              <Typography
+                variant="h6"
+                color="inherit"
+                paragraph
+              >
+                Manage and collaborate your daily professional activities through the Employee Self Service application
               </Typography>
-            }
 
-            {
-              !props.oidcState.isLoadingUser &&
-              props.oidcState.user &&
-              props.userState.user &&
-              <React.Fragment>
+              {
+                props.oidcState.isLoadingUser &&
+                <Typography variant="body2">
+                  <FormattedMessage id="layout.text.loading" />
+                </Typography>
+              }
+
+              {
+                !props.oidcState.isLoadingUser &&
+                props.oidcState.user &&
+                props.userState.user &&
+                <React.Fragment>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="large"
+                    onClick={() => props.handleOnClickLogin()}
+                  >
+                    {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
+                  </Button>
+                </React.Fragment>
+              }
+
+              {
+                !props.oidcState.isLoadingUser &&
+                !props.oidcState.user &&
                 <Button
                   variant="contained"
                   color="secondary"
                   size="large"
                   onClick={() => props.handleOnClickLogin()}
                 >
-                  {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
+                  Let me in
                 </Button>
-              </React.Fragment>
-            }
-
-            {
-              !props.oidcState.isLoadingUser &&
-              !props.oidcState.user &&
-              <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                onClick={() => props.handleOnClickLogin()}
-              >
-                Let me in
-              </Button>
-            }
+              }
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className={props.classes.heroSection}>
-        <Paper square elevation={2} className={props.classes.heroSummary}>
-          <div id="logo" className={props.classes.paddingFar}>
-            <div className={props.classes.logoEquine} />
-          </div>
+        <div className={props.classes.heroSection}>
+          <Paper square elevation={2} className={props.classes.heroSummary}>
+            <div id="logo" className={props.classes.paddingFar}>
+              <div className={props.classes.logoEquine} />
+            </div>
 
-          <div id="news">
-            <Typography 
-              variant="h5" 
-              align="center"
-              color="textSecondary"
-              className={props.classes.paddingFar}
-            >
-              News
-            </Typography>
+            <div id="news">
+              <Typography 
+                variant="h5" 
+                align="center"
+                color="textSecondary"
+                className={props.classes.paddingFar}
+              >
+                News
+              </Typography>
 
-            <NewsFeed />
-          </div>
+              <NewsFeed />
+            </div>
 
-          {/* <div id="achievements">
-            <Typography 
-              variant="h4" 
-              align="center" 
-              className={props.classes.paddingFar}
-            >
-              Achievements
-            </Typography>
+            {/* <div id="achievements">
+              <Typography 
+                variant="h4" 
+                align="center" 
+                className={props.classes.paddingFar}
+              >
+                Achievements
+              </Typography>
 
-            <NewsFeed />
-          </div> */}
-        </Paper>
-      </div>
+              <NewsFeed />
+            </div> */}
+          </Paper>
+        </div>
 
-      <footer className={props.classes.footer}>
-        <Typography
-          variant="body2"
-          color="inherit"
-          align="center"
-          gutterBottom
-        >
-          {props.description}
-        </Typography>
-        <Typography
-          variant="body2"
-          align="center"
-          color="inherit"
-          component="p"
-        >
-          {props.footer}
-        </Typography>
-      </footer>
-    </main>
+        <footer className={props.classes.footer}>
+          <Typography
+            variant="body2"
+            color="inherit"
+            align="center"
+            gutterBottom
+          >
+            {props.description}
+          </Typography>
+          <Typography
+            variant="body2"
+            align="center"
+            color="inherit"
+            component="p"
+          >
+            {props.footer}
+          </Typography>
+        </footer>
+      </main>
+    </div>
   </LayoutTheme>
 );

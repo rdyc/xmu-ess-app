@@ -144,6 +144,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
       case 'valueUsd':
         fieldProps = {
           type: 'number',
+          required: true,
           disabled: !isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
