@@ -179,6 +179,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

@@ -212,6 +212,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );
