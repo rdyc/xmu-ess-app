@@ -52,7 +52,12 @@ export const ProjectApprovalListFilterView: React.SFC<ProjectApprovalListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || 
+              props.filterType || 
+              props.filterStatus || 
+              !props.filterCompletion || 
+              props.filterCompletion && props.filterCompletion.value !== 'pending' ||  
+              props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -134,11 +139,11 @@ export const ProjectApprovalListFilterView: React.SFC<ProjectApprovalListFilterP
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(projectMessage.registration.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
             />
             <ListItemSecondaryAction>
             { 
-                props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton> 
@@ -211,6 +216,7 @@ export const ProjectApprovalListFilterView: React.SFC<ProjectApprovalListFilterP
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

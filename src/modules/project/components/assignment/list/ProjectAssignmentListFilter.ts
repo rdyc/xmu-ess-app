@@ -1,5 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
@@ -23,7 +24,12 @@ import {
 
 import { ProjectAssignmentListFilterView } from './ProjectAssignmentListFilterView';
 
-export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes'>;
+const completionStatus: ICollectionValue[] = [
+  { value: 'pending', name: 'Pending' },
+  { value: 'complete', name: 'Complete' }
+];
+
+export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -33,6 +39,8 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  completionStatus: ICollectionValue[];
+
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -44,6 +52,10 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -61,6 +73,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -85,6 +101,12 @@ interface IOwnHandler {
   handleFilterStatusOnSelected: (data: ISystemList) => void;
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
+
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
 }
 
 export type ProjectAssignmentListFilterProps 
@@ -99,9 +121,11 @@ export type ProjectAssignmentListFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectAssignmentListFilterProps, IOwnState> = (props: ProjectAssignmentListFilterProps): IOwnState => ({
+  completionStatus,
   isFilterCustomerOpen: false,
   isFilterTypeOpen: false,
-  isFilterStatusOpen: false
+  isFilterStatusOpen: false,
+  isFilterCompletionOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, IOwnStateUpdater> = { 
@@ -110,6 +134,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, 
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterActive: undefined
   }),
 
@@ -138,7 +163,16 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, 
   setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
-  })
+  }),
+
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
+  }),
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHandler> = {
@@ -150,7 +184,8 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
     props.onApply({
       customerUids: props.filterCustomer && props.filterCustomer.uid,
       projectTypes: props.filterType && props.filterType.type,
-      statusTypes: props.filterStatus && props.filterStatus.type
+      statusTypes: props.filterStatus && props.filterStatus.type,
+      status: props.filterCompletion && props.filterCompletion.value,
     });
   },
 
@@ -194,14 +229,28 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
   },
   handleFilterStatusOnClose: (props: ProjectAssignmentListFilterProps) => () => {
     props.setFilterStatusVisibility();
-  }
+  },
+
+  // filter completion
+  handleFilterCompletionVisibility: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: ProjectAssignmentListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
+  },
+  handleFilterCompletionOnClose: (props: ProjectAssignmentListFilterProps) => () => {
+    props.setFilterCompletionVisibility();
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListFilterProps, IOwnState> = {
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUids, projectTypes, statusTypes } = this.props.initialProps;
+      const { customerUids, projectTypes, statusTypes, status } = this.props.initialProps;
 
       // filter customer
       if (customerUids) {
@@ -234,6 +283,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListFilterProps, IOwn
           
           this.props.setFilterStatus(selected);
         }
+      }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
     }
   }

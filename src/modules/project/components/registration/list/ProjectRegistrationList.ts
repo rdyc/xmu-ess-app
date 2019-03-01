@@ -72,6 +72,7 @@ const createProps: mapper<ProjectRegistrationListProps, IOwnState> = (props: Pro
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
+    status: 'pending',
     fields: Object.keys(ProjectRegistrationField).map(key => ({ 
       value: key, 
       name: ProjectRegistrationField[key] 
@@ -88,6 +89,7 @@ const createProps: mapper<ProjectRegistrationListProps, IOwnState> = (props: Pro
       state.customerUid = request.filter.customerUid,
       state.projectType = request.filter.projectType,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
       state.isNewOwner = request.filter.isNewOwner;
     }
@@ -120,6 +122,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationListProps, IOwnHandler>
         customerUid: props.customerUid,
         projectType: props.projectType,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         isNewOwner: props.isNewOwner,
         find: request && request.filter && request.filter.find,
@@ -188,6 +191,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationListProps, IOwnHandler>
     return props.customerUid !== undefined || 
       props.projectType !== undefined || 
       props.statusType !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true ||
       props.isNewOwner === true;
   },
@@ -207,6 +211,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListProps, IOwnStat
         customerUid: this.props.customerUid,
         projectType: this.props.projectType,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
         isNewOwner: this.props.isNewOwner
       },
@@ -214,6 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListProps, IOwnStat
         customerUid: prevProps.customerUid,
         projectType: prevProps.projectType,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected,
         isNewOwner: prevProps.isNewOwner
       }

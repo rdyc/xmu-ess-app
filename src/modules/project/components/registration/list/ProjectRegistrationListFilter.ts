@@ -1,5 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
@@ -23,7 +24,12 @@ import {
 
 import { ProjectRegistrationListFilterView } from './ProjectRegistrationListFilterView';
 
-export type IProjectRegistrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'isRejected' | 'isNewOwner'>;
+const completionStatus: ICollectionValue[] = [
+  { value: 'pending', name: 'Pending' },
+  { value: 'complete', name: 'Complete' }
+];
+
+export type IProjectRegistrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'isRejected' | 'isNewOwner' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -33,6 +39,8 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  completionStatus: ICollectionValue[];
+
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -45,6 +53,10 @@ interface IOwnState {
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
 
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
+  
   // filter rejected
   filterRejected?: boolean;
   
@@ -67,6 +79,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
   
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
@@ -98,6 +114,12 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
+
   // filter rejected
   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 
@@ -117,9 +139,11 @@ export type ProjectRegistrationListFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectRegistrationListFilterProps, IOwnState> = (props: ProjectRegistrationListFilterProps): IOwnState => ({
+  completionStatus,
   isFilterCustomerOpen: false,
   isFilterTypeOpen: false,
   isFilterStatusOpen: false,
+  isFilterCompletionOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
@@ -132,6 +156,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationListFilterProps, IOwnState
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNewOwner: undefined,
     filterRejected: undefined
   }),
@@ -163,6 +188,15 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationListFilterProps, IOwnState
     filterStatus: data
   }),
 
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
+  }),
+
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
@@ -184,6 +218,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationListFilterProps, IOwnHa
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       projectType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
+      status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
       isNewOwner: props.filterNewOwner
     });
@@ -230,6 +265,20 @@ const handlerCreators: HandleCreators<ProjectRegistrationListFilterProps, IOwnHa
   handleFilterStatusOnClose: (props: ProjectRegistrationListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
+
+  // filter completion
+  handleFilterCompletionVisibility: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: ProjectRegistrationListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
+  },
+  handleFilterCompletionOnClose: (props: ProjectRegistrationListFilterProps) => () => {
+    props.setFilterCompletionVisibility();
+  },
   
   // filter rejected
   handleFilterRejectedOnChange: (props: ProjectRegistrationListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -246,7 +295,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListFilterProps, IO
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, projectType, statusType } = this.props.initialProps;
+      const { customerUid, projectType, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -279,6 +328,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListFilterProps, IO
           
           this.props.setFilterStatus(selected);
         }
+      }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
       }
     }
   }

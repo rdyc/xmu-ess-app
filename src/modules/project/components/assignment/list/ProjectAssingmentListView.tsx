@@ -104,7 +104,8 @@ export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = 
       initialProps={{
         customerUids: props.customerUids,
         projectTypes: props.projectTypes,
-        statusTypes: props.statusTypes
+        statusTypes: props.statusTypes,
+        status: props.status
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
