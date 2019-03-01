@@ -17,7 +17,7 @@
 
   "mileage.request.field.item.title": "Mileage Item",
   "mileage.request.field.item.subHeader": " ",
-  "mileage.request.field.information.title": "Details Submit Mileage",
+  "mileage.request.field.information.title": "Request",
   "mileage.request.field.information.subHeader": " ",
   "mileage.request.field.information.uid": "Mileage ID",
   "mileage.request.field.information.statusType": "Status",
@@ -47,7 +47,7 @@
   
   "mileage.approval.field.filter.employee": "Employee Name",
   
-  "mileage.request.item.title": "Details Mileage Item",
+  "mileage.request.item.title": "Mileages",
   "mileage.request.item.subHeader": " ",
   "mileage.request.item.empty": "No Item",
 
@@ -59,7 +59,7 @@
   "mileage.request.field.item.site": "Project Site",
   "mileage.request.field.item.value": "Value",
 
-  "mileage.request.timesheet.item.title": "Details Timesheet Item",
+  "mileage.request.timesheet.item.title": "Timesheets",
   "mileage.request.timesheet.item.subHeader": " ",
 
   "mileage.request.confirm.create.title": "Create Mileage",

@@ -102,8 +102,8 @@ const stateUpdaters: StateUpdaters<LookupMileageExceptionDetailProps, IOwnState,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'mileage exception'}),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,

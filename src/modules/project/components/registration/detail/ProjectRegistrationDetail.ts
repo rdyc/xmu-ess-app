@@ -109,8 +109,8 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IO
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.modifyTitle), 
     dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setClose: (state: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Close,

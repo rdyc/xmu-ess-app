@@ -1,4 +1,3 @@
-import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
@@ -30,9 +29,12 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
     )}
     secondary={(data: IProjectDetail) => ([
       <ProjectDocument 
-        title={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectTitle : projectMessage.registration.section.documentPreSalesTitle)}
-        // subHeader={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
-        data={data.projectType === ProjectType.Project ? data.documents : data.documentPreSales}
+        title={props.intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
+        data={data.documents}
+      />,
+      <ProjectDocument 
+        title={props.intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
+        data={data.documentPreSales}
       />,
       <ProjectSales data={data.sales} />,
       <ProjectSite data={data.sites} />,

@@ -102,8 +102,8 @@ const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, IOwnState, 
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(organizationMessage.structure.dialog.modifyTitle),
     dialogContent: props.intl.formatMessage(organizationMessage.structure.dialog.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: () => (): Partial<IOwnState> => ({
     dialogFullScreen: false,

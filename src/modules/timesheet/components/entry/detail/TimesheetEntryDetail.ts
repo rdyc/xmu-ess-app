@@ -104,8 +104,8 @@ const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, IOwnState, IOwnSta
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
