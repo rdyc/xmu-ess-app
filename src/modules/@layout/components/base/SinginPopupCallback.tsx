@@ -3,7 +3,7 @@ import * as React from 'react';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
 const callback: React.SFC = props => (
-  <div>Signed in...</div>
+  <p>Redirecting...</p>
 );
 
 const lifecycles: ReactLifeCycleFunctions<{}, {}> = ({
