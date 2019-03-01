@@ -113,8 +113,8 @@ const stateUpdaters: StateUpdaters<OrganizationWorkflowDetailProps, IOwnState, I
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(organizationMessage.workflowSetup.dialog.modifyTitle),
     dialogContent: props.intl.formatMessage(organizationMessage.workflowSetup.dialog.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,    

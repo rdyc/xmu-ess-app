@@ -104,8 +104,8 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, IOwnState, IOwnSt
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setSettle: (prevState: IOwnState, props: PurchaseRequestDetailProps) => (): Partial<IOwnState> => ({
     action: PurchaseUserAction.Settle,
@@ -113,8 +113,8 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, IOwnState, IOwnSt
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     ...prevState,

@@ -97,8 +97,8 @@ const createProps: mapper<HolidayDetailProps, IOwnState> = (props: HolidayDetail
      shouldLoad: false,
      dialogFullScreen: false,
      dialogOpen: false,
-     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
    };
  };
 
