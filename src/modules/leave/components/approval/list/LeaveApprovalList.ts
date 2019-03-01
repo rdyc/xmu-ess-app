@@ -65,6 +65,7 @@ const createProps: mapper<LeaveApprovalListProps, IOwnState> = (props: LeaveAppr
   
   // default state
   const state: IOwnState = {
+    status: 'pending',
     isFilterOpen: false,
     fields: Object.keys(LeaveRequestField).map(key => ({ 
       value: key, 
@@ -176,7 +177,7 @@ const handlerCreators: HandleCreators<LeaveApprovalListProps, IOwnHandler> = {
     return props.customerUid !== undefined || 
       props.leaveType !== undefined || 
       props.statusType !== undefined || 
-      props.status !== undefined || 
+      props.status !== 'pending' || 
       props.isNotify === true;
   },
 };
