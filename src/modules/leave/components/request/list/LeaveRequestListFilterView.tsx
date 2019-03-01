@@ -113,7 +113,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
           { 

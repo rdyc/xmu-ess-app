@@ -113,7 +113,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
             />
             <ListItemSecondaryAction>
               {
@@ -176,7 +176,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
       isCompletion={true}

@@ -134,7 +134,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
           { 
@@ -209,7 +209,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
       isCompletion={true}

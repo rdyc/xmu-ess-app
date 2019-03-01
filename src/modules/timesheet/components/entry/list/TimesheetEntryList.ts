@@ -85,6 +85,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
     }
   }
