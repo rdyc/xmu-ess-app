@@ -4,8 +4,8 @@ import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
-import Background1 from './image/background/1.png';
-import Background2 from './image/background/2.png';
+import Background1 from './image/background/1.jpg';
+import Background2 from './image/background/2.jpg';
 import AchievementIcon from './image/icons/achievement.png';
 import EventIcon from './image/icons/event.png';
 import NewsIcon from './image/icons/news.png';
