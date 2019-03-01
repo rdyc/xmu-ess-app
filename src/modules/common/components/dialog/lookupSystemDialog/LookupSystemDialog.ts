@@ -4,7 +4,7 @@ import { CommonCategoryType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ModuleDefinitionType } from '@layout/types';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -41,7 +41,6 @@ export type LookupSystemDialogProps
   & OwnHandlers
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = {
@@ -190,7 +189,7 @@ export const LookupSystemDialog = compose<LookupSystemDialogProps, OwnOption>(
   setDisplayName('LookupSystemDialog'),
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
 )(LookupSystemDialogView);

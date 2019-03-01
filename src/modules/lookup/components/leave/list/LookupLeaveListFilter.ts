@@ -1,7 +1,7 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { ILookupLeaveGetAllFilter } from '@lookup/classes/filters/leave/ILookupLeaveGetAllFilter';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -62,7 +62,6 @@ export type LookupLeaveListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupLeaveListFilterProps, IOwnState> = (props: LookupLeaveListFilterProps): IOwnState => ({
@@ -116,7 +115,7 @@ export const LookupLeaveListFilter = compose<LookupLeaveListFilterProps, IOwnOpt
   setDisplayName('LookupLeaveListFilter'),
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(LookupLeaveListFilterView);

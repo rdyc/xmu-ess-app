@@ -1,7 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IDiemAllFilter } from '@lookup/classes/filters';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -92,7 +92,6 @@ export type LookupDiemListFilterProps
   & WithCommonSystem
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<LookupDiemListFilterProps, IOwnState> = (): IOwnState => ({
@@ -204,7 +203,7 @@ export const LookupDiemListFilter = compose<LookupDiemListFilterProps, OwnOption
   setDisplayName('LookupDiemListFilter'),
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

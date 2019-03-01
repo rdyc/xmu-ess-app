@@ -34,7 +34,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
             primary={props.userState.user.fullName}
             secondary={`${props.userState.user.company.code} - ${props.userState.user.position.name}`}
             primaryTypographyProps={{
-              variant: 'body2',
+              // variant: 'body2',
               noWrap: true
             }}
             secondaryTypographyProps={{

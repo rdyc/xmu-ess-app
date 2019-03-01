@@ -3,7 +3,7 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -111,7 +111,6 @@ export type ProjectRegistrationListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -291,7 +290,7 @@ export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilt
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

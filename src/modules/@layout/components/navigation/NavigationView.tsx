@@ -32,7 +32,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
         <ListItemText 
           primary="Dashboard" 
           primaryTypographyProps={{
-            variant: 'body2'
+            // variant: 'body2'
           }}
         />
       </ListItem>
@@ -53,7 +53,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
                 primary={header.name}
                 primaryTypographyProps={{
                   noWrap: true,
-                  variant: 'body2'
+                  // variant: 'body2'
                 }}
               />
               <ListItemSecondaryAction>
@@ -83,7 +83,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
                       primary={child.name}
                       primaryTypographyProps={{
                         noWrap: true,
-                        variant: 'body2'
+                        // variant: 'body2'
                       }}
                     />
                   </ListItem>

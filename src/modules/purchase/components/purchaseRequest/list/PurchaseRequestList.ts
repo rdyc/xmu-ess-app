@@ -54,7 +54,7 @@ const createProps: mapper<PurchaseRequestListProps, IOwnState> = (props: Purchas
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
+    status: 'pending',
     fields: Object.keys(PurchaseField).map(key => ({
       value: key,
       name: PurchaseField[key]
@@ -64,12 +64,14 @@ const createProps: mapper<PurchaseRequestListProps, IOwnState> = (props: Purchas
   if (props.location.state) {
     // fill partial props from location state to handle redirection from dashboard notif
     state.statusType = props.location.state.statusType;
+    state.status = props.location.state.status;
     state.isSettlement = props.location.state.isSettlement;
     state.isRejected = props.location.state.isRejected;
   } else {
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isSettlement = request.filter.isSettlement;
       state.isRejected = request.filter.isRejected;
     }
@@ -102,6 +104,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListProps, IOwnHandler> = {
         statusType: props.statusType,
         isRejected: props.isRejected,
         isSettlement: props.isSettlement,
+        status: props.status,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -165,6 +168,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListProps, IOwnHandler> = {
   handleFilterBadge: (props: PurchaseRequestListProps) => () => {
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true ||
       props.isSettlement === true;
   },
@@ -177,12 +181,14 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, IOwnState> =
       {
         customerUid: this.props.customerUid,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
         isSettlement: this.props.isSettlement
       },
       {
         customerUid: prevProps.customerUid,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected,
         isSettlement: prevProps.isSettlement
       }

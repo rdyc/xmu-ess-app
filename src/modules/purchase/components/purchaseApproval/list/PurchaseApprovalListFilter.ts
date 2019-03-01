@@ -4,7 +4,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -113,7 +113,6 @@ export type PurchaseApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<PurchaseApprovalListFilterProps, IOwnState> = (props: PurchaseApprovalListFilterProps): IOwnState => ({
@@ -130,7 +129,7 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterStatus: undefined
   }),
@@ -218,7 +217,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: PurchaseApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -278,7 +277,7 @@ export const PurchaseApprovalListFilter = compose<PurchaseApprovalListFilterProp
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

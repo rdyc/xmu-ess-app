@@ -1,7 +1,7 @@
 import { IEmployee } from '@account/classes/response';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ISummaryWinningFilter } from '@summary/classes/filters';
 import * as moment from 'moment';
@@ -115,7 +115,6 @@ export type WinningRatioFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithStyles<typeof styles> 
-  & WithTheme
   & WithUser 
   & InjectedIntlProps;
 
@@ -274,6 +273,6 @@ export const WinningRatioFilter = compose<WinningRatioFilterProps, IOwnOption>(
   withUser,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   injectIntl
 )(WinningRatioFilterView);

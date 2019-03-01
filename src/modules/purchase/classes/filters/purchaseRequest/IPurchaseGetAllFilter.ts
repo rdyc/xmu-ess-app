@@ -3,6 +3,7 @@ import { IBaseFilter, IBasePagingFilter, ICompanyAccess } from '@generic/interfa
 export interface IPurchaseGetAllFilter extends IBaseFilter, IBasePagingFilter, ICompanyAccess {
   customerUid?: string;
   projectUid?: string;
+  status?: 'pending' | 'complete' | string;
   isRejected?: boolean;
   isSettlement?: boolean;
   statusType?: string;

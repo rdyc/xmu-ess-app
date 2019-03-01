@@ -2,7 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveRequestGetAllFilter } from '@leave/classes/filters/request';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -87,7 +87,6 @@ export type LeaveRequestListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithUser
   & WithCommonSystem
   & InjectedIntlProps;
@@ -215,7 +214,7 @@ export const LeaveRequestListFilter = compose<LeaveRequestListFilterProps, IOwnO
   withUser,
   withCommonSystem,
   injectIntl,
-  withStyles(styles,  { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

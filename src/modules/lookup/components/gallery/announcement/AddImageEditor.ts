@@ -1,6 +1,6 @@
 import { IGallery } from '@lookup/classes/response/gallery';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -45,7 +45,6 @@ export type AddImageEditorProps
   & OwnStateUpdater
   & OwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithImageGallery
   & InjectedIntlProps;
 
@@ -112,7 +111,7 @@ export const AddImageEditor = compose<AddImageEditorProps, OwnOption>(
   setDisplayName('AddImageEditor'),
   withImageGallery,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

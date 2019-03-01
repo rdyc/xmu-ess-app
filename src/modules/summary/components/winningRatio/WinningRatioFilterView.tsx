@@ -44,7 +44,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
         fullScreen
         disableBackdropClick
         open={props.isFilterOpen}
-        className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+        className={props.classes.shift}
         onClose={props.handleFilterVisibility}
       >
         <AppBar 

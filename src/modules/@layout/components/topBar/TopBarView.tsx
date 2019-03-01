@@ -13,9 +13,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
     elevation={0}
     color="default"
     position="fixed"
-    className={classNames(
-      props.classes.appBar, 
-      props.anchor === 'right' ? props.classes.appBarShiftRight : props.classes.appBarShiftLeft)}
+    className={classNames(props.classes.appBar, props.classes.shift)}
   >
     <Toolbar>
       <IconButton

@@ -114,7 +114,7 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
         disableBackdropClick
         open={props.isOpen}
         onClose={props.onClose}
-        className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+        className={props.classes.shift}
       >
         <AppBar 
           elevation={0}

@@ -42,6 +42,7 @@
   "layout.text.find": "Find",
   "layout.text.search": "Search",
   "layout.text.selection": "{count} Selected",
+  "layout.text.all": "All",
 
   "layout.tooltip.more": "More options",
   "layout.tooltip.filter": "Filter",

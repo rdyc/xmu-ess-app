@@ -28,7 +28,7 @@ export const OrganizationHierarchyListFilterView: React.SFC<OrganizationHierarch
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >

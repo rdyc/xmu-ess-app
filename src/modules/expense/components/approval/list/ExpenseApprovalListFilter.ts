@@ -5,7 +5,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -153,7 +153,6 @@ export type ExpenseApprovalListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & WithLookupCustomer
   & WithCommonSystem
   & InjectedIntlProps;
@@ -370,7 +369,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, expenseType, statusType } = this.props.initialProps;
+      const { customerUid, expenseType, statusType, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -404,6 +403,13 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalListFilterProps, IOwnSt
           this.props.setFilterStatus(selected);
         }
       }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
@@ -414,7 +420,7 @@ export const ExpenseApprovalListFilter = compose<ExpenseApprovalListFilterProps,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

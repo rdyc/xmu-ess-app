@@ -111,7 +111,6 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         handleDialogClose={handleDialogClose}
         classes={props.classes}
         intl={intl}
-        theme={props.theme}
       />
     </React.Fragment>
   );

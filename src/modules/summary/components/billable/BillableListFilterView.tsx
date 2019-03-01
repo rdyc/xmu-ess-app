@@ -45,7 +45,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         fullScreen
         disableBackdropClick
         open={props.isFilterOpen}
-        className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+        className={props.classes.shift}
         onClose={props.handleFilterVisibility}
       >
         <AppBar 

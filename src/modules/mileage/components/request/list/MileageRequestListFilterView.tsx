@@ -30,7 +30,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       onClose={props.onClose}
     >
       <AppBar 
@@ -49,7 +49,12 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
           </Typography>
 
           {
-            (props.filterMonth || props.filterYear || props.filterStatus || props.filterRejected) &&
+            (props.filterMonth || 
+              props.filterYear || 
+              props.filterStatus || 
+              !props.filterCompletion ||
+              props.filterCompletion && props.filterCompletion.value !== 'pending' || 
+              props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -128,14 +133,14 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
         </ListItem>
         <Divider />
 
-        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+        <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
           { 
-              props.filterCompletion &&
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
               <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
               </IconButton> 
@@ -146,7 +151,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider /> */}
+        <Divider />
 
         <ListItem>
           <ListItemText 
@@ -202,9 +207,10 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

@@ -1,7 +1,7 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomer } from '@lookup/classes/response';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
@@ -82,7 +82,6 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type ProgressFilterProps 
   = WithForm
-  & WithTheme
   & WithStyles<typeof styles>
   & WithUser
   & OwnStateUpdaters
@@ -196,7 +195,7 @@ export const ProgressFilter = compose<ProgressFilterProps, OwnOption>(
   withUser,
   withForm,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators)
 )(ProgressFilterView);

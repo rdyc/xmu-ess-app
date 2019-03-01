@@ -2,7 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { ICompanyList } from '@lookup/classes/response';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationHierarchyAllFilter } from '@organization/classes/filters/hierarchy';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -69,7 +69,6 @@ export type OrganizationHierarchyListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<OrganizationHierarchyListFilterProps, IOwnState> = (): IOwnState => ({
@@ -148,7 +147,7 @@ export const OrganizationHierarchyListFilter = compose<OrganizationHierarchyList
   withUser,
   withLookupCompany,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

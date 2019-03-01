@@ -1,7 +1,7 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationStructureAllFilter } from '@organization/classes/filters/structure';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -66,7 +66,6 @@ export type StructureListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<StructureListFilterProps, IOwnState> = (props: StructureListFilterProps): IOwnState => ({
@@ -141,7 +140,7 @@ export const StructureListFilter = compose<StructureListFilterProps, IOwnOption>
   withUser,
   withLookupCompany,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

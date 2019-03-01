@@ -1,7 +1,7 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICompanyList } from '@lookup/classes/response';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
@@ -21,7 +21,6 @@ export type FilterCompanyProps
   = WithLookupCompany
   & WithUser
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps
   & OwnOptions;
 
@@ -46,6 +45,6 @@ export const FilterCompany = compose<FilterCompanyProps, OwnOptions>(
   withLookupCompany,
   withUser,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   lifecycle(lifecycles)
 )(FilterCompanyView);

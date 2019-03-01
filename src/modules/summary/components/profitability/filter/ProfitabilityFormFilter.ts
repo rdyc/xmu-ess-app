@@ -1,7 +1,7 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
@@ -87,7 +87,6 @@ export type SummaryProfitabilityFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithTheme
   & InjectedIntlProps;
 
 const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: SummaryProfitabilityFilterProps): IOwnState => ({
@@ -187,7 +186,7 @@ export const ProfitabilityFormFilter = compose<SummaryProfitabilityFilterProps, 
   withUser,
   withForm,
   injectIntl,
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(ProfitabilityFormFilterView);

@@ -1,7 +1,7 @@
 import { IEmployee } from '@account/classes/response';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ISummaryBillableFilter } from '@summary/classes/filters';
 import * as moment from 'moment';
@@ -114,7 +114,6 @@ export type BillableListFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithStyles<typeof styles> 
-  & WithTheme
   & WithUser 
   & InjectedIntlProps;
 
@@ -273,6 +272,6 @@ export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
   withUser,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  withStyles(styles, { withTheme: true }),
+  withStyles(styles),
   injectIntl
 )(BillableListFilterView);

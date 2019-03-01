@@ -31,7 +31,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.theme.direction === 'rtl' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       onClose={props.onClose}
     >
       <AppBar 
@@ -50,7 +50,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
           </Typography>
 
           {
-            (props.filterMonth || props.filterYear || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterMonth || props.filterYear || props.filterStatus || !props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending' || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -152,11 +152,11 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
+            { 
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
               <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
               </IconButton> 
@@ -232,9 +232,10 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

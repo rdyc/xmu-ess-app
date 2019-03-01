@@ -118,6 +118,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
       isOpen={props.isFilterOpen}
       initialProps={{
         customerUid: props.customerUid,
+        status: props.status,
         statusType: props.statusType,
         isRejected: props.isRejected,
         isSettlement: props.isSettlement
