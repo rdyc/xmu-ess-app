@@ -127,7 +127,7 @@ const stateUpdaters: StateUpdaters<LeaveApprovalListFilterProps, IOwnState, IOwn
   setFilterReset: (prevState: IOwnState) => () => ({
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: {value: 'pending', name: 'Pending'},
     filterNotify: undefined
   }),
 
@@ -214,7 +214,7 @@ const handlerCreators: HandleCreators<LeaveApprovalListFilterProps, IOwnHandler>
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: LeaveApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: LeaveApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();

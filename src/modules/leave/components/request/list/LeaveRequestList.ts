@@ -69,6 +69,7 @@ const createProps: mapper<LeaveRequestListProps, IOwnState> = (props: LeaveReque
   
   // default state
   const state: IOwnState = {
+    status: 'pending',
     isFilterOpen: false,
     // selected: [],
     fields: Object.keys(LeaveRequestField).map(key => ({ 
@@ -79,12 +80,14 @@ const createProps: mapper<LeaveRequestListProps, IOwnState> = (props: LeaveReque
 
   // When location state are present (ex: redirection from dashboard) then don't use redux state
   if (props.location.state) {
+    state.status = props.location.state.status;
     state.isRejected = props.location.state.isRejected;
   } else {
     // fill from previous request if any
     if (request && request.filter) {
       state.leaveType = request.filter.leaveType,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status;
       state.isRejected = request.filter.isRejected;
     }
   }
@@ -115,6 +118,7 @@ const handlerCreators: HandleCreators<LeaveRequestListProps, IOwnHandler> = {
       const filter: ILeaveRequestGetAllFilter = {
         leaveType: props.leaveType,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -181,6 +185,7 @@ const handlerCreators: HandleCreators<LeaveRequestListProps, IOwnHandler> = {
   handleFilterBadge: (props: LeaveRequestListProps) => () => {
     return props.leaveType !== undefined || 
       props.statusType !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true;
   },
 };
@@ -192,11 +197,13 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestListProps, IOwnState> = {
       {
         leaveType: this.props.leaveType,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
       },
       {
         leaveType: prevProps.leaveType,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected,
       }
     );

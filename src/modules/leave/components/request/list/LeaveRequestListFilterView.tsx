@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType } from '@layout/types';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
@@ -50,7 +51,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
           </Typography>
 
           {
-            (props.filterType || props.filterStatus || props.filterRejected) &&
+            (props.filterType || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending')  || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -108,15 +109,16 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
-          {/* 
+          
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
           { 
               props.filterCompletion &&
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
               <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
               </IconButton> 
@@ -127,7 +129,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider /> */}
+        <Divider />
 
           <ListItem>
             <ListItemText
@@ -169,14 +171,15 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
       onClose={props.handleFilterStatusOnClose}
     />
 
-    {/* <DialogValue
+    <DialogValue
       title={props.intl.formatMessage(leaveMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    /> */}
+      isCompletion={true}
+    />
   </React.Fragment>
 );

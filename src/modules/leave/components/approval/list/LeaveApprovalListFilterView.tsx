@@ -51,7 +51,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
           </Typography>
           
           {
-            (props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterType || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -113,11 +113,12 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
-              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
             />
             <ListItemSecondaryAction>
               {
                 props.filterCompletion &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -175,9 +176,10 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

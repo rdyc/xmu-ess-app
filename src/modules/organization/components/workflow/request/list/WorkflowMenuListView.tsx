@@ -3,14 +3,13 @@ import { IMenu } from '@lookup/classes/response';
 import { Badge, Button, Divider, Grid, Hidden, IconButton, ListItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import { isMenusWithWorkflow } from '@organization/helper';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { isNullOrUndefined } from 'util';
 import { WorkflowListFilter } from './WorkflowListFilter';
-// import { OrganizationWorkflowFilter } from './OrganizationWorkflowFilter';
 import { WorkflowMenuListProps } from './WorkflowMenuList';
 
 export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
@@ -24,7 +23,6 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
         isMenusWithWorkflow(menu.uid) &&
         <div key={menu.uid}>
           <ListItem
-            button={!isLoading}
             key={menu.uid}
           >
             <Grid container spacing={8}>
@@ -45,7 +43,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
               </Hidden>
               <Grid item xs={12} md={8}>
                 <Grid container>
-                  <Grid item xs={7} md={9}>
+                  <Grid item xs={9} md={10}>
                     <Typography
                       variant="body2"
                       noWrap={true}
@@ -56,21 +54,14 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={5} md={3}>
-                    <Button
-                      size="small"
-                      disabled={isNullOrUndefined(props.companyUid)}
-                      onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
-                    >
-                      <FormattedMessage {...layoutMessage.action.details} />
-                    </Button>
+                  <Grid item xs={3} md={2}>
                     <Button
                       size="small"
                       color="secondary"
                       disabled={isNullOrUndefined(props.companyUid)}
-                      onClick={() => props.handleRedirectTo(`/organization/workflow/form`, { menuUid: menu.uid, companyUid: props.companyUid })}
+                      onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
                     >
-                      <FormattedMessage {...layoutMessage.action.modify} />
+                      <FormattedMessage {...layoutMessage.action.details} />
                     </Button>
                   </Grid>
                 </Grid>
@@ -89,9 +80,17 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
         <Toolbar>
         <Typography
           noWrap
-          variant="body2"
+          variant="h6"
           className={props.classes.flex}
         >
+        {
+          !props.companyUid &&
+          props.intl.formatMessage(organizationMessage.workflowSetup.text.selectCompany)
+        }
+
+        {
+          props.dataCompany && props.dataCompany.name
+        }
         </Typography>
           <Tooltip
             placement="bottom"
@@ -110,19 +109,6 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
               </Badge>
             </IconButton>
           </Tooltip>
-
-          <Tooltip
-            placement="bottom"
-            title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
-          >
-            <IconButton
-              id="option-sync"
-              disabled={isLoading}
-              onClick={() => props.setOnRefresh()}
-            >
-              <SyncIcon />
-            </IconButton>
-          </Tooltip>
         </Toolbar>
       </Paper>
       <Paper>
@@ -135,6 +121,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
             !isLoading &&
             response &&
             response.data &&
+            props.companyUid &&
             RenderWorkflowMenuList(response.data)
           }
         </Grid>
