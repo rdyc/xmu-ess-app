@@ -13,6 +13,7 @@ import {
 
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { ILookupCompany } from '@lookup/classes';
 import { ICompany } from '@lookup/classes/response';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
@@ -52,6 +53,7 @@ export type WorkflowMenuListProps
   = OwnOption
   & WithOrganizationWorkflow
   & WithLookupMenu
+  & WithMasterPage
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -107,42 +109,25 @@ const handlerCreators: HandleCreators<WorkflowMenuListProps, OwnHandler> = {
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnState> = {
-  componentWillMount() {
+  componentDidMount() {
     const {
-      layoutDispatch, intl, forceReload
+      masterPage, intl, forceReload
     } = this.props;
     const { response, isLoading } = this.props.lookupMenuState.list;
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupWorkflow,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
-        subTitle: intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
-      },
-      status: {
-        isNavBackVisible: false,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    masterPage.changePage({
+      uid: AppMenu.LookupWorkflow,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
+      description: intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
     });
 
-    if ((!response && !isLoading) || forceReload ) {
+    if ((!response && !isLoading) || forceReload) {
       loadData(this.props);
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
-    const { loadAllDispose } = this.props.lookupMenuDispatch;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
-    loadAllDispose();
+    this.props.masterPage.resetPage();
   },
 };
 
@@ -160,6 +145,7 @@ const loadData = (props: WorkflowMenuListProps): void => {
 export const workflowMenuList = compose<WorkflowMenuListProps, {}>(
   withLayout,
   withLookupMenu,
+  withMasterPage,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
