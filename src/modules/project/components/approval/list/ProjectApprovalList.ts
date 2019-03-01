@@ -67,6 +67,7 @@ const createProps: mapper<ProjectApprovalListProps, IOwnState> = (props: Project
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(ProjectRegistrationField).map(key => ({ 
       value: key, 
       name: ProjectRegistrationField[key] 
@@ -179,7 +180,7 @@ const handlerCreators: HandleCreators<ProjectApprovalListProps, IOwnHandler> = {
     return props.customerUid !== undefined || 
       props.projectType !== undefined || 
       props.statusType !== undefined || 
-      props.status !== undefined || 
+      props.status !== 'pending' || 
       props.isNotify === true;
   },
 };

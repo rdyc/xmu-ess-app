@@ -85,7 +85,8 @@ export const ProjectAcceptanceListView: React.SFC<ProjectAcceptanceListProps> = 
       initialProps={{
         customerUids: props.customerUids,
         projectTypes: props.projectTypes,
-        statusTypes: props.statusTypes
+        statusTypes: props.statusTypes,
+        status: props.status,
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

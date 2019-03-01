@@ -66,6 +66,7 @@ const createProps: mapper<ProjectAcceptanceListProps, IOwnState> = (props: Proje
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
+    // status: 'pending',
     fields: Object.keys(ProjectAssignmentField).map(key => ({ 
       value: key, 
       name: ProjectAssignmentField[key] 
@@ -77,6 +78,7 @@ const createProps: mapper<ProjectAcceptanceListProps, IOwnState> = (props: Proje
     state.customerUids = request.filter.customerUids;
     state.projectTypes = request.filter.projectTypes;
     state.statusTypes = request.filter.statusTypes;
+    state.status = request.filter.status;
   }
 
   return state;
@@ -103,9 +105,9 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListProps, IOwnHandler> =
         customerUids: props.customerUids,
         projectTypes: props.projectTypes,
         statusTypes: props.statusTypes,
+        // status: props.status,
         projectUid: request && request.filter && request.filter.projectUid,
         activeOnly: request && request.filter && request.filter.activeOnly,
-        status: request && request.filter && request.filter.status,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -169,6 +171,7 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListProps, IOwnHandler> =
     return props.customerUids !== undefined || 
       props.projectTypes !== undefined || 
       props.statusTypes !== undefined;
+      // props.status !== 'pending';
   }
 };
 
@@ -179,12 +182,14 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListProps, IOwnState>
       {
         customerUids: this.props.customerUids,
         projectTypes: this.props.projectTypes,
-        statusTypes: this.props.statusTypes
+        statusTypes: this.props.statusTypes,
+        // status: this.props.status,
       },
       {
         customerUids: prevProps.customerUids,
         projectTypes: prevProps.projectTypes,
-        statusTypes: prevProps.statusTypes
+        statusTypes: prevProps.statusTypes,
+        // status: prevProps.status,
       }
     );
 
