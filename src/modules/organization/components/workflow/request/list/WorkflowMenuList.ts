@@ -13,7 +13,9 @@ import {
 
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { ILookupCompany } from '@lookup/classes';
+import { ICompany } from '@lookup/classes/response';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -29,12 +31,12 @@ interface OwnOption {
 
 interface OwnState {
   companyUid?: string;
+  dataCompany?: ICompany;
   isFilterOpen: boolean;
   forceReload: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setCompany: StateHandler<OwnState>;
   setFilterVisibility: StateHandler<OwnState>;
   setFilterApplied: StateHandler<OwnState>;
   setOnRefresh: StateHandler<OwnState>;
@@ -42,7 +44,6 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 interface OwnHandler {
   handleGoToDetail: (menuUid: string, companyUid?: string) => void;
-  handleSelected: (event: any, newValue: string, oldValue: string) => void;
   handleRedirectTo: (path: string, state?: any) => void;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (company: ILookupCompany) => void;
@@ -52,6 +53,7 @@ export type WorkflowMenuListProps
   = OwnOption
   & WithOrganizationWorkflow
   & WithLookupMenu
+  & WithMasterPage
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -69,14 +71,12 @@ const createProps: mapper<WorkflowMenuListProps, OwnState> = (props: WorkflowMen
 };
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setCompany: (prevState: OwnState) => (newState: string) => ({
-    companyUid: newState ? newState !== '' ? newState : undefined : undefined
-  }),
   setFilterVisibility: (state: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
   setFilterApplied: (state: OwnState) => (company: ILookupCompany | undefined): Partial<OwnState> => ({
     companyUid: company ? company.uid : undefined,
+    dataCompany: company,
     isFilterOpen: false
   }),
   setOnRefresh: (prevState: OwnState) => () => ({
@@ -97,9 +97,6 @@ const handlerCreators: HandleCreators<WorkflowMenuListProps, OwnHandler> = {
 
     history.push(`/organization/workflow/${companyUid}/${menuUid}`);
   },
-  handleSelected: (props: WorkflowMenuListProps) => (event: any, newValue: string, oldValue: string) => {
-    props.setCompany(newValue);
-  },
   handleRedirectTo: (props: WorkflowMenuListProps) => (path: string, state?: any) => {
     props.history.push(path, state);
   },
@@ -112,51 +109,25 @@ const handlerCreators: HandleCreators<WorkflowMenuListProps, OwnHandler> = {
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnState> = {
-  componentWillMount() {
+  componentDidMount() {
     const {
-      layoutDispatch, intl, forceReload
+      masterPage, intl, forceReload
     } = this.props;
-    // const { loadListRequest } = this.props.lookupMenuDispatch;
     const { response, isLoading } = this.props.lookupMenuState.list;
 
-    // const filter: any = {
-    //   orderBy: 'uid',
-    //   direction: 'ascending'
-    // };
-
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupWorkflow,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
-        subTitle: intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
-      },
-      status: {
-        isNavBackVisible: false,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+    masterPage.changePage({
+      uid: AppMenu.LookupWorkflow,
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
+      description: intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
     });
 
-    if ((!response && !isLoading) || forceReload ) {
-      // loadListRequest({
-      //   filter
-      // });
+    if ((!response && !isLoading) || forceReload) {
       loadData(this.props);
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
-    const { loadAllDispose } = this.props.lookupMenuDispatch;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.moreHide();
-    loadAllDispose();
+    this.props.masterPage.resetPage();
   },
 };
 
@@ -169,12 +140,12 @@ const loadData = (props: WorkflowMenuListProps): void => {
       direction: 'ascending'
     }
   });
-
 };
 
 export const workflowMenuList = compose<WorkflowMenuListProps, {}>(
   withLayout,
   withLookupMenu,
+  withMasterPage,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),

@@ -29,7 +29,8 @@ import {
   organizationWorkflowSetupMessage, 
   organizationWorkflowSetupOption, 
   organizationWorkflowSetupPage,
-  organizationWorkflowSetupSection
+  organizationWorkflowSetupSection,
+  organizationWorkflowSetupText
 } from './organizationWorkflowSetupMessage';
 
 export const organizationMessage = {
@@ -46,7 +47,8 @@ export const organizationMessage = {
     option: organizationWorkflowSetupOption,
     field: organizationWorkflowSetupField,
     dialog: organizationWorkflowSetupDialog,
-    message: organizationWorkflowSetupMessage
+    message: organizationWorkflowSetupMessage,
+    text: organizationWorkflowSetupText
   },
   structure: {
     page: organizationStructurePage,
