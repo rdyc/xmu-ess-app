@@ -34,7 +34,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
 
         <IconButton
           disabled={props.notificationState.isLoading}
-          onClick={() => props.handleOnClickReload()}
+          onClick={props.handleOnClickReload}
         >
           <SyncIcon/>
         </IconButton>

@@ -1,4 +1,6 @@
+import AppMenu from '@constants/AppMenu';
 import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -151,20 +153,95 @@ const employeeLeave = (props: RouteComponentProps) => (
 
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/company`} component={company} />
-    <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
-    <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
-    <Route path={`${props.match.path}/currencies`} component={currency} />
-    <Route path={`${props.match.path}/positions`} component={position} />
-    <Route path={`${props.match.path}/diemvalues`} component={diem} />
-    <Route path={`${props.match.path}/holidays`} component={holiday} />
-    <Route path={`${props.match.path}/leaves`} component={leave} />
-    <Route path={`${props.match.path}/calculation`} component={calculation} />
-    <Route path={`${props.match.path}/roles`} component={role} />
-    <Route path={`${props.match.path}/customers`} component={lookupCustomer} />
-    <Route path={`${props.match.path}/achievementchart`} component={achievement} />
-    <Route path={`${props.match.path}/cogsupload`} component={cogsUpload} />
-    <Route path={`${props.match.path}/imagegalleries`} component={gallery} />
-    <Route path={`${props.match.path}/employeeleave`} component={employeeLeave} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/company`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCompany} 
+      component={company} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/systemlimits`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupSystemLimit} 
+      component={systemLimit} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/mileageexceptions`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupMileageException} 
+      component={mileageException} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/currencies`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCurrency} 
+      component={currency} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/positions`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupPosition} 
+      component={position} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/diemvalues`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupDiem} 
+      component={diem} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/holidays`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupHoliday} 
+      component={holiday} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/leaves`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupLeave} 
+      component={leave} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/calculation`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupLeave} 
+      component={calculation} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/roles`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupRole} 
+      component={role} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/customers`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCustomer} 
+      component={lookupCustomer} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/achievementchart`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.AchievementChart} 
+      component={achievement} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/cogsupload`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.COGSUpload} 
+      component={cogsUpload} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/imagegalleries`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupGallery} 
+      component={gallery} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/employeeleave`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupLeave} 
+      component={employeeLeave} 
+    />
   </Switch>
 );

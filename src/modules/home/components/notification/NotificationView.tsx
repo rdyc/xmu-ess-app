@@ -96,7 +96,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                     >
                       <ListItemText
                         primary="Download APK"
-                        secondary={`Update notes: ${props.lookupVersionState.detail.response.data.notes}`}
+                        secondary={props.lookupVersionState.detail.response.data.notes}
                         primaryTypographyProps={{
                           variant: 'body2'
                         }}

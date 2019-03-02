@@ -17,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -26,25 +27,20 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { AccountEmployeeExperienceEditorView } from './AccountEmployeeExperienceEditorView';
 import { AccountEmployeeExperienceFormData } from './form/AccountEmployeeExperienceContainerForm';
 
-interface OwnHandlers {
-  handleValidate: (payload: AccountEmployeeExperienceFormData) => FormErrors;
-  handleSubmit: (payload: AccountEmployeeExperienceFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+interface IOwnOption {
+
 }
 
-interface OwnOption {
-}
-
-interface OwnRouteParams {
+interface IOwnRouteParams {
   employeeUid: string;
   experienceUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   employeeUid: string;
   experienceUid?: string | undefined;
@@ -54,8 +50,15 @@ interface OwnState {
   submitDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
+}
+
+interface OwnHandlers {
+  handleValidate: (payload: AccountEmployeeExperienceFormData) => FormErrors;
+  handleSubmit: (payload: AccountEmployeeExperienceFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 export type AccountEmployeeExperienceEditorProps
@@ -64,12 +67,12 @@ export type AccountEmployeeExperienceEditorProps
   & WithMasterPage
   & WithLayout
   & WithWidth
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnOption
+  & IOwnOption
   & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnState
+  & IOwnStateUpdaters;
 
 const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnHandlers> = {
   handleValidate: (props: AccountEmployeeExperienceEditorProps) => (formData: AccountEmployeeExperienceFormData) => {
@@ -186,7 +189,7 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
   }
 };
 
-const createProps: mapper<AccountEmployeeExperienceEditorProps, OwnState> = (props: AccountEmployeeExperienceEditorProps): OwnState => ({
+const createProps: mapper<AccountEmployeeExperienceEditorProps, IOwnState> = (props: AccountEmployeeExperienceEditorProps): IOwnState => ({
   employeeUid: props.match.params.employeeUid,
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, {state: 'Experience'}),
@@ -195,14 +198,14 @@ const createProps: mapper<AccountEmployeeExperienceEditorProps, OwnState> = (pro
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<AccountEmployeeExperienceEditorProps, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, IOwnState> = {
   componentDidMount() {
     const { intl, history, stateUpdate, match } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeExperienceDispatch;
@@ -253,15 +256,16 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, 
   }
 };
 
-export default compose<AccountEmployeeExperienceEditorProps, OwnOption>(
+export const AccountEmployeeExperienceEditor = compose<AccountEmployeeExperienceEditorProps, IOwnOption>(
+  setDisplayName('AccountEmployeeExperienceEditor'),
   withUser,
   withLayout,
   withMasterPage,
   withRouter,
-  withWidth(),
   withAccountEmployeeExperience,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeExperienceEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeExperienceEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withWidth()
 )(AccountEmployeeExperienceEditorView);

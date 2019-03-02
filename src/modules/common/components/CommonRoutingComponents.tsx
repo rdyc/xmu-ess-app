@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -17,6 +19,11 @@ const CommonSystem = (props: RouteComponentProps) => (
 
 export const CommonRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/system`} component={CommonSystem} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/system`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.Common} 
+      component={CommonSystem} 
+    />
   </Switch>
 );
