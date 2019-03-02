@@ -4,8 +4,8 @@ import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
-import Background1 from './image/background/1.png';
-import Background2 from './image/background/2.png';
+import Background1 from './image/background/1.jpg';
+import Background2 from './image/background/2.jpg';
 import AchievementIcon from './image/icons/achievement.png';
 import EventIcon from './image/icons/event.png';
 import NewsIcon from './image/icons/news.png';
@@ -25,9 +25,6 @@ const size = {
 const styles = (theme: Theme) =>
   createStyles({
     '@global': {
-      body: {
-        margin: 0
-      },
       [theme.breakpoints.up('md')]: {
         '::-webkit-scrollbar': {
           width: 5
@@ -100,10 +97,12 @@ const styles = (theme: Theme) =>
       display: 'flex',
       position: 'fixed',
       color: theme.palette.primary.contrastText,
-      padding: theme.spacing.unit * 2,
+      paddingLeft: theme.spacing.unit * 2,
+      paddingRight: theme.spacing.unit * 2,
       width: '100%',
       zIndex: 2,
-      opacity: 0.5
+      opacity: 0.5,
+      alignItems: 'center'
     },
     heroUnit: {
       backgroundColor: '#333',
@@ -181,11 +180,11 @@ const styles = (theme: Theme) =>
       backgroundColor: lightBlue[500],
       padding: theme.spacing.unit * 3,
       color: '#FFF',
-      display: 'flex',
+      display: 'flex'
     },
     accessItem: {
       padding: 0,
-      color: lightBlue[500],
+      color: lightBlue[500]
     },
 
     // Application Bar
@@ -394,6 +393,7 @@ const styles = (theme: Theme) =>
       background: theme.palette.background.paper
       // zIndex: theme.zIndex.navDrawer + 1
     },
+
     /* Color page start */
     name: {
       marginBottom: 60
@@ -422,7 +422,6 @@ const styles = (theme: Theme) =>
     },
 
     /* Color page end */
-
     toolbar: {
       backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[900],
     },

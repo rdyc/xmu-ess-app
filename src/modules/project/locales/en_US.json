@@ -35,7 +35,7 @@
 
   "project.registration.section.info.title": "Project",
   "project.registration.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "project.registration.section.document.project.title": "Documents (Project)",
+  "project.registration.section.document.project.title": "Documents",
   "project.registration.section.document.project.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.section.document.preSales.title": "Documents (Pre-Sales)",
   "project.registration.section.document.preSales.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -106,6 +106,7 @@
   "project.registration.message.emptySite": "Site not found",
   "project.registration.message.emptyDocument": "Document not found",
   "project.registration.message.duplicateSales": "Sales person already added",
+  "project.registration.message.undefinedSales": "Please add one ore more project sales",
   "project.registration.message.create.success": "A new PID {uid} has been created",
   "project.registration.message.create.failure": "Unable to process your submission",
   "project.registration.message.update.success": "Existing PID {uid} has been updated",

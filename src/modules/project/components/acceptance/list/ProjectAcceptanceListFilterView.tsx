@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -47,7 +48,11 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus) &&
+            (props.filterCustomer || 
+              props.filterType || 
+              props.filterStatus ||
+              !props.filterCompletion ||
+              props.filterCompletion && props.filterCompletion.value !== 'pending') &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -125,6 +130,26 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
         </ListItem>
         <Divider /> */}
 
+        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(projectMessage.registration.field.completion)}
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+              <IconButton onClick={props.handleFilterCompletionOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider /> */}
+
       </List>
     </Dialog>
 
@@ -161,5 +186,16 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
     /> */}
+
+    <DialogValue
+      title={props.intl.formatMessage(projectMessage.registration.field.completion)}
+      isOpen={props.isFilterCompletionOpen}
+      hideBackdrop={true}
+      items={props.completionStatus}
+      value={props.filterCompletion && props.filterCompletion.value}
+      onSelected={props.handleFilterCompletionOnSelected}
+      onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
+    />
   </React.Fragment>
 );

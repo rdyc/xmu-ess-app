@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -14,10 +16,10 @@ import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployee
 import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
 import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
 import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
-import AccountEmployeeExperienceEditor from './editor/experience/AccountEmployeeExperienceEditor';
+import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
 import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
-import AccountEmployeeRateEditor from './editor/rate/AccountEmployeeRateEditor';
+import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
@@ -125,6 +127,11 @@ export const AccountRoutingComponents: React.SFC<RouteComponentProps> = props =>
   <Switch>
     <Route path={`${props.match.path}/access`} component={access} />
     <Route path={`${props.match.path}/profile`} component={profile} />
-    <Route path={`${props.match.path}/employee`} component={employee} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/employee`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.Account} 
+      component={employee} 
+    />
   </Switch>
 );

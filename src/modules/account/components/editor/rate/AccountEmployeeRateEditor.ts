@@ -17,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -26,22 +27,19 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { AccountEmployeeRateEditorView } from './AccountEmployeeRateEditorView';
 import { AccountEmployeeRateFormData } from './form/AccountEmployeeRateForm';
 
-interface OwnHandlers {
-  handleValidate: (payload: AccountEmployeeRateFormData) => FormErrors;
-  handleSubmit: (payload: AccountEmployeeRateFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-  handleValidity: (valid: boolean) => void;
+interface IOwnOption {
+
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   employeeUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   rateUid: string;
   submitDialogTitle: string;
@@ -50,8 +48,16 @@ interface OwnState {
   submitDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleValidate: (payload: AccountEmployeeRateFormData) => FormErrors;
+  handleSubmit: (payload: AccountEmployeeRateFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 export type AccountEmployeeRateEditorProps
@@ -62,12 +68,12 @@ export type AccountEmployeeRateEditorProps
   & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & RouteComponentProps<OwnRouteParams>
-  & OwnStateUpdaters;
+  & IOwnHandler
+  & IOwnState
+  & RouteComponentProps<IOwnRouteParams>
+  & IOwnStateUpdater;
 
-const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, IOwnHandler> = {
   handleValidate: (props: AccountEmployeeRateEditorProps) => (formData: AccountEmployeeRateFormData) => { 
     const errors = {
       information: {}
@@ -167,7 +173,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
   }
 };
 
-const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (props: AccountEmployeeRateEditorProps): OwnState => ({
+const createProps: mapper<AccountEmployeeRateEditorProps, IOwnState> = (props: AccountEmployeeRateEditorProps): IOwnState => ({
   rateUid: props.history.location.state.rateUid,
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, {state: 'Education'}),
@@ -176,14 +182,14 @@ const createProps: mapper<AccountEmployeeRateEditorProps, OwnState> = (props: Ac
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<AccountEmployeeRateEditorProps, IOwnState, IOwnStateUpdater> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, IOwnState> = {
   componentDidMount() {
     const { match, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeRateDispatch;
@@ -233,15 +239,16 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateEditorProps, {}> = 
   }
 };
 
-export default compose<AccountEmployeeRateEditorProps, {}>(
+export const AccountEmployeeRateEditor = compose<AccountEmployeeRateEditorProps, IOwnOption>(
+  setDisplayName('AccountEmployeeRateEditor'),
   withUser,
   withLayout,
   withMasterPage,
   withRouter,
-  withWidth(),
   withAccountEmployeeRate,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeRateEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeRateEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withWidth()
 )(AccountEmployeeRateEditorView);

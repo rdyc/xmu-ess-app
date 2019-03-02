@@ -110,6 +110,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
         customerUid: props.customerUid,
         projectType: props.projectType,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         isNewOwner: props.isNewOwner
       }}

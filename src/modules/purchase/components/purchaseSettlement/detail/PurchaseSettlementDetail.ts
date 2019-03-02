@@ -80,8 +80,8 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,

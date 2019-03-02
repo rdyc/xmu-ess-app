@@ -21,16 +21,16 @@ import {
 
 import { NotificationView } from './NotificationView';
 
-interface OwnOption {
+interface IOwnOption {
   interval?: number;
 }
 
-interface OwnState {
+interface IOwnState {
   index: number;
   module?: ModuleDefinitionType;
   name?: string;
   type?: NotificationType;
-  shouldReload: boolean;
+  shouldLoad: boolean;
   timerId?: number;
 
   categories?: [{
@@ -44,41 +44,42 @@ interface OwnState {
   items?: INotificationDetailItem[];
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setReload: StateHandler<OwnState>;
-  setTimer: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setTimer: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
-  handleOnClickReload: () => void;
-  handleOnChangeIndex: (e: React.MouseEvent, index: number, module?: string, name?: string, type?: string) => void;
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnClickReload: (event: React.MouseEvent) => void;
+  handleOnChangeIndex: (event: React.MouseEvent, index: number, module?: string, name?: string, type?: string) => void;
   handleRedirection: (uid: string, module?: ModuleDefinitionType, type?: NotificationType) => void;
 }
 
 export type NotificationProps
-  = OwnOption
-  & OwnState
-  & OwnStateUpdater
-  & OwnHandler
+  = IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler
   & WithUser
   & WithMasterPage
   & WithNotification
   & WithStyles<typeof styles>;
 
-const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
+const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   index: 0,
-  shouldReload: false
+  shouldLoad: false
 });
 
-const stateUpdaters: StateUpdaters<NotificationProps, OwnState, OwnStateUpdater> = {
-  setReload: (prev: OwnState) => (timerId?: number): Partial<OwnState> => ({
-    shouldReload: !prev.shouldReload,
-    index: !prev.shouldReload ? 0 : prev.index 
+const stateUpdaters: StateUpdaters<NotificationProps, IOwnState, IOwnStateUpdater> = {
+  setShouldLoad: (prev: IOwnState) => (timerId?: number): Partial<IOwnState> => ({
+    shouldLoad: !prev.shouldLoad,
+    index: !prev.shouldLoad ? 0 : prev.index 
   }),
-  setTimer: (prev: OwnState) => (timerId?: number): Partial<OwnState> => ({
+  setTimer: (prev: IOwnState) => (timerId?: number): Partial<IOwnState> => ({
     timerId
   }),
-  setIndex: (prev: OwnState) => (index: number, module?: ModuleDefinitionType, name?: string, type?: NotificationType): Partial<OwnState> => ({
+  setIndex: (prev: IOwnState) => (index: number, module?: ModuleDefinitionType, name?: string, type?: NotificationType): Partial<IOwnState> => ({
     index,
     module,
     name,
@@ -86,8 +87,8 @@ const stateUpdaters: StateUpdaters<NotificationProps, OwnState, OwnStateUpdater>
   })
 };
 
-const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
-  handleOnClickReload: (props: NotificationProps) => () => {
+const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
+  handleOnLoadApi: (props: NotificationProps) => () => {
     const { user } = props.userState;
     const { isLoading } = props.notificationState;
 
@@ -100,9 +101,12 @@ const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
 
     clearInterval(props.timerId);
     
-    props.setReload();
+    props.setShouldLoad();
   },
-  handleOnChangeIndex: (props: NotificationProps) => (e: React.MouseEvent, index: number, module?: ModuleDefinitionType, name?: string, type?: string) => {
+  handleOnClickReload: (props: NotificationProps) => (event: React.MouseEvent) => {
+    props.handleOnLoadApi();
+  },
+  handleOnChangeIndex: (props: NotificationProps) => (event: React.MouseEvent, index: number, module?: ModuleDefinitionType, name?: string, type?: string) => {
     props.setIndex(index, module, name, type);
   },
   handleRedirection: (props: NotificationProps) => (uid: string, module?: ModuleDefinitionType, type?: NotificationType) => {
@@ -114,17 +118,17 @@ const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, OwnState> = {
+const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, IOwnState> = {
   componentDidMount() {
-    this.props.setReload();
+    this.props.setShouldLoad();
   },
   componentDidUpdate(prevProps: NotificationProps) {
-    if (prevProps.shouldReload !== this.props.shouldReload) {
-      if (this.props.shouldReload) {
-        this.props.handleOnClickReload();
+    if (prevProps.shouldLoad !== this.props.shouldLoad) {
+      if (this.props.shouldLoad) {
+        this.props.handleOnLoadApi();
       } else {
         const timerId = setInterval(() => { 
-          this.props.handleOnClickReload(); 
+          this.props.handleOnLoadApi(); 
         // tslint:disable-next-line:align
         }, this.props.interval || 300000);
   
@@ -152,7 +156,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, OwnState> =
   }
 };
 
-export const Notification = compose<NotificationProps, OwnOption>(
+export const Notification = compose<NotificationProps, IOwnOption>(
   setDisplayName('Notification'),
   withUser,
   withNotification,

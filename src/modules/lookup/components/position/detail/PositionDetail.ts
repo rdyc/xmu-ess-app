@@ -112,8 +112,8 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, IOwnState, IOwnStateUpda
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.position.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.position.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDelete: (prevState: IOwnState, props: PositionDetailProps) => (): Partial<IOwnState> => ({
     action: PositionUserAction.Delete,
@@ -121,8 +121,8 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, IOwnState, IOwnStateUpda
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.position.confirm.deleteTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.position.confirm.deleteDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     ...prevState,

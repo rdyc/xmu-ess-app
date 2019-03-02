@@ -146,7 +146,7 @@ const stateUpdaters: StateUpdaters<ProjectApprovalListFilterProps, IOwnState, IO
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNotify: undefined
   }),
 
@@ -257,7 +257,7 @@ const handlerCreators: HandleCreators<ProjectApprovalListFilterProps, IOwnHandle
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: ProjectApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();

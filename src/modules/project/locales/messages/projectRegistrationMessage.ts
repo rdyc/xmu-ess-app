@@ -217,6 +217,7 @@ export const projectRegistrationMessage = defineMessages({
   emptySite: { id: `${prefix}.message.emptySite` },
   emptySales: { id: `${prefix}.message.emptySales` },
   duplicateSales: { id: `${prefix}.message.duplicateSales` },
+  undefinedSales: { id: `${prefix}.message.undefinedSales` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },

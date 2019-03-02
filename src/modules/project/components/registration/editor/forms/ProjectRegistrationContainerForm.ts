@@ -72,8 +72,8 @@ const mapStateToProps = (state: any): FormValueProps => {
   const valueUsd = selector(state, 'information.valueUsd');
   
   return {
-    formIsProject: projectType === ProjectType.Project,
-    formIsPresales: projectType === ProjectType.PreSales,
+    formIsProject: ([ProjectType.Project, ProjectType.NonProject, ProjectType.ExtraMiles, ProjectType.Maintenance]).indexOf(projectType) !== -1,
+    formIsPresales: ([ProjectType.PreSales]).indexOf(projectType) !== -1,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
