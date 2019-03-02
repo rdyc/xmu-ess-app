@@ -54,7 +54,7 @@ const createProps: mapper<PurchaseSettlementListProps, IOwnState> = (props: Purc
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    // selected: [],
+    status: 'pending',
     fields: Object.keys(SettlementField).map(key => ({
       value: key,
       name: SettlementField[key]
@@ -64,10 +64,12 @@ const createProps: mapper<PurchaseSettlementListProps, IOwnState> = (props: Purc
   if (props.location.state) {
     // fill partial props from location state to handle redirection from dashboard notif
     state.statusType = props.location.state.statusType;
+    state.status = props.location.state.status;
     state.isRejected = props.location.state.isRejected;
   } else {
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
+      state.status = request.filter.status,
       state.statusType = request.filter.statusType,
       state.isRejected = request.filter.isRejected;
     }
@@ -88,7 +90,7 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementListProps, IOwnState, IOwnS
 
 const handlerCreators: HandleCreators<PurchaseSettlementListProps, IOwnHandler> = {
   handleOnLoadApi: (props: PurchaseSettlementListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.purchaseSettlementState.all;
+    const { isExpired, isLoading, request } = props.purchaseSettlementState.all;
     const { loadAllRequest } = props.purchaseSettlementDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -98,6 +100,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, IOwnHandler> 
         positionUid: props.userState.user.position.uid,
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -111,7 +114,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, IOwnHandler> 
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });
@@ -162,6 +165,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, IOwnHandler> 
   handleFilterBadge: (props: PurchaseSettlementListProps) => () => {
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true;
   },
 };
@@ -173,10 +177,13 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListProps, IOwnState
       {
         customerUid: this.props.customerUid,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected
       },
       {
         customerUid: prevProps.customerUid,
+
+        status: prevProps.status,
         statusType: prevProps.statusType,
         isRejected: prevProps.isRejected
       }

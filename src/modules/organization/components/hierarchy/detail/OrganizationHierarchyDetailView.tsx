@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { IHierarchyDetail } from '@organization/classes/response/hierarchy';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
@@ -17,7 +18,15 @@ export const OrganizationHierarchyDetailView: React.SFC<OrganizationHierarchyDet
       title: props.intl.formatMessage(organizationMessage.hierarchy.page.detailTitle),
       description : props.intl.formatMessage(organizationMessage.hierarchy.page.detailSubHeader)
     }}
-    options={props.pageOptions}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="organization-hierarchy-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
     state={props.organizationHierarchyState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IHierarchyDetail) => (

@@ -1,9 +1,9 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
+import { IMileageRequest } from '@mileage/classes/response';
 import styles from '@styles';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,7 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalListFilterView } from './MileageApprovalListFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
@@ -158,7 +157,6 @@ export type MileageApprovalListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -183,7 +181,7 @@ const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, Own
     filterMonth: undefined,
     filterYear: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterNotify: undefined
   }),
 
@@ -318,7 +316,7 @@ const handlerCreators: HandleCreators<MileageApprovalListFilterProps, OwnHandler
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -373,11 +371,10 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListFilterProps, OwnSta
 
 export const MileageApprovalListFilter = compose<MileageApprovalListFilterProps, OwnOption>(
   setDisplayName('MileageApprovalListFilter'),
-  withLayout,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles),
+  lifecycle(lifecycles)
   )(MileageApprovalListFilterView);

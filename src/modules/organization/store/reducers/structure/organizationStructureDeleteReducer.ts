@@ -4,11 +4,12 @@ import { OrganizationStructureAction as Action } from '@organization/store/actio
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IOrganizationStructureDeleteRequest, boolean> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IOrganizationStructureDeleteRequest, boolean>> = (state = initialState, action) => {
@@ -16,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IOrganizationStructureDeleteRequest, bo
     case Action.DELETE_STRUCTURE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.DELETE_STRUCTURE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.DELETE_STRUCTURE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.DELETE_STRUCTURE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.DELETE_STRUCTURE_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }

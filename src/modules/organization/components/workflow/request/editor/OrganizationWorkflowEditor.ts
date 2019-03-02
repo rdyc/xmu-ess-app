@@ -1,7 +1,8 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { IOrganizationWorkflowPostPayload, IOrganizationWorkflowPutHierarchy, IOrganizationWorkflowPutPayload } from '@organization/classes/request/workflow/request';
@@ -10,7 +11,7 @@ import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organizatio
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
@@ -42,10 +43,11 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type OrganizationWorkflowEditorProps
   = WithOrganizationWorkflow
+  & WithOidc
   & WithLookupMenu
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -261,23 +263,19 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupWorkflow,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/organization/workflow',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, organizationWorkflowDispatch } = this.props;
+    const { masterPage, organizationWorkflowDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     organizationWorkflowDispatch.createDispose();
     organizationWorkflowDispatch.updateDispose();
@@ -285,9 +283,11 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
 };
 
 export default compose<OrganizationWorkflowEditorProps, {}>(
+  setDisplayName('OrganizationWorkflowEditor'),
+  withOidc,
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withOrganizationWorkflow,
   withLookupMenu,
   injectIntl,

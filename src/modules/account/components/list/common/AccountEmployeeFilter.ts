@@ -1,5 +1,5 @@
 import { IEmployeeAllFilter } from '@account/classes/filters';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
@@ -19,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { AccountEmployeeFilterView } from './AccountEmployeeFilterView';
 
 export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids'>;
@@ -79,7 +80,6 @@ export type AccountEmployeeFilterFilterProps
   & OwnStateUpdater
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (): OwnState => ({

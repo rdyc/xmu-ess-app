@@ -1,6 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
@@ -19,7 +20,6 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
       title: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle),
       description: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.settlementApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ISettlementDetail) => (
@@ -55,5 +55,14 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
         }
       </React.Fragment>
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu
+        id="purchase-settlement-approval-option"
+        selectable={false}
+        menuOptions={props.menuOptions}
+        onSelected={props.handleOnSelectedMenu}
+      />
+    }
   />
 );

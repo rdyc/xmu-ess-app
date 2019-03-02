@@ -67,6 +67,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
 
   // default state
   const state: IOwnState = {
+    status: 'pending',
     isFilterOpen: false,
     fields: Object.keys(TimesheetEntryField).map(key => ({
       value: key,
@@ -76,6 +77,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
 
   // When location state are present (ex: redirection from dashboard) then don't use redux state
   if (props.location.state) {
+    state.status = props.location.state.status;
     state.isRejected = props.location.state.isRejected;
   } else {
     // fill from previous request if any
@@ -83,6 +85,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
     }
   }
@@ -102,7 +105,7 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TimesheetEntryListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.timesheetEntryState.all;
+    const { isExpired, isLoading, request } = props.timesheetEntryState.all;
     const { loadAllRequest } = props.timesheetEntryDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -126,7 +129,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
           companyUid: props.userState.user.company.uid,
@@ -179,6 +182,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
   handleFilterBadge: (props: TimesheetEntryListProps) => () => {
     return props.customerUid !== undefined ||
       props.activityType !== undefined ||
+      props.status !== 'pending' ||
       props.statusType !== undefined ||
       props.isRejected === true;
   },
@@ -192,12 +196,14 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
       },
       {
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
+        status: prevProps.status,
         isRejected: prevProps.isRejected,
       }
     );

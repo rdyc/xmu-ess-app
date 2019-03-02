@@ -1,9 +1,7 @@
 import AppEvent from '@constants/AppEvent';
-import { Anchor } from '@layout/types';
 import { SwipeableDrawer, WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import * as classNames from 'classnames';
 import * as React from 'react';
 import {
   compose,
@@ -22,7 +20,6 @@ import {
 import { Notification } from '../notification/Notification';
 
 interface IOwnOption {
-  anchor: Anchor;
 }
 
 interface IOwnState {
@@ -30,11 +27,11 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setVisibility: StateHandler<IOwnState>;
+  setOpen: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnEventMenu: (event: CustomEvent) => void;
+  handleOnChangeDrawerRight: (event: CustomEvent) => void;
 }
 
 type DrawerRightProps 
@@ -51,40 +48,40 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
 
 const DrawerRightView: React.SFC<DrawerRightProps> = props => (
   <SwipeableDrawer
+    anchor="right"
     open={props.isOpen}
     variant="temporary"
-    anchor={props.anchor === 'left' ? 'right' : 'left'}
     classes={{
-      paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
+      paper: props.classes.drawerPaper
     }} 
     ModalProps={{
       keepMounted: true
     }}
-    onOpen={props.setVisibility}
-    onClose={props.setVisibility}
+    onOpen={props.setOpen}
+    onClose={props.setOpen}
   >
     <Notification />
   </SwipeableDrawer>
 );
 
 const stateUpdaters: StateUpdaters<DrawerRightProps, IOwnState, IOwnStateUpdater> = {
-  setVisibility: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpen: !prevState.isOpen
+  setOpen: (State: IOwnState) => (): Partial<IOwnState> => ({
+    isOpen: !State.isOpen
   })
 };
 
 const handlerCreators: HandleCreators<DrawerRightProps, IOwnHandler> = {
-  handleOnEventMenu: (props: DrawerRightProps) => (event: CustomEvent) => {
-    props.setVisibility();
+  handleOnChangeDrawerRight: (props: DrawerRightProps) => (event: CustomEvent) => {
+    props.setOpen();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerRightProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
+    addEventListener(AppEvent.onChangeDrawerRight, this.props.handleOnChangeDrawerRight);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.DrawerRight, this.props.handleOnEventMenu);
+    removeEventListener(AppEvent.onChangeDrawerRight, this.props.handleOnChangeDrawerRight);
   }
 };
 

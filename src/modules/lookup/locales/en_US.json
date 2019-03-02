@@ -180,7 +180,7 @@
   "lookup.company.message.create.failure": "Unable to process your submission",
   "lookup.company.message.update.success": "Existing Company ID {uid} has been updated",
   "lookup.company.message.update.failure": "Unable to process your submission",
-  "lookup.company.message.delete.success": "Current {uid} has been deleted",
+  "lookup.company.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.company.message.delete.failure": "Unable to process your submission",
   
   "lookup.currency.page.list.title": "Currency",

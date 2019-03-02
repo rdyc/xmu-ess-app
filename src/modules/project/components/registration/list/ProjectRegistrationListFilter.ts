@@ -1,6 +1,5 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
@@ -112,7 +111,6 @@ export type ProjectRegistrationListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -289,12 +287,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListFilterProps, IO
 export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilterProps, IOwnOption>(
   setDisplayName('ProjectRegistrationListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(ProjectRegistrationListFilterView);

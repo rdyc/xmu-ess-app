@@ -23,19 +23,25 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
 export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       disableBackdropClick
       open={props.isOpen}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -46,7 +52,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterStatus || props.filterProject || props.filterRejected) &&
+            (props.filterCustomer || props.filterStatus || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -61,6 +67,8 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         </Toolbar>
       </AppBar>
       
+      <Divider/>
+
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
           <ListItem button onClick={props.handleFilterCustomerVisibility}>
@@ -103,6 +111,26 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         </ListItem>
         <Divider />
 
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)}
+            />
+            <ListItemSecondaryAction>
+              {
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
         <ListItem>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.settlement.field.isNeedAdjust)}
@@ -110,7 +138,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           />
           <ListItemSecondaryAction>
             <Switch
-              color="primary"
+              color="secondary"
               checked={props.filterRejected || false}
               onChange={props.handleFilterRejectOnChange}
             />
@@ -144,6 +172,17 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
+    />
+
+    <DialogValue
+      title={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+      isOpen={props.isFilterCompletionOpen}
+      hideBackdrop={true}
+      items={props.completionStatus}
+      value={props.filterCompletion && props.filterCompletion.value}
+      onSelected={props.handleFilterCompletionOnSelected}
+      onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
     />
   </React.Fragment>
 );

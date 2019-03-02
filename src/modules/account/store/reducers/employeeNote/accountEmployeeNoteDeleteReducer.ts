@@ -4,11 +4,12 @@ import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IEmployeeNoteDeleteRequest, boolean> = {
-  request: undefined,
-  response: undefined,
+  isExpired: false,
   isError: false,
   isLoading: false,
-  errors: undefined,
+  request: undefined,
+  response: undefined,
+  errors: undefined
 };
 
 const reducer: Reducer<IQuerySingleState<IEmployeeNoteDeleteRequest, boolean>> = (state = initialState, action) => {

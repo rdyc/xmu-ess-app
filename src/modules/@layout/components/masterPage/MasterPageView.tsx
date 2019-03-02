@@ -7,7 +7,15 @@ import { DrawerLeft } from '../drawer/DrawerLeft';
 import { DrawerRight } from '../drawer/DrawerRight';
 import { SnackbarAlert } from '../snackbar/SnackbarAlert';
 import { TopBar } from '../topBar/TopBar';
-import { MasterPageProps } from './MasterPage';
+import { ChildPage, ChildPageProps, MasterPageProps } from './MasterPage';
+
+export const ChildPageView: React.SFC<ChildPageProps> = props => (
+  <main className={classNames(props.classes.content, props.classes.shift)}>
+    <ErrorBoundary>
+      {props.children}
+    </ErrorBoundary>
+  </main>
+);
 
 export const MasterPageView: React.SFC<MasterPageProps> = props => (
   <LayoutTheme>
@@ -15,17 +23,15 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
       { 
         props.userState.user &&
         <React.Fragment>
-          <TopBar />
+          <TopBar/>
 
-          <DrawerRight anchor={props.layoutState.anchor} />
+          <DrawerRight/>
           
-          <DrawerLeft anchor={props.layoutState.anchor} />
+          <DrawerLeft/>
           
-          <main className={classNames(props.classes.content, props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft)}>
-            <ErrorBoundary>
-              {props.children}
-            </ErrorBoundary>
-          </main>
+          <ChildPage>
+            {props.children}
+          </ChildPage>
 
           <SnackbarAlert/>
         </React.Fragment>

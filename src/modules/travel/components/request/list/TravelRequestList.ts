@@ -72,6 +72,7 @@ const createProps: mapper<TravelRequestListProps, IOwnState> = (props: TravelReq
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     selected: [],
     fields: Object.keys(TravelRequestField).map(key => ({
       value: key,
@@ -110,7 +111,7 @@ const stateUpdaters: StateUpdaters<TravelRequestListProps, IOwnState, IOwnStateU
 
 const handlerCreators: HandleCreators<TravelRequestListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TravelRequestListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.travelRequestState.all;
+    const { isExpired, isLoading, request } = props.travelRequestState.all;
     const { loadAllRequest } = props.travelRequestDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -120,6 +121,7 @@ const handlerCreators: HandleCreators<TravelRequestListProps, IOwnHandler> = {
         positionUid: props.userState.user.position.uid,
         customerUid: props.customerUid,
         statusType: props.statusType,
+        status: props.status,
         isRejected: props.isRejected,
         isSettlement: props.isSettlement,
         find: request && request.filter && request.filter.find,
@@ -134,7 +136,7 @@ const handlerCreators: HandleCreators<TravelRequestListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
 
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });
@@ -183,6 +185,7 @@ const handlerCreators: HandleCreators<TravelRequestListProps, IOwnHandler> = {
   handleFilterBadge: (props: TravelRequestListProps) => () => {
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
+      props.status !== 'pending' ||
       props.isRejected === true ||
       props.isSettlement === true;
   },
@@ -201,12 +204,14 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestListProps, IOwnState> = {
       {
         customerUid: this.props.customerUid,
         statusType: this.props.statusType,
+        status: this.props.status,
         isRejected: this.props.isRejected,
         isSettlement: this.props.isSettlement
       },
       {
         customerUid: nextProps.customerUid,
         statusType: nextProps.statusType,
+        status: nextProps.status,
         isRejected: nextProps.isRejected,
         isSettlement: nextProps.isSettlement
       }

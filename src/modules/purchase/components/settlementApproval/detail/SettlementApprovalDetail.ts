@@ -3,7 +3,6 @@ import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -30,10 +29,12 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -50,7 +51,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   shouldLoad: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -98,8 +99,8 @@ const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnS
     ...prevState,
     ...newState
   }),
-  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (state: OwnState, props: SettlementApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -111,6 +112,16 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
         positionUid: props.userState.user.position.uid,
         purchaseUid: props.match.params.purchaseUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: SettlementApprovalDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case PurchaseApprovalUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+
+      default:
+        break;
     }
   },
   handleValidate: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
@@ -177,7 +188,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       time: new Date()
     });
 
-    props.setDataload();
+    props.setNextLoad();
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
@@ -221,13 +232,12 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, OwnStat
 
     // handle updated response state
     if (this.props.settlementApprovalState.detail !== prevProps.settlementApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: PurchaseApprovalUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.settlementApprovalState.detail.isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         }
       ];
 

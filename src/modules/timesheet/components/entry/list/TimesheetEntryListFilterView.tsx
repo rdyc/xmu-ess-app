@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
@@ -31,11 +32,16 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -46,7 +52,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterRejected || props.filterProject) &&
+            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterRejected || (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') || props.filterProject) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -60,6 +66,8 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </Button>
         </Toolbar>
       </AppBar>
+
+      <Divider/>
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
@@ -123,6 +131,27 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </ListItem>
           <Divider />
 
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              props.filterCompletion &&
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+              <IconButton onClick={props.handleFilterCompletionOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
           <ListItem>
             <ListItemText
               primary={props.intl.formatMessage(timesheetMessage.entry.field.isRejected)}
@@ -130,7 +159,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -175,14 +204,15 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       onClose={props.handleFilterStatusOnClose}
     />
 
-    {/* <DialogValue
+    <DialogValue
       title={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      value={props.filterCompletion && props.filterCompletion.value}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    /> */}
+      isCompletion={true}
+    />
   </React.Fragment>
 );

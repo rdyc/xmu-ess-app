@@ -82,7 +82,7 @@ export const LookupRoleListView: React.SFC<LookupRoleListProps> = props => (
               <Badge
                 invisible={!props.handleFilterBadge()}
                 badgeContent={
-                  <CheckCircle color="primary" fontSize="small" />
+                  <CheckCircle color="secondary" fontSize="small" />
                 }
               >
                 <Tune />

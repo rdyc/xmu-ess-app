@@ -4,8 +4,8 @@ import { WithAccountEmployeeNote, withAccountEmployeeNote } from '@account/hoc/w
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
@@ -63,7 +63,7 @@ export type AccountEmployeeNoteEditorProps
   = WithAccountEmployeeNote
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -205,7 +205,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeNoteEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, match } = this.props;
+    const { intl, history, stateUpdate, match } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeNoteDispatch;
     const { user } = this.props.userState;
 
@@ -236,31 +236,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeNoteEditorProps, {}> = 
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupEmployee,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title, {state: 'Note'}),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupEmployee,
+      parentUid: AppMenu.Lookup,
       parentUrl: `/account/employee/${match.params.employeeUid}/note`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+      title: intl.formatMessage(view.title, {state: 'Note'}),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeNoteDispatch } = this.props;
+    const { masterPage, accountEmployeeNoteDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     accountEmployeeNoteDispatch.createDispose();
     accountEmployeeNoteDispatch.updateDispose();
@@ -270,7 +257,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeNoteEditorProps, {}> = 
 export const AccountEmployeeNoteEditor = compose<AccountEmployeeNoteEditorProps, OwnOption>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withWidth(),
   withAccountEmployeeNote,

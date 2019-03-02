@@ -16,26 +16,29 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IAppBarMenu } from '@layout/interfaces';
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { StructureUserAction } from '@organization/classes/types';
 import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { StructureDetailView } from './StructureDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   structureUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnModify: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
   action?: StructureUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -45,32 +48,55 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type OrganizationStructureDetailProps
   = WithUser
+  & WithOidc
   & WithOrganizationStructure
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<OrganizationStructureDetailProps, OwnState> = (): OwnState => ({
-  isAdmin: false,
-  dialogFullScreen: false,
-  dialogOpen: false,
-});
+const createProps: mapper<OrganizationStructureDetailProps, IOwnState> = (props: OrganizationStructureDetailProps): IOwnState => {
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
 
-const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: (prevState: OwnState, props: OrganizationStructureDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
+  return {
+    isAdmin,
+    shouldLoad: false,
+    dialogFullScreen: false,
+    dialogOpen: false
+  };
+};
+
+const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setOptions: (prevState: IOwnState, props: OrganizationStructureDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
-  setModify: (prevState: OwnState, props: OrganizationStructureDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: IOwnState, props: OrganizationStructureDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: OrganizationStructureDetailProps) => (): Partial<IOwnState> => ({
     action: StructureUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -79,7 +105,7 @@ const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, OwnState, O
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setDefault: () => (): Partial<OwnState> => ({
+  setDefault: () => (): Partial<IOwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
@@ -89,7 +115,7 @@ const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, OwnState, O
   })
 };
 
-const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<OrganizationStructureDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: OrganizationStructureDetailProps) => () => {
     if (props.userState.user && props.match.params.structureUid && !props.organizationStructureState.detail.isLoading) {
        if (props.history.location.state.companyUid) {
@@ -101,9 +127,20 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandl
          props.history.push('/organization/structure');
       }
     }
-  }, 
-  handleOnModify: (props: OrganizationStructureDetailProps) => () => {
-    props.setModify();
+  },
+  
+  handleOnSelectedMenu: (props: OrganizationStructureDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case StructureUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case StructureUserAction.Modify:
+        props.setModify();        
+        break;
+
+      default:
+        break;
+    }
   },
   handleOnCloseDialog: (props: OrganizationStructureDetailProps) => () => {
     props.setDefault();
@@ -152,8 +189,14 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, OwnHandl
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: OrganizationStructureDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.structureUid !== prevProps.match.params.structureUid) {
       this.props.handleOnLoadApi();
@@ -164,20 +207,18 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, OwnS
       const { isLoading } = this.props.organizationStructureState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: StructureUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: StructureUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnModify
+          visible: true
         },
       ];
 
@@ -189,6 +230,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, OwnS
 export const StructureDetail = compose(
   setDisplayName('OrganizationStructureDetail'),
   withRouter,
+  withOidc,
   withUser,
   withOrganizationStructure,
   injectIntl,

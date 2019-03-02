@@ -1,8 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseApproval';
 import styles from '@styles';
@@ -21,8 +22,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
-import { withLookupCustomer, WithLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { PurchaseApprovalListFilterView } from './PurchaseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -114,7 +113,6 @@ export type PurchaseApprovalListFilterProps
   & WithLookupCustomer
   & WithCommonSystem
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<PurchaseApprovalListFilterProps, IOwnState> = (props: PurchaseApprovalListFilterProps): IOwnState => ({
@@ -131,7 +129,7 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending' },
     filterNotify: undefined,
     filterStatus: undefined
   }),
@@ -219,7 +217,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({ value: 'pending', name: 'Pending' });
   },
   handleFilterCompletionOnClose: (props: PurchaseApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -276,12 +274,11 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalListFilterProps, IOwnS
 export const PurchaseApprovalListFilter = compose<PurchaseApprovalListFilterProps, IOwnOption>(
   setDisplayName('PurchaseApprovalListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles),
+  lifecycle(lifecycles)
 )(PurchaseApprovalListFilterView);

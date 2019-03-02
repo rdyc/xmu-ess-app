@@ -1,6 +1,5 @@
 import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveCancellationGetAllFilter } from '@leave/classes/filters/cancellation';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -66,7 +65,6 @@ export type LeaveCancellationListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithUser 
   & WithAccountEmployee
   & InjectedIntlProps;
@@ -145,12 +143,10 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListFilterProps, IOwn
 
 export const LeaveCancellationListFilter = compose<LeaveCancellationListFilterProps, IOwnOption>(
   setDisplayName('LeaveCancellationListFilter'),
-  withLayout,
-  withStyles(styles),
   withUser,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(LeaveCancellationListFilterView);

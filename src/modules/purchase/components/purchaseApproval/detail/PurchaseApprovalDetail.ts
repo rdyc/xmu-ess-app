@@ -1,9 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -33,20 +33,21 @@ import { isNullOrUndefined, isObject } from 'util';
 
 import { PurchaseApprovalDetailView } from './PurchaseApprovalDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   purchaseUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
-  pageOptions?: IAppBarMenu[];
+interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   shouldLoad: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -58,9 +59,9 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  setNextLoad: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type PurchaseApprovalDetailProps
@@ -68,13 +69,13 @@ export type PurchaseApprovalDetailProps
   & WithUser
   & WithLayout
   & WithNotification
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandler
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandler
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => ({
+const createProps: mapper<PurchaseApprovalDetailProps, IOwnState> = (props: PurchaseApprovalDetailProps): IOwnState => ({
   shouldLoad: false,
   approvalTitle: props.intl.formatMessage(purchaseMessage.approval.section.approveForm),
   approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
@@ -90,20 +91,20 @@ const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: Purch
 
 });
 
-const stateUpdaters: StateUpdaters<PurchaseApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setNextLoad: (state: OwnState, props: PurchaseApprovalDetailProps) => (): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<PurchaseApprovalDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState, props: PurchaseApprovalDetailProps) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
-  setOptions: (state: OwnState, props: PurchaseApprovalDetailProps) => (options?: IAppBarMenu[]): Partial<OwnState> => ({
-    pageOptions: options
+  setOptions: (state: IOwnState, props: PurchaseApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   })
 };
 
-const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: PurchaseApprovalDetailProps) => () => {
     if (props.userState.user && !props.purchaseApprovalState.detail.isLoading && props.match.params.purchaseUid) {
       props.purchaseApprovalDispatch.loadDetailRequest({
@@ -111,6 +112,16 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
         positionUid: props.userState.user.position.uid,
         purchaseUid: props.match.params.purchaseUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: PurchaseApprovalDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case PurchaseApprovalUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
@@ -185,7 +196,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
     });
     
     // set next load
-    props.setNextLoad();
+    props.setShouldLoad();
   },
   handleSubmitFail: (props: PurchaseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -204,12 +215,12 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: PurchaseApprovalDetailProps) {
     // handle updated should load
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of should load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -222,13 +233,12 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
 
     // handle updated response state
     if (this.props.purchaseApprovalState.detail !== prevProps.purchaseApprovalState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: PurchaseApprovalUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.purchaseApprovalState.detail.isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         }
       ];
 

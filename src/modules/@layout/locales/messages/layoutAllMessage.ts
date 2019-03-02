@@ -15,14 +15,16 @@ export const layoutText = defineMessages({
   inactive: { id: `${prefix}.text.inactive`},
   find: { id: `${prefix}.text.find`},
   search: { id: `${prefix}.text.search`},
-  selection: { id: `${prefix}.text.selection`}
+  selection: { id: `${prefix}.text.selection`},
+  all: { id: `${prefix}.text.all`}
 });
 
 // label
 export const layoutLabel = defineMessages({
   login: { id: `${prefix}.label.login`},
   logout: { id: `${prefix}.label.logout`},
-  theme: { id: `${prefix}.label.theme`},
+  themeDark: { id: `${prefix}.label.theme.dark`},
+  themeLight: { id: `${prefix}.label.theme.light`},
   anchorRight: { id: `${prefix}.label.anchor.right`},
   anchorLeft: { id: `${prefix}.label.anchor.left`},
   switch: { id: `${prefix}.label.switch`}

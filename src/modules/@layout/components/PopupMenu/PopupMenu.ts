@@ -10,17 +10,25 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { MoreOptionView } from './MoreOptionView';
+import { PopupMenuView } from './PopupMenuView';
+
+export interface IPopupMenuOption {
+  id: string;
+  name: string;
+  enabled: boolean;
+  visible: boolean;
+}
 
 interface IOwnOption {
   id: string;
-  menuItems: IAppBarMenu[];
-  onSelected: (item: IAppBarMenu) => void;
+  menuOptions: IPopupMenuOption[];
+  selectable: boolean;
+  onSelected: (item: IPopupMenuOption) => void;
 }
 
 interface IOwnState {
   isOpen: boolean;
-  selected?: IAppBarMenu;
+  selected?: IPopupMenuOption;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -33,37 +41,42 @@ interface IOwnHandler {
   handleOnSelected: (item: IAppBarMenu) => void;
 }
 
-export type MoreOptionProps
+export type PopupMenuProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  isOpen: false
+  isOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
   setOpen: (state: IOwnState) => (): Partial<IOwnState> => ({
     isOpen: !state.isOpen    
   }),
-  setSelected: (prev: IOwnState) => (menu: IAppBarMenu): IOwnState => ({
+  setSelected: (prev: IOwnState) => (menu: IPopupMenuOption): IOwnState => ({
     isOpen: false,
     selected: menu
   })
 };
 
-const handlerCreators: HandleCreators<MoreOptionProps, IOwnHandler> = {
-  handleVisibility: (props: MoreOptionProps) => (event: React.MouseEvent<HTMLDivElement>) => {
+const handlerCreators: HandleCreators<PopupMenuProps, IOwnHandler> = {
+  handleVisibility: (props: PopupMenuProps) => (event: React.MouseEvent<HTMLDivElement>) => {
     props.setOpen();
   },
-  handleOnSelected: (props: MoreOptionProps) => (item: IAppBarMenu) => {
-    props.setSelected(item);
+  handleOnSelected: (props: PopupMenuProps) => (item: IPopupMenuOption) => {
+    if (props.selectable) {
+      props.setSelected(item);
+    } else {
+      props.setOpen();
+    }
+
     props.onSelected(item);
   }
 };
 
-export const MoreOption = compose<MoreOptionProps, IOwnOption>(
+export const PopupMenu = compose<PopupMenuProps, IOwnOption>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(MoreOptionView);
+)(PopupMenuView);

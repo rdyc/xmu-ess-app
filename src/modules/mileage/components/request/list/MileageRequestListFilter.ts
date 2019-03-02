@@ -1,7 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
 import styles from '@styles';
@@ -20,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { MileageRequestListFilterView } from './MileageRequestListFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
@@ -142,7 +142,6 @@ export type MileageRequestListFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
   & WithCommonSystem
   & InjectedIntlProps;
 
@@ -165,7 +164,7 @@ const stateUpdaters: StateUpdaters<MileageRequestListFilterProps, OwnState, OwnS
     filterMonth: undefined,
     filterYear: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    filterCompletion: { value: 'pending', name: 'Pending'},
     filterRejected: undefined
   }),
 
@@ -276,7 +275,7 @@ const handlerCreators: HandleCreators<MileageRequestListFilterProps, OwnHandler>
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
+    props.setFilterCompletion({value: 'pending', name: 'Pending'});
   },
   handleFilterCompletionOnClose: (props: MileageRequestListFilterProps) => () => {
     props.setFilterCompletionVisibility();
@@ -292,7 +291,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnStat
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { year, month, statusType } = this.props.initialProps;
+      const { year, month, statusType, status } = this.props.initialProps;
 
       // filter year
       if (year) {
@@ -317,17 +316,23 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnStat
           this.props.setFilterStatus(selected);
         }
       }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
     }
   }
 };
 
 export const MileageRequestListFilter = compose<MileageRequestListFilterProps, OwnOption>(
   setDisplayName('MileageRequestListFilter'),
-  withLayout,
   withCommonSystem,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(MileageRequestListFilterView);

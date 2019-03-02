@@ -1,5 +1,7 @@
 import AppMenu from '@constants/AppMenu';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { AppRole } from '@constants/AppRole';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -17,12 +19,14 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { IProgressFilterResult } from './ProgressFilter';
 
 export interface Handlers {
@@ -57,9 +61,10 @@ export type FilterProgressData = {
 
 export type ProgressProps 
   = WithSummary
+  & WithOidc
   & WithWidth
   & WithUser
-  & WithLayout
+  & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
   & OwnOptions
@@ -133,16 +138,36 @@ const handlerCreators: HandleCreators<ProgressProps, Handlers> = {
 const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
     componentDidMount() { 
       const { 
-        layoutDispatch, intl, customerUid, projectUid
+        intl, customerUid, projectUid, stateUpdate
       } = this.props;
       
       const { isLoading, response } = this.props.summaryState.effectiveness;
+
+      // checking admin status
+      const { user: oidc } = this.props.oidcState;
+      let result: boolean = false;
+      if (oidc) {
+        const role: string | string[] | undefined = oidc.profile.role;
+
+        if (role) {
+          if (Array.isArray(role)) {
+            result = role.indexOf(AppRole.Admin) !== -1;
+          } else {
+            result = role === AppRole.Admin;
+          }
+        }
+
+        if (result) {
+          stateUpdate({ 
+            isAdmin: true
+          });
+        }
+      }
   
-      layoutDispatch.changeView({
+      this.props.masterPage.changePage({
         uid: AppMenu.ReportProgress,
         parentUid: AppMenu.Report,
         title: intl.formatMessage(summaryMessage.progress.page.title),
-        subTitle : intl.formatMessage(summaryMessage.progress.page.subTitle)
       });
     
       // only load data when response are empty
@@ -166,27 +191,13 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       }
     },
     componentWillUnmount() {
-      const { layoutDispatch } = this.props;
-      const { view } = this.props.layoutState;
-      const { loadProgressDispose } = this.props.summaryDispatch;
-  
-      layoutDispatch.changeView(null);
-      layoutDispatch.modeListOff();
-      layoutDispatch.searchHide();
-      layoutDispatch.modeSearchOff();
-      layoutDispatch.moreHide();
-  
-      // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.uid !== AppMenu.ReportProgress) {
-        loadProgressDispose();
-      }
+      this.props.summaryDispatch.loadProgressDispose();
     }
   };
 
 const loadData = (props: ProgressProps): void => {
     const { user } = props.userState;
     const { loadProgressRequest } = props.summaryDispatch;
-    const { alertAdd } = props.layoutDispatch;
     const { customerUid, projectUid } = props;
 
     if (user) {
@@ -194,24 +205,21 @@ const loadData = (props: ProgressProps): void => {
         customerUid,
         projectUid
       }); 
-    } else {
-      alertAdd({
-        time: new Date(),
-        message: 'Unable to find current user state'
-      });
     }
   };
 
 export const Progress = compose<ProgressProps, OwnOptions>(
     connect(),
+    setDisplayName('SummaryProgressEditor'),
+    withOidc,
     withSummary,
     withUser,
-    withLayout,
+    withMasterPage,
     withRouter,
     injectIntl,
     withWidth(),
     withStyles(styles),
-    withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-    withHandlers<ProgressProps, Handlers>(handlerCreators),
-    lifecycle<ProgressProps, OwnState>(lifecycles),
+    withStateHandlers(createProps, stateUpdaters), 
+    withHandlers(handlerCreators),
+    lifecycle(lifecycles)
   )(ProgressView);

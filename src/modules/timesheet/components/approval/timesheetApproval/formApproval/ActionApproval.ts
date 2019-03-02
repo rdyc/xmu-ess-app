@@ -1,6 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -66,7 +65,6 @@ export type ApprovalTimesheetsProps
   & WithNotification
   & WithUser
   & WithLayout
-  & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState

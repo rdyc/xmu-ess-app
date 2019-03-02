@@ -1,5 +1,5 @@
 import AppEvent from '@constants/AppEvent';
-import { Anchor } from '@layout/types';
+import { IPageInfo } from '@generic/interfaces';
 import { SwipeableDrawer, WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { isWidthDown, isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -21,19 +21,22 @@ import {
 import { Navigation } from '../navigation/Navigation';
 
 interface IOwnOption {
-  anchor: Anchor;
 }
 
 interface IOwnState {
   isOpen: boolean;
+  headerUid?: string;
+  childUid?: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setVisibility: StateHandler<IOwnState>;
+  setOpen: StateHandler<IOwnState>;
+  setHeaderAndChild: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleOnEventDrawerLeft: (event: CustomEvent) => void;
+  handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
+  handleOnChangeDrawerLeft: (event: CustomEvent) => void;
 }
 
 type DrawerLeftProps 
@@ -47,48 +50,56 @@ type DrawerLeftProps
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   isOpen: true
 });
-
+  
 const DrawerLeftView: React.SFC<DrawerLeftProps> = props => (
   <SwipeableDrawer
     open={props.isOpen}
     variant={isWidthUp('md', props.width) ? 'permanent' : 'temporary'}
-    anchor={props.anchor}
+    anchor="left"
     classes={{
       paper: props.classes.drawerPaper
     }} 
     ModalProps={{
       keepMounted: true
     }}
-    onOpen={props.setVisibility}
-    onClose={props.setVisibility}
-    onRendered={() => {
-      if (isWidthDown('sm', props.width)) {
-        props.setVisibility();
-      }
-    }}
+    onOpen={props.setOpen}
+    onClose={props.setOpen}
+    { ...isWidthDown('sm', props.width) && ({onRendered: () => props.setOpen()}) }
   >
-    <Navigation />
+    <Navigation 
+      defaultHeaderUid={props.headerUid}
+      defaultChildUid={props.childUid}
+    />
   </SwipeableDrawer>
 );
 
 const stateUpdaters: StateUpdaters<DrawerLeftProps, IOwnState, IOwnStateUpdater> = {
-  setVisibility: (prevState: IOwnState) => (): Partial<IOwnState> => ({
-    isOpen: !prevState.isOpen
+  setOpen: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isOpen: !state.isOpen
+  }),
+  setHeaderAndChild: (state: IOwnState) => (headerUid: string, childUid: string): Partial<IOwnState> => ({
+    headerUid,
+    childUid
   })
 };
 
 const handlerCreators: HandleCreators<DrawerLeftProps, IOwnHandler> = {
-  handleOnEventDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
-    props.setVisibility();
+  handleOnChangePage: (props: DrawerLeftProps) => (event: CustomEvent<IPageInfo>) => {
+    props.setHeaderAndChild(event.detail.parentUid, event.detail.uid);
+  },
+  handleOnChangeDrawerLeft: (props: DrawerLeftProps) => (event: CustomEvent) => {
+    props.setOpen();
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<DrawerLeftProps, {}> = {
   componentDidMount() {
-    addEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
+    addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+    addEventListener(AppEvent.onChangeDrawerLeft, this.props.handleOnChangeDrawerLeft);
   },
   componentWillUnmount() {
-    removeEventListener(AppEvent.DrawerLeft, this.props.handleOnEventDrawerLeft);
+    removeEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+    removeEventListener(AppEvent.onChangeDrawerLeft, this.props.handleOnChangeDrawerLeft);
   }
 };
 

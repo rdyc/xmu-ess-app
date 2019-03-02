@@ -71,6 +71,7 @@ const createProps: mapper<TravelSettlementApprovalListProps, IOwnState> = (props
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
+    status: 'pending',
     fields: Object.keys(TravelRequestField).map(key => ({ 
       value: key, 
       name: TravelRequestField[key] 
@@ -109,7 +110,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListProps, IOwnState,
 
 const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: TravelSettlementApprovalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.travelSettlementApprovalState.all;
+    const { isExpired, isLoading, request } = props.travelSettlementApprovalState.all;
     const { loadAllRequest } = props.travelSettlementApprovalDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -131,7 +132,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, IOwnHan
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter
         });
@@ -180,7 +181,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, IOwnHan
   handleFilterBadge: (props: TravelSettlementApprovalListProps) => () => {
     return props.customerUid !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      props.status !== 'pending' ||
       props.isNotify === true;
   },
   // handleSelection: (props: ProjectRegistrationListProps) => (values: string[]) => {

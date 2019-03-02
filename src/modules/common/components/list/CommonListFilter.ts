@@ -1,5 +1,8 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { ISystemAllFilter } from '@common/classes/filters';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { ICompanyList } from '@lookup/classes/response';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -17,10 +20,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ISystemAllFilter } from '@common/classes/filters';
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { CommonListFilterView } from './CommonListFilterView';
 
 export type ICommonListFilterResult = Pick<ISystemAllFilter, 'companyUid' >;
@@ -70,7 +69,6 @@ export type CommonListFilterProps
   & IOwnHandler
   & WithLookupCompany
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<CommonListFilterProps, IOwnState> = (): IOwnState => ({
@@ -147,7 +145,6 @@ const lifecycles: ReactLifeCycleFunctions<CommonListFilterProps, IOwnState> = {
 export const CommonListFilter = compose<CommonListFilterProps, IOwnOption>(
   setDisplayName('CommonListFilter'),
   withUser,
-  withLayout,
   withLookupCompany,
   withStyles(styles),
   injectIntl,

@@ -2,10 +2,10 @@ import { IEmployeeFamilyDeletePayload } from '@account/classes/request/employeeF
 import { WithAccountEmployeeFamily, withAccountEmployeeFamily } from '@account/hoc/withAccountEmployeeFamily';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,8 +22,9 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
+  menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
-  pageOptions?: IAppBarMenu[];
+  shouldLoad: boolean;
   action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -35,7 +36,7 @@ interface IOwnState {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnOpenDialog: (action: LookupUserAction) => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleSubmit: () => void;
@@ -44,8 +45,11 @@ interface IOwnHandler {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeFamilyDetailProps
@@ -77,6 +81,7 @@ const createProps: mapper<AccountEmployeeFamilyDetailProps, IOwnState> = (props:
   }
   return {
     isAdmin,
+    shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
@@ -89,9 +94,24 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFamilyDetailProps, IOwnState, 
     ...prevState,
     ...newState
   }),
-  setOptions: (prevState: IOwnState, props: AccountEmployeeFamilyDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (prevState: IOwnState, props: AccountEmployeeFamilyDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   }),
+  setShouldLoad: (state: IOwnState, props: AccountEmployeeFamilyDetailProps) => (): Partial<IOwnState> => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setModify: (prevState: IOwnState, props: AccountEmployeeFamilyDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Modify,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Family'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'family'}),
+  }),
+  setDelete: (prevState: IOwnState, props: AccountEmployeeFamilyDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Family'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'family'}),
+  })
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeFamilyDetailProps, IOwnHandler> = {
@@ -103,26 +123,27 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyDetailProps, IOwnHand
       });
     }
   },
-  handleOnOpenDialog: (props: AccountEmployeeFamilyDetailProps) => (action: LookupUserAction) => {
-    if (action === LookupUserAction.Modify) {
-      props.stateUpdate({
-        action: LookupUserAction.Modify,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Family'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'family'}),
-      });
-    } else if (action === LookupUserAction.Delete) {
-      props.stateUpdate({
-        action: LookupUserAction.Delete,
-        dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.deleteTitle, {state: 'Family'}),
-        dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.deleteDescription, {state: 'family'}),
-      });
+  handleOnSelectedMenu: (props: AccountEmployeeFamilyDetailProps) => (item: IPopupMenuOption) => { 
+    switch (item.id) {
+      case LookupUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
+        break;
+
+      default:
+        break;
     }
   },
   handleOnCloseDialog: (props: AccountEmployeeFamilyDetailProps) => () => {
     props.stateUpdate({
-      dialogOpen: false
+      dialogOpen: false,
+      dialogTitle: undefined,
+      dialogContent: undefined,
     });
   },
   handleOnConfirm: (props: AccountEmployeeFamilyDetailProps) => () => {
@@ -232,6 +253,12 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyDetailProps, IOwnHand
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: AccountEmployeeFamilyDetailProps) {
+    // handle updated reload state
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.setShouldLoad();
+      this.props.handleOnLoadApi();
+    }
+
     // handle updated route params
     if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
         this.props.match.params.familyUid !== prevProps.match.params.familyUid) {
@@ -243,27 +270,24 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyDetailProps, IOwn
       const { isLoading } = this.props.accountEmployeeFamilyState.detail;
 
       // generate option menus
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
-          onClick: this.props.handleOnLoadApi
+          visible: true
         },
         {
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Modify)
+          visible: true
         },
         {
           id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
-          visible: true,
-          onClick: () => this.props.handleOnOpenDialog(LookupUserAction.Delete)
+          visible: true
         }
       ];
 

@@ -31,11 +31,16 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
       fullScreen
       disableBackdropClick
       open={props.isOpen}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      className={props.classes.shift}
       scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <AppBar 
+        elevation={0}
+        position="fixed" 
+        color="default"
+        className={props.classes.appBarDialog}
+      >
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -60,6 +65,8 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
           </Button>
         </Toolbar>
       </AppBar>
+      
+      <Divider/>
       
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
@@ -130,7 +137,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterRejected || false}
                 onChange={props.handleFilterRejectedOnChange}
               />
@@ -145,7 +152,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
             />
             <ListItemSecondaryAction>
               <Switch
-                color="primary"
+                color="secondary"
                 checked={props.filterNewOwner || false}
                 onChange={props.handleFilterNewOwnerOnChange}
               />

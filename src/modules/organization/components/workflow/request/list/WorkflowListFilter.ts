@@ -1,4 +1,3 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -18,6 +17,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { WorkflowListFilterView } from './WorkflowListFilterView';
 
 export type IWorkflowMenuListFilterResult = Pick<IOrganizationWorkflowAllFilter,
@@ -64,7 +64,6 @@ export type WorkflowListFilterProps
   & WithLookupCompany
   & IOwnStateUpdater
   & WithStyles<typeof styles>
-  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<WorkflowListFilterProps, IOwnState> = (): IOwnState => ({
@@ -133,11 +132,10 @@ const lifecycles: ReactLifeCycleFunctions<WorkflowListFilterProps, IOwnState> = 
 
 export const WorkflowListFilter = compose<WorkflowListFilterProps, OwnOption>(
   setDisplayName('WorkflowListFilter'),
-  withLayout,
-  withStyles(styles),
-  injectIntl,
   withLookupCompany,
+  injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(WorkflowListFilterView);

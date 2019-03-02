@@ -3,12 +3,12 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Typography } from '@material-ui/core';
 import { TimesheetEntryForm, TimesheetFormData } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
-import { EntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
+import { TimeEntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
+export const TimesheetEntryEditorView: React.SFC<TimeEntryEditorProps> = props => {
   const { 
     formMode, 
     handleValidate, 
@@ -30,6 +30,7 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
   const renderForm = (formData: TimesheetFormData) => (
     <TimesheetEntryForm 
       formMode={formMode}
+      isAdmin={props.isAdmin}
       initialValues={formData}
       minDate={minDate}
       validate={handleValidate}

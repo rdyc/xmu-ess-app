@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ITravelSettlementPostPayload, ITravelSettlementPutItem, ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
@@ -49,7 +49,7 @@ export type TravelSettlementEditorProps
   & WithTravelRequest
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -248,7 +248,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadRequest } = this.props.travelSettlementDispatch;
     const { loadDetailRequest } = this.props.travelRequestDispatch;
     const { user } = this.props.userState;
@@ -304,23 +304,18 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
       }
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
+      parentUrl: '/travel/settlement/requests',
       title: intl.formatMessage(view.title),
-      subTitle: intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelSettlementDispatch } = this.props;
+    const { masterPage, travelSettlementDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     travelSettlementDispatch.createDispose();
     travelSettlementDispatch.updateDispose();
@@ -330,7 +325,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
 export default compose<TravelSettlementEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withTravelSettlement,
   withTravelRequest,

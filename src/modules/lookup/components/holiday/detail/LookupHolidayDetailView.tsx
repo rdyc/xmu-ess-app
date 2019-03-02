@@ -1,10 +1,11 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
+import { ILookupHolidayDetail } from '@lookup/classes/response';
 import { Delete } from '@lookup/components/shared/Delete';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 
-import { ILookupHolidayDetail } from '@lookup/classes/response';
-import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { HolidayDetailProps } from './LookupHolidayDetail';
 import { LookupHolidayInformation } from './shared/LookupHolidayInformation';
 
@@ -17,15 +18,20 @@ export const LookupHolidayDetailView: React.SFC<HolidayDetailProps> = props => (
       title: props.intl.formatMessage(lookupMessage.holiday.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.holiday.page.detailSubHeader),
     }}
-    options={props.pageOptions}
     state={props.lookupHolidayState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ILookupHolidayDetail) => (
       <LookupHolidayInformation data={data} />
     )}
-    secondary={() => ([
-      //
-    ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-holiday-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <Delete 
       action={props.action}

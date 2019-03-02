@@ -9,6 +9,7 @@ import {
   lookupRoleGetAllRequest,
   lookupRoleGetAllSuccess,
   // lookupRoleGetByIdDispose,
+  lookupRoleGetByIdDispose,
   lookupRoleGetByIdError,
   lookupRoleGetByIdRequest,
   lookupRoleGetByIdSuccess,
@@ -20,7 +21,6 @@ import {
   lookupRolePostSuccess,
   lookupRolePutError,
   lookupRolePutRequest,
-  lookupRolePutSuccess,
 } from '@lookup/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -107,8 +107,8 @@ function* watchPostRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupRoleGetAllDispose()),
-        put(lookupRolePostSuccess(response.body)),
-        put(lookupRoleGetByIdSuccess(response.body))
+        put(lookupRoleGetByIdDispose()),
+        put(lookupRolePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -153,7 +153,7 @@ function* watchPutRequest() {
       path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupRolePutSuccess(response.body)),
+        put(lookupRoleGetByIdDispose()),
         put(lookupRoleGetAllDispose()),
         put(lookupRoleGetByIdSuccess(response.body))
       ],

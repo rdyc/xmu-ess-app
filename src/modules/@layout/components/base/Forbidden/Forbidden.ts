@@ -1,5 +1,4 @@
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -15,40 +14,26 @@ interface IOwnOption extends RouteProps {
 
 export type ForbiddenProps
   = IOwnOption
-  & WithLayout
-  & WithAppBar
+  & WithMasterPage
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const lifeCycles: ReactLifeCycleFunctions<ForbiddenProps, {}> = {
   componentDidMount() {
-    this.props.layoutDispatch.setupView({
-      view: {
-        uid: '',
-        parentUid: '',
-        title: this.props.intl.formatMessage(layoutMessage.page.forbidden),
-        subTitle: '',
-      },
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeList: false,
-        isModeSearch: false
-      }
+    this.props.masterPage.changePage({
+      uid: '',
+      parentUid: '',
+      title: this.props.intl.formatMessage(layoutMessage.page.forbidden),
     });
   },
   componentWillUnmount() {
-    // reset top bar back to default 
-    this.props.appBarDispatch.dispose();
+    this.props.masterPage.resetPage();
   }
 };
 
 export const Forbidden = compose<ForbiddenProps, IOwnOption>(
   setDisplayName('Forbidden'),
-  withLayout,
-  withAppBar,
+  withMasterPage,
   injectIntl,
   lifecycle(lifeCycles),
   withStyles(styles)

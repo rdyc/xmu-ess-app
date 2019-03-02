@@ -1,7 +1,7 @@
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { ILeaveCancellationPostPayload } from '@leave/classes/request';
@@ -36,17 +36,9 @@ interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface IOwnHandler {
-  handleOnLoadApi: () => void;
-  handleValidate: (payload: LeaveCancellationFormData) => FormErrors;
-  handleSubmit: (payload: LeaveCancellationFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
 interface IOwnState {
   shoulLoad: boolean;
-  pageOptions?: IAppBarMenu[];
+  menuOptions?: IPopupMenuOption[];
   cancellationTitle: string;
   cancellationSubHeader: string;
   cancellationDialogTitle: string;
@@ -57,7 +49,16 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
-  setNextLoad: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleValidate: (payload: LeaveCancellationFormData) => FormErrors;
+  handleSubmit: (payload: LeaveCancellationFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 export type LeaveCancellationDetailProps
@@ -82,11 +83,11 @@ const createProps: mapper<LeaveCancellationDetailProps, IOwnState> = (props: Lea
 });
 
 const stateUpdaters: StateUpdaters<LeaveCancellationDetailProps, IOwnState, IOwnStateUpdater> = {
-  setNextLoad: (state: IOwnState, props: LeaveCancellationDetailProps) => (): Partial<IOwnState> => ({
+  setShouldLoad: (state: IOwnState, props: LeaveCancellationDetailProps) => (): Partial<IOwnState> => ({
     shoulLoad: !state.shoulLoad
   }),
-  setOptions: (state: IOwnState, props: LeaveCancellationDetailProps) => (options?: IAppBarMenu[]): Partial<IOwnState> => ({
-    pageOptions: options
+  setOptions: (state: IOwnState, props: LeaveCancellationDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+    menuOptions: options
   })
 };
 
@@ -98,6 +99,16 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, IOwnHandler>
         positionUid: props.userState.user.position.uid,
         leaveUid: props.match.params.leaveUid
       });
+    }
+  },
+  handleOnSelectedMenu: (props: LeaveCancellationDetailProps) => (item: IPopupMenuOption) => {
+    switch (item.id) {
+      case LeaveRequestUserAction.Refresh:
+        props.setShouldLoad();
+        break;
+    
+      default:
+        break;
     }
   },
   handleValidate: (props: LeaveCancellationDetailProps) => (formData: LeaveCancellationFormData) => { 
@@ -162,7 +173,7 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, IOwnHandler>
     });
 
     // set next load
-    props.setNextLoad();
+    props.setShouldLoad();
   },
   handleSubmitFail: (props: LeaveCancellationDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {
@@ -186,7 +197,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, IOwnStat
     // handle updated should load
     if (this.props.shoulLoad && this.props.shoulLoad !== prevProps.shoulLoad) {
       // turn of shoul load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();
@@ -199,13 +210,12 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, IOwnStat
 
     // handle updated response state
     if (this.props.leaveCancellationState.detail !== prevProps.leaveCancellationState.detail) {
-      const options: IAppBarMenu[] = [
+      const options: IPopupMenuOption[] = [
         {
           id: LeaveRequestUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !this.props.leaveCancellationState.detail.isLoading,
           visible: true,
-          onClick: this.props.handleOnLoadApi
         }
       ];
 

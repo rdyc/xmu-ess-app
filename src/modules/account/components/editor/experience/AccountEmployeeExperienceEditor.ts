@@ -4,8 +4,8 @@ import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@a
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
@@ -61,7 +61,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type AccountEmployeeExperienceEditorProps
   = WithAccountEmployeeExperience
   & WithUser
-  & WithAppBar
+  & WithMasterPage
   & WithLayout
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
@@ -204,7 +204,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, match } = this.props;
+    const { intl, history, stateUpdate, match } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeExperienceDispatch;
     const { user } = this.props.userState;
 
@@ -235,31 +235,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, 
       });
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupEmployee,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title, {state: 'Experience'}),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupEmployee,
+      parentUid: AppMenu.Lookup,
       parentUrl: `/account/employee/${match.params.employeeUid}/experience`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
+      title: intl.formatMessage(view.title, {state: 'Experience'}),
+      description : intl.formatMessage(view.subTitle)
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeExperienceDispatch } = this.props;
+    const { masterPage, accountEmployeeExperienceDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     accountEmployeeExperienceDispatch.createDispose();
     accountEmployeeExperienceDispatch.updateDispose();
@@ -269,7 +256,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, 
 export default compose<AccountEmployeeExperienceEditorProps, OwnOption>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withWidth(),
   withAccountEmployeeExperience,

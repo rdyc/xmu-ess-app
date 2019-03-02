@@ -1,6 +1,5 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
@@ -94,7 +93,6 @@ export type ProjectAcceptanceListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
-  & WithLayout
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
@@ -244,12 +242,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListFilterProps, IOwn
 export const ProjectAcceptanceListFilter = compose<ProjectAcceptanceListFilterProps, IOwnOption>(
   setDisplayName('ProjectAcceptanceListFilter'),
   withUser,
-  withLayout,
   withLookupCustomer,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  withStyles(styles)
+  lifecycle(lifecycles)
 )(ProjectAcceptanceListFilterView);

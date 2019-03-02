@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { ICurrencyDetail } from '@lookup/classes/response/currency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
@@ -16,15 +17,20 @@ export const CurrencyDetailView: React.SFC<CurrencyDetailProps> = props => (
       title: props.intl.formatMessage(lookupMessage.currency.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.currency.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.lookupCurrencyState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ICurrencyDetail) => (
       <CurrencyInformation data={data} />
     )}
-    secondary={(data: ICurrencyDetail) => ([
-      // 
-    ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="lookup-currency-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   >
     <React.Fragment>
       <DeleteForm

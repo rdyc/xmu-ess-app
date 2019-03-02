@@ -67,6 +67,7 @@ const createProps: mapper<ExpenseRequestListProps, IOwnState> = (props: ExpenseR
 
   const state: IOwnState = {
     isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(ExpenseField).map(key => ({ 
       value: key, 
       name: ExpenseField[key] 
@@ -103,7 +104,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
   handleOnLoadApi: (props: ExpenseRequestListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isLoading, request } = props.expenseRequestState.all;
+    const { isExpired, isLoading, request } = props.expenseRequestState.all;
     const { loadAllRequest } = props.expenseRequestDispatch;
 
     if (props.userState.user && !isLoading) {
@@ -116,7 +117,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
         start: props.start,
         end: props.end,
         statusType: props.statusType,
-        status: props.isRejected ? 'complete' : undefined, // this.props.status,
+        status: props.status,
         isRejected: props.isRejected,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -130,7 +131,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if (shouldLoad || isRetry) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
         });
@@ -184,7 +185,7 @@ const handlerCreators: HandleCreators<ExpenseRequestListProps, IOwnHandler> = {
       props.expenseType !== undefined ||
       props.start !== undefined ||
       props.end !== undefined ||
-      props.status !== undefined || 
+      props.status !== 'pending' || 
       props.isRejected === true;
   },
 };

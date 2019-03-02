@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
+import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { TimesheetInformation } from '@timesheet/components/entry/detail/shared/TimesheetInformation';
@@ -17,7 +18,6 @@ export const TimesheetApprovalHistoryDetailView: React.SFC<TimesheetApprovalHist
       title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
       description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader)
     }}
-    options={props.pageOptions}
     state={props.timesheetApprovalHistoryState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ITimesheetDetail) => (
@@ -26,5 +26,14 @@ export const TimesheetApprovalHistoryDetailView: React.SFC<TimesheetApprovalHist
     secondary={(data: ITimesheetDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
+    appBarComponent={
+      props.menuOptions &&
+      <PopupMenu 
+        id="timesheet-approval-history-option"
+        selectable={false}
+        menuOptions={props.menuOptions} 
+        onSelected={props.handleOnSelectedMenu} 
+      />
+    }
   />
 );

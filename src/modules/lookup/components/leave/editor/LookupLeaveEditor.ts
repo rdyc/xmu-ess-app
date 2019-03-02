@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupLeavePostPayload, ILookupLeavePutPayload } from '@lookup/classes/request/';
@@ -29,18 +29,18 @@ import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupLeaveEditorView } from './LookupLeaveEditorView';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: LookupLeaveFormData) => FormErrors;
   handleSubmit: (payload: LookupLeaveFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   leaveUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   leaveUid?: string | undefined;
@@ -50,22 +50,22 @@ interface OwnState {
   submitDialogConfirmedText: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type RequestEditorProps
   = WithLookupLeave
   & WithUser
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
   handleValidate: (props: RequestEditorProps) => (formData: LookupLeaveFormData) => { 
     const errors = {
       information: {}
@@ -150,7 +150,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/leaves/${response.uid}`);
+    history.push(`/lookup/leaves/${response.uid}`, {companyUid: response.companyUid});
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -183,7 +183,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
+const createProps: mapper<RequestEditorProps, IOwnState> = (props: RequestEditorProps): IOwnState => ({ 
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(lookupMessage.leave.dialog.createTitle),
   submitDialogContentText: props.intl.formatMessage(lookupMessage.leave.dialog.createDescription),
@@ -191,8 +191,8 @@ const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorP
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -200,7 +200,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.lookupLeaveDispatch;
     const { user } = this.props.userState;
     
@@ -229,23 +229,18 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
+    this.props.masterPage.changePage({
       uid: AppMenu.LookupLeave,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/leaves',
       title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+      description : intl.formatMessage(view.subTitle)
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, lookupLeaveDispatch } = this.props;
+    const { masterPage, lookupLeaveDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
+    masterPage.resetPage();
 
     lookupLeaveDispatch.createDispose();
     lookupLeaveDispatch.updateDispose();
@@ -255,11 +250,11 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 export default compose<RequestEditorProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  withMasterPage,
   withRouter,
   withLookupLeave,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<RequestEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<RequestEditorProps, {}>(lifecycles),
 )(LookupLeaveEditorView);

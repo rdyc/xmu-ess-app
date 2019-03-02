@@ -44,10 +44,15 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
         fullScreen
         disableBackdropClick
         open={props.isFilterOpen}
-        className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+        className={props.classes.shift}
         onClose={props.handleFilterVisibility}
       >
-        <AppBar className={props.classes.appBarDialog}>
+        <AppBar 
+          elevation={0}
+          position="fixed" 
+          color="default"
+          className={props.classes.appBarDialog}
+        >
           <Toolbar>
             <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
               <CloseIcon />
@@ -73,8 +78,9 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
           </Toolbar>
         </AppBar>
 
-        <List>
+        <Divider/>
 
+        <List>
           <ListItem button onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.winningRatio.field.company)}
@@ -221,7 +227,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
       >
         <Badge
           invisible={!showBadgeWhen()}
-          badgeContent={<CheckCircleIcon color="primary" />}
+          badgeContent={<CheckCircleIcon color="secondary" />}
         >
           <TuneIcon />
         </Badge>

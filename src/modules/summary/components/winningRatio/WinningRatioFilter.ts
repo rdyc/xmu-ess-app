@@ -1,5 +1,4 @@
 import { IEmployee } from '@account/classes/response';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -16,8 +15,9 @@ import {
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
+
 import { WinningRatioFilterView } from './WinningRatioFilterView';
 
 export type IWinningRatioFilterResult = Pick<ISummaryWinningFilter, 'companyUid' | 'employeeUid' | 'start' | 'end'>;
@@ -115,7 +115,6 @@ export type WinningRatioFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithStyles<typeof styles> 
-  & WithLayout 
   & WithUser 
   & InjectedIntlProps;
 
@@ -271,7 +270,6 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
 
 export const WinningRatioFilter = compose<WinningRatioFilterProps, IOwnOption>(
   setDisplayName('WinningRatioFilter'),
-  withLayout,
   withUser,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
