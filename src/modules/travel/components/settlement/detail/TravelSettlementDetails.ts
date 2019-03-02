@@ -23,6 +23,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import { TravelSettlementDetailViews } from './TravelSettlementDetailViews';
 
 interface IOwnRouteParams {
@@ -30,13 +31,16 @@ interface IOwnRouteParams {
 }
 
 interface IOwnHandler {
+  handleGetDataTravel: () => void;
   handleOnLoadApi: () => void;
+  handleOnLoadTravel: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
 interface IOwnState {
+  getDataTravel: boolean;
   menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
   shouldLoad: boolean;
@@ -54,6 +58,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setShouldLoad: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type TravelSettlementDetailProps
@@ -86,6 +91,7 @@ const createProps: mapper<TravelSettlementDetailProps, IOwnState> = (props: Trav
   
   return {    
     isAdmin,
+    getDataTravel: false,
     shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -115,6 +121,10 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, IOwnState, IOwnS
     dialogContent: undefined,
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
+  }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -134,6 +144,20 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, IOwnHandler> 
         });        
       }      
     }
+  },
+  handleOnLoadTravel: (props: TravelSettlementDetailProps) => () => {
+    if (props.userState.user && props.travelSettlementState.detail.response && props.travelSettlementState.detail.response.data.travelUid ) {
+      props.travelRequestDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        travelUid: props.travelSettlementState.detail.response.data.travelUid
+      });
+    }
+  },
+  handleGetDataTravel: (props: TravelSettlementDetailProps) => () => {
+    props.stateUpdate({
+      getDataTravel: true
+    });
   },
   handleOnSelectedMenu: (props: TravelSettlementDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
@@ -193,6 +217,18 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, IOwnHandler> 
 };
 
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, IOwnState> = {
+  componentDidMount() {
+    if (isNullOrUndefined(this.props.travelSettlementState.detail.response)) {
+      this.props.handleOnLoadApi();
+    }
+  },
+  componentWillUpdate(prevProps: TravelSettlementDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
+      this.props.handleOnLoadApi();
+      // this.props.handleOnLoadTravel();
+    }
+  },
   componentDidUpdate(prevProps: TravelSettlementDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
@@ -239,22 +275,36 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, IOwnState
 
       this.props.setOptions(options);
     }
-  },
-  componentWillReceiveProps(nextProps: TravelSettlementDetailProps) {
-    if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
-      const { response } = nextProps.travelSettlementState.detail;
-      const { user } = this.props.userState;
-      const { loadDetailRequest } = this.props.travelRequestDispatch;
 
-      if (user && response) {
-        loadDetailRequest({
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-          travelUid: response.data.travelUid
-        });
+    if (!this.props.getDataTravel && !this.props.history.location.state.travelUid) {
+      if (this.props.userState.user && this.props.travelSettlementState.detail.response ) {
+        if (!this.props.travelRequestState.detail.response) {
+          this.props.handleOnLoadTravel();
+          this.props.handleGetDataTravel();
+        }
+
+        if ( this.props.travelSettlementState.detail.response.data.travelUid !== (this.props.travelRequestState.detail.response && this.props.travelRequestState.detail.response.data.uid) ) {
+          this.props.handleOnLoadTravel();
+          this.props.handleGetDataTravel();
+        }
       }
     }
   },
+  // componentWillReceiveProps(nextProps: TravelSettlementDetailProps) {
+  //   if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
+  //     const { response } = nextProps.travelSettlementState.detail;
+  //     const { user } = this.props.userState;
+  //     const { loadDetailRequest } = this.props.travelRequestDispatch;
+
+  //     if (user && response) {
+  //       loadDetailRequest({
+  //         companyUid: user.company.uid,
+  //         positionUid: user.position.uid,
+  //         travelUid: response.data.travelUid
+  //       });
+  //     }
+  //   }
+  // },
   componentWillUnmount() {
     const { travelSettlementDispatch, travelRequestDispatch } = this.props;
 

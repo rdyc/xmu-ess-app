@@ -36,7 +36,9 @@ import { isNullOrUndefined, isObject } from 'util';
 import { TravelSettlementApprovalDetailViews } from './TravelSettlementApprovalDetailViews';
 
 interface OwnHandler {
+  handleGetDataTravel: () => void;
   handleOnLoadApi: () => void;
+  handleOnLoadTravel: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
@@ -50,6 +52,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   shouldLoad: boolean;
+  getDataTravel: boolean;
   menuOptions?: IPopupMenuOption[];  
   approvalTitle: string;
   approvalSubHeader: string;
@@ -64,6 +67,7 @@ interface OwnState {
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setOptions: StateHandler<OwnState>;
   setShouldLoad: StateHandler<OwnState>;
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type TravelSettlementApprovalDetailProps
@@ -80,6 +84,7 @@ export type TravelSettlementApprovalDetailProps
 
 const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (props: TravelSettlementApprovalDetailProps): OwnState => ({
   shouldLoad: false,
+  getDataTravel: false,
   approvalTitle: props.intl.formatMessage(travelMessage.settlement.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(travelMessage.settlement.section.approvalSubHeader),
   approvalChoices: [
@@ -99,6 +104,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
   }),
   setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
     menuOptions: options
+  }),
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -110,15 +119,28 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
         positionUid: props.userState.user.position.uid,
         travelSettlementUid: props.match.params.travelSettlementUid
       });
-      if ( props.history.location.state ) {
+      if (props.history.location.state) {
         props.travelApprovalDispatch.loadDetailRequest({
           companyUid: props.userState.user.company.uid,
           positionUid: props.userState.user.position.uid,
           travelUid: props.history.location.state.travelUid
         });
       }
-      
     }
+  },
+  handleOnLoadTravel: (props: TravelSettlementApprovalDetailProps) => () => {
+    if (props.userState.user && props.travelSettlementApprovalState.detail.response && props.travelSettlementApprovalState.detail.response.data.travelUid ) {
+      props.travelApprovalDispatch.loadDetailRequest({
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        travelUid: props.travelSettlementApprovalState.detail.response.data.travelUid
+      });
+    }
+  },
+  handleGetDataTravel: (props: TravelSettlementApprovalDetailProps) => () => {
+    props.stateUpdate({
+      getDataTravel: true
+    });
   },
   handleOnSelectedMenu: (props: TravelSettlementApprovalDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
@@ -223,6 +245,18 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
 };
 
 const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, OwnState> = {
+  componentDidMount() {
+    if (isNullOrUndefined(this.props.travelSettlementApprovalState.detail.response)) {
+      this.props.handleOnLoadApi();
+    }
+  },
+  componentWillUpdate(prevProps: TravelSettlementApprovalDetailProps) {
+    // handle updated route params
+    if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
+      this.props.handleOnLoadApi();
+      // this.props.handleOnLoadTravel();
+    }
+  },
   componentDidUpdate(prevProps: TravelSettlementApprovalDetailProps) {
     // handle updated should load
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
@@ -231,11 +265,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
 
       // load from api
       this.props.handleOnLoadApi();
-    }
-
-    // handle updated route params
-    if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
-      this.props.handleOnLoadApi();
+      // this.props.handleOnLoadTravel();
     }
 
     // handle updated response state
@@ -251,29 +281,26 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
 
       this.props.setOptions(options);
     }
+
+    if (!this.props.getDataTravel && !this.props.history.location.state.travelUid || this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
+      if (this.props.userState.user && this.props.travelSettlementApprovalState.detail.response ) {
+        if (!this.props.travelApprovalState.detail.response) {
+          this.props.handleOnLoadTravel();
+          this.props.handleGetDataTravel();
+        }
+
+        if ( this.props.travelSettlementApprovalState.detail.response.data.travelUid !== (this.props.travelApprovalState.detail.response && this.props.travelApprovalState.detail.response.data.uid) ) {
+          this.props.handleOnLoadTravel();
+          this.props.handleGetDataTravel();
+        }
+      }
+    }
   },
-  // componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
-  //   if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
-  //     const { response } = nextProps.travelSettlementApprovalState.detail;
-  //     const { user } = this.props.userState;
-  //     const { loadDetailRequest } = this.props.travelApprovalDispatch;
-
-  //     if (user && response) {
-  //           loadDetailRequest ({
-  //             companyUid: user.company.uid,
-  //             positionUid: user.position.uid,
-  //             travelUid: response.data.travelUid
-  //           });
-  //         }
-  //   }
-  // },
-  // componentWillUnmount() {
-  //   const { travelSettlementApprovalDispatch, travelApprovalDispatch } = this.props;
-
-  //   travelSettlementApprovalDispatch.loadDetailDispose();
-  //   travelApprovalDispatch.loadDetailDispose();
-    
-  // }
+  componentWillUnmount() {
+    const { travelApprovalDispatch, travelSettlementApprovalDispatch } = this.props;
+    travelApprovalDispatch.loadDetailDispose();
+    travelSettlementApprovalDispatch.loadDetailDispose();
+  }
 };
 
 export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(

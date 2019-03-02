@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
@@ -11,6 +12,7 @@ import { TravelSettlementItem } from '@travel/components/settlement/detail/share
 import { TravelSettlementSummary } from '@travel/components/settlement/detail/shared/TravelSettlementSummary';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 import { TravelSettlementApprovalDetailProps } from './TravelSettlementApprovalDetails';
 
 const parentUrl = (props: TravelSettlementApprovalDetailProps) => {
@@ -23,67 +25,75 @@ const parentUrl = (props: TravelSettlementApprovalDetailProps) => {
   return path;
 };
 
-export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementApprovalDetailProps> = props => (
-  <PreviewPage
-    info={{
-      uid: AppMenu.TravelSettlementApproval,
-      parentUid: AppMenu.Travel,
-      parentUrl: parentUrl(props),
-      title: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle),
-      description: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle)
-    }}
-    state={props.travelSettlementApprovalState.detail}
-    onLoadApi={props.handleOnLoadApi}
-    primary={(data: ITravelSettlementDetail) => (
-      <TravelSettlementSummary
-        data={data}
-        travelData={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data}
-      />
-    )}
-    secondary={(data: ITravelSettlementDetail) => ([
-      <TravelSettlementItem data={data.items} />,
-      <TravelRequestItem data={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data.items} />,
-      <TravelSettlementInformation data={data} />,
-      <React.Fragment>
-        {
-          props.travelApprovalState.detail.response &&
-          <TravelInformation data={props.travelApprovalState.detail.response.data} />
-        }
-      </React.Fragment>,
-      <WorkflowHistory data={data.workflow} />,
-      <React.Fragment>
-        {
-          data.workflow &&
-          data.workflow.isApproval &&
-          <WorkflowApprovalRemarkForm
-            approvalTitle={props.approvalTitle}
-            approvalSubHeader={props.approvalSubHeader}
-            approvalChoices={props.approvalChoices}
-            approvalTrueValue={props.approvalTrueValue}
-            approvalDialogTitle={props.approvalDialogTitle}
-            approvalDialogContentText={props.approvalDialogContentText}
-            approvalDialogCancelText={props.approvalDialogCancelText}
-            approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit}
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
-            approvalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNote)}
-            approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNeededPlaceholder)}
-            approvalOptionalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotes)}
-            approvalOptionalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotesPlaceholder)}
-          />
-        }
-      </React.Fragment>
-    ])}
-    appBarComponent={
-      props.menuOptions &&
-      <PopupMenu 
-        id="travel-settlement-approval-option"
-        selectable={false}
-        menuOptions={props.menuOptions} 
-        onSelected={props.handleOnSelectedMenu} 
-      />
-    }
-  />
-);
+export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementApprovalDetailProps> = props => {
+  const render = (
+    <PreviewPage
+      info={{
+        uid: AppMenu.TravelSettlementApproval,
+        parentUid: AppMenu.Travel,
+        parentUrl: parentUrl(props),
+        title: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle),
+        description: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle)
+      }}
+      state={props.travelSettlementApprovalState.detail}
+      onLoadApi={props.handleOnLoadApi}
+      primary={(data: ITravelSettlementDetail) => (
+        <TravelSettlementSummary
+          data={data}
+          travelData={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data}
+        />
+      )}
+      secondary={(data: ITravelSettlementDetail) => ([
+        <TravelSettlementItem data={data.items} />,
+        <TravelRequestItem data={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data.items} />,
+        <TravelSettlementInformation data={data} />,
+        <React.Fragment>
+          {
+            props.travelApprovalState.detail.response &&
+            <TravelInformation data={props.travelApprovalState.detail.response.data} />
+          }
+        </React.Fragment>,
+        <WorkflowHistory data={data.workflow} />,
+        <React.Fragment>
+          {
+            data.workflow &&
+            data.status && data.status.type !== WorkflowStatusType.AdjustmentNeeded &&
+            data.workflow.isApproval &&
+            <WorkflowApprovalRemarkForm
+              approvalTitle={props.approvalTitle}
+              approvalSubHeader={props.approvalSubHeader}
+              approvalChoices={props.approvalChoices}
+              approvalTrueValue={props.approvalTrueValue}
+              approvalDialogTitle={props.approvalDialogTitle}
+              approvalDialogContentText={props.approvalDialogContentText}
+              approvalDialogCancelText={props.approvalDialogCancelText}
+              approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+              validate={props.handleValidate}
+              onSubmit={props.handleSubmit}
+              onSubmitSuccess={props.handleSubmitSuccess}
+              onSubmitFail={props.handleSubmitFail}
+              approvalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNote)}
+              approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNeededPlaceholder)}
+              approvalOptionalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotes)}
+              approvalOptionalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotesPlaceholder)}
+            />
+          }
+        </React.Fragment>
+      ])}
+      appBarComponent={
+        props.menuOptions &&
+        <PopupMenu 
+          id="travel-settlement-approval-option"
+          selectable={false}
+          menuOptions={props.menuOptions} 
+          onSelected={props.handleOnSelectedMenu} 
+        />
+      }
+    />
+  );
+
+  return (
+    !isNullOrUndefined(props.history.location.state.travelUid) ? render : 
+    (props.getDataTravel ? render : null )
+  );
+};
