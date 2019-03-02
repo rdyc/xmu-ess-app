@@ -3,7 +3,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import { isSettlementRequestEditable } from '@organization/helper';
 import { ITravelSettlement } from '@travel/classes/response';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
@@ -69,13 +69,6 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
-      }
-      appBarCustomComponent={
-        <IconButton
-          onClick={() => props.history.push('/travel/settlement/requests/form')}
-        >
-          <AddCircle />
-        </IconButton>
       }
 
       // data toolbar component
