@@ -61,6 +61,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/leaves/form')}
         >
           <AddCircle/>

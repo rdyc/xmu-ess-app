@@ -67,6 +67,7 @@ export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = 
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/project/assignments/form')}
         >
           <AddCircle/>

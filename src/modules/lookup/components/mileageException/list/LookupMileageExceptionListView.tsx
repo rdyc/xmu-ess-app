@@ -62,6 +62,7 @@ export const LookupMileageExceptionListView: React.SFC<LookupMileageExceptionPro
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/mileageexceptions/form')}
         >
           <AddCircle/>

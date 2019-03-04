@@ -69,6 +69,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/customers/form')}
         >
           <AddCircle />

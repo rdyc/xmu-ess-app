@@ -72,6 +72,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/project/requests/form')}
         >
           <AddCircle/>

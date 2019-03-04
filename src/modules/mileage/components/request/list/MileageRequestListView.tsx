@@ -56,6 +56,7 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/mileage/requests/form')}
         >
           <AddCircle/>

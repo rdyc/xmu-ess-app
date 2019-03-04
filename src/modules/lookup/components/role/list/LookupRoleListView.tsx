@@ -61,6 +61,7 @@ export const LookupRoleListView: React.SFC<LookupRoleListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/roles/form')}
         >
           <AddCircle />

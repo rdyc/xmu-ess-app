@@ -178,5 +178,41 @@ export const CollectionPageDataContainerView: React.SFC<CollectionPageDataContai
         )
       }
     </Menu>
+  
+    {/* {
+        // loaded success (pagination)
+        !props.state.isLoading &&
+        !props.state.isError &&
+        props.metadata &&
+        props.metadata.paginate &&
+        <BottomNavigation
+          showLabels
+          className={props.classes.bottomNavigation}
+          value={-1}
+        >
+          <BottomNavigationAction 
+            label="Prev" 
+            icon={<ChevronLeftIcon />}
+            disabled={!props.metadata.paginate.previous}
+            onClick={props.onClickPrevious}
+          />
+
+          <BottomNavigationAction 
+            label={props.intl.formatMessage(layoutMessage.text.pagingInfo, { 
+              current: props.metadata.paginate.current,
+              total: props.metadata.paginate.total}
+            )} 
+            className={props.classes.flex}
+            disabled={true}
+          />
+
+          <BottomNavigationAction 
+            label="Next" 
+            icon={<ChevronRightIcon />} 
+            disabled={!props.metadata.paginate.next}
+            onClick={props.onClickNext}
+          />
+        </BottomNavigation>
+    } */}
   </React.Fragment>  
 );

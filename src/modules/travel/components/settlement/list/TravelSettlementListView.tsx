@@ -72,6 +72,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/travel/settlement/requests/form')}
         >
           <AddCircle />

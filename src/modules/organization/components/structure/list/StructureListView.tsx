@@ -69,6 +69,7 @@ export const StructureListView: React.SFC<StructureListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/organization/structure/form')}
         >
           <AddCircle />

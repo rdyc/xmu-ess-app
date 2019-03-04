@@ -30,6 +30,7 @@ export const OrganizationWorkflowDetailView: React.SFC<OrganizationWorkflowDetai
 
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push(`/organization/workflow/form`, { menuUid: props.match.params.menuUid, companyUid: props.match.params.companyUid })}
         >
           <BorderColor/>

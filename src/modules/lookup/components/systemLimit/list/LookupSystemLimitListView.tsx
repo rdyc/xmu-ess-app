@@ -62,6 +62,7 @@ export const LookupSystemLimitListView: React.SFC<LookupSystemLimitListProps> = 
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/systemlimits/form')}
         >
           <AddCircle/>
