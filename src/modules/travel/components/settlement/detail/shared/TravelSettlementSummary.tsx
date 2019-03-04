@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   data: ITravelSettlementDetail;
-  travelData: ITravelRequestDetail | undefined;
+  travelData?: ITravelRequestDetail;
 }
 
 type AllProps

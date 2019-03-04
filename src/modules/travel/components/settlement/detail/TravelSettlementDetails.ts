@@ -5,7 +5,6 @@ import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -60,7 +59,6 @@ export type TravelSettlementDetailProps
   = WithOidc
   & WithUser
   & WithTravelSettlement
-  & WithTravelRequest
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -125,14 +123,7 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, IOwnHandler> 
         companyUid: props.userState.user.company.uid,
         positionUid: props.userState.user.position.uid,
         travelSettlementUid: props.match.params.travelSettlementUid
-      });
-      if (props.history.location.state) {
-        props.travelRequestDispatch.loadDetailRequest({
-          companyUid: props.userState.user.company.uid,
-          positionUid: props.userState.user.position.uid,
-          travelUid: props.history.location.state.travelUid
-        });        
-      }      
+      });     
     }
   },
   handleOnSelectedMenu: (props: TravelSettlementDetailProps) => (item: IPopupMenuOption) => { 
@@ -163,8 +154,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, IOwnHandler> 
     let travelSettlementUid: string | undefined;
 
     // get project uid
-    if (response.data) {
-      travelSettlementUid = response.data.uid;
+    if (response.data.settlement) {
+      travelSettlementUid = response.data.settlement.uid;
     }
 
     // actions with new page
@@ -212,8 +203,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, IOwnState
       // find status type
       let _statusType: string | undefined = undefined;
 
-      if (response && response.data) {
-        _statusType = response.data.statusType;
+      if (response && response.data.settlement) {
+        _statusType = response.data.settlement.statusType;
       }
 
       // checking status types
@@ -240,28 +231,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementDetailProps, IOwnState
       this.props.setOptions(options);
     }
   },
-  componentWillReceiveProps(nextProps: TravelSettlementDetailProps) {
-    if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
-      const { response } = nextProps.travelSettlementState.detail;
-      const { user } = this.props.userState;
-      const { loadDetailRequest } = this.props.travelRequestDispatch;
-
-      if (user && response) {
-        loadDetailRequest({
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-          travelUid: response.data.travelUid
-        });
-      }
-    }
-  },
-  componentWillUnmount() {
-    const { travelSettlementDispatch, travelRequestDispatch } = this.props;
-
-    travelSettlementDispatch.loadDetailDispose();
-    travelRequestDispatch.loadDetailDispose();
-
-  }
 };
 
 export const TravelSettlementDetails = compose(
@@ -269,7 +238,6 @@ export const TravelSettlementDetails = compose(
   withOidc,
   withUser,
   withTravelSettlement,
-  withTravelRequest,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

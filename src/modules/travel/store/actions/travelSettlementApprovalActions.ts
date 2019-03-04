@@ -4,7 +4,7 @@ import {
   ITravelSettlementApprovalGetByIdRequest,
   ITravelSettlementApprovalPostRequest,
 } from '@travel/classes/queries/settlementApproval';
-import { ITravelSettlement, ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlement, ITravelSettlementRequestDetail } from '@travel/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum TravelSettlementApprovalAction {
@@ -34,7 +34,7 @@ export const travelSettlementApprovalGetAllDispose = () => action(TravelSettleme
 
 // get request by id
 export const travelSettlementApprovalGetByIdRequest = (request: ITravelSettlementApprovalGetByIdRequest) => action(TravelSettlementApprovalAction.GET_BY_ID_REQUEST, request);
-export const travelSettlementApprovalGetByIdSuccess = (response: IResponseSingle<ITravelSettlementDetail>) => action(TravelSettlementApprovalAction.GET_BY_ID_SUCCESS, response);
+export const travelSettlementApprovalGetByIdSuccess = (response: IResponseSingle<ITravelSettlementRequestDetail>) => action(TravelSettlementApprovalAction.GET_BY_ID_SUCCESS, response);
 export const travelSettlementApprovalGetByIdError = (error: any) => action(TravelSettlementApprovalAction.GET_BY_ID_ERROR, error);
 export const travelSettlementApprovalGetByIdDispose = () => action(TravelSettlementApprovalAction.GET_BY_ID_DISPOSE);
 

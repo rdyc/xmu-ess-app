@@ -117,7 +117,7 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
 
     if (!isLoading && response && response.data) {
       // todo: replace values with response data
-      const data = response.data;
+      const data = response.data.settlement;
 
       initialValues.information.uid = data.uid;
       initialValues.information.travelUid = data.travelUid;

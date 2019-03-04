@@ -10,7 +10,6 @@ import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
 import { WithTravelSettlementApproval, withTravelSettlementApproval } from '@travel/hoc/withTravelSettlementApproval';
 import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMessages';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
@@ -69,14 +68,13 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 export type TravelSettlementApprovalDetailProps
   = WithTravelSettlementApproval
   & WithNotification
-  & WithTravelApproval
   & WithUser
   & WithLayout
-  & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
   & OwnState
-  & OwnStateUpdater;
+  & OwnStateUpdater
+  & RouteComponentProps<OwnRouteParams>;
 
 const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (props: TravelSettlementApprovalDetailProps): OwnState => ({
   shouldLoad: false,
@@ -99,7 +97,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
   }),
   setOptions: (state: OwnState, props: TravelSettlementApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
     menuOptions: options
-  })
+  }),
 };
 
 const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHandler> = {
@@ -110,14 +108,6 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
         positionUid: props.userState.user.position.uid,
         travelSettlementUid: props.match.params.travelSettlementUid
       });
-      if ( props.history.location.state ) {
-        props.travelApprovalDispatch.loadDetailRequest({
-          companyUid: props.userState.user.company.uid,
-          positionUid: props.userState.user.position.uid,
-          travelUid: props.history.location.state.travelUid
-        });
-      }
-      
     }
   },
   handleOnSelectedMenu: (props: TravelSettlementApprovalDetailProps) => (item: IPopupMenuOption) => { 
@@ -237,7 +227,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
     if (this.props.match.params.travelSettlementUid !== prevProps.match.params.travelSettlementUid) {
       this.props.handleOnLoadApi();
     }
-
+    
     // handle updated response state
     if (this.props.travelSettlementApprovalState.detail !== prevProps.travelSettlementApprovalState.detail) {
       const options: IPopupMenuOption[] = [
@@ -252,28 +242,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, O
       this.props.setOptions(options);
     }
   },
-  // componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
-  //   if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
-  //     const { response } = nextProps.travelSettlementApprovalState.detail;
-  //     const { user } = this.props.userState;
-  //     const { loadDetailRequest } = this.props.travelApprovalDispatch;
-
-  //     if (user && response) {
-  //           loadDetailRequest ({
-  //             companyUid: user.company.uid,
-  //             positionUid: user.position.uid,
-  //             travelUid: response.data.travelUid
-  //           });
-  //         }
-  //   }
-  // },
-  // componentWillUnmount() {
-  //   const { travelSettlementApprovalDispatch, travelApprovalDispatch } = this.props;
-
-  //   travelSettlementApprovalDispatch.loadDetailDispose();
-  //   travelApprovalDispatch.loadDetailDispose();
-    
-  // }
 };
 
 export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(
@@ -281,7 +249,6 @@ export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalD
   withRouter,
   withUser,
   withLayout,
-  withTravelApproval,
   withTravelSettlementApproval,
   withNotification,
   injectIntl,

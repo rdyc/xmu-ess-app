@@ -136,6 +136,11 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState>
       }
     }
   },
+  componentWillUpdate(prevProps: AccountEmployeeDialogProps) {
+    if (this.props.filter !== prevProps.filter) {
+      this.props.handleOnLoadApi();
+    }
+  },
   componentDidUpdate(prevProps: AccountEmployeeDialogProps) {
     if (
       this.props.search !== prevProps.search ||

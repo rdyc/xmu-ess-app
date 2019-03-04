@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ITravelSettlementGetByIdRequest } from '@travel/classes/queries/settlement';
-import { ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlementRequestDetail } from '@travel/classes/response';
 import { TravelSettlementAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail> = {
+const initialState: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementRequestDetail> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSe
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementRequestDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };

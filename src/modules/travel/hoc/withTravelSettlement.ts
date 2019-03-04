@@ -5,7 +5,7 @@ import {
   ITravelSettlementPostRequest, 
   ITravelSettlementPutRequest 
 } from '@travel/classes/queries/settlement';
-import { ITravelSettlement, ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlement, ITravelSettlementRequestDetail } from '@travel/classes/response';
 import { 
   travelSettlementGetAllDispose, 
   travelSettlementGetAllRequest, 
@@ -22,7 +22,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   travelSettlementState: {
     all: IQueryCollectionState<ITravelSettlementGetAllRequest, ITravelSettlement>;
-    detail: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail>;
+    detail: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementRequestDetail>;
   };
 }
 

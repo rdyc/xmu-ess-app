@@ -1,6 +1,6 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { ITravelSettlementApprovalGetAllRequest, ITravelSettlementApprovalGetByIdRequest, ITravelSettlementApprovalPostRequest } from '@travel/classes/queries/settlementApproval';
-import { ITravelSettlement, ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlement, ITravelSettlementRequestDetail } from '@travel/classes/response';
 import { 
   travelSettlementApprovalGetAllDispose,
   travelSettlementApprovalGetAllRequest,
@@ -15,7 +15,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   travelSettlementApprovalState: {
     all: IQueryCollectionState<ITravelSettlementApprovalGetAllRequest, ITravelSettlement>;
-    detail: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementDetail>;
+    detail: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementRequestDetail>;
   };
 }
 
