@@ -311,6 +311,11 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
   // filter rejected
   handleFilterRejectedOnChange: (props: TravelSettlementListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);
+    if (checked) {
+      props.setFilterCompletion();
+    } else {
+      props.setFilterCompletion({value: 'pending', name: 'Pending'});
+    }
   },
 };
 

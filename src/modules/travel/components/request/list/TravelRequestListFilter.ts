@@ -329,11 +329,21 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
   // filter rejected
   handleFilterRejectedOnChange: (props: TravelRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);
+    if (checked) {
+      props.setFilterCompletion();
+    } else if (!checked && !props.filterSettlement) {
+      props.setFilterCompletion({value: 'pending', name: 'Pending'});
+    }
   },
 
   // filter new owner
   handleFilterSettlementOnChange: (props: TravelRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSettlement(checked);
+    if (checked) {
+      props.setFilterCompletion();
+    } else if (!checked && !props.filterRejected) {
+      props.setFilterCompletion({value: 'pending', name: 'Pending'});
+    }
   }
 };
 
