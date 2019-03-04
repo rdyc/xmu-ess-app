@@ -74,7 +74,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     component={SelectEmployee}
                     filter={{
                       companyUid: props.userState.user && props.userState.user.company.uid,
-                      useAcces: true,
+                      useAccess: true,
                       orderBy: 'fullName'
                     }}
                   />

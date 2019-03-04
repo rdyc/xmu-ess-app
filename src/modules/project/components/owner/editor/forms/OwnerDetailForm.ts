@@ -77,11 +77,10 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
 
     let _roleUids = undefined;
 
-    // checking roles
-    if (user) {
+    // checking roles, when admin then show all employees
+    if (user && !isAdmin) {
       if (isMemberOfSales(user.role.uid)) {
-        // when user is admin then show roles for PM and Sales, else Sales only
-        if (isAdmin && rolePmoUids && roleSalesUids) {
+        if (rolePmoUids && roleSalesUids) {
           _roleUids = rolePmoUids.concat(roleSalesUids).join(',');
         } else {
           _roleUids = roleSalesUids && roleSalesUids.join(',');
@@ -90,7 +89,7 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
 
       if (isMemberOfPMO(user.role.uid)) {
         _roleUids = rolePmUids && rolePmUids.join(',');
-      } 
+      }
     }
       
     let fieldProps: SelectSystemOption & any = {};
@@ -101,13 +100,13 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
           required: true,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
-          component: SelectEmployee,
           filter: {
             companyUids: user && user.company.uid,
             roleUids: _roleUids,
-            useAcces: true,
+            useAccess: true,
             orderBy: 'fullName'
-          }
+          },
+          component: SelectEmployee
         };
         break;
 

@@ -66,7 +66,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                       required={true}
                       filter={{
                         companyUid: props.userState.user && props.userState.user.company.uid,
-                        useAcces: true,
+                        useAccess: true,
                         orderBy: 'fullName'
                       }}
                       component={SelectEmployee}
