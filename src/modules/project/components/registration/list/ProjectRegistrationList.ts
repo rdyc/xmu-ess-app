@@ -6,6 +6,7 @@ import { GlobalFormat } from '@layout/types';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField } from '@project/classes/types';
+import { WithAllowedProjectCreate, withAllowedProjectCreate } from '@project/hoc/withAllowedProjectCreate';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -62,6 +63,7 @@ export type ProjectRegistrationListProps
   & IOwnHandler
   & WithUser
   & WithProjectRegistration
+  & WithAllowedProjectCreate
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -235,6 +237,7 @@ export const ProjectRegistrationList = compose(
   setDisplayName('ProjectRegistrationList'),
   withUser,
   withProjectRegistration,
+  withAllowedProjectCreate,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

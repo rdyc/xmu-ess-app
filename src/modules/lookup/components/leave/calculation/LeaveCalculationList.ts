@@ -174,9 +174,8 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> =
     const { isLoading, response } = this.props.leaveCalculationState.all;
 
     this.props.masterPage.changePage({
-      uid: AppMenu.LookupLeave,
-      parentUid: AppMenu.Leave,
-      parentUrl: '/leave/calculations',
+      uid: AppMenu.LookupEmployeeLeave,
+      parentUid: AppMenu.Lookup,
       title: intl.formatMessage(lookupMessage.calculation.page.title),
       description: intl.formatMessage(lookupMessage.calculation.page.subHeader)
     });

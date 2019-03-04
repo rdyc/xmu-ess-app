@@ -130,7 +130,7 @@ export const AccountRoutingComponents: React.SFC<RouteComponentProps> = props =>
     <SecureMenuRoute 
       path={`${props.match.path}/employee`}
       menu={AppMenu.Lookup} 
-      subMenu={AppMenu.Account} 
+      subMenu={AppMenu.LookupEmployee} 
       component={employee} 
     />
   </Switch>
