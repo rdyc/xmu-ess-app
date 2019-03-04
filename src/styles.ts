@@ -239,9 +239,11 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
     },
     searchRoot: {
+      color: theme.palette.common.white,
       width: '100%',
     },
     searchInput: {
+      color: theme.palette.common.white,
       paddingTop: theme.spacing.unit,
       paddingRight: theme.spacing.unit,
       paddingBottom: theme.spacing.unit,

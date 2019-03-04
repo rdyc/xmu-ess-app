@@ -62,7 +62,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAs
                     disabled={isItemComplete}
                     filter={{
                       companyUid: props.userState.user && props.userState.user.company.uid,
-                      useAcces: true,
+                      useAccess: true,
                       orderBy: 'fullName'
                     }}
                     component={SelectEmployee}
