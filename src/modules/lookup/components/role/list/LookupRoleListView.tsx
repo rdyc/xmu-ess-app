@@ -38,18 +38,22 @@ export const LookupRoleListView: React.SFC<LookupRoleListProps> = props => (
         <React.Fragment>
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
+
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/roles/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
+      
       // app bar component
       appBarSearchComponent={
         <SearchBox

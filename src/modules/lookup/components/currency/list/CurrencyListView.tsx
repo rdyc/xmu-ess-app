@@ -39,14 +39,17 @@ export const CurrencyListView: React.SFC<CurrencyListProps> = props => (
       )}
       actionComponent={(item: ICurrency) => (
         <React.Fragment>
-            <Button
-              size="small"
-            onClick={() => props.history.push(`/lookup/currencies/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
           <Button
             size="small"
+            color="secondary"
+            onClick={() => props.history.push(`/lookup/currencies/form`, { uid: item.uid })}
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
+          
+          <Button
+            size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/currencies/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

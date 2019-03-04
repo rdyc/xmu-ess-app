@@ -39,12 +39,14 @@ export const MileageRequestListView: React.SFC<MileageRequestListProps> = props 
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/mileage/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
+      
       // app bar component
       appBarSearchComponent={
         <SearchBox

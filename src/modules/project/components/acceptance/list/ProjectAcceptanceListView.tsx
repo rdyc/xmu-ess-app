@@ -38,6 +38,7 @@ export const ProjectAcceptanceListView: React.SFC<ProjectAcceptanceListProps> = 
       actionComponent={(item: IProjectAssignmentDetail) => (
         <Button 
           size="small"
+          color="secondary"
           onClick={() => props.history.push(`/project/acceptances/${item.uid}`)}
         >
           {props.intl.formatMessage(layoutMessage.action.details)}

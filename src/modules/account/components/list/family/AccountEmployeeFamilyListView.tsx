@@ -43,6 +43,7 @@ export const AccountEmployeeFamilyListView: React.SFC<AccountEmployeeFamilyListP
           <React.Fragment>
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/family/form`, { familyUid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -50,6 +51,7 @@ export const AccountEmployeeFamilyListView: React.SFC<AccountEmployeeFamilyListP
 
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/family/${item.uid}`)}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}

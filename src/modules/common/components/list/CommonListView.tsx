@@ -48,6 +48,7 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/common/system/${props.match.params.category}/form`, { id: item.id })}
           >
             <FormattedMessage {...layoutMessage.action.modify}/>
@@ -55,6 +56,7 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/common/system/${props.match.params.category}/${item.id}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>

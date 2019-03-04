@@ -38,18 +38,22 @@ export const LookupHolidayListView: React.SFC<LookupHolidayListProps> = props =>
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/holidays/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
+
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/holidays/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
+
       // app bar component
       appBarSearchComponent={
         <SearchBox
@@ -59,6 +63,7 @@ export const LookupHolidayListView: React.SFC<LookupHolidayListProps> = props =>
           onApply={props.handleOnLoadApiSearch}
         />
       }
+      
       appBarCustomComponent={
         <IconButton
           color="inherit"

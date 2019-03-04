@@ -46,16 +46,19 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
             isRequestEditable(item.statusType) &&
             <Button
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/purchase/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
           }
+          
           { 
             item.statusType &&
             isSettleReady(item.statusType) &&
             <Button
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -64,6 +67,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/purchase/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

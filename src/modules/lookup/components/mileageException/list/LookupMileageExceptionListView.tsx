@@ -39,18 +39,22 @@ export const LookupMileageExceptionListView: React.SFC<LookupMileageExceptionPro
         <React.Fragment>
            <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/mileageexceptions/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
+
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/mileageexceptions/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
+      
       // app bar component
       appBarSearchComponent={
         <SearchBox

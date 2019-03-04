@@ -39,12 +39,14 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
         <PurchaseSummary data={item} />
       )}
       actionComponent={(item: IPurchase) => (
-        <React.Fragment><Button
-          size="small"
-          onClick={() => props.history.push(`/purchase/settlement/approvals/${item.uid}`)}
-        >
-          {props.intl.formatMessage(layoutMessage.action.details)}
-        </Button>
+        <React.Fragment>
+          <Button
+            size="small"
+            color="secondary"
+            onClick={() => props.history.push(`/purchase/settlement/approvals/${item.uid}`)}
+          >
+            {props.intl.formatMessage(layoutMessage.action.details)}
+          </Button>
         </React.Fragment>
       )}
 

@@ -39,6 +39,7 @@ export const LeaveApprovalListView: React.SFC<LeaveApprovalListProps> = props =>
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/leave/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

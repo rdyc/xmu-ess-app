@@ -46,6 +46,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
             isRequestEditable(item.statusType) &&
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/project/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -54,6 +55,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/project/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

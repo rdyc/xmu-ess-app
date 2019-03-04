@@ -43,6 +43,7 @@ export const FinanceApprovalListView: React.SFC<FinanceApprovalListProps> = prop
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/finance/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>

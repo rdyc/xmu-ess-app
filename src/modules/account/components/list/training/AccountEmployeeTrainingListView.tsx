@@ -43,6 +43,7 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
           <React.Fragment>
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/form`, { trainingUid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -50,6 +51,7 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
 
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/${item.uid}`)}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}

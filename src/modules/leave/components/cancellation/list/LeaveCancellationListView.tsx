@@ -39,6 +39,7 @@ export const LeaveCancellationListView: React.SFC<LeaveCancellationListProps> = 
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/leave/cancellations/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

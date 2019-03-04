@@ -43,6 +43,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
           {
             <Button
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/lookup/customers/form`, { uid: item.uid, companyUid: item.companyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -51,6 +52,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/customers/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

@@ -4,11 +4,11 @@ import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { CheckCircle, Tune } from '@material-ui/icons';
-import * as React from 'react';
-
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageSummary } from '@mileage/components/request/shared/MileageSummary';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import * as React from 'react';
+
 import { MileageApprovalListProps } from './MileageApprovalList';
 import { MileageApprovalListFilter } from './MileageApprovalListFilter';
 
@@ -38,6 +38,7 @@ export const MileageApprovalListView: React.SFC<MileageApprovalListProps> = prop
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/mileage/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

@@ -46,6 +46,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
             isLeaveRequestEditable(item.statusType) &&
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/leave/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -54,6 +55,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/leave/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

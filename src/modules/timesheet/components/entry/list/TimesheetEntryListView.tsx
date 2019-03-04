@@ -42,6 +42,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
             isTimesheetEditable(item.statusType) &&
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/timesheet/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -50,6 +51,7 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/timesheet/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

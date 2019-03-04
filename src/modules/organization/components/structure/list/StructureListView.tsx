@@ -43,6 +43,7 @@ export const StructureListView: React.SFC<StructureListProps> = props => (
         <React.Fragment>
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/organization/structure/form`, { structureUid: item.uid, companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -50,12 +51,12 @@ export const StructureListView: React.SFC<StructureListProps> = props => (
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/organization/structure/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
-
       )}
 
       // app bar component
