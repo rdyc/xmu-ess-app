@@ -1,21 +1,25 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import { Preloader } from '@layout/components/preloader';
+import { PreloaderWithError } from '@layout/components/preloader';
 import { LayoutTheme } from '@layout/hoc/withRoot';
 import { layoutMessage } from '@layout/locales/messages';
 import {
+  Avatar,
   Divider,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Grid,
+  IconButton,
   List,
   ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
   ListItemText,
+  Paper,
   Typography,
 } from '@material-ui/core';
-import { Fingerprint } from '@material-ui/icons';
+import { Fingerprint, Sync } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { AccessSwitcherProps } from './AccountAccess';
@@ -23,40 +27,47 @@ import { AccessSwitcherProps } from './AccountAccess';
 export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
   <LayoutTheme>
     <div className={props.classes.root}>
-    
       <div className={props.classes.accessContainer}>
-        <div className={props.classes.logoTessa} />
-
         <Grid container spacing={16} justify="center">
-          <Grid item xs={12} sm={12} md={6} lg={4}>
-            <Preloader 
-              show={props.accountEmployeeMyState.detail.isLoading}
-              label={props.intl.formatMessage(layoutMessage.text.waiting)}
+          <Grid item xs={12} sm={8} md={6} lg={4}>
+            <PreloaderWithError
+              state={props.accountEmployeeMyState.detail}
+              waitingText={props.intl.formatMessage(layoutMessage.text.waiting)}
+              waitingTextProps={{
+                color: 'default'
+              }}
+              onRetry={props.handleOnRetry}
             >
-              <div className={classNames(props.classes.marginWideTop, props.classes.marginWideBottom)}>
-                {
-                  !props.accountEmployeeMyState.detail.isLoading &&
-                  props.accountEmployeeMyState.detail.response &&
-                  <div className={props.classes.accessContent}>
-                    <div className={props.classes.paddingThin}>
-                      <Fingerprint fontSize="large"/>
-                    </div>             
-
-                    <div>
-                      <Typography variant="body2" color="inherit">   
-                        {props.intl.formatMessage(accountMessage.access.message.greeting, { name: props.name })}
-                      </Typography>
-                      <Typography variant="body1" color="inherit">   
-                        {props.intl.formatMessage(accountMessage.access.message.selection)}
-                      </Typography>
-                    </div>
-                  </div>
-                }   
-              </div>
+              <Paper square elevation={1} className={props.classes.accessContent}>
+                <List>
+                  <ListItem >
+                    <ListItemAvatar>
+                      <Avatar className={props.classes.accessAvatar}>
+                        <Fingerprint/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText 
+                      primary={props.intl.formatMessage(accountMessage.access.message.greeting, { name: props.name })}
+                      secondary={props.intl.formatMessage(accountMessage.access.message.selection)}
+                      primaryTypographyProps={{
+                        color: 'inherit'
+                      }}
+                      secondaryTypographyProps={{
+                        color: 'inherit'
+                      }}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton color="inherit" onClick={props.handleOnRetry}>
+                        <Sync />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </Paper>
 
               {
                 props.access.map((access, index) => 
-                  <ExpansionPanel key={access.companyUid} disabled={access.isExpired}>
+                  <ExpansionPanel key={index} disabled={access.isExpired}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6" color="textSecondary">
                         {access.company && access.company.name}
@@ -76,7 +87,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                                 <Divider/>
                                 <ListItem
                                   button
-                                  onClick={() => props.handleSelected(item.uid)}
+                                  onClick={() => props.handleOnSelected(item.uid)}
                                 >
                                   <ListItemText
                                     primary={item.position && item.position.name}
@@ -95,7 +106,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                   </ExpansionPanel>
                 )
               }
-            </Preloader>
+            </PreloaderWithError>
           </Grid>
         </Grid>
       </div>

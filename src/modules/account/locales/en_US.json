@@ -38,8 +38,8 @@
   "account.shared.confirm.delete.title": "Delete {state}",
   "account.shared.confirm.delete.subHeader": "You are about to delete this {state} data. Do you want to continue?",
 
-  "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
-  "account.access.message.selection": "Please select your company access",
+  "account.access.message.greeting": "Hi {name}",
+  "account.access.message.selection": "Welcome to TESSA, please select your company access",
 
   "account.employee.message.emptyProps": "Some props are empty",
   "account.employee.message.create.success": "New Employee Data has been created",
