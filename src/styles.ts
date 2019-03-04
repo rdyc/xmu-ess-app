@@ -1,4 +1,5 @@
 import { createStyles, Theme } from '@material-ui/core';
+import { orange } from '@material-ui/core/colors';
 import blue from '@material-ui/core/colors/blue';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
@@ -192,7 +193,8 @@ const styles = (theme: Theme) =>
 
     // Application Bar
     appBar: {
-      background: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[900],
+      background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
+      color: theme.palette.common.white,
       zIndex: theme.zIndex.drawer + 1,
       [theme.breakpoints.up('md')]: {
         width: `calc(100% - ${drawerWidth}px)`
@@ -209,6 +211,8 @@ const styles = (theme: Theme) =>
       },
     },
     appBarDialog: {
+      background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
+      color: theme.palette.common.white,
       position: 'relative'
     },
 
@@ -339,11 +343,11 @@ const styles = (theme: Theme) =>
     // avatar
     avatarPrimary: {
       color: '#fff',
-      backgroundColor: theme.palette.primary.main
+      backgroundColor: lightBlue[500]
     },
     avatarSecondary: {
       color: '#fff',
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: orange[500]
     },
     avatarRed: {
       color: '#fff',
@@ -426,13 +430,14 @@ const styles = (theme: Theme) =>
 
     /* Color page end */
     toolbar: {
-      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[900],
+      background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
+      color: theme.palette.common.white
     },
 
     /* Toolbar Custom */
     toolbarCustom: {
       minHeight: 40,
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: orange[500],
       color: theme.palette.grey[50],
       marginBottom: theme.spacing.unit * 2
     },
@@ -543,10 +548,10 @@ const styles = (theme: Theme) =>
 
     /* background colors */
     backgroundColorPrimary: { 
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: lightBlue[500],
     },
     backgroundColorSecondary: { 
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: orange[500],
     },
 
     /* colors */

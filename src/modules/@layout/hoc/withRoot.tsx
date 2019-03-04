@@ -4,7 +4,7 @@ import AppEvent from '@constants/AppEvent';
 import AppStorage from '@constants/AppStorage';
 import MomentUtils from '@date-io/moment';
 import { PaletteType } from '@material-ui/core';
-import { indigo, orange } from '@material-ui/core/colors';
+import { lightBlue, orange } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, Direction, MuiThemeProvider, Theme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
@@ -69,7 +69,7 @@ const themeOverides: Partial<Theme> =  {
 const customMuiTheme = (direction?: Direction, type?: PaletteType): Theme => createMuiTheme({
   direction: direction || 'ltr',
   palette: {
-    primary: indigo,
+    primary: lightBlue,
     secondary: orange,
     type: type || 'light'
   },

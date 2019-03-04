@@ -240,7 +240,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <SecureMenuRoute 
       path={`${props.match.path}/employeeleave`}
       menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupLeave} 
+      subMenu={AppMenu.LookupEmployeeLeave} 
       component={employeeLeave} 
     />
   </Switch>

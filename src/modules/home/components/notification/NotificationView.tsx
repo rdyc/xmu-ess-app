@@ -53,7 +53,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <ListItem disableGutters>
                   <ListItemAvatar>
-                    <Avatar className={props.classes.backgroundColorSecondary}>
+                    <Avatar className={props.classes.backgroundColorPrimary}>
                       <Android />
                     </Avatar>
                   </ListItemAvatar>
@@ -125,7 +125,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <ListItem disableGutters>
                       <ListItemAvatar>
-                        <Avatar className={props.classes.backgroundColorSecondary}>
+                        <Avatar className={props.classes.backgroundColorPrimary}>
                           <ModuleIcon module={category.moduleUid} />
                         </Avatar>
                       </ListItemAvatar>

@@ -58,6 +58,7 @@ export const AccountEmployeeExperienceListView: React.SFC<AccountEmployeeExperie
 
         appBarCustomComponent={
           <IconButton
+            color="inherit"
             onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`)}
           >
             <AddCircle/>

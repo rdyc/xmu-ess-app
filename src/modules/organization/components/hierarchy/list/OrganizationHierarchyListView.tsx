@@ -70,6 +70,7 @@ export const OrganizationHierarchyListView: React.SFC<OrganizationHierarchyListP
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/organization/hierarchy/form')}
         >
           <AddCircle/>

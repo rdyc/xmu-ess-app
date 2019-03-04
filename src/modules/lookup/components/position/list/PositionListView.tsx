@@ -69,6 +69,7 @@ export const PositionListView: React.SFC<PositionListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/positions/form')}
         >
           <AddCircle />

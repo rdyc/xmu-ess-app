@@ -17,6 +17,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
   >
     <Toolbar>
       <IconButton
+        color="inherit"
         className={(isWidthUp('md', props.width) || props.parentUrl) && props.classes.hide || ''}
         onClick={props.handleOnClickMenu}
       >
@@ -24,6 +25,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
       </IconButton>
 
       <IconButton
+        color="inherit"
         className={!props.parentUrl && props.classes.hide || ''}
         onClick={props.handleOnClickBack}
       >
@@ -32,6 +34,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       <Typography 
         noWrap
+        color="inherit"
         variant="h6"
         className={props.classes.flex}
       >
@@ -41,6 +44,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
       {props.searchComponent}
       
       <IconButton
+        color="inherit"
         className={props.totalNotif === 0 && props.classes.hide || ''}
         onClick={props.handleOnClickNotif}
       >

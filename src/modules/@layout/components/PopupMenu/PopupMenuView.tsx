@@ -8,6 +8,7 @@ export const PopupMenuView: React.SFC<PopupMenuProps> = props => (
   <React.Fragment>
     <IconButton
       id={props.id}
+      color="inherit"
       onClick={props.handleVisibility}
     >
       <MoreVert/>

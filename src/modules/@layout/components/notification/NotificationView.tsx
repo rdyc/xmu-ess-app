@@ -28,11 +28,16 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
   return (
     <React.Fragment>
       <Toolbar className={props.classes.toolbar}>
-        <Typography variant="h6" className={props.classes.flex}>
+        <Typography 
+          color="inherit" 
+          variant="h6" 
+          className={props.classes.flex}
+        >
           <FormattedMessage id="layout.notification.title"/>
         </Typography>
 
         <IconButton
+          color="inherit"
           disabled={props.notificationState.isLoading}
           onClick={props.handleOnClickReload}
         >

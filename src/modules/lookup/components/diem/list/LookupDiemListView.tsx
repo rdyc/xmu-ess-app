@@ -69,6 +69,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/diemvalues/form')}
         >
           <AddCircle />

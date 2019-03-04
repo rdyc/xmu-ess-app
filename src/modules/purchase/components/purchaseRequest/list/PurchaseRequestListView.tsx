@@ -82,6 +82,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/purchase/requests/form')}
         >
           <AddCircle />
