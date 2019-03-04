@@ -1,7 +1,9 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -59,6 +61,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type WinningRatioProps = WithSummary &
   WithWidth &
   WithUser &
+  WithOidc &
   WithMasterPage &
   WithLayout &
   RouteComponentProps &
@@ -73,9 +76,23 @@ const createProps: mapper<WinningRatioProps, OwnState> = (
 ): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.summaryState.winning;
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+  
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
 
   return {
-    isAdmin: false,
+    isAdmin,
     reloadData: false,
     isDetailOpen: false,
     type: undefined,
@@ -238,6 +255,7 @@ const loadData = (props: WinningRatioProps): void => {
 export const WinningRatio = compose<WinningRatioProps, {}>(
   withSummary,
   withUser,
+  withOidc,
   withMasterPage,
   withLayout,
   withRouter,

@@ -1,3 +1,4 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
@@ -24,7 +25,7 @@ export type IWinningRatioFilterResult = Pick<ISummaryWinningFilter, 'companyUid'
 
 interface IOwnOption {
   isAdmin: boolean;
-  className: string;
+  // className: string;
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IWinningRatioFilterResult) => void;
@@ -36,7 +37,7 @@ interface IOwnState {
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
-  filterNonAdmin?: string;
+  filterCompanyNonAdmin?: string;
 
   // filter employee
   isFilterEmployeeOpen: boolean;
@@ -52,6 +53,8 @@ interface IOwnState {
 
   start?: string;
   end?: string;
+
+  filterEmployeeList?: IEmployeeListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -127,7 +130,7 @@ const createProps: mapper<WinningRatioFilterProps, IOwnState> = (props: WinningR
     isFilterEndOpen: false,
     isFilterStartOpen: false,
     isFilterOpen: false,
-    filterNonAdmin: user && user.company.name,
+    filterCompanyNonAdmin: user && user.company.name,
     filterStart: moment()
       .startOf('year')
       .toISOString(true),
@@ -160,9 +163,15 @@ const stateUpdaters: StateUpdaters<WinningRatioFilterProps, IOwnState, IOwnState
   setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
-  setFilterCompany: () => (data?: ILookupCompany) => ({
+  setFilterCompany: (prevState: IOwnState) => (data?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
-    filterCompany: data
+    filterCompany: data,
+    filterEmployeeList: {
+      companyUids: data && data.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    },
+    filterEmployee: (prevState.filterCompany === data ? prevState.filterEmployee : undefined)
   }),
 
   // filter Employee
@@ -220,6 +229,9 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
   },
   handleFilterCompanyOnClear: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompany();
+    if (props.isAdmin) {
+      props.setFilterEmployee();
+    }
   },
   handleFilterCompanyOnClose: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompanyVisibility();

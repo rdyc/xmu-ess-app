@@ -4,7 +4,7 @@ import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import { ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlementRequestDetail } from '@travel/classes/response';
 import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
 import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
 import { TravelSettlementInformation } from '@travel/components/settlement/detail/shared/TravelSettlementInformation';
@@ -12,7 +12,6 @@ import { TravelSettlementItem } from '@travel/components/settlement/detail/share
 import { TravelSettlementSummary } from '@travel/components/settlement/detail/shared/TravelSettlementSummary';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 import { TravelSettlementApprovalDetailProps } from './TravelSettlementApprovalDetails';
 
 const parentUrl = (props: TravelSettlementApprovalDetailProps) => {
@@ -37,28 +36,28 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
       }}
       state={props.travelSettlementApprovalState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: ITravelSettlementDetail) => (
+      primary={(data: ITravelSettlementRequestDetail) => (
         <TravelSettlementSummary
-          data={data}
-          travelData={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data}
+          data={data.settlement}
+          travelData={data.request}
         />
       )}
-      secondary={(data: ITravelSettlementDetail) => ([
-        <TravelSettlementItem data={data.items} />,
-        <TravelRequestItem data={props.travelApprovalState.detail.response && props.travelApprovalState.detail.response.data.items} />,
-        <TravelSettlementInformation data={data} />,
+      secondary={(data: ITravelSettlementRequestDetail) => ([
+        <TravelSettlementItem data={data.settlement.items} />,
+        <TravelRequestItem data={data.request && data.request.items} />,
+        <TravelSettlementInformation data={data.settlement} />,
         <React.Fragment>
           {
-            props.travelApprovalState.detail.response &&
-            <TravelInformation data={props.travelApprovalState.detail.response.data} />
+            data.request &&
+            <TravelInformation data={data.request} />
           }
         </React.Fragment>,
-        <WorkflowHistory data={data.workflow} />,
+        <WorkflowHistory data={data.settlement.workflow} />,
         <React.Fragment>
           {
-            data.workflow &&
-            data.status && data.status.type !== WorkflowStatusType.AdjustmentNeeded &&
-            data.workflow.isApproval &&
+            data.settlement.workflow &&
+            data.settlement.status && data.settlement.status.type !== WorkflowStatusType.AdjustmentNeeded &&
+            data.settlement.workflow.isApproval &&
             <WorkflowApprovalRemarkForm
               approvalTitle={props.approvalTitle}
               approvalSubHeader={props.approvalSubHeader}
@@ -92,8 +91,5 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
     />
   );
 
-  return (
-    !isNullOrUndefined(props.history.location.state.travelUid) ? render : 
-    (props.getDataTravel ? render : null )
-  );
+  return render;
 };
