@@ -1,7 +1,9 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
+import { withAccountEmployee, WithAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
+import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ISummaryWinningFilter } from '@summary/classes/filters';
@@ -10,7 +12,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -25,7 +29,7 @@ export type IWinningRatioFilterResult = Pick<ISummaryWinningFilter, 'companyUid'
 
 interface IOwnOption {
   isAdmin: boolean;
-  // className: string;
+  initialProps?: IWinningRatioFilterResult;  
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IWinningRatioFilterResult) => void;
@@ -36,7 +40,7 @@ interface IOwnState {
 
   // filter company
   isFilterCompanyOpen: boolean;
-  filterCompany?: ILookupCompany;
+  filterCompany: ILookupCompany;
   filterCompanyNonAdmin?: string;
 
   // filter employee
@@ -117,12 +121,27 @@ export type WinningRatioFilterProps
   & IOwnState 
   & IOwnHandler 
   & IOwnStateUpdater 
+  & WithLookupCompany
+  & WithAccountEmployee
   & WithStyles<typeof styles> 
   & WithUser 
   & InjectedIntlProps;
 
 const createProps: mapper<WinningRatioFilterProps, IOwnState> = (props: WinningRatioFilterProps): IOwnState => {
   const { user } = props.userState;
+  let getCompany: ILookupCompany = {
+    uid: '',
+    code: '',
+    name: ''
+  };
+
+  if (user) {
+    getCompany = {
+      uid: user.company.uid,
+      code: user.company.code,
+      name: user.company.name
+    };
+  }
 
   return {
     isFilterCompanyOpen: false,
@@ -130,7 +149,13 @@ const createProps: mapper<WinningRatioFilterProps, IOwnState> = (props: WinningR
     isFilterEndOpen: false,
     isFilterStartOpen: false,
     isFilterOpen: false,
+    filterCompany: getCompany,
     filterCompanyNonAdmin: user && user.company.name,
+    filterEmployeeList: {
+      companyUids: user && user.company.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    },
     filterStart: moment()
       .startOf('year')
       .toISOString(true),
@@ -280,11 +305,50 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<WinningRatioFilterProps, IOwnState> = {
+  componentDidMount() {
+    if (this.props.initialProps) {
+      const { companyUid, employeeUid, start, end } = this.props.initialProps;
+
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+
+      if (employeeUid) {
+        const { response } = this.props.accountEmployeeState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === employeeUid);
+
+          this.props.setFilterEmployee(selected);
+        }
+      }
+
+      if (start) {
+        this.props.setFilterStart(start);
+      }
+
+      if (end) {
+        this.props.setFilterEnd(end);
+      }
+    }
+  }
+};
+
 export const WinningRatioFilter = compose<WinningRatioFilterProps, IOwnOption>(
   setDisplayName('WinningRatioFilter'),
   withUser,
+  withLookupCompany,
+  withAccountEmployee,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   withStyles(styles),
+  lifecycle(lifecycles),
   injectIntl
 )(WinningRatioFilterView);
