@@ -37,11 +37,13 @@ interface OwnOptions {
 
 interface OwnState extends IEffectivenessFilterResult {
   reloadData: boolean;
+  isStartup: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
   setFilterApplied: StateHandler<OwnState>;
+  setStartup: StateHandler<OwnState>;
 }
 
 export type EffectivenessProps 
@@ -62,6 +64,7 @@ export type EffectivenessProps
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
     return { 
       reloadData: false,
+      isStartup: true,
     };
   };
 
@@ -73,11 +76,18 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   setFilterApplied: (prevState: OwnState) => (filter: IEffectivenessFilterResult) => ({
     ...filter
   }),
+  setStartup: (prevState: OwnState) => (filter: IEffectivenessFilterResult) => ({
+    isStartup: false
+  }),
 };
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
   handleChangeFilter: (props: EffectivenessProps) => (filter: IEffectivenessFilterResult) => {
     props.setFilterApplied(filter);
+    
+    if (props.isStartup) {
+      props.setStartup();
+    }
   },
   handleReloadData: (props: EffectivenessProps) => () => {
     props.stateUpdate({
@@ -119,7 +129,7 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       });
     
       // only load data when response are empty
-      if (!isLoading && !response) {
+      if (!isLoading && !response && this.props.employeeUid && this.props.projectUid) {
         loadData(this.props);
       }
     },

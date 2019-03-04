@@ -25,6 +25,7 @@ export type IEffectivenessFilterResult = Pick<ISummaryEffectivenessFilter, 'empl
 interface IOwnOption {
   className: string;
   isLoading: boolean;
+  isStartup: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IEffectivenessFilterResult) => void;
 }
@@ -86,7 +87,7 @@ export type EffectivenessFilterProps
   
 const createProps: mapper<EffectivenessFilterProps, IOwnState> = (props: EffectivenessFilterProps): IOwnState => {
   return { 
-    isFilterDialogOpen: false,
+    isFilterDialogOpen: true,
     isFilterEmployeeOpen: false,
     isFilterProjectOpen: false
   };
