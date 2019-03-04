@@ -34,8 +34,8 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
   const showBadgeWhen = (): boolean => {
     return props.filterCompany !== undefined ||
       props.filterEmployee !== undefined ||
-      props.filterStart !== undefined ||
-      props.filterEnd !== undefined;
+      props.filterStart !== props.start ||
+      props.filterEnd !== props.end;
   };
 
   const filter = () => {
@@ -64,7 +64,9 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             </Typography>
 
             {
-              (props.filterCompany || props.filterEmployee || props.filterStart || props.filterEnd) &&
+              (props.filterCompany || props.filterEmployee ||
+                 props.filterStart && props.filterStart !== props.start || 
+                 props.filterEnd && props.filterEnd !== props.end) &&
               <Button color="inherit" onClick={props.handleFilterOnReset}>
                 {props.intl.formatMessage(layoutMessage.action.reset)}
               </Button>
@@ -86,7 +88,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           <ListItem button onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.billable.field.company)}
-              secondary={props.isAdmin ? props.filterCompany && props.filterCompany.name : props.filterNonAdmin || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.isAdmin ? (props.filterCompany ? props.filterCompany.name : props.intl.formatMessage(layoutMessage.text.none)) : props.filterCompanyNonAdmin || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
               {
@@ -103,14 +105,14 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+          <ListItem button onClick={props.handleFilterEmployeeVisibility} disabled={props.isAdmin ? (props.filterCompany ? false : true ) : false }>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.billable.field.name)}
               secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
               {
-                props.filterEmployee &&
+                (props.isAdmin ? (props.filterCompany && props.filterEmployee) : props.filterEmployee) &&
                 <IconButton onClick={props.handleFilterEmployeeOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -130,7 +132,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterStart &&
+                props.filterStart && props.filterStart !== props.start &&
                 <IconButton onClick={props.handleFilterStartOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -150,7 +152,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterEnd &&
+                props.filterEnd && props.filterEnd !== props.end &&
                 <IconButton onClick={props.handleFilterEndOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -178,7 +180,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           isOpen={props.isFilterEmployeeOpen}
           title={props.intl.formatMessage(summaryMessage.billable.field.name)}
           value={props.filterEmployee && props.filterEmployee.uid}
-          filter={{
+          filter={props.isAdmin ? props.filterEmployeeList : {
             companyUids: props.userState.user && props.userState.user.company.uid,
             orderBy: 'fullName',
             direction: 'ascending'
@@ -211,9 +213,9 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
   };
 
   return (
-    <Paper square>
-      <Toolbar>
-        <Typography
+    <Paper square elevation={1}>
+      <Toolbar style={{direction : 'rtl'}}>
+        {/* <Typography
           noWrap
           variant="body2"
           className={props.classes.flex}
@@ -222,7 +224,20 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             props.isLoading &&
             props.intl.formatMessage(layoutMessage.text.loading)
           }
-        </Typography>
+        </Typography> */}
+        
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
+        >
+          <IconButton 
+            id="option-sync"
+            disabled={props.isLoading}
+            onClick={props.onClickSync}
+          >
+            <SyncIcon />
+          </IconButton>
+        </Tooltip>
 
         <Tooltip
           placement="bottom"
@@ -242,19 +257,6 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         </Tooltip>
 
         {filter()}
-
-        <Tooltip
-          placement="bottom"
-          title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
-        >
-          <IconButton 
-            id="option-sync"
-            disabled={props.isLoading}
-            onClick={props.onClickSync}
-          >
-            <SyncIcon />
-          </IconButton>
-        </Tooltip>
       </Toolbar>
     </Paper>
   );

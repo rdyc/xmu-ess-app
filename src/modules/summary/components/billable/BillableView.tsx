@@ -53,8 +53,6 @@ export const BillableView: React.SFC<BillableProps> = props => (
           </React.Fragment>
         }
       </Paper>
-    </PreloaderWithError>
-
     <div className={props.classes.marginFarTop}>
       <Typography
         noWrap
@@ -69,5 +67,7 @@ export const BillableView: React.SFC<BillableProps> = props => (
         {props.intl.formatMessage(summaryMessage.billable.note.presalesPercentage)}
       </Typography>
     </div>
+    </PreloaderWithError>
+
   </React.Fragment>
 );

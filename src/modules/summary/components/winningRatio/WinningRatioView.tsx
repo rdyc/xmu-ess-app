@@ -1,7 +1,7 @@
+import { PreloaderWithError } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { WinningRatioProps } from './WinningRatio';
 import { WinningRatioDetail } from './WinningRatioDetail';
 import { WinningRatioFilter } from './WinningRatioFilter';
@@ -27,31 +27,29 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
 
   const render = (
     <React.Fragment>
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Paper square elevation={1}>
-          <WinningRatioFilter
-            isAdmin={props.isAdmin}
-            className={props.classes.flex}
-            isLoading={isLoading}
-            onClickSync={handleReloadData}
-            onApply={handleChangeFilter}
-          />
-          </Paper>
-          <Paper square elevation={1}>
-            {isLoading && (
-              <Typography variant="body2">
-              <FormattedMessage {...layoutMessage.text.loading} />
-              </Typography>
-            )}
-            <WinningRatioDetail
-              uid={props.uid}
-              type={props.type}
-              isDetailOpen={props.isDetailOpen}
-              handleDialogDetail={handleDialogDetail}
-              data={response && response.data}
-            />
-            {!isLoading && response && (
+      <WinningRatioFilter
+        isAdmin={props.isAdmin}
+        // className={props.classes.flex}
+        isLoading={isLoading}
+        onClickSync={handleReloadData}
+        onApply={handleChangeFilter}
+      />
+      <PreloaderWithError 
+        state={props.summaryState.winning}
+        waitingText={props.intl.formatMessage(layoutMessage.text.waiting)}
+        onRetry={handleReloadData}
+      >
+        <Paper square elevation={1}>
+          {
+            response &&
+            <React.Fragment>
+              <WinningRatioDetail
+                uid={props.uid}
+                type={props.type}
+                isDetailOpen={props.isDetailOpen}
+                handleDialogDetail={handleDialogDetail}
+                data={response && response.data}
+              />
               <WinningRatioTable
                 page={page}
                 size={size}
@@ -67,11 +65,10 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
                 handleGoToNext={handleGoToNext}
                 handleGoToPrevious={handleGoToPrevious}
               />
-            )}
-          </Paper>
-        </Grid>
-      </Grid>
-
+            </React.Fragment>
+          }
+        </Paper>
+      </PreloaderWithError>
     </React.Fragment>
   );
 
