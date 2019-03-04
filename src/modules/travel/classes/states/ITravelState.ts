@@ -16,7 +16,7 @@ import {
   ITravelRequest,  
   ITravelRequestDetail,
   ITravelSettlement,
-  ITravelSettlementDetail,
+  ITravelSettlementRequestDetail,
 } from '@travel/classes/response';
 import { ITravelSettlementApprovalGetAllRequest, ITravelSettlementApprovalGetByIdRequest, ITravelSettlementApprovalPostRequest } from '../queries/settlementApproval';
 
@@ -29,7 +29,7 @@ export interface ITravelState {
 
   // travel settlement
   travelSettlementGetAll: IQueryCollectionState<ITravelSettlementGetAllRequest, ITravelSettlement>;
-  travelSettlementGetById: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail>;
+  travelSettlementGetById: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementRequestDetail>;
   travelSettlementPost: IQuerySingleState<ITravelSettlementPostRequest, ITravelSettlement>;
   travelSettlementPut: IQuerySingleState<ITravelSettlementPutRequest, ITravelSettlement>;
 
@@ -40,6 +40,6 @@ export interface ITravelState {
 
   // travel settlement approval
   travelSettlementApprovalGetAll: IQueryCollectionState<ITravelSettlementApprovalGetAllRequest, ITravelSettlement>;
-  travelSettlementApprovalGetById: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementDetail>;
+  travelSettlementApprovalGetById: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementRequestDetail>;
   travelSettlementApprovalPost: IQuerySingleState<ITravelSettlementApprovalPostRequest, ITravelSettlement>;  
 }
