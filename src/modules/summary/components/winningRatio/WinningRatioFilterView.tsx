@@ -87,7 +87,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
           <ListItem button onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.winningRatio.field.company)}
-              secondary={props.isAdmin ? (props.filterCompany ? props.filterCompany.name : props.intl.formatMessage(layoutMessage.text.none)) : props.filterCompanyNonAdmin || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.isAdmin ? (props.filterCompany ? props.filterCompany.name : props.intl.formatMessage(layoutMessage.text.none)) : props.filterCompanyNonAdmin}
             />
             <ListItemSecondaryAction>
               {

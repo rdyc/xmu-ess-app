@@ -13,6 +13,12 @@ export const BillableView: React.SFC<BillableProps> = props => (
   <React.Fragment>
     <BillableListFilter
       isAdmin={props.isAdmin}
+      initialProps={{
+        companyUid: props.companyUid,
+        employeeUid: props.employeeUid,
+        start: props.start,
+        end: props.end
+      }}
       isLoading={props.summaryState.billable.isLoading}
       onClickSync={props.handleReloadData}
       onApply={props.handleChangeFilter}

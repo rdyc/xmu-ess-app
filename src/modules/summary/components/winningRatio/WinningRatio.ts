@@ -90,13 +90,13 @@ const createProps: mapper<WinningRatioProps, OwnState> = (
       }
     }
   }
-
-  return {
+  const state: OwnState = {
     isAdmin,
     reloadData: false,
     isDetailOpen: false,
     type: undefined,
     uid: undefined,
+    companyUid: props.userState.user && props.userState.user.company.uid,
     start: moment()
       .startOf('year')
       .toISOString(true),
@@ -112,6 +112,15 @@ const createProps: mapper<WinningRatioProps, OwnState> = (
     page: (request && request.filter && request.filter.page) || page || 1,
     size: (request && request.filter && request.filter.size) || size || 10
   };
+
+  if (request && request.filter) {
+    state.companyUid = request.filter.companyUid,
+    state.employeeUid = request.filter.employeeUid,
+    state.start = request.filter.start,
+    state.end = request.filter.end;
+  }
+
+  return state;
 };
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

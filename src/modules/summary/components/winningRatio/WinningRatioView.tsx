@@ -29,7 +29,12 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
     <React.Fragment>
       <WinningRatioFilter
         isAdmin={props.isAdmin}
-        // className={props.classes.flex}
+        initialProps={{
+          companyUid: props.companyUid,
+          employeeUid: props.employeeUid,
+          start: props.start,
+          end: props.end
+        }}
         isLoading={isLoading}
         onClickSync={handleReloadData}
         onApply={handleChangeFilter}

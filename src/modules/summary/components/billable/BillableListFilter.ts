@@ -1,7 +1,9 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ISummaryBillableFilter } from '@summary/classes/filters';
@@ -10,7 +12,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -25,6 +29,7 @@ export type IBillableListFilterResult = Pick<ISummaryBillableFilter, 'companyUid
 
 interface OwnOption {
   isAdmin: boolean;
+  initialProps?: IBillableListFilterResult;  
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IBillableListFilterResult) => void;
@@ -35,7 +40,7 @@ interface IOwnState {
 
   // filter company
   isFilterCompanyOpen: boolean;
-  filterCompany?: ILookupCompany;
+  filterCompany: ILookupCompany;
   filterCompanyNonAdmin?: string;
 
   // filter employee
@@ -116,12 +121,27 @@ export type BillableListFilterProps
   & IOwnState 
   & IOwnHandler 
   & IOwnStateUpdater 
+  & WithLookupCompany
+  & WithAccountEmployee
   & WithStyles<typeof styles> 
   & WithUser 
   & InjectedIntlProps;
 
 const createProps: mapper<BillableListFilterProps, IOwnState> = (props: BillableListFilterProps): IOwnState => {
   const { user } = props.userState;
+  let getCompany: ILookupCompany = {
+    uid: '',
+    code: '',
+    name: ''
+  };
+
+  if (user) {
+    getCompany = {
+      uid: user.company.uid,
+      code: user.company.code,
+      name: user.company.name
+    };
+  }
 
   return {
     isFilterCompanyOpen: false,
@@ -129,7 +149,13 @@ const createProps: mapper<BillableListFilterProps, IOwnState> = (props: Billable
     isFilterEndOpen: false,
     isFilterStartOpen: false,
     isFilterOpen: false,
+    filterCompany: getCompany,
     filterCompanyNonAdmin: user && user.company.name,
+    filterEmployeeList: {
+      companyUids: user && user.company.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    },
     filterStart: moment()
       .startOf('year')
       .toISOString(true),
@@ -279,11 +305,50 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<BillableListFilterProps, IOwnState> = {
+  componentDidMount() {
+    if (this.props.initialProps) {
+      const { companyUid, employeeUid, start, end } = this.props.initialProps;
+
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+
+      if (employeeUid) {
+        const { response } = this.props.accountEmployeeState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === employeeUid);
+
+          this.props.setFilterEmployee(selected);
+        }
+      }
+
+      if (start) {
+        this.props.setFilterStart(start);
+      }
+
+      if (end) {
+        this.props.setFilterEnd(end);
+      }
+    }
+  }
+};
+
 export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
   setDisplayName('BillableListFilter'),
   withUser,
+  withLookupCompany,
+  withAccountEmployee,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   withStyles(styles),
+  lifecycle(lifecycles),
   injectIntl
 )(BillableListFilterView);
