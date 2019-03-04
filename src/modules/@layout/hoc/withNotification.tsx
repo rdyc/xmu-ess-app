@@ -1,6 +1,6 @@
 import { IAppState } from '@generic/interfaces';
 import { INotificationMark, INotificationQuery, INotificationState } from '@layout/interfaces';
-import { notificationComplete, notificationFetchRequest } from '@layout/store/actions';
+import { notificationComplete, notificationGetAllDispose, notificationGetAllRequest } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -10,7 +10,8 @@ interface PropsFromState {
 }
 interface PropsFromDispatch {
   notificationDispatch: {
-    fetchRequest: typeof notificationFetchRequest;
+    loadAllRequest: typeof notificationGetAllRequest;
+    loadAllDispose: typeof notificationGetAllDispose;
     markAsComplete: typeof notificationComplete;
   };
 }
@@ -23,7 +24,8 @@ const mapStateToProps = ({ notification }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   notificationDispatch: {
-    fetchRequest: (params: INotificationQuery) => dispatch(notificationFetchRequest(params)),
+    loadAllRequest: (params: INotificationQuery) => dispatch(notificationGetAllRequest(params)),
+    loadAllDispose: () => dispatch(notificationGetAllDispose()),
     markAsComplete: (params: INotificationMark) => dispatch(notificationComplete(params))
   }
 });

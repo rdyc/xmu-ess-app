@@ -93,7 +93,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     const { isLoading } = props.notificationState;
 
     if (user && !isLoading) {
-      props.notificationDispatch.fetchRequest({
+      props.notificationDispatch.loadAllRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid
       });
@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, IOwnState> = {
   componentDidMount() {
-    this.props.setShouldLoad();
+    this.props.handleOnLoadApi();
   },
   componentDidUpdate(prevProps: NotificationProps) {
     if (prevProps.shouldLoad !== this.props.shouldLoad) {
@@ -130,7 +130,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, IOwnState> 
         const timerId = setInterval(() => { 
           this.props.handleOnLoadApi(); 
         // tslint:disable-next-line:align
-        }, this.props.interval || 300000);
+        }, this.props.interval || 300000); // 5 mins
   
         this.props.setTimer(timerId);
       }

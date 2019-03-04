@@ -15,6 +15,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
+import { TypographyProps } from '@material-ui/core/Typography';
 import { Report, TurnedInNot } from '@material-ui/icons';
 import styles from '@styles';
 import * as React from 'react';
@@ -36,6 +37,7 @@ const getHeaderKey = (headers: ICollectionValue[], name: string): string => {
 interface IOwnOption {
   state: IQueryCollectionState<any, any> | IQuerySingleState<any, any>;
   waitingText: string;
+  waitingTextProps?: TypographyProps;
   onRetry: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
@@ -50,9 +52,17 @@ const LoaderView: React.SFC<AllProps> = props => (
       props.state.isLoading &&
       <div className={props.classes.preloader}>
         <div className={props.classes.preloaderContent}>
-          <CircularProgress style={{margin: 'auto'}} color="secondary" />
+          <CircularProgress 
+            style={{margin: 'auto'}} 
+            color="secondary"
+          />
 
-          <Typography className={props.classes.marginFarTop}>{props.waitingText}</Typography>
+          <Typography
+            {...props.waitingTextProps}
+            className={props.classes.marginFarTop}
+          >
+            {props.waitingText}
+          </Typography>
         </div>    
       </div>
     }
