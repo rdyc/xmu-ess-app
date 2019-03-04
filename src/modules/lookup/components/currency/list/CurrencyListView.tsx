@@ -65,6 +65,7 @@ export const CurrencyListView: React.SFC<CurrencyListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/currencies/form')}
         >
           <AddCircle />

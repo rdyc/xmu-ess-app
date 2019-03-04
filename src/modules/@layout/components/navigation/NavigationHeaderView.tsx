@@ -25,7 +25,7 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
         props.userState.user &&
         <React.Fragment>
           <ListItemAvatar>
-            <Avatar className={props.classes.avatarPrimary}>
+            <Avatar className={props.classes.avatarSecondary}>
               {props.nameInitial}
             </Avatar>
           </ListItemAvatar>
@@ -35,9 +35,11 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
             secondary={`${props.userState.user.company.code} - ${props.userState.user.position.name}`}
             primaryTypographyProps={{
               // variant: 'body2',
+              color: 'inherit',
               noWrap: true
             }}
             secondaryTypographyProps={{
+              color: 'inherit',
               variant: 'caption',
               noWrap: true
             }}

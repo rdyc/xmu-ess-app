@@ -61,6 +61,7 @@ export const LookupHolidayListView: React.SFC<LookupHolidayListProps> = props =>
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/holidays/form')}
         >
           <AddCircle/>

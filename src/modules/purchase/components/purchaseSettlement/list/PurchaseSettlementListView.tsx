@@ -68,6 +68,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
     
     appBarCustomComponent = {
       <IconButton
+        color="inherit"
         onClick = {() => props.history.push('/purchase/settlement/requests/form')}
       >
         <AddCircle />

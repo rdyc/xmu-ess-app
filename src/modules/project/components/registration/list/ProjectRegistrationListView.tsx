@@ -63,6 +63,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
 
       // app bar component
       appBarSearchComponent={
+        
         <SearchBox
           key="project.registration.request"
           default={props.projectRegisterState.all.request && props.projectRegisterState.all.request.filter && props.projectRegisterState.all.request.filter.find}
@@ -71,7 +72,9 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegistrationListProps
         />
       }
       appBarCustomComponent={
+        props.isAllowedToCreateProject &&
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/project/requests/form')}
         >
           <AddCircle/>

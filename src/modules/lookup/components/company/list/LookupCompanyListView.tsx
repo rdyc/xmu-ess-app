@@ -63,6 +63,7 @@ export const LookupCompanyListView: React.SFC<LookupCompanyListProps> = props =>
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/lookup/company/form')}
         >
           <AddCircle/>

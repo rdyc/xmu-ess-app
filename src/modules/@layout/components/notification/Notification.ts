@@ -104,7 +104,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     props.setShouldLoad();
   },
   handleOnClickReload: (props: NotificationProps) => (event: React.MouseEvent) => {
-    props.handleOnLoadApi();
+    props.setShouldLoad();
   },
   handleOnChangeIndex: (props: NotificationProps) => (event: React.MouseEvent, index: number, module?: ModuleDefinitionType, name?: string, type?: string) => {
     props.setIndex(index, module, name, type);

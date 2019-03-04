@@ -72,6 +72,7 @@ export const LeaveRequestListView: React.SFC<LeaveRequestListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/leave/requests/form')}
         >
           <AddCircle/>

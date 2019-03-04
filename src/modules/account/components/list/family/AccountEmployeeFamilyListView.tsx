@@ -59,6 +59,7 @@ export const AccountEmployeeFamilyListView: React.SFC<AccountEmployeeFamilyListP
 
         appBarCustomComponent={
           <IconButton
+            color="inherit"
             onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/family/form`)}
           >
             <AddCircle/>

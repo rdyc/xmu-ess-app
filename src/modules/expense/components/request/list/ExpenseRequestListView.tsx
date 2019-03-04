@@ -72,6 +72,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push('/expense/requests/form')}
         >
           <AddCircle/>

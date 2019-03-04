@@ -156,7 +156,7 @@ const lifecycles: ReactLifeCycleFunctions<AccessSwitcherProps, {}> = {
   componentDidMount() {
     this.props.switchAccess();
 
-    this.props.handleOnLoadApi();
+    this.props.setShouldLoad();
   },
   componentDidUpdate(prevProps: AccessSwitcherProps) {
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {

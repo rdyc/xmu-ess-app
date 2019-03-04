@@ -73,6 +73,7 @@ export const CommonListView: React.SFC<CommonListProps> = props => (
       }
       appBarCustomComponent={
         <IconButton
+          color="inherit"
           onClick={() => props.history.push(`/common/system/${props.match.params.category}/form`)}
         >
           <AddCircle/>
