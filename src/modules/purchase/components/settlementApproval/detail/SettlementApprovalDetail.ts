@@ -43,7 +43,7 @@ interface OwnHandler {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setOptions: StateHandler<OwnState>;
-  setNextLoad: StateHandler<OwnState>;
+  setShouldLoad: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
@@ -92,7 +92,7 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
 });
 
 const stateUpdaters: StateUpdaters<SettlementApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setNextLoad: (state: OwnState, props: SettlementApprovalDetailProps) => (): Partial<OwnState> => ({
+  setShouldLoad: (state: OwnState, props: SettlementApprovalDetailProps) => (): Partial<OwnState> => ({
     shouldLoad: !state.shouldLoad
   }), 
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
@@ -188,7 +188,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       time: new Date()
     });
 
-    props.setNextLoad();
+    props.setShouldLoad();
 
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
@@ -219,7 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, OwnStat
     // handle updated should load
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       // turn of should load
-      this.props.setNextLoad();
+      this.props.setShouldLoad();
 
       // load from api
       this.props.handleOnLoadApi();

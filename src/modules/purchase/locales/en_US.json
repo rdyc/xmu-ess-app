@@ -119,6 +119,7 @@
   "purchase.message.settlement.settle.success": "Purchase ID {uid} now in settlement process",
   "purchase.message.settlement.settle.failure": "Unable to process your settlement",
   "purchase.message.approval.emptyProps": "Some important data's are empty, please check again",
+  "purchase.message.approval.create.failure": "Unable to process your submission",
   "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.message.approval.submit.success": "Approval decision for {uid} has been submitted",
