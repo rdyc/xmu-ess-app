@@ -24,25 +24,29 @@ import * as store from 'store';
 
 import { accountAccessView } from './accountAccessView';
 
-interface OwnHandlers {
-  handleSelected: (uid: string) => void;
-  filterCompanies: () => void;
-}
-
-interface OwnState {
-  current: any | undefined;
-  name: string | undefined;
+interface IOwnState {
+  shouldLoad: boolean;
+  current?: any;
+  name?: string;
   access: IEmployeeAccessList[];
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setName: StateHandler<OwnState>;
-  setCompanies: StateHandler<OwnState>;
+interface OwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setShouldLoad: StateHandler<IOwnState>;
+  setName: StateHandler<IOwnState>;
+  setCompanies: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+  handleOnRetry: (event: React.MouseEvent) => void;
+  handleOnSelected: (uid: string) => void;
+  filterCompanies: () => void;
 }
 
 export type AccessSwitcherProps
-  = OwnHandlers
-  & OwnState
+  = IOwnHandler
+  & IOwnState
   & OwnStateUpdaters
   & InjectedIntlProps
   & WithUser
@@ -50,27 +54,44 @@ export type AccessSwitcherProps
   & WithStyles<typeof styles>
   & RouteComponentProps;
 
-const createProps: mapper<AccessSwitcherProps, OwnState> = (props: AccessSwitcherProps): OwnState => {
+const createProps: mapper<AccessSwitcherProps, IOwnState> = (props: AccessSwitcherProps): IOwnState => {
   const { user } = props.userState;
 
   return {
+    shouldLoad: false,
     current: user,
     name: user ? user.fullName : undefined,
     access: []
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  setName: (prevState: OwnState) => (name: string) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, OwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState) => () => ({
+    shouldLoad: !state.shouldLoad
+  }),
+  setName: (state: IOwnState) => (name: string) => ({
     name
   }),
-  setCompanies: (prevState: OwnState) => (data: IEmployeeAccessList[] | []) => ({
+  setCompanies: (state: IOwnState) => (data: IEmployeeAccessList[] | []) => ({
     access: data
   })
 };
 
-const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
-  handleSelected: (props: AccessSwitcherProps) => (uid: string) => {
+const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
+  handleOnLoadApi: (props: AccessSwitcherProps) => () => {
+    const { isLoading } = props.accountEmployeeMyState.detail;
+    const { loadRequest  } = props.accountEmployeeMyDispatch;
+
+    if (props.shouldLoad || !isLoading) {
+      loadRequest();
+
+      props.setShouldLoad();
+    }
+  },
+  handleOnRetry: (props: AccessSwitcherProps) => () => {
+    props.setShouldLoad();
+  },
+  handleOnSelected: (props: AccessSwitcherProps) => (uid: string) => {
     const { response } = props.accountEmployeeMyState.detail;
 
     if (response && response.data && response.data.access) {
@@ -133,19 +154,15 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccessSwitcherProps, {}> = {
   componentDidMount() {
-    const { isLoading } = this.props.accountEmployeeMyState.detail;
-    const { loadRequest  } = this.props.accountEmployeeMyDispatch;
-
-    // set document props
-    document.title = 'Company Access Selection';
-
-    if (!isLoading) {
-      loadRequest();
-    }
-
     this.props.switchAccess();
+
+    this.props.handleOnLoadApi();
   },
   componentDidUpdate(prevProps: AccessSwitcherProps) {
+    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
+      this.props.handleOnLoadApi();
+    }
+
     if (this.props.accountEmployeeMyState.detail !== prevProps.accountEmployeeMyState.detail) {
       const { response } = this.props.accountEmployeeMyState.detail;
 

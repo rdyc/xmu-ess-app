@@ -6,21 +6,11 @@ const location = window.location;
 const selfHost = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}`;
 
 const PopupCenter = (w: number, h: number): string => {
-  const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-  const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-  // const width = window.innerWidth ? window.innerWidth : (document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width);
-  // const height = window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height);
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  const systemZoom = width / window.screen.availWidth;
-  const left = (width - w) / 2 / systemZoom + dualScreenLeft;
-  const top = (height - h) / 2 / systemZoom + dualScreenTop;
+  const left = (window.screen.width - w) / 2;
+  const top = (window.screen.height - h) / 2;
 
   const result = `directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes, width=${w}, height=${h}, top=${top}, left=${left}`;
 
-  console.log(result);
   return result;
 };
 
@@ -31,7 +21,7 @@ const settings: UserManagerSettings = {
   response_type: 'token id_token',
   // redirect_uri: `${selfHost}/callback`,
   popup_redirect_uri: `${selfHost}/signin`,
-  popupWindowFeatures: PopupCenter(500, 600), 
+  popupWindowFeatures: PopupCenter(450, 500), 
   post_logout_redirect_uri: `${selfHost}`,
   silent_redirect_uri: `${selfHost}/silent_renew`,
   // automaticSilentRenew: true,

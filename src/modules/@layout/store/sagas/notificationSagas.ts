@@ -3,30 +3,49 @@ import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-import { notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actions';
+import {
+  notificationGetAllDispose,
+  notificationGetAllError,
+  notificationGetAllRequest,
+  notificationGetAllSuccess,
+  UserAction,
+} from '../actions';
 
 function* watchFetchRequest() {
-  const worker = (action: ReturnType<typeof notificationFetchRequest>) => {
+  const worker = (action: ReturnType<typeof notificationGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/notifications?companyUid=${action.payload.companyUid}&positionUid=${action.payload.positionUid}`, 
       successEffects: (response: IApiResponse) => ([
-        put(notificationFetchSuccess(response.body))
+        put(notificationGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(notificationFetchError(response))
+        put(notificationGetAllError(response))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(notificationFetchError(error.message))
+        put(notificationGetAllError(error.message))
       ])
     });
   };
 
-  yield takeEvery(Action.FETCH_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+}
+
+function* watchSwitchAccess() {
+  function* worker() { 
+    yield all([
+      put(notificationGetAllDispose()),
+    ]);
+  }
+
+  yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
 function* commonNotificationSagas() {
-  yield all([fork(watchFetchRequest)]);
+  yield all([
+    fork(watchFetchRequest),
+    fork(watchSwitchAccess)
+  ]);
 }
 
 export default commonNotificationSagas;

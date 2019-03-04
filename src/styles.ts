@@ -170,6 +170,7 @@ const styles = (theme: Theme) =>
       backgroundColor: '#333',
       backgroundImage: `url("${Background2}")`,
       backgroundSize: 'cover',
+      backgroundPosition: 'center',
       height: '100vh',
       display: 'flex',
       position: 'relative',
@@ -178,9 +179,11 @@ const styles = (theme: Theme) =>
     },
     accessContent: {
       backgroundColor: lightBlue[500],
-      padding: theme.spacing.unit * 3,
-      color: '#FFF',
-      display: 'flex'
+      color: '#FFF'
+    },
+    accessAvatar: {
+      backgroundColor: theme.palette.common.white,
+      color: lightBlue[500]
     },
     accessItem: {
       padding: 0,

@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
   },
   handleSyncClick: (props: NotificationProps) => () => {
     const { user } = props.userState;
-    const { fetchRequest } = props.notificationDispatch;
+    const { loadAllRequest: fetchRequest } = props.notificationDispatch;
 
     if (user) {
       props.handleReset();
