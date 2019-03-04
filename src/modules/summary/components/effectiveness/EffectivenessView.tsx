@@ -22,7 +22,7 @@ export type IEffectiveness = {
 
 export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
-  const { width, classes, handleChangeFilter, handleReloadData, intl } = props;
+  const { width, classes, handleChangeFilter, handleReloadData, intl, isStartup } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -171,6 +171,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
                 isLoading={isLoading}
                 onClickSync={handleReloadData}
                 onApply={handleChangeFilter}
+                isStartup={isStartup}
             />
           </Paper>   
           {
