@@ -70,6 +70,7 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
               <Button 
                 color="inherit" 
                 onClick={props.handleFilterOnApply}
+                disabled={props.filterEmployee === undefined || props.filterProject === undefined}
               >
                 {props.intl.formatMessage(layoutMessage.action.apply)}
               </Button>
@@ -190,7 +191,8 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
       >
         <IconButton 
           id="option-sync"
-          disabled={props.isLoading}
+          disabled={props.isLoading || 
+            props.filterEmployee === undefined || props.filterProject === undefined}
           onClick={props.onClickSync}
         >
           <SyncIcon />

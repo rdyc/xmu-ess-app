@@ -71,15 +71,13 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
                 </Button>
               }
 
-              {
-                (props.filterCustomer && props.filterProject) &&
-                <Button 
-                  color="inherit" 
-                  onClick={props.handleFilterOnApply}
-                >
-                  {props.intl.formatMessage(layoutMessage.action.apply)}
-                </Button>
-              }
+              <Button 
+                color="inherit" 
+                onClick={props.handleFilterOnApply}
+                disabled={props.filterCustomer === undefined || props.filterProject === undefined}
+              >
+                {props.intl.formatMessage(layoutMessage.action.apply)}
+              </Button>
             </Toolbar>
           </AppBar>
 
@@ -193,7 +191,8 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
       >
         <IconButton 
           id="option-sync"
-          disabled={props.isLoading}
+          disabled={props.isLoading ||
+            props.filterCustomer === undefined || props.filterProject === undefined}
           onClick={props.onClickSync}
         >
           <SyncIcon />
