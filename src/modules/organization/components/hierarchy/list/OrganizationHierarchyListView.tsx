@@ -44,6 +44,7 @@ export const OrganizationHierarchyListView: React.SFC<OrganizationHierarchyListP
           {
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/organization/hierarchy/form`, { companyUid: item.companyUid, hierarchyUid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
@@ -52,6 +53,7 @@ export const OrganizationHierarchyListView: React.SFC<OrganizationHierarchyListP
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/organization/hierarchy/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details}/>

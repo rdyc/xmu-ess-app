@@ -62,6 +62,11 @@ const themeOverides: Partial<Theme> =  {
       expanded: {
         margin: 0
       }
+    },
+    MuiExpansionPanelActions: {
+      root: {
+        padding: 8
+      }
     }
   }
 };
@@ -69,8 +74,14 @@ const themeOverides: Partial<Theme> =  {
 const customMuiTheme = (direction?: Direction, type?: PaletteType): Theme => createMuiTheme({
   direction: direction || 'ltr',
   palette: {
-    primary: lightBlue,
-    secondary: orange,
+    primary: {
+      ...lightBlue,
+      main: lightBlue[500]
+    },
+    secondary: {
+      ...orange,
+      main: orange[500]
+    },
     type: type || 'light'
   },
   typography: {

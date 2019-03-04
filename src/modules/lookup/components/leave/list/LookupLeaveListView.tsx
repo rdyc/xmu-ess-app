@@ -38,18 +38,22 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/leaves/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
+
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/leaves/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
       )}
+      
       // app bar component
       appBarSearchComponent={
         <SearchBox

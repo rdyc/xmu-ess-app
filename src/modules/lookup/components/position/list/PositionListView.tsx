@@ -43,6 +43,7 @@ export const PositionListView: React.SFC<PositionListProps> = props => (
         <React.Fragment>
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -50,12 +51,12 @@ export const PositionListView: React.SFC<PositionListProps> = props => (
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
         </React.Fragment>
-
       )}
 
       // app bar component

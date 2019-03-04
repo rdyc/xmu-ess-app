@@ -42,6 +42,7 @@ export const AccountEmployeeAccessHistoryListView: React.SFC<AccountEmployeeAcce
           <React.Fragment>
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/history/${item.uid}`)}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}

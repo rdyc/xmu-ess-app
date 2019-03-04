@@ -39,6 +39,7 @@ export const LookupCompanyListView: React.SFC<LookupCompanyListProps> = props =>
         <React.Fragment>
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/company/form`, { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
@@ -46,6 +47,7 @@ export const LookupCompanyListView: React.SFC<LookupCompanyListProps> = props =>
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/lookup/company/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details} />

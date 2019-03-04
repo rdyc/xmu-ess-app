@@ -46,6 +46,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
             isModuleRequestEditable(item.statusType) &&
             <Button 
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/expense/requests/form`, { uid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
@@ -54,6 +55,7 @@ export const ExpenseRequestListView: React.SFC<ExpenseRequestListProps> = props 
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/expense/requests/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>

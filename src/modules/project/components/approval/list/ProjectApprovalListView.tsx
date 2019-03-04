@@ -39,6 +39,7 @@ export const ProjectApprovalListView: React.SFC<ProjectApprovalListProps> = prop
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/project/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

@@ -39,6 +39,7 @@ export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = 
         <React.Fragment>
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push('/project/assignments/form', { 
               companyUid: item.customer && item.customer.companyUid, 
               assignmentUid: item.uid 
@@ -49,6 +50,7 @@ export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = 
 
           <Button 
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/project/assignments/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}

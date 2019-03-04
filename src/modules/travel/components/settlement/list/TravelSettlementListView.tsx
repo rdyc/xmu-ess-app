@@ -46,6 +46,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
             isSettlementRequestEditable(item.statusType) &&
             <Button
               size="small"
+              color="secondary"
               onClick={() => props.history.push(`/travel/settlement/requests/form`, { uid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
@@ -54,6 +55,7 @@ export const TravelSettlementListView: React.SFC<TravelSettlementListProps> = pr
 
           <Button
             size="small"
+            color="secondary"
             onClick={() => props.history.push(`/travel/settlement/requests/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
