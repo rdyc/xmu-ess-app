@@ -439,8 +439,8 @@ const styles = (theme: Theme) =>
     /* Toolbar Custom */
     toolbarCustom: {
       minHeight: 40,
-      backgroundColor: orange[500],
-      color: theme.palette.grey[50],
+      background: theme.palette.type === 'light' ? orange[500] : theme.palette.grey[900],
+      color: theme.palette.common.white,
       marginBottom: theme.spacing.unit * 2
     },
 
