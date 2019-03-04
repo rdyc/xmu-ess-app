@@ -3,9 +3,10 @@ import { INotification } from './INotification';
 import { INotificationQuery } from './INotificationQuery';
 
 export interface INotificationState {
-    response?: IResponseList<INotification>;
-    parameter?: INotificationQuery;
+    isExpired: boolean;
     isLoading: boolean;
     isError: boolean;
+    response?: IResponseList<INotification>;
+    parameter?: INotificationQuery;
     errors?: any;
 }

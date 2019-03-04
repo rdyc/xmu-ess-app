@@ -6,10 +6,11 @@ import { INotificationState } from '../../interfaces/INotificationState';
 import { NotificationAction } from '../../types';
 
 const initialState: INotificationState = {
-  response: undefined,
-  parameter: undefined,
   isLoading: false,
   isError: false,
+  isExpired: false,
+  response: undefined,
+  parameter: undefined,
   errors: undefined
 };
 
@@ -79,36 +80,22 @@ const removeinItem = (params: INotificationMark, current?: IResponseList<INotifi
 
 const reducer: Reducer<INotificationState> = (state = initialState, action) => {
   switch (action.type) {
-    case NotificationAction.FETCH_REQUEST: {
-      return { 
-        ...state, 
-        isLoading: true,
-        isError: false,
-        parameter: action.payload
-      };
+    case NotificationAction.GET_ALL_REQUEST: {
+      return { ...state, isExpired: false, isLoading: true, isError: false, parameter: action.payload };
     }
-    case NotificationAction.FETCH_SUCCESS: {
-      return { 
-        ...state, 
-        isLoading: false,
-        isError: false,
-        response: action.payload 
-      };
+    case NotificationAction.GET_ALL_SUCCESS: {
+      return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
     }
-    case NotificationAction.FETCH_ERROR: {
-      return { 
-        ...state, 
-        isLoading: false,
-        isError: true, 
-        errors: action.payload 
-      };
+    case NotificationAction.GET_ALL_ERROR: {
+      return { ...state, isExpired: false, isLoading: false, isError: true, errors: action.payload };
+    }
+    case NotificationAction.GET_ALL_DISPOSE: {
+      return { ...state, isExpired: true };
     }
     case NotificationAction.COMPLETE: {
-      return { 
-        ...state,
-        response: removeinItem(action.payload, state.response)
-      };
+      return { ...state, response: removeinItem(action.payload, state.response) };
     }
+
     default: {
       return state;
     }
