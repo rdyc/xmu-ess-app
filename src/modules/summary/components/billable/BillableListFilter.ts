@@ -1,3 +1,4 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
@@ -35,7 +36,7 @@ interface IOwnState {
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
-  filterNonAdmin?: string;
+  filterCompanyNonAdmin?: string;
 
   // filter employee
   isFilterEmployeeOpen: boolean;
@@ -43,14 +44,16 @@ interface IOwnState {
 
   // filter start
   isFilterStartOpen: boolean;
-  filterStart?: string;
+  filterStart: string;
 
   // filter end
   isFilterEndOpen: boolean;
-  filterEnd?: string;
+  filterEnd: string;
 
   start?: string;
   end?: string;
+
+  filterEmployeeList?: IEmployeeListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -126,7 +129,7 @@ const createProps: mapper<BillableListFilterProps, IOwnState> = (props: Billable
     isFilterEndOpen: false,
     isFilterStartOpen: false,
     isFilterOpen: false,
-    filterNonAdmin: user && user.company.name,
+    filterCompanyNonAdmin: user && user.company.name,
     filterStart: moment()
       .startOf('year')
       .toISOString(true),
@@ -159,9 +162,15 @@ const stateUpdaters: StateUpdaters<BillableListFilterProps, IOwnState, IOwnState
   setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
-  setFilterCompany: () => (data?: ILookupCompany) => ({
+  setFilterCompany: (prevState: IOwnState) => (data?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
-    filterCompany: data
+    filterCompany: data,
+    filterEmployeeList: {
+      companyUids: data && data.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    },
+    filterEmployee: (prevState.filterCompany === data ? prevState.filterEmployee : undefined)
   }),
 
   // filter Employee
@@ -219,6 +228,9 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
   },
   handleFilterCompanyOnClear: (props: BillableListFilterProps) => () => {
     props.setFilterCompany();
+    if (props.isAdmin) {
+      props.setFilterEmployee();
+    }
   },
   handleFilterCompanyOnClose: (props: BillableListFilterProps) => () => {
     props.setFilterCompanyVisibility();

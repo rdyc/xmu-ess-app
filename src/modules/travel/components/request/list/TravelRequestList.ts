@@ -89,6 +89,7 @@ const createProps: mapper<TravelRequestListProps, IOwnState> = (props: TravelReq
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
       state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
       state.isSettlement = request.filter.isSettlement;
     }
