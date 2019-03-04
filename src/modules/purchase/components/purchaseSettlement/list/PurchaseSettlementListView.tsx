@@ -3,7 +3,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { isSettlementEditable } from '@purchase/helper';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
@@ -66,15 +66,6 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
       />
     }
     
-    appBarCustomComponent = {
-      <IconButton
-        color="inherit"
-        onClick = {() => props.history.push('/purchase/settlement/requests/form')}
-      >
-        <AddCircle />
-      </IconButton >
-    }
-
   // data toolbar component
     toolbarDataComponent = {
     <Tooltip
@@ -90,7 +81,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
       <Badge
       invisible={ !props.handleFilterBadge() }
       badgeContent = {
-        < CheckCircle color = "primary" fontSize = "small" />
+        < CheckCircle color = "secondary" fontSize = "small" />
         }
         >
           <Tune />
