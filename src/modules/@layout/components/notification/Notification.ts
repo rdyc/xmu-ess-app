@@ -130,7 +130,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<NotificationProps, IOwnState> 
         const timerId = setInterval(() => { 
           this.props.handleOnLoadApi(); 
         // tslint:disable-next-line:align
-        }, this.props.interval || 300000);
+        }, this.props.interval || 300000); // 5 mins
   
         this.props.setTimer(timerId);
       }
