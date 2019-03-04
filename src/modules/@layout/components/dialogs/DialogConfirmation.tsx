@@ -28,10 +28,10 @@ export const DialogConfirmation: React.SFC<OwnProps> = props => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={props.onClickCancel}>
+      <Button color="secondary" onClick={props.onClickCancel}>
         {props.labelCancel || 'cancel'}
       </Button>
-      <Button onClick={props.onClickConfirm} autoFocus>
+      <Button color="secondary" onClick={props.onClickConfirm} autoFocus>
         {props.labelConfirm || 'confirm'}
       </Button>
     </DialogActions>
