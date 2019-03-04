@@ -311,6 +311,11 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListFilterProps, I
   // filter new owner
   handleFilterNotifyOnChange: (props: TravelSettlementApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterNotify(checked);
+    if (checked) {
+      props.setFilterCompletion();
+    } else {
+      props.setFilterCompletion({ value: 'pending', name: 'Pending'});
+    }
   }
 };
 
