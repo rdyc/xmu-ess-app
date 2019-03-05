@@ -66,7 +66,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                         {intl.formatMessage(summaryMessage.progress.header.percentage)}
                       </TableCell>
                       <TableCell numeric>
-                        {`${progress.percentage} %`}
+                        {`${intl.formatNumber(progress.percentage)} %`}
                       </TableCell>
                     </TableRow>
                   </TableBody>

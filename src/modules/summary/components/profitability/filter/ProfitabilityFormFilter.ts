@@ -158,9 +158,11 @@ const handlerCreators: HandleCreators<SummaryProfitabilityFilterProps, IOwnHandl
   },
   handleFilterCustomerOnSelected: (props: SummaryProfitabilityFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
+    props.setFilterProject();
   },
   handleFilterCustomerOnClear: (props: SummaryProfitabilityFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
+    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: SummaryProfitabilityFilterProps) => () => {
     props.setFilterCustomerVisibility();

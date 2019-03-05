@@ -50,16 +50,16 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                     {assignment.employee && assignment.employee.fullName}
                   </TableCell>
                   <TableCell numeric>
-                    {assignment.allocatedHours}
+                    {intl.formatNumber(assignment.allocatedHours)}
                   </TableCell>
                   <TableCell numeric>
-                    {assignment.actualHours}
+                    {intl.formatNumber(assignment.actualHours)}
                   </TableCell>
                   <TableCell numeric>
-                    {assignment.remainHours}
+                    {intl.formatNumber(assignment.remainHours)}
                   </TableCell>
                   <TableCell numeric>
-                    {`${assignment.progress} %`}
+                    {`${intl.formatNumber(assignment.progress)} %`}
                   </TableCell>
                 </TableRow>
               )
@@ -109,19 +109,19 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                   <TableBody>
                     <TableRow>
                     <TableCell numeric>
-                        {project.maxHours}
+                        {intl.formatNumber(project.maxHours)}
                       </TableCell>
                       <TableCell numeric>
-                        {project.allocatedHours}
+                        {intl.formatNumber(project.allocatedHours)}
                       </TableCell>
                       <TableCell numeric>
-                        {project.actualHours}
+                        {intl.formatNumber(project.actualHours)}
                       </TableCell>
                       <TableCell numeric>
-                        {project.remainHours}
+                        {intl.formatNumber(project.remainHours)}
                       </TableCell>
                       <TableCell numeric>
-                        {`${project.progress} %`}
+                        {`${intl.formatNumber(project.progress)} %`}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(project.actualRates)}
