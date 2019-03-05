@@ -131,7 +131,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+          {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
               secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -149,7 +149,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider />
+          <Divider /> */}
 
           <ListItem>
             <ListItemText
