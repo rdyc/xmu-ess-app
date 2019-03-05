@@ -137,8 +137,10 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState>
     }
   },
   componentWillUpdate(prevProps: AccountEmployeeDialogProps) {
-    if (this.props.filter !== prevProps.filter) {
-      this.props.handleOnLoadApi();
+    if (this.props.filter && prevProps.filter) {
+      if (this.props.filter.companyUids !== prevProps.filter.companyUids) {
+        this.props.handleOnLoadApi();
+      }
     }
   },
   componentDidUpdate(prevProps: AccountEmployeeDialogProps) {
