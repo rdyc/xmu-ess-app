@@ -32,6 +32,10 @@ interface IOwnRouteParams {
   year: string;
 }
 
+interface IOwnOption {
+  employeeUid: string | undefined;
+}
+
 export type AccountLeaveDetailProps
   = WithAccountEmployeeLeave
   & WithUser
@@ -39,6 +43,7 @@ export type AccountLeaveDetailProps
   & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
   & IOwnState
+  & IOwnOption
   & IOwnStateUpdaters;
 
 const createProps: mapper<AccountLeaveDetailProps, IOwnState> = (props: AccountLeaveDetailProps): IOwnState => ({ 
@@ -73,7 +78,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, IOwnState> = 
         loadDetailRequest({
           year: yearNow,
           companyUid: user.company.uid,
-          employeeUid: user.uid,
+          employeeUid: this.props.employeeUid || user.uid,
         });
       }
     },
@@ -85,7 +90,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountLeaveDetailProps, IOwnState> = 
     }
   };
   
-export const AccountLeave = compose<AccountLeaveDetailProps, {}>(
+export const AccountLeave = compose<AccountLeaveDetailProps, IOwnOption>(
     withUser,
     withLayout,
     withRouter,

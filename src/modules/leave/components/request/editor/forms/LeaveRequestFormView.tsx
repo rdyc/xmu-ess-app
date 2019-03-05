@@ -1,3 +1,4 @@
+import { AccountLeave } from '@account/components/leave';
 import { Submission } from '@layout/components/submission/Submission';
 import { LeaveRequestDetailForm } from '@leave/components/request/editor/forms/LeaveRequestDetailForm';
 import { RequestFormProps } from '@leave/components/request/editor/forms/LeaveRequestForm';
@@ -57,6 +58,7 @@ export const LeaveRequestContainerFormView: React.SFC<RequestFormProps> = props 
         </Grid>
 
          <Grid item xs={12} md={4}>
+         <AccountLeave employeeUid={undefined}/>
           <Submission 
             valid={props.valid}
             reset={props.reset}
