@@ -117,7 +117,6 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
           />
           <ListItemSecondaryAction>
           { 
-              props.filterCompletion &&
               (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
               <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
