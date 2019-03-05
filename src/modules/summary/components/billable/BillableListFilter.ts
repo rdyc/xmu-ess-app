@@ -59,6 +59,7 @@ interface IOwnState {
   end?: string;
 
   filterEmployeeList?: IEmployeeListFilter;
+  resetCompany?: ILookupCompany;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -150,6 +151,7 @@ const createProps: mapper<BillableListFilterProps, IOwnState> = (props: Billable
     isFilterStartOpen: false,
     isFilterOpen: false,
     filterCompany: getCompany,
+    resetCompany: getCompany,
     filterCompanyNonAdmin: user && user.company.name,
     filterEmployeeList: {
       companyUids: user && user.company.uid,
@@ -159,11 +161,11 @@ const createProps: mapper<BillableListFilterProps, IOwnState> = (props: Billable
     filterStart: moment()
       .startOf('year')
       .toISOString(true),
-    filterEnd: moment().toISOString(true),
+    filterEnd: moment().format('YYYY MM DD'),
     start: moment()
     .startOf('year')
     .toISOString(true),
-    end: moment().toISOString(true)
+    end: moment().format('YYYY MM DD')
   };
 };
 
@@ -174,11 +176,16 @@ const stateUpdaters: StateUpdaters<BillableListFilterProps, IOwnState, IOwnState
   }),
 
   // main filter
-  setFilterReset: (prevState: IOwnState) => () => ({
-    filterCompany: undefined,
+  setFilterReset: (prevState: IOwnState, props: BillableListFilterProps) => () => ({
+    filterCompany: prevState.resetCompany,
     filterEmployee: undefined,
     filterStart: prevState.start,
-    filterEnd: prevState.end
+    filterEnd: prevState.end,
+    filterEmployeeList: props.userState.user && {
+      companyUids: props.userState.user && props.userState.user.company.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    }
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
@@ -253,7 +260,7 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
     props.setFilterCompany(data);
   },
   handleFilterCompanyOnClear: (props: BillableListFilterProps) => () => {
-    props.setFilterCompany();
+    props.setFilterCompany(props.resetCompany);
     if (props.isAdmin) {
       props.setFilterEmployee();
     }
