@@ -34,12 +34,14 @@ interface IOwnOption {
 interface IOwnState extends ILeaveRequestListFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
+  isDialogOpen: boolean;
   // selected: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
   // setSelection: StateHandler<IOwnState>;
 }
 
@@ -50,6 +52,7 @@ interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: ILeaveRequestListFilterResult) => void;
   handleFilterBadge: () => boolean;
+  handleDialog: () => void;
   // handleSelection: (values: string[]) => void;
   // handleDisableSelection: (item: ILeave) => boolean;
 }
@@ -71,6 +74,7 @@ const createProps: mapper<LeaveRequestListProps, IOwnState> = (props: LeaveReque
   const state: IOwnState = {
     status: 'pending',
     isFilterOpen: false,
+    isDialogOpen: false,
     // selected: [],
     fields: Object.keys(LeaveRequestField).map(key => ({ 
       value: key, 
@@ -102,6 +106,10 @@ const stateUpdaters: StateUpdaters<LeaveRequestListProps, IOwnState, IOwnStateUp
   setFilterApplied: (state: IOwnState) => (filter: ILeaveRequestListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
+  }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   }),
   // setSelection: (state: IOwnState) => (values?: string[]): Partial<IOwnState> => ({
   //   selected: values
@@ -187,6 +195,9 @@ const handlerCreators: HandleCreators<LeaveRequestListProps, IOwnHandler> = {
       props.statusType !== undefined ||
       props.status !== 'pending' ||
       props.isRejected === true;
+  },
+  handleDialog: (props: LeaveRequestListProps) => () => {
+    props.stateUpdate({isDialogOpen: !props.isDialogOpen});
   },
 };
 

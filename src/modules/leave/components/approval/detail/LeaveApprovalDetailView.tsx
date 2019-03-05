@@ -1,3 +1,4 @@
+import { AccountLeave } from '@account/components/leave';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
@@ -24,6 +25,7 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
       <LeaveInformation data={data} />
     )}
     secondary={(data: ILeaveDetail) => ([
+      <AccountLeave employeeUid={data.employeeUid}/>,
       <WorkflowHistory data={data.workflow} />,
       <React.Fragment>
         {
