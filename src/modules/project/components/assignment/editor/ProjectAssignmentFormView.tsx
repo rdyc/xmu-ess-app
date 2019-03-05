@@ -97,6 +97,11 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAs
                         props.change(`${field}.allocatedHours`, newValue * 8);
                       }
                     }}
+                    normalize={(value: any, previousValue?: any, allValues?: any, previousAllValues?: any) => {
+                      // minimum mandays must be greater than consumed hours
+                      const mandays = value * 8;
+                      return item.consumedHours < mandays ? value : previousValue;
+                    }}
                   />
                   <Field 
                     type="number"
@@ -163,7 +168,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
   <form onSubmit={props.handleSubmit}>
     <Grid container spacing={16}>
       <Grid item xs={12} md={4}>
-        <ProjectAssignment 
+        <ProjectAssignment
           formMode={props.formMode} 
           data={props.currentProject}
           showProjectHours={true}

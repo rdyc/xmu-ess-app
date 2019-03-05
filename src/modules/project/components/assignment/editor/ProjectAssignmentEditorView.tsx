@@ -6,11 +6,11 @@ import { ProjectAssignmentForm } from './ProjectAssignmentForm';
 export const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps> = props => (
   <ProjectAssignmentForm 
     formMode={props.formMode}
-    initialData={props.generateInitialData()}
-    initialValues={props.generateInitialValues()}
-    validate={props.handleValidate}
-    onSubmit={props.handleSubmit}
-    onSubmitSuccess={props.handleSubmitSuccess}
-    onSubmitFail={props.handleSubmitFail}
+    initialData={props.initialData}
+    initialValues={props.initialValues}
+    validate={props.handleOnValidate}
+    onSubmit={props.handleOnSubmit}
+    onSubmitSuccess={props.handleOnSubmitSuccess}
+    onSubmitFail={props.handleOnSubmitFail}
   />
 );
