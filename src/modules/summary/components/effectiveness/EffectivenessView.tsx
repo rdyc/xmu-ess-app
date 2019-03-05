@@ -14,9 +14,9 @@ export type IEffectiveness = {
   positionRole: string;
   project: string;
   customer: string;
-  allocated: number;
-  actual: number;
-  remaining: number;
+  allocated: string;
+  actual: string;
+  remaining: string;
   progress: string;
 };
 
@@ -36,10 +36,10 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         positionRole: `${assignment.position && assignment.position.name } - ${assignment.role}`,
         project: `${assignment.project && assignment.project.uid } - ${ assignment.project && assignment.project.name}`,
         customer: `${ assignment.project && assignment.project.customer && assignment.project.customer.name }`,
-        allocated: assignment.allocateHours,
-        actual: assignment.actualHours,
-        remaining: assignment.remainHours,
-        progress: `${assignment.percentage} %`,
+        allocated: intl.formatNumber(assignment.allocateHours),
+        actual: intl.formatNumber(assignment.actualHours),
+        remaining: intl.formatNumber(assignment.remainHours),
+        progress: `${intl.formatNumber(assignment.percentage)} %`,
       })
     ));
 
