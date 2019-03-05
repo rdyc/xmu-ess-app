@@ -1,11 +1,6 @@
-import {
-  Dialog,
-  DialogTitle,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Dialog, DialogTitle, Grid } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+
 import { AccountLeaveDetailProps } from './AccountLeave';
 import { AccountLeaveInformation } from './AccountLeaveInformation';
 
@@ -13,7 +8,7 @@ export const AccountLeaveView: React.SFC<AccountLeaveDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle
   } = props;
-  const { isLoading, response } = props.accountEmployeeLeaveState.detail;
+  const { response } = props.accountEmployeeLeaveState.detail;
 
   const renderDialog = (
     <Dialog
@@ -30,12 +25,6 @@ export const AccountLeaveView: React.SFC<AccountLeaveDetailProps> = props => {
 
   const render = (
     <React.Fragment>
-      {
-        isLoading && 
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
-      }
       {
         response && 
         <Grid 
