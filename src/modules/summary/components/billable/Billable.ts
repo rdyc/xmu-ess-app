@@ -101,7 +101,7 @@ const createProps: mapper<BillableProps, OwnState> = (
     start: moment()
       .startOf('year')
       .toISOString(true),
-    end: moment().toISOString(true),
+    end: moment().format('YYYY MM DD'),
     orderBy:
       (request && request.filter && request.filter.orderBy) ||
       orderBy ||

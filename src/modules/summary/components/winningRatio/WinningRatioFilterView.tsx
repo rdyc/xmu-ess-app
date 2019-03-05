@@ -32,7 +32,7 @@ import { WinningRatioFilterProps } from './WinningRatioFilter';
 
 export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
-    return props.filterCompany !== undefined ||
+    return props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
       props.filterEmployee !== undefined ||
       props.filterStart !== props.start ||
       props.filterEnd !== props.end;
@@ -64,7 +64,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             </Typography>
 
             {
-              (props.filterCompany || props.filterEmployee || 
+              (props.filterCompany && props.resetCompany && props.filterCompany.uid !== props.resetCompany.uid || props.filterEmployee || 
                 props.filterStart && props.filterStart !== props.start || 
                 props.filterEnd && props.filterEnd !== props.end) &&
               <Button color="inherit" onClick={props.handleFilterOnReset}>
@@ -91,7 +91,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterCompany &&
+                props.filterCompany && props.resetCompany && props.filterCompany.uid !== props.resetCompany.uid &&
                 <IconButton onClick={props.handleFilterCompanyOnClear}>
                   <ClearIcon />
                 </IconButton>
