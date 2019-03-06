@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify'>;
+export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify' | 'positionUid' | 'start' | 'end'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -52,6 +52,14 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
 
   // filter completion
   isFilterCompletionOpen: boolean;
@@ -76,6 +84,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
@@ -108,6 +124,18 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
+
   // filter completion
   handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
@@ -135,6 +163,8 @@ const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = 
   isFilterActivityTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify
@@ -146,6 +176,8 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwn
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
+    filterStart: undefined,
+    filterEnd: undefined,
     filterCompletion: undefined,
     filterNotify: undefined
   }),
@@ -177,6 +209,24 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwn
     filterStatus: data
   }),
 
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: () => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
+  }),
+
   // filter completion
   setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
     isFilterCompletionOpen: !prevState.isFilterCompletionOpen
@@ -203,6 +253,8 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      start: props.filterStart,
+      end: props.filterEnd,
       isNotify: props.filterNotify
     });
   },
@@ -249,6 +301,34 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
     props.setFilterStatusVisibility();
   },
 
+  // filter Start
+  handleFilterStartVisibility: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (data: string) => {
+    props.setFilterStart(data);
+  },
+  handleFilterStartOnClear: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStart();
+  },
+  handleFilterStartOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (data: string) => {
+    props.setFilterEnd(data);
+  },
+  handleFilterEndOnClear: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEnd();
+  },
+  handleFilterEndOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterEndVisibility();
+  },
+
   // filter completion
   handleFilterCompletionVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
@@ -273,7 +353,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProp
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, activityType, statusType, status } = this.props.initialProps;
+      const { customerUid, activityType, statusType, status, start, end } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -313,6 +393,16 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProp
         const selected = completionStatus.find(item => item.value === status);
           
         this.props.setFilterCompletion(selected);
+      }
+
+      // filter start
+      if (start) {
+        this.props.setFilterStart(start);
+      }
+
+      // filter end
+      if (end) {
+        this.props.setFilterEnd(end);
       }
     }
   }

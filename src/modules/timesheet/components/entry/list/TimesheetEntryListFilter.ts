@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
+export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected' | 'positionUid' | 'start' | 'end'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -52,6 +52,14 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
 
   // filter completion
   isFilterCompletionOpen: boolean;
@@ -81,6 +89,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
 
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
+
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
 }
@@ -107,6 +123,18 @@ interface IOwnHandler {
   handleFilterStatusOnSelected: (data: ISystemList) => void;
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
+
+  // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
 
   // filter completion
   handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -135,6 +163,8 @@ const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: Ti
   isFilterActivityTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected
@@ -146,6 +176,8 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
+    filterStart: undefined,
+    filterEnd: undefined,
     filterCompletion: { value: 'pending', name: 'Pending' },
     filterRejected: undefined
   }),
@@ -177,6 +209,24 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
     filterStatus: data
   }),
 
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: () => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
+  }),
+
   // filter completion
   setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
     isFilterCompletionOpen: !prevState.isFilterCompletionOpen
@@ -203,6 +253,8 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      start: props.filterStart,
+      end: props.filterEnd,
       isRejected: props.filterRejected,
     });
   },
@@ -249,6 +301,34 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
     props.setFilterStatusVisibility();
   },
 
+  // filter Start
+  handleFilterStartVisibility: (props: TimesheetEntryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: TimesheetEntryListFilterProps) => (data: string) => {
+    props.setFilterStart(data);
+  },
+  handleFilterStartOnClear: (props: TimesheetEntryListFilterProps) => () => {
+    props.setFilterStart();
+  },
+  handleFilterStartOnClose: (props: TimesheetEntryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: TimesheetEntryListFilterProps) => (data: string) => {
+    props.setFilterEnd(data);
+  },
+  handleFilterEndOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEnd();
+  },
+  handleFilterEndOnClose: (props: TimesheetEntryListFilterProps) => () => {
+    props.setFilterEndVisibility();
+  },
+
   // filter completion
   handleFilterCompletionVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
@@ -273,7 +353,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnSta
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, activityType, statusType, status } = this.props.initialProps;
+      const { customerUid, activityType, statusType, status, start, end } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -313,6 +393,16 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnSta
         const selected = completionStatus.find(item => item.value === status);
 
         this.props.setFilterCompletion(selected);
+      }
+
+      // filter start
+      if (start) {
+        this.props.setFilterStart(start);
+      }
+
+      // filter end
+      if (end) {
+        this.props.setFilterEnd(end);
       }
     }
   }

@@ -110,18 +110,21 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.from`}
                     label={props.intl.formatMessage(travelMessage.request.field.from)}
+                    required={true}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
                     label={props.intl.formatMessage(travelMessage.request.field.destination)}
+                    required={true}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
+                    required={true}
                     minDate={props.minDate}
                     maxDate={props.maxDate}
                   />

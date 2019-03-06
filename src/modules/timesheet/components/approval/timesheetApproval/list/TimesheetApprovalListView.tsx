@@ -93,6 +93,8 @@ export const TimesheetApprovalListView: React.SFC<TimesheetApprovalListProps> = 
         activityType: props.activityType,
         statusType: props.statusType,
         status: props.status,
+        start: props.start,
+        end: props.end,
         isNotify: props.isNotify
       }}
       onClose={props.handleFilterVisibility}
