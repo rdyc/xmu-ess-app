@@ -1,5 +1,7 @@
 import { UserAction } from '@layout/store/actions';
 import {
+  purchaseGetAllDispose,
+  purchaseGetByIdDispose,
   SettlementAction,
   settlementGetAllDispose,
   settlementGetAllError,
@@ -78,6 +80,8 @@ function* watchPostFetchRequest() {
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
+        put(purchaseGetByIdDispose()),
+        put(purchaseGetAllDispose()),
         put(settlementGetByIdDispose()),
         put(settlementGetAllDispose()),
         put(settlementPostSuccess(response.body)),

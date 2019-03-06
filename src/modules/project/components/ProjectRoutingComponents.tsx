@@ -7,6 +7,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { ProjectAcceptanceApproval } from './acceptance/approval/ProjectAcceptanceApproval';
 import { ProjectAcceptanceDetail } from './acceptance/detail/ProjectAcceptanceDetail';
 import { ProjectAcceptanceList } from './acceptance/list/ProjectAcceptanceList';
+import { ProjectAdministrationList } from './administration/list/ProjectAdministrationList';
 import { ProjectApprovalDetail } from './approval/detail/ProjectApprovalDetail';
 import { ProjectApprovalList } from './approval/list/ProjectApprovalList';
 import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDetail';
@@ -54,6 +55,13 @@ const acceptance = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const administration = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
+    <Route path={`${props.match.path}`} component={ProjectAdministrationList} />
+  </Switch>
+);
+
 export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
@@ -79,6 +87,12 @@ export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props =>
       menu={AppMenu.ProjectAssignment} 
       subMenu={AppMenu.ProjectAssignmentAcceptance} 
       component={acceptance}
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/administrations`} 
+      menu={AppMenu.ProjectRegistration} 
+      subMenu={AppMenu.ProjectRegistrationRequest} 
+      component={administration}
     />
   </Switch>
 );
