@@ -178,7 +178,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListProps, IOwnHan
     return props.customerUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      // props.status !== undefined ||
       props.isNotify === true;
   },
 };

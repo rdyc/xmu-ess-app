@@ -185,7 +185,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
     return props.customerUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
-      props.status !== undefined ||
+      // props.status !== undefined ||
       props.isNotify === true;
   },
   handleSelection: (props: TimesheetApprovalListProps) => (values: string[]) => {

@@ -1,17 +1,20 @@
 import { GlobalFormat } from '@layout/types';
 import {
-  Button,
+  AppBar,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
+  Divider,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Toolbar,
+  Typography,
   WithStyles,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
@@ -44,10 +47,26 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       fullWidth
       maxWidth="md"
     >
-      <DialogTitle id="progress-expense-dialog-title">
-        {intl.formatMessage(summaryMessage.progress.dialog.title)}
-        {expenseProjectUid}
-      </DialogTitle>
+    <AppBar 
+      elevation={0}
+      position="fixed" 
+      color="default"
+      className={props.classes.appBarDialog}
+    >
+        <Toolbar>
+          <IconButton color="inherit" onClick={handleDialogClose} aria-label="Close">
+            <CloseIcon />
+          </IconButton>
+
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
+            {props.intl.formatMessage(summaryMessage.profitability.dialog.title)}{expenseProjectUid}
+          </Typography>
+
+        </Toolbar>
+      </AppBar>
+
+      <Divider/>
+
       <DialogContent>
         <Table
           padding= "dense"
@@ -97,11 +116,6 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
           </TableBody>
         </Table>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
-          {intl.formatMessage(summaryMessage.progress.dialog.close)}
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

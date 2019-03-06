@@ -63,7 +63,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
                       {intl.formatMessage(summaryMessage.profitability.header.percentage)}
                     </TableCell>
                     <TableCell numeric>
-                      {`${profitability.percentage} %`}
+                      {`${intl.formatNumber(profitability.percentage)} %`}
                     </TableCell>
                   </TableRow>
                 </TableBody>
