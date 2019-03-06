@@ -1,3 +1,4 @@
+import AppEvent from '@constants/AppEvent';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
@@ -21,21 +22,24 @@ import {
 import { AppUserManager } from '../../../../utils';
 import { LandingPageView } from './LandingPageView';
 
-interface OwnHandler {
-  handleOnClickLogin: () => void;
-  handleOnClickLogout: () => void;
-}
-
-interface OwnState {
+interface IOwnState {
+  isUpdateAvailable: boolean;
+  isLoggedIn: boolean;
   title: string;
   description: string;
   footer: string;
-  isLoggedIn: boolean;
   user?: IAppUser;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setUser: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setUser: StateHandler<IOwnState>;
+  setUpdateAvailable: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnFoundUpdate: (event: CustomEvent) => void;
+  handleOnClickLogin: () => void;
+  handleOnClickLogout: () => void;
 }
 
 export type LandingPageProps 
@@ -44,25 +48,32 @@ export type LandingPageProps
   & WithOidc 
   & WithUser
   & WithStyles<typeof styles>
-  & OwnState 
-  & OwnStateUpdaters 
-  & OwnHandler;
+  & IOwnState 
+  & IOwnStateUpdater 
+  & IOwnHandler;
 
-const createProps: mapper<LandingPageProps, OwnState> = (props: LandingPageProps): OwnState => ({
+const createProps: mapper<LandingPageProps, IOwnState> = (props: LandingPageProps): IOwnState => ({
+  isUpdateAvailable: false,
   isLoggedIn: false,
   title: process.env.REACT_APP_WEBSITE_NAME || 'Title',
   description: process.env.REACT_APP_WEBSITE_DESCRIPTION || 'Description',
   footer: process.env.REACT_APP_WEBSITE_FOOTER || 'Copyright',
 });
 
-const stateUpdaters: StateUpdaters<LandingPageProps, OwnState, OwnStateUpdaters> = {
-  setUser: (prevState: OwnState, props: LandingPageProps) => (appUser: IAppUser): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<LandingPageProps, IOwnState, IOwnStateUpdater> = {
+  setUpdateAvailable: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isUpdateAvailable: !state.isUpdateAvailable
+  }),
+  setUser: (state: IOwnState, props: LandingPageProps) => (appUser: IAppUser): Partial<IOwnState> => ({
     isLoggedIn: true,
     user: appUser
   })
 };
 
-const handlerCreators: HandleCreators<LandingPageProps, OwnHandler> = {
+const handlerCreators: HandleCreators<LandingPageProps, IOwnHandler> = {
+  handleOnFoundUpdate: (props: LandingPageProps) => (event: CustomEvent) => {
+    props.setUpdateAvailable();
+  },
   handleOnClickLogin: (props: LandingPageProps) => () => {
     // check user login
     if (props.oidcState.user) {
@@ -88,9 +99,14 @@ const handlerCreators: HandleCreators<LandingPageProps, OwnHandler> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
-  componentDidMount() {
+  componentWillMount() {
     // set document props
     document.title = 'Welcome to New TESSA';
+
+    addEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
+  },
+  componentWillUnmount() {
+    removeEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
   }
 };
 
