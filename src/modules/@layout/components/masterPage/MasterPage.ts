@@ -1,4 +1,5 @@
 import AppEvent from '@constants/AppEvent';
+import AppStorage from '@constants/AppStorage';
 import { IPageInfo, IRedirection } from '@generic/interfaces';
 import { NotificationProps } from '@home/components/notification';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -19,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import * as store from 'store';
 
 import { ChildPageView, MasterPageView } from './MasterPageView';
 
@@ -37,7 +39,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnFoundUpdate: (event: CustomEvent) => void;
   handleOnChangeRoute: (event: CustomEvent) => void;
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
   handleOnClickReload: (event: React.MouseEvent) => void;
@@ -83,18 +84,26 @@ const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
     document.title = `${page.title} - ${webName}`;
   },
   handleOnClickReload: (props: MasterPageProps) => (event: React.MouseEvent) => {
+    store.set(AppStorage.Update, false);
+
     window.location.reload(true);
   } 
 };
 
 const lifecycles: ReactLifeCycleFunctions<MasterPageProps, {}> = {
   componentWillMount() {
-    addEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
     addEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
   },
+  componentDidMount() {
+    // get update status
+    const update: boolean = store.get(AppStorage.Update);
+
+    if (update) {
+      this.props.setUpdateAvailable();
+    }
+  },
   componentWillUnmount() {
-    removeEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
     removeEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
     removeEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
   }

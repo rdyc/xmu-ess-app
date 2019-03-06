@@ -1,4 +1,4 @@
-import AppEvent from '@constants/AppEvent';
+import AppStorage from '@constants/AppStorage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
@@ -18,6 +18,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import * as store from 'store';
 
 import { AppUserManager } from '../../../../utils';
 import { LandingPageView } from './LandingPageView';
@@ -37,7 +38,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnFoundUpdate: (event: CustomEvent) => void;
+  handleOnClickReload: (event: React.MouseEvent) => void;
   handleOnClickLogin: () => void;
   handleOnClickLogout: () => void;
 }
@@ -71,9 +72,6 @@ const stateUpdaters: StateUpdaters<LandingPageProps, IOwnState, IOwnStateUpdater
 };
 
 const handlerCreators: HandleCreators<LandingPageProps, IOwnHandler> = {
-  handleOnFoundUpdate: (props: LandingPageProps) => (event: CustomEvent) => {
-    props.setUpdateAvailable();
-  },
   handleOnClickLogin: (props: LandingPageProps) => () => {
     // check user login
     if (props.oidcState.user) {
@@ -95,18 +93,25 @@ const handlerCreators: HandleCreators<LandingPageProps, IOwnHandler> = {
   handleOnClickLogout: (props: LandingPageProps) => () => {
     AppUserManager.signoutRedirect();
     // AppUserManager.signoutPopup();
-  }
+  },
+  handleOnClickReload: (props: LandingPageProps) => (event: React.MouseEvent) => {
+    store.set(AppStorage.Update, false);
+
+    window.location.reload(true);
+  } 
 };
 
 const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
-  componentWillMount() {
+  componentDidMount() {
     // set document props
     document.title = 'Welcome to New TESSA';
 
-    addEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
-  },
-  componentWillUnmount() {
-    removeEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
+    // get update status
+    const update: boolean = store.get(AppStorage.Update);
+
+    if (update) {
+      this.props.setUpdateAvailable();
+    }
   }
 };
 

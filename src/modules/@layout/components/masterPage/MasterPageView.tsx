@@ -42,8 +42,16 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
               horizontal: 'center',
               vertical: 'top'
             }}
-            message="A new updated version is available!"
-            action={<Button title="Reload" onClick={props.handleOnClickReload} />}
+            message="A new version is available!"
+            action={
+              <Button 
+                color="secondary" 
+                size="small"
+                onClick={props.handleOnClickReload}
+              >
+                Apply
+              </Button>
+            }
           />
         </React.Fragment>
       }
