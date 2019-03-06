@@ -115,7 +115,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: dateFormatEditor (item.departureDate),
+            departureDate: dateFormatEditor(item.departureDate),
             returnDate: dateFormatEditor(item.returnDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,

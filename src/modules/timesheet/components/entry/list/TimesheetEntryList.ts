@@ -86,6 +86,8 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
       state.status = request.filter.status,
+      state.start = request.filter.start,
+      state.end = request.filter.end,
       state.isRejected = request.filter.isRejected;
     }
   }
@@ -112,7 +114,10 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
       // predefined filter
       const filter: ITimesheetEntryGetAllFilter = {
         isRejected: props.isRejected,
-        companyUid: props.companyUid,
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.positionUid,
+        start: props.start,
+        end: props.end,
         customerUid: props.customerUid,
         activityType: props.activityType,
         statusType: props.statusType,
@@ -184,6 +189,8 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
       props.activityType !== undefined ||
       props.status !== 'pending' ||
       props.statusType !== undefined ||
+      props.start !== undefined ||
+      props.end !== undefined ||
       props.isRejected === true;
   },
 };
@@ -197,6 +204,8 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
         activityType: this.props.activityType,
         statusType: this.props.statusType,
         status: this.props.status,
+        start: this.props.start,
+        end: this.props.end,
         isRejected: this.props.isRejected,
       },
       {
@@ -204,6 +213,8 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
         status: prevProps.status,
+        start: prevProps.start,
+        end: prevProps.end,
         isRejected: prevProps.isRejected,
       }
     );
