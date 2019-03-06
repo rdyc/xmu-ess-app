@@ -1,4 +1,5 @@
 import { LayoutTheme } from '@layout/hoc/withRoot';
+import { Button, Snackbar } from '@material-ui/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 
@@ -34,6 +35,24 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
           </ChildPage>
 
           <SnackbarAlert/>
+
+          <Snackbar 
+            open={props.isUpdateAvailable} 
+            anchorOrigin={{
+              horizontal: 'center',
+              vertical: 'top'
+            }}
+            message="A new version is available!"
+            action={
+              <Button 
+                color="secondary" 
+                size="small"
+                onClick={props.handleOnClickReload}
+              >
+                Apply
+              </Button>
+            }
+          />
         </React.Fragment>
       }
     </div>
