@@ -20,7 +20,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/registrations?companyUid=${action.payload.companyUid}&${params}`,
+      path: `/v1/project/registrations?companyUid=${action.payload.companyUid}${params.length !== 0 ? '&' : '' }${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAdministrationGetAllSuccess(response.body)),
       ],

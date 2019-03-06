@@ -25,8 +25,8 @@ import {
 import { ProjectAdministrationListFilterView } from './ProjectAdministrationFilterView';
 
 const completionStatus: ICollectionValue[] = [
-  { value: 'pending', name: 'Pending' },
-  { value: 'complete', name: 'Complete' }
+  { value: 'complete', name: 'Complete' },
+  { value: 'pending', name: 'Pending' }
 ];
 
 export type IProjectAdministrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'isRejected' | 'isNewOwner' | 'status'>;
@@ -156,7 +156,7 @@ const stateUpdaters: StateUpdaters<ProjectAdministrationListFilterProps, IOwnSta
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: { value: 'pending', name: 'Pending'},
+    filterCompletion: { value: 'complete', name: 'Complete'},
     filterNewOwner: undefined,
     filterRejected: undefined
   }),
@@ -274,7 +274,7 @@ const handlerCreators: HandleCreators<ProjectAdministrationListFilterProps, IOwn
     props.setFilterCompletion(data);
   },
   handleFilterCompletionOnClear: (props: ProjectAdministrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion({value: 'pending', name: 'Pending'});
+    props.setFilterCompletion({value: 'complete', name: 'Complete'});
   },
   handleFilterCompletionOnClose: (props: ProjectAdministrationListFilterProps) => () => {
     props.setFilterCompletionVisibility();

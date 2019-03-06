@@ -74,7 +74,7 @@ const createProps: mapper<ProjectAdministrationListProps, IOwnState> = (props: P
   const state: IOwnState = {
     isFilterOpen: false,
     // selected: [],
-    status: 'pending',
+    status: 'complete',
     fields: Object.keys(ProjectRegistrationField).map(key => ({ 
       value: key, 
       name: ProjectRegistrationField[key] 
@@ -193,7 +193,7 @@ const handlerCreators: HandleCreators<ProjectAdministrationListProps, IOwnHandle
     return props.customerUid !== undefined || 
       props.projectType !== undefined || 
       props.statusType !== undefined ||
-      props.status !== 'pending' ||
+      props.status !== 'complete' ||
       props.isRejected === true ||
       props.isNewOwner === true;
   },

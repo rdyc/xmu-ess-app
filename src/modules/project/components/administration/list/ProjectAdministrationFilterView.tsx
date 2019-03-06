@@ -14,7 +14,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -56,7 +55,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
               props.filterType || 
               props.filterStatus ||
               !props.filterCompletion ||
-              props.filterCompletion && props.filterCompletion.value !== 'pending' ||  
+              props.filterCompletion && props.filterCompletion.value !== 'complete' ||  
               props.filterRejected || 
               props.filterNewOwner) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
@@ -117,7 +116,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterStatusVisibility}>
+          {/* <ListItem button onClick={props.handleFilterStatusVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(projectMessage.registration.field.statusType)}
               secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -135,7 +134,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
               </IconButton> 
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider />
+          <Divider /> */}
 
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
@@ -144,7 +143,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
             />
             <ListItemSecondaryAction>
             { 
-                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+                (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'complete') &&
                 <IconButton onClick={props.handleFilterCompletionOnClear}>
                   <ClearIcon />
                 </IconButton> 
@@ -157,7 +156,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
           </ListItem>
           <Divider />
 
-          <ListItem>
+          {/* <ListItem>
             <ListItemText 
               primary={props.intl.formatMessage(projectMessage.registration.field.isRejected)}
               secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
@@ -170,9 +169,9 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
               />
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider />
+          <Divider /> */}
           
-          <ListItem>
+          {/* <ListItem>
             <ListItemText 
               primary={props.intl.formatMessage(projectMessage.registration.field.isNewOwner)}
               secondary={props.intl.formatMessage(props.filterNewOwner ? layoutMessage.action.yes : layoutMessage.action.no)}
@@ -185,7 +184,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
               />
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider />
+          <Divider /> */}
 
         </List>
       </DialogContent>
