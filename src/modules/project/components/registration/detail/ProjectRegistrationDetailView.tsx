@@ -18,7 +18,7 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
     info={{
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      parentUrl: '/project/requests',
+      parentUrl: props.location.state && props.location.state.isAdministration ? '/project/administrations' : '/project/requests',
       title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),
       description: props.intl.formatMessage(projectMessage.registration.page.detailSubHeader)
     }}
