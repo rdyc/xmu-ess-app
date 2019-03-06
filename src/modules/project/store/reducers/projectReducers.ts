@@ -1,4 +1,5 @@
 import projectAcceptanceReducers from './acceptance/projectAcceptanceReducers';
+import projectAdministrationReducers from './administration/projectAdministrationReducers';
 import projectApprovalReducers from './approval/projectApprovalReducers';
 import projectAssignmentReducers from './assignment/projectAssignmentReducers';
 import projectHourReducers from './hour/projectHourReducers';
@@ -16,4 +17,5 @@ export const projectReducers = {
   ...projectApprovalReducers,
   ...projectAssignmentReducers,
   ...projectAcceptanceReducers,
+  ...projectAdministrationReducers
 };

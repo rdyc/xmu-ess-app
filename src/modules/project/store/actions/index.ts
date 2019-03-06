@@ -6,3 +6,4 @@ export * from './projectHourActions';
 export * from './projectRegistrationActions';
 export * from './projectSiteActions';
 export * from './projectStatusActions';
+export * from './projectAdministrationActions';

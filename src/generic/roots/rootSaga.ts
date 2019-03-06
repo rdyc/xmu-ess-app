@@ -71,6 +71,7 @@ import organizationHierarchySagas from '@organization/store/sagas/organizationHi
 import organizationStructureSagas from '@organization/store/sagas/organizationStructureSagas';
 import organizationWorkflowSagas from '@organization/store/sagas/organizationWorkflowSagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
+import projectAdministrationSagas from '@project/store/sagas/projectAdministrationSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
 import projectHourSagas from '@project/store/sagas/projectHourSagas';
@@ -174,6 +175,7 @@ export function* rootSaga() {
     fork(projectApprovalSagas),
     fork(projectAssignmentSagas),
     fork(projectAcceptanceSagas),
+    fork(projectAdministrationSagas),
     
     // timesheet
     fork(timesheetEntrySagas),

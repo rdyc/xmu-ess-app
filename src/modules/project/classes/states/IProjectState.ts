@@ -81,4 +81,7 @@ export interface IProjectState {
   projectAcceptanceGetAll: IQueryCollectionState<IProjectAcceptanceGetAllRequest, IProjectAssignment>;
   projectAcceptanceGetById: IQuerySingleState<IProjectAcceptanceGetByIdRequest, IProjectAssignmentDetailItem>;
   projectAcceptancePost: IQuerySingleState<IProjectAcceptancePostRequest, boolean>;
+
+  // administration
+  projectAdministrationGetAll: IQueryCollectionState<IProjectRegistrationGetAllRequest, IProject>;
 }

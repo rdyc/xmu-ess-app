@@ -1,5 +1,6 @@
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
+  travelGetAllDispose,
   TravelSettlementAction as Action,
   travelSettlementGetAllDispose,
   travelSettlementGetAllError,
@@ -85,6 +86,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(travelSettlementGetAllDispose()),
+        put(travelGetAllDispose()),
         put(travelSettlementPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
