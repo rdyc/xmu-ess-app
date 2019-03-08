@@ -78,7 +78,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     });
 
     if (formData.item.items) {
-      const requiredItemFields = ['employeeUid', 'transportType', 'departureDate', 'from', 'destination'];
+      const requiredItemFields = ['employeeUid', 'transportType', 'departureDate', 'from', 'destination', 'returnDate'];
 
       const itemErrors: any[] = [];
       
