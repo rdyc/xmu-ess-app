@@ -130,6 +130,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   />
                   <Field 
                     name={`${field}.returnDate`}
+                    required
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
                     minDate={props.minDate}
