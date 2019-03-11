@@ -125,7 +125,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     filterCustomer: customer,
     filterProjectDialog: {
       customerUids: customer && customer.uid,
-      activeOnly: true,
       orderBy: 'uid',
       direction: 'descending',
     }
