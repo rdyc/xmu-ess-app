@@ -73,12 +73,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   
     const requiredFields = [
       'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 
-      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType'
+      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType'
     ];
   
     const requiredBank = [
       'citizenNumber', 'taxNumber', 'familyCardNumber', 
-      'bankAccount', 'bankAccountName', 'bpjsEmploymentNumber', 'bpjsHealthCareNumber'
+      'bankAccount', 'bankAccountName'
     ];
 
     const requiredContact = [
