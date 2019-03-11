@@ -1,6 +1,6 @@
 import { NewsFeed } from '@home/components/newsFeed/NewsFeed';
 import { LayoutTheme } from '@layout/hoc/withRoot';
-import { Paper } from '@material-ui/core';
+import { Paper, Snackbar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
@@ -160,6 +160,24 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
           </Typography>
         </footer>
       </main>
+    
+      <Snackbar 
+        open={props.isUpdateAvailable} 
+        anchorOrigin={{
+          horizontal: 'center',
+          vertical: 'top'
+        }}
+        message="A new version is available!"
+        action={
+          <Button 
+            color="secondary" 
+            size="small"
+            onClick={props.handleOnClickReload}
+          >
+            Apply
+          </Button>
+        }
+      />
     </div>
   </LayoutTheme>
 );

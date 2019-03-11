@@ -75,16 +75,19 @@ export const expenseInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.name)}
           value={data.client ? data.client.name : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.title)}
           value={data.client ? data.client.title : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.notes)}
           value={data.notes || 'N/A'}
         />

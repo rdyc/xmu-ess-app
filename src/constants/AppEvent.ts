@@ -1,4 +1,5 @@
 enum AppEvent {
+  onFoundUpdate = 'found.update',
   onChangeTheme = 'theme.change',
   onChangeRoute = 'route.change',
   onChangePage = 'page.change',
