@@ -7,6 +7,7 @@ import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCu
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -307,6 +308,9 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   },
   handleFilterStartOnSelected: (props: TimesheetEntryListFilterProps) => (data: string) => {
     props.setFilterStart(data);
+    if (moment(data).isAfter(props.filterEnd)) {
+      props.setFilterEnd();
+    }
   },
   handleFilterStartOnClear: (props: TimesheetEntryListFilterProps) => () => {
     props.setFilterStart();
@@ -321,6 +325,9 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   },
   handleFilterEndOnSelected: (props: TimesheetEntryListFilterProps) => (data: string) => {
     props.setFilterEnd(data);
+    if (moment(data).isBefore(props.filterStart)) {
+      props.setFilterStart();
+    }
   },
   handleFilterEndOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEnd();

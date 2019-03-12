@@ -289,6 +289,9 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
   },
   handleFilterStartOnSelected: (props: WinningRatioFilterProps) => (data: string) => {
     props.setFilterStart(data);
+    if (moment(data).isAfter(props.filterEnd)) {
+      props.setFilterEnd();
+    }
   },
   handleFilterStartOnClear: (props: WinningRatioFilterProps) => () => {
     props.setFilterStart(props.start);
@@ -303,6 +306,9 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
   },
   handleFilterEndOnSelected: (props: WinningRatioFilterProps) => (data: string) => {
     props.setFilterEnd(data);
+    if (moment(data).isBefore(props.filterStart)) {
+      props.setFilterStart();
+    }
   },
   handleFilterEndOnClear: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEnd(props.end);
