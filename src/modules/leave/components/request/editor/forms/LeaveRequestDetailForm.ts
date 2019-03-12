@@ -1,7 +1,9 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDateLeave } from '@layout/components/input/date';
+import { InputDateEndView } from '@layout/components/input/date/InputDateEndView';
 import { InputText } from '@layout/components/input/text';
+import { ILeaveGetEnd } from '@leave/classes/response';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InputLeave } from '@lookup/components/leave/input';
@@ -12,11 +14,12 @@ import { BaseFieldsProps } from 'redux-form';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
-  formRegularType: string | null | undefined;
+  // formRegularType: string | null | undefined;
   isRegularType: boolean;
   isAdmin: boolean;
+  dataEnd: ILeaveGetEnd | undefined; 
   onChangeEnd: (event: any, newValue: string, oldValue: string) => void;
-  onChangeRegular: (event: any, newValue: string, oldValue: string) => void;
+  // onChangeRegular: (event: any, newValue: string, oldValue: string) => void;
 }
 
 interface OwnHandlers {
@@ -31,7 +34,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formMode, isRegularType, onChangeEnd, onChangeRegular
+      intl, formMode, isRegularType, onChangeEnd
     } = props;
 
     const fieldName = name.replace('information.', '');
@@ -56,14 +59,14 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
-          onChange: onChangeRegular
+          // onChange: onChangeRegular
         };
         break;
 
       case 'regularType':
         fieldProps = {
           required: false,
-          disabled: !isRegularType,
+          // disabled: !isRegularType,
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: isRegularType ? InputLeave : InputText,
@@ -83,10 +86,11 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'end': 
         fieldProps = {
           required: true,
-          disabled: isRegularType,
+          disabled: !isRegularType,
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
-          component: InputDateLeave
+          value: !isRegularType && props.dataEnd,
+          component: !isRegularType ? InputDateEndView : InputDateLeave
         };
         break;
       
