@@ -83,6 +83,7 @@ const createProps: mapper<ProjectAssignmentFormProps, IOwnState> = (props: Proje
     projectFilter: {
       find: user ? user.uid : '',
       findBy: 'ownerEmployeeUid',
+      companyUid: user && user.company.uid,
       statusTypes: WorkflowStatusType.Approved,
       assignmentStatus: 'unassigned',
     }
