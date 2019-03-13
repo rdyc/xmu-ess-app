@@ -1,9 +1,9 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDateLeave } from '@layout/components/input/date';
-import { InputDateEndView } from '@layout/components/input/date/InputDateEndView';
+import { InputDateEnd } from '@layout/components/input/date/InputDateEnd';
 import { InputText } from '@layout/components/input/text';
-import { ILeaveGetEnd } from '@leave/classes/response';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InputLeave } from '@lookup/components/leave/input';
@@ -14,12 +14,10 @@ import { BaseFieldsProps } from 'redux-form';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
-  // formRegularType: string | null | undefined;
+  startValue: string | undefined;
+  regularValue: string | undefined;
   isRegularType: boolean;
   isAdmin: boolean;
-  dataEnd: ILeaveGetEnd | undefined; 
-  onChangeEnd: (event: any, newValue: string, oldValue: string) => void;
-  // onChangeRegular: (event: any, newValue: string, oldValue: string) => void;
 }
 
 interface OwnHandlers {
@@ -29,13 +27,20 @@ interface OwnHandlers {
 export type RequestDetailFormProps 
   = OwnProps
   & OwnHandlers
+  & WithUser
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formMode, isRegularType, onChangeEnd
+      intl, formMode, isRegularType
     } = props;
+
+    const endFilter: any = {
+      start: props.startValue,
+      regularType: props.regularValue,
+      companyUid: props.userState.user && props.userState.user.company.uid
+    };
 
     const fieldName = name.replace('information.', '');
 
@@ -59,14 +64,12 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
-          // onChange: onChangeRegular
         };
         break;
 
       case 'regularType':
         fieldProps = {
           required: false,
-          // disabled: !isRegularType,
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: isRegularType ? InputLeave : InputText,
@@ -79,18 +82,17 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputDateLeave,
-          onChange: onChangeEnd
         };
         break;
         
       case 'end': 
         fieldProps = {
           required: true,
-          disabled: !isRegularType,
+          disabled: isRegularType,
           label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
-          value: !isRegularType && props.dataEnd,
-          component: !isRegularType ? InputDateEndView : InputDateLeave
+          filter: endFilter,
+          component: isRegularType && props.startValue && props.regularValue ? InputDateEnd : InputDateLeave
         };
         break;
       
@@ -139,5 +141,6 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 export const LeaveRequestDetailForm = compose<RequestDetailFormProps, OwnProps>(
   setDisplayName('LeaveRequestDetailForm'),
   injectIntl,
+  withUser,
   withHandlers<RequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(LeaveRequestDetailFormView);
