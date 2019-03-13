@@ -41,8 +41,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
   generateFieldProps: (props: ProjectRegistrationDetailFormProps) => (name: string) => { 
     const { 
       intl, formMode, formCurrencyType, isCurrencyIdr, 
-      onChangeCurrencyType, onChangeValueIdr, 
-      onChangeRate, allowedProjectTypes, isRequestor, formIsPresales
+      formIsPresales, onChangeCurrencyType, onChangeValueIdr, 
+      onChangeRate, allowedProjectTypes, isRequestor 
     } = props;
     
     let fieldProps: SelectSystemOption & any = {};

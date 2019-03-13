@@ -325,7 +325,6 @@ const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHand
   },
   handleFilterEndOnSelected: (props: TimesheetApprovalListFilterProps) => (data: string) => {
     props.setFilterEnd(data);
-    props.setFilterEnd(data);
     if (moment(data).isBefore(props.filterStart)) {
       props.setFilterStart();
     }

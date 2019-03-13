@@ -66,6 +66,10 @@ export const leaveRequestField = defineMessages({
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
+
+  reEntry: { id: `${prefix}.field.reEntry` },
+  reEntryRequired: { id: `${prefix}.field.reEntry.required` },
+  reEntryPlaceHolder: { id: `${prefix}.field.reEntry.placeholder` },
   
   address: { id: `${prefix}.field.address` },
   addressRequired: { id: `${prefix}.field.address.required` },

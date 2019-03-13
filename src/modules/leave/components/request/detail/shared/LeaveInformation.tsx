@@ -61,6 +61,11 @@ const leaveInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.reEntry)}
+          value={props.intl.formatDate(props.data.reEntry, GlobalFormat.Date)}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(leaveMessage.request.field.address)}
           value={props.data.address}
         />
