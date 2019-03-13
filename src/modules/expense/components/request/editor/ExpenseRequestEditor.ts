@@ -312,7 +312,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     this.props.masterPage.changePage({
       uid: AppMenu.ExpenseRequest,
       parentUid: AppMenu.Expense,
-      parentUrl: '/project/request',
+      parentUrl: '/expense/request',
       title: intl.formatMessage(view.title),
     });
   },
