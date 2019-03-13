@@ -94,15 +94,15 @@ const lifecycles: ReactLifeCycleFunctions<InputDateEndProps, {}> = {
       }
     }
   },
-  // componentDidUpdate(prevProps: InputDateEndProps) {
-  //   if (prevProps.leaveGetEndState.detail.response && this.props.leaveGetEndState.detail.response) {
-  //     if (prevProps.leaveGetEndState.detail.response.data.end !== this.props.leaveGetEndState.detail.response.data.end) {
-  //       this.props.stateUpdate({
-  //         value: this.props.leaveGetEndState.detail.response.data.end
-  //       });
-  //     }
-  //   }
-  // }
+  componentDidUpdate(prevProps: InputDateEndProps) {
+    if (this.props.leaveGetEndState.detail.response) {
+      if (this.props.value !== this.props.leaveGetEndState.detail.response.data.end) {
+        this.props.stateUpdate({
+          value: this.props.leaveGetEndState.detail.response.data.end
+        });
+      }
+    }
+  }
 };
 
 export const InputDateEnd = compose<InputDateEndProps, OwnProps>(
