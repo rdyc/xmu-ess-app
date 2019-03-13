@@ -55,6 +55,12 @@ const CurrencyDefaultOption: ReactIntl.FormattedNumber.PropsBase = {
   currencyDisplay: 'symbol'
 };
 
+const DateEndOption: IntlComponent.DateTimeFormatProps = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+};
+
 export const GlobalFormat = {
   Date: DateOption,
   DateTime: DateTimeOption,
@@ -62,5 +68,6 @@ export const GlobalFormat = {
   Time: TimeOption,
   MonthYear: MonthYearOption,
   Currency: CurrencyOption,
-  CurrencyDefault: CurrencyDefaultOption
+  CurrencyDefault: CurrencyDefaultOption,
+  DateEnd: DateEndOption
 };

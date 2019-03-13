@@ -23,12 +23,7 @@ export const LeaveRequestDetailFormView: React.SFC<RequestDetailFormProps> = pro
     if (!isRegularType && fieldsRegular.indexOf(fieldName) !== -1) {
       return null;
     }
-
-    const fieldsEnd = ['end'];
-    if (isRegularType && fieldsEnd.indexOf(fieldName) !== -1) {
-      return null;
-    }
-
+    
     return (
       <Field
         key={fieldName}

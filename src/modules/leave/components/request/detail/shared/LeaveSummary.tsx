@@ -41,6 +41,7 @@ const leaveSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(leaveMessage.request.field.regularType)}
         value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'Regular Type' : 'Regular Type'}
+        multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -52,6 +53,7 @@ const leaveSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(leaveMessage.request.field.reason)}
         value={props.data.reason || 'N/A'}
+        multiline
       />
     </Grid>
 
