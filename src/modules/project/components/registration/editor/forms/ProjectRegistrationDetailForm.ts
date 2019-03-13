@@ -21,6 +21,7 @@ interface IOwnProps {
   isCurrencyIdr: boolean;
   isRequestor: boolean;
   isAdmin: boolean;
+  formIsPresales: boolean;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
@@ -40,7 +41,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
   generateFieldProps: (props: ProjectRegistrationDetailFormProps) => (name: string) => { 
     const { 
       intl, formMode, formCurrencyType, isCurrencyIdr, 
-      onChangeCurrencyType, onChangeValueIdr, 
+      formIsPresales, onChangeCurrencyType, onChangeValueIdr, 
       onChangeRate, allowedProjectTypes, isRequestor 
     } = props;
     
@@ -82,7 +83,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
       case 'contractNumber':
         fieldProps = {
           type: 'text',
-          required: isRequestor,
+          required: !formIsPresales && isRequestor,
           disabled: !isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),

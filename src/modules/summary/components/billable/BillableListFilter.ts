@@ -289,6 +289,9 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
   },
   handleFilterStartOnSelected: (props: BillableListFilterProps) => (data: string) => {
     props.setFilterStart(data);
+    if (moment(data).isAfter(props.filterEnd)) {
+      props.setFilterEnd();
+    }
   },
   handleFilterStartOnClear: (props: BillableListFilterProps) => () => {
     props.setFilterStart(props.start);
@@ -303,6 +306,9 @@ const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
   },
   handleFilterEndOnSelected: (props: BillableListFilterProps) => (data: string) => {
     props.setFilterEnd(data);
+    if (moment(data).isBefore(props.filterStart)) {
+      props.setFilterStart();
+    }
   },
   handleFilterEndOnClear: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEnd(props.end);
