@@ -2,6 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveGetEndQuery } from '@leave/classes/queries/request';
 import { WithLeaveGetEnd, withLeaveGetEnd } from '@leave/hoc/withLeaveGetEnd';
 import * as moment from 'moment';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -45,6 +46,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type InputDateEndProps 
   = WithLeaveGetEnd
   & WithUser
+  & InjectedIntlProps
   & OwnProps
   & OwnHandlers
   & OwnState
@@ -106,6 +108,7 @@ const lifecycles: ReactLifeCycleFunctions<InputDateEndProps, {}> = {
 };
 
 export const InputDateEnd = compose<InputDateEndProps, OwnProps>(
+  injectIntl,
   withLeaveGetEnd,
   withUser,
   withStateHandlers(createProps, stateUpdaters),
