@@ -63,7 +63,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleValidate: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
     const errors = {
       information: {},
-      item: {}
+      // item: {}
     };
 
     const requiredFields = [
@@ -77,12 +77,12 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     });
 
-    if (formData.item.items) {
+    if (formData.items) {
       const requiredItemFields = ['employeeUid', 'transportType', 'departureDate', 'from', 'destination', 'returnDate'];
 
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
 
         if (!item) { return ; }
@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       });
 
       if (itemErrors.length) {
-        Object.assign(errors.item, {
+        Object.assign(errors, {
           items: itemErrors
         });
       }
@@ -115,18 +115,18 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       return Promise.reject('user was not found');
     }
 
-    if (!formData.item.items.length) {
+    if (!formData.items.length) {
       return Promise.reject('At least one item must be entered');
     }
 
     const parsedItems = () => {
-      if (!formData.item.items) {
+      if (!formData.items) {
         return null;
       }
 
       const _items: ITravelPutItem[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         _items.push({
           uid: item.uid,
           employeeUid: item.employeeUid,

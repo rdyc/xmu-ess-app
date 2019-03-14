@@ -9,30 +9,26 @@ import {
   IconButton,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { PurchaseRequestItemFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { Field } from 'redux-form';
+import { Field, WrappedFieldArrayProps } from 'redux-form';
+import { PurchaseRequestFormProps, PurchaseRequestItemFormData } from './PurchaseRequestForm';
 
-// export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
-export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
-  const { context } = props;
-  
+export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestFormProps> = props => {  
   const render = (
     <Grid container spacing={16}>
       {
-        context.fields.map((field, index) =>
+        props.fields.map((field, index) =>
           <Grid key={index} item xs={12} md={4}>
             <Card square>
               <CardHeader
                 action={
-                  context.fields.length > 1 ?
-                  <IconButton onClick={() => context.fields.remove(index)}>
+                  props.fields.length > 1 &&
+                  <IconButton onClick={() => props.fields.remove(index)}>
                     <DeleteForeverIcon />
                   </IconButton>
-                  : ''
                 }
-                title={`#${index + 1}`}
+                title={`Request Item - #${index + 1}`}
               />
               <CardContent>
                 <div>
@@ -59,7 +55,7 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
       <Grid item xs={12} md={4}>
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <Button onClick={() => context.fields.push({
+            <Button variant="outlined" color="primary" onClick={() => props.fields.push({
               uid: undefined,
               description: '',
               request: 0,

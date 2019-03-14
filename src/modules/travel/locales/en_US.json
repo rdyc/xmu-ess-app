@@ -296,8 +296,12 @@
   "travel.item.field.information.diemValue.placeholder": "Per Diem",
   "travel.item.field.information.amount": "Diem Value",
   "travel.item.field.information.amount.placeholder": "Diem Value",
-  "travel.field.information.item.employeeUid.required": "employee is required",
+  "travel.field.information.item.employeeUid.required": "Employee is required",
   "travel.field.information.item.transportType.required": "Transport Type is required",
+  "travel.field.information.item.from.required": "From is required",
+  "travel.field.information.item.destination.required": "Destination is required",
+  "travel.field.information.item.departureDate.required": "Departure date is required",
+  "travel.field.information.item.returnDate.required": "Return date is required",
 
   "travel.request.message.items.empty": "Empty Travel Item",
 

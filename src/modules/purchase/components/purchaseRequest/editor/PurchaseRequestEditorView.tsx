@@ -1,15 +1,12 @@
 import { FormMode } from '@generic/types';
-import { 
-  // Typography, 
-  LinearProgress } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import {
   PurchaseRequestForm,
   PurchaseRequestFormData,
-  // PurchaseRequestItemFormData
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorProps } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import * as React from 'react';
-// import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, 
@@ -47,15 +44,15 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       requestInIDR: 0,
       notes: undefined,
     },
-    items: {
-      items: [
-        {
-          uid: undefined,
-          request: 0,
-          description: '',
-        }
+    // items: {
+    items: [
+      {
+        uid: undefined,
+        request: 0,
+        description: '',
+      }
     ]
-    }
+    // }
   };
 
   // New
@@ -65,9 +62,11 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <LinearProgress variant="query" />
+        <Typography variant="body2">
+          <FormattedMessage id="global.loading"/>
+        </Typography>
       );
     }
 
@@ -87,9 +86,9 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.advance = data.advance || 0;
 
       if (data.items) {
-        initialValues.items.items = [];
+        initialValues.items = [];
         data.items.forEach(item =>
-          initialValues.items.items.push({
+          initialValues.items.push({
             uid: item.uid,
             description: item.description ? item.description : '',
             request: item.requestValue

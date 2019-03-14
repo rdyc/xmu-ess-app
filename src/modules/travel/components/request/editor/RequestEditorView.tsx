@@ -45,9 +45,32 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       comment: undefined,
       total: 0,
     },
-    item: {
-      items: []
-    }
+    items: [
+      {
+        uid: undefined,
+        employeeUid: '',
+        fullName: '',
+        transportType: '',
+        isRoundTrip: false,
+        from: '',
+        destination: '',
+        departureDate: '',
+        returnDate: '',
+        costTransport: 0,
+        isTransportByCompany: false,
+        hotel: '',
+        costHotel: 0,
+        isHotelByCompany: false,
+        notes: '',
+        duration: 0,
+        amount: 0,            
+        currencyUid: '',
+        currencyRate: 0,
+        diemValue: 0 ,
+      }
+    ]
+    // item: {
+    // }
   };
 
   const dateFormatEditor = (date: string): string => {
@@ -75,7 +98,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
 
   // modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
         <Typography variant="body2">
           <FormattedMessage id="global.loading"/>
@@ -104,10 +127,9 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.total = data.total;
 
       if (data.items) {
-        
-        data.items.forEach(item =>
-          
-          initialValues.item.items.push({
+        initialValues.items = [];
+        data.items.forEach(item =>       
+          initialValues.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
             fullName: item.employee ? item.employee.fullName : 'N/A',
