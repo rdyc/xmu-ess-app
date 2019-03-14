@@ -72,7 +72,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
-    const { isAdmin, rolePmoUids, rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
+    const { isAdmin, rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
 
     let _roleUids = undefined;
@@ -80,11 +80,13 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
     // checking roles, when admin then show all employees
     if (user && !isAdmin) {
       if (isMemberOfSales(user.role.uid)) {
-        if (rolePmoUids && roleSalesUids) {
-          _roleUids = rolePmoUids.concat(roleSalesUids).join(',');
-        } else {
-          _roleUids = roleSalesUids && roleSalesUids.join(',');
-        }
+        _roleUids = roleSalesUids && roleSalesUids.join(',');
+        
+        // if (rolePmoUids && roleSalesUids) {
+        //   _roleUids = rolePmoUids.concat(roleSalesUids).join(',');
+        // } else {
+        //   _roleUids = roleSalesUids && roleSalesUids.join(',');
+        // }
       }
 
       if (isMemberOfPMO(user.role.uid)) {
