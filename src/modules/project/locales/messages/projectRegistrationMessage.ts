@@ -23,6 +23,12 @@ export const projectRegistrationPage = defineMessages({
   statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
 });
 
+// page
+export const projectAdministrationPage = defineMessages({
+  listTitle: { id: `project.administration.page.list.title` },
+  listSubHeader: { id: `project.administration.page.list.subHeader` },
+});
+
 // option
 export const projectRegistrationOption = defineMessages({
   close: { id: `${prefix}.option.close` },
