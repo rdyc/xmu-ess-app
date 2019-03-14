@@ -1,4 +1,6 @@
+import { IResponseSingle } from '@generic/interfaces/IResponseSingle';
 import { IProjectOwnerPutRequest } from '@project/classes/queries/owner';
+import { IProject } from '@project/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum ProjectOwnerAction {
@@ -10,6 +12,6 @@ export const enum ProjectOwnerAction {
 
 // put 
 export const projectOwnerPutRequest = (request: IProjectOwnerPutRequest) => action(ProjectOwnerAction.PUT_REQUEST, request);
-export const projectOwnerPutSuccess = (response: boolean) => action(ProjectOwnerAction.PUT_SUCCESS, response);
+export const projectOwnerPutSuccess = (response: IResponseSingle<IProject>) => action(ProjectOwnerAction.PUT_SUCCESS, response);
 export const projectOwnerPutError = (error: any) => action(ProjectOwnerAction.PUT_ERROR, error);
 export const projectOwnerPutDispose = () => action(ProjectOwnerAction.PUT_DISPOSE);
