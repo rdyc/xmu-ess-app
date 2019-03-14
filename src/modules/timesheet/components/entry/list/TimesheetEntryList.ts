@@ -83,6 +83,7 @@ const createProps: mapper<TimesheetEntryListProps, IOwnState> = (props: Timeshee
     // fill from previous request if any
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
+      state.projectUid = request.filter.projectUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
       state.status = request.filter.status,
@@ -119,6 +120,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
         start: props.start,
         end: props.end,
         customerUid: props.customerUid,
+        projectUid: props.projectUid,
         activityType: props.activityType,
         statusType: props.statusType,
         status: props.status,
@@ -186,6 +188,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListProps, IOwnHandler> = {
   },
   handleFilterBadge: (props: TimesheetEntryListProps) => () => {
     return props.customerUid !== undefined ||
+      props.projectUid !== undefined ||
       props.activityType !== undefined ||
       props.status !== 'pending' ||
       props.statusType !== undefined ||
@@ -201,6 +204,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
     const isFilterChanged = !shallowEqual(
       {
         customerUid: this.props.customerUid,
+        projectUid: this.props.projectUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
         status: this.props.status,
@@ -210,6 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListProps, IOwnState> = 
       },
       {
         customerUid: prevProps.customerUid,
+        projectUid: prevProps.projectUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
         status: prevProps.status,
