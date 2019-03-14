@@ -5,6 +5,9 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { IProjectAssignmentList } from '@project/classes/response';
+import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import styles from '@styles';
 import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
 import * as moment from 'moment';
@@ -30,7 +33,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected' | 'positionUid' | 'start' | 'end'>;
+export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'projectUid' | 'statusType' | 'status' | 'isRejected' | 'positionUid' | 'start' | 'end'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -45,6 +48,11 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
+
+  // filter project
+  isFilterProjectOpen: boolean;
+  filterProject?: IProjectAssignmentList;
+  filterProjectValue?: IProjectAssignmentGetListFilter;
 
   // filter activity type
   isFilterActivityTypeOpen: boolean;
@@ -77,6 +85,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
+
+  // filter project
+  setFilterProjectVisibility: StateHandler<IOwnState>;
+  setFilterProject: StateHandler<IOwnState>;
 
   // filter activity type
   setFilterActivityTypeVisibility: StateHandler<IOwnState>;
@@ -112,6 +124,12 @@ interface IOwnHandler {
   handleFilterCustomerOnSelected: (customer?: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
+
+  // filter customer
+  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnSelected: (customer?: IProjectAssignmentList) => void;
+  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnClose: () => void;
 
   // filter activity type
   handleFilterActivityTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -155,12 +173,14 @@ export type TimesheetEntryListFilterProps
   & WithStyles<typeof styles>
   & WithUser
   & WithLookupCustomer
+  & WithProjectAssignment
   & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: TimesheetEntryListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
+  isFilterProjectOpen: false,
   isFilterActivityTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
@@ -175,6 +195,7 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
+    filterProject: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
     filterStart: undefined,
@@ -189,7 +210,20 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer
+    filterCustomer: customer,
+    filterProjectValue: {
+      customerUid: customer && customer.uid
+    },
+    filterProject: (prevState.filterCustomer === customer ? prevState.filterProject : undefined)
+  }),
+
+  // filter project
+  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
+  }),
+  setFilterProject: (prevState: IOwnState) => (project?: IProjectAssignmentList) => ({
+    isFilterProjectOpen: false,
+    filterProject: project
   }),
 
   // filter activity type
@@ -251,6 +285,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   handleFilterOnApply: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
+      projectUid: props.filterProject && props.filterProject.uid,
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
@@ -269,9 +304,24 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   },
   handleFilterCustomerOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
+    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: TimesheetEntryListFilterProps) => () => {
     props.setFilterCustomerVisibility();
+  },
+
+  // filter project
+  handleFilterProjectVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProjectVisibility();
+  },
+  handleFilterProjectOnSelected: (props: TimesheetEntryListFilterProps) => (project?: IProjectAssignmentList) => {
+    props.setFilterProject(project);
+  },
+  handleFilterProjectOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProject();
+  },
+  handleFilterProjectOnClose: (props: TimesheetEntryListFilterProps) => () => {
+    props.setFilterProjectVisibility();
   },
 
   // filter activity type
@@ -360,7 +410,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnSta
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, activityType, statusType, status, start, end } = this.props.initialProps;
+      const { customerUid, projectUid, activityType, statusType, status, start, end } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -370,6 +420,17 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnSta
           const selected = response.data.find(item => item.uid === customerUid);
 
           this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project
+      if (projectUid) {
+        const { response } = this.props.projectAssignmentState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === projectUid);
+
+          this.props.setFilterProject(selected);
         }
       }
 
@@ -419,6 +480,7 @@ export const TimesheetEntryListFilter = compose<TimesheetEntryListFilterProps, I
   setDisplayName('TimesheetEntryListFilter'),
   withUser,
   withLookupCustomer,
+  withProjectAssignment,
   withCommonSystem,
   injectIntl,
   withStyles(styles),
