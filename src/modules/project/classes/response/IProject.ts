@@ -12,6 +12,7 @@ export interface IProject {
   contractNumber?: string;
   ownerEmployeeUid?: string;
   owner?: IAccountEmployee;
+  childProjectUid?: string;
   name: string;
   description?: string;
   maxHours: number;
