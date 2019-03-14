@@ -91,7 +91,7 @@ export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props =>
     <SecureMenuRoute 
       path={`${props.match.path}/administrations`} 
       menu={AppMenu.ProjectRegistration} 
-      subMenu={AppMenu.ProjectRegistrationRequest} 
+      subMenu={AppMenu.ProjectAdmnistration} 
       component={administration}
     />
   </Switch>

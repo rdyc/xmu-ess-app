@@ -16,7 +16,7 @@ import { ProjectSite } from './shared/ProjectSite';
 export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.ProjectRegistrationRequest,
+      uid: props.location.state && props.location.state.isAdministration ? AppMenu.ProjectAdmnistration : AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
       parentUrl: props.location.state && props.location.state.isAdministration ? '/project/administrations' : '/project/requests',
       title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),

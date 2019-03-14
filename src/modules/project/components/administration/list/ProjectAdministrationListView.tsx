@@ -17,10 +17,10 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.ProjectRegistrationRequest,
+        uid: AppMenu.ProjectAdmnistration,
         parentUid: AppMenu.ProjectRegistration,
-        title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
-        description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader)
+        title: props.intl.formatMessage(projectMessage.administration.page.listTitle),
+        description: props.intl.formatMessage(projectMessage.administration.page.listSubHeader)
       }}
 
       // state & fields

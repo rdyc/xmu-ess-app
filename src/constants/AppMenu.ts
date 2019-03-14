@@ -24,6 +24,7 @@ enum AppMenu {
   ProjectRegistration = 'MNU12',
   ProjectRegistrationRequest = 'MNU19',
   ProjectRegistrationApproval = 'MNU20',
+  ProjectAdmnistration = 'MNU65',
   Report = 'MNU15',
   ReportBillable = 'MNU58',
   ReportPresales = 'MNU61',
