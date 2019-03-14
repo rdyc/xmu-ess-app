@@ -27,6 +27,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { IProject } from '@project/classes/response';
 import { ProjectOwnerFormData } from './forms/OwnerForm';
 import { OwnerEditorView } from './OwnerEditorView';
 
@@ -116,14 +117,18 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
       });
     });
   },
-  handleSubmitSuccess: (props: OwnerEditorProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: OwnerEditorProps) => (response: IProject) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectOwnerMessage.updateSuccess);
+      if (response && response.childProjectUid) {
+        message = intl.formatMessage(projectOwnerMessage.cloneSuccess, {pid: response.childProjectUid});
+      } else {
+        message = intl.formatMessage(projectOwnerMessage.updateSuccess);
+      }
     }
 
     alertAdd({
