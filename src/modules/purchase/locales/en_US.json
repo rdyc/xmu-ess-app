@@ -33,6 +33,7 @@
   "purchase.item.uid": "Item ID ",
   "purchase.item.description": "Description ",
   "purchase.item.description.required": "Description is required",
+  "purchase.item.description.placeholder": "Type any description",
   "purchase.item.request": "Request Value",
   "purchase.item.request.required": "Request value is required",
   "purchase.item.request.placeholder": "Fill Request Value",
@@ -109,7 +110,7 @@
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
-  "purchase.action.add": "Add",
+  "purchase.action.add": "Add Item",
 
   "purchase.message.request.empty.purchaseUid": "Purchase ID isn't available",
   "purchase.message.request.item.duplication": "Item(s) already added",

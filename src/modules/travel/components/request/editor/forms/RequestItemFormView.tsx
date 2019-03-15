@@ -114,6 +114,7 @@ export const RequestItemFormView: React.SFC<WrappedFieldArrayProps<TravelItemFor
                     type="text"
                     name={`${field}.from`}
                     label={props.intl.formatMessage(travelMessage.request.field.from)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.fromPlaceholder)}
                     required={true}
                     component={InputText}
                   />
@@ -121,6 +122,7 @@ export const RequestItemFormView: React.SFC<WrappedFieldArrayProps<TravelItemFor
                     type="text"
                     name={`${field}.destination`}
                     label={props.intl.formatMessage(travelMessage.request.field.destination)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.destinationPlaceholder)}
                     required={true}
                     component={InputText}
                   />
@@ -170,6 +172,7 @@ export const RequestItemFormView: React.SFC<WrappedFieldArrayProps<TravelItemFor
                     type="text"
                     name={`${field}.hotel`}
                     label={props.intl.formatMessage(travelMessage.request.field.hotel)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.hotelPlaceholder)}
                     component={InputText}
                   />
                   <Field 
@@ -202,6 +205,7 @@ export const RequestItemFormView: React.SFC<WrappedFieldArrayProps<TravelItemFor
                     type="text"
                     name={`${field}.notes`}
                     label={props.intl.formatMessage(travelMessage.request.field.note)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.notePlaceholder)}
                     component={InputText}
                   />
                   <TextField

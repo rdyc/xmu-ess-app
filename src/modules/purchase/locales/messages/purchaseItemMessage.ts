@@ -5,6 +5,7 @@ const prefix = 'purchase.item';
 export const purchaseItemField = defineMessages({
   uid: { id: `${prefix}.uid`},
   description: { id: `${prefix}.description`},
+  descriptionPlaceholder: { id: `${prefix}.description.placeholder`},
   request: { id: `${prefix}.request`},
   requestPlaceholder: {id: `${prefix}.request.placeholder`},
   actual: { id: `${prefix}.actual`},

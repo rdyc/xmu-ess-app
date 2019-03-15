@@ -36,6 +36,7 @@ export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<Purch
                     type="text"
                     name={`${field}.description`}
                     label={props.intl.formatMessage(purchaseMessage.request.items.description)}
+                    placeholder={props.intl.formatMessage(purchaseMessage.request.items.descriptionPlaceholder)}
                     required
                     component={InputText}
                   />
