@@ -83,8 +83,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
       case 'contractNumber':
         fieldProps = {
           type: 'text',
-          required: !formIsPresales && isRequestor,
-          disabled: !isRequestor,
+          required: !formIsPresales,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
