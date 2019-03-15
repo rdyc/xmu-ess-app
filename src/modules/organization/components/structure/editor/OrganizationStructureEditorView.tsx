@@ -31,17 +31,17 @@ export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = pro
       uid: undefined,
       companyUid: undefined,
       positionUid: undefined,
-      description: undefined,
       inactiveDate: undefined,
+      description: undefined,
     },
-    item: {
-      items: [{
-        uid: undefined,
-        positionUid: undefined,
-        start: undefined,
-        end: undefined 
-      }]
-    }
+    items: [{
+      uid: undefined,
+      positionUid: undefined,
+      start: undefined,
+      end: undefined 
+    }]
+    // item: {
+    // }
   };
 
   // New
@@ -66,13 +66,13 @@ export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = pro
       initialValues.information.uid = data.uid;
       initialValues.information.positionUid = data.positionUid;
       initialValues.information.companyUid = data.companyUid;
-      initialValues.information.description = data.description;
       initialValues.information.inactiveDate = data.inactiveDate;
+      initialValues.information.description = data.description;
 
       if (data.reportTo) {
-        initialValues.item.items = [];
+        initialValues.items = [];
         data.reportTo.forEach(item => 
-          initialValues.item.items.push({
+          initialValues.items.push({
             uid: item.uid,
             positionUid: item.positionUid,
             start: item.start,

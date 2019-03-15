@@ -1,5 +1,7 @@
 import { FormMode } from '@generic/types';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { StructureFormView } from './StructureFormView';
 
@@ -13,9 +15,9 @@ export type OrganizationStructureFormData = {
     inactiveDate: string | null | undefined;
     description: string | null | undefined;
   },
-  item: {
-    items: OrganizationStructureItemFormData[]
-  }
+  items: OrganizationStructureItemFormData[]
+  // item: {
+  // }
 };
 
 export type OrganizationStructureItemFormData = {
@@ -41,6 +43,7 @@ interface FormValueProps {
 
 export type StructureFormProps 
   = InjectedFormProps<OrganizationStructureFormData, OwnProps> 
+  & InjectedIntlProps
   & FormValueProps
   & OwnProps;
   
@@ -57,7 +60,10 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(StructureFormView);
+const connectedView = compose<StructureFormProps, OwnProps & InjectedFormProps<OrganizationStructureFormData, OwnProps>>(
+  connect(mapStateToProps),
+  injectIntl
+)(StructureFormView);
 
 export const StructureForm = reduxForm<OrganizationStructureFormData, OwnProps>({
   form: formName,
