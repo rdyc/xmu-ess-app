@@ -54,7 +54,7 @@ const handlerCreators: HandleCreators<StructureDetailFormProps, OwnHandlers> = {
         case 'companyUid':
           fieldProps = {
             type: 'text',
-            disabled: true,
+            // disabled: true,
             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
             component: SelectLookupCompany,
@@ -64,11 +64,11 @@ const handlerCreators: HandleCreators<StructureDetailFormProps, OwnHandlers> = {
         case 'positionUid':
           fieldProps = {
             type: 'text',
-            disabled: true,
+            // disabled: true,
             label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
             component: SelectPosition,
-            // disabled: isNullOrUndefined(formCompany),
+            disabled: isNullOrUndefined(formCompany),
             filter: positionFilter
           };
           break;
@@ -76,7 +76,7 @@ const handlerCreators: HandleCreators<StructureDetailFormProps, OwnHandlers> = {
         case 'inactiveDate': 
           fieldProps = {
             type: 'date',
-            disabled: true,
+            // disabled: true,
             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
             disablePast: true,
