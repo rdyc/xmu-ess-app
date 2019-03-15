@@ -74,7 +74,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'name', 'positionUid', 'items'
+      'companyUid', 'name'
     ];
   
     requiredFields.forEach(field => {
@@ -83,12 +83,12 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       }
     });
 
-    if (formData.item.items) {
-      const requiredItemFields = ['sequence', 'RelationType'];
+    if (formData.items) {
+      const requiredItemFields = ['sequence', 'positionUid'];
       
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
         
         if (!item) { return ; }
@@ -127,7 +127,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     const parsedItemsPost = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           sequence: item.sequence,
           positionUid: item.positionUid,
@@ -141,7 +141,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     const parsedItemsPut = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           uid: item.uid,
           sequence: item.sequence,

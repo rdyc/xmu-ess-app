@@ -46,9 +46,29 @@ const handlerCreators: HandleCreators<HierarchyDetailFormProps, OwnHandlers> = {
         case 'companyUid':
           fieldProps = {
             type: 'text',
+            required: true,
             label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
             component: SelectLookupCompany
+          };
+          break;
+
+        case 'name':
+          fieldProps = {
+            type: 'text',
+            required: true,
+            label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
+            component: InputText
+          };
+          break;
+
+        case 'description':
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
+            component: InputText
           };
           break;
 
