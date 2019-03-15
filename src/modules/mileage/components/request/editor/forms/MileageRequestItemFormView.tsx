@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Card,
   CardContent,
@@ -15,7 +16,7 @@ import * as React from 'react';
 import { FormattedDate } from 'react-intl';
 
 export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
-  const { isLoading, response } = props.timesheetMileagesState;
+  const { isLoading, response, isExpired } = props.timesheetMileagesState;
   const { intl } = props;
   // let { nolValue } = props;
 
@@ -84,27 +85,22 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
       />
       <CardContent>
         <Grid>
-          {/* {!isLoading &&
-            response &&
-            response.data &&
-            renderFilter(response.data) &&
-            !nolValue && (
-              <Typography variant="body2">
-                {intl.formatMessage(mileageMessage.request.field.noData)}
-              </Typography>
-            )} */}
+          {isLoading &&
+            <Typography variant="body2">
+              {props.intl.formatMessage(layoutMessage.text.loading)}
+            </Typography> 
+          }
           {!isLoading &&
-            (!response ||
-              (response.data && response.data.length < 1)/*  ||
-              !nolValue */) && (
+            (isExpired || !response ||
+              (response.data && response.data.length < 1)) && (
               <Typography variant="body2">
                 {intl.formatMessage(mileageMessage.request.field.noData)}
               </Typography>
             )}
           {!isLoading &&
+            !isExpired &&
             response &&
             response.data &&
-            // nolValue &&
             renderItem(response.data)}
         </Grid>
       </CardContent>

@@ -110,6 +110,7 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'inactiveDate': return organizationStructureField.inactiveDatePlaceholder;
       case 'start': return organizationStructureField.startPlaceholder;
       case 'end': return organizationStructureField.endPlaceholder;
+      case 'description': return organizationStructureField.descriptionPlaceholder;
     
       default: return {id: field};
     }

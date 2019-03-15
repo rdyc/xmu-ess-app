@@ -83,12 +83,12 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
       }
     });
 
-    if (formData.item.items) {
+    if (formData.items) {
       const requiredItemFields = ['positionUid', 'start'];
       
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
         
         if (!item) { return ; }
@@ -127,7 +127,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     const parsedItemsPost = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           positionUid: item.positionUid,
           start: item.start,
@@ -141,7 +141,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     const parsedItemsPut = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           uid: item.uid,
           positionUid: item.positionUid,

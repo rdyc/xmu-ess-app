@@ -2,14 +2,16 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
+import { BaseFieldsProps, FieldArray, Fields, FormSection } from 'redux-form';
 import { HierarchyDetailForm } from './HierarchyDetailForm';
-import { HierarchyFormProps, OrganizationHierarchyItemFormData } from './HierarchyForm';
-import { HierarchyItemForm } from './HierarchyItemForm';
+import { HierarchyFormProps } from './HierarchyForm';
+// import { HierarchyItemForm } from './HierarchyItemForm';
+import { HierarchyItemFormView } from './HierarchyItemFormView';
+// import { HierarchyItemForm } from './HierarchyItemForm';
 
 export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
   const {
-    formMode, companyUidValue
+    formMode
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -21,12 +23,12 @@ export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
     />
   );
 
-  const componentHierarchyItem = (context: WrappedFieldArrayProps<OrganizationHierarchyItemFormData>) => (
-    <HierarchyItemForm
-      context={context}
-      companyUidValue={companyUidValue}
-    />
-  );
+  // const componentHierarchyItem = (itemProps: HierarchyFormProps) => (
+  //   <HierarchyItemForm
+  //     itemProps={itemProps}
+  //     companyUidValue={companyUidValue}
+  //   />
+  // );
 
   const render = (
     <form onSubmit={props.handleSubmit}>
@@ -47,12 +49,13 @@ export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <FormSection name="item">
+          {/* <FormSection name="item"> */}
             <FieldArray 
               name="items"
-              component={componentHierarchyItem}
+              props={props}
+              component={HierarchyItemFormView}
             />
-          </FormSection>
+          {/* </FormSection> */}
         </Grid>
         
         <Grid item xs={12} md={4}>

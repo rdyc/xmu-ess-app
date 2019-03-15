@@ -2,15 +2,14 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
+import { BaseFieldsProps, FieldArray, Fields, FormSection } from 'redux-form';
 import { StructureDetailForm } from './StructureDetailForm';
-import { OrganizationStructureItemFormData, StructureFormProps } from './StructureForm';
-import { StructureItemForm } from './StructureItemForm';
+import { StructureFormProps } from './StructureForm';
+import { StructureItemFormView } from './StructureItemFormView';
 
 export const StructureFormView: React.SFC<StructureFormProps> = props => {
   const {
-    formMode, companyUidValue,
-    inactiveDateValue
+    formMode, companyUidValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -23,13 +22,13 @@ export const StructureFormView: React.SFC<StructureFormProps> = props => {
     />
   );
 
-  const componentStructureItem = (context: WrappedFieldArrayProps<OrganizationStructureItemFormData>) => (
-    <StructureItemForm
-      context={context}
-      companyUidValue={companyUidValue}
-      inactiveDateValue={inactiveDateValue}
-    />
-  );
+  // const componentStructureItem = (context: WrappedFieldArrayProps<OrganizationStructureItemFormData>) => (
+  //   <StructureItemForm
+  //     context={context}
+  //     companyUidValue={companyUidValue}
+  //     inactiveDateValue={inactiveDateValue}
+  //   />
+  // );
 
   const render = (
     <form onSubmit={props.handleSubmit}>
@@ -50,12 +49,13 @@ export const StructureFormView: React.SFC<StructureFormProps> = props => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <FormSection name="item">
+          {/* <FormSection name="item"> */}
             <FieldArray 
               name="items"
-              component={componentStructureItem}
+              props={props}
+              component={StructureItemFormView}
             />
-          </FormSection>
+          {/* </FormSection> */}
         </Grid>
         
         <Grid item xs={12} md={4}>

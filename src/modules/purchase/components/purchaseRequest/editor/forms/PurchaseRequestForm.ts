@@ -1,5 +1,7 @@
 import { FormMode } from '@generic/types';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { PurchaseRequestFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestFormView';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
@@ -25,9 +27,9 @@ export type PurchaseRequestFormData = {
     request: number | 0;
     requestInIDR: number | 0;
   },
-  items:  {
-   items: PurchaseRequestItemFormData[];
-  }
+  items: PurchaseRequestItemFormData[];
+  // items:  {
+  // }
 };
 
 interface OwnProps {
@@ -57,6 +59,8 @@ interface FormValueProps {
 
 export type PurchaseRequestFormProps
   = InjectedFormProps<PurchaseRequestFormData, OwnProps>
+  & InjectedIntlProps
+  & WithUser
   & FormValueProps
   & OwnHandlers
   & OwnProps
@@ -67,8 +71,8 @@ const handlers: HandleCreators<PurchaseRequestFormProps, OwnHandlers> = {
     const formValues = event.detail as PurchaseRequestFormData;
 
     let total: number = 0;
-    if (formValues.items.items) {
-      formValues.items.items.forEach((item) => total += item.request);
+    if (formValues.items) {
+      formValues.items.forEach((item) => total += item.request);
     }
     props.change('information.request', total);
     props.change('information.requestInIDR', total * props.formRate);
@@ -112,6 +116,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestFormProps, OwnState> = 
 
 const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormProps<PurchaseRequestFormData, OwnProps>>(
   connect(mapStateToProps),
+  withUser,
+  injectIntl,
   withHandlers(handlers),
   lifecycle(lifecycles),
 )(PurchaseRequestFormView);
@@ -120,7 +126,7 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true,
+  // enableReinitialize: true,
   destroyOnUnmount: true,
   onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
     dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));

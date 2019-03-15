@@ -34,9 +34,16 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       description: undefined,
       inactiveDate: undefined,
     },
-    item: {
-      items: []
-    }
+    items: [
+      {
+        uid: undefined,
+        sequence: 1,
+        positionUid: undefined,
+        relationType: undefined
+      }
+    ]
+    // item: {
+    // }
   };
 
   // New
@@ -65,8 +72,9 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       initialValues.information.inactiveDate = data.inactiveDate;
 
       if (data.items) {
+        initialValues.items = [];
         data.items.forEach(item => 
-          initialValues.item.items.push({
+          initialValues.items.push({
             uid: item.uid,
             sequence: item.level,
             positionUid: item.positionUid,

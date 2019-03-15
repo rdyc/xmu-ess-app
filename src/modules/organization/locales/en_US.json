@@ -30,7 +30,7 @@
   "organization.structure.section.item.title": "Super Ordinate",
   "organization.structure.section.item.subHeader": " ",
 
-  "organization.structure.text.addItem": "Add New",
+  "organization.structure.text.addItem": "Add Item",
   "organization.structure.text.draft": "New Draft",
   
   "organization.structure.dialog.modify.title": "Modify Confirmation",
@@ -67,11 +67,11 @@
   "organization.structure.field.end.placeholder": "Select a End Date",
   "organization.structure.field.end.required": "End Date is required",
   "organization.structure.field.description": "Description",
-  "organization.structure.field.description.placeholder": "Type a Description",
+  "organization.structure.field.description.placeholder": "Type any description",
   "organization.structure.field.description.required": "Description is required",
-  "organization.structure.field.positionUid": "Position",
-  "organization.structure.field.positionUid.placeholder": "Select a Position",
-  "organization.structure.field.positionUid.required": "Position is required",
+  "organization.structure.field.positionUid": "Superordinate",
+  "organization.structure.field.positionUid.placeholder": "Select a superordinate",
+  "organization.structure.field.positionUid.required": "Superordinate is required",
   "organization.structure.field.isExpired": "Valid",
   "organization.structure.field.isNotExpired": "Expired",
 

@@ -1,5 +1,7 @@
 import { FormMode } from '@generic/types';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { HierarchyFormView } from './HierarchyFormView';
 
@@ -13,9 +15,9 @@ export type OrganizationHierarchyFormData = {
     inactiveDate: string | null | undefined;
     description: string | null | undefined;
   },
-  item: {
-    items: OrganizationHierarchyItemFormData[]
-  }
+  items: OrganizationHierarchyItemFormData[]
+  // item: {
+  // }
 };
 
 export type OrganizationHierarchyItemFormData = {
@@ -40,6 +42,7 @@ interface FormValueProps {
 
 export type HierarchyFormProps 
   = InjectedFormProps<OrganizationHierarchyFormData, OwnProps> 
+  & InjectedIntlProps
   & FormValueProps
   & OwnProps;
   
@@ -54,11 +57,15 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(HierarchyFormView);
+const connectedView = compose<HierarchyFormProps, OwnProps & InjectedFormProps<OrganizationHierarchyFormData, OwnProps>>(
+  connect(mapStateToProps), 
+  injectIntl
+)(HierarchyFormView);
 
 export const HierarchyForm = reduxForm<OrganizationHierarchyFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  destroyOnUnmount: true,
+  // enableReinitialize: true
 })(connectedView);
