@@ -102,6 +102,7 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListProps, IOwnHandler> =
     if (props.userState.user && !isLoading) {
       // predefined filter
       const filter: IProjectAcceptanceGetAllFilter = {
+        companyUid: props.userState.user.company.uid,
         customerUids: props.customerUids,
         projectTypes: props.projectTypes,
         statusTypes: props.statusTypes,
@@ -137,7 +138,8 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListProps, IOwnHandler> =
         ...request && request.filter,
         find,
         findBy,
-        page: undefined
+        page: undefined,
+        companyUid: props.userState.user.company.uid,
       };
       
       // compare request

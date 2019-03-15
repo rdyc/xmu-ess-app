@@ -15,6 +15,7 @@ import {
   projectAssignmentSection,
 } from './projectAssignmentMessage';
 import {
+  projectAdministrationPage,
   projectRegistrationConfirm,
   projectRegistrationField,
   projectRegistrationFieldHelperFor,
@@ -41,6 +42,9 @@ export const projectMessage = {
     field: projectRegistrationField,
     fieldFor: projectRegistrationFieldHelperFor,
     message: projectRegistrationMessage
+  },
+  administration: {
+    page: projectAdministrationPage
   },
   approval: {
     page: projectApprovalPage,

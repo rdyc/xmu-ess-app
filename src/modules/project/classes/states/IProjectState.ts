@@ -52,7 +52,7 @@ export interface IProjectState {
   projectRegistrationPut: IQuerySingleState<IProjectRegistrationPutRequest, IProject>;
 
   // owner
-  projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
+  projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, IProject>;
 
   // hour
   projectHourPut: IQuerySingleState<IProjectHourPutRequest, boolean>;
