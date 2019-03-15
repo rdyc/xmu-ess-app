@@ -8,7 +8,7 @@ import { organizationMessage } from '@organization/locales/messages/organization
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-// import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from 'util';
 import { StructureDetailFormView } from './StructureDetailFormView';
 
 interface OwnProps {
