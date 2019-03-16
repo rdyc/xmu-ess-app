@@ -39,8 +39,8 @@
   "leave.request.dialog.editTitle": "Modify Confirmation",
   "leave.request.dialog.editDescription": "Do you want to modify leave request ?",
 
-  "leave.request.field.uid": "PID",
-  "leave.request.field.uid.placeholder": "PID",
+  "leave.request.field.uid": "Leave ID",
+  "leave.request.field.uid.placeholder": "Leave ID",
   "leave.request.field.statusType": "Status",
   "leave.request.field.leaveType": "Leave Type",
   "leave.request.field.leaveType.required": "Leave type is required",
@@ -71,8 +71,8 @@
   "leave.request.field.completion": "Completion",
   "leave.request.field.employeeUid": "Employee",
 
-  "leave.field.information.uid": "PID",
-  "leave.field.information.uid.placeholder": "PID",
+  "leave.field.information.uid": "Leave ID",
+  "leave.field.information.uid.placeholder": "Leave ID",
   "leave.field.information.status": "Status",
   "leave.field.information.leaveType": "Leave Type",
   "leave.field.information.leaveType.required": "Leave type is required",
@@ -99,9 +99,9 @@
   "leave.field.information.reason.required": "Reason is required",
   "leave.field.information.reason.placeholder": "Type a reason name",
   
-  "leave.request.message.create.success": "A new PID {uid} has been created",
+  "leave.request.message.create.success": "A new leave ID {uid} has been created",
   "leave.request.message.create.failure": "Unable to process your submission",
-  "leave.request.message.update.success": "Existing PID {uid} has been updated",
+  "leave.request.message.update.success": "Existing leave ID {uid} has been updated",
   "leave.request.message.update.failure": "Unable to process your submission",
 
   "leave.message.approval.create.success": "A leave request has been approved",
