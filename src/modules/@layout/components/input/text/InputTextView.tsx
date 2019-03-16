@@ -19,5 +19,8 @@ export const InputTextView: React.SFC<InputTextProps> = props => (
     onChange={props.handleOnChange}
     onBlur={props.handleOnBlur}
     multiline={props.multiline}
+    inputProps={{
+      maxLength: props.maxChar
+    }}
   />
 );
