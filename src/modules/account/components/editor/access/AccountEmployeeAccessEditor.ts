@@ -79,7 +79,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'positionUid', 'roleUid', 'unitType', 'departmentType', 'levelType', 'start'
+      'companyUid', 'positionUid', 'roleUid', 'levelType', 'start'
     ];
   
     requiredFields.forEach(field => {

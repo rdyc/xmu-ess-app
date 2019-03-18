@@ -33,11 +33,11 @@ export const AccountEmployeeAccessEditorView: React.SFC<AccountEmployeeAccessEdi
       companyUid: undefined,
       positionUid: undefined,
       roleUid: undefined,
-      unitType: undefined,
-      departmentType: undefined,
+      unitType: null,
+      departmentType: null,
       levelType: undefined,
       start: undefined,
-      end: undefined
+      end: null
     }
   };
 
