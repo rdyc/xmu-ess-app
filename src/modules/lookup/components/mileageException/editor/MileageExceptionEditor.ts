@@ -9,6 +9,8 @@ import { IMileageExceptionPutPayload } from '@lookup/classes/request/mileageExce
 import { IMileageException } from '@lookup/classes/response';
 import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -60,6 +62,7 @@ export type MileageExceptionEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -249,6 +252,7 @@ export default compose<MileageExceptionEditorProps, {}>(
   withRouter,
   withLookupMileageException,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<MileageExceptionEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<MileageExceptionEditorProps, {}>(lifecycles),

@@ -8,6 +8,8 @@ import { ILookupCurrencyPostPayload, ILookupCurrencyPutPayload } from '@lookup/c
 import { ICurrency } from '@lookup/classes/response';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -47,6 +49,7 @@ export type CurrencyEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -243,6 +246,7 @@ export const CurrencyEditor = compose<CurrencyEditorProps, {}>(
   withRouter,
   withLookupCurrency,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<CurrencyEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<CurrencyEditorProps, {}>(lifecycles),
