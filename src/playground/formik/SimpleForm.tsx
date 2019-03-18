@@ -3,12 +3,56 @@ import { ArrayHelpers, Field, FieldArray, FieldProps, Form, Formik, FormikAction
 import * as React from 'react';
 import * as Yup from 'yup';
 
+export interface ISectionField<T> {
+  key: keyof T;
+  component?: React.ReactNode;
+}
+
+export interface ISectionForm<T> {
+  title: string;
+  isArray?: boolean;
+  fields: ISectionField<T>[];
+}
+
+export interface IForm<T> {
+  sections: ISectionForm<T>[];
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<T>>>;
+  onSubmit?: () => void;
+  onReset?: () => void;
+}
+
+export const schemaForm: IForm<MyFormValues> = {
+  sections: [
+    {
+      title: 'Basic',
+      fields: [
+        {
+          key: 'firstName'
+        },
+        {
+          key: 'lastName'
+        }
+      ]
+    },
+    {
+      title: 'Items',
+      isArray: true,
+      fields: [
+        {
+          key: 'items',
+        }
+      ]
+    }
+  ]
+};
+
 interface MyFormItems {
   type: string;
 }
 
 interface MyFormValues {
   firstName: string;
+  lastName: string;
   items?: MyFormItems[];
 }
 
@@ -44,7 +88,7 @@ export const SimpleForm: React.SFC<{}> = () => {
     <div>
       <h1>My Example</h1>
       <Formik 
-        initialValues={{ firstName: '', items: undefined }}
+        initialValues={{ firstName: '', lastName: '', items: undefined }}
         validationSchema={validationSchema}
         onSubmit={(values: MyFormValues, actions: FormikActions<MyFormValues>) => {
           // alert(JSON.stringify(values, null, 2));

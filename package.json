@@ -43,6 +43,7 @@
     "@types/redux-form": "^7.4.8",
     "@types/store": "^2.0.0",
     "@types/victory": "^31.0.3",
+    "@types/yup": "^0.26.12",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "connected-react-router": "^4.5.0",
