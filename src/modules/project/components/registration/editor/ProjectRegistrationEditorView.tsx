@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import {
   ProjectRegistrationContainerForm,
   ProjectRegistrationFormData,
@@ -59,6 +59,25 @@ export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorP
 
   // Modify
   if (formMode === FormMode.Edit) {
+    if (isLoading) {
+      return (
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
+      );
+    }
+    
     if (isLoading && !response) {
       return (
         <Typography variant="body2">

@@ -13,6 +13,8 @@ import { LeaveRequestEditorView } from '@leave/components/request/editor/LeaveRe
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { leaveRequestMessage } from '@leave/locales/messages/leaveRequestMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -67,6 +69,7 @@ export type LeaveRequestEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -304,6 +307,7 @@ export default compose<LeaveRequestEditorProps, {}>(
   withRouter,
   withLeaveRequest,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
