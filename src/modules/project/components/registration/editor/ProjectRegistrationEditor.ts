@@ -156,14 +156,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
         });
       };
   
-      if (formData.information.projectType === ProjectType.Project) {
-        formData.document.project.forEach(fillDocuments);
-      }
-      
       if (formData.information.projectType === ProjectType.PreSales) {
         formData.document.preSales.forEach(fillDocuments);
+      } else {
+        formData.document.project.forEach(fillDocuments);
       }
-      
       return documents;
     };
 

@@ -10,6 +10,8 @@ export const LeaveRequestEditorView: React.SFC<LeaveRequestEditorProps> = props 
     submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.leaveRequestState.detail;
 
+  const today = new Date();
+
   const renderForm = (formData: LeaveRequestFormData) => (
     <LeaveRequestContainerForm 
       formMode={formMode}
@@ -32,7 +34,7 @@ export const LeaveRequestEditorView: React.SFC<LeaveRequestEditorProps> = props 
       uid: undefined,
       leaveType: undefined,
       regularType: undefined,
-      start: undefined,
+      start: today.toDateString(),
       end: undefined,
       address: undefined,
       contactNumber: undefined,
