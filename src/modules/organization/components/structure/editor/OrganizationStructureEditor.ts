@@ -6,10 +6,12 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationStructurePostPayload, IOrganizationStructurePutPayload } from '@organization/classes/request/structure';
 import { IStructure } from '@organization/classes/response/structure';
 import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -63,6 +65,7 @@ export type OrganizationStructureEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -351,6 +354,7 @@ export default compose<OrganizationStructureEditorProps, {}>(
   withRouter,
   withOrganizationStructure,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<OrganizationStructureEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<OrganizationStructureEditorProps, {}>(lifecycles),

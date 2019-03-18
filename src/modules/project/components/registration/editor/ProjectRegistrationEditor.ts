@@ -6,6 +6,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
 import {
   IProjectRegistrationPatchPayload,
   IProjectRegistrationPostPayload,
@@ -20,6 +21,7 @@ import {
 import { ProjectRegistrationEditorView } from '@project/components/registration/editor/ProjectRegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -71,6 +73,7 @@ export type ProjectRegistrationEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -401,6 +404,7 @@ export const ProjectRegistrationEditor = compose<ProjectRegistrationEditorProps,
   withRouter,
   withProjectRegistration,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

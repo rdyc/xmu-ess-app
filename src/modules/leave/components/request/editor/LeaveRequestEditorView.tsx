@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { LeaveRequestContainerForm, LeaveRequestFormData } from '@leave/components/request/editor/forms/LeaveRequestForm';
 import { LeaveRequestEditorProps } from '@leave/components/request/editor/LeaveRequestEditor';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const LeaveRequestEditorView: React.SFC<LeaveRequestEditorProps> = props => {
@@ -49,11 +49,22 @@ export const LeaveRequestEditorView: React.SFC<LeaveRequestEditorProps> = props 
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          {props.intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     

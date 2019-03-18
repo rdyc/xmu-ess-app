@@ -8,6 +8,8 @@ import { ISystemLimitPostPayload, ISystemLimitPutPayload } from '@lookup/classes
 import { ISystemLimit } from '@lookup/classes/response';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -60,6 +62,7 @@ export type SystemLimitEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -253,6 +256,7 @@ export default compose<SystemLimitEditorProps, {}>(
   withRouter,
   withLookupSystemLimit,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<SystemLimitEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<SystemLimitEditorProps, {}>(lifecycles),

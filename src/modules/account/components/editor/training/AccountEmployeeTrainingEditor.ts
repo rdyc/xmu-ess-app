@@ -8,7 +8,9 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -56,6 +58,7 @@ export type AccountEmployeeTrainingEditorProps
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnOption
   & OwnHandlers
   & OwnState
@@ -251,6 +254,7 @@ export const AccountEmployeeTrainingEditor = compose<AccountEmployeeTrainingEdit
   withRouter,
   withAccountEmployeeTraining,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeTrainingEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeTrainingEditorProps, {}>(lifecycles),

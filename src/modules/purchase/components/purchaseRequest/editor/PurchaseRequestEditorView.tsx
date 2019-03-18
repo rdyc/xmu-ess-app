@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
-import { Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { CircularProgress, Typography } from '@material-ui/core';
 import {
   PurchaseRequestForm,
   PurchaseRequestFormData,
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorProps } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, 
@@ -64,9 +64,20 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
   if (formMode === FormMode.Edit) {
     if (isLoading) {
       return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
 

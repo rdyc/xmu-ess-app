@@ -5,10 +5,12 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationWorkflowPostPayload, IOrganizationWorkflowPutHierarchy, IOrganizationWorkflowPutPayload } from '@organization/classes/request/workflow/request';
 import { IWorkflow } from '@organization/classes/response/workflow';
 import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -50,6 +52,7 @@ export type OrganizationWorkflowEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -291,6 +294,7 @@ export default compose<OrganizationWorkflowEditorProps, {}>(
   withOrganizationWorkflow,
   withLookupMenu,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<OrganizationWorkflowEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<OrganizationWorkflowEditorProps, {}>(lifecycles),
