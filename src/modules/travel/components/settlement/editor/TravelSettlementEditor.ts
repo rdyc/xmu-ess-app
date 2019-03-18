@@ -4,6 +4,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ITravelSettlementPostPayload, ITravelSettlementPutItem, ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
 import { ITravelRequest } from '@travel/classes/response';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
@@ -52,6 +54,7 @@ export type TravelSettlementEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -330,6 +333,7 @@ export default compose<TravelSettlementEditorProps, {}>(
   withTravelSettlement,
   withTravelRequest,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<TravelSettlementEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<TravelSettlementEditorProps, {}>(lifecycles),
