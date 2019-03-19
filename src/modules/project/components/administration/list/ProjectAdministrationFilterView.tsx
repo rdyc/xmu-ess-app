@@ -116,7 +116,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
           </ListItem>
           <Divider />
 
-          {/* <ListItem button onClick={props.handleFilterStatusVisibility}>
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(projectMessage.registration.field.statusType)}
               secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -134,7 +134,7 @@ export const ProjectAdministrationListFilterView: React.SFC<ProjectAdministratio
               </IconButton> 
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider /> */}
+          <Divider />
 
           <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
