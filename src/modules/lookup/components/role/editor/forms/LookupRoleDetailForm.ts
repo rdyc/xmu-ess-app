@@ -60,7 +60,6 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'gradeType':
         fieldProps = {
-          required: true,
           category: 'grade',
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
@@ -70,7 +69,6 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'description':
         fieldProps = {
-          required: true,
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
           component: InputText

@@ -9,6 +9,8 @@ import { IRole } from '@lookup/classes/response';
 import { Menus } from '@lookup/classes/types';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -27,8 +29,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { WithStyles, withStyles } from '@material-ui/core';
-import styles from '@styles';
 import { LookupRoleFormData, LookupRoleMenuFormData } from './forms/LookupRoleForm';
 import { LookupRoleEditorView } from './LookupRoleEditorView';
 
@@ -77,7 +77,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, IOwnHandlers> = {
     };
 
     const requiredFields = [
-      'companyUid', 'name', 'gradeType', 'description'
+      'companyUid', 'name'
     ];
 
     requiredFields.forEach(field => {
@@ -275,6 +275,7 @@ export default compose<RoleEditorProps, {}>(
   withMasterPage,
   withRouter,
   withLookupRole,
+  withStyles(styles),
   injectIntl,
   withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),

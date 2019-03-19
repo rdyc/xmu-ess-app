@@ -36,8 +36,8 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       companyUid: null,
       employmentType: null,
       joinDate: null,
-      taxType: null,
       inactiveDate: null,
+      taxType: null,
       bloodType: null,
       religionType: null,
     },
@@ -104,8 +104,8 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.employmentType = data.employmentType;
       initialValues.information.joinDate = data.joinDate;
-      initialValues.information.taxType = data.taxType;
       initialValues.information.inactiveDate = data.inactiveDate;
+      initialValues.information.taxType = data.taxType;
       initialValues.information.bloodType = data.bloodType;
       initialValues.information.religionType = data.religionType;
 

@@ -59,6 +59,7 @@ export type AccountEmployeeEditorProps
   & WithUser
   & WithLayout
   & WithMasterPage
+  & WithStyles<typeof styles>
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & WithStyles<typeof styles>
@@ -166,7 +167,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee' });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee', uid: response.uid });
     }
 
     alertAdd({
@@ -277,6 +278,7 @@ export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withMasterPage,
   withRouter,
   withAccountEmployee,
+  withStyles(styles),
   injectIntl,
   withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
