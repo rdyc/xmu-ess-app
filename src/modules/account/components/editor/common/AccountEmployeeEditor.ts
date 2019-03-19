@@ -8,6 +8,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -57,6 +59,7 @@ export type AccountEmployeeEditorProps
   & WithUser
   & WithLayout
   & WithMasterPage
+  & WithStyles<typeof styles>
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -163,7 +166,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee' });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee', uid: response.uid });
     }
 
     alertAdd({
@@ -274,6 +277,7 @@ export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withMasterPage,
   withRouter,
   withAccountEmployee,
+  withStyles(styles),
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeEditorProps, OwnHandlers>(handlerCreators),
