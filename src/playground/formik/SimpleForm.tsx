@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as Yup from 'yup';
 
 export interface ISectionField<T> {
-  key: keyof T;
+  key: Partial<keyof T>;
   component?: React.ReactNode;
 }
 
@@ -29,9 +29,6 @@ export const schemaForm: IForm<MyFormValues> = {
         {
           key: 'firstName'
         },
-        {
-          key: 'lastName'
-        }
       ]
     },
     {
@@ -39,7 +36,7 @@ export const schemaForm: IForm<MyFormValues> = {
       isArray: true,
       fields: [
         {
-          key: 'items',
+          key: 'items'
         }
       ]
     }
@@ -83,113 +80,110 @@ const validationSchema = Yup.object().shape<Partial<MyFormValues>>({
   //   .required('Required'),
 });
 
-export const SimpleForm: React.SFC<{}> = () => {
-  return (
-    <div>
-      <h1>My Example</h1>
-      <Formik 
-        initialValues={{ firstName: '', lastName: '', items: undefined }}
-        validationSchema={validationSchema}
-        onSubmit={(values: MyFormValues, actions: FormikActions<MyFormValues>) => {
-          // alert(JSON.stringify(values, null, 2));
+export const SimpleForm: React.SFC<{}> = () => (
+  <div>
+    <Formik
+      initialValues={{ firstName: '', lastName: '', items: undefined }}
+      validationSchema={validationSchema}
+      onSubmit={(values: MyFormValues, actions: FormikActions<MyFormValues>) => {
+        // alert(JSON.stringify(values, null, 2));
 
-          setTimeout(() => {
-            actions.setSubmitting(false);
-            actions.setFieldError('firstName', 'das dasdas');
-            actions.setFieldError('items[1].type', 'semprul...!');
-            
-            console.log({ values, actions });
-          },         1000);
-         }}
-        render={(formikBag: FormikProps<MyFormValues>) => (
-          <Form>
-            <Field
-              name="firstName"
-              render={({ field, form }: FieldProps<MyFormValues>) => (
-                <TextField
-                  {...field}
-                  fullWidth={true}
-                  margin="normal"
-                  label="First Name"
-                  required={true}
-                  placeholder={'The name'}
-                  disabled={form.isSubmitting}
-                  helperText={form.touched.firstName && form.errors.firstName}
-                  error={form.touched.firstName && Boolean(form.errors.firstName)}
-                />
-              )}
-            />
+        setTimeout(() => {
+          actions.setSubmitting(false);
+          actions.setFieldError('firstName', 'das dasdas');
+          actions.setFieldError('items[1].type', 'semprul...!');
+          
+          console.log({ values, actions });
+        },         1000);
+      }}
+      render={(formikBag: FormikProps<MyFormValues>) => (
+        <Form>
+          <Field
+            name="firstName"
+            render={({ field, form }: FieldProps<MyFormValues>) => (
+              <TextField
+                {...field}
+                fullWidth={true}
+                margin="normal"
+                label="First Name"
+                required={true}
+                placeholder={'The name'}
+                disabled={form.isSubmitting}
+                helperText={form.touched.firstName && form.errors.firstName}
+                error={form.touched.firstName && Boolean(form.errors.firstName)}
+              />
+            )}
+          />
 
-            <FieldArray
-              name="items"
-              render={(arrayHelper: ArrayHelpers) => (
-                <React.Fragment>
-                  {
-                    formikBag.values.items &&
-                    formikBag.values.items.length > 0 &&
-                    formikBag.values.items.map((item, index) => 
-                      <Field
-                        key={index}
-                        name={`items.${index}.type`}
-                        render={({ field, form }: FieldProps<MyFormValues>) => {
-                          const error = getIn(form.errors, `items.${index}.type`);
-                          const touch = getIn(form.touched, `items.${index}.type`);
-                          
-                          return (
-                            <React.Fragment>
-                              <TextField
-                                {...field}
-                                fullWidth={true}
-                                margin="normal"
-                                label="Type"
-                                required={true}
-                                placeholder={'The type'}
-                                disabled={form.isSubmitting}
-                                helperText={touch && error}
-                                error={touch && Boolean(error)}
-                              />
+          <FieldArray
+            name="items"
+            render={(arrayHelper: ArrayHelpers) => (
+              <React.Fragment>
+                {
+                  formikBag.values.items &&
+                  formikBag.values.items.length > 0 &&
+                  formikBag.values.items.map((item, index) => 
+                    <Field
+                      key={index}
+                      name={`items.${index}.type`}
+                      render={({ field, form }: FieldProps<MyFormValues>) => {
+                        const error = getIn(form.errors, `items.${index}.type`);
+                        const touch = getIn(form.touched, `items.${index}.type`);
+                        
+                        return (
+                          <React.Fragment>
+                            <TextField
+                              {...field}
+                              fullWidth={true}
+                              margin="normal"
+                              label="Type"
+                              required={true}
+                              placeholder={'The type'}
+                              disabled={form.isSubmitting}
+                              helperText={touch && error}
+                              error={touch && Boolean(error)}
+                            />
 
-                              <Button onClick={() => arrayHelper.remove(index)}>Remove</Button>
-                            </React.Fragment>
-                          );
-                      }}
-                      />
-                    )
-                  }
-                  
-                  <Divider />
-                  
-                  <Button onClick={() => arrayHelper.push({ type: '' })}>Add</Button>      
-                </React.Fragment>
-              )}
-            />
+                            <Button onClick={() => arrayHelper.remove(index)}>Remove</Button>
+                          </React.Fragment>
+                        );
+                    }}
+                    />
+                  )
+                }
+                
+                <Divider />
+                
+                <Button onClick={() => arrayHelper.push({ type: '' })}>Add</Button>      
+              </React.Fragment>
+            )}
+          />
 
-            {
-              formikBag.submitCount > 0 &&
-              typeof formikBag.errors.items === 'string' &&
-              <div>{formikBag.errors.items}</div>
-            }
+          {
+            formikBag.submitCount > 0 &&
+            typeof formikBag.errors.items === 'string' &&
+            <div>{formikBag.errors.items}</div>
+          }
 
-            <Button
-              type="reset"
-              variant="contained"
-              color="secondary"
-              disabled={!formikBag.dirty}
-            >
-              Reset
-            </Button>
+          <Button
+            type="reset"
+            variant="contained"
+            color="secondary"
+            disabled={!formikBag.dirty}
+          >
+            Reset
+          </Button>
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={formikBag.isSubmitting}
-            >
-              {formikBag.isSubmitting ? 'Processing' : 'Submit'}
-            </Button>
-          </Form>
-        )}
-      />
-    </div>
-  );
-};
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={formikBag.isSubmitting}
+          >
+            {formikBag.isSubmitting ? 'Processing' : 'Submit'}
+          </Button>
+        </Form>
+      )}
+    />
+  </div>
+);

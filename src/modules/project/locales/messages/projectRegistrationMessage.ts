@@ -112,6 +112,7 @@ export const projectRegistrationField = defineMessages({
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
   
   contractNumber: { id: `${prefix}.field.contractNumber` },
+  contractNumberRequired: { id: `${prefix}.field.contractNumber.required` },
   contractNumberPlaceholder: { id: `${prefix}.field.contractNumber.placeholder` },
   
   employeeUid: { id: `${prefix}.field.employeeUid` },
@@ -180,6 +181,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'customerUid': return projectRegistrationField.customerUidRequired;
       case 'start': return projectRegistrationField.startRequired;
       case 'end': return projectRegistrationField.endRequired;
+      case 'contractNumber': return projectRegistrationField.contractNumberRequired;
       case 'employeeUid': return projectRegistrationField.employeeUidRequired;
       case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidRequired;
       case 'currencyType': return projectRegistrationField.currencyTypeRequired;

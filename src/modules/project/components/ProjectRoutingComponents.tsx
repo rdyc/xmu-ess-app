@@ -15,7 +15,7 @@ import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignme
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
 import { HourEditor } from './hour/editor/HourEditor';
 import { OwnerEditor } from './owner/editor/OwnerEditor';
-import { ProjectRegistrationEditor } from './registration/editor/ProjectRegistrationEditor';
+import { ProjectRegistrationForm } from './registration/form/ProjectRegistrationForm';
 import { ProjectRegistrationList } from './registration/list/ProjectRegistrationList';
 import { SiteEditor } from './sites/SiteEditor';
 import { StatusEditor } from './status/StatusEditor';
@@ -26,7 +26,7 @@ const request = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/owner`} component={OwnerEditor} />
     <Route path={`${props.match.path}/status`} component={StatusEditor} />
     <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
-    <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} />
+    <Route path={`${props.match.path}/form`} component={ProjectRegistrationForm} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectRegistrationList} />
   </Switch>
