@@ -29,8 +29,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { WithStyles, withStyles } from '@material-ui/core';
-import styles from '@styles';
 import { LookupRoleFormData, LookupRoleMenuFormData } from './forms/LookupRoleForm';
 import { LookupRoleEditorView } from './LookupRoleEditorView';
 
