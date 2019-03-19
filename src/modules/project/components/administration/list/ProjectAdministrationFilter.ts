@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'pending', name: 'Pending' }
 ];
 
-export type IProjectAdministrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'isRejected' | 'isNewOwner' | 'status'>;
+export type IProjectAdministrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectTypes' | 'statusTypes' | 'isRejected' | 'isNewOwner' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -216,8 +216,8 @@ const handlerCreators: HandleCreators<ProjectAdministrationListFilterProps, IOwn
   handleFilterOnApply: (props: ProjectAdministrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectType: props.filterType && props.filterType.type,
-      statusType: props.filterStatus && props.filterStatus.type,
+      projectTypes: props.filterType && props.filterType.type,
+      statusTypes: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
       isNewOwner: props.filterNewOwner
@@ -295,7 +295,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListFilterProps, 
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, projectType, statusType, status } = this.props.initialProps;
+      const { customerUid, projectTypes, statusTypes, status } = this.props.initialProps;
 
       // filter customer
       if (customerUid) {
@@ -309,22 +309,22 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListFilterProps, 
       }
 
       // filter project type
-      if (projectType) {
+      if (projectTypes) {
         const { response } = this.props.commonProjectListState;
         
         if (response && response.data) {
-          const selected = response.data.find(item => item.type === projectType);
+          const selected = response.data.find(item => item.type === projectTypes);
           
           this.props.setFilterType(selected);
         }
       }
 
       // filter status type
-      if (statusType) {
+      if (statusTypes) {
         const { response } = this.props.commonStatusListState;
         
         if (response && response.data) {
-          const selected = response.data.find(item => item.type === statusType);
+          const selected = response.data.find(item => item.type === statusTypes);
           
           this.props.setFilterStatus(selected);
         }

@@ -75,19 +75,19 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
     if (isLoading) {
       return (
         <div className={props.classes.preloader}>
-        <div className={props.classes.preloaderContent}>
-          <CircularProgress 
-            style={{margin: 'auto'}} 
-            color="secondary"
-          />
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
 
-          <Typography
-            className={props.classes.marginFarTop}
-          >
-            {props.intl.formatMessage(layoutMessage.text.waiting)}
-          </Typography>
-        </div>    
-      </div>
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     

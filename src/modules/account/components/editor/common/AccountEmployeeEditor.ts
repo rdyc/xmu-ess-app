@@ -62,6 +62,7 @@ export type AccountEmployeeEditorProps
   & WithStyles<typeof styles>
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -279,6 +280,7 @@ export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withAccountEmployee,
   withStyles(styles),
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeEditorProps, {}>(lifecycles),

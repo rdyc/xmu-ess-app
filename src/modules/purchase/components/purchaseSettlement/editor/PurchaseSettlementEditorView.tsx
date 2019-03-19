@@ -1,11 +1,9 @@
 import { FormMode } from '@generic/types';
-import { 
-  // Typography, 
-  LinearProgress } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { CircularProgress, Typography } from '@material-ui/core';
 import {
   PurchaseSettlementForm,
   PurchaseSettlementFormData,
-  // PurchaseSettlementItemFormData
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorProps } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditor';
 import * as React from 'react';
@@ -60,11 +58,24 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
     }
   };
 
-  if (isLoading && !response) {
-      return (
-        <LinearProgress variant="query" />
-      );
-    }
+  if (isLoading) {
+    return (
+      <div className={props.classes.preloader}>
+        <div className={props.classes.preloaderContent}>
+          <CircularProgress 
+            style={{margin: 'auto'}} 
+            color="secondary"
+          />
+
+          <Typography
+            className={props.classes.marginFarTop}
+          >
+            {props.intl.formatMessage(layoutMessage.text.waiting)}
+          </Typography>
+        </div>    
+      </div>
+    );
+  }
 
   if (!isLoading && response && response.data) {
       // todo: replace values with response data

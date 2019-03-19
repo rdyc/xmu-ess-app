@@ -2,6 +2,8 @@ import { FormMode } from '@generic/types';
 import { IProjectDetail } from '@project/classes/response';
 import * as React from 'react';
 
+import { layoutMessage } from '@layout/locales/messages';
+import { CircularProgress, Typography } from '@material-ui/core';
 import { OwnerForm, ProjectOwnerFormData } from './forms/OwnerForm';
 import { OwnerEditorProps } from './OwnerEditor';
 
@@ -33,6 +35,25 @@ export const OwnerEditorView: React.SFC<OwnerEditorProps> = props => {
   
   // Modify
   if (formMode === FormMode.Edit) {
+    if (isLoading) {
+      return (
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
+      );
+    }
+    
     if (!isLoading && response && response.data) {
       const data = response.data;
 

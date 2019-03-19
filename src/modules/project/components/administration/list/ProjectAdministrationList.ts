@@ -89,8 +89,8 @@ const createProps: mapper<ProjectAdministrationListProps, IOwnState> = (props: P
     // fill from previous request if any
     if (request && request.filter) {
       state.customerUid = request.filter.customerUid,
-      state.projectType = request.filter.projectType,
-      state.statusType = request.filter.statusType,
+      state.projectTypes = request.filter.projectTypes,
+      state.statusTypes = request.filter.statusTypes,
       state.status = request.filter.status,
       state.isRejected = request.filter.isRejected;
       state.isNewOwner = request.filter.isNewOwner;
@@ -122,8 +122,8 @@ const handlerCreators: HandleCreators<ProjectAdministrationListProps, IOwnHandle
       // predefined filter
       const filter: IProjectRegistrationGetAllFilter = {
         customerUid: props.customerUid,
-        projectType: props.projectType,
-        statusType: props.statusType,
+        projectTypes: props.projectTypes,
+        statusTypes: props.statusTypes,
         status: props.status,
         isRejected: props.isRejected,
         isNewOwner: props.isNewOwner,
@@ -191,8 +191,8 @@ const handlerCreators: HandleCreators<ProjectAdministrationListProps, IOwnHandle
   },
   handleFilterBadge: (props: ProjectAdministrationListProps) => () => {
     return props.customerUid !== undefined || 
-      props.projectType !== undefined || 
-      props.statusType !== undefined ||
+      props.projectTypes !== undefined || 
+      props.statusTypes !== undefined ||
       props.status !== 'complete' ||
       props.isRejected === true ||
       props.isNewOwner === true;
@@ -211,16 +211,16 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListProps, IOwnSt
     const isFilterChanged = !shallowEqual(
       {
         customerUid: this.props.customerUid,
-        projectType: this.props.projectType,
-        statusType: this.props.statusType,
+        projectTypes: this.props.projectTypes,
+        statusTypes: this.props.statusTypes,
         status: this.props.status,
         isRejected: this.props.isRejected,
         isNewOwner: this.props.isNewOwner
       },
       {
         customerUid: prevProps.customerUid,
-        projectType: prevProps.projectType,
-        statusType: prevProps.statusType,
+        projectTypes: prevProps.projectTypes,
+        statusTypes: prevProps.statusTypes,
         status: prevProps.status,
         isRejected: prevProps.isRejected,
         isNewOwner: prevProps.isNewOwner

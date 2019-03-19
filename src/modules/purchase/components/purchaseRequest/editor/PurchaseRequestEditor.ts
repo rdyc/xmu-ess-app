@@ -6,6 +6,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import {
   IPurchaseItemPostPayload,
   IPurchaseItemPutPayload,
@@ -20,6 +21,7 @@ import {
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -73,6 +75,7 @@ export type PurchaseRequestEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -382,6 +385,7 @@ export const PurchaseRequestEditor = compose<PurchaseRequestEditorProps, {}>(
   withRouter,
   withPurchaseRequest,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<PurchaseRequestEditorProps, OwnHandlers>(handlers),
   lifecycle<PurchaseRequestEditorProps, {}>(lifecycles),

@@ -29,6 +29,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { LookupRoleFormData, LookupRoleMenuFormData } from './forms/LookupRoleForm';
 import { LookupRoleEditorView } from './LookupRoleEditorView';
 
@@ -277,6 +279,7 @@ export default compose<RoleEditorProps, {}>(
   withLookupRole,
   withStyles(styles),
   injectIntl,
+  withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RoleEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<RoleEditorProps, {}>(lifecycles),
