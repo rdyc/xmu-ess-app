@@ -2,8 +2,9 @@ import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
+import { SelectField, SelectFieldOption } from '@layout/components/fields/SelectField';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
-import { Card, CardContent, CardHeader, MenuItem, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, CardHeader, MenuItem, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
@@ -12,6 +13,20 @@ import { Moment } from 'moment';
 import * as React from 'react';
 
 import { IProjectRegistrationFormValue, ProjectRegistrationFormProps } from './ProjectRegistrationForm';
+
+const optionCustomers = [
+  { value: '', label: '' },
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+];
+
+const optionProjects = [
+  { value: '', label: '' },
+  { value: 'SPT01', label: 'Project' },
+  { value: 'SPT02', label: 'Presales' },
+  { value: 'SPT03', label: 'Maintenis' }
+];
 
 export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps> = props => (
   <FormPage
@@ -40,43 +55,45 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
               <Field
                 name="customerUid"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    required
-                    select
-                    margin="normal"
-                    disabled={form.isSubmitting}
-                    label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
-                    placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
-                    helperText={form.touched.customerUid && form.errors.customerUid}
-                    error={form.touched.customerUid && Boolean(form.errors.customerUid)}
-                  >
-                    <option value=""></option>
-                  </TextField>
+                  <SelectField
+                    isSearchable
+                    isClearable={field.value !== ''}
+                    escapeClearsValue={true}
+                    value={optionCustomers.find(option => option.value === field.value)}
+                    options={optionCustomers}
+                    textFieldProps={{
+                      label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                      required: true,
+                      helperText: form.touched.customerUid && form.errors.customerUid,
+                      error: form.touched.customerUid && Boolean(form.errors.customerUid)
+                    }}
+                    onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                    onChange={(selected: SelectFieldOption) => {
+                      formikBag.setFieldValue('projectType', 'SPT03');
+                      formikBag.setFieldValue(field.name, selected && selected.value || '');
+                    }}
+                  />
                 )}
               />
 
               <Field
                 name="projectType"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    required
-                    select
-                    margin="normal"
-                    disabled={form.isSubmitting}
-                    label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
-                    placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
-                    helperText={form.touched.projectType && form.errors.projectType}
-                    error={form.touched.projectType && Boolean(form.errors.projectType)}
-                  >
-                    <MenuItem value=""><em>None</em></MenuItem>
-                    <MenuItem value="SPT01">Project</MenuItem>
-                    <MenuItem value="SPT02">Presales</MenuItem>
-                    <MenuItem value="SPT03">Maintenis</MenuItem>
-                  </TextField>
+                  <SelectField
+                    isSearchable
+                    isClearable={field.value !== ''}
+                    escapeClearsValue={true}
+                    value={optionProjects.find(option => option.value === field.value)}
+                    options={optionProjects}
+                    textFieldProps={{
+                      label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                      required: true,
+                      helperText: form.touched.projectType && form.errors.projectType,
+                      error: form.touched.projectType && Boolean(form.errors.projectType)
+                    }}
+                    onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                    onChange={(selected: SelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                  />
                 )}
               />
 
@@ -307,6 +324,24 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             <CardContent>
             </CardContent>
           </Card>
+
+          <Button
+            type="reset"
+            variant="contained"
+            color="secondary"
+            disabled={!formikBag.dirty}
+          >
+            Reset
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={formikBag.isSubmitting}
+          >
+            {formikBag.isSubmitting ? 'Processing' : 'Submit'}
+          </Button>
         </Form>
       )}
     />
