@@ -74,7 +74,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
       information: {}
     };
   
-    const requiredFields = ['employeeUid', 'projectType'];
+    const requiredFields = ['projectType'];
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
@@ -96,7 +96,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
     }
 
     // props checking
-    if (!projectUid || !information.employeeUid || !information.projectType) {
+    if (!projectUid || !information.projectType) {
       const message = intl.formatMessage(projectOwnerMessage.emptyProps);
 
       return Promise.reject(message);
