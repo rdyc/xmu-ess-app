@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'pending', name: 'Pending' }
 ];
 
-export type IProjectAdministrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectTypes' | 'statusTypes' | 'isRejected' | 'isNewOwner' | 'status'>;
+export type IProjectAdministrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'isRejected' | 'isNewOwner' | 'status'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -215,7 +215,7 @@ const handlerCreators: HandleCreators<ProjectAdministrationListFilterProps, IOwn
   },
   handleFilterOnApply: (props: ProjectAdministrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
-      customerUid: props.filterCustomer && props.filterCustomer.uid,
+      customerUids: props.filterCustomer && props.filterCustomer.uid,
       projectTypes: props.filterType && props.filterType.type,
       statusTypes: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
@@ -295,14 +295,14 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListFilterProps, 
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, projectTypes, statusTypes, status } = this.props.initialProps;
+      const { customerUids, projectTypes, statusTypes, status } = this.props.initialProps;
 
       // filter customer
-      if (customerUid) {
+      if (customerUids) {
         const { response } = this.props.lookupCustomerState.list;
         
         if (response && response.data) {
-          const selected = response.data.find(item => item.uid === customerUid);
+          const selected = response.data.find(item => item.uid === customerUids);
           
           this.props.setFilterCustomer(selected);
         }

@@ -91,7 +91,7 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
     <ProjectAdministrationListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        customerUid: props.customerUid,
+        customerUids: props.customerUids,
         projectTypes: props.projectTypes,
         statusTypes: props.statusTypes,
         status: props.status,
