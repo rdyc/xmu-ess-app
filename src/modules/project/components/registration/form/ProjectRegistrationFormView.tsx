@@ -2,8 +2,9 @@ import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
-import { SelectField, SelectFieldOption } from '@layout/components/fields/SelectField';
+import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
+import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
 import { Button, Card, CardContent, CardHeader, MenuItem, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -13,13 +14,6 @@ import { Moment } from 'moment';
 import * as React from 'react';
 
 import { IProjectRegistrationFormValue, ProjectRegistrationFormProps } from './ProjectRegistrationForm';
-
-const optionCustomers = [
-  { value: '', label: '' },
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-];
 
 const optionProjects = [
   { value: '', label: '' },
@@ -55,24 +49,25 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
               <Field
                 name="customerUid"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <SelectField
-                    isSearchable
-                    isClearable={field.value !== ''}
-                    escapeClearsValue={true}
-                    value={optionCustomers.find(option => option.value === field.value)}
-                    options={optionCustomers}
-                    textFieldProps={{
-                      label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
-                      required: true,
-                      helperText: form.touched.customerUid && form.errors.customerUid,
-                      error: form.touched.customerUid && Boolean(form.errors.customerUid)
-                    }}
-                    onMenuClose={() => formikBag.setFieldTouched(field.name)}
-                    onChange={(selected: SelectFieldOption) => {
-                      formikBag.setFieldValue('projectType', 'SPT03');
-                      formikBag.setFieldValue(field.name, selected && selected.value || '');
-                    }}
-                  />
+                  <LookupCustomerOption filter={props.filterCustomer}>
+                    <SelectField
+                      isSearchable
+                      isClearable={field.value !== ''}
+                      escapeClearsValue={true}
+                      valueString={field.value}
+                      textFieldProps={{
+                        label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                        required: true,
+                        helperText: form.touched.customerUid && form.errors.customerUid,
+                        error: form.touched.customerUid && Boolean(form.errors.customerUid)
+                      }}
+                      onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                      onChange={(selected: ISelectFieldOption) => {
+                        formikBag.setFieldValue('projectType', 'SPT03');
+                        formikBag.setFieldValue(field.name, selected && selected.value || '');
+                      }}
+                    />
+                  </LookupCustomerOption>
                 )}
               />
 
@@ -92,7 +87,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                       error: form.touched.projectType && Boolean(form.errors.projectType)
                     }}
                     onMenuClose={() => formikBag.setFieldTouched(field.name)}
-                    onChange={(selected: SelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                    onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
                   />
                 )}
               />

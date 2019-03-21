@@ -43,9 +43,6 @@ const styles = (theme: Theme) => createStyles({
   noOptionsMessage: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
   },
-  singleValue: {
-    fontSize: 16,
-  },
   placeholder: {
     display: 'none'
   },
@@ -62,6 +59,16 @@ const styles = (theme: Theme) => createStyles({
 });
 
 const NoOptionsMessage = (props: any) => (
+  <Typography
+    color="textSecondary"
+    className={props.selectProps.classes.noOptionsMessage}
+    {...props.innerProps}
+  >
+    {props.children}
+  </Typography>
+);
+
+const LoadingMessage = (props: any) => (
   <Typography
     color="textSecondary"
     className={props.selectProps.classes.noOptionsMessage}
@@ -121,8 +128,7 @@ const Placeholder = (props: any) => (
 );
 
 const SingleValue = (props: any) => (
-  <Typography 
-    className={props.selectProps.classes.singleValue} 
+  <Typography variant="body1" paragraph={false}
     {...props.innerProps}
   >
     {props.children}
@@ -162,13 +168,14 @@ const Menu = (props: any) => (
   </Paper>
 );
 
-export interface SelectFieldOption {
+export interface ISelectFieldOption {
   value: string;
   label: string;
   object?: any;
 }
 
-export interface SelectFieldProps extends Props<SelectFieldOption> {
+export interface SelectFieldProps extends Props<ISelectFieldOption> {
+  valueString?: string;
   textFieldProps: TextFieldProps;
 }
 
@@ -195,9 +202,8 @@ const component = (props: SelectFieldProps & WithStyles<typeof styles> & WithThe
       SingleValue,
       ValueContainer,
       IndicatorSeparator,
+      LoadingMessage
     }}
-    getOptionLabel={option => option.label}
-    getOptionValue={option => option.value}
   />
 );
 

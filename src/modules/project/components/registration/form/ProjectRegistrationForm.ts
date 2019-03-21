@@ -1,5 +1,6 @@
 import { ProjectType } from '@common/classes/types';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { FormikActions } from 'formik';
@@ -64,6 +65,9 @@ interface IOwnOption {
 interface IOwnState {
   initialValues?: IProjectRegistrationFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IProjectRegistrationFormValue>>>;
+
+  filterCustomer?: ILookupCustomerGetListFilter;
+
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -75,6 +79,7 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setValidationSchema: StateHandler<IOwnState>;
+  setFilterCustomer: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -105,6 +110,9 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
   }),
   setValidationSchema: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     validationSchema: values
+  }),
+  setFilterCustomer: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    filterCustomer: values
   })
 };
 
@@ -127,7 +135,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
   componentDidMount() {
     // 1. define initial values
     const initialValues: IProjectRegistrationFormValue = {
-      customerUid: '',
+      customerUid: 'CS00001060',
       projectType: '',
       contractNumber: '',
       name: '',
@@ -175,13 +183,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
     });
 
     this.props.setValidationSchema(validationSchema);
+
+    // 3. define customer filter
+    const filterCustomer: ILookupCustomerGetListFilter = {
+      companyUid: this.props.userState.user && this.props.userState.user.company.uid,
+      orderBy: 'name',
+      direction: 'descending'
+    };
+
+    this.props.setFilterCustomer(filterCustomer);
   },
-  componentDidUpdate() {
-    console.log('component did update');
-  },
-  componentWillUnmount() {
-    console.log('component will unmount');
-  }
+  // componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
+  //   console.log('component did update');
+  // }
 };
 
 export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOwnOption>(
