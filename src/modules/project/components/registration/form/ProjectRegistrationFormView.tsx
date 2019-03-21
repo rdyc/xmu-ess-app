@@ -1,26 +1,21 @@
 import { ProjectType } from '@common/classes/types';
+import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
-import { Button, Card, CardContent, CardHeader, MenuItem, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { IProjectRegistrationFormValue, ProjectRegistrationFormProps } from './ProjectRegistrationForm';
-
-const optionProjects = [
-  { value: '', label: '' },
-  { value: 'SPT01', label: 'Project' },
-  { value: 'SPT02', label: 'Presales' },
-  { value: 'SPT03', label: 'Maintenis' }
-];
 
 export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps> = props => (
   <FormPage
@@ -49,7 +44,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
               <Field
                 name="customerUid"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <LookupCustomerOption filter={props.filterCustomer}>
+                  <LookupCustomerOption filter={props.filterLookupCustomer}>
                     <SelectField
                       isSearchable
                       isClearable={field.value !== ''}
@@ -74,21 +69,22 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
               <Field
                 name="projectType"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <SelectField
-                    isSearchable
-                    isClearable={field.value !== ''}
-                    escapeClearsValue={true}
-                    value={optionProjects.find(option => option.value === field.value)}
-                    options={optionProjects}
-                    textFieldProps={{
-                      label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
-                      required: true,
-                      helperText: form.touched.projectType && form.errors.projectType,
-                      error: form.touched.projectType && Boolean(form.errors.projectType)
-                    }}
-                    onMenuClose={() => formikBag.setFieldTouched(field.name)}
-                    onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
-                  />
+                  <CommonSystemOption category="project" filter={props.filterCommonSystem}>
+                    <SelectField
+                      isSearchable
+                      isClearable={field.value !== ''}
+                      escapeClearsValue={true}
+                      valueString={field.value}
+                      textFieldProps={{
+                        label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                        required: true,
+                        helperText: form.touched.projectType && form.errors.projectType,
+                        error: form.touched.projectType && Boolean(form.errors.projectType)
+                      }}
+                      onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                      onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                    />
+                  </CommonSystemOption>
                 )}
               />
 
@@ -195,23 +191,34 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
               <Field
                 name="currencyType"
                 render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    required
-                    select
-                    margin="normal"
-                    disabled={form.isSubmitting}
-                    label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
-                    placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
-                    helperText={form.touched.currencyType && form.errors.currencyType}
-                    error={form.touched.currencyType && Boolean(form.errors.currencyType)}
-                  >
-                    <MenuItem value=""><em>None</em></MenuItem>
-                    <MenuItem value="SCR01">IDR</MenuItem>
-                    <MenuItem value="SCR02">USD</MenuItem>
-                    <MenuItem value="SCR03">JPY</MenuItem>
-                  </TextField>
+                  <CommonSystemOption category="currency" filter={props.filterCommonSystem}>
+                    <SelectField
+                      isSearchable
+                      isClearable={field.value !== ''}
+                      escapeClearsValue={true}
+                      valueString={field.value}
+                      textFieldProps={{
+                        label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                        required: true,
+                        helperText: form.touched.projectType && form.errors.projectType,
+                        error: form.touched.projectType && Boolean(form.errors.projectType)
+                      }}
+                      onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                      onChange={(selected: ISelectFieldOption) => {
+                        const currencyType = selected && selected.value || '';
+
+                        formikBag.setFieldValue(field.name, currencyType);
+
+                        // reset to 1 for IDR
+                        if (currencyType === 'SCR01') {
+                          formikBag.setFieldValue('rate', 1);
+
+                          // set valueIdr field
+                          formikBag.setFieldValue('valueIdr', formikBag.values.valueUsd && formikBag.values.valueUsd || 0);
+                        }
+                      }}
+                    />
+                  </CommonSystemOption>
                 )}
               />
 
@@ -234,7 +241,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                     }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       // set current field
-                      formikBag.setFieldValue(field.name, e.target.value);
+                      formikBag.setFieldValue(field.name, parseFloat(e.target.value));
 
                       // set valueIdr field
                       formikBag.setFieldValue('valueIdr', parseFloat(e.target.value) * (formikBag.values.valueUsd && formikBag.values.valueUsd || 0));
@@ -262,7 +269,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                     }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         // set current field
-                        formikBag.setFieldValue(field.name, e.target.value);
+                        formikBag.setFieldValue(field.name, parseFloat(e.target.value));
   
                         // set valueIdr field
                         formikBag.setFieldValue('valueIdr', parseFloat(e.target.value) * (formikBag.values.rate && formikBag.values.rate || 0));
@@ -284,7 +291,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                       inputComponent: NumberFormatter
                     }}
                     InputLabelProps={{ 
-                      shrink: formikBag.values.valueIdr !== undefined 
+                      shrink: !isNullOrUndefined(formikBag.values.valueIdr) 
                     }} 
                   />
                 )}
@@ -319,6 +326,8 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             <CardContent>
             </CardContent>
           </Card>
+
+          <pre>{JSON.stringify(formikBag.values, null, 2)}</pre>
 
           <Button
             type="reset"

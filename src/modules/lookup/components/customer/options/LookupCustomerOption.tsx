@@ -1,5 +1,5 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
-import { ILookupCustomerGetAllFilter } from '@lookup/classes/filters/customer';
+import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import * as React from 'react';
 import {
@@ -17,7 +17,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: ILookupCustomerGetAllFilter;
+  filter?: ILookupCustomerGetListFilter;
 }
 
 interface IOwnState {

@@ -1,3 +1,4 @@
+import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
@@ -66,7 +67,8 @@ interface IOwnState {
   initialValues?: IProjectRegistrationFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IProjectRegistrationFormValue>>>;
 
-  filterCustomer?: ILookupCustomerGetListFilter;
+  filterLookupCustomer?: ILookupCustomerGetListFilter;
+  filterCommonSystem?: ISystemListFilter;
 
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -79,7 +81,8 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setValidationSchema: StateHandler<IOwnState>;
-  setFilterCustomer: StateHandler<IOwnState>;
+  setFilterLookupCustomer: StateHandler<IOwnState>;
+  setFilterCommonSystem: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -111,8 +114,11 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
   setValidationSchema: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     validationSchema: values
   }),
-  setFilterCustomer: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    filterCustomer: values
+  setFilterLookupCustomer: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    filterLookupCustomer: values
+  }),
+  setFilterCommonSystem: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    filterCommonSystem: values
   })
 };
 
@@ -135,7 +141,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
   componentDidMount() {
     // 1. define initial values
     const initialValues: IProjectRegistrationFormValue = {
-      customerUid: 'CS00001060',
+      customerUid: '',
       projectType: '',
       contractNumber: '',
       name: '',
@@ -143,7 +149,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
       start: '',
       end: '',
       currencyType: '',
-      rate: 1
+      rate: 1,
+      valueUsd: 0,
+      valueIdr: 0
     };
 
     this.props.setInitialValues(initialValues);
@@ -188,10 +196,18 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
     const filterCustomer: ILookupCustomerGetListFilter = {
       companyUid: this.props.userState.user && this.props.userState.user.company.uid,
       orderBy: 'name',
-      direction: 'descending'
+      direction: 'ascending'
     };
 
-    this.props.setFilterCustomer(filterCustomer);
+    this.props.setFilterLookupCustomer(filterCustomer);
+
+    // 4. define common project filter
+    const filterCommonSystem: ISystemListFilter = {
+      orderBy: 'value',
+      direction: 'ascending'
+    };
+
+    this.props.setFilterCommonSystem(filterCommonSystem);
   },
   // componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
   //   console.log('component did update');
