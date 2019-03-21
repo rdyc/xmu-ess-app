@@ -88,7 +88,7 @@ const createProps: mapper<ProjectAdministrationListProps, IOwnState> = (props: P
   } else {
     // fill from previous request if any
     if (request && request.filter) {
-      state.customerUid = request.filter.customerUid,
+      state.customerUids = request.filter.customerUids,
       state.projectTypes = request.filter.projectTypes,
       state.statusTypes = request.filter.statusTypes,
       state.status = request.filter.status,
@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<ProjectAdministrationListProps, IOwnHandle
     if (props.userState.user && !isLoading) {
       // predefined filter
       const filter: IProjectRegistrationGetAllFilter = {
-        customerUid: props.customerUid,
+        customerUids: props.customerUids,
         projectTypes: props.projectTypes,
         statusTypes: props.statusTypes,
         status: props.status,
@@ -190,7 +190,7 @@ const handlerCreators: HandleCreators<ProjectAdministrationListProps, IOwnHandle
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: ProjectAdministrationListProps) => () => {
-    return props.customerUid !== undefined || 
+    return props.customerUids !== undefined || 
       props.projectTypes !== undefined || 
       props.statusTypes !== undefined ||
       props.status !== 'complete' ||
@@ -210,7 +210,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListProps, IOwnSt
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
-        customerUid: this.props.customerUid,
+        customerUids: this.props.customerUids,
         projectTypes: this.props.projectTypes,
         statusTypes: this.props.statusTypes,
         status: this.props.status,
@@ -218,7 +218,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListProps, IOwnSt
         isNewOwner: this.props.isNewOwner
       },
       {
-        customerUid: prevProps.customerUid,
+        customerUids: prevProps.customerUids,
         projectTypes: prevProps.projectTypes,
         statusTypes: prevProps.statusTypes,
         status: prevProps.status,
