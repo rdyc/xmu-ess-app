@@ -10,9 +10,12 @@ export const summaryWinningRatioPage = defineMessages({
 
 export const summaryWinningRatioField = defineMessages({
   company: { id: `${prefix}.field.company`},
+  companyRequired: { id: `${prefix}.field.company.required`},
   name: { id: `${prefix}.field.name`},
   start: { id: `${prefix}.field.start`},
+  startRequired: { id: `${prefix}.field.start.required`},
   end: { id: `${prefix}.field.end`},
+  endRequired: { id: `${prefix}.field.end.required`},
   null: { id: `${prefix}.field.null`}
 });
 
