@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, IOwnHandlers> = {
         });
       };
 
-      formData.menu.menus.forEach(fillMenus);
+      formData.menus.forEach(fillMenus);
 
       return menus;
     };
@@ -277,7 +277,6 @@ export default compose<RoleEditorProps, {}>(
   withLookupRole,
   withStyles(styles),
   injectIntl,
-  withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RoleEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<RoleEditorProps, {}>(lifecycles),

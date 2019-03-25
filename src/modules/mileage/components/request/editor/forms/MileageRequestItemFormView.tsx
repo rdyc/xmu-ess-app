@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -86,9 +87,20 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
       <CardContent>
         <Grid>
           {isLoading &&
-            <Typography variant="body2">
-              {props.intl.formatMessage(layoutMessage.text.loading)}
-            </Typography> 
+            <div className={props.classes.preloader}>
+            <div className={props.classes.preloaderContent}>
+              <CircularProgress 
+                style={{margin: 'auto'}} 
+                color="secondary"
+              />
+  
+              <Typography
+                className={props.classes.marginFarTop}
+              >
+                {props.intl.formatMessage(layoutMessage.text.waiting)}
+              </Typography>
+            </div>    
+          </div>
           }
           {!isLoading &&
             (isExpired || !response ||

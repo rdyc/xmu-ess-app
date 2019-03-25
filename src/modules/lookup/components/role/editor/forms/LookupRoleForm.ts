@@ -19,9 +19,9 @@ export type LookupRoleFormData = {
     description: string | null | undefined;
     isActive: boolean | undefined;
   },
-  menu: {
-    menus: LookupRoleMenuFormData[]
-  }
+  menus: LookupRoleMenuFormData[]
+  // menu: {
+  // }
 };
 
 interface OwnProps {

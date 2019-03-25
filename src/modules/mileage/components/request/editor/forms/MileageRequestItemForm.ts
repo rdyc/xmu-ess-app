@@ -1,5 +1,7 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { MileageRequestItemFormView } from '@mileage/components/request/editor/forms/MileageRequestItemFormView';
+import styles from '@styles';
 import {
   WithTimesheetMileages,
   withTimesheetMileages
@@ -16,7 +18,13 @@ interface OwnState {
   nolValue: boolean;
 }
 
-export type ItemFormProps = WithTimesheetMileages & WithUser & OwnProps & OwnState & InjectedIntlProps;
+export type ItemFormProps 
+  = WithTimesheetMileages 
+  & WithUser 
+  & WithStyles<typeof styles>
+  & OwnProps 
+  & OwnState 
+  & InjectedIntlProps;
 
 const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
   componentDidMount() {
@@ -45,6 +53,7 @@ const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
 
 export const MileageRequestItemForm = compose<ItemFormProps, OwnProps>(
   withUser,
+  withStyles(styles),
   withTimesheetMileages,
   injectIntl,
   lifecycle<ItemFormProps, {}>(lifecycles)

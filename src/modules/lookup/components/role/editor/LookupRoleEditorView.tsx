@@ -46,9 +46,9 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       description: undefined,
       isActive: undefined,
     },
-    menu: {
-      menus: []
-    }
+    menus: []
+    // menu: {
+    // }
   };
 
   // New
@@ -90,14 +90,24 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
 
       if (data.menus) {
         data.menus.forEach(item => {
-          initialValues.menu.menus.push({
+          initialValues.menus.push({
             [`${item.menuUid}`]: item.isAccess
           });
           if (item.isAccess) {
-            isCheckedMenus.push({uid: item.menuUid, parentUid: item.menu && item.menu.parentUid});
+            // this one is for handling which one menus is checked, so we can compare it later for checking logic parent and child
+            isCheckedMenus.push({uid: item.menuUid, parentUid: undefined});
           }
+          if (item.childs) {
+            item.childs.forEach(child => {
+              initialValues.menus.push({
+                [`${child.menuUid}`]: child.isAccess
+              });
+              if (child.isAccess) {
+                isCheckedMenus.push({uid: child.menuUid, parentUid: item.menuUid});
+              }
+            });
           }
-        );
+        });
       }
 
       return renderForm(initialValues);
