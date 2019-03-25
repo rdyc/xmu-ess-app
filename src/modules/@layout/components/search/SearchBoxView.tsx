@@ -9,7 +9,7 @@ import { SearchBoxProps } from './SearchBox';
 export const SearchBoxView: React.SFC<SearchBoxProps> = props => (
   <div className={props.classes.search}>
     <div className={props.classes.searchIcon}>
-      <SearchIcon color="inherit" />
+      <SearchIcon color="default" />
     </div>
 
     <InputBase
@@ -24,15 +24,17 @@ export const SearchBoxView: React.SFC<SearchBoxProps> = props => (
         props.find.length > 0 &&
         <InputAdornment position="end">
           <IconButton 
+            className={props.classes.searchRightIcon}
             id="search.fields"
-            color="inherit"
+            color="default"
             onClick={props.handleOnOpen}
           >
             <MoreHoriz fontSize="small" />
           </IconButton>
 
           <IconButton 
-            color="inherit"
+            className={props.classes.searchRightIcon}
+            color="default"
             onClick={props.handleOnClear}
           >
             <Close fontSize="small" />
