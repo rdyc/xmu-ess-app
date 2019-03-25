@@ -4,7 +4,7 @@ export enum ProjectRegistrationField {
   // customerUid = 'Customer',
   // projectType = 'Project Type',
   contractNumber = 'Contract No.',
-  name = 'Name',
+  name = 'Project Name',
   description = 'Description',
   // statusType = 'Status',
   // currencyUid = 'Currency',
