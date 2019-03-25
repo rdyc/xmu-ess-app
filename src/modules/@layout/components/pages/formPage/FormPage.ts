@@ -1,95 +1,72 @@
-import {
-  compose,
-  HandleCreators,
-  lifecycle,
-  mapper,
-  ReactLifeCycleFunctions,
-  setDisplayName,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
+import { IPageInfo, IQuerySingleState } from '@generic/interfaces';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'recompose';
 
 import { FormPageView } from './FormPageView';
 
 interface IOwnOption {
-  initialCount: number;
+  state: IQuerySingleState<any, any>;
+  options?: IAppBarMenu[];
+  info: IPageInfo;
+  appBarComponent?: React.ReactNode;
+  onLoadApi: () => void;
+  onLoadedApi?: () => void;
 }
 
 interface IOwnState {
-  counter: number;
-  value: string;
-}
 
-interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setIncrement: StateHandler<IOwnState>;
-  setDecrement: StateHandler<IOwnState>;
-  setValue: StateHandler<IOwnState>;
-}
-
-interface IOwnHandler {
-  handleVoid: () => void;
-  handleParams: (value: string) => void;
 }
 
 export type FormPageProps
   = IOwnOption
-  & IOwnState
-  & IOwnStateUpdater
-  & IOwnHandler;
+  & WithStyles<typeof styles>
+  & WithWidth
+  & WithMasterPage
+  & InjectedIntlProps;
 
-const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  counter: props.initialCount,
-  value: 'Test'
-});
-
-const stateUpdaters: StateUpdaters<FormPageProps, IOwnState, IOwnStateUpdater> = {
-  setIncrement: (prevState: IOwnState) => (value: number): Partial<IOwnState> => ({
-    counter: prevState.counter + value,
-  }),
-  setDecrement: (prevState: IOwnState) => (value: number): Partial<IOwnState> => ({
-    counter: prevState.counter - value,
-  }),
-  setValue: (prevState: IOwnState) => (value: string): Partial<IOwnState> => ({
-    value,
-  })
-};
-
-const handlerCreators: HandleCreators<FormPageProps, IOwnHandler> = {
-  handleVoid: (props: FormPageProps) => () => {
-    alert('void method was called');
-  },
-  handleParams: (props: FormPageProps) => (value: string) => {
-    alert(`void method was called with param: 'value'`);
-  }
-};
-
-const lifeCycles: ReactLifeCycleFunctions<FormPageProps, IOwnState> = {
-  componentWillMount() {
-    console.log('component will mount');
-  },
-  componentWillReceiveProps() {
-    console.log('component will receive props');
-  },
+const lifecycles: ReactLifeCycleFunctions<FormPageProps, IOwnState> = {
   componentDidMount() {
-    console.log('component did mount');
+    // configure view
+    this.props.masterPage.changePage({
+      ...this.props.info
+    });
+
+    if (this.props.appBarComponent) {
+      this.props.masterPage.changeCustomComponent(this.props.appBarComponent);
+    }
+
+    // loading data event from config
+    this.props.onLoadApi();
   },
-  componentWillUpdate() {
-    console.log('component will update');
-  },
-  componentDidUpdate() {
-    console.log('component did update');
+  componentDidUpdate(prevProps: FormPageProps) {
+    // handling updated custom component
+    if (this.props.appBarComponent && this.props.appBarComponent !== prevProps.appBarComponent) {
+      this.props.masterPage.changeCustomComponent(this.props.appBarComponent);
+    }
+    
+    // handling updated response state
+    if (this.props.state.response !== prevProps.state.response) {
+      if (this.props.onLoadedApi) {
+        this.props.onLoadedApi();
+      }
+    }
   },
   componentWillUnmount() {
-    console.log('component will unmount');
+    // reset page
+    this.props.masterPage.resetPage();
   }
 };
 
 export const FormPage = compose<FormPageProps, IOwnOption>(
   setDisplayName('FormPage'),
-  withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators),
-  lifecycle(lifeCycles)
+  withMasterPage,
+  lifecycle(lifecycles),
+  withStyles(styles),
+  withWidth(),
+  injectIntl
 )(FormPageView);

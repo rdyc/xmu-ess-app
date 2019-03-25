@@ -29,7 +29,7 @@ export const OwnerEditorView: React.SFC<OwnerEditorProps> = props => {
       customerUid: undefined,
       name: undefined,
       projectType: undefined,
-      employeeUid: undefined
+      employeeUid: null,
     }
   };
   
