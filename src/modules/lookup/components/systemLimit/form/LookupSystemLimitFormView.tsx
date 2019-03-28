@@ -40,6 +40,8 @@ export const SystemLimitFormView: React.SFC<SystemLimitFormProps> = props => (
                   <LookupCompanyOption filter={props.filterLookupCompany}>
                     <SelectField
                       isSearchable
+                      menuPlacement="auto"
+                      menuPosition="fixed"
                       isClearable={field.value !== ''}
                       escapeClearsValue={true}
                       valueString={field.value}
@@ -65,6 +67,8 @@ export const SystemLimitFormView: React.SFC<SystemLimitFormProps> = props => (
                   <CommonSystemOption category="limiter" filter={props.filterCommonSystem}>
                     <SelectField
                       isSearchable
+                      menuPlacement="auto"
+                      menuPosition="fixed"
                       isClearable={field.value !== ''}
                       escapeClearsValue={true}
                       valueString={field.value}
