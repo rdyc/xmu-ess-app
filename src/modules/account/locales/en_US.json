@@ -146,17 +146,17 @@
   "account.employee.field.religion.placeholder": "Select a religion",
   "account.employee.field.religion.required": "Religion is required",
 
-  "account.employee.field.kartuKeluarga": "Kartu Keluarga",
-  "account.employee.field.kartuKeluarga.placeholder": "Type any Kartu Keluarga number",
-  "account.employee.field.kartuKeluarga.required": "Kartu Keluarga is required",
+  "account.employee.field.kartuKeluarga": "Family Card",
+  "account.employee.field.kartuKeluarga.placeholder": "Type any Family Card number",
+  "account.employee.field.kartuKeluarga.required": "Family Card is required",
 
-  "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
-  "account.employee.field.bpjsKetenagakerjaan.placeholder": "Type any BPJS Ketenagakerjaan number",
-  "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Ketenagakerjaan is required",
+  "account.employee.field.bpjsKetenagakerjaan": "BPJS Employment Number",
+  "account.employee.field.bpjsKetenagakerjaan.placeholder": "Type any BPJS Employment number",
+  "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Employment Number is required",
 
-  "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
-  "account.employee.field.bpjsKesehatan.placeholder": "Type any BPJS Kesehatan number",
-  "account.employee.field.bpjsKesehatan.required": "BPJS Kesehatan is required",
+  "account.employee.field.bpjsKesehatan": "BPJS Health Care Number",
+  "account.employee.field.bpjsKesehatan.placeholder": "Type any BPJS Health Care number",
+  "account.employee.field.bpjsKesehatan.required": "BPJS Health Care Number is required",
 
   "account.employee.field.mobile": "Mobile",
   "account.employee.field.mobile.placeholder": "Type any mobile phone number",
@@ -206,10 +206,10 @@
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
   
-  "account.employee.field.information.contact.title": "Employee Contacts",
+  "account.employee.field.information.contact.title": "Employee Contacts and Address",
   "account.employee.field.information.contact.subHeader": " ",
 
-  "account.employee.field.information.bank.title": "BCA Account Information",
+  "account.employee.field.information.bank.title": "Employee Identity and BCA Account",
   "account.employee.field.information.bank.subHeader": " ",
 
   "account.employee.section.basic.title": "Employee Basic Data",

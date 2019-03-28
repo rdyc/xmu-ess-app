@@ -1,4 +1,6 @@
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -37,10 +39,12 @@ interface OwnOption {
 
 export type DetailPageProps
   = OwnOption
-  & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
   & OwnHandlers
+  & WithTheme 
+  & WithStyles<typeof styles>
+  & InjectedIntlProps
   & RouteComponentProps<OwnRouteParams>;
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -70,9 +74,10 @@ const lifecycles: ReactLifeCycleFunctions<DetailPageProps, OwnState> = {
 };
 
 export const DetailPage = compose<DetailPageProps, OwnOption>(
-  withRouter,
-  injectIntl,
   setDisplayName('DetailPage'),
+  withRouter,
+  withStyles(styles, { withTheme: true }),
+  injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>({}, stateUpdaters),
   withHandlers<DetailPageProps, OwnHandlers>(handlerCreators),
   lifecycle<DetailPageProps, OwnState>(lifecycles)

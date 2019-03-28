@@ -10,9 +10,12 @@ export const summaryBillablePage = defineMessages({
 
 export const summaryBillableField = defineMessages({
   company: { id: `${prefix}.field.company`},
+  companyRequired: { id: `${prefix}.field.company.required`},
   name: { id: `${prefix}.field.name`},
   start: { id: `${prefix}.field.start`},
-  end: { id: `${prefix}.field.end`}
+  startRequired: { id: `${prefix}.field.start.required`},
+  end: { id: `${prefix}.field.end`},
+  endRequired: { id: `${prefix}.field.end.required`},
 });
 
 export const summaryBillableNote = defineMessages({

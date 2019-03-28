@@ -27,6 +27,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { LookupLeaveEditorView } from './LookupLeaveEditorView';
 
 interface IOwnHandlers {
@@ -61,6 +63,7 @@ export type RequestEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -254,6 +257,7 @@ export default compose<RequestEditorProps, {}>(
   withRouter,
   withLookupLeave,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RequestEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<RequestEditorProps, {}>(lifecycles),

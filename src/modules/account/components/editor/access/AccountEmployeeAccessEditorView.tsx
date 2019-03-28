@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeAccessEditorProps } from './AccountEmployeeAccessEditor';
 import { AccountEmployeeAccessContainerForm, AccountEmployeeAccessContainerFormData } from './form/AccountEmployeeAccessContainerForm';
@@ -33,11 +33,11 @@ export const AccountEmployeeAccessEditorView: React.SFC<AccountEmployeeAccessEdi
       companyUid: undefined,
       positionUid: undefined,
       roleUid: undefined,
-      unitType: undefined,
-      departmentType: undefined,
+      unitType: null,
+      departmentType: null,
       levelType: undefined,
       start: undefined,
-      end: undefined
+      end: null
     }
   };
 
@@ -48,11 +48,22 @@ export const AccountEmployeeAccessEditorView: React.SFC<AccountEmployeeAccessEdi
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          {props.intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
 

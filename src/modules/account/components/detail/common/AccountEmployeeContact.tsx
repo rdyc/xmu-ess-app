@@ -37,6 +37,32 @@ const accountEmployeeContact: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
+        label={intl.formatMessage(accountMessage.employee.field.companyEmail)}
+        value={data.email}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={intl.formatMessage(accountMessage.employee.field.companyEmail)}
+        value={data.emailPersonal ? data.emailPersonal : 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        multiline={true}
+        label={intl.formatMessage(accountMessage.employee.field.addressKtp)}
+        value={data.address ? data.address : 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        multiline={true}
+        label={intl.formatMessage(accountMessage.employee.field.addressNpwp)}
+        value={data.addressAdditional ? data.addressAdditional : 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.emergencyName)}
         value={data.contact && data.contact.name ? data.contact.name : 'N/A'}
       />
@@ -57,24 +83,6 @@ const accountEmployeeContact: React.SFC<AllProps> = props => {
         margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.emergencyPhone2)}
         value={data.contact && data.contact.phoneAdditional ? data.contact.phoneAdditional : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.companyEmail)}
-        value={data.email}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.addressKtp)}
-        value={data.address ? data.address : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.addressNpwp)}
-        value={data.addressAdditional ? data.addressAdditional : 'N/A'}
       />
     </CardContent>
   </Card>

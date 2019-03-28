@@ -9,6 +9,8 @@ import { IRole } from '@lookup/classes/response';
 import { Menus } from '@lookup/classes/types';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -63,6 +65,7 @@ export type RoleEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -74,7 +77,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, IOwnHandlers> = {
     };
 
     const requiredFields = [
-      'companyUid', 'name', 'gradeType', 'description'
+      'companyUid', 'name'
     ];
 
     requiredFields.forEach(field => {
@@ -272,6 +275,7 @@ export default compose<RoleEditorProps, {}>(
   withMasterPage,
   withRouter,
   withLookupRole,
+  withStyles(styles),
   injectIntl,
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RoleEditorProps, IOwnHandlers>(handlerCreators),

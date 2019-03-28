@@ -28,6 +28,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { AccountEmployeeRateEditorView } from './AccountEmployeeRateEditorView';
 import { AccountEmployeeRateFormData } from './form/AccountEmployeeRateForm';
 
@@ -68,6 +70,7 @@ export type AccountEmployeeRateEditorProps
   & WithMasterPage
   & RouteComponentProps
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandler
   & IOwnState
   & RouteComponentProps<IOwnRouteParams>
@@ -247,6 +250,7 @@ export const AccountEmployeeRateEditor = compose<AccountEmployeeRateEditorProps,
   withRouter,
   withAccountEmployeeRate,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
