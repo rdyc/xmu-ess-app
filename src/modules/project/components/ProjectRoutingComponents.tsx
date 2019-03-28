@@ -57,6 +57,7 @@ const acceptance = (props: RouteComponentProps) => (
 
 const administration = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectAdministrationList} />
   </Switch>
