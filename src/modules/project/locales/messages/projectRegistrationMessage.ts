@@ -141,6 +141,10 @@ export const projectRegistrationField = defineMessages({
   hoursRequired: { id: `${prefix}.field.hours.required` },
   hoursPlaceholder: { id: `${prefix}.field.hours.placeholder` },
 
+  sales: { id: `${prefix}.field.sales` },
+  salesRequired: { id: `${prefix}.field.sales.required` },
+  salesPlaceholder: { id: `${prefix}.field.sales.placeholder` },
+
   rejectedReason: { id: `${prefix}.field.rejectedReason` },
 
   completion: { id: `${prefix}.field.completion` },
@@ -168,6 +172,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'valueUsd': return projectRegistrationField.valueUsd;
       case 'valueIdr': return projectRegistrationField.valueIdr;
       case 'hours': return projectRegistrationField.hours;
+      case 'sales': return projectRegistrationField.sales;
     
       default: return {id: field};
     }
@@ -188,6 +193,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'rate': return projectRegistrationField.rateRequired;
       case 'valueUsd': return projectRegistrationField.valueUsdRequired;
       case 'hours': return projectRegistrationField.hoursRequired;
+      case 'sales': return projectRegistrationField.salesRequired;
 
       default: return {id: field};
     }
@@ -210,6 +216,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'rate': return projectRegistrationField.ratePlaceholder;
       case 'valueUsd': return projectRegistrationField.valueUsdPlaceholder;
       case 'hours': return projectRegistrationField.hoursPlaceholder;
+      case 'sales': return projectRegistrationField.salesPlaceholder;
     
       default: return {id: field};
     }

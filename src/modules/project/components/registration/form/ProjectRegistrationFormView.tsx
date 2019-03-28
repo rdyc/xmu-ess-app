@@ -1,3 +1,4 @@
+import { AccountEmployeeOption } from '@account/components/options/AccountEmployeeOption';
 import { ProjectType } from '@common/classes/types';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import AppMenu from '@constants/AppMenu';
@@ -9,7 +10,7 @@ import { LookupCustomerOption } from '@lookup/components/customer/options/Lookup
 import { Button, Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
@@ -34,8 +35,8 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<IProjectRegistrationFormValue>) => (
-        <Form style={{display: 'flex', flexDirection: 'column'}}>
-          <Card square style={{maxWidth: 300}}>
+        <Form>
+          <Card square style={{width: 300}}>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.registration.section.infoTitle)}
               // subheader={props.intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
@@ -300,7 +301,8 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             </CardContent>
           </Card>
 
-          <Card square style={{maxWidth: 300}}>
+          <div style={{display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
+          <Card square style={{width: 300}}>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
               // subheader={props.intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
@@ -309,7 +311,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             </CardContent>
           </Card>
 
-          <Card square style={{maxWidth: 300}}>
+          <Card square style={{width: 300}}>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
               // subheader={props.intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
@@ -318,14 +320,41 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             </CardContent>
           </Card>
 
-          <Card square style={{maxWidth: 300}}>
+          <Card square style={{width: 300}}>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
               // subheader={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
             />
             <CardContent>
+              <FieldArray
+                name="sales"
+                render={(fields: FieldArrayRenderProps) => (
+                  <AccountEmployeeOption filter={props.filterAccountEmployee}>
+                    <SelectField
+                      isMulti
+                      isSearchable
+                      isClearable={formikBag.values.sales !== undefined}
+                      closeMenuOnSelect={false}
+                      escapeClearsValue={true}
+                      menuPlacement="auto"
+                      menuPosition="fixed"
+                      defaultValue={formikBag.values.sales}
+                      textFieldProps={{
+                        label: props.intl.formatMessage(projectMessage.registration.field.sales),
+                        placeholder: props.intl.formatMessage(projectMessage.registration.fieldFor(fields.name, 'fieldPlaceholder')),
+                        required: true,
+                        helperText: formikBag.touched.sales && formikBag.errors.sales,
+                        error: formikBag.touched.sales && Boolean(formikBag.errors.sales)
+                      }}
+                      onMenuClose={() => formikBag.setFieldTouched(fields.name)}
+                      onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(fields.name, selected)}
+                    />
+                  </AccountEmployeeOption>
+                )}
+              />
             </CardContent>
           </Card>
+          </div>
 
           <pre>{JSON.stringify(formikBag.values, null, 2)}</pre>
 

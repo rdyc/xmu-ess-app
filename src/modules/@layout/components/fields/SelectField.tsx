@@ -24,6 +24,10 @@ const styles = (theme: Theme) => createStyles({
     paddingTop: theme.spacing.unit / 2,
     paddingBottom: theme.spacing.unit / 2
   },
+  IndicatorsContainer: {
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
   valueContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -87,8 +91,9 @@ const Control = (props: any) => (
     fullWidth
     margin="normal"
     required={props.selectProps.required}
+    placeholder={props.selectProps.placeholder}
     label={props.selectProps.label}
-    value={props.selectProps.value && props.selectProps.value.value || ''}
+    value={props.selectProps.isMulti ? props.selectProps.value.length > 0 && props.selectProps.value[0].value || '' : props.selectProps.value && props.selectProps.value.value || ''}
     InputProps={{
       inputComponent,
       inputProps: {
@@ -135,6 +140,12 @@ const SingleValue = (props: any) => (
   </Typography>
 );
 
+const IndicatorsContainer = (props: any) => (
+  <div className={props.selectProps.classes.IndicatorsContainer}>
+    {props.children}
+  </div>
+);
+
 const ValueContainer = (props: any) => (
   <div className={props.selectProps.classes.valueContainer}>
     {props.children}
@@ -159,7 +170,7 @@ const MultiValue = (props: any) => (
   />
 );
 
-const Menu = (props: any) => (
+const MenuComponent = (props: any) => (
   <Paper square 
     className={props.selectProps.classes.paper} 
     {...props.innerProps}
@@ -194,15 +205,16 @@ const component = (props: SelectFieldProps & WithStyles<typeof styles> & WithThe
     }}
     components={{
       Control,
-      Menu,
       MultiValue,
       NoOptionsMessage,
       Option,
       Placeholder,
       SingleValue,
+      IndicatorsContainer,
       ValueContainer,
       IndicatorSeparator,
-      LoadingMessage
+      LoadingMessage,
+      Menu: MenuComponent,
     }}
   />
 );

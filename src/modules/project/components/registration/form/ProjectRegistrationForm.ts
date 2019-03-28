@@ -1,5 +1,8 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
+import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withAccountSalesRoles';
 import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
+import { ISelectFieldOption } from '@layout/components/fields/SelectField';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -28,13 +31,6 @@ interface IProjectDocumentFormValue {
   [key: string]: boolean;
 }
 
-interface IProjectSalesFormValue {
-  uid?: string;
-  employeeUid: string;
-  fullName: string;
-  email: string;
-}
-
 export interface IProjectRegistrationFormValue {
   uid?: string;
   ownerEmployeeUid?: string;
@@ -50,9 +46,9 @@ export interface IProjectRegistrationFormValue {
   valueUsd?: number;
   valueIdr?: number;
   hours?: number;
-  documentProject?: IProjectDocumentFormValue[];
-  documentPreSales?: IProjectDocumentFormValue[];
-  sales?: IProjectSalesFormValue[];
+  documentProject: IProjectDocumentFormValue[];
+  documentPreSales: IProjectDocumentFormValue[];
+  sales: ISelectFieldOption[];
 }
 
 interface IOwnRouteParams {
@@ -69,6 +65,7 @@ interface IOwnState {
 
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
+  filterAccountEmployee?: IEmployeeListFilter;
 
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -83,6 +80,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setValidationSchema: StateHandler<IOwnState>;
   setFilterLookupCustomer: StateHandler<IOwnState>;
   setFilterCommonSystem: StateHandler<IOwnState>;
+  setFilterAccountEmployee: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -94,6 +92,7 @@ interface IOwnHandler {
 
 export type ProjectRegistrationFormProps
   = WithProjectRegistration
+  & WithAccountSalesRoles
   & WithUser
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -119,6 +118,9 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
   }),
   setFilterCommonSystem: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     filterCommonSystem: values
+  }),
+  setFilterAccountEmployee: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    filterAccountEmployee: values
   })
 };
 
@@ -151,7 +153,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
       currencyType: '',
       rate: 1,
       valueUsd: 0,
-      valueIdr: 0
+      valueIdr: 0,
+      documentPreSales: [],
+      documentProject: [],
+      sales: [
+        {
+          'value': 'E0022',
+          'label': 'AHMAD FAISAL'
+        },
+        {
+          'value': 'E0202',
+          'label': 'AHMED EMIR ROSYADI'
+        }
+      ]
     };
 
     this.props.setInitialValues(initialValues);
@@ -187,7 +201,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
       
       valueUsd: Yup.number()
         .min(0)
-        .required(this.props.intl.formatMessage(projectMessage.registration.fieldFor('valueUsd', 'fieldRequired')))
+        .required(this.props.intl.formatMessage(projectMessage.registration.fieldFor('valueUsd', 'fieldRequired'))),
+
+      sales: Yup.array()
+        .of<ISelectFieldOption>(Yup.object())
+        .min(1, this.props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
     });
 
     this.props.setValidationSchema(validationSchema);
@@ -208,6 +226,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
     };
 
     this.props.setFilterCommonSystem(filterCommonSystem);
+
+    // 5. define account employee filter
+    const filterAccountEmployee: IEmployeeListFilter = {
+      companyUids: this.props.userState.user && this.props.userState.user.company.uid,
+      roleUids: this.props.roleSalesUids && this.props.roleSalesUids.join(','),
+      orderBy: 'fullName',
+      direction: 'ascending'
+    };
+
+    this.props.setFilterAccountEmployee(filterAccountEmployee);
   },
   // componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
   //   console.log('component did update');
@@ -219,6 +247,7 @@ export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOw
   withUser,
   withRouter,
   withProjectRegistration,
+  withAccountSalesRoles,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
