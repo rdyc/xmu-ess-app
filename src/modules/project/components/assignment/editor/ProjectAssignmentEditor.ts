@@ -27,6 +27,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import * as moment from 'moment';
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
 import { IProjectAssignmentFormData, IProjectAssignmentItemFormData } from './ProjectAssignmentForm';
 
@@ -256,6 +257,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
             items.push({
               uid: item.uid,
               employeeUid: item.employeeUid,
+              isEmployeeActive: item.employee && item.employee.inactiveDate !== null ? moment(item.employee.inactiveDate) > moment() : true,
+              employeeName: item.employee && `${item.employee.fullName} (inactive)` || 'N/A',
               role: item.role,
               jobDescription: item.jobDescription,
               mandays: item.mandays,
