@@ -2,11 +2,14 @@ import { IEmployeeListFilter } from '@account/classes/filters';
 import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withAccountSalesRoles';
 import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ISelectFieldOption } from '@layout/components/fields/SelectField';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -28,7 +31,9 @@ import * as Yup from 'yup';
 import { ProjectRegistrationFormView } from './ProjectRegistrationFormView';
 
 interface IProjectDocumentFormValue {
-  [key: string]: boolean;
+  label: string;
+  value: string;
+  checked: boolean;
 }
 
 export interface IProjectRegistrationFormValue {
@@ -46,7 +51,7 @@ export interface IProjectRegistrationFormValue {
   valueUsd?: number;
   valueIdr?: number;
   hours?: number;
-  documentProject: IProjectDocumentFormValue[];
+  documentProjects: IProjectDocumentFormValue[];
   documentPreSales: IProjectDocumentFormValue[];
   sales: ISelectFieldOption[];
 }
@@ -77,6 +82,8 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setInitialDocumentProjectValues: StateHandler<IOwnState>;
+  setInitialDocumentPreSalesValues: StateHandler<IOwnState>;
   setValidationSchema: StateHandler<IOwnState>;
   setFilterLookupCustomer: StateHandler<IOwnState>;
   setFilterCommonSystem: StateHandler<IOwnState>;
@@ -85,6 +92,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnLoadDocumentProject: (filter?: ISystemListFilter) => void;
+  handleOnLoadDocumentPreSales: (filter?: ISystemListFilter) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleOnSubmit: (values: IProjectRegistrationFormValue, actions: FormikActions<IProjectRegistrationFormValue>) => void;
@@ -93,7 +102,9 @@ interface IOwnHandler {
 export type ProjectRegistrationFormProps
   = WithProjectRegistration
   & WithAccountSalesRoles
+  & WithCommonSystem
   & WithUser
+  & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnOption
@@ -110,6 +121,28 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setInitialDocumentProjectValues: (state: IOwnState) => (values: any): Partial<IOwnState> => {
+    const initialValues = state.initialValues;
+
+    if (initialValues) {
+      initialValues.documentProjects = values;
+    }
+    
+    return {
+      initialValues
+    };
+  },
+  setInitialDocumentPreSalesValues: (state: IOwnState) => (values: any): Partial<IOwnState> => {
+    const initialValues = state.initialValues;
+
+    if (initialValues) {
+      initialValues.documentPreSales = values;
+    }
+    
+    return {
+      initialValues
+    };
+  },
   setValidationSchema: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     validationSchema: values
   }),
@@ -127,6 +160,18 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
 const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler> = {
   handleOnLoadApi: (props: ProjectRegistrationFormProps) => () => {
     //
+  },
+  handleOnLoadDocumentProject: (props: ProjectRegistrationFormProps) => (filter?: ISystemListFilter) => {
+    props.commonDispatch.documentListRequest({ 
+      filter,
+      category: 'document'
+    });
+  },
+  handleOnLoadDocumentPreSales: (props: ProjectRegistrationFormProps) => (filter?: ISystemListFilter) => {
+    props.commonDispatch.documentPresalesListRequest({ 
+      filter,
+      category: 'documentPreSales'
+    });
   },
   handleOnCloseDialog: (props: ProjectRegistrationFormProps) => () => {
     //
@@ -154,8 +199,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
       rate: 1,
       valueUsd: 0,
       valueIdr: 0,
+      documentProjects: [],
       documentPreSales: [],
-      documentProject: [],
       sales: [
         {
           'value': 'E0022',
@@ -236,10 +281,40 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
     };
 
     this.props.setFilterAccountEmployee(filterAccountEmployee);
+
+    // 6. load common system
+    this.props.handleOnLoadDocumentProject(filterCommonSystem);
+    this.props.handleOnLoadDocumentPreSales(filterCommonSystem);
   },
-  // componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
-  //   console.log('component did update');
-  // }
+  componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
+    if (this.props.commonDocumentListState !== prevProps.commonDocumentListState) {
+      if (this.props.commonDocumentListState.response && this.props.commonDocumentListState.response.data) {
+        const checklist: IProjectDocumentFormValue[] = [];
+
+        this.props.commonDocumentListState.response.data.forEach(item => checklist.push({
+          label: item.name,
+          value: item.type,
+          checked: false
+        }));
+
+        this.props.setInitialDocumentProjectValues(checklist);
+      }
+    }
+
+    if (this.props.commonDocumentPresalesListState !== prevProps.commonDocumentPresalesListState) {
+      if (this.props.commonDocumentPresalesListState.response && this.props.commonDocumentPresalesListState.response.data) {
+        const checklist: IProjectDocumentFormValue[] = [];
+
+        this.props.commonDocumentPresalesListState.response.data.forEach(item => checklist.push({
+          label: item.name,
+          value: item.type,
+          checked: false
+        }));
+
+        this.props.setInitialDocumentPreSalesValues(checklist);
+      }
+    }
+  }
 };
 
 export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOwnOption>(
@@ -248,8 +323,10 @@ export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOw
   withRouter,
   withProjectRegistration,
   withAccountSalesRoles,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifeCycleFunctions)
+  lifecycle(lifeCycleFunctions),
+  withStyles(styles)
 )(ProjectRegistrationFormView);

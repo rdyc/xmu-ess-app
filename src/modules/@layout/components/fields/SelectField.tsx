@@ -187,7 +187,7 @@ export interface ISelectFieldOption {
 
 export interface SelectFieldProps extends Props<ISelectFieldOption> {
   valueString?: string;
-  textFieldProps: TextFieldProps;
+  textFieldProps?: TextFieldProps;
 }
 
 const component = (props: SelectFieldProps & WithStyles<typeof styles> & WithTheme) => (

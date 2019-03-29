@@ -482,6 +482,37 @@ const styles = (theme: Theme) =>
       minWidth: 350
     },
 
+    /* forms */
+    flexRow: {
+      display: 'flex',
+      flexWrap: 'wrap'
+    },
+
+    flexColumn: {
+      padding: 0,
+      [theme.breakpoints.up('xs')]: {
+        width: '100%'
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% / 2)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: `calc(100% / 3)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: `calc(100% / 4)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      }
+    },
+
+    flexContent: {
+      marginBottom: theme.spacing.unit * 2,
+      verticalAlign: 'middle',
+      width: '100%'
+    },
+
     /* -------- generic classes start----------*/
     /* positioning */
     absoluteTopRight: {
