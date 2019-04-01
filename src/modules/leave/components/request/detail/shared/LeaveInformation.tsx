@@ -79,6 +79,11 @@ const leaveInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(leaveMessage.request.field.reason)}
           value={props.data.reason}
         />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.requestedLeave)}
+          value={props.data.requestedLeave}
+        />
         {
           props.data.changes &&
           <React.Fragment>

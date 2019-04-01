@@ -38,7 +38,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
       const projectFilter: any = {
         customerUids: customerUidValue,
-        statusTypes: ([WorkflowStatusType.Approved, WorkflowStatusType.Closed, WorkflowStatusType.ReOpened]).toString(),
+        statusTypes: ([WorkflowStatusType.Approved]).toString(),
 
       };
       
