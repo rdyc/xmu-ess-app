@@ -27,6 +27,8 @@ import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 export interface IProjectAssignmentItemFormData {
   uid?: string;
   employeeUid: string;
+  isEmployeeActive: boolean;
+  employeeName: string;
   role?: string;
   jobDescription?: string;
   mandays: number;
