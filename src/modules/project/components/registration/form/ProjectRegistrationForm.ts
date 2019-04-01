@@ -4,7 +4,6 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types/FormMode';
-import { ISelectFieldOption } from '@layout/components/fields/SelectField';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -39,6 +38,10 @@ interface IProjectDocumentFormValue {
   checked: boolean;
 }
 
+interface IProjectSalesFormValue {
+  employeeUid: string;
+}
+
 export interface IProjectRegistrationFormValue {
   uid?: string;
   customerUid: string;
@@ -54,7 +57,7 @@ export interface IProjectRegistrationFormValue {
   valueIdr: number;
   documentProjects: IProjectDocumentFormValue[];
   documentPreSales: IProjectDocumentFormValue[];
-  sales: ISelectFieldOption[];
+  sales: IProjectSalesFormValue[];
 }
 
 interface IOwnOption {
@@ -152,7 +155,12 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
       .required(props.intl.formatMessage(projectMessage.registration.fieldFor('valueUsd', 'fieldRequired'))),
 
     sales: Yup.array()
-      .of<ISelectFieldOption>(Yup.object())
+      .of(
+        Yup.object().shape({
+          employeeUid: Yup.string()
+            .required(props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
+        })
+      )
       .min(1, props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
   }),
 
@@ -279,7 +287,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
 
         // fill payload sales
         values.sales.forEach(item => payload.sales.push({
-          employeeUid: item.value
+          employeeUid: item.employeeUid
         }));
         
         // create promise
@@ -403,8 +411,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
 
         // fill sales
         response.data.sales.forEach(item => initialValues.sales.push({
-          value: item.employeeUid,
-          label: item.employee && item.employee.fullName || item.employeeUid
+          employeeUid: item.employeeUid
         }));
 
         // set initial values

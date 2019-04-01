@@ -8,10 +8,20 @@ import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages/layoutMessage';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  TextField,
+} from '@material-ui/core';
+import { AddCircle, ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, Form, Formik, FormikProps, getIn } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
@@ -160,9 +170,9 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                         placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
                         leftArrowIcon={<ChevronLeft />}
                         rightArrowIcon={<ChevronRight />}
-                        format="MMM DD, YYYY"
-                        helperText={form.touched.sales && form.errors.sales}
-                        error={form.touched.sales && Boolean(form.errors.sales)}
+                        format="MMMM DD, YYYY"
+                        helperText={form.touched.start && form.errors.start}
+                        error={form.touched.start && Boolean(form.errors.start)}
                         onChange={(moment: Moment) => formikBag.setFieldValue('start', moment.toDate())}
                         invalidLabel=""
                       />
@@ -175,15 +185,15 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                       <DatePicker
                         {...field}
                         fullWidth
-                        required
+                        required={formikBag.values.start !== ''}
                         showTodayButton
                         margin="normal"
-                        disabled={!formikBag.values.start || form.isSubmitting}
+                        disabled={!formikBag.values.end || form.isSubmitting}
                         label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
                         placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
                         leftArrowIcon={<ChevronLeft />}
                         rightArrowIcon={<ChevronRight />}
-                        format="MMM DD, YYYY"
+                        format="MMMM DD, YYYY"
                         helperText={form.touched.end && form.errors.end}
                         error={form.touched.end && Boolean(form.errors.end)}
                         onChange={(moment: Moment) => formikBag.setFieldValue(field.name, moment.toDate())}
@@ -387,41 +397,76 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
             </div>
 
             <div className={props.classes.flexColumn}>
-              <Card square className={props.classes.flexContent}>
-                <CardHeader 
-                  title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
-                  // subheader={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
-                />
-                <CardContent>
-                  <FieldArray
-                    name="sales"
-                    render={(fields: FieldArrayRenderProps) => (
-                      <AccountEmployeeOption filter={props.filterAccountEmployee}>
-                        <SelectField
-                          isMulti
-                          isSearchable
-                          isClearable={formikBag.values.sales !== undefined}
-                          closeMenuOnSelect={false}
-                          escapeClearsValue={true}
-                          menuPlacement="auto"
-                          menuPosition="fixed"
-                          defaultValue={formikBag.values.sales}
-                          textFieldProps={{
-                            label: props.intl.formatMessage(projectMessage.registration.field.sales),
-                            placeholder: props.intl.formatMessage(projectMessage.registration.fieldFor(fields.name, 'fieldPlaceholder')),
-                            required: true,
-                            helperText: formikBag.touched.sales && formikBag.errors.sales,
-                            error: formikBag.touched.sales && Boolean(formikBag.errors.sales)
-                          }}
-                          onMenuClose={() => formikBag.setFieldTouched(fields.name)}
-                          onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(fields.name, selected)}
-                        />
-                      </AccountEmployeeOption>
-                    )}
-                  />
-                </CardContent>
-              </Card>
+              <FieldArray
+                name="sales"
+                render={(fields: FieldArrayRenderProps) => (
+                  <Card square className={props.classes.flexContent}>
+                    <CardHeader 
+                      title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
+                      subheader={
+                        formikBag.submitCount > 0 &&
+                        typeof formikBag.errors.sales === 'string' &&
+                        formikBag.errors.sales
+                      }
+                      subheaderTypographyProps={{
+                        color: 'error',
+                        variant: 'body1'
+                      }}
+                      action={
+                        <IconButton 
+                          disabled={formikBag.isSubmitting}
+                          onClick={() => fields.push({ employeeUid: '' })}
+                        >
+                          <AddCircle color="primary" />
+                        </IconButton>
+                      }
+                    />
+                    <CardContent>
+                      {
+                        formikBag.values.sales.length > 0 &&
+                        formikBag.values.sales.map((item, index) => 
+                          <Field
+                            key={index}
+                            name={`sales.${index}.employeeUid`}
+                            render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => {
+                              const error = getIn(form.errors, `sales.${index}.employeeUid`);
+                              const touch = getIn(form.touched, `sales.${index}.employeeUid`);
+                              
+                              return (
+                                <React.Fragment>
+                                  <AccountEmployeeOption filter={props.filterAccountEmployee}>
+                                    <SelectField
+                                      isSearchable
+                                      isClearable={field.value !== ''}
+                                      escapeClearsValue={true}
+                                      menuPlacement="auto"
+                                      menuPosition="fixed"
+                                      valueString={item.employeeUid}
+                                      textFieldProps={{
+                                        label: props.intl.formatMessage(projectMessage.registration.field.sales),
+                                        placeholder: props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldPlaceholder')),
+                                        required: true,
+                                        helperText: touch && error,
+                                        error: touch && Boolean(error)
+                                      }}
+                                      onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                                      onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                                    />
+                                  </AccountEmployeeOption>
+      
+                                  <Button onClick={() => fields.remove(index)}>Remove</Button>
 
+                                  <Divider/>
+                                </React.Fragment>
+                              );
+                            }}
+                          />
+                        )
+                      }
+                    </CardContent>
+                  </Card>
+                )}
+              />
               <SubmissionForm 
                 title={props.intl.formatMessage(projectMessage.registration.submission.form)}
                 className={props.classes.flexContent}

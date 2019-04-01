@@ -10,6 +10,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -72,7 +73,34 @@ const handlerCreators: HandleCreators<AccountEmployeeOptionProps, IOwnHandler> =
 
 const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeOptionProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
+    const { request, response } = this.props.accountEmployeeState.list;
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
+        
+          if (response && response.data) {
+            response.data.forEach(item => options.push({ 
+              value: item.uid, 
+              label: item.fullName 
+            }));
+            
+            this.props.setOptions(options);
+          }
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: AccountEmployeeOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = this.props.accountEmployeeState.list;

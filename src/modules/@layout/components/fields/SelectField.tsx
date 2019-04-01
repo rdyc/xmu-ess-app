@@ -93,7 +93,7 @@ const Control = (props: any) => (
     required={props.selectProps.required}
     placeholder={props.selectProps.placeholder}
     label={props.selectProps.label}
-    value={props.selectProps.isMulti ? props.selectProps.value.length > 0 && props.selectProps.value[0].value || '' : props.selectProps.value && props.selectProps.value.value || ''}
+    value={props.selectProps.isMulti ? props.selectProps.value : props.selectProps.value && props.selectProps.value.value || ''}
     InputProps={{
       inputComponent,
       inputProps: {
