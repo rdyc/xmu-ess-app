@@ -12,7 +12,7 @@ export interface IProjectRegistrationPostPayload extends IBasePayload {
   end: string;
   rate: number;
   valueUsd: number;
-  valueIdr?: number;
-  documents?: IProjectRegistrationPostDocument[];
-  sales?: IProjectRegistrationPostSales[];
+  valueIdr: number;
+  documents: IProjectRegistrationPostDocument[];
+  sales: IProjectRegistrationPostSales[];
 }

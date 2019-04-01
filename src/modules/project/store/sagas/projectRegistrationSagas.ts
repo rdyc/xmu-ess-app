@@ -123,12 +123,7 @@ function* watchPostRequest() {
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
-          const errors: any = { 
-            // information -> based form section name
-            information: flattenObject(response.body.errors) 
-          };
-
-          action.payload.reject(new SubmissionError(errors));
+          action.payload.reject(response.body.data);
         } else {
           action.payload.reject(response.statusText);
         }

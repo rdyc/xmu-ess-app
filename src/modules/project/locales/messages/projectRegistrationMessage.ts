@@ -38,8 +38,15 @@ export const projectRegistrationOption = defineMessages({
   site: { id: `${prefix}.option.site` }
 });
 
+// submission
+export const projectRegistrationSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
+});
+
 // confimation
 export const projectRegistrationConfirm = defineMessages({
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
   closeTitle: { id: `${prefix}.confirm.close.title` },

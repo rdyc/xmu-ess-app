@@ -36,11 +36,11 @@ export interface IProjectDetail {
   rejectedReason?: string;
   rate: number;
   valueUsd: number;
-  valueIdr?: number;
+  valueIdr: number;
   isNotifyToOwner: boolean;
   isNotified: boolean;
   sites?: IProjectSite[];
-  sales?: IProjectSales[];
+  sales: IProjectSales[];
   documents: IProjectDocument[];
   documentPreSales: IProjectDocument[];
   histories?: History[];
