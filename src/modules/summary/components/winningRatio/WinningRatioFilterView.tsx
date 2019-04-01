@@ -231,6 +231,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
           onSelected={props.handleFilterEndOnSelected}
           isOpen={props.isFilterEndOpen}
           onClose={props.handleFilterEndOnClose}
+          minDate={props.filterStart}
           disableFuture={true}
         />
       </Dialog>

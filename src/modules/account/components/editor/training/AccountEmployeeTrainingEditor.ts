@@ -11,6 +11,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -74,9 +75,18 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       'name', 'start', 'end', 'organizer', 'trainingType', 'certificationType'
     ];
 
+    const endDate = ['end'];
+
     requiredFields.forEach(field => {
       if (!formData.training[field] || isNullOrUndefined(formData.training[field])) {
         errors.training[field] = props.intl.formatMessage(accountMessage.training.fieldFor(field, 'fieldRequired'));
+      }
+    });
+    endDate.forEach(field => {
+      if (formData.training[field] && formData.training.start && formData.training.end) {
+        if (moment(formData.training.end).isBefore(formData.training.start)) {
+          errors.training[field] = props.intl.formatMessage(accountMessage.training.field.endBefore);
+        }
       }
     });
 
@@ -93,6 +103,8 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 
     const payload = {
       ...formData.training,
+      start: formData.training.start && formData.training.start.substring(0, 10),
+      end: formData.training.end && formData.training.end.substring(0, 10),
     };
 
     // creating

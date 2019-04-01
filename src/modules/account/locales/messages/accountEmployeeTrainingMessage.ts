@@ -21,6 +21,7 @@ export const accountEmployeeTrainingField = defineMessages({
   end: { id: `${prefix}.field.end`},
   endPlaceholder: { id: `${prefix}.field.end.placeholder`},
   endRequired: { id: `${prefix}.field.end.required`},
+  endBefore: { id: `${prefix}.field.end.before`},
   
   organizer: { id: `${prefix}.field.organizer`},
   organizerPlaceholder: { id: `${prefix}.field.organizer.placeholder`},
@@ -113,7 +114,6 @@ export const accountEmployeeTrainingFieldHelperFor = (field: string, type: 'fiel
       default: return {id: field};
     }
   }
-
   return {id: field};
 };
 

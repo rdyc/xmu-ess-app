@@ -11,6 +11,7 @@ import { AccountEmployeeTrainingDetailFormView } from './AccountEmployeeTraining
 interface OwnProps {
   formMode: FormMode | undefined;
   context: BaseFieldsProps;
+  start?: string | undefined;
 }
 
 interface OwnHandlers {
@@ -24,7 +25,7 @@ export type AccountEmployeeTrainingDetailFormProps =
 
 const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: AccountEmployeeTrainingDetailFormProps) => (name: string) => {
-    const { intl } = props;
+    const { intl, start } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -63,6 +64,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
           required: true,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
+          disableFuture: true,
           component: InputDate
         };
         break;
@@ -72,6 +74,8 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
           required: true,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
+          disableFuture: true,
+          minDate: start,
           component: InputDate
         };
         break;

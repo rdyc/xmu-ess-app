@@ -45,6 +45,7 @@ export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props 
           disableFuture={disableFuture}
           onClose={props.onClose}
           value={val}
+          minDate={props.minDate}
         />
       );
     }
