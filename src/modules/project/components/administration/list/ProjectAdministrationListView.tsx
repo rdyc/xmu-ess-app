@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
@@ -41,6 +42,17 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
       )}
       actionComponent={(item: IProject) => (
         <React.Fragment>
+          {
+            props.isAdmin &&
+            item.statusType ===  WorkflowStatusType.Approved && 
+            <Button 
+              size="small"
+              color="secondary"
+              onClick={() => props.history.push(`/project/administrations/form`, { uid: item.uid, isAdministration : true })}
+            >
+              {props.intl.formatMessage(layoutMessage.action.modify)}
+            </Button>
+          }
           <Button 
             size="small"
             color="secondary"

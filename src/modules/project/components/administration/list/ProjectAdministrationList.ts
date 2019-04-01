@@ -1,6 +1,8 @@
+import { AppRole } from '@constants/AppRole';
 import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
@@ -37,6 +39,7 @@ interface IOwnState extends IProjectAdministrationListFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
   // selected: string[];
+  isAdmin: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -62,6 +65,7 @@ export type ProjectAdministrationListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
+  & WithOidc
   & WithProjectAdministration
   & WithAllowedProjectCreate
   & InjectedIntlProps
@@ -69,9 +73,25 @@ export type ProjectAdministrationListProps
 
 const createProps: mapper<ProjectAdministrationListProps, IOwnState> = (props: ProjectAdministrationListProps): IOwnState => {
   const { request } = props.projectAdministrationState.all;
+  // checking admin status
+  const { user } = props.oidcState;
+  let isAdmin: boolean = false;
+
+  if (user) {
+    const role: string | string[] | undefined = user.profile.role;
+
+    if (role) {
+      if (Array.isArray(role)) {
+        isAdmin = role.indexOf(AppRole.Admin) !== -1;
+      } else {
+        isAdmin = role === AppRole.Admin;
+      }
+    }
+  }
   
   // default state
   const state: IOwnState = {
+    isAdmin,
     isFilterOpen: false,
     // selected: [],
     status: 'complete',
@@ -236,6 +256,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAdministrationListProps, IOwnSt
 export const ProjectAdministrationList = compose(
   setDisplayName('ProjectAdministrationList'),
   withUser,
+  withOidc,
   withProjectAdministration,
   withAllowedProjectCreate,
   withRouter,

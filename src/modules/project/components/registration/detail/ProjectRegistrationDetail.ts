@@ -248,7 +248,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
         case ProjectUserAction.Modify:
           next = '/project/requests/form';
           break;
-          
+
         case ProjectUserAction.ChangeOwner:
           next = '/project/requests/owner';
           break;
@@ -272,9 +272,16 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
 
       props.setDefault();
 
-      props.history.push(next, { 
-        uid: projectUid 
-      });
+      if (props.location.state && props.location.state.isAdministration) {
+        props.history.push(next, { 
+          uid: projectUid,
+          isAdministration : true
+        });
+      } else {
+        props.history.push(next, { 
+          uid: projectUid 
+        });
+      }
     }
   },
 };
@@ -328,7 +335,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.Close,

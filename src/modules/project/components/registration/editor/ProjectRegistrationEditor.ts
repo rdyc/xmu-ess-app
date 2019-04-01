@@ -267,7 +267,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       time: new Date()
     });
 
-    history.push(`/project/requests/${response.uid}`);
+    if (props.location.state && props.location.state.isAdministration) {
+      history.push(`/project/administrations/${response.uid}`, {isAdministration : true});
+    } else {
+      history.push(`/project/requests/${response.uid}`);
+    }
   },
   handleSubmitFail: (props: ProjectRegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -365,9 +369,9 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     }
 
     this.props.masterPage.changePage({
-      uid: AppMenu.ProjectRegistrationRequest,
+      uid: this.props.location.state && this.props.location.state.isAdministration ? AppMenu.ProjectAdmnistration : AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      parentUrl: '/project/requests',
+      parentUrl: this.props.location.state && this.props.location.state.isAdministration ? '/project/administrations' : '/project/requests',
       title: intl.formatMessage(view.title),
       description : intl.formatMessage(view.subTitle)
     });
