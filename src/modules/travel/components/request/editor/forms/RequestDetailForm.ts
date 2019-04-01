@@ -50,7 +50,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
     const projectFilter: any = {
       customerUids: customerUidValue,
-      statusTypes: WorkflowStatusType.Approved,
+      statusTypes: ([WorkflowStatusType.Approved]).toString(),
     };
 
     const fieldName = name.replace('information.', '');
