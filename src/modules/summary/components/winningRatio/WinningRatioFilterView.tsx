@@ -17,6 +17,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
@@ -24,6 +25,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { AccountEmployeeDialog } from '@account/components/dialog';
 import { FilterCompany } from '@lookup/components/company/select';
@@ -32,7 +34,8 @@ import { WinningRatioFilterProps } from './WinningRatioFilter';
 
 export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
-    return props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
+    return props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
+    isNullOrUndefined(props.filterCompany) ||
       props.filterEmployee !== undefined ||
       props.filterStart !== props.start ||
       props.filterEnd !== props.end;
@@ -64,9 +67,11 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             </Typography>
 
             {
-              (props.filterCompany && props.resetCompany && props.filterCompany.uid !== props.resetCompany.uid || props.filterEmployee || 
-                props.filterStart && props.filterStart !== props.start || 
-                props.filterEnd && props.filterEnd !== props.end) &&
+              (props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
+              isNullOrUndefined(props.filterCompany) ||
+              props.filterEmployee ||
+              props.filterStart !== props.start ||          
+              props.filterEnd !== props.end) &&
               <Button color="inherit" onClick={props.handleFilterOnReset}>
                 {props.intl.formatMessage(layoutMessage.action.reset)}
               </Button>
@@ -75,6 +80,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             <Button 
               color="inherit" 
               onClick={props.handleFilterOnApply}
+              disabled={(!props.filterCompany) || (!props.filterStart) || (!props.filterEnd)}
             >
               {props.intl.formatMessage(layoutMessage.action.apply)}
             </Button>
@@ -91,12 +97,19 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterCompany && props.resetCompany && props.filterCompany.uid !== props.resetCompany.uid &&
+                (props.filterCompany && props.filterCompany.uid !== (props.resetCompany && props.resetCompany.uid) || isNullOrUndefined(props.filterCompany)) &&
                 <IconButton onClick={props.handleFilterCompanyOnClear}>
                   <ClearIcon />
                 </IconButton>
               }
-
+              {
+                !props.filterCompany &&
+                <Tooltip title={props.intl.formatMessage(summaryMessage.billable.field.companyRequired)}>
+                  <IconButton onClick={props.handleFilterCompanyVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
               <IconButton onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
                 <ChevronRightIcon />
               </IconButton>
@@ -131,12 +144,19 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterStart && props.filterStart !== props.start &&
+                props.filterStart !== props.start &&
                 <IconButton onClick={props.handleFilterStartOnClear}>
                   <ClearIcon />
                 </IconButton>
               }
-
+              {
+                props.filterEnd && !props.filterStart &&
+                <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.field.startRequired)}>
+                  <IconButton onClick={props.handleFilterStartVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
               <IconButton onClick={props.handleFilterStartVisibility}>
                 <ChevronRightIcon />
               </IconButton>
@@ -151,12 +171,19 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                props.filterEnd && props.filterEnd !== props.end &&
+                props.filterEnd !== props.end &&
                 <IconButton onClick={props.handleFilterEndOnClear}>
                   <ClearIcon />
                 </IconButton>
               }
-
+              {
+                props.filterStart && !props.filterEnd &&
+                <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.field.endRequired)}>
+                  <IconButton onClick={props.handleFilterEndVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
               <IconButton onClick={props.handleFilterEndVisibility}>
                 <ChevronRightIcon />
               </IconButton>

@@ -37,6 +37,7 @@ import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
+// import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
 

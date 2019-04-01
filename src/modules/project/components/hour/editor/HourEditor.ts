@@ -27,6 +27,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ProjectHourFormData } from './forms/HourForm';
 import { HourEditorView } from './HourEditorView';
 
@@ -60,6 +62,7 @@ export type HourEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -211,6 +214,7 @@ export const HourEditor = compose<HourEditorProps, {}>(
   withProjectRegistration,
   withProjectHour,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

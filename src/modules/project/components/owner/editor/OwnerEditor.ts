@@ -27,7 +27,9 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
+import styles from '@styles';
 import { ProjectOwnerFormData } from './forms/OwnerForm';
 import { OwnerEditorView } from './OwnerEditorView';
 
@@ -61,6 +63,7 @@ export type OwnerEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -71,7 +74,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
       information: {}
     };
   
-    const requiredFields = ['employeeUid', 'projectType'];
+    const requiredFields = ['projectType'];
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
@@ -93,7 +96,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
     }
 
     // props checking
-    if (!projectUid || !information.employeeUid || !information.projectType) {
+    if (!projectUid || !information.projectType) {
       const message = intl.formatMessage(projectOwnerMessage.emptyProps);
 
       return Promise.reject(message);
@@ -213,6 +216,7 @@ export const OwnerEditor = compose<OwnerEditorProps, {}>(
   withProjectRegistration,
   withProjectOwner,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

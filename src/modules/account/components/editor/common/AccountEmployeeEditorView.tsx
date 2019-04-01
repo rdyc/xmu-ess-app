@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeEditorProps } from './AccountEmployeeEditor';
 import { AccountEmployeeContainerForm, AccountEmployeeFormData } from './form/AccountEmployeeContainerForm';
@@ -36,8 +36,8 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       companyUid: null,
       employmentType: null,
       joinDate: null,
-      taxType: null,
       inactiveDate: null,
+      taxType: null,
       bloodType: null,
       religionType: null,
     },
@@ -72,11 +72,22 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          {props.intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     
@@ -93,8 +104,8 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.employmentType = data.employmentType;
       initialValues.information.joinDate = data.joinDate;
-      initialValues.information.taxType = data.taxType;
       initialValues.information.inactiveDate = data.inactiveDate;
+      initialValues.information.taxType = data.taxType;
       initialValues.information.bloodType = data.bloodType;
       initialValues.information.religionType = data.religionType;
 

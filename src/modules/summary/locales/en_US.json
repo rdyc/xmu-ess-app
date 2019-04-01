@@ -11,9 +11,12 @@
   "summary.billable.page.detail": "Detail {type}",
 
   "summary.billable.field.company": "Company",
+  "summary.billable.field.company.required": "Company is required",
   "summary.billable.field.name": "Employee Name",
   "summary.billable.field.start": "Start",
+  "summary.billable.field.start.required": "Start is required",
   "summary.billable.field.end": "End",
+  "summary.billable.field.end.required": "End is required",
 
   "summary.billable.note": "Note:",
   "summary.billable.totalhours": "*Total available Hours = 2080 Hour",
@@ -97,9 +100,12 @@
   "summary.winningRatio.detail.title" : "Details Winning Ratio",
   "summary.winningRatio.title": "Report Winning Ratio",
   "summary.winningRatio.field.company": "Company",
+  "summary.winningRatio.field.company.required": "Company is required",
   "summary.winningRatio.field.name": "Employee Name",
   "summary.winningRatio.field.start": "Start",
+  "summary.winningRatio.field.start.required": "Start is required",
   "summary.winningRatio.field.end": "End",
+  "summary.winningRatio.field.end.required": "End is required",
   "summary.winningRatio.subTitle": " ",
   "summary.winningRatio.detail.projectNull": "No Data",
 

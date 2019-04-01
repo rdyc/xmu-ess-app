@@ -26,6 +26,7 @@ export interface IPurchaseDetail {
   customerUid: string;
   customer?: ILookupCustomer;
   isNotified?: boolean;
+  settlement?: boolean;
   items?: IPurchaseItemRequest[];
   histories?: IPurchaseHistory[];
   workflow?: IOrganizationWorkflow;

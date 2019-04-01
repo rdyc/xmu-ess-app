@@ -6,6 +6,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import {
   ISettlementItemPostPayload,
   ISettlementItemPutPayload,
@@ -20,6 +21,7 @@ import {
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -74,6 +76,7 @@ export type PurchaseSettlementEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -389,6 +392,7 @@ export const PurchaseSettlementEditor = compose<PurchaseSettlementEditorProps, {
   withRouter,
   withPurchaseSettlement,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<PurchaseSettlementEditorProps, OwnHandlers>(handlers),
   lifecycle<PurchaseSettlementEditorProps, {}>(lifecycles),

@@ -99,7 +99,6 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
     switch (name) {
       case 'employeeUid':
         fieldProps = {
-          required: true,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           filter: {

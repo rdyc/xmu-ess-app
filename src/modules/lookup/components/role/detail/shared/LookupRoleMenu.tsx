@@ -87,7 +87,7 @@ const roleMenu: React.SFC<AllProps> = props => {
                     data.map(child => child.menu && (child.menu.parentUid === parent.menuUid) &&
                       <div key={child.menuUid}>
                         <ListItem
-                          button
+                          // button
                           color={'inherit'}
                           className={props.classes.marginFarLeft}
                         >

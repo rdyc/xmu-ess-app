@@ -45,36 +45,6 @@ const accountEmployeeInformation: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.company)}
-        value={data.company ? data.company.name : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.employment)}
-        value={data.employment ? data.employment.value : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.rate)}
-        value={'RATE'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.joinDate)}
-        value={intl.formatDate(data.joinDate, GlobalFormat.Date)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.inactiveDate)}
-        value={data.inactiveDate ? intl.formatDate(data.inactiveDate, GlobalFormat.Date) : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.gender)}
         value={data.gender ? data.gender.value : 'N/A'}
       />
@@ -93,20 +63,26 @@ const accountEmployeeInformation: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.blood)}
-        value={data.blood ? data.blood.value : 'N/A'}
+        label={intl.formatMessage(accountMessage.employee.field.company)}
+        value={data.company ? data.company.name : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.ktp)}
-        value={data.citizenNumber ? data.citizenNumber : 'N/A'}
+        label={intl.formatMessage(accountMessage.employee.field.employment)}
+        value={data.employment ? data.employment.value : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.npwp)}
-        value={data.taxNumber ? data.taxNumber : 'N/A'}
+        label={intl.formatMessage(accountMessage.employee.field.joinDate)}
+        value={intl.formatDate(data.joinDate, GlobalFormat.Date)}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={intl.formatMessage(accountMessage.employee.field.inactiveDate)}
+        value={data.inactiveDate ? intl.formatDate(data.inactiveDate, GlobalFormat.Date) : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -117,20 +93,14 @@ const accountEmployeeInformation: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.kartuKeluarga)}
-        value={data.familyCardNumber ? data.familyCardNumber : 'N/A'}
+        label={intl.formatMessage(accountMessage.employee.field.blood)}
+        value={data.blood ? data.blood.value : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.bpjsKetenagakerjaan)}
-        value={data.bpjsEmploymentNumber ? data.bpjsEmploymentNumber : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.bpjsKesehatan)}
-        value={data.bpjsHealthCareNumber ? data.bpjsHealthCareNumber : 'N/A'}
+        label={intl.formatMessage(accountMessage.employee.field.religion)}
+        value={data.religion ? data.religion.value : 'N/A'}
       />
       {
         props.data.changes &&

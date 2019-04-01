@@ -28,6 +28,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { AccountEmployeeExperienceEditorView } from './AccountEmployeeExperienceEditorView';
 import { AccountEmployeeExperienceFormData } from './form/AccountEmployeeExperienceContainerForm';
 
@@ -69,6 +71,7 @@ export type AccountEmployeeExperienceEditorProps
   & WithWidth
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnOption
   & OwnHandlers
   & IOwnState
@@ -264,6 +267,7 @@ export const AccountEmployeeExperienceEditor = compose<AccountEmployeeExperience
   withRouter,
   withAccountEmployeeExperience,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),

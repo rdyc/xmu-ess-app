@@ -13,7 +13,10 @@ export const DetailPageView: React.SFC<DetailPageProps> = props => {
   const render = (
     <React.Fragment>
       <AppBar position="static">
-        <Tabs value={props.tabValue} scrollButtons="auto" scrollable>
+        <Tabs value={props.tabValue} scrollButtons="auto" scrollable style={{
+          color: '#fff',
+          background: props.theme.palette.type === 'light' ? '#03a9f4' : '#212121'
+        }}>
           {tabs.map(item => (
             <Tab
               key={item.id}

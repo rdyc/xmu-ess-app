@@ -1,6 +1,6 @@
-import { PreloaderWithError } from '@layout/components/preloader';
+// import { PreloaderWithError } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
-import { Paper } from '@material-ui/core';
+import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { WinningRatioProps } from './WinningRatio';
 import { WinningRatioDetail } from './WinningRatioDetail';
@@ -39,14 +39,33 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
         onClickSync={handleReloadData}
         onApply={handleChangeFilter}
       />
-      <PreloaderWithError 
+      {/* <PreloaderWithError 
         state={props.summaryState.winning}
         waitingText={props.intl.formatMessage(layoutMessage.text.waiting)}
         onRetry={handleReloadData}
-      >
+      > */}
         <Paper square elevation={1}>
+        {
+            isLoading &&
+            <div className={props.classes.preloader}>
+              <div className={props.classes.preloaderContent}>
+                <CircularProgress 
+                  style={{margin: 'auto'}} 
+                  color="secondary"
+                />
+
+                <Typography
+                  className={props.classes.marginFarTop}
+                >
+                  {props.intl.formatMessage(layoutMessage.text.waiting)}
+                </Typography>
+              </div>    
+            </div>
+          }
           {
+            !isLoading &&
             response &&
+            response.data &&
             <React.Fragment>
               <WinningRatioDetail
                 uid={props.uid}
@@ -73,7 +92,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
             </React.Fragment>
           }
         </Paper>
-      </PreloaderWithError>
+      {/* </PreloaderWithError> */}
     </React.Fragment>
   );
 

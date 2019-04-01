@@ -231,6 +231,7 @@ const styles = (theme: Theme) =>
     },
     searchIcon: {
       width: theme.spacing.unit * 9,
+      color: theme.palette.grey[900],
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -243,7 +244,7 @@ const styles = (theme: Theme) =>
       width: '100%',
     },
     searchInput: {
-      color: theme.palette.common.white,
+      color: theme.palette.grey[900],
       paddingTop: theme.spacing.unit,
       paddingRight: theme.spacing.unit,
       paddingBottom: theme.spacing.unit,
@@ -256,6 +257,9 @@ const styles = (theme: Theme) =>
           width: 200,
         },
       },
+    },
+    searchRightIcon: {
+      color: theme.palette.grey[900],
     },
 
     // App Tabs
