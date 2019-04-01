@@ -1,3 +1,4 @@
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { InputDateWithValueView } from './InputDateWithValueView';
@@ -9,6 +10,7 @@ interface OwnProps {
   isOpen: boolean;
   onSelected: (data: string) => void;
   onClose: () => void;
+  minDate?: DateType;
 }
 
 export type InputDateWithValueProps 
