@@ -1,5 +1,6 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
-import { Button, Card, CardActions, CardHeader } from '@material-ui/core';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 
 import { SubmissionFormProps } from './SubmissionForm';
@@ -7,10 +8,32 @@ import { SubmissionFormProps } from './SubmissionForm';
 export const SubmissionFormView: React.SFC<SubmissionFormProps> = props => (
   <React.Fragment>
     <Card square className={props.className}>
-      <CardHeader 
-        title={props.title}
-        subheader={props.subheader}
-      />
+      <CardHeader title={props.title} subheader={props.subheader} />
+      
+      {
+        !props.formikProps.isSubmitting &&
+        props.formikProps.status &&
+        <CardContent>
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label="Date"
+            value={props.formikProps.status.date || 'N/A'}
+          />
+
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label="Correlation ID"
+            value={props.formikProps.status.id || 'N/A'}
+          />
+
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label="Status"
+            value={props.formikProps.status.message}
+          />
+        </CardContent>
+      }
+      
       <CardActions>
         <Button
           fullWidth

@@ -2,6 +2,7 @@ import { AccountEmployeeOption } from '@account/components/options/AccountEmploy
 import { ProjectType } from '@common/classes/types';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import AppMenu from '@constants/AppMenu';
+import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
@@ -39,8 +40,8 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
       parentUrl: '/project/requests',
-      title: props.intl.formatMessage(projectMessage.registration.page.newTitle),
-      description: props.intl.formatMessage(projectMessage.registration.page.newSubHeader)
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newTitle : projectMessage.registration.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newSubHeader : projectMessage.registration.page.modifySubHeader)
     }}
     state={props.projectRegisterState.detail}
     onLoadApi={props.handleOnLoadDetail}
@@ -61,11 +62,39 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                 />
                 <CardContent>
                   <Field
+                    name="uid"
+                    render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        disabled
+                        margin="normal"
+                        label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
+                        helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+                      />
+                    )}
+                  />
+
+                  <Field
+                    name="ownerEmployeeUid"
+                    render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        disabled
+                        margin="normal"
+                        label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
+                      />
+                    )}
+                  />
+
+                  <Field
                     name="customerUid"
                     render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
                       <LookupCustomerOption filter={props.filterLookupCustomer}>
                         <SelectField
                           isSearchable
+                          isDisabled={formikBag.isSubmitting}
                           isClearable={field.value !== ''}
                           escapeClearsValue={true}
                           valueString={field.value}
@@ -88,22 +117,33 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                   <Field
                     name="projectType"
                     render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-                      <CommonSystemOption category="project" filter={props.filterCommonSystem}>
-                        <SelectField
-                          isSearchable
-                          isClearable={field.value !== ''}
-                          escapeClearsValue={true}
-                          valueString={field.value}
-                          textFieldProps={{
-                            label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
-                            required: true,
-                            helperText: form.touched.projectType && form.errors.projectType,
-                            error: form.touched.projectType && Boolean(form.errors.projectType)
-                          }}
-                          onMenuClose={() => formikBag.setFieldTouched(field.name)}
-                          onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
-                        />
-                      </CommonSystemOption>
+                      <React.Fragment>
+                        <CommonSystemOption category="project" filter={props.filterCommonSystem}>
+                          <SelectField
+                            isSearchable
+                            isDisabled={props.formMode === FormMode.Edit || formikBag.isSubmitting}
+                            isClearable={props.formMode === FormMode.New && field.value !== ''}
+                            escapeClearsValue={true}
+                            valueString={field.value}
+                            filterOption={option => {
+                              // filter options from allowed project types
+                              if (props.allowedProjectTypes) {
+                                return props.allowedProjectTypes.findIndex(item => item === option.value) !== -1;
+                              } 
+
+                              return true;
+                            }}
+                            textFieldProps={{
+                              label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                              required: true,
+                              helperText: form.touched.projectType && form.errors.projectType,
+                              error: form.touched.projectType && Boolean(form.errors.projectType)
+                            }}
+                            onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                            onChange={(selected: ISelectFieldOption) => formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                          />
+                        </CommonSystemOption>
+                      </React.Fragment>
                     )}
                   />
 
@@ -192,7 +232,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                         required={formikBag.values.start !== ''}
                         showTodayButton
                         margin="normal"
-                        disabled={!formikBag.values.end || form.isSubmitting}
+                        disabled={formikBag.values.start === '' || form.isSubmitting}
                         label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
                         placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
                         leftArrowIcon={<ChevronLeft />}
@@ -213,14 +253,15 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                       <CommonSystemOption category="currency" filter={props.filterCommonSystem}>
                         <SelectField
                           isSearchable
+                          isDisabled={!props.isRequestor || formikBag.isSubmitting}
                           isClearable={field.value !== ''}
                           escapeClearsValue={true}
                           valueString={field.value}
                           textFieldProps={{
                             label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
                             required: true,
-                            helperText: form.touched.projectType && form.errors.projectType,
-                            error: form.touched.projectType && Boolean(form.errors.projectType)
+                            helperText: form.touched.currencyType && form.errors.currencyType,
+                            error: form.touched.currencyType && Boolean(form.errors.currencyType)
                           }}
                           onMenuClose={() => formikBag.setFieldTouched(field.name)}
                           onChange={(selected: ISelectFieldOption) => {
@@ -248,7 +289,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                         {...field}
                         fullWidth
                         required
-                        disabled={(formikBag.values.currencyType && formikBag.values.currencyType === 'SCR01') || form.isSubmitting}
+                        disabled={(formikBag.values.currencyType && formikBag.values.currencyType === 'SCR01') || !props.isRequestor || form.isSubmitting}
                         margin="normal"
                         autoComplete="off"
                         label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
@@ -276,7 +317,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                         {...field}
                         fullWidth
                         required
-                        disabled={form.isSubmitting}
+                        disabled={!props.isRequestor || form.isSubmitting}
                         margin="normal"
                         autoComplete="off"
                         label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
@@ -316,6 +357,22 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                     )}
                   />
 
+                  <Field
+                    name="maxHours"
+                    render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        disabled
+                        margin="normal"
+                        label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
+                        helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+                        InputProps={{
+                          inputComponent: NumberFormatter,
+                        }}
+                      />
+                    )}
+                  />
                 </CardContent>
               </Card>
             </div>
@@ -345,7 +402,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                                       {...field} 
                                       value={item.value}
                                       checked={item.checked}
-                                      disabled={formikBag.values.projectType === '' || formikBag.values.projectType === ProjectType.PreSales} 
+                                      disabled={formikBag.values.projectType === '' || formikBag.values.projectType === ProjectType.PreSales || formikBag.isSubmitting} 
                                     />
                                   }
                                   style={{width: '100%'}}
@@ -384,7 +441,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                                       {...field} 
                                       value={item.value}
                                       checked={item.checked}
-                                      disabled={formikBag.values.projectType === '' || formikBag.values.projectType !== ProjectType.PreSales} 
+                                      disabled={formikBag.values.projectType === '' || formikBag.values.projectType !== ProjectType.PreSales || formikBag.isSubmitting} 
                                     />
                                   }
                                   style={{width: '100%'}}
@@ -418,70 +475,78 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                     name="sales"
                     render={(fields: FieldArrayRenderProps) => (
                       <React.Fragment>
-                        <CardContent>
-                          <List disablePadding>
-                          {
-                            formikBag.values.sales.length > 0 &&
-                            formikBag.values.sales.map((item, index) => 
-                              <Field
-                                key={index}
-                                name={`sales.${index}.employeeUid`}
-                                render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => {
-                                  const error = getIn(form.errors, `sales.${index}.employeeUid`);
-                                  const touch = getIn(form.touched, `sales.${index}.employeeUid`);
-                                  
-                                  return (
-                                    <React.Fragment>
-                                      <ListItem disableGutters>
-                                        <ListItemText>
-                                          <AccountEmployeeOption filter={props.filterAccountEmployee}>
-                                            <SelectField
-                                              isSearchable
-                                              isClearable={field.value !== ''}
-                                              escapeClearsValue={true}
-                                              menuPlacement="auto"
-                                              menuPosition="fixed"
-                                              valueString={item.employeeUid}
-                                              textFieldProps={{
-                                                label: props.intl.formatMessage(projectMessage.registration.field.salesEmployeeUid),
-                                                placeholder: props.intl.formatMessage(projectMessage.registration.fieldFor('salesEmployeeUid', 'fieldPlaceholder')),
-                                                required: true,
-                                                helperText: touch && error,
-                                                error: touch && Boolean(error)
-                                              }}
-                                              onMenuClose={() => formikBag.setFieldTouched(field.name)}
-                                              onChange={(selected: ISelectFieldOption) => {
-                                                const value = selected && selected.value || '';
+                        {
+                          formikBag.values.sales.length > 0 &&
+                          <CardContent>
+                            <List disablePadding>
+                            {
+                              formikBag.values.sales.length > 0 &&
+                              formikBag.values.sales.map((item, index) => 
+                                <Field
+                                  key={index}
+                                  name={`sales.${index}.employeeUid`}
+                                  render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => {
+                                    const error = getIn(form.errors, `sales.${index}.employeeUid`);
+                                    const touch = getIn(form.touched, `sales.${index}.employeeUid`);
+                                    
+                                    return (
+                                      <React.Fragment>
+                                        <ListItem disableGutters>
+                                          <ListItemText>
+                                            <AccountEmployeeOption filter={props.filterAccountEmployee}>
+                                              <SelectField
+                                                autoFocus
+                                                isSearchable
+                                                isClearable={field.value !== ''}
+                                                isDisabled={formikBag.isSubmitting}
+                                                escapeClearsValue={true} 
+                                                menuPlacement="auto"
+                                                menuPosition="fixed"
+                                                valueString={item.employeeUid}
+                                                textFieldProps={{
+                                                  label: props.intl.formatMessage(projectMessage.registration.field.salesEmployeeUid),
+                                                  placeholder: props.intl.formatMessage(projectMessage.registration.fieldFor('salesEmployeeUid', 'fieldPlaceholder')),
+                                                  required: true,
+                                                  helperText: touch && error,
+                                                  error: touch && Boolean(error)
+                                                }}
+                                                onMenuClose={() => formikBag.setFieldTouched(field.name)}
+                                                onChange={(selected: ISelectFieldOption) => {
+                                                  const value = selected && selected.value || '';
 
-                                                // prevent duplicate
-                                                if (value !== '') {
-                                                  const isExist = formikBag.values.sales.findIndex(sales => sales.employeeUid === value);
+                                                  // prevent duplicate
+                                                  if (value !== '') {
+                                                    const isExist = formikBag.values.sales.findIndex(sales => sales.employeeUid === value);
 
-                                                  if (isExist === -1) {
+                                                    if (isExist === -1) {
+                                                      formikBag.setFieldValue(field.name, value);
+                                                    }
+                                                  } else {
                                                     formikBag.setFieldValue(field.name, value);
                                                   }
-                                                } else {
-                                                  formikBag.setFieldValue(field.name, value);
-                                                }
-                                              }}
-                                            />
-                                          </AccountEmployeeOption>
-                                        </ListItemText>
+                                                }}
+                                              />
+                                            </AccountEmployeeOption>
+                                          </ListItemText>
 
-                                        <ListItemSecondaryAction className={props.classes.marginWideTop}>
-                                          <IconButton onClick={() => fields.remove(index)}>
-                                            <DeleteForever color="action" />
-                                          </IconButton>
-                                        </ListItemSecondaryAction>
-                                      </ListItem>
-                                    </React.Fragment>
-                                  );
-                                }}
-                              />
-                            )
-                          }
-                          </List>
-                        </CardContent>
+                                          <ListItemSecondaryAction className={props.classes.marginWideTop}>
+                                            <IconButton 
+                                              disabled={formikBag.isSubmitting}
+                                              onClick={() => fields.remove(index)}
+                                            >
+                                              <DeleteForever color="action" />
+                                            </IconButton>
+                                          </ListItemSecondaryAction>
+                                        </ListItem>
+                                      </React.Fragment>
+                                    );
+                                  }}
+                                />
+                              )
+                            }
+                            </List>
+                          </CardContent>
+                        }
                         <CardActions>
                           <Button
                             fullWidth
@@ -516,12 +581,15 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                 }} 
               />
               
-              <Card square className={props.classes.flexContent}>
-                <CardHeader title="JSON"/>
-                <CardContent>
-                  <pre>{JSON.stringify(formikBag.values, null, 2)}</pre>
-                </CardContent>
-              </Card>
+              {
+                process.env.NODE_ENV !== 'production' &&
+                <Card square className={props.classes.flexContent}>
+                  <CardHeader title="JSON"/>
+                  <CardContent>
+                    <pre>{JSON.stringify(formikBag.values, null, 2)}</pre>
+                  </CardContent>
+                </Card>
+              }
             </div>
           </div>
         </Form>
