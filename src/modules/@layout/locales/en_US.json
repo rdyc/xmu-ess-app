@@ -137,6 +137,8 @@
   "layout.form.submit.title": "Submission",
   "layout.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
+  "layout.action.add": "Add",
+  "layout.action.remove": "Remove",
   "layout.action.apply": "Apply",
   "layout.action.yes": "Yes",
   "layout.action.no": "No",

@@ -158,7 +158,7 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
       .of(
         Yup.object().shape({
           employeeUid: Yup.string()
-            .required(props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
+            .required(props.intl.formatMessage(projectMessage.registration.fieldFor('salesEmployeeUid', 'fieldRequired')))
         })
       )
       .min(1, props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
