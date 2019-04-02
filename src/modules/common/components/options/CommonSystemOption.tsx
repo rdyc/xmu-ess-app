@@ -9,6 +9,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -219,7 +220,35 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
+    // this.props.handleOnLoadApi();
+    const { request, response } = fnGetContext(this.props);
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
+        
+          if (response && response.data) {
+            response.data.forEach(item => options.push({ 
+              value: item.type, 
+              label: item.name 
+            }));
+            
+            this.props.setOptions(options);
+          }
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: CommonSystemOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = fnGetContext(this.props);

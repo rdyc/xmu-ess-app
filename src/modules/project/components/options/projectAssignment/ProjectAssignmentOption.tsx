@@ -1,6 +1,6 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
-import { ICurrencyListFilter } from '@lookup/classes/filters';
-import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
+import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import * as React from 'react';
 import {
   compose,
@@ -18,7 +18,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: ICurrencyListFilter;
+  filter?: IProjectAssignmentGetListFilter;
 }
 
 interface IOwnState {
@@ -35,8 +35,8 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
 }
 
-export type LookupCurrencyOptionProps
-  = WithLookupCurrency
+export type ProjectAssignmentOptionProps
+  = WithProjectAssignment
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -47,7 +47,7 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
   options: [{ label: '', value: ''}]
 });
 
-const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<ProjectAssignmentOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
@@ -56,10 +56,10 @@ const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnSta
   })
 };
 
-const handlerCreators: HandleCreators<LookupCurrencyOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: LookupCurrencyOptionProps) => () => {
-    const { isExpired, isLoading } = props.lookupCurrencyState.list;
-    const { loadListRequest } = props.lookupCurrencyDispatch;
+const handlerCreators: HandleCreators<ProjectAssignmentOptionProps, IOwnHandler> = {
+  handleOnLoadApi: (props: ProjectAssignmentOptionProps) => () => {
+    const { isExpired, isLoading } = props.projectAssignmentState.list;
+    const { loadListRequest } = props.projectAssignmentDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
@@ -69,9 +69,9 @@ const handlerCreators: HandleCreators<LookupCurrencyOptionProps, IOwnHandler> = 
   }
 };
 
-const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> = {
+const lifeCycle: ReactLifeCycleFunctions<ProjectAssignmentOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.lookupCurrencyState.list;
+    const { request, response } = this.props.projectAssignmentState.list;
 
     // 1st load only when request are empty
     if (!request) {
@@ -100,9 +100,9 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
       }
     }
   },
-  componentDidUpdate(prevProps: LookupCurrencyOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupCurrencyState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupCurrencyState.list;
+  componentDidUpdate(prevProps: ProjectAssignmentOptionProps) {
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.projectAssignmentState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.projectAssignmentState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -123,7 +123,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
   }
 };
 
-const component: React.SFC<LookupCurrencyOptionProps> = props => {
+const component: React.SFC<ProjectAssignmentOptionProps> = props => {
   const children = props.children as React.ReactElement<SelectFieldProps>;
 
   if (children) {
@@ -143,9 +143,9 @@ const component: React.SFC<LookupCurrencyOptionProps> = props => {
   return <div></div>;
 };
 
-export const LookupCurrencyOption = compose<LookupCurrencyOptionProps, IOwnOption>(
-  setDisplayName('LookupCurrencyOptionProps'),
-  withLookupCurrency,
+export const ProjectAssignmentOption = compose<ProjectAssignmentOptionProps, IOwnOption>(
+  setDisplayName('ProjectAssignmentOption'),
+  withProjectAssignment,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

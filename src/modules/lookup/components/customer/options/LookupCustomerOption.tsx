@@ -9,6 +9,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -21,10 +22,12 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  isLoading: boolean;
   options: ISelectFieldOption[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setLoading: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
 }
 
@@ -40,10 +43,14 @@ export type LookupCustomerOptionProps
   & IOwnHandler;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  isLoading: false,
   options: [{ label: '', value: ''}]
 });
 
 const stateUpdaters: StateUpdaters<LookupCustomerOptionProps, IOwnState, IOwnStateUpdater> = {
+  setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    isLoading: values
+  }),
   setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     options: values
   })
@@ -64,16 +71,48 @@ const handlerCreators: HandleCreators<LookupCustomerOptionProps, IOwnHandler> = 
 
 const lifeCycle: ReactLifeCycleFunctions<LookupCustomerOptionProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
+    const { request, response } = this.props.lookupCustomerState.list;
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
+        
+          if (response && response.data) {
+            response.data.forEach(item => options.push({ 
+              value: item.uid, 
+              label: item.name 
+            }));
+            
+            this.props.setOptions(options);
+          }
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: LookupCustomerOptionProps) {
-    if (this.props.lookupCustomerState.list.response !== prevProps.lookupCustomerState.list.response) {
-      const { response } = this.props.lookupCustomerState.list;
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupCustomerState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupCustomerState.list;
 
-      if (response && response.data) {
+    if (thisIsLoading !== prevIsLoading) {
+      this.props.setLoading(thisIsLoading);
+    }
+
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
         const options: ISelectFieldOption[] = [{ label: '', value: ''}];
         
-        response.data.forEach(item => options.push({ 
+        thisResponse.data.forEach(item => options.push({ 
           value: item.uid, 
           label: item.name 
         }));
@@ -91,8 +130,8 @@ const component: React.SFC<LookupCustomerOptionProps> = props => {
     return (
       <React.Fragment>
         {
-          React.cloneElement(children, { 
-            isLoading: props.lookupCustomerState.list.isLoading,
+          React.cloneElement(children, {
+            isLoading: props.isLoading,
             options: props.options,
             value: props.options.find(option => option.value === children.props.valueString)
           })
