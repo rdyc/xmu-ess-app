@@ -1,5 +1,6 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import * as React from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -21,10 +23,12 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  isLoading: boolean;
   options: ISelectFieldOption[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setLoading: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
 }
 
@@ -40,13 +44,28 @@ export type LookupCustomerOptionProps
   & IOwnHandler;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  isLoading: false,
   options: [{ label: '', value: ''}]
 });
 
 const stateUpdaters: StateUpdaters<LookupCustomerOptionProps, IOwnState, IOwnStateUpdater> = {
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    isLoading: values
+  }),
+  setOptions: (state: IOwnState) => (values: ICustomerList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.name 
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<LookupCustomerOptionProps, IOwnHandler> = {
@@ -64,21 +83,39 @@ const handlerCreators: HandleCreators<LookupCustomerOptionProps, IOwnHandler> = 
 
 const lifeCycle: ReactLifeCycleFunctions<LookupCustomerOptionProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
+    const { request, response } = this.props.lookupCustomerState.list;
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: LookupCustomerOptionProps) {
-    if (this.props.lookupCustomerState.list.response !== prevProps.lookupCustomerState.list.response) {
-      const { response } = this.props.lookupCustomerState.list;
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupCustomerState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupCustomerState.list;
 
-      if (response && response.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        response.data.forEach(item => options.push({ 
-          value: item.uid, 
-          label: item.name 
-        }));
+    if (thisIsLoading !== prevIsLoading) {
+      this.props.setLoading(thisIsLoading);
+    }
 
-        this.props.setOptions(options);
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
+        this.props.setOptions(thisResponse.data);
       }
     }
   }
@@ -92,7 +129,7 @@ const component: React.SFC<LookupCustomerOptionProps> = props => {
       <React.Fragment>
         {
           React.cloneElement(children, { 
-            isLoading: props.lookupCustomerState.list.isLoading,
+            isLoading: props.isLoading,
             options: props.options,
             value: props.options.find(option => option.value === children.props.valueString)
           })
@@ -105,7 +142,7 @@ const component: React.SFC<LookupCustomerOptionProps> = props => {
 };
 
 export const LookupCustomerOption = compose<LookupCustomerOptionProps, IOwnOption>(
-  setDisplayName('LookupCustomerOptionProps'),
+  setDisplayName('LookupCustomerOption'),
   withLookupCustomer,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

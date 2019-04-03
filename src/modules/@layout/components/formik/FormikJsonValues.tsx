@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Typography } from '@material-ui/core';
 import { FormikProps } from 'formik';
 import * as React from 'react';
 
@@ -11,9 +11,14 @@ const FormikJsonValues: React.ComponentType<FormikJsonValuesProps> = props => (
     {
       process.env.NODE_ENV !== 'production' &&
       <Card square>
-        <CardHeader title="JSON"/>
+        <CardHeader title="Json Values"/>
         <CardContent>
-          <pre>{JSON.stringify(props.formikBag.values, null, 2)}</pre>
+          <Typography 
+            variant="body1"
+            component="pre"
+          >
+            {JSON.stringify(props.formikBag.values, null, 2)}
+          </Typography>
         </CardContent>
       </Card>
     }

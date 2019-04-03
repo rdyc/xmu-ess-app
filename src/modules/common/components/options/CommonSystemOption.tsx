@@ -1,4 +1,5 @@
 import { ISystemListRequest } from '@common/classes/queries';
+import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
@@ -9,6 +10,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -86,9 +88,20 @@ const stateUpdaters: StateUpdaters<CommonSystemOptionProps, IOwnState, IOwnState
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setOptions: (state: IOwnState) => (values: ISystemList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.type, 
+      label: item.name
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
@@ -219,7 +232,27 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
+    const { request, response } = fnGetContext(this.props);
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: CommonSystemOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = fnGetContext(this.props);
@@ -231,14 +264,7 @@ const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        thisResponse.data.forEach(item => options.push({ 
-          value: item.type, 
-          label: item.name 
-        }));
-
-        this.props.setOptions(options);
+        this.props.setOptions(thisResponse.data);
       }
     }
   }
@@ -265,7 +291,7 @@ const component: React.SFC<CommonSystemOptionProps> = props => {
 };
 
 export const CommonSystemOption = compose<CommonSystemOptionProps, IOwnOption>(
-  setDisplayName('CommonSystemOptionProps'),
+  setDisplayName('CommonSystemOption'),
   withCommonSystem,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { FormMode } from '@generic/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
@@ -13,7 +15,13 @@ import { IProjectRegistrationFormValue, ProjectRegistrationFormProps } from './P
 
 export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps> = props => (
   <FormPage
-    info={props.info}
+    info={{
+      uid: AppMenu.ProjectRegistrationRequest,
+      parentUid: AppMenu.ProjectRegistration,
+      parentUrl: '/project/requests',
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newTitle : projectMessage.registration.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newSubHeader : projectMessage.registration.page.modifySubHeader)
+    }}
     state={props.projectRegisterState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
