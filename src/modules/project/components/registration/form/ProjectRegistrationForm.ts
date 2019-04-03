@@ -3,6 +3,8 @@ import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withA
 import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import AppMenu from '@constants/AppMenu';
+import { IPageInfo } from '@generic/interfaces';
 import { FormMode } from '@generic/types/FormMode';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
@@ -75,6 +77,7 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  info: IPageInfo;
   formMode: FormMode;
   isRequestor: boolean;
 
@@ -116,6 +119,13 @@ export type ProjectRegistrationFormProps
 
 const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: ProjectRegistrationFormProps): IOwnState => ({
   // form props
+  info: {
+    uid: AppMenu.ProjectRegistrationRequest,
+    parentUid: AppMenu.ProjectRegistration,
+    parentUrl: '/project/requests',
+    title: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newTitle : projectMessage.registration.page.modifyTitle),
+    description: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.page.newSubHeader : projectMessage.registration.page.modifySubHeader)
+  },
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   isRequestor: true,
 

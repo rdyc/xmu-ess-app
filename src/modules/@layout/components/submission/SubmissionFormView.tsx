@@ -5,9 +5,9 @@ import * as React from 'react';
 
 import { SubmissionFormProps } from './SubmissionForm';
 
-export const SubmissionFormView: React.SFC<SubmissionFormProps> = props => (
+export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = props => (
   <React.Fragment>
-    <Card square className={props.className}>
+    <Card square>
       <CardHeader title={props.title} subheader={props.subheader} />
       
       {
