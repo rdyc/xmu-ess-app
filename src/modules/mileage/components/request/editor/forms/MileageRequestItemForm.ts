@@ -23,6 +23,7 @@ const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
     const { year, month } = this.props;
     const { user } = this.props.userState;
     const { loadAllMileages } = this.props.timesheetMileagesDispatch;
+
     if (user) {
       if (year && month) {
         loadAllMileages({
@@ -30,6 +31,24 @@ const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
             companyUid: user.company.uid,
             year: this.props.year,
             month: this.props.month
+          }
+        });
+      }
+    }
+  },
+  componentDidUpdate(prevProps: ItemFormProps) {
+    const { year: thisYear, month: thisMonth } = this.props;
+    const { year: prevYear, month: prevMonth } = prevProps;
+    const { user } = this.props.userState;
+    const { loadAllMileages } = this.props.timesheetMileagesDispatch;
+
+    if (user) {
+      if (thisYear !== prevYear || thisMonth !== prevMonth) {
+        loadAllMileages({
+          filter: {
+            companyUid: user.company.uid,
+            year: thisYear,
+            month: thisMonth
           }
         });
       }

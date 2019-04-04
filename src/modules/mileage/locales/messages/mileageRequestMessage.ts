@@ -100,7 +100,7 @@ export const mileageFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
   if (type === 'fieldRequired') {
     switch (field) {
       case 'year': return mileageRequestField.yearRequired;
-      case 'month': return mileageRequestField.yearRequired;
+      case 'month': return mileageRequestField.monthRequired;
 
       default: return {id: field};
     }
@@ -117,3 +117,7 @@ export const mileageFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
 
   return {id: field};
 };
+
+export const mileageRequestSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form`}
+});

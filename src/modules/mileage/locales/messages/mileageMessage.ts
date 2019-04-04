@@ -1,5 +1,19 @@
-import { mileageApprovalField, mileageApprovalMessage, mileageApprovalPage, mileageApprovalSubmission } from './mileageApprovalMessage';
-import { mileageFieldHelperFor, mileageRequestConfirm, mileageRequestField, mileageRequestItem, mileageRequestMessage, mileageRequestPage, timesheetItem } from './mileageRequestMessage';
+import {
+  mileageApprovalField,
+  mileageApprovalMessage,
+  mileageApprovalPage,
+  mileageApprovalSubmission
+} from './mileageApprovalMessage';
+import {
+  mileageFieldHelperFor,
+  mileageRequestConfirm,
+  mileageRequestField,
+  mileageRequestItem,
+  mileageRequestMessage,
+  mileageRequestPage,
+  mileageRequestSubmission,
+  timesheetItem
+} from './mileageRequestMessage';
 
 export const mileageMessage = {
   request: {
@@ -9,7 +23,8 @@ export const mileageMessage = {
     item: mileageRequestItem,
     confirm: mileageRequestConfirm,
     timesheet: timesheetItem,
-    fieldFor: mileageFieldHelperFor
+    fieldFor: mileageFieldHelperFor,
+    submission: mileageRequestSubmission
   },
   approval: {
     page: mileageApprovalPage,

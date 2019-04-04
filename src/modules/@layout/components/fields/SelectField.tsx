@@ -184,8 +184,8 @@ const MenuComponent = (props: any) => (
 );
 
 export interface ISelectFieldOption {
-  value: string;
-  label: string;
+  value: any;
+  label: any;
   object?: any;
 }
 

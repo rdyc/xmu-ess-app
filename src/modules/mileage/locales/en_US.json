@@ -8,6 +8,8 @@
   "mileage.approval.submission.dialog.title": "Mileage Approval Submission",
   "mileage.approval.submission.dialog.content": "You are about to submiting mileage approval. Do you want to continue?",
 
+  "mileage.request.submission.form": "Mileage Request Submission",
+  
   "mileage.request.page.list.title": "Mileage Request",
   "mileage.request.page.list.subHeader": " ",
   "mileage.request.page.detail.title": "Mileage Details",
