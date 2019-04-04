@@ -1,7 +1,8 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
-import { ICurrencyListFilter } from '@lookup/classes/filters';
-import { ICurrencyList } from '@lookup/classes/response';
-import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectRegistrationGetListRequest } from '@project/classes/queries/registration';
+import { IProjectList } from '@project/classes/response';
+import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import * as React from 'react';
 import {
   compose,
@@ -19,7 +20,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: ICurrencyListFilter;
+  filter?: IProjectRegistrationGetListFilter;
 }
 
 interface IOwnState {
@@ -36,8 +37,8 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
 }
 
-export type LookupCurrencyOptionProps
-  = WithLookupCurrency
+export type ProjectOptionProps
+  = WithProjectRegistration
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -48,11 +49,11 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
   options: [{ label: '', value: ''}]
 });
 
-const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<ProjectOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: ICurrencyList[]): Partial<IOwnState> => {
+  setOptions: (state: IOwnState) => (values: IProjectList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
@@ -68,22 +69,23 @@ const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnSta
   }
 };
 
-const handlerCreators: HandleCreators<LookupCurrencyOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: LookupCurrencyOptionProps) => () => {
-    const { isExpired, isLoading } = props.lookupCurrencyState.list;
-    const { loadListRequest } = props.lookupCurrencyDispatch;
+const handlerCreators: HandleCreators<ProjectOptionProps, IOwnHandler> = {
+  handleOnLoadApi: (props: ProjectOptionProps) => () => {
+    const { isExpired, isLoading } = props.projectRegisterState.list;
+
+    const request: IProjectRegistrationGetListRequest = {
+      filter: props.filter
+    };
 
     if (isExpired || !isLoading) {
-      loadListRequest({ 
-        filter: props.filter 
-      });
+      props.projectRegisterDispatch.loadListRequest(request);
     }
   }
 };
 
-const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> = {
+const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.lookupCurrencyState.list;
+    const { request, response } = this.props.projectRegisterState.list;
 
     // 1st load only when request are empty
     if (!request) {
@@ -105,9 +107,9 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
       }
     }
   },
-  componentDidUpdate(prevProps: LookupCurrencyOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupCurrencyState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupCurrencyState.list;
+  componentDidUpdate(prevProps: ProjectOptionProps) {
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.projectRegisterState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.projectRegisterState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -121,7 +123,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
   }
 };
 
-const component: React.SFC<LookupCurrencyOptionProps> = props => {
+const component: React.SFC<ProjectOptionProps> = props => {
   const children = props.children as React.ReactElement<SelectFieldProps>;
 
   if (children) {
@@ -141,9 +143,9 @@ const component: React.SFC<LookupCurrencyOptionProps> = props => {
   return <div></div>;
 };
 
-export const LookupCurrencyOption = compose<LookupCurrencyOptionProps, IOwnOption>(
-  setDisplayName('LookupCurrencyOptionProps'),
-  withLookupCurrency,
+export const ProjectOption = compose<ProjectOptionProps, IOwnOption>(
+  setDisplayName('ProjectOption'),
+  withProjectRegistration,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

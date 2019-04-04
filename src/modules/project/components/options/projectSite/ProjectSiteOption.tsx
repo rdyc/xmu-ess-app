@@ -1,7 +1,7 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
-import { ICurrencyListFilter } from '@lookup/classes/filters';
-import { ICurrencyList } from '@lookup/classes/response';
-import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
+import { IProjectSite } from '@project/classes/response';
+import { withProjectSite, WithProjectSite } from '@project/hoc/withProjectSite';
 import * as React from 'react';
 import {
   compose,
@@ -18,8 +18,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface IOwnOption {
-  filter?: ICurrencyListFilter;
+interface IOwnOption extends IProjectSiteGetRequest {
+  // filter?: ;
 }
 
 interface IOwnState {
@@ -36,8 +36,8 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
 }
 
-export type LookupCurrencyOptionProps
-  = WithLookupCurrency
+export type ProjectSiteOptionProps
+  = WithProjectSite
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -48,11 +48,11 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
   options: [{ label: '', value: ''}]
 });
 
-const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<ProjectSiteOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: ICurrencyList[]): Partial<IOwnState> => {
+  setOptions: (state: IOwnState) => (values: IProjectSite[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
@@ -68,31 +68,41 @@ const stateUpdaters: StateUpdaters<LookupCurrencyOptionProps, IOwnState, IOwnSta
   }
 };
 
-const handlerCreators: HandleCreators<LookupCurrencyOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: LookupCurrencyOptionProps) => () => {
-    const { isExpired, isLoading } = props.lookupCurrencyState.list;
-    const { loadListRequest } = props.lookupCurrencyDispatch;
+const handlerCreators: HandleCreators<ProjectSiteOptionProps, IOwnHandler> = {
+  handleOnLoadApi: (props: ProjectSiteOptionProps) => () => {
+    const { isExpired, isLoading } = props.projectSiteState;
+    const { loadRequest } = props.projectSiteDispatch;
 
     if (isExpired || !isLoading) {
-      loadListRequest({ 
-        filter: props.filter 
+      loadRequest({ 
+        companyUid: props.companyUid,
+        projectUid: props.projectUid,
       });
     }
   }
 };
 
-const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> = {
+const lifeCycle: ReactLifeCycleFunctions<ProjectSiteOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.lookupCurrencyState.list;
+    const { request, response } = this.props.projectSiteState;
 
     // 1st load only when request are empty
     if (!request) {
       this.props.handleOnLoadApi();
     } else {
       // 2nd load only when request filter are present
-      if (request.filter) {
+      // if (request.filter) {
         // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+        const shouldUpdate = !shallowEqual(
+          {
+            companyUid: request.companyUid,
+            projectUid: request.projectUid
+          },
+          {
+            companyUid: this.props.companyUid,
+            projectUid: this.props.projectUid
+          }
+        );
   
         // then should update the list?
         if (shouldUpdate) {
@@ -102,12 +112,12 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
             this.props.setOptions(response.data);
           }
         }
-      }
+      // }
     }
   },
-  componentDidUpdate(prevProps: LookupCurrencyOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupCurrencyState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupCurrencyState.list;
+  componentDidUpdate(prevProps: ProjectSiteOptionProps) {
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.projectSiteState;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.projectSiteState;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -121,7 +131,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCurrencyOptionProps, IOwnState> =
   }
 };
 
-const component: React.SFC<LookupCurrencyOptionProps> = props => {
+const component: React.SFC<ProjectSiteOptionProps> = props => {
   const children = props.children as React.ReactElement<SelectFieldProps>;
 
   if (children) {
@@ -141,9 +151,9 @@ const component: React.SFC<LookupCurrencyOptionProps> = props => {
   return <div></div>;
 };
 
-export const LookupCurrencyOption = compose<LookupCurrencyOptionProps, IOwnOption>(
-  setDisplayName('LookupCurrencyOptionProps'),
-  withLookupCurrency,
+export const ProjectSiteOption = compose<ProjectSiteOptionProps, IOwnOption>(
+  setDisplayName('ProjectSiteOptionProps'),
+  withProjectSite,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)
