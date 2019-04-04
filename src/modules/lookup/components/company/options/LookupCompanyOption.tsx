@@ -142,7 +142,7 @@ const component: React.SFC<LookupCompanyOptionProps> = props => {
 };
 
 export const LookupCompanyOption = compose<LookupCompanyOptionProps, IOwnOption>(
-  setDisplayName('LookupCompanyOptionProps'),
+  setDisplayName('LookupCompanyOption'),
   withLookupCompany,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
