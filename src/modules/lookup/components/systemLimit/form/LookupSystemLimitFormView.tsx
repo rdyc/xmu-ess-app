@@ -20,7 +20,7 @@ export const SystemLimitFormView: React.SFC<SystemLimitFormProps> = props => (
       description: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.systemLimit.page.newSubHeader : lookupMessage.systemLimit.page.modifySubHeader)
     }}
     state={props.systemLimitState.detail}
-    onLoadApi={props.handleOnLoadApi}
+    onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
       enableReinitialize

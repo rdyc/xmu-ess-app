@@ -1,6 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
@@ -53,26 +54,14 @@ interface IOwnState {
 
   filterLookupCompany?: ILookupCompanyGetListFilter;
   filterCommonSystem?: ISystemListFilter;
-
-  // dialogFullScreen: boolean;
-  // dialogOpen: boolean;
-  // dialogTitle?: string;
-  // dialogContent?: string;
-  // dialogCancelLabel?: string;
-  // dialogConfirmLabel?: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
-  // setValidationSchema: StateHandler<IOwnState>;
-  // setFilterLookupCompany: StateHandler<IOwnState>;
-  // setFilterCommonSystem: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
-  // handleOnCloseDialog: () => void;
-  // handleOnConfirm: () => void;
   handleOnSubmit: (values: ISystemLimitFormValue, actions: FormikActions<ISystemLimitFormValue>) => void;
 }
 
@@ -80,6 +69,7 @@ export type SystemLimitFormProps
   = WithLookupSystemLimit
   & WithCommonSystem
   & WithUser
+  & WithMasterPage
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -128,16 +118,7 @@ const createProps: mapper<SystemLimitFormProps, IOwnState> = (props: SystemLimit
 const stateUpdaters: StateUpdaters<SystemLimitFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
-  }),
-  // setValidationSchema: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-  //   validationSchema: values
-  // }),
-  // setFilterLookupCompany: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-  //   filterLookupCompany: values
-  // }),
-  // setFilterCommonSystem: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-  //   filterCommonSystem: values
-  // })
+  })
 };
 
 const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
@@ -155,12 +136,6 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
       }
     }
   },
-  // handleOnCloseDialog: (props: SystemLimitFormProps) => () => {
-  //   //
-  // },
-  // handleOnConfirm: (props: SystemLimitFormProps) => () => {
-  //   //
-  // },
   handleOnSubmit: (props: SystemLimitFormProps) => (values: ISystemLimitFormValue, actions: FormikActions<ISystemLimitFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
@@ -222,6 +197,12 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.systemLimit.message.createSuccess : lookupMessage.systemLimit.message.updateSuccess, { uid: response.uid })
+        });
+
+        // redirect to detail
         props.history.push(`/lookup/systemlimits/${response.uid}`, { companyuid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
@@ -237,51 +218,20 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
+
+        // console.log(error.errors);
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.systemLimit.message.createFailure : lookupMessage.systemLimit.message.updateFailure)
+        });
       });
   }
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<SystemLimitFormProps, IOwnState> = {
   componentDidMount() {
-    // // 1. define initial values
-    // const initialValues: ISystemLimitFormValue = {
-    //   companyUid: '',
-    //   categoryType: '',
-    //   days: 0
-    // };
-
-    // this.props.setInitialValues(initialValues);
-
-    // // 2. define validation schema
-    // const validationSchema = Yup.object().shape<Partial<ISystemLimitFormValue>>({
-    //   companyUid: Yup.string()
-    //     .required(this.props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('companyUid', 'fieldRequired'))),
-
-    //   categoryType: Yup.string()
-    //     .required(this.props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('categoryType', 'fieldRequired'))),
-
-    //   days: Yup.number()
-    //     .min(0)
-    //     .required(this.props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('days', 'fieldRequired')))
-    // });
-
-    // this.props.setValidationSchema(validationSchema);
-
-    // // 3. define company filter
-    // const filterCompany: ILookupCompanyGetListFilter = {
-    //   orderBy: 'name',
-    //   direction: 'ascending'
-    // };
-
-    // this.props.setFilterLookupCompany(filterCompany);
-
-    // // 4. define common project filter
-    // const filterCommonSystem: ISystemListFilter = {
-    //   orderBy: 'value',
-    //   direction: 'ascending'
-    // };
-
-    // this.props.setFilterCommonSystem(filterCommonSystem);
+    //
   },
   componentDidUpdate(prevProps: SystemLimitFormProps) {
     const { response: thisResponse } = this.props.systemLimitState.detail;
@@ -306,6 +256,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<SystemLimitFormProps, IOwnStat
 export const SystemLimitForm = compose<SystemLimitFormProps, IOwnOption>(
   setDisplayName('SystemLimitForm'),
   withUser,
+  withMasterPage,
   withRouter,
   withLookupSystemLimit,
   withCommonSystem,

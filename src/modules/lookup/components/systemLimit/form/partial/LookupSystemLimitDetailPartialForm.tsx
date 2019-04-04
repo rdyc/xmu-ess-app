@@ -1,6 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
+import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
@@ -46,8 +47,8 @@ const LookupSystemLimitDetailPartialForm: React.ComponentType<LookupSystemLimitD
           <LookupCompanyOption filter={props.filterLookupCompany}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -73,8 +74,8 @@ const LookupSystemLimitDetailPartialForm: React.ComponentType<LookupSystemLimitD
           <CommonSystemOption category="limiter" filter={props.filterCommonSystem}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -106,6 +107,13 @@ const LookupSystemLimitDetailPartialForm: React.ComponentType<LookupSystemLimitD
             placeholder={props.intl.formatMessage(lookupMessage.systemLimit.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.days && form.errors.days}
             error={form.touched.days && Boolean(form.errors.days)}
+            InputProps={{
+              inputComponent: NumberFormatter,
+            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              // set current field
+              props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+          }}
           />
         )}
       />
