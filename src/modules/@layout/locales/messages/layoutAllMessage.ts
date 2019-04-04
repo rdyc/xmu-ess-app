@@ -4,6 +4,7 @@ const prefix = 'layout';
 
 // text
 export const layoutText = defineMessages({
+  autoField: { id: `${prefix}.text.autoField`},
   loading: { id: `${prefix}.text.loading`},
   waiting: { id: `${prefix}.text.waiting`},
   processing: { id: `${prefix}.text.processing`},

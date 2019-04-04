@@ -90,6 +90,7 @@ const Control = (props: any) => (
   <TextField
     fullWidth
     margin="normal"
+    disabled={props.selectProps.isDisabled}
     required={props.selectProps.required}
     placeholder={props.selectProps.placeholder}
     label={props.selectProps.label}
@@ -133,7 +134,10 @@ const Placeholder = (props: any) => (
 );
 
 const SingleValue = (props: any) => (
-  <Typography variant="body1" paragraph={false}
+  <Typography 
+    variant="body1" 
+    paragraph={false} 
+    color={props.selectProps.isDisabled ? 'textSecondary' : 'textPrimary'}
     {...props.innerProps}
   >
     {props.children}

@@ -1,5 +1,6 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import * as React from 'react';
 import {
@@ -51,9 +52,20 @@ const stateUpdaters: StateUpdaters<LookupCustomerOptionProps, IOwnState, IOwnSta
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setOptions: (state: IOwnState) => (values: ICustomerList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.name 
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<LookupCustomerOptionProps, IOwnHandler> = {
@@ -86,15 +98,8 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCustomerOptionProps, IOwnState> =
         if (shouldUpdate) {
           this.props.handleOnLoadApi();
         } else {
-          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
           if (response && response.data) {
-            response.data.forEach(item => options.push({ 
-              value: item.uid, 
-              label: item.name 
-            }));
-            
-            this.props.setOptions(options);
+            this.props.setOptions(response.data);
           }
         }
       }
@@ -110,14 +115,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupCustomerOptionProps, IOwnState> =
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        thisResponse.data.forEach(item => options.push({ 
-          value: item.uid, 
-          label: item.name 
-        }));
-
-        this.props.setOptions(options);
+        this.props.setOptions(thisResponse.data);
       }
     }
   }
@@ -130,7 +128,7 @@ const component: React.SFC<LookupCustomerOptionProps> = props => {
     return (
       <React.Fragment>
         {
-          React.cloneElement(children, {
+          React.cloneElement(children, { 
             isLoading: props.isLoading,
             options: props.options,
             value: props.options.find(option => option.value === children.props.valueString)
@@ -144,7 +142,7 @@ const component: React.SFC<LookupCustomerOptionProps> = props => {
 };
 
 export const LookupCustomerOption = compose<LookupCustomerOptionProps, IOwnOption>(
-  setDisplayName('LookupCustomerOptionProps'),
+  setDisplayName('LookupCustomerOption'),
   withLookupCustomer,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

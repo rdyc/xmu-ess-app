@@ -76,7 +76,7 @@ const projectInformationSimple: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.registration.field.hours)}
+        label={props.intl.formatMessage(projectMessage.registration.field.maxHours)}
         value={props.intl.formatNumber(props.data.maxHours)}
       />
       

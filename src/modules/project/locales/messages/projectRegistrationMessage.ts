@@ -144,9 +144,9 @@ export const projectRegistrationField = defineMessages({
   
   valueIdr: { id: `${prefix}.field.valueIdr` },
   
-  hours: { id: `${prefix}.field.hours` },
-  hoursRequired: { id: `${prefix}.field.hours.required` },
-  hoursPlaceholder: { id: `${prefix}.field.hours.placeholder` },
+  maxHours: { id: `${prefix}.field.maxHours` },
+  maxHoursRequired: { id: `${prefix}.field.maxHours.required` },
+  maxHoursPlaceholder: { id: `${prefix}.field.maxHours.placeholder` },
 
   sales: { id: `${prefix}.field.sales` },
   salesRequired: { id: `${prefix}.field.sales.required` },
@@ -182,7 +182,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'rate': return projectRegistrationField.rate;
       case 'valueUsd': return projectRegistrationField.valueUsd;
       case 'valueIdr': return projectRegistrationField.valueIdr;
-      case 'hours': return projectRegistrationField.hours;
+      case 'maxHours': return projectRegistrationField.maxHours;
       case 'sales': return projectRegistrationField.sales;
       case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUid;
     
@@ -204,7 +204,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'currencyType': return projectRegistrationField.currencyTypeRequired;
       case 'rate': return projectRegistrationField.rateRequired;
       case 'valueUsd': return projectRegistrationField.valueUsdRequired;
-      case 'hours': return projectRegistrationField.hoursRequired;
+      case 'maxHours': return projectRegistrationField.maxHoursRequired;
       case 'sales': return projectRegistrationField.salesRequired;
       case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUidRequired;
 
@@ -228,7 +228,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'currencyType': return projectRegistrationField.currencyTypePlaceholder;
       case 'rate': return projectRegistrationField.ratePlaceholder;
       case 'valueUsd': return projectRegistrationField.valueUsdPlaceholder;
-      case 'hours': return projectRegistrationField.hoursPlaceholder;
+      case 'maxHours': return projectRegistrationField.maxHoursPlaceholder;
       case 'sales': return projectRegistrationField.salesPlaceholder;
       case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUidPlaceholder;
     

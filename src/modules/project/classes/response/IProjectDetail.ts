@@ -23,7 +23,7 @@ export interface IProjectDetail {
   currencyType: string;
   currency?: ICommonSystem;
   contractNumber?: string;
-  ownerEmployeeUid?: string;
+  ownerEmployeeUid: string;
   owner?: IAccountEmployee;
   name: string;
   description?: string;

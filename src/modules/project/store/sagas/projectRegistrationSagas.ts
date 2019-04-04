@@ -1,3 +1,4 @@
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   ProjectRegistrationAction as Action,
@@ -23,10 +24,8 @@ import {
   projectRegistrationPutRequest,
   projectRegistrationPutSuccess,
 } from '@project/store/actions';
-import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
-import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
@@ -122,11 +121,9 @@ function* watchPostRequest() {
         put(projectRegistrationPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          action.payload.reject(response.body.data);
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(projectRegistrationPostError(error.message)),
@@ -164,17 +161,9 @@ function* watchPutRequest() {
         put(projectRegistrationPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(projectRegistrationPutError(error.message)),
@@ -212,17 +201,9 @@ function* watchPatchRequest() {
         put(projectRegistrationPatchError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(projectRegistrationPatchError(error.message)),
