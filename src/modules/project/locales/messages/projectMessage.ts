@@ -23,6 +23,7 @@ import {
   projectRegistrationOption,
   projectRegistrationPage,
   projectRegistrationSection,
+  projectRegistrationSubmission,
 } from './projectRegistrationMessage';
 import {
   projectSiteField,
@@ -37,6 +38,7 @@ export const projectMessage = {
   registration: {
     page: projectRegistrationPage,
     option: projectRegistrationOption,
+    submission: projectRegistrationSubmission,
     confirm: projectRegistrationConfirm,
     section: projectRegistrationSection,
     field: projectRegistrationField,

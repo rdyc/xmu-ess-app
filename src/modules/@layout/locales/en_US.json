@@ -105,6 +105,7 @@
   "purchase_not_approved":"purchase is not approved",
   "purchase_settlement_not_required":"purchase settlement is not required",
 
+  "layout.text.autoField": "This field value will be automatically filled after submitted",
   "layout.text.loading": "Loading...",
   "layout.text.processing": "Processing...",
   "layout.text.waiting": "Please Wait...",
@@ -137,6 +138,8 @@
   "layout.form.submit.title": "Submission",
   "layout.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
+  "layout.action.add": "Add",
+  "layout.action.remove": "Remove",
   "layout.action.apply": "Apply",
   "layout.action.yes": "Yes",
   "layout.action.no": "No",

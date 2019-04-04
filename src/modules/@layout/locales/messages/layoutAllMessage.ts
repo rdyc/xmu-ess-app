@@ -4,6 +4,7 @@ const prefix = 'layout';
 
 // text
 export const layoutText = defineMessages({
+  autoField: { id: `${prefix}.text.autoField`},
   loading: { id: `${prefix}.text.loading`},
   waiting: { id: `${prefix}.text.waiting`},
   processing: { id: `${prefix}.text.processing`},
@@ -45,6 +46,8 @@ export const layoutTooltip = defineMessages({
 
 // action
 export const layoutAction = defineMessages({
+  add: { id: `${prefix}.action.add`},
+  remove: { id: `${prefix}.action.remove`},
   apply: { id: `${prefix}.action.apply`},
   yes: { id: `${prefix}.action.yes`},
   no: { id: `${prefix}.action.no`},
