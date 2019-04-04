@@ -93,8 +93,8 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(projectMessage.registration.confirm.newTitle),
-                    message: props.intl.formatMessage(projectMessage.registration.confirm.newDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.confirm.newTitle : projectMessage.registration.confirm.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.confirm.newDescription : projectMessage.registration.confirm.modifyDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
