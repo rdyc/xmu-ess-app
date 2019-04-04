@@ -39,7 +39,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnChangeRoute: (event: CustomEvent) => void;
+  handleOnChangeRoute: (event: CustomEvent<IRedirection>) => void;
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
   handleOnClickReload: (event: React.MouseEvent) => void;
 }
@@ -87,7 +87,7 @@ const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
     store.set(AppStorage.Update, false);
 
     window.location.reload(true);
-  } 
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<MasterPageProps, {}> = {

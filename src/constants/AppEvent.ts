@@ -10,6 +10,7 @@ enum AppEvent {
   onChangeCustomComponent = 'custom.change',
   onChangeDrawerLeft = 'drawer.left',
   onChangeDrawerRight = 'drawer.right',
+  onFlashMessage = 'flash.message'
 }
 
 export default AppEvent;
