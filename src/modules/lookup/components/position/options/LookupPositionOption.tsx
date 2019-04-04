@@ -1,5 +1,6 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
+import { IPositionList } from '@lookup/classes/response';
 import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
 import * as React from 'react';
 import {
@@ -51,9 +52,20 @@ const stateUpdaters: StateUpdaters<LookupPositionOptionProps, IOwnState, IOwnSta
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setOptions: (state: IOwnState) => (values: IPositionList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.name 
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<LookupPositionOptionProps, IOwnHandler> = {
@@ -86,15 +98,8 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
         if (shouldUpdate) {
           this.props.handleOnLoadApi();
         } else {
-          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
           if (response && response.data) {
-            response.data.forEach(item => options.push({ 
-              value: item.uid, 
-              label: item.name 
-            }));
-            
-            this.props.setOptions(options);
+            this.props.setOptions(response.data);
           }
         }
       }
@@ -110,14 +115,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        thisResponse.data.forEach(item => options.push({ 
-          value: item.uid, 
-          label: item.name 
-        }));
-
-        this.props.setOptions(options);
+        this.props.setOptions(thisResponse.data);
       }
     }
   }

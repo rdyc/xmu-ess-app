@@ -1,5 +1,6 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { IProjectSiteGetRequest } from '@project/classes/queries/site';
+import { IProjectSite } from '@project/classes/response';
 import { withProjectSite, WithProjectSite } from '@project/hoc/withProjectSite';
 import * as React from 'react';
 import {
@@ -51,9 +52,20 @@ const stateUpdaters: StateUpdaters<ProjectSiteOptionProps, IOwnState, IOwnStateU
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setOptions: (state: IOwnState) => (values: IProjectSite[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.name 
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<ProjectSiteOptionProps, IOwnHandler> = {
@@ -96,15 +108,8 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectSiteOptionProps, IOwnState> = {
         if (shouldUpdate) {
           this.props.handleOnLoadApi();
         } else {
-          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
           if (response && response.data) {
-            response.data.forEach(item => options.push({ 
-              value: item.uid, 
-              label: item.name 
-            }));
-            
-            this.props.setOptions(options);
+            this.props.setOptions(response.data);
           }
         }
       // }
@@ -120,14 +125,7 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectSiteOptionProps, IOwnState> = {
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        thisResponse.data.forEach(item => options.push({ 
-          value: item.uid, 
-          label: item.name 
-        }));
-
-        this.props.setOptions(options);
+        this.props.setOptions(thisResponse.data);
       }
     }
   }

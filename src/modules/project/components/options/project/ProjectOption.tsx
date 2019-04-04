@@ -1,6 +1,7 @@
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectRegistrationGetListRequest } from '@project/classes/queries/registration';
+import { IProjectList } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import * as React from 'react';
 import {
@@ -52,9 +53,20 @@ const stateUpdaters: StateUpdaters<ProjectOptionProps, IOwnState, IOwnStateUpdat
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    options: values
-  })
+  setOptions: (state: IOwnState) => (values: IProjectList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.name 
+    }));
+
+    return {
+      options
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<ProjectOptionProps, IOwnHandler> = {
@@ -88,15 +100,8 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
         if (shouldUpdate) {
           this.props.handleOnLoadApi();
         } else {
-          const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
           if (response && response.data) {
-            response.data.forEach(item => options.push({ 
-              value: item.uid, 
-              label: item.name 
-            }));
-            
-            this.props.setOptions(options);
+            this.props.setOptions(response.data);
           }
         }
       }
@@ -112,14 +117,7 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const options: ISelectFieldOption[] = [{ label: '', value: ''}];
-        
-        thisResponse.data.forEach(item => options.push({ 
-          value: item.uid, 
-          label: item.name 
-        }));
-
-        this.props.setOptions(options);
+        this.props.setOptions(thisResponse.data);
       }
     }
   }
