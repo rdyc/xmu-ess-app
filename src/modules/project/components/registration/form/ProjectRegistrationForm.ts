@@ -439,8 +439,6 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
     // handling promise
     promise
       .then((response: IProject) => {
-        console.log(response);
-        
         // set submitting status
         actions.setSubmitting(false);
 
