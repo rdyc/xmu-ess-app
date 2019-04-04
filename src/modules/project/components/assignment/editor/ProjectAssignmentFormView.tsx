@@ -53,20 +53,33 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAs
               />
               <CardContent>
                 <div>
-                  <Field 
-                    type="text"
-                    name={`${field}.employeeUid`}
-                    label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
-                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
-                    required={true}
-                    disabled={isItemComplete}
-                    filter={{
-                      companyUid: props.userState.user && props.userState.user.company.uid,
-                      useAccess: true,
-                      orderBy: 'fullName'
-                    }}
-                    component={SelectEmployee}
-                  />
+                  {
+                    item.isEmployeeActive &&
+                    <Field 
+                      type="text"
+                      name={`${field}.employeeUid`}
+                      label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
+                      placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
+                      required={true}
+                      disabled={isItemComplete}
+                      filter={{
+                        companyUid: props.userState.user && props.userState.user.company.uid,
+                        useAccess: true,
+                        orderBy: 'fullName'
+                      }}
+                      component={SelectEmployee}
+                    /> ||
+                    <Field 
+                      type="text"
+                      name={`${field}.employeeName`}
+                      label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
+                      placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
+                      value={item.employeeName}
+                      required={true}
+                      disabled={true}
+                      component={InputText}
+                    />
+                  }
                   <Field 
                     type="text"
                     name={`${field}.role`}
@@ -137,6 +150,8 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAs
               <Button onClick={() => props.fields.push({
                 uid: undefined,
                 employeeUid: '',
+                isEmployeeActive: true,
+                employeeName: '',
                 role: '',
                 jobDescription: '',
                 mandays: 0,

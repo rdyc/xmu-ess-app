@@ -4,6 +4,7 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types/FormMode';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
@@ -107,6 +108,7 @@ export type ProjectRegistrationFormProps
   & WithAllowedProjectType
   & WithCommonSystem
   & WithUser
+  & WithMasterPage
   & WithStyles<typeof styles>
   & RouteComponentProps
   & InjectedIntlProps
@@ -445,22 +447,12 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
         // clear form status
         actions.setStatus();
 
-        // todo: redirecting
-        /* 
-        if (formMode === FormMode.New) {
-          message = intl.formatMessage(projectMessage.registration.message.createSuccess, { uid: response.uid });
-        }
-
-        if (formMode === FormMode.Edit) {
-          message = intl.formatMessage(projectMessage.registration.message.updateSuccess, { uid: response.uid });
-        }
-
-        alertAdd({
-          message,
-          time: new Date()
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.message.createSuccess : projectMessage.registration.message.updateSuccess, { uid: response.uid })
         });
-        */
        
+        // redirect to detail
         props.history.push(`/project/requests/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
@@ -476,6 +468,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? projectMessage.registration.message.createFailure : projectMessage.registration.message.updateFailure)
+        });
       });
   }
 };
@@ -590,6 +587,7 @@ export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOw
   withAccountSalesRoles,
   withAllowedProjectType,
   withCommonSystem,
+  withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

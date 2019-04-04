@@ -232,6 +232,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           onSelected={props.handleFilterEndOnSelected}
           isOpen={props.isFilterEndOpen}
           onClose={props.handleFilterEndOnClose}
+          minDate={props.filterStart}
           disableFuture={true}
         />
       </Dialog>

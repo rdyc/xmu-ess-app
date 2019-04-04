@@ -246,6 +246,7 @@
   "account.employee.training.field.end": "Training End Date",
   "account.employee.training.field.end.placeholder": "Select a Training End Date",
   "account.employee.training.field.end.required": "Training End Date is required",
+  "account.employee.training.field.end.before": "End date is less than start date",
 
   "account.employee.training.field.organizer": "Training Organizer",
   "account.employee.training.field.organizer.placeholder": "Type any Training Organizer",

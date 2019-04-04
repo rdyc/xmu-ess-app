@@ -83,6 +83,8 @@ export const leaveRequestField = defineMessages({
   reasonRequired: { id: `${prefix}.field.reason.required` },
   reasonPlaceholder: { id: `${prefix}.field.reason.placeholder` },
 
+  requestedLeave: { id: `${prefix}.field.requestedLeave` },
+
   employeeUid: { id: `${prefix}.field.employeeUid` },
   employeeUidRequired: { id: `${prefix}.field.employeeUid.required` },
   employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder` },

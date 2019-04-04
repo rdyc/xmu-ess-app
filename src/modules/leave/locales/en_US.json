@@ -66,6 +66,7 @@
   "leave.request.field.reason": "Reason",
   "leave.request.field.reason.required": "Reason is required",
   "leave.request.field.reason.placeholder": "Type a reason name",
+  "leave.request.field.requestedLeave": "Requested Leave",
   "leave.request.field.isNotify": "Notified Only",
   "leave.request.field.isRejected": "Rejected Only",
   "leave.request.field.completion": "Completion",
