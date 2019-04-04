@@ -1,12 +1,14 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types/FormMode';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILeaveRequestPostPayload, ILeaveRequestPutPayload } from '@leave/classes/request';
 import { ILeave } from '@leave/classes/response';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -27,6 +29,7 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
+
 import { LeaveRequestFormView } from './LeaveRequestFormView';
 
 export interface ILeaveRequestFormValue {
@@ -46,16 +49,15 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  isRequestor: boolean;
 
   initialValues: ILeaveRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ILeaveRequestFormValue>>>;
 
+  filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setIsRequestor: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
 }
 
@@ -68,6 +70,7 @@ export type LeaveRequestFormProps
   = WithLeaveRequest
   & WithCommonSystem
   & WithUser
+  & WithMasterPage
   & WithStyles<typeof styles>
   & RouteComponentProps
   & InjectedIntlProps
@@ -79,7 +82,6 @@ export type LeaveRequestFormProps
 const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveRequestFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  isRequestor: true,
 
   // form values
   initialValues: {
@@ -115,6 +117,13 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
   }),
 
   // filter props
+  filterLookupLeave: {
+    companyUid: props.userState.user && props.userState.user.company.uid,
+    categoryType: 'LVC02',
+    orderBy: 'name',
+    direction: 'ascending'
+  },
+
   filterCommonSystem: {
     orderBy: 'value',
     direction: 'ascending'
@@ -122,9 +131,6 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
 });
 
 const stateUpdaters: StateUpdaters<LeaveRequestFormProps, IOwnState, IOwnStateUpdater> = {
-  setIsRequestor: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    isRequestor: !state.isRequestor
-  }),
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
@@ -183,31 +189,27 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
 
         // must have leaveUid
         if (leaveUid) {
+          // fill payload
+          const payload: ILeaveRequestPutPayload = {
+            leaveType: values.leaveType,
+            regularType: values.regularType === '' ? undefined : values.regularType,
+            start: values.start,
+            end: values.end,
+            address: values.address,
+            contactNumber: values.contactNumber,
+            reason: values.reason,
+          };
 
-          // requestor is updating the request
-          if (props.isRequestor) {
-            // fill payload
-            const payload: ILeaveRequestPutPayload = {
-              leaveType: values.leaveType,
-              regularType: values.regularType === '' ? undefined : values.regularType,
-              start: values.start,
-              end: values.end,
-              address: values.address,
-              contactNumber: values.contactNumber,
-              reason: values.reason,
-            };
-
-            promise = new Promise((resolve, reject) => {
-              props.leaveRequestDispatch.updateRequest({
-                leaveUid,
-                resolve,
-                reject,
-                companyUid: user.company.uid,
-                positionUid: user.position.uid,
-                data: payload as ILeaveRequestPutPayload,
-              });
+          promise = new Promise((resolve, reject) => {
+            props.leaveRequestDispatch.updateRequest({
+              leaveUid,
+              resolve,
+              reject,
+              companyUid: user.company.uid,
+              positionUid: user.position.uid,
+              data: payload as ILeaveRequestPutPayload,
             });
-          }
+          });
         }
       }
     }
@@ -223,22 +225,12 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
-        // todo: redirecting
-        /* 
-        if (formMode === FormMode.New) {
-          message = intl.formatMessage(leaveMessage.request.message.createSuccess, { uid: response.uid });
-        }
-
-        if (formMode === FormMode.Edit) {
-          message = intl.formatMessage(leaveMessage.request.message.updateSuccess, { uid: response.uid });
-        }
-
-        alertAdd({
-          message,
-          time: new Date()
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? leaveMessage.request.message.createSuccess : leaveMessage.request.message.updateSuccess, { uid: response.uid })
         });
-        */
 
+        // redirect to detail
         props.history.push(`/leave/requests/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
@@ -254,6 +246,11 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
             actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
           );
         }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? leaveMessage.request.message.createFailure : leaveMessage.request.message.updateFailure)
+        });
       });
   }
 };
@@ -280,13 +277,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveRequestFormProps, IOwnSta
 
         // set initial values
         this.props.setInitialValues(initialValues);
-
-        // update isRequestor status
-        if (this.props.userState.user && response.data.changes) {
-          if (this.props.userState.user.uid !== response.data.changes.createdBy) {
-            this.props.setIsRequestor();
-          }
-        }
       }
     }
   }
@@ -298,6 +288,7 @@ export const LeaveRequestForm = compose<LeaveRequestFormProps, IOwnOption>(
   withRouter,
   withLeaveRequest,
   withCommonSystem,
+  withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

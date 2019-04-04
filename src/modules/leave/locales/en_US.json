@@ -147,6 +147,11 @@
   "leave.cancellation.field.cancelDate.placeholder": "Input Date",
   "leave.cancellation.field.cancelDate.required": "Cancel date is required",
   "leave.dialog.CancellationTitle": "Cancellation Confirmation",
-  "leave.dialog.CancellationContent": " "
+  "leave.dialog.CancellationContent": " ",
+
+  "leave.request.submission.form": "Leave Submission",
+
+  "leave.request.confirm.new.title": "New Leave Request",
+  "leave.request.confirm.new.description": "You are about creating a new leave request. Do you want to continue?"
 }
 

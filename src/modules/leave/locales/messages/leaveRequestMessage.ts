@@ -30,6 +30,8 @@ export const leaveRequestPage = defineMessages({
 export const leaveRequestConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
 });
 
 // dialog
@@ -92,6 +94,11 @@ export const leaveRequestField = defineMessages({
   completion: { id: `${prefix}.field.completion` },
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },
+});
+
+// submission
+export const leaveRequestSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
 });
 
 // section

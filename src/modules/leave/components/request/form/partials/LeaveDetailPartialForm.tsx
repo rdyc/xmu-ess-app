@@ -1,10 +1,12 @@
 import { ISystemListFilter } from '@common/classes/filters';
+import { LeaveType } from '@common/classes/types';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
+import { LookupLeaveOption } from '@lookup/components/leave/options/LookupLeaveOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -19,10 +21,8 @@ type LeaveDetailPartialFormProps = {
   formMode: FormMode;
   formikBag: FormikProps<ILeaveRequestFormValue>;
   intl: InjectedIntl;
-  isRequestor: boolean;
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem?: ISystemListFilter;
-  allowedLeaveTypes?: string[];
 };
 
 const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> = props => (
@@ -54,14 +54,6 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
                 isClearable={props.formMode === FormMode.New && field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}
-                filterOption={option => {
-                  // filter options from allowed leave types
-                  if (props.allowedLeaveTypes) {
-                    return props.allowedLeaveTypes.findIndex(item => item === option.value) !== -1;
-                  }
-
-                  return true;
-                }}
                 textFieldProps={{
                   label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
                   required: true,
@@ -76,28 +68,30 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
         )}
       />
 
-      <Field
-        name="regularType"
-        render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
-          <LookupLeaveOption filter={props.filterLookupLeave}>
-            <SelectField
-              isSearchable
-              isDisabled={props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
-                required: true,
-                helperText: form.touched.leaveUid && form.errors.leaveUid,
-                error: form.touched.leaveUid && Boolean(form.errors.leaveUid)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
-            />
-          </LookupLeaveOption>
-        )}
-      />
+      {props.formikBag.values.leaveType === LeaveType.CutiKhusus &&
+        <Field
+          name="regularType"
+          render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
+            <LookupLeaveOption filter={props.filterLookupLeave}>
+              <SelectField
+                isSearchable
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
+                  required: false,
+                  helperText: form.touched.uid && form.errors.uid,
+                  error: form.touched.uid && Boolean(form.errors.uid)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+              />
+            </LookupLeaveOption>
+          )}
+        />
+      }
 
       <Field
         name="start"
