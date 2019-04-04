@@ -6,6 +6,8 @@
   "lookup.confirm.delete.title": "Delete Confirmation",
   "lookup.confirm.delete.description": "You are about to delete this {state}. Do you want to continue?",
 
+  "lookup.submission.form": "{state} Submission",
+  
   "lookup.mileageException.page.list.title": "Mileage Exception",
   "lookup.mileageException.page.list.subHeader": " ",
   "lookup.mileageException.page.detail.title": "Mileage Exception Detail",
