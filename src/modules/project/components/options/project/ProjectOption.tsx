@@ -110,6 +110,7 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
   componentDidUpdate(prevProps: ProjectOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = this.props.projectRegisterState.list;
     const { isLoading: prevIsLoading, response: prevResponse } = prevProps.projectRegisterState.list;
+    const { request, response } = this.props.projectRegisterState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -119,6 +120,22 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
       if (thisResponse && thisResponse.data) {
         this.props.setOptions(thisResponse.data);
       }
+    }
+
+    if (this.props.filter !== prevProps.filter) {
+      if (request && request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      } 
     }
   }
 };
