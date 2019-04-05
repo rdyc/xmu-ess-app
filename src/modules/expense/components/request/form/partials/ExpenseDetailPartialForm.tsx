@@ -171,11 +171,11 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               // set current field
-              props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
-
               if (e.target.value === '') {
                 props.formikBag.setFieldValue(field.name, parseFloat('0'));
-              } 
+              } else {
+                props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+              }
             }}
           />
         )}
