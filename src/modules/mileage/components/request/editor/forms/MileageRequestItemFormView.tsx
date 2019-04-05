@@ -81,7 +81,12 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
     <Card square>
       <CardHeader
         title={intl.formatMessage(mileageMessage.request.field.itemTitle)}
-        // subheader={}
+        subheader={
+          props.formikBag &&
+          props.formikBag.submitCount > 0 &&
+          typeof props.formikBag.errors.items === 'string' &&
+          props.formikBag.errors.items
+        }
         subheaderTypographyProps={{
           color: 'error',
           variant: 'body1'

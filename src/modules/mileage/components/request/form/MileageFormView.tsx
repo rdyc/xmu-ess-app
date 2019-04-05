@@ -24,7 +24,15 @@ export const MileageFormView: React.SFC<MileageFormProps> = props => (
                 intl={props.intl}
               />
             </div>
+          </div>
 
+          <div className={props.classes.flexColumn}>
+            <div className={props.classes.flexContent}>
+              <MileageRequestItemForm year={Number(formikBag.values.year)} month={Number(formikBag.values.month)} formikBag={formikBag} handleSetInitialValues={props.handleSetInitialValue}/>
+            </div>
+          </div>
+          
+          <div className={props.classes.flexColumn}>
             <div className={props.classes.flexContent}>
               <SubmissionForm 
                 title={props.intl.formatMessage(mileageMessage.request.submission.form)}
@@ -42,13 +50,6 @@ export const MileageFormView: React.SFC<MileageFormProps> = props => (
                   labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                 }} 
               />
-            </div>
-
-          </div>
-
-          <div className={props.classes.flexColumn}>
-            <div className={props.classes.flexContent}>
-              <MileageRequestItemForm year={Number(formikBag.values.year)} month={Number(formikBag.values.month)} formikBag={formikBag}/>
             </div>
           </div>
 

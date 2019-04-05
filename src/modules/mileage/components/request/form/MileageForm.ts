@@ -8,7 +8,6 @@ import { IMileageRequest } from '@mileage/classes/response';
 import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import styles from '@styles';
-import { ITimesheetMileages } from '@timesheet/classes/response';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -28,12 +27,14 @@ import {
 import * as Yup from 'yup';
 import { MileageFormView } from './MileageFormView';
 
+interface IItemValue {
+  itemUid: string;
+  value?: number;
+}
 export interface IMileageFormValue {
   year: string;
   month: string;
-  itemValues: number;
-  itemsIsExist: boolean;
-  items: ITimesheetMileages[];
+  items: IItemValue[];
 }
 
 interface IOwnRouteParams {
@@ -54,7 +55,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  // handleOnLoadDetail: () => void;
+  handleSetInitialValue: (values: any) => void;
   handleOnSubmit: (values: IMileageFormValue, actions: FormikActions<IMileageFormValue>) => void;
 }
 
@@ -75,18 +76,27 @@ const createProps: mapper<MileageFormProps, IOwnState> = (props: MileageFormProp
   initialValues: {
     year: '',
     month: '',
-    itemValues: 0,
-    itemsIsExist: false,
     items: []
   },
 
   // validation props
   validationSchema: Yup.object().shape<Partial<IMileageFormValue>>({
     year: Yup.string()
-      .required(props.intl.formatMessage(mileageMessage.request.fieldFor('year', 'fieldRequired'))),
+      .label(props.intl.formatMessage(mileageMessage.request.field.year))
+      .required(),
 
     month: Yup.string()
-      .required(props.intl.formatMessage(mileageMessage.request.fieldFor('month', 'fieldRequired'))),
+      .label(props.intl.formatMessage(mileageMessage.request.field.month))
+      .required(),
+
+    items: Yup.array()
+      .of(
+        Yup.object().shape({
+          itemUid: Yup.string()
+            .required(props.intl.formatMessage(mileageMessage.request.fieldFor('itemUid', 'fieldRequired')))
+        })
+      )    
+      .min(1, props.intl.formatMessage(mileageMessage.request.fieldFor('items', 'fieldRequired')))
   })
 });
 
@@ -97,6 +107,9 @@ const stateUpdaters: StateUpdaters<MileageFormProps, IOwnState, IOwnStateUpdater
 };
 
 const handlerCreators: HandleCreators<MileageFormProps, IOwnHandler> = {
+  handleSetInitialValue: (props: MileageFormProps) => (values: any) => {
+    props.setInitialValues(values);
+  },
   handleOnSubmit: (props: MileageFormProps) => (values: IMileageFormValue, actions: FormikActions<IMileageFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);

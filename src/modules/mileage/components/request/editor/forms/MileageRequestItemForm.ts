@@ -12,9 +12,10 @@ import { compose, lifecycle, mapper, ReactLifeCycleFunctions, shallowEqual, Stat
 import { IMileageFormValue } from '../../form/MileageForm';
 
 interface OwnProps {
-  year?: number | undefined;
-  month?: number | undefined;
-  formikBag?: FormikProps<IMileageFormValue>;
+  year: number;
+  month: number;
+  formikBag: FormikProps<IMileageFormValue>;
+  handleSetInitialValues: (values: any) => void;
 }
 
 interface OwnState {
@@ -84,32 +85,25 @@ const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
     }
   },
   componentDidUpdate(prevProps: ItemFormProps) {
-    const { formikBag } = this.props;
     const { response: thisResponse } = this.props.timesheetMileagesState;
     const { response: prevResponse } = prevProps.timesheetMileagesState;
 
-    if (formikBag) {
+    if (thisResponse && thisResponse.data && prevResponse) {
+      const shouldUpdate = !shallowEqual(thisResponse.data, prevResponse.data || {});
+      if (shouldUpdate) {
+        const initialValues: IMileageFormValue = {
+          year: (this.props.year).toString(),
+          month: (this.props.month).toString(),
+          items: []
+        };
+        
+        thisResponse.data.forEach(item => initialValues.items.push({
+          itemUid: item.uid,
+          value: item.value
+        }));
 
-      if (thisResponse && thisResponse.data && prevResponse) {
-        const shouldUpdate = !shallowEqual(thisResponse.data, prevResponse.data || {});
-        if (shouldUpdate) {
-          if (thisResponse.data.length >= 1) {
-            let value: number = 0;
-
-            formikBag.setFieldValue('items', thisResponse.data);
-            formikBag.setFieldValue('itemsIsExist', true);
-            thisResponse.data.forEach(item => 
-              value = value + item.value
-            );
-            formikBag.setFieldValue('itemValues', value);  
-          } else {
-            formikBag.setFieldValue('items', []);
-            formikBag.setFieldValue('itemsIsExist', false);
-            formikBag.setFieldValue('itemValues', 0);
-          }
-        }
-      } 
-      console.log(formikBag.values.items);
+        this.props.handleSetInitialValues(initialValues);
+      }
     }
   },
   componentWillUnmount() {

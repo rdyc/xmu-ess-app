@@ -53,7 +53,9 @@
   "mileage.request.item.subHeader": " ",
   "mileage.request.item.empty": "No Item",
 
-  "mileage.request.field.item.uid": "Mileage Item ID",
+  "mileage.request.field.item.required": "Must have minimum one mileage item",
+  "mileage.request.field.item.uid": "Mileage item ID",
+  "mileage.request.field.item.uid.required": "Mileage item is required",
   "mileage.request.field.item.date": "Report Date",
   "mileage.request.field.item.customer": "Customer",
   "mileage.request.field.item.project": "Project",

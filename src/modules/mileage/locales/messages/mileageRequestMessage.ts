@@ -46,12 +46,15 @@ export const mileageRequestField = defineMessages({
   subHeader: { id: `${prefix}.field.information.subHeader`},
 
   // item
+  itemRequired: {id: `${prefix}.field.item.required`},
   itemTitle: { id: `${prefix}.field.item.title`},
   itemSubHeader: { id: `${prefix}.field.item.subHeader`},
   noData: { id: `${prefix}.field.information.noData`},
   
   // field item
   itemUid: { id: `${prefix}.field.item.uid`},
+  itemUidRequired: { id: `${prefix}.field.item.uid.required`},
+  
   itemDate: { id: `${prefix}.field.item.date`},
   itemCustomer: { id: `${prefix}.field.item.customer`},
   itemProject: { id: `${prefix}.field.item.project`},
@@ -101,6 +104,8 @@ export const mileageFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
     switch (field) {
       case 'year': return mileageRequestField.yearRequired;
       case 'month': return mileageRequestField.monthRequired;
+      case 'items': return mileageRequestField.itemRequired;
+      case 'itemUid': return mileageRequestField.itemUidRequired;
 
       default: return {id: field};
     }
