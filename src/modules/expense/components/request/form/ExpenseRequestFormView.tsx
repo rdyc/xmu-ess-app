@@ -37,12 +37,12 @@ export const ExpenseRequestFormView: React.SFC<ExpenseRequestFormProps> = props 
                 <ExpenseDetailPartialForm 
                   formikBag={formikBag}
                   formMode={props.formMode}
-                  isRequestor={props.isRequestor}
                   intl={props.intl}
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCustomer={props.filterLookupCustomer}
                   filterProject={props.filterProject}
                   setProjectFilter={props.handleSetProjectFilter}
+                  minDate={props.minDate}
                 />
               </div>
             </div>

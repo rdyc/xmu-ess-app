@@ -26,12 +26,15 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { WorkflowStatusType } from '@common/classes/types';
+import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import { IExpenseRequestPostPayload, IExpenseRequestPutPayload } from '@expense/classes/request/request';
 import { IExpense } from '@expense/classes/response';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
+import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import * as moment from 'moment';
 import { ExpenseRequestFormView } from './ExpenseRequestFormView';
 
 export interface IExpenseRequestFormValue {
@@ -54,7 +57,7 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  isRequestor: boolean;
+  minDate: Date;
 
   initialValues: IExpenseRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IExpenseRequestFormValue>>>;
@@ -67,10 +70,12 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setProjectFilter: StateHandler<IOwnState>;
+  setMinDate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleSetProjectFilter: (customerUid: string) => void;
+  handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IExpenseRequestFormValue, actions: FormikActions<IExpenseRequestFormValue>) => void;
 }
@@ -78,6 +83,7 @@ interface IOwnHandler {
 export type ExpenseRequestFormProps
   = WithExpenseRequest
   & WithCommonSystem
+  & WithLookupSystemLimit
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -91,7 +97,7 @@ export type ExpenseRequestFormProps
 const createProps: mapper<ExpenseRequestFormProps, IOwnState> = (props: ExpenseRequestFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  isRequestor: true,
+  minDate: moment().toDate(),
 
   // form values
   initialValues: {
@@ -174,9 +180,25 @@ const stateUpdaters: StateUpdaters<ExpenseRequestFormProps, IOwnState, IOwnState
       direction: 'ascending'
     },
   }),
+  setMinDate: () => (minDate: Date): Partial<IOwnState> => ({
+    minDate
+  }),
 };
 
 const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
+  handleSetMinDate: (props: ExpenseRequestFormProps) => (days: number, fromDate?: Date | null) => {
+    let today = moment(); // create date today
+
+    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
+      today = moment(fromDate);
+    }
+
+    const minDate = today.subtract(days, 'days'); // substract date using momentjs, because using native date in js sucks
+
+    if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { // only update minDate state once
+      props.setMinDate(minDate.toDate());
+    }
+  },
   handleSetProjectFilter: (props: ExpenseRequestFormProps) => (customerUid: string) => {
     props.setProjectFilter(customerUid);
   },
@@ -236,37 +258,32 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
 
         // must have expenseUid
         if (expenseUid) {
-          
-          // requestor is updating the request
-          if (props.isRequestor) {
-            // fill payload
-            const payload: IExpenseRequestPutPayload = {
-              date: values.date,
-              expenseType: values.expenseType,
-              customerUid: values.customerUid,
-              projectUid: values.projectUid,
-              value: values.value,
-              location: values.location,
-              address: values.address,
-              client: {
-                name: values.name,
-                title: values.title,
-              },
-              notes: values.notes,
-            };
+          // fill payload
+          const payload: IExpenseRequestPutPayload = {
+            date: values.date,
+            expenseType: values.expenseType,
+            customerUid: values.customerUid,
+            projectUid: values.projectUid,
+            value: values.value,
+            location: values.location,
+            address: values.address,
+            client: {
+              name: values.name,
+              title: values.title,
+            },
+            notes: values.notes,
+          };
 
-            promise = new Promise((resolve, reject) => {
-              props.expenseRequestDispatch.updateRequest({
-                expenseUid, 
-                resolve, 
-                reject,
-                companyUid: user.company.uid,
-                positionUid: user.position.uid,
-                data: payload as IExpenseRequestPutPayload, 
-              });
+          promise = new Promise((resolve, reject) => {
+            props.expenseRequestDispatch.updateRequest({
+              expenseUid, 
+              resolve, 
+              reject,
+              companyUid: user.company.uid,
+              positionUid: user.position.uid,
+              data: payload as IExpenseRequestPutPayload, 
             });
-
-          } 
+          });
         }
       }
     }
@@ -312,13 +329,21 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnState> = {
-  // tslint:disable-next-line:no-empty
   componentDidMount() {
-    
+    const { loadAmountRequest } = this.props.systemLimitDispatch;
+    const { user } = this.props.userState;
+
+    if (user) {
+      loadAmountRequest({
+        companyUid: user.company.uid,
+        categoryType: SystemLimitType.Expense
+      });
+    }    
   },
   componentDidUpdate(prevProps: ExpenseRequestFormProps) {
     // handle project detail response
     const { response } = this.props.expenseRequestState.detail;
+    const { response: amountResponse } = this.props.systemLimitState.amount;
 
     if (response !== prevProps.expenseRequestState.detail.response) {
       if (response && response.data) {
@@ -329,7 +354,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnS
           expenseType: response.data.expenseType,
           customerUid: response.data.customerUid,
           projectUid: response.data.projectUid,
-          value: 0,
+          value: response.data.value,
           location: response.data.location,
           address: response.data.address,
           name: response.data.client && response.data.client.name || '',
@@ -339,6 +364,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnS
 
         // set initial values
         this.props.setInitialValues(initialValues);
+      }
+    }
+
+    if (amountResponse !== prevProps.systemLimitState.detail.response) {
+      if (amountResponse && amountResponse.data) {
+        if (this.props.formMode === FormMode.New) {
+          this.props.handleSetMinDate(amountResponse.data.days);
+        } else {
+          this.props.handleSetMinDate(amountResponse.data.days, response && response.data.changes && response.data.changes.createdAt);
+        }        
       }
     }
   }
@@ -351,6 +386,7 @@ export const ExpenseRequestForm = compose<ExpenseRequestFormProps, IOwnOption>(
   withRouter,
   withExpenseRequest,
   withCommonSystem,
+  withLookupSystemLimit,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

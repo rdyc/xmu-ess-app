@@ -8,7 +8,6 @@ import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
-import { projectMessage } from '@project/locales/messages/projectMessage';
 import { Field, FieldProps, FormikProps } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
@@ -24,17 +23,16 @@ type ExpenseDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IExpenseRequestFormValue>;
   intl: InjectedIntl;
-  isRequestor: boolean;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectRegistrationGetListFilter;
   setProjectFilter: (customerUid: string) => void;
-  allowedProjectTypes?: string[];
+  minDate: Date;
 };
 
 const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProps> = props => (
   <Card square>
-    <CardHeader title={props.intl.formatMessage(projectMessage.registration.section.infoTitle)} />
+    <CardHeader title={props.intl.formatMessage(expenseMessage.request.section.title)} />
     <CardContent>
       <Field
         name="uid"
@@ -44,7 +42,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
+            label={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldName'))}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
@@ -65,6 +63,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
+            minDate={props.minDate}
             helperText={form.touched.date && form.errors.date}
             error={form.touched.date && Boolean(form.errors.date)}
             onChange={(moment: Moment) => props.formikBag.setFieldValue('date', moment.toDate())}
@@ -80,8 +79,8 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             <CommonSystemOption category="expense" filter={props.filterCommonSystem}>
               <SelectField
                 isSearchable
-                isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
-                isClearable={props.formMode === FormMode.New && field.value !== ''}
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}
                 textFieldProps={{
@@ -161,6 +160,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             required
             margin="normal"
             autoComplete="off"
+            disabled={form.isSubmitting}
             label={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.value && form.errors.value}
