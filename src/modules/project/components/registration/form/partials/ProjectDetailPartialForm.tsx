@@ -24,6 +24,7 @@ type ProjectDetailPartialFormProps = {
   formikBag: FormikProps<IProjectRegistrationFormValue>;
   intl: InjectedIntl;
   isRequestor: boolean;
+  isAdmin: boolean;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   allowedProjectTypes?: string[];
@@ -66,8 +67,8 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
           <LookupCustomerOption filter={props.filterLookupCustomer}>
             <SelectField
               isSearchable
-              isDisabled={props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
+              isDisabled={!(props.isRequestor || props.isAdmin) || props.formikBag.isSubmitting}
+              isClearable={(props.isRequestor || props.isAdmin) && field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
@@ -125,7 +126,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             required={props.formikBag.values.projectType && props.formikBag.values.projectType !== ProjectType.PreSales || false}
             margin="normal"
             autoComplete="off"
-            disabled={form.isSubmitting}
+            disabled={!(props.isRequestor || props.isAdmin) || form.isSubmitting}
             label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.contractNumber && form.errors.contractNumber}
@@ -222,8 +223,8 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
           <CommonSystemOption category="currency" filter={props.filterCommonSystem}>
             <SelectField
               isSearchable
-              isDisabled={!props.isRequestor || props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
+              isDisabled={!(props.isRequestor || props.isAdmin) || props.formikBag.isSubmitting}
+              isClearable={(props.isRequestor || props.isAdmin) && field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
@@ -258,7 +259,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             {...field}
             fullWidth
             required
-            disabled={(props.formikBag.values.currencyType && props.formikBag.values.currencyType === 'SCR01') || !props.isRequestor || form.isSubmitting}
+            disabled={(props.formikBag.values.currencyType && props.formikBag.values.currencyType === 'SCR01') || !(props.isRequestor || props.isAdmin) || form.isSubmitting}
             margin="normal"
             autoComplete="off"
             label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
@@ -269,11 +270,21 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
               inputComponent: NumberFormatter,
             }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              // set current field
-              props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+              if (e.target.value === '') {
+                // set current field
+                props.formikBag.setFieldValue(field.name, 0);
 
-              // set valueIdr field
-              props.formikBag.setFieldValue('valueIdr', parseFloat(e.target.value) * (props.formikBag.values.valueUsd && props.formikBag.values.valueUsd || 0));
+                // set valueIdr field
+                props.formikBag.setFieldValue('valueIdr', 0);
+              } else {
+                const value = parseFloat(e.target.value);
+
+                // set current field
+                props.formikBag.setFieldValue(field.name, value);
+
+                // set valueIdr field
+                props.formikBag.setFieldValue('valueIdr', value * (props.formikBag.values.valueUsd && props.formikBag.values.valueUsd || 0));
+              }
             }}
           />
         )}
@@ -286,7 +297,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             {...field}
             fullWidth
             required
-            disabled={!props.isRequestor || form.isSubmitting}
+            disabled={!(props.isRequestor || props.isAdmin) || form.isSubmitting}
             margin="normal"
             autoComplete="off"
             label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
@@ -297,11 +308,21 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
               inputComponent: NumberFormatter,
             }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (e.target.value === '') {
                 // set current field
-                props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+                props.formikBag.setFieldValue(field.name, 0);
 
                 // set valueIdr field
-                props.formikBag.setFieldValue('valueIdr', parseFloat(e.target.value) * (props.formikBag.values.rate && props.formikBag.values.rate || 0));
+                props.formikBag.setFieldValue('valueIdr', 0);
+              } else {
+                const value = parseFloat(e.target.value);
+
+                // set current field
+                props.formikBag.setFieldValue(field.name, value);
+
+                // set valueIdr field
+                props.formikBag.setFieldValue('valueIdr', value * (props.formikBag.values.rate && props.formikBag.values.rate || 0));
+              }
             }}
           />
         )}

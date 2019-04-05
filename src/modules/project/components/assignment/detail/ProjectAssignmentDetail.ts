@@ -81,7 +81,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentDetailProps, IOwnState, IOwn
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(projectMessage.assignment.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(projectMessage.assignment.confirm.modifyContent),
+    dialogContent: props.intl.formatMessage(projectMessage.assignment.confirm.modifyMessage),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
