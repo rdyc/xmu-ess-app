@@ -141,32 +141,33 @@ const createProps: mapper<ExpenseRequestFormProps, IOwnState> = (props: ExpenseR
     value: Yup.number()
       .min(1)
       .label(props.intl.formatMessage(expenseMessage.request.field.value))
-      .required(),
+      .required()
+      .integer(),
 
     location: Yup.string()
-      .min(2).max(100)
+      .max(100)
       .label(props.intl.formatMessage(expenseMessage.request.field.location))
       .required(),
 
     address: Yup.string()
-      .min(2).max(200)
+      .max(200)
       .label(props.intl.formatMessage(expenseMessage.request.field.address))
       .required(),
 
     client: Yup.object().shape({
       name: Yup.string()
-        .min(2).max(50)
+        .max(50)
         .label(props.intl.formatMessage(expenseMessage.request.field.name))
         .required(),
 
       title: Yup.string()
-        .min(2).max(100)
+        .max(100)
         .label(props.intl.formatMessage(expenseMessage.request.field.title))
         .required(),
     }),    
 
     notes: Yup.string()
-      .min(2).max(200)
+      .max(200)
       .label(props.intl.formatMessage(expenseMessage.request.field.notes))
       .required(),
   }),

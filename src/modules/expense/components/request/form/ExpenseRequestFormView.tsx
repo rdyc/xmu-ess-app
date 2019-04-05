@@ -7,6 +7,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { ExpenseRequestFormProps, IExpenseRequestFormValue } from './ExpenseRequestForm';
 import ExpenseDetailPartialForm from './partials/ExpenseDetailPartialForm';
 
@@ -67,9 +68,9 @@ export const ExpenseRequestFormView: React.SFC<ExpenseRequestFormProps> = props 
                 />
               </div>
               
-              {/* <div className={props.classes.flexContent}>
+              <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
-              </div> */}
+              </div>
 
             </div>
           </div>
