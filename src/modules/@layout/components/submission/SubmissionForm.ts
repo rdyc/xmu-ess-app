@@ -1,8 +1,12 @@
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { layoutMessage } from '@layout/locales/messages';
 import { FormikProps } from 'formik';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -29,6 +33,7 @@ interface ISubmissionDialogProps {
 interface IOwnProps {
   title: string;
   subheader?: string;
+  warningMessage?: string;
   className: string;
   formikProps: FormikProps<any>;
   buttonLabelProps: ISubmissionButtonLabelProps;
@@ -53,7 +58,9 @@ export type SubmissionFormProps
   & IOwnProps
   & IOwnHandler
   & IOwnState
-  & IOwnStateUpdater; 
+  & IOwnStateUpdater
+  & WithMasterPage
+  & InjectedIntlProps; 
 
 const createProps: mapper<SubmissionFormProps, IOwnState> = (props: SubmissionFormProps): IOwnState => ({
   isOpenDialog: false
@@ -72,10 +79,19 @@ const handlerCreators: HandleCreators<SubmissionFormProps, IOwnHandler> = {
   handleOnConfirmed: (props: SubmissionFormProps) => () => {
     props.setOpen();
     props.formikProps.submitForm();
+
+    if (!props.formikProps.isValid) {
+      props.masterPage.flashMessage({
+        message: props.warningMessage || props.intl.formatMessage(layoutMessage.text.invalidFormFields)
+      });
+    }
   },
 };
 
 export const SubmissionForm = compose<SubmissionFormProps, IOwnProps>(
+  setDisplayName('SubmissionForm'),
+  withMasterPage,
+  injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators)
 )(SubmissionFormView);

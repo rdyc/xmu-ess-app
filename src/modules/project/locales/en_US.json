@@ -105,7 +105,7 @@
   "project.registration.field.maxHours.required": "Hours is required",
   "project.registration.field.maxHours.placeholder": "Maximum project hours",
   "project.registration.field.sales": "Names",
-  "project.registration.field.sales.required": "Must have minimum one sales name",
+  "project.registration.field.sales.required": "Must have at least one name",
   "project.registration.field.sales.placeholder": "Choose sales names",
   "project.registration.field.salesEmployeeUid": "Name",
   "project.registration.field.salesEmployeeUid.required": "Sales name is required",
@@ -183,6 +183,8 @@
   "project.site.message.delete.success": "Current site has been deleted",
   "project.site.message.delete.failure": "Unable to process your submission",
   
+  "project.assignment.submission.form": "Assignment Submission",
+
   "project.assignment.page.list.title": "Project Assignments",
   "project.assignment.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.page.detail.title": "Assignment Details",
@@ -208,10 +210,13 @@
   "project.assignment.option.addMember": "Add More",
   "project.assignment.option.acceptance": "Acceptance",
 
+  "project.assignment.confirm.new.title": "New Assignment Confirmation",
+  "project.assignment.confirm.new.message": "You are about to create a new project assignment. Do you want to continue?",
   "project.assignment.confirm.modify.title": "Modify Confirmation",
-  "project.assignment.confirm.modify.content": "You are about to modify current project assignment. Do you want to continue?",
+  "project.assignment.confirm.modify.message": "You are about to modify current project assignment. Do you want to continue?",
 
   "project.assignment.field.uid": "Assignment ID",
+  "project.assignment.field.project": "Available Project",
   "project.assignment.field.projectUid": "Project ID",
   "project.assignment.field.projectUid.required": "Project id is required",
   "project.assignment.field.projectUid.placeholder": "Select a project",
@@ -225,6 +230,7 @@
   "project.assignment.field.item.role.required": "Role is required",
   "project.assignment.field.item.role.placeholder": "Type a role",
   "project.assignment.field.item.jobDesc": "Job Description",
+  "project.assignment.field.item.jobDesc.required": "Job description is required",
   "project.assignment.field.item.jobDesc.placeholder": "Type a job description",
   "project.assignment.field.item.mandays": "Mandays",
   "project.assignment.field.item.mandays.required": "Mandays is required",
@@ -236,6 +242,7 @@
   "project.assignment.field.item.statusType": "Status",
   "project.assignment.field.item.rejectedReason": "Rejected Reason",
   "project.assignment.field.item.activeOnly": "Active Only",
+  "project.assignment.field.items.minimum": "Must have at least one assignment",
 
   "project.assignment.message.invalidProps": "Some props are not valid",
   "project.assignment.message.create.success": "A new assignment has been created",

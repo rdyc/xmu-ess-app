@@ -29,7 +29,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label="Status"
-            value={props.formikProps.status.message}
+            value={props.intl.formatMessage(props.formikProps.status.message)}
           />
         </CardContent>
       }
