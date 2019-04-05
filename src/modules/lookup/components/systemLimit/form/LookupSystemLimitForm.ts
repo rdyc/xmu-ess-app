@@ -93,14 +93,18 @@ const createProps: mapper<SystemLimitFormProps, IOwnState> = (props: SystemLimit
   // validation props
   validationSchema: Yup.object().shape<Partial<ISystemLimitFormValue>>({
     companyUid: Yup.string()
-      .required(props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('companyUid', 'fieldRequired'))),
+      .label(props.intl.formatMessage(lookupMessage.systemLimit.field.company))
+      .required(),
 
     categoryType: Yup.string()
-      .required(props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('categoryType', 'fieldRequired'))),
+      .label(props.intl.formatMessage(lookupMessage.systemLimit.field.category))
+      .required(),
 
     days: Yup.number()
+      .label(props.intl.formatMessage(lookupMessage.systemLimit.field.days))
+      .integer()
       .min(1)
-      .required(props.intl.formatMessage(lookupMessage.systemLimit.fieldFor('days', 'fieldRequired'))),
+      .required(),
   }),
 
   // filter props

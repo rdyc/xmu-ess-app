@@ -111,8 +111,11 @@ const LookupSystemLimitDetailPartialForm: React.ComponentType<LookupSystemLimitD
               inputComponent: NumberFormatter,
             }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              // set current field
-              props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+              if (e.target.value === '') {
+                props.formikBag.setFieldValue(field.name, 0);
+              } else {
+                props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+              }
           }}
           />
         )}
