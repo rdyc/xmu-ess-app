@@ -241,8 +241,8 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             margin="normal"
             autoComplete="off"
             disabled={form.isSubmitting}
-            label={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldName'))}
-            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldPlaceholder'))}
+            label={props.intl.formatMessage(expenseMessage.request.fieldFor('title', 'fieldName'))}
+            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor('title', 'fieldPlaceholder'))}
             helperText={(form.touched.client && form.touched.client.title) && (form.errors.client && form.errors.client.title)}
             error={(form.touched.client && form.touched.client.title) && Boolean(form.errors.client && form.errors.client.title)}
           />
