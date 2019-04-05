@@ -40,6 +40,7 @@ export const ProjectRegistrationFormView: React.SFC<ProjectRegistrationFormProps
                   formikBag={formikBag}
                   formMode={props.formMode}
                   isRequestor={props.isRequestor}
+                  isAdmin={props.isAdmin}
                   intl={props.intl}
                   allowedProjectTypes={props.allowedProjectTypes}
                   filterCommonSystem={props.filterCommonSystem}

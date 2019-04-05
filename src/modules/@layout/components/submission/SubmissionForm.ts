@@ -78,13 +78,18 @@ const handlerCreators: HandleCreators<SubmissionFormProps, IOwnHandler> = {
   },
   handleOnConfirmed: (props: SubmissionFormProps) => () => {
     props.setOpen();
-    props.formikProps.submitForm();
 
-    if (!props.formikProps.isValid) {
-      props.masterPage.flashMessage({
-        message: props.warningMessage || props.intl.formatMessage(layoutMessage.text.invalidFormFields)
+    // validate the form
+    props.formikProps.validateForm()
+      .then(value => {
+        if (Object.keys(value).length === 0) {
+          props.formikProps.submitForm();
+        } else {
+          props.masterPage.flashMessage({
+            message: props.warningMessage || props.intl.formatMessage(layoutMessage.text.invalidFormFields)
+          });
+        }
       });
-    }
   },
 };
 

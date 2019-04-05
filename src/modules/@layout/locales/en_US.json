@@ -1,7 +1,7 @@
 {
-  "insufficient_scope": "Insufficient scope",
-  "restricted_company_access": "Restricted company access",
-  "restricted_organization_workflow": "Restricted organization workflow",
+  "insufficient_scope": "Insufficient Scope",
+  "restricted_company_access": "Restricted Company Access",
+  "restricted_organization_workflow": "Restricted Workflow",
 
   "text_can_not_empty": "text cannot be empty",
   "text_char_must_be_5": "text must be in 5 characters",
