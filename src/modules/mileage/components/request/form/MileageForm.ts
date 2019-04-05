@@ -8,6 +8,7 @@ import { IMileageRequest } from '@mileage/classes/response';
 import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import styles from '@styles';
+import { ITimesheetMileages } from '@timesheet/classes/response';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -28,8 +29,11 @@ import * as Yup from 'yup';
 import { MileageFormView } from './MileageFormView';
 
 export interface IMileageFormValue {
-  year: number;
-  month: number;
+  year: string;
+  month: string;
+  itemValues: number;
+  itemsIsExist: boolean;
+  items: ITimesheetMileages[];
 }
 
 interface IOwnRouteParams {
@@ -69,16 +73,19 @@ export type MileageFormProps
 const createProps: mapper<MileageFormProps, IOwnState> = (props: MileageFormProps): IOwnState => ({
   // form values
   initialValues: {
-    year: 0,
-    month: 0
+    year: '',
+    month: '',
+    itemValues: 0,
+    itemsIsExist: false,
+    items: []
   },
 
   // validation props
   validationSchema: Yup.object().shape<Partial<IMileageFormValue>>({
-    year: Yup.number()
+    year: Yup.string()
       .required(props.intl.formatMessage(mileageMessage.request.fieldFor('year', 'fieldRequired'))),
 
-    month: Yup.number()
+    month: Yup.string()
       .required(props.intl.formatMessage(mileageMessage.request.fieldFor('month', 'fieldRequired'))),
   })
 });
@@ -97,8 +104,8 @@ const handlerCreators: HandleCreators<MileageFormProps, IOwnHandler> = {
     if (user) {
       // fill payload
       const payload: IMileageRequestPostPayload = {
-        year: values.year,
-        month: values.month
+        year: Number(values.year),
+        month: Number(values.month)
       };
 
       // set the promise
@@ -145,8 +152,6 @@ const handlerCreators: HandleCreators<MileageFormProps, IOwnHandler> = {
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
-
-        // console.log(error.errors);
 
         // show flash message
         props.masterPage.flashMessage({

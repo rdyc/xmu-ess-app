@@ -76,8 +76,8 @@
   
   "lookup.systemLimit.field.uid": "System Limit ID",
   "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
-  "lookup.systemLimit.field.company": "Company Name",
-  "lookup.systemLimit.field.company.placeholder": "Company Name",
+  "lookup.systemLimit.field.company": "Company",
+  "lookup.systemLimit.field.company.placeholder": "Company",
   "lookup.systemLimit.field.company.required": "Company is required",
   
   "lookup.systemLimit.field.category": "Category",

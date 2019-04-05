@@ -38,8 +38,8 @@ const stateUpdaters: StateUpdaters<InputYearOptionProps, IOwnState, IOwnStateUpd
     ];
         
     values.forEach(item => options.push({ 
-      value: item, 
-      label: item 
+      value: item.toString(), 
+      label: item.toString() 
     }));
 
     return {

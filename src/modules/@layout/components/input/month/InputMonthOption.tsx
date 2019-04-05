@@ -38,7 +38,7 @@ const stateUpdaters: StateUpdaters<InputMonthOptionProps, IOwnState, IOwnStateUp
     ];
         
     values.forEach((item, index) => options.push({ 
-      value: index + 1, 
+      value: (index + 1).toString(), 
       label: item 
     }));
 

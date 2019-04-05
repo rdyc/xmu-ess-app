@@ -9,68 +9,56 @@ import { IMileageFormValue, MileageFormProps } from './MileageForm';
 import MileageDetailPartialForm from './partial/MileageDetailPartialForm';
 
 export const MileageFormView: React.SFC<MileageFormProps> = props => (
-  // <FormPage
-  //   info={{
-  //     uid: AppMenu.MileageRequest,
-  //     parentUid: AppMenu.Mileage,
-  //     parentUrl: '/mileage/requests',
-  //     title: props.intl.formatMessage(mileageMessage.request.page.newTitle),
-  //     description: props.intl.formatMessage(mileageMessage.request.page.newSubHeader)
-  //   }}
-  //   state={props.mileageRequestState.detail}
-  //   onLoadApi={props.handleOnLoadDetail}
-  // >
-    <Formik
-      enableReinitialize
-      initialValues={props.initialValues}
-      validationSchema={props.validationSchema}
-      onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<IMileageFormValue>) => (
-        <Form>
-          <div className={props.classes.flexRow}>
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <MileageDetailPartialForm 
-                  formikBag={formikBag}
-                  intl={props.intl}
-                />
-              </div>
+  <Formik
+    enableReinitialize
+    initialValues={props.initialValues}
+    validationSchema={props.validationSchema}
+    onSubmit={props.handleOnSubmit}
+    render={(formikBag: FormikProps<IMileageFormValue>) => (
+      <Form>
+        <div className={props.classes.flexRow}>
+          <div className={props.classes.flexColumn}>
+            <div className={props.classes.flexContent}>
+              <MileageDetailPartialForm 
+                formikBag={formikBag}
+                intl={props.intl}
+              />
             </div>
 
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <SubmissionForm 
-                  title={props.intl.formatMessage(mileageMessage.request.submission.form)}
-                  className={props.classes.flexContent}
-                  formikProps={formikBag}
-                  buttonLabelProps={{
-                    reset: props.intl.formatMessage(layoutMessage.action.reset),
-                    submit: props.intl.formatMessage(layoutMessage.action.submit),
-                    processing: props.intl.formatMessage(layoutMessage.text.processing)
-                  }}
-                  confirmationDialogProps={{
-                    title: props.intl.formatMessage(mileageMessage.request.confirm.createTitle),
-                    message: props.intl.formatMessage(mileageMessage.request.confirm.createDescription),
-                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
-                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                  }} 
-                />
-              </div>
-            </div>
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <MileageRequestItemForm year={Number(formikBag.values.year)} month={Number(formikBag.values.month)} />
-              </div>
+            <div className={props.classes.flexContent}>
+              <SubmissionForm 
+                title={props.intl.formatMessage(mileageMessage.request.submission.form)}
+                className={props.classes.flexContent}
+                formikProps={formikBag}
+                buttonLabelProps={{
+                  reset: props.intl.formatMessage(layoutMessage.action.reset),
+                  submit: props.intl.formatMessage(layoutMessage.action.submit),
+                  processing: props.intl.formatMessage(layoutMessage.text.processing)
+                }}
+                confirmationDialogProps={{
+                  title: props.intl.formatMessage(mileageMessage.request.confirm.createTitle),
+                  message: props.intl.formatMessage(mileageMessage.request.confirm.createDescription),
+                  labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                  labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+                }} 
+              />
             </div>
 
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <FormikJsonValues formikBag={formikBag} />
-              </div>
+          </div>
+
+          <div className={props.classes.flexColumn}>
+            <div className={props.classes.flexContent}>
+              <MileageRequestItemForm year={Number(formikBag.values.year)} month={Number(formikBag.values.month)} formikBag={formikBag}/>
             </div>
           </div>
-        </Form>
-      )}
-    />
-  // </FormPage>
+
+          <div className={props.classes.flexColumn}>
+            <div className={props.classes.flexContent}>
+              <FormikJsonValues formikBag={formikBag} />
+            </div>
+          </div>
+        </div>
+      </Form>
+    )}
+  />
 );
