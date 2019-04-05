@@ -37,8 +37,8 @@ import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
-// import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
-import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
+import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
+// import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
 
 const role = (props: RouteComponentProps) => (
@@ -96,7 +96,7 @@ const calculation = (props: RouteComponentProps) => (
 
 const systemLimit = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor} />
+    <Route path={`${props.match.path}/form`} component={SystemLimitForm} />
     <Route path={`${props.match.path}/:systemLimitUid`} component={LookupSystemLimitDetail} />
     <Route path={`${props.match.path}`} component={LookupSystemLimitList} />
   </Switch>

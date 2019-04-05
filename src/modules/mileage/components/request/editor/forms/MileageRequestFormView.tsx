@@ -2,14 +2,14 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import { MileageRequestDetailForm } from '@mileage/components/request/editor/forms/MileageRequestDetailForm';
 import { MileageRequestFormProps } from '@mileage/components/request/editor/forms/MileageRequestForm';
-import { MileageRequestItemForm } from '@mileage/components/request/editor/forms/MileageRequestItemForm';
+// import { MileageRequestItemForm } from '@mileage/components/request/editor/forms/MileageRequestItemForm';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 
 export const MileageRequestFormView: React.SFC<
   MileageRequestFormProps
 > = props => {
-  const { formMode, formMonth, formYear } = props;
+  const { formMode } = props;
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
@@ -18,9 +18,9 @@ export const MileageRequestFormView: React.SFC<
     </div>
   );
 
-  const componentItem = () => (
-    <MileageRequestItemForm year={Number(formYear)} month={Number(formMonth)} />
-  );
+  // const componentItem = () => (
+  //   <MileageRequestItemForm year={Number(formYear)} month={Number(formMonth)} />
+  // );
 
   const render = (
     <form onSubmit={props.handleSubmit}>
@@ -36,9 +36,9 @@ export const MileageRequestFormView: React.SFC<
             <Fields names={fields} component={componentInformation} />
           </FormSection>
         </Grid>
-        <Grid item xs={12} md={8}>
+        {/* <Grid item xs={12} md={8}>
           <Fields names={fields} component={componentItem} />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} md={4}>
           <Submission
             valid={props.valid}

@@ -152,7 +152,7 @@ const component: React.SFC<ProjectSiteOptionProps> = props => {
 };
 
 export const ProjectSiteOption = compose<ProjectSiteOptionProps, IOwnOption>(
-  setDisplayName('ProjectSiteOptionProps'),
+  setDisplayName('ProjectSiteOption'),
   withProjectSite,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

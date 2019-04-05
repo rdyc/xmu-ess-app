@@ -128,7 +128,6 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'inactiveDate':
         fieldProps = {
-          disablePast: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           isClearable: true,
