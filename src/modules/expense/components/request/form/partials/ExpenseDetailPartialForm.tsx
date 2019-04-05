@@ -214,7 +214,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
       />
 
       <Field
-        name="name"
+        name="client.name"
         render={({ field, form }: FieldProps<IExpenseRequestFormValue>) => (
           <TextField
             {...field}
@@ -223,16 +223,16 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             margin="normal"
             autoComplete="off"
             disabled={form.isSubmitting}
-            label={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.name && form.errors.name}
-            error={form.touched.name && Boolean(form.errors.name)}
+            label={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldName'))}
+            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldPlaceholder'))}
+            helperText={(form.touched.client && form.touched.client.name) && (form.errors.client && form.errors.client.name)}
+            error={(form.touched.client && form.touched.client.name) && Boolean(form.errors.client && form.errors.client.name)}
           />
         )}
       />
 
       <Field
-        name="title"
+        name="client.title"
         render={({ field, form }: FieldProps<IExpenseRequestFormValue>) => (
           <TextField
             {...field}
@@ -241,10 +241,10 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             margin="normal"
             autoComplete="off"
             disabled={form.isSubmitting}
-            label={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.title && form.errors.title}
-            error={form.touched.title && Boolean(form.errors.title)}
+            label={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldName'))}
+            placeholder={props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldPlaceholder'))}
+            helperText={(form.touched.client && form.touched.client.title) && (form.errors.client && form.errors.client.title)}
+            error={(form.touched.client && form.touched.client.title) && Boolean(form.errors.client && form.errors.client.title)}
           />
         )}
       />

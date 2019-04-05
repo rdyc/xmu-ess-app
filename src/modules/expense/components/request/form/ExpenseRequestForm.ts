@@ -37,6 +37,11 @@ import { IProjectRegistrationGetListFilter } from '@project/classes/filters/regi
 import * as moment from 'moment';
 import { ExpenseRequestFormView } from './ExpenseRequestFormView';
 
+interface IExpenseClientFormValue {
+  name: string;
+  title: string;
+}
+
 export interface IExpenseRequestFormValue {
   uid: string;
   date: string;
@@ -46,8 +51,7 @@ export interface IExpenseRequestFormValue {
   value: number;
   location: string;
   address: string;
-  name: string;
-  title: string;
+  client: IExpenseClientFormValue;
   notes: string;
 }
 
@@ -109,48 +113,62 @@ const createProps: mapper<ExpenseRequestFormProps, IOwnState> = (props: ExpenseR
     value: 0,
     location: '',
     address: '',
-    name: '',
-    title: '',
+    client: {
+      name: '',
+      title: '',
+    },
     notes: '',
   },
 
   // validation props
   validationSchema: Yup.object().shape<Partial<IExpenseRequestFormValue>>({
     date: Yup.string()
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('date', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.date))
+      .required(),
 
     expenseType: Yup.string()
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('expenseType', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.expenseType))
+      .required(),
 
     customerUid: Yup.string()
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('customerUid', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.customerUid))
+      .required(),
 
     projectUid: Yup.string()
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('projectUid', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.projectUid))
+      .required(),
 
     value: Yup.number()
       .min(1)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('value', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.value))
+      .required(),
 
     location: Yup.string()
       .min(2).max(100)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('location', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.location))
+      .required(),
 
     address: Yup.string()
       .min(2).max(200)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('address', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.address))
+      .required(),
 
-    name: Yup.string()
-      .min(2).max(50)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('name', 'fieldRequired'))),
+    client: Yup.object().shape({
+      name: Yup.string()
+        .min(2).max(50)
+        .label(props.intl.formatMessage(expenseMessage.request.field.name))
+        .required(),
 
-    title: Yup.string()
-      .min(2).max(100)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('title', 'fieldRequired'))),
+      title: Yup.string()
+        .min(2).max(100)
+        .label(props.intl.formatMessage(expenseMessage.request.field.title))
+        .required(),
+    }),    
 
     notes: Yup.string()
       .min(2).max(200)
-      .required(props.intl.formatMessage(expenseMessage.request.fieldFor('notes', 'fieldRequired'))),
+      .label(props.intl.formatMessage(expenseMessage.request.field.notes))
+      .required(),
   }),
 
   // filter props
@@ -234,8 +252,8 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
           location: values.location,
           address: values.address,
           client: {
-            name: values.name,
-            title: values.title,
+            name: values.client.name,
+            title: values.client.title,
           },
           notes: values.notes,
         };
@@ -268,8 +286,8 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
             location: values.location,
             address: values.address,
             client: {
-              name: values.name,
-              title: values.title,
+              name: values.client.name,
+              title: values.client.title,
             },
             notes: values.notes,
           };
@@ -357,8 +375,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnS
           value: response.data.value,
           location: response.data.location,
           address: response.data.address,
-          name: response.data.client && response.data.client.name || '',
-          title: response.data.client && response.data.client.title || '',
+          client: {
+            name: response.data.client && response.data.client.name || '',
+            title: response.data.client && response.data.client.title || '',
+          },
           notes: response.data.notes || '',
         };
 
