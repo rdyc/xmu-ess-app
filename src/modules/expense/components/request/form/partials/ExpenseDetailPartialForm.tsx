@@ -63,6 +63,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
+            disableFuture
             minDate={props.minDate}
             helperText={form.touched.date && form.errors.date}
             error={form.touched.date && Boolean(form.errors.date)}

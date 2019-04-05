@@ -1,6 +1,5 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages/layoutMessage';
@@ -68,9 +67,9 @@ export const ExpenseRequestFormView: React.SFC<ExpenseRequestFormProps> = props 
                 />
               </div>
               
-              <div className={props.classes.flexContent}>
+              {/* <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
-              </div>
+              </div> */}
 
             </div>
           </div>
