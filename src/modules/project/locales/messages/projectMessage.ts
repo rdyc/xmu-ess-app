@@ -13,6 +13,7 @@ import {
   projectAssignmentOption,
   projectAssignmentPage,
   projectAssignmentSection,
+  projectAssignmentSubmission,
 } from './projectAssignmentMessage';
 import {
   projectAdministrationPage,
@@ -64,6 +65,7 @@ export const projectMessage = {
     page: projectAssignmentPage,
     section: projectAssignmentSection,
     option: projectAssignmentOption,
+    submission: projectAssignmentSubmission,
     field: projectAssignmentField,
     fieldFor: projectAssignmentFieldHelperFor,
     confirm: projectAssignmentConfirm,
