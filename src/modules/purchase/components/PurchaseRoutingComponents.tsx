@@ -3,7 +3,6 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { PurchaseApprovalDetail } from '@purchase/components/purchaseApproval/detail/PurchaseApprovalDetail';
 import { PurchaseApprovalList } from '@purchase/components/purchaseApproval/list/PurchaseApprovalList';
 import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
-import { PurchaseRequestEditor } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import { PurchaseRequestList } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { PurchaseSettlementDetail } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
 import { PurchaseSettlementEditor } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditor';
@@ -12,10 +11,11 @@ import { SettlementApprovalDetail } from '@purchase/components/settlementApprova
 import { SettlementApprovalList } from '@purchase/components/settlementApproval/list/SettlementApprovalList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { PurchaseRequestForm } from './purchaseRequest/form/PurchaseRequestForm';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={PurchaseRequestEditor} />
+    <Route path={`${props.match.path}/form`} component={PurchaseRequestForm} />
     <Route path={`${props.match.path}/:purchaseUid`} component={PurchaseRequestDetail} />
     <Route path={`${props.match.path}`} component={PurchaseRequestList} />
   </Switch>
