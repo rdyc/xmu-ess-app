@@ -49,6 +49,8 @@ export const timesheetEntryField = defineMessages({
   uid: { id: `${prefix}.field.uid` },
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
 
+  employee: { id: `${prefix}.field.employee`},
+  
   activityType: { id: `${prefix}.field.activityType` },
   activityTypeRequired: { id: `${prefix}.field.activityType.required` },
   activityTypePlaceholder: { id: `${prefix}.field.activityType.placeholder` },

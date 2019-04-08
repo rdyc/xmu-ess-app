@@ -1,3 +1,4 @@
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { InputDateWithValue } from '@layout/components/input/date';
@@ -56,6 +57,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
 
           {
             (props.filterCustomer || 
+              props.filterEmployee || 
               props.filterActivityType || 
               props.filterStatus || 
               props.filterStart || props.filterEnd || 
@@ -80,6 +82,27 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
+
+          <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.employee)}
+              secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterEmployee &&
+                <IconButton onClick={props.handleFilterEmployeeOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterEmployeeVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
           <ListItem button onClick={props.handleFilterCustomerVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
@@ -232,6 +255,20 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
       </DialogContent>
     </Dialog>
 
+    <AccountEmployeeDialog
+      isOpen={props.isFilterEmployeeOpen}
+      title={props.intl.formatMessage(timesheetMessage.entry.field.employee)}
+      value={props.filterEmployee && props.filterEmployee.uid}
+      filter={{
+        companyUids: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'fullName',
+        direction: 'ascending'
+      }}
+      hideBackdrop={true}
+      onSelected={props.handleFilterEmployeeOnSelected}
+      onClose={props.handleFilterEmployeeOnClose}
+    />
+    
     <LookupCustomerDialog
       isOpen={props.isFilterCustomerOpen}
       value={props.filterCustomer && props.filterCustomer.uid}

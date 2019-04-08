@@ -23,6 +23,7 @@
   
   "timesheet.entry.field.uid": "Time Report ID",
   "timesheet.entry.field.uid.placeholder": "Time Report ID",
+  "timesheet.entry.field.employee": "Employee",
   "timesheet.entry.field.activityType": "Activity Type",
   "timesheet.entry.field.activityType.required": "Activity Type is required",
   "timesheet.entry.field.activityType.placeholder": "Select a activity type",
