@@ -158,7 +158,7 @@ const createProps: mapper<PurchaseRequestFormProps, IOwnState> = (props: Purchas
       .of(
         Yup.object().shape({
           description: Yup.string()
-            // .max(200)
+            .max(200)
             .label(props.intl.formatMessage(purchaseMessage.request.items.description))
             .required(),
 
