@@ -31,6 +31,7 @@ export const purchaseSettlementSection = defineMessages({
   infoTitle: { id: `${prefix}.settlement.section.info.title` },
   infoSubHeader: { id: `${prefix}.settlement.section.info.subTitle` },
   itemTitle: { id: `${prefix}.item.settlementTitle` },
+  submit: { id: `${prefix}.settlement.section.submit`},
   itemSubHeader: { id: `${prefix}.item.settlementSubTitle` },
 });
 

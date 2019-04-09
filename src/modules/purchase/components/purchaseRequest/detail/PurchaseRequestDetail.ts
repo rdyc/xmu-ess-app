@@ -249,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, IOwnState>
           id: PurchaseUserAction.Settle,
           name: this.props.intl.formatMessage(purchaseMessage.action.settle),
           enabled: _statusType !== undefined,
-          visible: !_settlementStatusType || false,
+          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && !_settlementStatusType || false,
         },
       ];
 
