@@ -19,6 +19,8 @@ export const timesheetEntryPage = defineMessages({
 
 // confirmation
 export const timesheetEntryConfirm = defineMessages({
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
   closeTitle: { id: `${prefix}.confirm.close.title` },
@@ -42,6 +44,11 @@ export const timesheetEntryDialog = defineMessages({
   createDescription: { id: `${prefix}.dialog.newDescription`},
   editTitle: { id: `${prefix}.dialog.editTitle`},
   editDescription: { id: `${prefix}.dialog.editDescription`},
+});
+
+// submission
+export const timesheetEntrySubmission = defineMessages({
+  form: { id: `${prefix}.submission.form`},
 });
 
 // fields
@@ -86,7 +93,8 @@ export const timesheetEntryField = defineMessages({
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
   startPlaceholder: { id: `${prefix}.field.start.placeholder` },
-
+  startIsAfterEnd: { id: `${prefix}.field.start.isAfterEnd`},
+  
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
