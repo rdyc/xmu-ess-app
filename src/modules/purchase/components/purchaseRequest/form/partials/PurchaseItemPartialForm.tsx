@@ -48,7 +48,7 @@ const PurchaseItemPartialForm: React.ComponentType<PurchaseItemPartialFormProps>
 
                         // set request
                         props.formikBag.setFieldValue('request', totalRequest);
-                        props.formikBag.setFieldValue('requestInIDR', totalRequest * props.formikBag.values.rate);
+                        // props.formikBag.setFieldValue('requestInIDR', totalRequest * props.formikBag.values.rate);
                       }}
                     >
                       <DeleteForever />
@@ -128,7 +128,6 @@ const PurchaseItemPartialForm: React.ComponentType<PurchaseItemPartialFormProps>
 
                             // set requests
                             props.formikBag.setFieldValue('request', totalRequest);
-                            props.formikBag.setFieldValue('requestInIDR', totalRequest * props.formikBag.values.rate);
                           }}
                         />
                       );

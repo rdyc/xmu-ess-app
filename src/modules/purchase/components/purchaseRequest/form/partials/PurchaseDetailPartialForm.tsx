@@ -14,7 +14,6 @@ import { Moment } from 'moment';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
-import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { ProjectOption } from '@project/components/options/project/ProjectOption';
@@ -33,7 +32,7 @@ type PurchaseDetailPartialFormProps = {
 
 const PurchaseDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormProps> = props => (
   <Card square>
-    <CardHeader title={props.intl.formatMessage(expenseMessage.request.section.title)} />
+    <CardHeader title={props.intl.formatMessage(purchaseMessage.request.section.infoTitle)} />
     <CardContent>
       <Field
         name="uid"
@@ -230,38 +229,38 @@ const PurchaseDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormPr
         )}
       />
 
-      {
-        props.formikBag.values.currencyType && 
-        props.formikBag.values.currencyType !== '' &&
-        props.formikBag.values.currencyType !== 'SCR01' &&
-        <Field
-          name="request"
-          render={({ field, form }: FieldProps<IPurchaseRequestFormValue>) => (
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              {...field}
-              label={props.intl.formatMessage(purchaseMessage.request.fieldFor(field.name, 'fieldName'))}
-              value={props.intl.formatNumber(field.value)}
-              helperText={form.touched.request && form.errors.request}
-              error={form.touched.request && Boolean(form.errors.request)}
-            />
-          )}
-        />
-      }      
-
       <Field
-        name="requestInIDR"
+        name="request"
         render={({ field, form }: FieldProps<IPurchaseRequestFormValue>) => (
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             {...field}
             label={props.intl.formatMessage(purchaseMessage.request.fieldFor(field.name, 'fieldName'))}
             value={props.intl.formatNumber(field.value)}
-            helperText={form.touched.requestInIDR && form.errors.requestInIDR}
-            error={form.touched.requestInIDR && Boolean(form.errors.requestInIDR)}
+            helperText={form.touched.request && form.errors.request}
+            error={form.touched.request && Boolean(form.errors.request)}
           />
         )}
-      />      
+      /> 
+
+      {
+        props.formikBag.values.currencyType && 
+        props.formikBag.values.currencyType !== '' &&
+        props.formikBag.values.currencyType !== 'SCR01' &&
+        <Field
+          name="requestInIDR"
+          render={({ field, form }: FieldProps<IPurchaseRequestFormValue>) => (
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              {...field}
+              label={props.intl.formatMessage(purchaseMessage.request.fieldFor(field.name, 'fieldName'))}
+              value={props.intl.formatNumber(props.formikBag.values.request * props.formikBag.values.rate)}
+              helperText={form.touched.requestInIDR && form.errors.requestInIDR}
+              error={form.touched.requestInIDR && Boolean(form.errors.requestInIDR)}            
+            />
+          )}
+        />    
+      }  
       
       <Field
         name="notes"

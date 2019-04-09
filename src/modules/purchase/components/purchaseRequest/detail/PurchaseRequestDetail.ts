@@ -194,7 +194,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, IOwnHandler> =
       props.setDefault();
 
       props.history.push(next, { 
-        uid: purchaseUid 
+        uid: purchaseUid
       });
     }
   },
