@@ -86,6 +86,7 @@ export const TimesheetApprovalHistoryListView: React.SFC<TimesheetApprovalHistor
     <TimesheetApprovalHistoryListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
+        employeeUid: props.employeeUid,
         customerUid: props.customerUid,
         activityType: props.activityType,
         statusType: props.statusType,

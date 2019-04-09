@@ -12,7 +12,8 @@ import {
   timesheetEntryFieldHelperFor, 
   timesheetEntryMessage, 
   timesheetEntryPage, 
-  timesheetEntrySection
+  timesheetEntrySection,
+  timesheetEntrySubmission
 } from './timesheetEntryMessage';
 
 export const timesheetMessage = {
@@ -23,7 +24,8 @@ export const timesheetMessage = {
     field: timesheetEntryField,
     fieldFor: timesheetEntryFieldHelperFor,
     message: timesheetEntryMessage,
-    dialog: timesheetEntryDialog
+    dialog: timesheetEntryDialog,
+    submission: timesheetEntrySubmission
   },
   approval: {
     page: timesheetApprovalPage,

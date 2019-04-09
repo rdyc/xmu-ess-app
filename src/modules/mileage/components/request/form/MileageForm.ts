@@ -1,5 +1,7 @@
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -46,11 +48,14 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  isAdmin: boolean;
+
   initialValues?: IMileageFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IMileageFormValue>>>;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setIsAdmin: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
 }
 
@@ -61,6 +66,7 @@ interface IOwnHandler {
 
 export type MileageFormProps
   = WithMileageRequest
+  & WithOidc
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -72,6 +78,8 @@ export type MileageFormProps
   & IOwnHandler;
 
 const createProps: mapper<MileageFormProps, IOwnState> = (props: MileageFormProps): IOwnState => ({
+  isAdmin: false,
+
   // form values
   initialValues: {
     year: '',
@@ -101,6 +109,9 @@ const createProps: mapper<MileageFormProps, IOwnState> = (props: MileageFormProp
 });
 
 const stateUpdaters: StateUpdaters<MileageFormProps, IOwnState, IOwnStateUpdater> = {
+  setIsAdmin: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    isAdmin: !state.isAdmin
+  }),
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   })
@@ -155,7 +166,7 @@ const handlerCreators: HandleCreators<MileageFormProps, IOwnHandler> = {
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
         actions.setSubmitting(false);
-        
+
         // set form status
         actions.setStatus(error);
         
@@ -176,6 +187,26 @@ const handlerCreators: HandleCreators<MileageFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<MileageFormProps, IOwnState> = {
   componentDidMount() {
+    // checking admin status
+    const { user } = this.props.oidcState;
+    let isAdmin: boolean = false;
+
+    if (user) {
+      const role: string | string[] | undefined = user.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          isAdmin = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          isAdmin = role === AppRole.Admin;
+        }
+      }
+
+      if (isAdmin) {
+        this.props.setIsAdmin();
+      }
+    }
+
     const view = {
       title: mileageMessage.request.page.newTitle,
       subTitle: mileageMessage.request.page.newSubHeader,
@@ -197,6 +228,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<MileageFormProps, IOwnState> =
 export const MileageForm = compose<MileageFormProps, IOwnOption>(
   setDisplayName('MileageForm'),
   withUser,
+  withOidc,
   withMasterPage,
   withRouter,
   withMileageRequest,

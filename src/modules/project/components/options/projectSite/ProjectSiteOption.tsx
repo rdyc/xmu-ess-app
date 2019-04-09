@@ -10,7 +10,6 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
-  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -19,7 +18,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption extends IProjectSiteGetRequest {
-  // filter?: ;
+  // 
 }
 
 interface IOwnState {
@@ -33,7 +32,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (filter: IProjectSiteGetRequest) => void;
 }
 
 export type ProjectSiteOptionProps
@@ -69,14 +68,14 @@ const stateUpdaters: StateUpdaters<ProjectSiteOptionProps, IOwnState, IOwnStateU
 };
 
 const handlerCreators: HandleCreators<ProjectSiteOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: ProjectSiteOptionProps) => () => {
+  handleOnLoadApi: (props: ProjectSiteOptionProps) => (filter: IProjectSiteGetRequest) => {
     const { isExpired, isLoading } = props.projectSiteState;
     const { loadRequest } = props.projectSiteDispatch;
 
     if (isExpired || !isLoading) {
       loadRequest({ 
-        companyUid: props.companyUid,
-        projectUid: props.projectUid,
+        companyUid: filter.companyUid,
+        projectUid: filter.projectUid,
       });
     }
   }
@@ -84,35 +83,23 @@ const handlerCreators: HandleCreators<ProjectSiteOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<ProjectSiteOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.projectSiteState;
+    // 
+  },
+  componentWillUpdate(nextProps: ProjectSiteOptionProps) {
+    const filter: IProjectSiteGetRequest = {
+      companyUid: nextProps.companyUid,
+      projectUid: nextProps.projectUid
+    };
 
-    // 1st load only when request are empty
-    if (!request) {
-      this.props.handleOnLoadApi();
-    } else {
-      // 2nd load only when request filter are present
-      // if (request.filter) {
-        // comparing some props
-        const shouldUpdate = !shallowEqual(
-          {
-            companyUid: request.companyUid,
-            projectUid: request.projectUid
-          },
-          {
-            companyUid: this.props.companyUid,
-            projectUid: this.props.projectUid
-          }
-        );
-  
-        // then should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi();
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
-          }
-        }
-      // }
+    if (!this.props.projectUid && nextProps.projectUid) {
+      this.props.handleOnLoadApi(filter);
+    }
+
+    if (this.props.projectUid && nextProps.projectUid) {
+      // comparing the project uid
+      if (this.props.projectUid !== nextProps.projectUid) {
+        this.props.handleOnLoadApi(filter);
+      }
     }
   },
   componentDidUpdate(prevProps: ProjectSiteOptionProps) {
