@@ -243,6 +243,11 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   // filter settlement
   handleFilterSettlementOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSettlement(checked);
+    if (checked) {
+      props.setFilterCompletion();
+    } else {
+      props.setFilterCompletion({ value: 'pending', name: 'Pending' });
+    }
   },
 
   // filter reject

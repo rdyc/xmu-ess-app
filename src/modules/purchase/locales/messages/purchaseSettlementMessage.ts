@@ -92,9 +92,14 @@ export const purchaseSettlementFieldHelperFor = (field: string, type: 'fieldName
       case 'status': return purchaseSettlementField.status;
       case 'notes': return purchaseSettlementField.notes;
       case 'request': return purchaseSettlementField.request;
+      case 'actual': return purchaseSettlementField.actual;
+      case 'difference': return purchaseSettlementField.difference;
       case 'requestInIDR': return purchaseSettlementField.requestInIDR;
+      case 'actualInIDR': return purchaseSettlementField.actualInIDR;
+      case 'differenceInIDR': return purchaseSettlementField.differenceInIDR;
       case 'advance': return purchaseSettlementField.advance;
       case 'rate': return purchaseSettlementField.rate;
+      case 'balanceDue': return purchaseSettlementField.balanceDue;
 
       // item
       case 'requestValue': return purchaseSettlementField.request;

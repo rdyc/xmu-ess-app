@@ -43,7 +43,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
           <Button
             size="small"
             color="secondary"
-            onClick = {() => props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType }) }
+            onClick = {() => props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid, isModifyForm: true  }) }
           >
             { props.intl.formatMessage(layoutMessage.action.modify) }
           </Button >
