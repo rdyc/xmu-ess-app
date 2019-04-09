@@ -25,7 +25,6 @@ type LeaveDetailPartialFormProps = {
   // isRequestor: boolean;
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem?: ISystemListFilter;
-  allowedLeaveTypes?: string[];
 };
 
 // function disableWeekends(date: Date) {
