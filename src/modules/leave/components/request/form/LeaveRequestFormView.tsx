@@ -36,8 +36,9 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
                 <LeaveDetailPartialForm 
                   formikBag={formikBag}
                   formMode={props.formMode}
-                  isRequestor={props.isRequestor}
+                  // isRequestor={props.isRequestor}
                   intl={props.intl}
+                  handleFilterLeave={props.handleFilterLeave}
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupLeave={props.filterLookupLeave}
                 />

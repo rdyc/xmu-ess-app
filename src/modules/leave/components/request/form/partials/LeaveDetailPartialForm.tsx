@@ -1,10 +1,12 @@
 import { ISystemListFilter } from '@common/classes/filters';
+import { LeaveType } from '@common/classes/types';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
+import { LookupLeaveOption } from '@lookup/components/leave/options/LookupLeaveOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -19,11 +21,17 @@ type LeaveDetailPartialFormProps = {
   formMode: FormMode;
   formikBag: FormikProps<ILeaveRequestFormValue>;
   intl: InjectedIntl;
-  isRequestor: boolean;
+  handleFilterLeave: (values: string) => void;
+  // isRequestor: boolean;
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   allowedLeaveTypes?: string[];
 };
+
+// function disableWeekends(date: Date) {
+//   const dateObject = new Date(date);
+//   return dateObject.getDay() === 0 || dateObject.getDay() === 6;
+// }
 
 const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> = props => (
   <Card square>
@@ -54,14 +62,6 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
                 isClearable={props.formMode === FormMode.New && field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}
-                filterOption={option => {
-                  // filter options from allowed leave types
-                  if (props.allowedLeaveTypes) {
-                    return props.allowedLeaveTypes.findIndex(item => item === option.value) !== -1;
-                  }
-
-                  return true;
-                }}
                 textFieldProps={{
                   label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
                   required: true,
@@ -69,7 +69,10 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
                   error: form.touched.leaveType && Boolean(form.errors.leaveType)
                 }}
                 onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.handleFilterLeave(selected && selected.value);
+                }}
               />
             </CommonSystemOption>
           </React.Fragment>
@@ -89,8 +92,8 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               textFieldProps={{
                 label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
                 required: true,
-                helperText: form.touched.leaveUid && form.errors.leaveUid,
-                error: form.touched.leaveUid && Boolean(form.errors.leaveUid)
+                helperText: form.touched.regularType && form.errors.regularType,
+                error: form.touched.regularType && Boolean(form.errors.regularType)
               }}
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
@@ -116,8 +119,13 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             format="MMMM DD, YYYY"
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.toDate())}
             invalidLabel=""
+            disablePast
+            shouldDisableDate={(date: Date) => {
+              const dateObject = new Date(date);
+              return dateObject.getDay() === 0 || dateObject.getDay() === 6;
+            }}
           />
         )}
       />
@@ -125,23 +133,31 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
       <Field
         name="end"
         render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
+          props.formikBag.values.regularType === LeaveType.CutiKhusus ? 
+            
+          :
           <DatePicker
             {...field}
             fullWidth
-            required={props.formikBag.values.start !== ''}
-            showTodayButton
+            required={true}
             margin="normal"
-            disabled={props.formikBag.values.start === '' || form.isSubmitting}
+            disabled={form.isSubmitting}
+            showTodayButton
             label={props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            helperText={form.touched.end && form.errors.end}
-            error={form.touched.end && Boolean(form.errors.end)}
+            helperText={form.touched.start && form.errors.start}
+            error={form.touched.start && Boolean(form.errors.start)}
             onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.toDate())}
             invalidLabel=""
+            disablePast
             minDate={props.formikBag.values.start}
+            shouldDisableDate={(date: Date) => {
+              const dateObject = new Date(date);
+              return dateObject.getDay() === 0 || dateObject.getDay() === 6;
+            }}
           />
         )}
       />

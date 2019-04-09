@@ -7,6 +7,7 @@ import { ILeaveRequestPostPayload, ILeaveRequestPutPayload } from '@leave/classe
 import { ILeave } from '@leave/classes/response';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -28,6 +29,7 @@ import {
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { LeaveRequestFormView } from './LeaveRequestFormView';
+import { WithLeaveGetEnd, withLeaveGetEnd } from '@leave/hoc/withLeaveGetEnd';
 
 export interface ILeaveRequestFormValue {
   uid: string;
@@ -46,20 +48,25 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  isRequestor: boolean;
+  endValue: string;
+  // isRequestor: boolean;
 
   initialValues: ILeaveRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ILeaveRequestFormValue>>>;
 
   filterCommonSystem: ISystemListFilter;
+  filterLookupLeave?: ILookupLeaveGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setIsRequestor: StateHandler<IOwnState>;
+  // setIsRequestor: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
+  setFilterLeave: StateHandler<IOwnState>;
+  setEndValue: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
+  handleFilterLeave: (values: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ILeaveRequestFormValue, actions: FormikActions<ILeaveRequestFormValue>) => void;
 }
@@ -67,6 +74,7 @@ interface IOwnHandler {
 export type LeaveRequestFormProps
   = WithLeaveRequest
   & WithCommonSystem
+  & WithLeaveGetEnd
   & WithUser
   & WithStyles<typeof styles>
   & RouteComponentProps
@@ -79,7 +87,8 @@ export type LeaveRequestFormProps
 const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveRequestFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  isRequestor: true,
+  endValue: '',
+  // isRequestor: true,
 
   // form values
   initialValues: {
@@ -108,10 +117,10 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
       .required(props.intl.formatMessage(leaveMessage.request.fieldFor('address', 'fieldRequired'))),
 
     contactNumber: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('address', 'fieldRequired'))),
+      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('contactNumber', 'fieldRequired'))),
 
     reason: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('address', 'fieldRequired'))),
+      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('reason', 'fieldRequired'))),
   }),
 
   // filter props
@@ -122,12 +131,18 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
 });
 
 const stateUpdaters: StateUpdaters<LeaveRequestFormProps, IOwnState, IOwnStateUpdater> = {
-  setIsRequestor: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    isRequestor: !state.isRequestor
-  }),
+  // setIsRequestor: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+  //   isRequestor: !state.isRequestor
+  // }),
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setFilterLeave: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    filterLookupLeave: values
+  }),
+  setEndValue: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    endValue: values
+  })
 };
 
 const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
@@ -146,7 +161,16 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
       }
     }
   },
+  handleFilterLeave: (props: LeaveRequestFormProps) => (values: string) => {
+    const filter: ILookupLeaveGetListFilter = {
+      orderBy: 'name',
+      direction: 'ascending',
+      companyUid: props.userState.user && props.userState.user.company.uid,
+      categoryType: values
+    };
 
+    props.setFilterLeave(filter);
+  },
   handleOnSubmit: (props: LeaveRequestFormProps) => (values: ILeaveRequestFormValue, actions: FormikActions<ILeaveRequestFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
@@ -298,6 +322,7 @@ export const LeaveRequestForm = compose<LeaveRequestFormProps, IOwnOption>(
   withRouter,
   withLeaveRequest,
   withCommonSystem,
+  withLeaveGetEnd,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
