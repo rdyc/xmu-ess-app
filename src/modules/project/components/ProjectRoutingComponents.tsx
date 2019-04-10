@@ -11,7 +11,7 @@ import { ProjectAdministrationList } from './administration/list/ProjectAdminist
 import { ProjectApprovalDetail } from './approval/detail/ProjectApprovalDetail';
 import { ProjectApprovalList } from './approval/list/ProjectApprovalList';
 import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDetail';
-import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignmentEditor';
+import { ProjectAssignmentForm } from './assignment/form/ProjectAssignmentForm';
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
 import { HourEditor } from './hour/editor/HourEditor';
 import { OwnerEditor } from './owner/editor/OwnerEditor';
@@ -41,7 +41,7 @@ const approval = (props: RouteComponentProps) => (
 
 const assignment = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={ProjectAssignmentEditorForm} />
+    <Route path={`${props.match.path}/form`} component={ProjectAssignmentForm} />
     <Route path={`${props.match.path}/:assignmentUid`} component={ProjectAssignmentDetail} />
     <Route path={`${props.match.path}`} component={ProjectAssignmentList} />
   </Switch>

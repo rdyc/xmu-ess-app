@@ -80,6 +80,7 @@ const createProps: mapper<TimesheetApprovalHistoryListProps, IOwnState> = (props
   } else {
     // fill from previous request if any
     if (request && request.filter) {
+      state.employeeUid = request.filter.employeeUid,
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
@@ -116,6 +117,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListProps, IOwnHan
         positionUid: props.positionUid,
         start: props.start,
         end: props.end,
+        employeeUid: props.employeeUid,
         customerUid: props.customerUid,
         activityType: props.activityType,
         statusType: props.statusType,
@@ -181,6 +183,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListProps, IOwnHan
   },
   handleFilterBadge: (props: TimesheetApprovalHistoryListProps) => () => {
     return props.customerUid !== undefined ||
+      props.employeeUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
       props.start !== undefined ||
@@ -195,6 +198,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListProps, IOw
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
+        employeeUid: this.props.employeeUid,
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
@@ -204,6 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListProps, IOw
         isNotify: this.props.isNotify
       },
       {
+        employeeUid: prevProps.employeeUid,
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,

@@ -3,8 +3,10 @@ import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withA
 import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types/FormMode';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
@@ -79,6 +81,7 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   isRequestor: boolean;
+  isAdmin: boolean;
 
   initialValues: IProjectRegistrationFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IProjectRegistrationFormValue>>>;
@@ -90,6 +93,7 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setIsRequestor: StateHandler<IOwnState>;
+  setIsAdmin: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
   setInitialDocumentProjectValues: StateHandler<IOwnState>;
   setInitialDocumentPreSalesValues: StateHandler<IOwnState>;
@@ -107,6 +111,7 @@ export type ProjectRegistrationFormProps
   & WithAccountSalesRoles
   & WithAllowedProjectType
   & WithCommonSystem
+  & WithOidc
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -120,7 +125,8 @@ export type ProjectRegistrationFormProps
 const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: ProjectRegistrationFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  isRequestor: true,
+  isRequestor: false,
+  isAdmin: false,
 
   // form values
   initialValues: {
@@ -146,41 +152,54 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
   // validation props
   validationSchema: Yup.object().shape<Partial<IProjectRegistrationFormValue>>({
     customerUid: Yup.string()
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('customerUid', 'fieldRequired'))),
+      .label(props.intl.formatMessage(projectMessage.registration.field.customerUid))
+      .required(),
 
     projectType: Yup.string()
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('projectType', 'fieldRequired'))),
+      .label(props.intl.formatMessage(projectMessage.registration.field.customerUid))
+      .required(),
 
     contractNumber: Yup.string()
+      .label(props.intl.formatMessage(projectMessage.registration.field.customerUid))
       .when('projectType', {
         is: (value: string) => value !== ProjectType.PreSales,
         then: Yup.string()
-          .required(props.intl.formatMessage(projectMessage.registration.fieldFor('contractNumber', 'fieldRequired')))
+          .required()
       }),
 
     name: Yup.string()
-      .min(2).max(50)
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('name', 'fieldRequired'))),
+      .label(props.intl.formatMessage(projectMessage.registration.field.name))      
+      .max(100)
+      .required(),
+      
+    description: Yup.string()
+      .label(props.intl.formatMessage(projectMessage.registration.field.name))      
+      .max(200),
 
     start: Yup.string()
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('start', 'fieldRequired'))),
+      .label(props.intl.formatMessage(projectMessage.registration.field.start))
+      .required(),
 
     end: Yup.string()
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('end', 'fieldRequired'))),
+      .label(props.intl.formatMessage(projectMessage.registration.field.end))
+      .required(),
     
     rate: Yup.number()
+      .label(props.intl.formatMessage(projectMessage.registration.field.rate))      
       .min(1)
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('rate', 'fieldRequired'))),
+      .required(),
     
     valueUsd: Yup.number()
+      .label(props.intl.formatMessage(projectMessage.registration.field.valueUsd))
       .min(0)
-      .required(props.intl.formatMessage(projectMessage.registration.fieldFor('valueUsd', 'fieldRequired'))),
+      .required(),
 
     sales: Yup.array()
       .of(
         Yup.object().shape({
           employeeUid: Yup.string()
-            .required(props.intl.formatMessage(projectMessage.registration.fieldFor('salesEmployeeUid', 'fieldRequired')))
+            .label(props.intl.formatMessage(projectMessage.registration.field.salesEmployeeUid))
+            .required()
         })
       )
       .min(1, props.intl.formatMessage(projectMessage.registration.fieldFor('sales', 'fieldRequired')))
@@ -208,6 +227,9 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
 const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwnStateUpdater> = {
   setIsRequestor: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isRequestor: !state.isRequestor
+  }),
+  setIsAdmin: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+    isAdmin: !state.isAdmin
   }),
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
@@ -385,15 +407,20 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
             });
 
           } else {
-            // next owner (isn't requestor) patching the request
+            // next owner (isn't requestor) or admin patching the request
             // fill payload
             const payload: IProjectRegistrationPatchPayload = {
+              customerUid: props.isAdmin && values.customerUid || undefined,
               projectType: values.projectType,
               contractNumber: values.contractNumber === '' ? undefined : values.contractNumber,
               name: values.name,
               description: values.description === '' ? undefined : values.description,
               start: values.start,
               end: values.end,
+              currencyType: props.isAdmin && values.currencyType || undefined,
+              rate: props.isAdmin && values.rate || undefined,
+              valueUsd: props.isAdmin && values.valueUsd || undefined,
+              valueIdr: props.isAdmin && values.valueIdr || undefined,
               documents: [],
               sales: []
             };
@@ -439,8 +466,6 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
     // handling promise
     promise
       .then((response: IProject) => {
-        console.log(response);
-        
         // set submitting status
         actions.setSubmitting(false);
 
@@ -484,6 +509,26 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
       // load common system
       this.props.handleOnLoadDocumentProject();
       this.props.handleOnLoadDocumentPreSales();
+    }
+
+    // checking admin status
+    const { user } = this.props.oidcState;
+    let isAdmin: boolean = false;
+    
+    if (user) {
+      const role: string | string[] | undefined = user.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          isAdmin = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          isAdmin = role === AppRole.Admin;
+        }
+      }
+
+      if (isAdmin) {
+        this.props.setIsAdmin();
+      }
     }
   },
   componentDidUpdate(prevProps: ProjectRegistrationFormProps) {
@@ -570,7 +615,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
 
         // update isRequestor status
         if (this.props.userState.user && response.data.changes) {
-          if (this.props.userState.user.uid !== response.data.changes.createdBy) {
+          if (this.props.userState.user.uid === response.data.changes.createdBy) {
             this.props.setIsRequestor();
           }
         }
@@ -581,6 +626,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
 
 export const ProjectRegistrationForm = compose<ProjectRegistrationFormProps, IOwnOption>(
   setDisplayName('ProjectRegistrationForm'),
+  withOidc,
   withUser,
   withRouter,
   withProjectRegistration,

@@ -142,7 +142,7 @@ const component: React.SFC<LookupRoleOptionProps> = props => {
 };
 
 export const LookupRoleOption = compose<LookupRoleOptionProps, IOwnOption>(
-  setDisplayName('LookupRoleOptionProps'),
+  setDisplayName('LookupRoleOption'),
   withLookupRole,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

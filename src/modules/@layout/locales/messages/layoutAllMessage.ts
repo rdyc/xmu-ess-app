@@ -17,7 +17,8 @@ export const layoutText = defineMessages({
   find: { id: `${prefix}.text.find`},
   search: { id: `${prefix}.text.search`},
   selection: { id: `${prefix}.text.selection`},
-  all: { id: `${prefix}.text.all`}
+  all: { id: `${prefix}.text.all`},
+  invalidFormFields: { id: `${prefix}.text.invalidFormFields`}
 });
 
 // label

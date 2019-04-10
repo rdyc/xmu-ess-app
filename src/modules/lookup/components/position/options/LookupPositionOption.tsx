@@ -142,7 +142,7 @@ const component: React.SFC<LookupPositionOptionProps> = props => {
 };
 
 export const LookupPositionOption = compose<LookupPositionOptionProps, IOwnOption>(
-  setDisplayName('LookupPositionOptionProps'),
+  setDisplayName('LookupPositionOption'),
   withLookupPosition,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
