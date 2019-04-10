@@ -99,7 +99,6 @@ const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilte
     // default filter project dialog
     filterProjectDialog: {
       customerUids: undefined,
-      activeOnly: true,
       orderBy: 'uid',
       direction: 'descending',
     }
