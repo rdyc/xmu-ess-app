@@ -60,6 +60,7 @@ export const leaveRequestField = defineMessages({
   regularType: { id: `${prefix}.field.regularType` },
   regularTypeRequired: { id: `${prefix}.field.regularType.required` },
   regularTypePlaceholder: { id: `${prefix}.field.regularType.placeholder` },
+  regularTypeActive: { id: `${prefix}.field.regularType.active` },
   
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
@@ -68,6 +69,7 @@ export const leaveRequestField = defineMessages({
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
+  endAuto: { id: `${prefix}.field.end.auto` },
 
   reEntry: { id: `${prefix}.field.reEntry` },
   reEntryRequired: { id: `${prefix}.field.reEntry.required` },

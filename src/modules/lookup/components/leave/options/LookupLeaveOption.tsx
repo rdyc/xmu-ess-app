@@ -1,4 +1,4 @@
-import { LeaveType } from '@common/classes/types';
+// import { LeaveType } from '@common/classes/types';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
 import { ILookupLeaveList } from '@lookup/classes/response';
@@ -85,12 +85,17 @@ const handlerCreators: HandleCreators<LookupLeaveOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<LookupLeaveOptionProps, IOwnState> = {
   componentDidMount() {
-    // const { request, response } = this.props.lookupLeaveState.list;
+    const { request, response } = this.props.lookupLeaveState.list;
 
-    // // 1st load only when request are empty
-    // if (!request) {
-    //   this.props.handleOnLoadApi();
-    // } else {
+    // 1st load only when request are empty
+    if (!request && this.props.filter) {
+      this.props.handleOnLoadApi(this.props.filter);
+    } else if (request) {
+      if ( response && response.data ) {
+        this.props.setOptions(response.data);
+      }
+    }
+    // else {
     //   // 2nd load only when request filter are present
     //   if (request.filter) {
     //     // comparing some props
@@ -98,7 +103,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupLeaveOptionProps, IOwnState> = {
   
     //     // then should update the list?
     //     if (shouldUpdate) {
-    //       this.props.handleOnLoadApi();
+    //       this.props.handleOnLoadApi(this.props.filter);
     //     } else {
     //       if (response && response.data) {
     //         this.props.setOptions(response.data);
@@ -107,13 +112,13 @@ const lifeCycle: ReactLifeCycleFunctions<LookupLeaveOptionProps, IOwnState> = {
     //   }
     // }
   },
-  componentWillUpdate(nextProps: LookupLeaveOptionProps) {
-    if (!this.props.filter && nextProps.filter) {
-      if (nextProps.filter.categoryType === LeaveType.CutiKhusus) {
-        this.props.handleOnLoadApi(nextProps.filter);
-      }
-    }
-  },
+  // componentWillUpdate(nextProps: LookupLeaveOptionProps) {
+  //   if (!this.props.filter && nextProps.filter) {
+  //     if (nextProps.filter.categoryType === LeaveType.CutiKhusus) {
+  //       this.props.handleOnLoadApi(nextProps.filter);
+  //     }
+  //   }
+  // },
   componentDidUpdate(prevProps: LookupLeaveOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = this.props.lookupLeaveState.list;
     const { isLoading: prevIsLoading, response: prevResponse } = prevProps.lookupLeaveState.list;

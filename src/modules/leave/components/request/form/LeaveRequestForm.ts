@@ -31,12 +31,11 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { LeaveRequestFormView } from './LeaveRequestFormView';
-import { WithLeaveGetEnd, withLeaveGetEnd } from '@leave/hoc/withLeaveGetEnd';
 
 export interface ILeaveRequestFormValue {
   uid: string;
   leaveType: string;
-  regularType?: string;
+  regularType: string;
   start: string;
   end: string;
   address: string;
@@ -50,22 +49,18 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  endValue: string;
-  // isRequestor: boolean;
 
   initialValues: ILeaveRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ILeaveRequestFormValue>>>;
 
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem: ISystemListFilter;
-  filterLookupLeave?: ILookupLeaveGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  // setIsRequestor: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
   setFilterLeave: StateHandler<IOwnState>;
-  setEndValue: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -77,7 +72,6 @@ interface IOwnHandler {
 export type LeaveRequestFormProps
   = WithLeaveRequest
   & WithCommonSystem
-  & WithLeaveGetEnd
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -91,8 +85,6 @@ export type LeaveRequestFormProps
 const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveRequestFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  endValue: '',
-  // isRequestor: true,
 
   // form values
   initialValues: {
@@ -109,22 +101,35 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
   // validation props
   validationSchema: Yup.object().shape<Partial<ILeaveRequestFormValue>>({
     leaveType: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('leaveType', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.leaveType))
+      .required(),
+
+    regularType: Yup.string()
+      .label(props.intl.formatMessage(leaveMessage.request.field.regularType)),
+      // .required(),
 
     start: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('start', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.start))
+      .required(),
 
     end: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('end', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .required(),
 
     address: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('address', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .required()
+      .max(100),
 
     contactNumber: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('contactNumber', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .required()
+      .max(15),
 
     reason: Yup.string()
-      .required(props.intl.formatMessage(leaveMessage.request.fieldFor('reason', 'fieldRequired'))),
+      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .required()
+      .max(50)
   }),
 
   // filter props
@@ -142,17 +147,15 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
 });
 
 const stateUpdaters: StateUpdaters<LeaveRequestFormProps, IOwnState, IOwnStateUpdater> = {
-  // setIsRequestor: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-  //   isRequestor: !state.isRequestor
-  // }),
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
   setFilterLeave: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     filterLookupLeave: values
   }),
-  setEndValue: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
-    endValue: values
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -220,6 +223,7 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
         if (leaveUid) {
           // fill payload
           const payload: ILeaveRequestPutPayload = {
+            uid: leaveUid,
             leaveType: values.leaveType,
             regularType: values.regularType === '' ? undefined : values.regularType,
             start: values.start,
@@ -285,6 +289,9 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveRequestFormProps, IOwnState> = {
+  componentWillUpdate(nextProps: LeaveRequestFormProps) {
+    //
+  },
   componentDidUpdate(prevProps: LeaveRequestFormProps) {
 
     // handle leave detail response
@@ -296,7 +303,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveRequestFormProps, IOwnSta
         const initialValues: ILeaveRequestFormValue = {
           uid: response.data.uid,
           leaveType: response.data.leaveType,
-          regularType: response.data.regularType,
+          regularType: response.data.regular ? response.data.regular.leaveUid : '',
           start: response.data.start,
           end: response.data.end,
           address: response.data.address,
@@ -317,7 +324,7 @@ export const LeaveRequestForm = compose<LeaveRequestFormProps, IOwnOption>(
   withRouter,
   withLeaveRequest,
   withCommonSystem,
-  withLeaveGetEnd,
+  withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -1,3 +1,4 @@
+import { AccountLeave } from '@account/components/leave';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
@@ -36,7 +37,6 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
                 <LeaveDetailPartialForm 
                   formikBag={formikBag}
                   formMode={props.formMode}
-                  // isRequestor={props.isRequestor}
                   intl={props.intl}
                   handleFilterLeave={props.handleFilterLeave}
                   filterCommonSystem={props.filterCommonSystem}
@@ -46,8 +46,9 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
             </div>
 
             <div className={props.classes.flexColumn}>
-
               <div className={props.classes.flexContent}>
+                <AccountLeave employeeUid={undefined}/>
+
                 <SubmissionForm 
                   title={props.intl.formatMessage(leaveMessage.request.submission.form)}
                   className={props.classes.flexContent}
@@ -65,12 +66,14 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
                   }} 
                 />
               </div>
-              
+            </div>
+
+            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-
             </div>
+
           </div>
         </Form>
       )}
