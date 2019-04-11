@@ -22,6 +22,7 @@ type TimesheetEntryDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<ITimesheetEntryFormValue>;
   intl: InjectedIntl;
+  minDate: Date;
   companyUid: string;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectAssignmentGetListFilter;
@@ -183,6 +184,7 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
             }}
             disableFuture
             invalidLabel=""
+            minDate={props.minDate}
           />
         )}
       />

@@ -38,6 +38,7 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
                   formMode={props.formMode}
                   formikBag={formikBag}
                   intl={props.intl}
+                  minDate={props.minDate}
                   companyUid={props.userState.user && props.userState.user.company.uid || ''}
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCustomer={props.filterLookupCustomer}
