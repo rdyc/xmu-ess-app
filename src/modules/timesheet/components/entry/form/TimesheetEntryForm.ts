@@ -201,26 +201,18 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
 
-    let start: string = '';
-    let end: string = '';
-
-    if (values) {
-      start = `${values.date.substring(0, 10)}${values.start.substring(10)}`;
-      end = `${values.date.substring(0, 10)}${values.end.substring(10)}`;
-    }
-
     if (user) {
       // create
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: ITimesheetPostPayload = {
-          start,
-          end,
           activityType: values.activityType,
           customerUid: values.customerUid,
           projectUid: values.projectUid,
           siteUid: values.siteUid,
           date: values.date,
+          start: values.start,
+          end: values.end,
           description: values.description
         };
 
@@ -243,8 +235,6 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
         // must have timesheetUid
         if (timesheetUid) {
           const payload: ITimesheetPutPayload = {
-            start,
-            end,
             companyUid: user.company.uid,
             positionUid: user.position.uid,
             activityType: values.activityType,
@@ -252,6 +242,8 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
             projectUid: values.projectUid,
             siteUid: values.siteUid,
             date: values.date,
+            start: values.start,
+            end: values.end,
             description: values.description
           };
 
@@ -347,8 +339,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           projectUid: thisResponse.data.projectUid,
           siteUid: thisResponse.data.siteUid,
           date: thisResponse.data.date,
-          start: moment(start).format(),
-          end: moment(end).format(),
+          start: moment(start).toISOString(true),
+          end: moment(end).toISOString(true),
           description: thisResponse.data.description || ''
         };
 
