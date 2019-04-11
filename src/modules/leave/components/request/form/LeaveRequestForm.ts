@@ -1,4 +1,5 @@
 import { ISystemListFilter } from '@common/classes/filters';
+import { LeaveType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types/FormMode';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -105,8 +106,11 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
       .required(),
 
     regularType: Yup.string()
+      .when('leaveType', {
+        is: (leaveType: string) => leaveType === LeaveType.CutiKhusus,
+        then: Yup.string().required()
+      })
       .label(props.intl.formatMessage(leaveMessage.request.field.regularType)),
-      // .required(),
 
     start: Yup.string()
       .label(props.intl.formatMessage(leaveMessage.request.field.start))
@@ -117,17 +121,17 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
       .required(),
 
     address: Yup.string()
-      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .label(props.intl.formatMessage(leaveMessage.request.field.address))
       .required()
       .max(100),
 
     contactNumber: Yup.string()
-      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .label(props.intl.formatMessage(leaveMessage.request.field.contactNumber))
       .required()
       .max(15),
 
     reason: Yup.string()
-      .label(props.intl.formatMessage(leaveMessage.request.field.end))
+      .label(props.intl.formatMessage(leaveMessage.request.field.reason))
       .required()
       .max(50)
   }),

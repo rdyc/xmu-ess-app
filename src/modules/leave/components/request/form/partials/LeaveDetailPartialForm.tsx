@@ -92,8 +92,8 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               textFieldProps={{
                 label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
                 required: (props.formikBag.values.leaveType === LeaveType.CutiKhusus),
-                helperText: (props.formikBag.values.leaveType !== LeaveType.CutiKhusus ? 
-                  props.intl.formatMessage(leaveMessage.request.field.regularTypeActive) : 
+                helperText: (props.formikBag.values.leaveType !== LeaveType.CutiKhusus && 
+                  props.intl.formatMessage(leaveMessage.request.field.regularTypeActive) || 
                   form.touched.regularType && form.errors.regularType),
                 error: (props.formikBag.values.leaveType === LeaveType.CutiKhusus && form.touched.regularType && Boolean(form.errors.regularType))
               }}
@@ -162,8 +162,8 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               leftArrowIcon={<ChevronLeft />}
               rightArrowIcon={<ChevronRight />}
               format="MMMM DD, YYYY"
-              helperText={form.touched.start && form.errors.start}
-              error={form.touched.start && Boolean(form.errors.start)}
+              helperText={form.touched.end && form.errors.end}
+              error={form.touched.end && Boolean(form.errors.end)}
               onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
               invalidLabel=""
               disablePast
