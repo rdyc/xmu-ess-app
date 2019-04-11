@@ -22,6 +22,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 import { ProjectRegistrationDetailView } from './ProjectRegistrationDetailView';
 
@@ -323,6 +324,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
         isOwner = user.uid === response.data.ownerEmployeeUid;
       }
 
+      // find child project uid
+      let _haschildProject = false;
+
+      if (response && response.data) {
+        _haschildProject = !isNullOrUndefined(response.data.childProjectUid);
+      }
+
       // generate option menus
       const options: IPopupMenuOption[] = [
         {
@@ -359,7 +367,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.ChangeOwner,
           name: this.props.intl.formatMessage(projectMessage.registration.option.owner),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin)
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin) && !_haschildProject
         },
         {
           id: ProjectUserAction.ManageSites,

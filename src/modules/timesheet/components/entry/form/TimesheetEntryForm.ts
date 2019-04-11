@@ -1,13 +1,14 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { ProjectType } from '@common/classes/types';
+import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
-import { GlobalFormat } from '@layout/types';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
 import styles from '@styles';
@@ -58,6 +59,7 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
+  minDate: Date;
   isAdmin: boolean;
 
   filterLookupCustomer?: ILookupCustomerGetListFilter;
@@ -72,16 +74,19 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setIsAdmin: StateHandler<IOwnState>;
   setProjectFilter: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleSetProjectFilter: (customerUid: string, values: ITimesheetEntryFormValue) => void;
+  handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ITimesheetEntryFormValue, actions: FormikActions<ITimesheetEntryFormValue>) => void;
 }
 
 export type TimesheetEntryFormProps
   = WithTimesheetEntry
+  & WithLookupSystemLimit
   & WithUser
   & WithOidc
   & WithMasterPage
@@ -96,6 +101,7 @@ export type TimesheetEntryFormProps
 const createProps: mapper<TimesheetEntryFormProps, IOwnState> = (props: TimesheetEntryFormProps): IOwnState => ({
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   isAdmin: false,
+  minDate: new Date(),
 
   // form values
   initialValues: {
@@ -125,23 +131,36 @@ const createProps: mapper<TimesheetEntryFormProps, IOwnState> = (props: Timeshee
       .required(),
 
     siteUid: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.siteUid))
       .required(),
 
     date: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.date))
       .required(),
 
     start: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.start))
       .required(),
 
+    // end: Yup.lazy( value => {
+    //   return Yup.string()
+    //           .label(props.intl.formatMessage(timesheetMessage.entry.field.end))
+    //           .when('start', {
+    //             is: (start: string) => {
+    //               console.log(moment(start).isAfter(value));
+    //               return moment(start).isAfter(value);
+    //             },
+    //             then: Yup.string().default('NOOOOOOOOOO')
+    //           })
+    //           .required();
+    // }),
+
     end: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.end))
       .required(),
 
     description: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.notes))
       .max(200)
       .required(),
   }),
@@ -168,6 +187,10 @@ const stateUpdaters: StateUpdaters<TimesheetEntryFormProps, IOwnState, IOwnState
   setProjectFilter: (state: IOwnState) => (filterProject: IProjectAssignmentGetListFilter) => ({
     filterProject
   }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
 };
 
 const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
@@ -182,6 +205,25 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
           timesheetUid
         });
       }
+    }
+  },
+  handleSetMinDate: (props: TimesheetEntryFormProps) => (days: number, fromDate?: Date | null) => {
+    // create date today
+    let today = moment();
+
+    // is fromDate exist, use from date instead
+    if (!isNullOrUndefined(fromDate)) {
+      today = moment(fromDate);
+    }
+
+    // substract date using momentjs, because using native date in js sucks
+    const minDate = today.subtract(days, 'days'); 
+
+    // only update minDate state once
+    if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { 
+      props.stateUpdate({
+        minDate: minDate.toDate()
+      });
     }
   },
   handleSetProjectFilter: (props: TimesheetEntryFormProps) => (customerUid: string, values: ITimesheetEntryFormValue) => {
@@ -201,26 +243,18 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
 
-    let start: string = '';
-    let end: string = '';
-
-    if (values) {
-      start = `${values.date.substring(0, 10)}${values.start.substring(10)}`;
-      end = `${values.date.substring(0, 10)}${values.end.substring(10)}`;
-    }
-
     if (user) {
       // create
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: ITimesheetPostPayload = {
-          start,
-          end,
           activityType: values.activityType,
           customerUid: values.customerUid,
           projectUid: values.projectUid,
           siteUid: values.siteUid,
           date: values.date,
+          start: values.start,
+          end: values.end,
           description: values.description
         };
 
@@ -243,8 +277,6 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
         // must have timesheetUid
         if (timesheetUid) {
           const payload: ITimesheetPutPayload = {
-            start,
-            end,
             companyUid: user.company.uid,
             positionUid: user.position.uid,
             activityType: values.activityType,
@@ -252,6 +284,8 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
             projectUid: values.projectUid,
             siteUid: values.siteUid,
             date: values.date,
+            start: values.start,
+            end: values.end,
             description: values.description
           };
 
@@ -311,6 +345,10 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnState> = {
   componentDidMount() {
+    const { request, response } = this.props.systemLimitState.amount;
+    const { loadAmountRequest } = this.props.systemLimitDispatch;
+    const { user: userData } = this.props.userState;
+
     // checking admin status
     const { user } = this.props.oidcState;
     let isAdmin: boolean = false;
@@ -330,15 +368,40 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
         this.props.setIsAdmin();
       }
     }
+
+    // get system limit amount
+    if (userData) {
+      if (!request) {
+        loadAmountRequest({
+          companyUid: userData.company.uid,
+          categoryType: SystemLimitType.Timesheet
+        });
+      } else if (request) {
+        if (response && response.data) {
+          this.props.handleSetMinDate(response.data.days);          
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: TimesheetEntryFormProps) {
     const { response: thisResponse } = this.props.timesheetEntryState.detail;
     const { response: prevResponse } = prevProps.timesheetEntryState.detail;
+    const { response: amountResponse } = this.props.systemLimitState.amount;
 
+    const dateNow: Date = new Date();
+
+    // get system limit amount for new form
+    if (!thisResponse) {
+      if (moment(this.props.minDate).format('YYYY-MM-DD') === moment(dateNow).format('YYYY-MM-DD')) {
+        if (amountResponse && amountResponse.data) {
+          this.props.handleSetMinDate(amountResponse.data.days);
+        }
+      }
+    }
+
+    // load detail
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
-        const start = this.props.intl.formatDate(thisResponse.data.start, GlobalFormat.TimeDate);
-        const end = this.props.intl.formatDate(thisResponse.data.end, GlobalFormat.TimeDate);
 
         const initialValues: ITimesheetEntryFormValue = {
           uid: thisResponse.data.uid,
@@ -347,11 +410,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           projectUid: thisResponse.data.projectUid,
           siteUid: thisResponse.data.siteUid,
           date: thisResponse.data.date,
-          start: moment(start).format(),
-          end: moment(end).format(),
+          start: thisResponse.data.start,
+          end: thisResponse.data.end,
           description: thisResponse.data.description || ''
         };
 
+        if (amountResponse && amountResponse.data) {
+          this.props.handleSetMinDate(amountResponse.data.days, thisResponse.data.changes && thisResponse.data.changes.createdAt);
+        }       
         this.props.handleSetProjectFilter(thisResponse.data.customerUid, initialValues);
         this.props.setInitialValues(initialValues);
       }
@@ -366,6 +432,7 @@ export const TimesheetEntryForm = compose<TimesheetEntryFormProps, IOwnOption>(
   withMasterPage,
   withRouter,
   withTimesheetEntry,
+  withLookupSystemLimit,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

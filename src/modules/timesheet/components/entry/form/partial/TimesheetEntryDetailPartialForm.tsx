@@ -22,14 +22,12 @@ type TimesheetEntryDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<ITimesheetEntryFormValue>;
   intl: InjectedIntl;
+  minDate: Date;
   companyUid: string;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectAssignmentGetListFilter;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   handleSetProjectFilter: (customerUid: string, values: ITimesheetEntryFormValue) => void;
-  // handleDate: (dateValue: string) => void;
-  // handleStart: (startValue: string) => void;
-  // handleEnd: (endValue: string) => void;
 };
 
 const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailPartialFormProps> = props => (
@@ -176,11 +174,17 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
             helperText={form.touched.date && form.errors.date}
             error={form.touched.date && Boolean(form.errors.date)}
             onChange={(moment: Moment) => {
-              props.formikBag.setFieldValue('date', moment.utc(true).toISOString(true));
-              // props.handleDate(moment.utc().toISOString(true));
+              props.formikBag.setFieldValue('date', moment.format('YYYY-MM-DD'));
+              if (props.formikBag.values.start !== '') {
+                props.formikBag.setFieldValue('start', `${moment.format('YYYY-MM-DD')} ${(props.formikBag.values.start).substring(11)}`);
+              }
+              if (props.formikBag.values.end !== '') {
+                props.formikBag.setFieldValue('end', `${moment.format('YYYY-MM-DD')} ${(props.formikBag.values.end).substring(11)}`);
+              }
             }}
             disableFuture
             invalidLabel=""
+            minDate={props.minDate}
           />
         )}
       />
@@ -194,15 +198,14 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
             required={true}
             ampm={false}
             margin="normal"
-            disabled={form.isSubmitting}
+            disabled={props.formikBag.values.date === '' || form.isSubmitting}
             label={props.intl.formatMessage(timesheetMessage.entry.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(timesheetMessage.entry.fieldFor(field.name, 'fieldPlaceholder'))}
-            format="HH:mm"
+            // format="HH:mm"
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
             onChange={(moment: Moment) => {
-              props.formikBag.setFieldValue('start', moment.toISOString(true));
-              // props.handleStart(moment.toISOString(true));
+              props.formikBag.setFieldValue('start', `${props.formikBag.values.date} ${moment.format('HH:mm')}`);
             }}
             invalidLabel=""
           />
@@ -218,15 +221,14 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
             required={true}
             ampm={false}
             margin="normal"
-            disabled={form.isSubmitting}
+            disabled={props.formikBag.values.date === '' || form.isSubmitting}
             label={props.intl.formatMessage(timesheetMessage.entry.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(timesheetMessage.entry.fieldFor(field.name, 'fieldPlaceholder'))}
-            format="HH:mm"
+            // format="HH:mm"
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
             onChange={(moment: Moment) => {
-              props.formikBag.setFieldValue(field.name, moment.toISOString(true));
-              // props.handleEnd(moment.toISOString(true));
+              props.formikBag.setFieldValue(field.name, `${props.formikBag.values.date} ${moment.format('HH:mm')}`);
             }}
             invalidLabel=""
             minDate={props.formikBag.values.start}

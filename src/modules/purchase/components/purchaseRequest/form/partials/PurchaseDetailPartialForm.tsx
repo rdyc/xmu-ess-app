@@ -148,7 +148,7 @@ const PurchaseDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormPr
             disablePast
             helperText={form.touched.date && form.errors.date}
             error={form.touched.date && Boolean(form.errors.date)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('date', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue('date', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
           />
         )}

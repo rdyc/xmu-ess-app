@@ -187,7 +187,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             format="MMMM DD, YYYY"
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
           />
         )}
@@ -210,7 +210,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             format="MMMM DD, YYYY"
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
             invalidLabel=""
             minDate={props.formikBag.values.start}
           />

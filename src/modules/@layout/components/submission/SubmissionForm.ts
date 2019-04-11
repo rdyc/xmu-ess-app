@@ -82,9 +82,9 @@ const handlerCreators: HandleCreators<SubmissionFormProps, IOwnHandler> = {
     // validate the form
     props.formikProps.validateForm()
       .then(value => {
-        if (Object.keys(value).length === 0) {
-          props.formikProps.submitForm();
-        } else {
+        props.formikProps.submitForm();
+
+        if (Object.keys(value).length >= 0) {
           props.masterPage.flashMessage({
             message: props.warningMessage || props.intl.formatMessage(layoutMessage.text.invalidFormFields)
           });
