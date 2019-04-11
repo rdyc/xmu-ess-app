@@ -41,6 +41,9 @@ export const projectRegistrationOption = defineMessages({
 // submission
 export const projectRegistrationSubmission = defineMessages({
   form: { id: `${prefix}.submission.form` },
+  formOwner: { id: `${prefix}.submission.owner.form` },
+  formHour: { id: `${prefix}.submission.hour.form` },
+  formSite: { id: `${prefix}.submission.site.form` }
 });
 
 // confimation
@@ -168,6 +171,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return projectRegistrationField.uid;
+      case 'childProjectUid': return projectRegistrationField.childUid;
       case 'name': return projectRegistrationField.name;
       case 'description': return projectRegistrationField.description;
       case 'statusType': return projectRegistrationField.statusType;
