@@ -1,3 +1,4 @@
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectHourAction as Action,
@@ -7,9 +8,7 @@ import {
   projectRegistrationGetAllDispose,
   projectRegistrationGetByIdDispose,
 } from '@project/store/actions';
-import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
-import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
@@ -31,15 +30,9 @@ function* watchPutRequest() {
         put(projectHourPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = {
-            information: flattenObject(response.body.errors) 
-          };
-          
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(projectHourPutError(error.message)),
