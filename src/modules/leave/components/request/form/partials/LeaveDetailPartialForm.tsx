@@ -123,7 +123,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             format="MMMM DD, YYYY"
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
             disablePast
             shouldDisableDate={(date: Date) => {
@@ -164,7 +164,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               format="MMMM DD, YYYY"
               helperText={form.touched.start && form.errors.start}
               error={form.touched.start && Boolean(form.errors.start)}
-              onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.toDate())}
+              onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
               invalidLabel=""
               disablePast
               minDate={props.formikBag.values.start}

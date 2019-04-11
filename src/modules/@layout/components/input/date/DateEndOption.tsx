@@ -72,7 +72,7 @@ const lifeCycle: ReactLifeCycleFunctions<DateEndOptionProps, IOwnState> = {
     // 
   },
   componentWillUpdate(nextProps: DateEndOptionProps) {
-    const start: string = nextProps.start.toString().substring(0, 10);
+    const start: string = nextProps.start;
 
     const filter: ILeaveGetEndQuery = {
       start,
