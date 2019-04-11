@@ -131,23 +131,36 @@ const createProps: mapper<TimesheetEntryFormProps, IOwnState> = (props: Timeshee
       .required(),
 
     siteUid: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.siteUid))
       .required(),
 
     date: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.date))
       .required(),
 
     start: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.start))
       .required(),
 
+    // end: Yup.lazy( value => {
+    //   return Yup.string()
+    //           .label(props.intl.formatMessage(timesheetMessage.entry.field.end))
+    //           .when('start', {
+    //             is: (start: string) => {
+    //               console.log(moment(start).isAfter(value));
+    //               return moment(start).isAfter(value);
+    //             },
+    //             then: Yup.string().default('NOOOOOOOOOO')
+    //           })
+    //           .required();
+    // }),
+
     end: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.end))
       .required(),
 
     description: Yup.string()
-      .label(props.intl.formatMessage(timesheetMessage.entry.field.projectUid))
+      .label(props.intl.formatMessage(timesheetMessage.entry.field.notes))
       .max(200)
       .required(),
   }),
@@ -375,7 +388,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
     const { response: prevResponse } = prevProps.timesheetEntryState.detail;
     const { response: amountResponse } = this.props.systemLimitState.amount;
 
-    console.log(this.props.minDate);
     const dateNow: Date = new Date();
 
     // get system limit amount for new form
