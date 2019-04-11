@@ -299,7 +299,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementFormProps, IOwnHandler> 
           message: props.intl.formatMessage(props.formMode === FormMode.New ? purchaseMessage.request.message.createSuccess : purchaseMessage.request.message.updateSuccess, { uid: response.uid })
         });
        
-        props.history.push(`/purchase/requests/${response.uid}`);
+        props.history.push(`/purchase/settlement/requests/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
