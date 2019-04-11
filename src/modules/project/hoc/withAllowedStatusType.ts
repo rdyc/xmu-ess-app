@@ -10,16 +10,19 @@ const mapStateToProps = () => {
     switch (currentStatus) {
       case WorkflowStatusType.Approved: 
         return [
+          WorkflowStatusType.Approved,
           WorkflowStatusType.Closed
         ];
         
       case WorkflowStatusType.Closed: 
         return [
+          WorkflowStatusType.Closed,
           WorkflowStatusType.ReOpened
         ];
 
       case WorkflowStatusType.ReOpened: 
         return [
+          WorkflowStatusType.ReOpened,
           WorkflowStatusType.Closed
         ];
       
