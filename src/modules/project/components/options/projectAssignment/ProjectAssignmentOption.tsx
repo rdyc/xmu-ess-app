@@ -33,7 +33,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (filter: IProjectAssignmentGetListFilter) => void;
 }
 
 export type ProjectAssignmentOptionProps
@@ -59,7 +59,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentOptionProps, IOwnState, IOwn
         
     values.forEach(item => options.push({ 
       value: item.uid, 
-      label: item.name 
+      label: `${item.uid} - ${item.name}`
     }));
 
     return {
@@ -69,13 +69,13 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentOptionProps, IOwnState, IOwn
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: ProjectAssignmentOptionProps) => () => {
+  handleOnLoadApi: (props: ProjectAssignmentOptionProps) => (filter: IProjectAssignmentGetListFilter) => {
     const { isExpired, isLoading } = props.projectAssignmentState.list;
     const { loadListRequest } = props.projectAssignmentDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
-        filter: props.filter 
+        filter
       });
     }
   }
@@ -83,26 +83,23 @@ const handlerCreators: HandleCreators<ProjectAssignmentOptionProps, IOwnHandler>
 
 const lifeCycle: ReactLifeCycleFunctions<ProjectAssignmentOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.projectAssignmentState.list;
-
-    // 1st load only when request are empty
-    if (!request) {
-      this.props.handleOnLoadApi();
-    } else {
-      // 2nd load only when request filter are present
-      if (request.filter) {
+    // 
+  },
+  componentWillUpdate(nextProps: ProjectAssignmentOptionProps) {
+    if ( !this.props.filter && nextProps.filter ) {
+      this.props.handleOnLoadApi(nextProps.filter);
+    }
+    
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter !== nextProps.filter && (nextProps.filter.customerUid && nextProps.filter.projectTypes)) {
         // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
-  
+        const shouldUpdate = !shallowEqual(nextProps.filter, this.props.filter || {});
+
         // then should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi();
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
-          }
+          this.props.handleOnLoadApi(nextProps.filter);
         }
-      }
+      } 
     }
   },
   componentDidUpdate(prevProps: ProjectAssignmentOptionProps) {

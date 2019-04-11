@@ -84,6 +84,7 @@ const createProps: mapper<TimesheetApprovalListProps, IOwnState> = (props: Times
   } else {
     // fill from previous request if any
     if (request && request.filter) {
+      state.employeeUid = request.filter.employeeUid,
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
@@ -124,6 +125,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
         start: props.start,
         end: props.end,
         customerUid: props.customerUid,
+        employeeUid: props.employeeUid,
         activityType: props.activityType,
         statusType: props.statusType,
         status: 'pending',
@@ -188,6 +190,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
   },
   handleFilterBadge: (props: TimesheetApprovalListProps) => () => {
     return props.customerUid !== undefined ||
+      props.employeeUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
       props.start !== undefined ||
@@ -205,6 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalListProps, IOwnState>
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
+        employeeUid: this.props.employeeUid,
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
@@ -214,6 +218,7 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalListProps, IOwnState>
         isNotify: this.props.isNotify
       },
       {
+        employeeUid: prevProps.employeeUid,
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,

@@ -123,8 +123,6 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
   },
   handleOnConfirm: (props: PurchaseSettlementDetailProps) => () => {
     const { response } = props.purchaseSettlementState.detail;
-    
-    let status: string | null | undefined;
     let purchaseUid: string | undefined;
 
     if (!props.action || !response) {
@@ -132,7 +130,6 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
     }
 
     if (response.data) {
-      status = response.data.statusType; 
       purchaseUid = response.data.uid;
     }
 
@@ -156,7 +153,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
       props.history.push(next, { 
         uid: purchaseUid, 
-        statusType: status 
+        isModifyForm: true 
       });
     }
   },

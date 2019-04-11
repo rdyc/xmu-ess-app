@@ -142,7 +142,7 @@ const component: React.SFC<LookupCurrencyOptionProps> = props => {
 };
 
 export const LookupCurrencyOption = compose<LookupCurrencyOptionProps, IOwnOption>(
-  setDisplayName('LookupCurrencyOptionProps'),
+  setDisplayName('LookupCurrencyOption'),
   withLookupCurrency,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

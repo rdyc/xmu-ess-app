@@ -6,6 +6,8 @@
   "lookup.confirm.delete.title": "Delete Confirmation",
   "lookup.confirm.delete.description": "You are about to delete this {state}. Do you want to continue?",
 
+  "lookup.submission.form": "{state} Submission",
+  
   "lookup.mileageException.page.list.title": "Mileage Exception",
   "lookup.mileageException.page.list.subHeader": " ",
   "lookup.mileageException.page.detail.title": "Mileage Exception Detail",
@@ -74,8 +76,9 @@
   
   "lookup.systemLimit.field.uid": "System Limit ID",
   "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
-  "lookup.systemLimit.field.company": "Company Name",
-  "lookup.systemLimit.field.company.placeholder": "Company Name",
+  "lookup.systemLimit.field.company": "Company",
+  "lookup.systemLimit.field.company.placeholder": "Company",
+  "lookup.systemLimit.field.company.required": "Company is required",
   
   "lookup.systemLimit.field.category": "Category",
   "lookup.systemLimit.field.category.required": "Category is required",

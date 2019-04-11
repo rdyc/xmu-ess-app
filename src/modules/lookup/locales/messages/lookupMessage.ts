@@ -83,7 +83,7 @@ import {
   positionPage,
   positionSection,
 } from './positionMessage';
-import { lookupConfirm } from './shared';
+import { lookupConfirm, lookupSubmission } from './shared';
 import {
   systemLimitConfirm,
   systemLimitField,
@@ -95,7 +95,8 @@ import {
 
 export const lookupMessage = {
   shared: {
-    confirm: lookupConfirm
+    confirm: lookupConfirm,
+    submission: lookupSubmission
   },
   mileageException: {
     page: mileageExceptionPage,

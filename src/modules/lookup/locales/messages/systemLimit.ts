@@ -42,6 +42,7 @@ export const systemLimitField = defineMessages({
   
   company: { id: `${prefix}.field.company`},
   companyPlaceholder: { id: `${prefix}.field.company.placeholder`},
+  companyRequired: { id: `${prefix}.field.company.required`},
 
   category: { id: `${prefix}.field.category`},
   categoryRequired: { id: `${prefix}.field.category.required`},
@@ -82,6 +83,7 @@ export const systemLimitFieldHelperFor = (field: string, type: 'fieldName' | 'fi
 
   if (type === 'fieldRequired') {
     switch (field) {
+      case 'companyUid': return systemLimitField.companyRequired;
       case 'categoryType': return systemLimitField.categoryRequired;
       case 'days': return systemLimitField.daysRequired;  
 

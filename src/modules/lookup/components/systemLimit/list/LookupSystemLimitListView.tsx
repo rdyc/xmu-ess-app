@@ -39,7 +39,7 @@ export const LookupSystemLimitListView: React.SFC<LookupSystemLimitListProps> = 
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => props.history.push(`/lookup/systemlimits/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/lookup/systemlimits/form`, { uid: item.uid, companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
