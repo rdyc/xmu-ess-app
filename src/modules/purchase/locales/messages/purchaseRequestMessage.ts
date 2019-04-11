@@ -18,7 +18,9 @@ export const purchaseRequestPage = defineMessages({
   detailTitle: { id: `${prefix}.request.detail.title` },
   detailSubHeader: { id: `${prefix}.request.detail.subTitle`},
   newTitle: { id: `${prefix}.form.request.newTitle`},
+  newSubTitle: { id: `${prefix}.form.request.newSubTitle`},
   modifyTitle: { id: `${prefix}.form.request.editTitle`},
+  modifySubTitle: { id: `${prefix}.form.request.editSubTitle`},
 
 });
 
@@ -27,6 +29,7 @@ export const purchaseRequestSection = defineMessages({
   infoSubHeader: { id: `${prefix}.request.section.info.subTitle`},
   itemTitle: { id: `${prefix}.item.purchaseTitle`},
   itemSubHeader: { id: `${prefix}.item.purchaseSubTitle`},
+  submit: { id: `${prefix}.request.section.submit`},
 });
 
 export const purchaseRequestConfirm = defineMessages({
@@ -58,6 +61,7 @@ export const purchaseRequestField = defineMessages({
   createdByPlaceholder: { id: `${prefix}.field.information.createdBy.placeholder` },
 
   notes: { id: `${prefix}.field.information.notes` },
+  notesRequired: { id: `${prefix}.field.information.notes.required` },
   notesPlaceholder: { id: `${prefix}.field.information.notes.placeholder` },
 
   advance: { id: `${prefix}.field.information.advance` },
@@ -154,6 +158,7 @@ export const purchaseRequestFieldHelperFor = (field: string, type: 'fieldName' |
       case 'currencyType': return purchaseRequestField.currencyTypePlaceholder;
       case 'currency': return purchaseRequestField.currencyTypePlaceholder;
       case 'rate': return purchaseRequestField.ratePlaceholder;
+      case 'notes': return purchaseRequestField.notesPlaceholder;
       
       // item
       case 'request': return purchaseItemField.requestPlaceholder;

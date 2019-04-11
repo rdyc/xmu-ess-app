@@ -22,16 +22,18 @@ export const DialogConfirmation: React.SFC<OwnProps> = props => (
     <DialogTitle id="dialog-confirm-title">
       {props.title || 'title'}
     </DialogTitle>
+
     <DialogContent>
       <DialogContentText id="dialog-confirm-description">
         {props.content || 'content'}
       </DialogContentText>
     </DialogContent>
+    
     <DialogActions>
-      <Button color="secondary" onClick={props.onClickCancel}>
+      <Button fullWidth color="secondary" onClick={props.onClickCancel}>
         {props.labelCancel || 'cancel'}
       </Button>
-      <Button color="secondary" onClick={props.onClickConfirm} autoFocus>
+      <Button fullWidth color="primary" onClick={props.onClickConfirm} autoFocus>
         {props.labelConfirm || 'confirm'}
       </Button>
     </DialogActions>

@@ -189,7 +189,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerListProps, IOwnState> = 
   }
 };
 
-export const LookupCustomerList = compose(
+export const LookupCustomerList = compose<LookupCustomerListProps, IOwnOption>(
   setDisplayName('LookupCustomerList'),
   withUser,
   withLookupCustomer,

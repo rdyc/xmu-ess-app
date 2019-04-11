@@ -13,6 +13,7 @@ import {
   projectAssignmentOption,
   projectAssignmentPage,
   projectAssignmentSection,
+  projectAssignmentSubmission,
 } from './projectAssignmentMessage';
 import {
   projectAdministrationPage,
@@ -23,6 +24,7 @@ import {
   projectRegistrationOption,
   projectRegistrationPage,
   projectRegistrationSection,
+  projectRegistrationSubmission,
 } from './projectRegistrationMessage';
 import {
   projectSiteField,
@@ -37,6 +39,7 @@ export const projectMessage = {
   registration: {
     page: projectRegistrationPage,
     option: projectRegistrationOption,
+    submission: projectRegistrationSubmission,
     confirm: projectRegistrationConfirm,
     section: projectRegistrationSection,
     field: projectRegistrationField,
@@ -62,6 +65,7 @@ export const projectMessage = {
     page: projectAssignmentPage,
     section: projectAssignmentSection,
     option: projectAssignmentOption,
+    submission: projectAssignmentSubmission,
     field: projectAssignmentField,
     fieldFor: projectAssignmentFieldHelperFor,
     confirm: projectAssignmentConfirm,
