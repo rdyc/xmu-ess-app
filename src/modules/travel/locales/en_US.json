@@ -75,6 +75,7 @@
   "travel.settlement.section.info.subHeader": " ",
   "travel.settlement.section.item.title": "Travel Settlement Item",
   "travel.settlement.section.item.subHeader": " ",
+  "travel.settlement.section.item.submit": "Travel Settlement Submission",
 
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
   "travel.approval.confirm.submission.content": "You are about to submitting travel request for this approval request. Do you want to continue?",
