@@ -1,26 +1,26 @@
+import { AccountLeave } from '@account/components/leave';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages/layoutMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { ILeaveRequestFormValue, LeaveRequestFormProps } from './LeaveRequestForm';
+import LeaveDetailPartialForm from './partials/LeaveDetailPartialForm';
 
-import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
-import TimesheetEntryDetailPartialForm from './partial/TimesheetEntryDetailPartialForm';
-import { ITimesheetEntryFormValue, TimesheetEntryFormProps } from './TimesheetEntryForm';
-
-export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props => (
+export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.TimesheetRequest,
-      parentUid: AppMenu.Timesheet,
-      parentUrl: '/timesheet/requests',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.page.newTitle : timesheetMessage.entry.page.modifyTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.page.newSubHeader : timesheetMessage.entry.page.modifySubHeader)
+      uid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
+      parentUrl: '/leave/requests',
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? leaveMessage.request.page.newTitle : leaveMessage.request.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? leaveMessage.request.page.newSubHeader : leaveMessage.request.page.modifySubHeader)
     }}
-    state={props.timesheetEntryState.detail}
+    state={props.leaveRequestState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -28,30 +28,29 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<ITimesheetEntryFormValue>) => (
+      render={(formikBag: FormikProps<ILeaveRequestFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <TimesheetEntryDetailPartialForm 
-                  formMode={props.formMode}
+                <LeaveDetailPartialForm 
                   formikBag={formikBag}
+                  formMode={props.formMode}
                   intl={props.intl}
-                  minDate={props.minDate}
-                  companyUid={props.userState.user && props.userState.user.company.uid || ''}
+                  handleFilterLeave={props.handleFilterLeave}
                   filterCommonSystem={props.filterCommonSystem}
-                  filterLookupCustomer={props.filterLookupCustomer}
-                  filterProject={props.filterProject}
-                  handleSetProjectFilter={props.handleSetProjectFilter}
+                  filterLookupLeave={props.filterLookupLeave}
                 />
               </div>
             </div>
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
+                <AccountLeave employeeUid={undefined}/>
+
                 <SubmissionForm 
-                  title={props.intl.formatMessage(timesheetMessage.entry.submission.form)}
+                  title={props.intl.formatMessage(leaveMessage.request.submission.form)}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -60,19 +59,21 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.confirm.newTitle : timesheetMessage.entry.confirm.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.confirm.newDescription : timesheetMessage.entry.confirm.modifyDescription),
+                    title: props.intl.formatMessage(leaveMessage.request.confirm.newTitle),
+                    message: props.intl.formatMessage(leaveMessage.request.confirm.newDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
                 />
               </div>
-              
+            </div>
+
+            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-
             </div>
+
           </div>
         </Form>
       )}
