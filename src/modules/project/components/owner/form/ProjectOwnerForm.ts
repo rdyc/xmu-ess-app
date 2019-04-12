@@ -42,7 +42,8 @@ import * as Yup from 'yup';
 import { ProjectOwnerFormView } from './ProjectOwnerFormView';
 
 export interface IProjectOwnerFormValue {
-  uid: string;
+  statusType: string;
+  projectUid: string;
   childProjectUid?: string;
   ownerEmployeeUid: string;
   customerUid: string;
@@ -115,7 +116,8 @@ const createProps: mapper<ProjectOwnerFormProps, IOwnState> = (props: ProjectOwn
 
   // form values
   initialValues: {
-    uid: '',
+    statusType: '',
+    projectUid: '',
     ownerEmployeeUid: '',
     customerUid: '',
     projectType: '',
@@ -325,15 +327,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectOwnerFormProps, IOwnSta
       if (response && response.data) {
         // define initial values
         const initialValues: IProjectOwnerFormValue = {
-          uid: response.data.uid,
+          statusType: response.data.status && response.data.status.value || response.data.statusType,
+          projectUid: response.data.uid,
           childProjectUid: response.data.childProjectUid,
           ownerEmployeeUid: response.data.ownerEmployeeUid,
           customerUid: response.data.customer && response.data.customer.name || response.data.customerUid,
           projectType: response.data.projectType,
           maxHours: response.data.maxHours,
-          contractNumber: response.data.contractNumber || '-',
+          contractNumber: response.data.contractNumber || 'N/A',
           name: response.data.name,
-          description: response.data.description || '-',
+          description: response.data.description || 'N/A',
           start: response.data.start,
           end: response.data.end,
           currencyType: response.data.currency && response.data.currency.value || response.data.currencyType,

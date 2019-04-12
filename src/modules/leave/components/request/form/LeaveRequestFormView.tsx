@@ -47,8 +47,12 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <AccountLeave employeeUid={undefined}/>
+                <AccountLeave/>
+              </div>
+            </div>
 
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(leaveMessage.request.submission.form)}
                   className={props.classes.flexContent}
@@ -66,14 +70,11 @@ export const LeaveRequestFormView: React.SFC<LeaveRequestFormProps> = props => (
                   }} 
                 />
               </div>
-            </div>
 
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
             </div>
-
           </div>
         </Form>
       )}
