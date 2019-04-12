@@ -33,7 +33,7 @@ interface IOwnRouteParams {
 }
 
 interface IOwnOption {
-  employeeUid: string | undefined;
+  employeeUid?: string;
 }
 
 export type AccountLeaveDetailProps
