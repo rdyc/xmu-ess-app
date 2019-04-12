@@ -10,7 +10,6 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
-  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -19,7 +18,8 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: ILookupRoleGetListFilter;
+  // filter?: ILookupRoleGetListFilter;
+  companyUid: string;
 }
 
 interface IOwnState {
@@ -33,7 +33,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (companyUid: string) => void;
 }
 
 export type LookupRoleOptionProps
@@ -69,13 +69,18 @@ const stateUpdaters: StateUpdaters<LookupRoleOptionProps, IOwnState, IOwnStateUp
 };
 
 const handlerCreators: HandleCreators<LookupRoleOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: LookupRoleOptionProps) => () => {
+  handleOnLoadApi: (props: LookupRoleOptionProps) => (companyUid: string) => {
     const { isExpired, isLoading } = props.lookupRoleState.list;
     const { loadListRequest } = props.lookupRoleDispatch;
 
+    const filter: ILookupRoleGetListFilter = {
+      companyUid,
+      direction: 'ascending'
+    };
+
     if (isExpired || !isLoading) {
       loadListRequest({ 
-        filter: props.filter 
+        filter
       });
     }
   }
@@ -83,25 +88,16 @@ const handlerCreators: HandleCreators<LookupRoleOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<LookupRoleOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.lookupRoleState.list;
+    //
+  },
+  componentWillUpdate(nextProps: LookupRoleOptionProps) {
+    if (!this.props.companyUid && nextProps.companyUid) {
+      this.props.handleOnLoadApi(nextProps.companyUid);
+    }
 
-    // 1st load only when request are empty
-    if (!request) {
-      this.props.handleOnLoadApi();
-    } else {
-      // 2nd load only when request filter are present
-      if (request.filter) {
-        // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
-  
-        // then should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi();
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
-          }
-        }
+    if (this.props.companyUid && nextProps.companyUid) {
+      if (this.props.companyUid !== nextProps.companyUid) {
+        this.props.handleOnLoadApi(nextProps.companyUid);
       }
     }
   },

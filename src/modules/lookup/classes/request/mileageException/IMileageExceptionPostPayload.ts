@@ -1,9 +1,9 @@
 export interface IMileageExceptionPostPayload {
   roleUid: string;
+  projectUid: string;
+  siteType: string;
+  siteUid: string;
   percentage: number;
-  projectUid?: string;
-  siteType?: string;
-  projectSiteUid?: string;
   description?: string;
   reason?: string;
   inactiveDate?: string;
