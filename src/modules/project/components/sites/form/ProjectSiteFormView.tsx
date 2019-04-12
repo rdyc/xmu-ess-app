@@ -17,8 +17,8 @@ export const ProjectSiteFormView: React.SFC<ProjectSiteFormProps> = props => (
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
       parentUrl: `/project/requests/${props.projectUid}`,
-      title: props.intl.formatMessage(projectMessage.site.page.modifyTitle),
-      description: props.intl.formatMessage(projectMessage.site.page.modifySubHeader)
+      title: props.intl.formatMessage(projectMessage.site.page.title),
+      description: props.intl.formatMessage(projectMessage.site.page.subHeader)
     }}
     state={props.projectRegisterState.detail}
     onLoadApi={props.handleOnLoadDetail}
@@ -49,8 +49,8 @@ export const ProjectSiteFormView: React.SFC<ProjectSiteFormProps> = props => (
                   formMode={props.formMode}
                   intl={props.intl}
                   classes={{
-                    marginFarRight: props.classes.marginFarRight,
-                    marginWideTop: props.classes.marginWideTop
+                    flexContent: props.classes.flexContent,
+                    marginFarRight: props.classes.marginFarRight
                   }}
                   filterCommonSystem={props.filterCommonSystem}
                 />
@@ -69,8 +69,8 @@ export const ProjectSiteFormView: React.SFC<ProjectSiteFormProps> = props => (
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(projectMessage.registration.confirm.adjustHourTitle),
-                    message: props.intl.formatMessage(projectMessage.registration.confirm.adjustHourDescription),
+                    title: props.intl.formatMessage(projectMessage.site.confirm.patchTitle),
+                    message: props.intl.formatMessage(projectMessage.site.confirm.patchContent),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 

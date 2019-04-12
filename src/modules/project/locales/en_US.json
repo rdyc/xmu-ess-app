@@ -155,18 +155,13 @@
   "project.approval.message.submit.success": "Successfully processing approval submission",
   "project.approval.message.submit.failure": "Failure when processing approval submission",
 
-  "project.site.page.list.title": "Manage Sites",
-  "project.site.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "project.site.page.new.title": "New Site",
-  "project.site.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "project.site.page.modify.title": "Modify Site",
-  "project.site.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "project.site.page.delete.title": "Delete Site",
-  "project.site.page.delete.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  
+  "project.site.page.title": "Manage Sites",
+  "project.site.page.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "project.site.section.item.title": "Sites",
   "project.site.section.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
+  "project.site.field.uid": "Site ID",
   "project.site.field.name": "Name",
   "project.site.field.name.required": "Site name is required",
   "project.site.field.name.placeholder": "Type a site name",
@@ -176,18 +171,18 @@
   "project.site.field.value": "Value",
   "project.site.field.value.required": "Site value is required",
   "project.site.field.value.placeholder": "Type a site value",
+  "project.site.field.itemsMinimum": "Must have at least one project site",
   
   "project.site.option.new": "Create",
   "project.site.option.hour": "Project Hours",
   "project.site.option.modify": "Modify",
   "project.site.option.remove": "Remove",
 
-  "project.site.message.create.success": "New site has been created",
-  "project.site.message.create.failure": "Unable to process your submission",
-  "project.site.message.update.success": "Current site has been updated",
-  "project.site.message.update.failure": "Unable to process your submission",
-  "project.site.message.delete.success": "Current site has been deleted",
-  "project.site.message.delete.failure": "Unable to process your submission",
+  "project.site.confirm.patch.title": "Sites Confirmation",
+  "project.site.confirm.patch.content": "You are about to modify sites for current project. Do you want to continue?",
+
+  "project.site.message.patch.success": "Project sites has been successfully updated",
+  "project.site.message.patch.failure": "Unable to process your submission",
   
   "project.assignment.submission.form": "Assignment Submission",
 

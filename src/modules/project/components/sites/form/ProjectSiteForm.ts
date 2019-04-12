@@ -4,7 +4,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectSitePayload } from '@project/classes/request/site';
+import { IProjectSitePatchPayload } from '@project/classes/request/site';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { WithProjectSite, withProjectSite } from '@project/hoc/withProjectSite';
 import { projectHourMessage } from '@project/locales/messages/projectHourMessage';
@@ -32,7 +32,7 @@ import * as Yup from 'yup';
 import { ProjectSiteFormView } from './ProjectSiteFormView';
 
 interface IProjectSiteItemValue {
-  uid: string;
+  uid?: string;
   name: string;
   value: number;
   siteType: string;
@@ -121,10 +121,26 @@ const createProps: mapper<ProjectSiteFormProps, IOwnState> = (props: ProjectSite
 
   // validation props
   validationSchema: Yup.object().shape<Partial<IProjectSiteFormValue>>({
-    maxHours: Yup.number()
-      .label(props.intl.formatMessage(projectMessage.registration.field.maxHours))
-      .min(0)
-      .required()
+    sites: Yup.array()
+      .of(
+        Yup.object().shape({
+          name: Yup.string()
+            .label(props.intl.formatMessage(projectMessage.site.field.name))
+            .max(50)
+            .required(),
+
+          siteType: Yup.string()
+            .label(props.intl.formatMessage(projectMessage.site.field.siteType))
+            .required(),
+
+          value: Yup.number()
+            .label(props.intl.formatMessage(projectMessage.site.field.value))
+            .min(0)
+            .integer()
+            .required()
+        })
+      )
+      .min(1, props.intl.formatMessage(projectMessage.site.field.itemsMinimum))
   }),
 
   // filter props
@@ -166,15 +182,21 @@ const handlerCreators: HandleCreators<ProjectSiteFormProps, IOwnHandler> = {
         if (props.projectUid) {
           
           // fill payload
-          const payload: IProjectSitePayload = {
-            siteType: '?',
-            name: '',
-            value: 0
+          const payload: IProjectSitePatchPayload = {
+            sites: []
           };
+
+          // fill sites payload
+          values.sites.forEach(item => payload.sites.push({
+            uid: item.uid,
+            siteType: item.siteType,
+            name: item.name,
+            value: item.value
+          }));
 
           // set the promise
           promise = new Promise((resolve, reject) => {
-            props.projectSiteDispatch.createRequest({
+            props.projectSiteDispatch.patchRequest({
               resolve, 
               reject,
               companyUid: user.company.uid,
@@ -197,11 +219,11 @@ const handlerCreators: HandleCreators<ProjectSiteFormProps, IOwnHandler> = {
         
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(projectHourMessage.updateSuccess)
+          message: props.intl.formatMessage(projectMessage.site.message.patchSuccess)
         });
        
         // redirect to detail
-        // props.history.push(`/project/requests/${props.projectUid}`);
+        props.history.push(`/project/requests/${props.projectUid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

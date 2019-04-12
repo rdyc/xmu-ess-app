@@ -3,19 +3,13 @@ import { layoutAlertAdd } from '@layout/store/actions';
 import {
   projectRegistrationGetByIdDispose,
   ProjectSiteAction as Action,
-  projectSiteDeleteError,
-  projectSiteDeleteRequest,
-  projectSiteDeleteSuccess,
   projectSiteGetDispose,
   projectSiteGetError,
   projectSiteGetRequest,
   projectSiteGetSuccess,
-  projectSitePostError,
-  projectSitePostRequest,
-  projectSitePostSuccess,
-  projectSitePutError,
-  projectSitePutRequest,
-  projectSitePutSuccess,
+  projectSitePatchError,
+  projectSitePatchRequest,
+  projectSitePatchSuccess,
 } from '@project/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
@@ -44,22 +38,22 @@ function* watchGetRequest() {
   yield takeEvery(Action.GET_REQUEST, worker);
 }
 
-function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof projectSitePostRequest>) => {
+function* watchPatchRequest() {
+  const worker = (action: ReturnType<typeof projectSitePatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'patch',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(projectRegistrationGetByIdDispose()),
         put(projectSiteGetDispose()),
-        put(projectSitePostSuccess(response.body))
+        put(projectSitePatchSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(projectSitePostError(response.statusText))
+        put(projectSitePatchError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -67,7 +61,7 @@ function* watchPostRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(projectSitePostError(error.message)),
+        put(projectSitePatchError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -81,101 +75,13 @@ function* watchPostRequest() {
     });
   };
 
-  yield takeEvery(Action.POST_REQUEST, worker);
-}
-
-function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof projectSitePutRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'put',
-      path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(projectRegistrationGetByIdDispose()),
-        put(projectSiteGetDispose()),
-        put(projectSitePutSuccess(response.body))
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(projectSitePutError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(projectSitePutError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.PUT_REQUEST, worker);
-}
-
-function* watchDeleteRequest() {
-  const worker = (action: ReturnType<typeof projectSiteDeleteRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'delete',
-      path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
-      successEffects: (response: IApiResponse) => [
-        put(projectRegistrationGetByIdDispose()),
-        put(projectSiteGetDispose()),
-        put(projectSiteDeleteSuccess(response.body))
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(projectSiteDeleteError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(projectSiteDeleteError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.DELETE_REQUEST, worker);
+  yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
 function* projectSiteSagas() {
   yield all([
     fork(watchGetRequest),
-    fork(watchPostRequest),
-    fork(watchPutRequest),
-    fork(watchDeleteRequest)
+    fork(watchPatchRequest)
   ]);
 }
 
