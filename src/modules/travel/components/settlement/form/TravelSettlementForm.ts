@@ -26,6 +26,7 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IExpense } from '@expense/classes/response';
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
+import { GlobalFormat } from '@layout/types';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { ITravelSettlementPostPayload, ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
@@ -468,8 +469,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelSettlementFormProps, IOw
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: item.departureDate,
-            returnDate: item.returnDate,
+            departureDate: this.props.intl.formatDate(item.departureDate, GlobalFormat.TimeDate),
+            returnDate: this.props.intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
             hotel: item.hotel,
@@ -521,8 +522,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelSettlementFormProps, IOw
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: item.departureDate,
-            returnDate: item.returnDate,
+            departureDate: this.props.intl.formatDate(item.departureDate, GlobalFormat.TimeDate),
+            returnDate: this.props.intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
             hotel: item.hotel,

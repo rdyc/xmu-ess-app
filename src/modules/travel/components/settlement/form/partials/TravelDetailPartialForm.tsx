@@ -104,7 +104,6 @@ const TravelDetailPartialForm: React.ComponentType<TravelDetailPartialFormProps>
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            disablePast
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
             onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
@@ -128,7 +127,6 @@ const TravelDetailPartialForm: React.ComponentType<TravelDetailPartialFormProps>
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            disablePast
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
             onChange={(moment: Moment) => props.formikBag.setFieldValue('end', moment.format('YYYY-MM-DD'))}

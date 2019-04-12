@@ -9,10 +9,10 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import { AccessTime, ChevronLeft, ChevronRight, DateRange } from '@material-ui/icons';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
-import { DatePicker } from 'material-ui-pickers';
-import { Moment } from 'moment';
+import { DateTimePicker } from 'material-ui-pickers';
+import * as moment from 'moment';
 import { ITravelSettlementFormValue } from '../TravelSettlementForm';
 
 type TravelItemPartialFormProps = {
@@ -24,6 +24,48 @@ type TravelItemPartialFormProps = {
     flexContent: string;
     marginFarRight: string;
   };
+};
+
+const calculateDiem = (start: string, end: string, index: number, props: TravelItemPartialFormProps) => {
+  let result: number = 0;
+
+  if (start !== '' && end !== '') {
+    const startDate = moment(start);
+    const endDate = moment(end);
+    const diffHours = endDate.diff(startDate, 'hours');
+    const diffDays = startDate.isSame(endDate, 'years') ?
+      endDate.dayOfYear() - startDate.dayOfYear() :
+      endDate.diff(startDate, 'days');
+
+    if (startDate.isSame(endDate, 'days')) {
+      result = diffHours >= 8 ? 1 : 0;
+    } else if (!startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+      result = diffDays + 1;
+    } else {
+      result = diffDays;
+    }
+  }
+
+  // calculate amount
+  const thisAmount = result * props.formikBag.values.items[index].diemValue * props.formikBag.values.items[index].currencyRate;
+  let totalValue = 0;
+
+  // set duration & amount
+  props.formikBag.setFieldValue(`items.${index}.duration`, result);
+  props.formikBag.setFieldValue(`items.${index}.amount`, thisAmount);
+
+  // calculate total requested
+  totalValue = thisAmount;
+  props.formikBag.values.items.forEach((requestItem, indexItem) => {
+    if (index !== indexItem) {
+      totalValue = totalValue + requestItem.costTransport + requestItem.costHotel + requestItem.amount;
+    } else {
+      totalValue = totalValue + requestItem.costHotel + requestItem.costTransport;
+    }                              
+  });
+
+  // set ttoal
+  props.formikBag.setFieldValue('total', totalValue);
 };
 
 const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = props => (
@@ -72,17 +114,17 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                             <SelectField
                               isSearchable
                               isDisabled={props.formikBag.isSubmitting}
-                              isClearable={field.value !== ''}
+                              isClearable={props.formikBag.values.items[index].transportType !== ''}
                               escapeClearsValue={true}
-                              valueString={field.value}
+                              valueString={props.formikBag.values.items[index].transportType}
                               textFieldProps={{
-                                label: props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName')),
+                                label: props.intl.formatMessage(travelMessage.request.field.transportType),
                                 required: true,
                                 helperText: touch && error,
                                 error: touch && Boolean(error)
                               }}
                               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(`items.${index}.transportType`, selected && selected.value || '')}
                             />
                           </CommonSystemOption>
                         </React.Fragment>
@@ -95,7 +137,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                     name={`items.${index}.isRoundTrip`}
                     render={({ field, form }: FieldProps<ITravelSettlementFormValue>) => (
                       <FormControlLabel
-                        label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
+                        label={props.intl.formatMessage(travelMessage.request.field.isRoundTrip)}
                         control={
                           <Checkbox 
                             {...field} 
@@ -161,22 +203,33 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                       const touch = getIn(form.touched, `items.${index}.departureDate`);
 
                       return (
-                        <DatePicker
+                        <DateTimePicker
                           {...field}
                           fullWidth
                           required={true}
                           margin="normal"
+                          minDate={props.formikBag.values.start}
+                          maxDate={props.formikBag.values.end}
                           disabled={form.isSubmitting}
+                          timeIcon={<AccessTime />}
+                          dateRangeIcon={<DateRange />}
+                          ampm={false}
                           showTodayButton
-                          label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
-                          placeholder={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
+                          label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
+                          placeholder={props.intl.formatMessage(travelMessage.request.field.itemStart)}
+                          value={moment(props.formikBag.values.items[index].departureDate).format('YYYY-MM-DD HH:mm')}
                           leftArrowIcon={<ChevronLeft />}
                           rightArrowIcon={<ChevronRight />}
-                          format="MMMM DD, YYYY"
-                          disablePast
+                          format="MMMM DD, YYYY HH:mm" 
                           helperText={touch && error}
                           error={touch && Boolean(error)}
-                          onChange={(moment: Moment) => props.formikBag.setFieldValue(`items.${index}.departureDate`, moment.format('YYYY-MM-DD'))}
+                          onChange={(momentDate: moment.Moment) => {
+                            // set value
+                            props.formikBag.setFieldValue(`items.${index}.departureDate`, momentDate.format('YYYY-MM-DD HH:mm'));
+
+                            // set diem duration
+                            calculateDiem(momentDate.format('YYYY-MM-DD HH:mm'), props.formikBag.values.items[index].returnDate, index, props);
+                          }}
                           invalidLabel=""
                         />
                       );
@@ -190,22 +243,32 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                       const touch = getIn(form.touched, `items.${index}.returnDate`);
 
                       return (
-                        <DatePicker
+                        <DateTimePicker
                           {...field}
                           fullWidth
                           required={true}
                           margin="normal"
+                          minDate={props.formikBag.values.start}
+                          maxDate={props.formikBag.values.end}
                           disabled={form.isSubmitting}
+                          timeIcon={<AccessTime />}
+                          dateRangeIcon={<DateRange />}
+                          ampm={false}
                           showTodayButton
-                          label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
-                          placeholder={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
+                          label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
+                          placeholder={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                           leftArrowIcon={<ChevronLeft />}
                           rightArrowIcon={<ChevronRight />}
-                          format="MMMM DD, YYYY"
-                          disablePast
+                          format="MMMM DD, YYYY HH:mm"
                           helperText={touch && error}
                           error={touch && Boolean(error)}
-                          onChange={(moment: Moment) => props.formikBag.setFieldValue(`items.${index}.returnDate`, moment.format('YYYY-MM-DD'))}
+                          onChange={(momentDate: moment.Moment) => {
+                            // set value
+                            props.formikBag.setFieldValue(`items.${index}.returnDate`, momentDate.format('YYYY-MM-DD HH:mm'));
+
+                            // set diem duration
+                            calculateDiem(props.formikBag.values.items[index].departureDate, momentDate.format('YYYY-MM-DD HH:mm'), index, props);
+                          }}
                           invalidLabel=""
                         />
                       );
@@ -234,20 +297,34 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                             inputComponent: NumberFormatter,
                           }}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            let value = 0;
+                            let thisCost = 0;
+                            let totalValue = 0;
 
                             if (e.target.value === '') {
                               // set current field
                               props.formikBag.setFieldValue(field.name, 0);
                             } else {
-                              value = parseFloat(e.target.value);
+                              thisCost = parseFloat(e.target.value);
 
                               // set current field
-                              props.formikBag.setFieldValue(field.name, value);
+                              props.formikBag.setFieldValue(field.name, thisCost);
                             }
 
                             // set cost field
-                            props.formikBag.setFieldValue(`items.${index}.costTransport`, value);
+                            props.formikBag.setFieldValue(`items.${index}.costTransport`, thisCost);
+
+                            // calculate total requested
+                            totalValue = thisCost;
+                            props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                              if (index !== indexItem) {
+                                totalValue = totalValue + requestItem.costTransport + requestItem.costHotel + requestItem.amount;
+                              } else {
+                                totalValue = totalValue + requestItem.costHotel + requestItem.amount;
+                              }                         
+                            });
+
+                            // set total
+                            props.formikBag.setFieldValue('total', totalValue);
                           }}
                         />
                       );
@@ -259,7 +336,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                     name={`items.${index}.isTransportByCompany`}
                     render={({ field, form }: FieldProps<ITravelSettlementFormValue>) => (
                       <FormControlLabel
-                        label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
+                        label={props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)}
                         control={
                           <Checkbox 
                             {...field} 
@@ -317,20 +394,34 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                             inputComponent: NumberFormatter,
                           }}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            let value = 0;
+                            let thisCost = 0;
+                            let totalValue = 0;
 
                             if (e.target.value === '') {
                               // set current field
                               props.formikBag.setFieldValue(field.name, 0);
                             } else {
-                              value = parseFloat(e.target.value);
+                              thisCost = parseFloat(e.target.value);
 
                               // set current field
-                              props.formikBag.setFieldValue(field.name, value);
+                              props.formikBag.setFieldValue(field.name, thisCost);
                             }
 
                             // set cost field
-                            props.formikBag.setFieldValue(`items.${index}.costHotel`, value);
+                            props.formikBag.setFieldValue(`items.${index}.costHotel`, thisCost);
+
+                            // calculate total requested
+                            totalValue = thisCost;
+                            props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                              if (index !== indexItem) {
+                                totalValue = totalValue + requestItem.costTransport + requestItem.costHotel + requestItem.amount;
+                              } else {
+                                totalValue = totalValue + requestItem.costTransport + requestItem.amount;
+                              }                         
+                            });
+
+                            // set total
+                            props.formikBag.setFieldValue('total', totalValue);
                           }}
                         />
                       );
@@ -342,7 +433,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                     name={`items.${index}.isHotelByCompany`}
                     render={({ field, form }: FieldProps<ITravelSettlementFormValue>) => (
                       <FormControlLabel
-                        label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
+                        label={props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)}
                         control={
                           <Checkbox 
                             {...field} 
