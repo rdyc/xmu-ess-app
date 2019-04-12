@@ -11,6 +11,7 @@ import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import styles from '@styles';
 import { ITimesheetPostPayload, ITimesheetPutPayload } from '@timesheet/classes/request/entry';
 import { ITimesheet } from '@timesheet/classes/response';
@@ -65,7 +66,7 @@ interface IOwnState {
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectAssignmentGetListFilter;
-  
+  filterProjectSite?: IProjectSiteGetRequest;
   initialValues?: ITimesheetEntryFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ITimesheetEntryFormValue>>>;
 }
@@ -79,6 +80,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleSetProjectFilter: (customerUid: string, values: ITimesheetEntryFormValue) => void;
+  handleSetProjectSiteFilter: (projectUid: string) => void;
   handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ITimesheetEntryFormValue, actions: FormikActions<ITimesheetEntryFormValue>) => void;
@@ -223,6 +225,20 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
     if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { 
       props.stateUpdate({
         minDate: minDate.toDate()
+      });
+    }
+  },
+  handleSetProjectSiteFilter: (props: TimesheetEntryFormProps) => (projectUid: string) => {
+    const { user } = props.userState;
+
+    if (user) {
+      const filterProjectSite: IProjectSiteGetRequest = {
+        projectUid,
+        companyUid: user.company.uid,
+      };
+
+      props.stateUpdate({
+        filterProjectSite
       });
     }
   },
@@ -410,15 +426,17 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           projectUid: thisResponse.data.projectUid,
           siteUid: thisResponse.data.siteUid,
           date: thisResponse.data.date,
-          start: thisResponse.data.start,
-          end: thisResponse.data.end,
+          start: moment(thisResponse.data.start).format('YYYY-MM-DD HH:mm'),
+          end: moment(thisResponse.data.end).format('YYYY-MM-DD HH:mm'),
           description: thisResponse.data.description || ''
         };
 
         if (amountResponse && amountResponse.data) {
           this.props.handleSetMinDate(amountResponse.data.days, thisResponse.data.changes && thisResponse.data.changes.createdAt);
-        }       
+        }
+
         this.props.handleSetProjectFilter(thisResponse.data.customerUid, initialValues);
+        this.props.handleSetProjectSiteFilter(thisResponse.data.projectUid);
         this.props.setInitialValues(initialValues);
       }
     }

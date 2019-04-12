@@ -3,24 +3,23 @@ import { FormMode } from '@generic/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
-import { layoutMessage } from '@layout/locales/messages/layoutMessage';
+import { layoutMessage } from '@layout/locales/messages';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { IMileageExceptionFormValue, MileageExceptionFormProps } from './LookupMileageExceptionForm';
+import LookupMileageExceptionDetailPartialForm from './partial/LookupMileageExceptionDetailPartialForm';
 
-import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
-import TimesheetEntryDetailPartialForm from './partial/TimesheetEntryDetailPartialForm';
-import { ITimesheetEntryFormValue, TimesheetEntryFormProps } from './TimesheetEntryForm';
-
-export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props => (
+export const LookupMileageExceptionFormView: React.SFC<MileageExceptionFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.TimesheetRequest,
-      parentUid: AppMenu.Timesheet,
-      parentUrl: '/timesheet/requests',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.page.newTitle : timesheetMessage.entry.page.modifyTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.page.newSubHeader : timesheetMessage.entry.page.modifySubHeader)
+      uid: AppMenu.LookupMileageException,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/mileageexceptions',
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.mileageException.page.newTitle : lookupMessage.mileageException.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.mileageException.page.newSubHeader : lookupMessage.mileageException.page.modifySubHeader)
     }}
-    state={props.timesheetEntryState.detail}
+    state={props.mileageExceptionState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -28,24 +27,21 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<ITimesheetEntryFormValue>) => (
+      render={(formikBag: FormikProps<IMileageExceptionFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
-
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <TimesheetEntryDetailPartialForm 
+                <LookupMileageExceptionDetailPartialForm 
                   formMode={props.formMode}
                   formikBag={formikBag}
                   intl={props.intl}
-                  minDate={props.minDate}
-                  companyUid={props.userState.user && props.userState.user.company.uid || ''}
                   filterCommonSystem={props.filterCommonSystem}
-                  filterLookupCustomer={props.filterLookupCustomer}
+                  filterLookupCompany={props.filterLookupCompany}
                   filterProject={props.filterProject}
                   filterProjectSite={props.filterProjectSite}
-                  handleSetProjectSiteFilter={props.handleSetProjectSiteFilter}
-                  handleSetProjectFilter={props.handleSetProjectFilter}
+                  handleFilterProject={props.handleFilterProject}
+                  handleFilterProjectSite={props.handleFilterProjectSite}
                 />
               </div>
             </div>
@@ -53,7 +49,7 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(timesheetMessage.entry.submission.form)}
+                  title={props.intl.formatMessage(lookupMessage.shared.submission.form, {state: 'Mileage Exception'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -62,18 +58,19 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.confirm.newTitle : timesheetMessage.entry.confirm.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? timesheetMessage.entry.confirm.newDescription : timesheetMessage.entry.confirm.modifyDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createTitle : lookupMessage.shared.confirm.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createDescription : lookupMessage.shared.confirm.modifyDescription, {state: 'Mileage Exception'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
                 />
               </div>
-              
+            </div>
+
+            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-
             </div>
           </div>
         </Form>

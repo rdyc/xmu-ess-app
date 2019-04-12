@@ -10,6 +10,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -17,8 +18,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface IOwnOption extends IProjectSiteGetRequest {
-  // 
+interface IOwnOption {
+  filter?: IProjectSiteGetRequest;
 }
 
 interface IOwnState {
@@ -83,22 +84,67 @@ const handlerCreators: HandleCreators<ProjectSiteOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<ProjectSiteOptionProps, IOwnState> = {
   componentDidMount() {
-    // 
+    const { request, response } = this.props.projectSiteState;
+
+    // 1st load only when request are empty
+    if (!request) {
+      if (this.props.filter) {
+        this.props.handleOnLoadApi(this.props.filter);
+      }
+    } else {
+      // 2nd load only when request filter are present
+      if (request && this.props.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request, this.props.filter);
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi(this.props.filter);
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
   },
   componentWillUpdate(nextProps: ProjectSiteOptionProps) {
-    const filter: IProjectSiteGetRequest = {
-      companyUid: nextProps.companyUid,
-      projectUid: nextProps.projectUid
-    };
+    const { request, response } = this.props.projectSiteState;
 
-    if (!this.props.projectUid && nextProps.projectUid) {
-      this.props.handleOnLoadApi(filter);
+    // if no filter before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.filter && nextProps.filter ) {
+      // when no data then load
+      if (!request) {
+        this.props.handleOnLoadApi(nextProps.filter);
+      } else if (request) {
+        // if request(data) is exist then compare
+        const shouldUpdate = !shallowEqual(request, nextProps.filter);
+
+        // should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi(nextProps.filter);
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
     }
 
-    if (this.props.projectUid && nextProps.projectUid) {
-      // comparing the project uid
-      if (this.props.projectUid !== nextProps.projectUid) {
-        this.props.handleOnLoadApi(filter);
+    // this used for update list when changing the filter *not the 1st time load
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter !== nextProps.filter) {
+        if (request) {
+          const shouldUpdate = !shallowEqual(request, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.filter);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
+          }
+        }
       }
     }
   },
