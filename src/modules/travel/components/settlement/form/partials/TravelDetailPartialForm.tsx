@@ -9,7 +9,6 @@ import { InjectedIntl } from 'react-intl';
 
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { ITravelSettlementFormValue } from '../TravelSettlementForm';
 
@@ -219,12 +218,11 @@ const TravelDetailPartialForm: React.ComponentType<TravelDetailPartialFormProps>
           <TextField
             {...field}
             fullWidth
-            required={true}
             margin="normal"
             autoComplete="off"
             disabled={form.isSubmitting}
-            label={props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field.name, 'fieldPlaceholder'))}
+            label={props.intl.formatMessage(travelMessage.request.field.comment)}
+            placeholder={props.intl.formatMessage(travelMessage.request.field.comment)}
             helperText={form.touched.comment && form.errors.comment}
             error={form.touched.comment && Boolean(form.errors.comment)}
           />
@@ -237,7 +235,8 @@ const TravelDetailPartialForm: React.ComponentType<TravelDetailPartialFormProps>
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             {...field}
-            label={props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field.name, 'fieldName'))}
+            label={props.intl.formatMessage(travelMessage.request.field.total)}
+            value={props.intl.formatNumber(props.formikBag.values.total)}
           />
         )}
       />

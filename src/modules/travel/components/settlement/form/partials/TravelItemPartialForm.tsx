@@ -285,7 +285,6 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                         <TextField
                           {...field}
                           fullWidth
-                          required
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
@@ -359,7 +358,6 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                         <TextField 
                           {...field}
                           fullWidth
-                          required
                           margin="normal"
                           autoComplete="off"
                           disabled={form.isSubmitting}
@@ -382,7 +380,6 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                         <TextField
                           {...field}
                           fullWidth
-                          required
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
@@ -456,7 +453,6 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                         <TextField 
                           {...field}
                           fullWidth
-                          required
                           margin="normal"
                           autoComplete="off"
                           disabled={form.isSubmitting}
@@ -482,6 +478,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                           fullWidth
                           label={props.intl.formatMessage(travelMessage.request.field.duration)}
                           placeholder={props.intl.formatMessage(travelMessage.request.field.duration)}
+                          value={props.intl.formatNumber(props.formikBag.values.items[index].duration)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />
@@ -502,6 +499,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                           fullWidth
                           label={props.intl.formatMessage(travelMessage.request.field.amount)}
                           placeholder={props.intl.formatMessage(travelMessage.request.field.amount)}
+                          value={props.intl.formatNumber(props.formikBag.values.items[index].amount)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />
@@ -542,6 +540,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                           fullWidth
                           label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                           placeholder={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
+                          value={props.intl.formatNumber(props.formikBag.values.items[index].currencyRate)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />
@@ -562,6 +561,7 @@ const TravelItemPartialForm: React.ComponentType<TravelItemPartialFormProps> = p
                           fullWidth
                           label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                           placeholder={props.intl.formatMessage(travelMessage.request.field.diemValue)}
+                          value={props.intl.formatNumber(props.formikBag.values.items[index].diemValue)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />

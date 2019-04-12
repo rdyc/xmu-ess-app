@@ -174,11 +174,11 @@ const createProps: mapper<TravelSettlementFormProps, IOwnState> = (props: Travel
       .label(props.intl.formatMessage(travelMessage.request.field.target)),
       
     comment: Yup.string()
-      .label(props.intl.formatMessage(travelMessage.settlement.field.comment))
-      .required(),
+      .max(200)
+      .label(props.intl.formatMessage(travelMessage.request.field.comment)),
 
     total: Yup.number()
-      .label(props.intl.formatMessage(travelMessage.settlement.field.total)),
+      .label(props.intl.formatMessage(travelMessage.request.field.total)),
   
     items: Yup.array()
       .of(
@@ -215,26 +215,20 @@ const createProps: mapper<TravelSettlementFormProps, IOwnState> = (props: Travel
             .label(props.intl.formatMessage(travelMessage.request.field.itemEnd)),
             
           costTransport: Yup.number()
-            .min(1)
-            .label(props.intl.formatMessage(travelMessage.request.field.transportCost))
-            .required(),
+            .label(props.intl.formatMessage(travelMessage.request.field.transportCost)),
             
           isTransportByCompany: Yup.boolean()
-            .label(props.intl.formatMessage(travelMessage.request.field.isTransportByCompany))
-            .required(),
+            .label(props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)),
             
           hotel: Yup.string()
             .max(50)
             .label(props.intl.formatMessage(travelMessage.request.field.hotel)),
             
           costHotel: Yup.number()
-            .min(1)
-            .label(props.intl.formatMessage(travelMessage.request.field.hotelCost))
-            .required(),
+            .label(props.intl.formatMessage(travelMessage.request.field.hotelCost)),
             
           isHotelByCompany: Yup.boolean()
-            .label(props.intl.formatMessage(travelMessage.request.field.isHotelByCompany))
-            .required(),
+            .label(props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)),
             
           notes: Yup.string()
             .max(125)
@@ -359,6 +353,7 @@ const handlerCreators: HandleCreators<TravelSettlementFormProps, IOwnHandler> = 
   
           // fill items
           values.items.forEach(item => payload.items && payload.items.push({
+            uid: item.uid,
             employeeUid: item.employeeUid,
             isRoundTrip: item.isRoundTrip,
             transportType: item.transportType,
@@ -473,10 +468,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelSettlementFormProps, IOw
             returnDate: this.props.intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
-            hotel: item.hotel,
-            costHotel: item.costHotel,
+            hotel: item.hotel || '',
+            costHotel: item.costHotel || 0,
             isHotelByCompany: item.isHotelByCompany,
-            notes: item.notes,
+            notes: item.notes || '',
             duration: item.duration || 0,
             amount: item.amount,
             currencyUid: item.currency && item.currency.name,
@@ -515,7 +510,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelSettlementFormProps, IOw
         // fill items
         if (travelResponse.data.items) {
           travelResponse.data.items.forEach(item => initialValues.items && initialValues.items.push({
-            uid: item.uid,
+            uid: '',
             employeeUid: item.employeeUid,
             fullName: item.employee && item.employee.fullName || 'N/A',
             transportType: item.transportType,
@@ -526,10 +521,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelSettlementFormProps, IOw
             returnDate: this.props.intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
-            hotel: item.hotel,
+            hotel: item.hotel || '',
             costHotel: item.costHotel || 0,
             isHotelByCompany: item.isHotelByCompany,
-            notes: item.notes,
+            notes: item.notes || '',
             duration: item.duration || 0,
             amount: item.amount,
             currencyUid: item.currency && item.currency.name,
