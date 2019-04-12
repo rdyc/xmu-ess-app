@@ -39,6 +39,9 @@ export const LookupMileageExceptionFormView: React.SFC<MileageExceptionFormProps
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCompany={props.filterLookupCompany}
                   filterProject={props.filterProject}
+                  filterProjectSite={props.filterProjectSite}
+                  handleFilterProject={props.handleFilterProject}
+                  handleFilterProjectSite={props.handleFilterProjectSite}
                 />
               </div>
             </div>

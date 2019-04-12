@@ -11,6 +11,7 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import { ProjectOption } from '@project/components/options/project/ProjectOption';
 import { ProjectSiteOption } from '@project/components/options/projectSite/ProjectSiteOption';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -27,6 +28,9 @@ type LookupMileageExceptionDetailPartialFormProps = {
   filterLookupCompany?: ILookupCompanyGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectRegistrationGetListFilter;
+  filterProjectSite?: IProjectSiteGetRequest;
+  handleFilterProject: (companyUid?: string) => void;
+  handleFilterProjectSite: (companyUid: string, projectUid?: string) => void;
 };
 
 const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileageExceptionDetailPartialFormProps> = props => (
@@ -71,7 +75,9 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                 props.formikBag.setFieldValue('roleUid', '');
+                props.formikBag.setFieldValue('projectUid', '');
                 props.formikBag.setFieldValue('siteUid', '');
+                props.handleFilterProject(selected && selected.value);
               }}
             />
           </LookupCompanyOption>
@@ -138,7 +144,7 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               isSearchable
               // menuPlacement="auto"
               // menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -151,6 +157,7 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                props.handleFilterProjectSite(props.formikBag.values.companyUid, selected && selected.value);
               }}
             />
           </ProjectOption>
@@ -160,7 +167,7 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
       <Field
         name="siteUid"
         render={({ field, form }: FieldProps<IMileageExceptionFormValue>) => (
-          <ProjectSiteOption companyUid={props.formikBag.values.companyUid} projectUid={props.formikBag.values.projectUid}>
+          <ProjectSiteOption filter={props.filterProjectSite}>
             <SelectField
               isSearchable
               // menuPlacement="auto"

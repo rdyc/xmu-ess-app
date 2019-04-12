@@ -13,6 +13,7 @@ import { WithLookupMileageException, withLookupMileageException } from '@lookup/
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -64,14 +65,18 @@ interface IOwnState {
   filterLookupCompany?: ILookupCompanyGetListFilter;
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectRegistrationGetListFilter;
+  filterProjectSite?: IProjectSiteGetRequest;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
+  handleFilterProject: (companyUid?: string) => void;
+  handleFilterProjectSite: (companyUid: string, projectUid?: string) => void;
   handleOnSubmit: (values: IMileageExceptionFormValue, actions: FormikActions<IMileageExceptionFormValue>) => void;
 }
 
@@ -91,7 +96,7 @@ export type MileageExceptionFormProps
 const createProps: mapper<MileageExceptionFormProps, IOwnState> = (props: MileageExceptionFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  
+
   // form values
   initialValues: {
     uid: 'Auto Generated',
@@ -155,17 +160,16 @@ const createProps: mapper<MileageExceptionFormProps, IOwnState> = (props: Mileag
   filterCommonSystem: {
     orderBy: 'value',
     direction: 'ascending'
-  },
-
-  filterProject: {
-    activeOnly: true,
-    statusTypes: WorkflowStatusType.Approved
   }
 });
 
 const stateUpdaters: StateUpdaters<MileageExceptionFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
+  }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -181,6 +185,31 @@ const handlerCreators: HandleCreators<MileageExceptionFormProps, IOwnHandler> = 
           mileageExceptionUid
         });
       }
+    }
+  },
+  handleFilterProjectSite: (props: MileageExceptionFormProps) => (companyUid: string, projectUid?: string) => {
+    if (projectUid) {
+      const filterProjectSite: IProjectSiteGetRequest = {
+        companyUid,
+        projectUid
+      };
+  
+      props.stateUpdate({
+        filterProjectSite
+      });
+    }
+  },
+  handleFilterProject: (props: MileageExceptionFormProps) => (companyUid?: string) => {
+    if (companyUid) {
+      const filterProject: IProjectRegistrationGetListFilter = {
+        companyUid,
+        activeOnly: true,
+        statusTypes: WorkflowStatusType.Approved,
+      };
+  
+      props.stateUpdate({
+        filterProject
+      });
     }
   },
   handleOnSubmit: (props: MileageExceptionFormProps) => (values: IMileageExceptionFormValue, actions: FormikActions<IMileageExceptionFormValue>) => {
@@ -309,6 +338,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<MileageExceptionFormProps, IOw
         };
 
         this.props.setInitialValues(initialValues);
+        this.props.handleFilterProjectSite(thisResponse.data.role.companyUid, thisResponse.data.projectUid);
+        this.props.handleFilterProject(thisResponse.data.role.companyUid);
       }
     }
   }
