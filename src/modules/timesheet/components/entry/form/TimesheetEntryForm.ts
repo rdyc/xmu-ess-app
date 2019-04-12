@@ -410,8 +410,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           projectUid: thisResponse.data.projectUid,
           siteUid: thisResponse.data.siteUid,
           date: thisResponse.data.date,
-          start: thisResponse.data.start,
-          end: thisResponse.data.end,
+          start: moment(thisResponse.data.start).format('YYYY-MM-DD HH:mm'),
+          end: moment(thisResponse.data.end).format('YYYY-MM-DD HH:mm'),
           description: thisResponse.data.description || ''
         };
 
