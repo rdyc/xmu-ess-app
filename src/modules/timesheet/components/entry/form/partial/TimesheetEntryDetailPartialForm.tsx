@@ -8,6 +8,7 @@ import { LookupCustomerOption } from '@lookup/components/customer/options/Lookup
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import { ProjectAssignmentOption } from '@project/components/options/projectAssignment/ProjectAssignmentOption';
 import { ProjectSiteOption } from '@project/components/options/projectSite/ProjectSiteOption';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
@@ -27,7 +28,9 @@ type TimesheetEntryDetailPartialFormProps = {
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectAssignmentGetListFilter;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
+  filterProjectSite?: IProjectSiteGetRequest;
   handleSetProjectFilter: (customerUid: string, values: ITimesheetEntryFormValue) => void;
+  handleSetProjectSiteFilter: (projectUid: string) => void;
 };
 
 const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailPartialFormProps> = props => (
@@ -123,6 +126,7 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
                 onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
                 onChange={(selected: ISelectFieldOption) => {
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.handleSetProjectSiteFilter(selected && selected.value);
                   props.formikBag.setFieldValue('siteUid', '');
                 }}
               />
@@ -135,7 +139,7 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
         name="siteUid"
         render={({ field, form }: FieldProps<ITimesheetEntryFormValue>) => (
           <React.Fragment>
-            <ProjectSiteOption companyUid={props.companyUid} projectUid={props.formikBag.values.projectUid}>
+            <ProjectSiteOption filter={props.filterProjectSite}>
               <SelectField
                 isSearchable
                 isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.isSubmitting}
