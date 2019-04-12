@@ -17,7 +17,7 @@ import { ProjectHourForm } from './hour/form/ProjectHourForm';
 import { ProjectOwnerForm } from './owner/form/ProjectOwnerForm';
 import { ProjectRegistrationForm } from './registration/form/ProjectRegistrationForm';
 import { ProjectRegistrationList } from './registration/list/ProjectRegistrationList';
-import { SiteEditor } from './sites/SiteEditor';
+import { ProjectSiteForm } from './sites/form/ProjectSiteForm';
 import { ProjectStatusForm } from './status/form/ProjectStatusForm';
 
 const request = (props: RouteComponentProps) => (
@@ -25,7 +25,7 @@ const request = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/hour`} component={ProjectHourForm} />
     <Route path={`${props.match.path}/owner`} component={ProjectOwnerForm} />
     <Route path={`${props.match.path}/status`} component={ProjectStatusForm} />
-    <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
+    <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={ProjectSiteForm} />
     <Route path={`${props.match.path}/form`} component={ProjectRegistrationForm} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectRegistrationList} />

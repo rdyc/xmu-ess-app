@@ -1,15 +1,11 @@
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
-import { IProjectSiteGetRequest, IProjectSitePostRequest, IProjectSitePutRequest } from '@project/classes/queries/site';
+import { IProjectSiteGetRequest, IProjectSitePatchRequest } from '@project/classes/queries/site';
 import { IProjectSite } from '@project/classes/response';
 import {
-  projectSiteDeleteDispose,
-  projectSiteDeleteRequest,
   projectSiteGetDispose,
   projectSiteGetRequest,
-  projectSitePostDispose,
-  projectSitePostRequest,
-  projectSitePutDispose,
-  projectSitePutRequest,
+  projectSitePatchDispose,
+  projectSitePatchRequest,
 } from '@project/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -21,12 +17,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   projectSiteDispatch: {
     // command
-    createRequest: typeof projectSitePostRequest;
-    createDispose: typeof projectSitePostDispose;
-    updateRequest: typeof projectSitePutRequest;
-    updateDispose: typeof projectSitePutDispose;
-    deleteRequest: typeof projectSiteDeleteRequest;
-    deleteDispose: typeof projectSiteDeleteDispose;
+    patchRequest: typeof projectSitePatchRequest;
+    patchDispose: typeof projectSitePatchDispose;
 
     // query
     loadRequest: typeof projectSiteGetRequest;
@@ -43,12 +35,8 @@ const mapStateToProps = ({ projectSiteGet }: IAppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   projectSiteDispatch: {
     // command
-    createRequest: (request: IProjectSitePostRequest) => dispatch(projectSitePostRequest(request)),
-    createDispose: () => dispatch(projectSitePostDispose()),
-    updateRequest: (request: IProjectSitePutRequest) => dispatch(projectSitePutRequest(request)),
-    updateDispose: () => dispatch(projectSitePutDispose()),
-    deleteRequest: (request: IProjectSitePutRequest) => dispatch(projectSiteDeleteRequest(request)),
-    deleteDispose: () => dispatch(projectSiteDeleteDispose()),
+    patchRequest: (request: IProjectSitePatchRequest) => dispatch(projectSitePatchRequest(request)),
+    patchDispose: () => dispatch(projectSitePatchDispose()),
     
     // query
     loadRequest: (request: IProjectSiteGetRequest) => dispatch(projectSiteGetRequest(request)),

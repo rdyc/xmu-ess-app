@@ -28,6 +28,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
 
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
+            multiline
             label="Status"
             value={props.intl.formatMessage({id: props.formikProps.status.message})}
           />

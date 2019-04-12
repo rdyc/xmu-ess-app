@@ -27,6 +27,7 @@ import {
   projectRegistrationSubmission,
 } from './projectRegistrationMessage';
 import {
+  projectSiteConfirm,
   projectSiteField,
   projectSiteFieldHelperFor,
   projectSiteMessage,
@@ -59,6 +60,7 @@ export const projectMessage = {
     section: projectSiteSection,
     field: projectSiteField,
     fieldFor: projectSiteFieldHelperFor,
+    confirm: projectSiteConfirm,
     message: projectSiteMessage
   },
   assignment: {

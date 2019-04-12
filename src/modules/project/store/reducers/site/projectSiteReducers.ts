@@ -1,15 +1,11 @@
 import {
-  projectSiteDeleteReducer,
   projectSiteGetReducer,
-  projectSitePostReducer,
-  projectSitePutReducer,
+  projectSitePatchReducer
 } from '@project/store/reducers/site';
 
 const projectSiteReducers = {
   projectSiteGet: projectSiteGetReducer,
-  projectSitePost: projectSitePostReducer,
-  projectSitePut: projectSitePutReducer,
-  projectSiteDelete: projectSiteDeleteReducer,
+  projectSitePatch: projectSitePatchReducer
 };
 
 export default projectSiteReducers;
