@@ -34,6 +34,7 @@ export const travelSettlementDialog = defineMessages({
 
 // section
 export const travelSettlementSection = defineMessages({
+  submit: { id: `${prefix}.section.submit`},
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   itemTitle: { id: `${prefix}.section.item.title` },

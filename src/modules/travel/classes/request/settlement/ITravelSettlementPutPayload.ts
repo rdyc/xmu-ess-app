@@ -6,5 +6,5 @@ export interface ITravelSettlementPutPayload extends IBasePayload {
   start: string;
   end: string;
   comment?: string;
-  item?: ITravelSettlementPutItem[]; 
+  items?: ITravelSettlementPutItem[]; 
 }
