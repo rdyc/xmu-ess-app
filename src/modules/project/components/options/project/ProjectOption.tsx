@@ -34,7 +34,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (filter: IProjectRegistrationGetListFilter) => void;
 }
 
 export type ProjectOptionProps
@@ -60,7 +60,7 @@ const stateUpdaters: StateUpdaters<ProjectOptionProps, IOwnState, IOwnStateUpdat
         
     values.forEach(item => options.push({ 
       value: item.uid, 
-      label: item.name,
+      label: `${item.uid} - ${item.name}`,
       data: item
     }));
 
@@ -71,11 +71,11 @@ const stateUpdaters: StateUpdaters<ProjectOptionProps, IOwnState, IOwnStateUpdat
 };
 
 const handlerCreators: HandleCreators<ProjectOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: ProjectOptionProps) => () => {
+  handleOnLoadApi: (props: ProjectOptionProps) => (filter: IProjectRegistrationGetListFilter) => {
     const { isExpired, isLoading } = props.projectRegisterState.list;
 
     const request: IProjectRegistrationGetListRequest = {
-      filter: props.filter
+      filter
     };
 
     if (isExpired || !isLoading) {
@@ -90,16 +90,18 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
 
     // 1st load only when request are empty
     if (!request) {
-      this.props.handleOnLoadApi();
+      if (this.props.filter) {
+        this.props.handleOnLoadApi(this.props.filter);
+      }
     } else {
       // 2nd load only when request filter are present
-      if (request.filter) {
+      if (request && request.filter && this.props.filter) {
         // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter);
   
         // then should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi();
+          this.props.handleOnLoadApi(this.props.filter);
         } else {
           if (response && response.data) {
             this.props.setOptions(response.data);
@@ -108,10 +110,49 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
       }
     }
   },
+  componentWillUpdate(nextProps: ProjectOptionProps) {
+    const { request, response } = this.props.projectRegisterState.list;
+
+    // if no filter before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.filter && nextProps.filter) {
+      // when no data then load
+      if (!request) {
+        this.props.handleOnLoadApi(nextProps.filter);
+      } else if (request && request.filter) {
+        // if request(data) is exist then compare
+        const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+
+        // should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi(nextProps.filter);
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
+
+    // this used for update list when changing the filter *not the 1st time load
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter !== nextProps.filter) {
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.filter);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
+          }
+        }
+      }
+    }
+  },
   componentDidUpdate(prevProps: ProjectOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = this.props.projectRegisterState.list;
     const { isLoading: prevIsLoading, response: prevResponse } = prevProps.projectRegisterState.list;
-    const { request, response } = this.props.projectRegisterState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -121,22 +162,6 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
       if (thisResponse && thisResponse.data) {
         this.props.setOptions(thisResponse.data);
       }
-    }
-
-    if (this.props.filter !== prevProps.filter) {
-      if (request && request.filter) {
-        // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
-
-        // then should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi();
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
-          }
-        }
-      } 
     }
   }
 };
