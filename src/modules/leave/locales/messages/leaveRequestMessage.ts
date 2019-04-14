@@ -30,6 +30,8 @@ export const leaveRequestPage = defineMessages({
 export const leaveRequestConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
 });
 
 // dialog
@@ -58,6 +60,7 @@ export const leaveRequestField = defineMessages({
   regularType: { id: `${prefix}.field.regularType` },
   regularTypeRequired: { id: `${prefix}.field.regularType.required` },
   regularTypePlaceholder: { id: `${prefix}.field.regularType.placeholder` },
+  regularTypeActive: { id: `${prefix}.field.regularType.active` },
   
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
@@ -66,6 +69,7 @@ export const leaveRequestField = defineMessages({
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
+  endAuto: { id: `${prefix}.field.end.auto` },
 
   reEntry: { id: `${prefix}.field.reEntry` },
   reEntryRequired: { id: `${prefix}.field.reEntry.required` },
@@ -92,6 +96,11 @@ export const leaveRequestField = defineMessages({
   completion: { id: `${prefix}.field.completion` },
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },
+});
+
+// submission
+export const leaveRequestSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
 });
 
 // section

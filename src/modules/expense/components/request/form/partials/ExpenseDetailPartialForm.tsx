@@ -15,6 +15,7 @@ import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { ProjectOption } from '@project/components/options/project/ProjectOption';
 import { IExpenseRequestFormValue } from '../ExpenseRequestForm';
@@ -39,8 +40,8 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
         render={({ field }: FieldProps<IExpenseRequestFormValue>) => (
           <TextField
             {...field}
+            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
-            disabled
             margin="normal"
             label={props.intl.formatMessage(expenseMessage.request.fieldFor(field.name, 'fieldName'))}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
@@ -67,7 +68,7 @@ const ExpenseDetailPartialForm: React.ComponentType<ExpenseDetailPartialFormProp
             minDate={props.minDate}
             helperText={form.touched.date && form.errors.date}
             error={form.touched.date && Boolean(form.errors.date)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('date', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue('date', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
           />
         )}

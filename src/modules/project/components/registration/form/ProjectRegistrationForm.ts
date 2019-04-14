@@ -125,7 +125,7 @@ export type ProjectRegistrationFormProps
 const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: ProjectRegistrationFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  isRequestor: false,
+  isRequestor: isNullOrUndefined(props.history.location.state) ? true : false,
   isAdmin: false,
 
   // form values

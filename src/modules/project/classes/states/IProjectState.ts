@@ -35,12 +35,7 @@ import {
 } from '../queries/assignment';
 import { IProjectHourPutRequest } from '../queries/hour';
 import { IProjectOwnerPutRequest } from '../queries/owner';
-import {
-  IProjectSiteDeleteRequest,
-  IProjectSiteGetRequest,
-  IProjectSitePostRequest,
-  IProjectSitePutRequest,
-} from '../queries/site';
+import { IProjectSiteGetRequest, IProjectSitePatchRequest } from '../queries/site';
 import { IProjectStatusPutRequest } from '../queries/status';
 
 export interface IProjectState {
@@ -62,9 +57,7 @@ export interface IProjectState {
 
   // site
   projectSiteGet: IQueryCollectionState<IProjectSiteGetRequest, IProjectSite>;
-  projectSitePost: IQuerySingleState<IProjectSitePostRequest, boolean>;
-  projectSitePut: IQuerySingleState<IProjectSitePutRequest, boolean>;
-  projectSiteDelete: IQuerySingleState<IProjectSiteDeleteRequest, boolean>;
+  projectSitePatch: IQuerySingleState<IProjectSitePatchRequest, boolean>;
 
   // approval
   projectApprovalGetAll: IQueryCollectionState<IProjectApprovalGetAllRequest, IProject>;

@@ -87,33 +87,31 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
       <Field
         name="projectType"
         render={({ field, form }: FieldProps<IProjectRegistrationFormValue>) => (
-          <React.Fragment>
-            <CommonSystemOption category="project" filter={props.filterCommonSystem}>
-              <SelectField
-                isSearchable
-                isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
-                isClearable={props.formMode === FormMode.New && field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                filterOption={option => {
-                  // filter options from allowed project types
-                  if (props.allowedProjectTypes) {
-                    return props.allowedProjectTypes.findIndex(item => item === option.value) !== -1;
-                  } 
+          <CommonSystemOption category="project" filter={props.filterCommonSystem}>
+            <SelectField
+              isSearchable
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
+              isClearable={props.formMode === FormMode.New && field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              filterOption={option => {
+                // filter options from allowed project types
+                if (props.allowedProjectTypes) {
+                  return props.allowedProjectTypes.findIndex(item => item === option.value) !== -1;
+                } 
 
-                  return true;
-                }}
-                textFieldProps={{
-                  label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
-                  required: true,
-                  helperText: form.touched.projectType && form.errors.projectType,
-                  error: form.touched.projectType && Boolean(form.errors.projectType)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
-              />
-            </CommonSystemOption>
-          </React.Fragment>
+                return true;
+              }}
+              textFieldProps={{
+                label: props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName')),
+                required: true,
+                helperText: form.touched.projectType && form.errors.projectType,
+                error: form.touched.projectType && Boolean(form.errors.projectType)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+            />
+          </CommonSystemOption>
         )}
       />
 
@@ -187,7 +185,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             format="MMMM DD, YYYY"
             helperText={form.touched.start && form.errors.start}
             error={form.touched.start && Boolean(form.errors.start)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
           />
         )}
@@ -210,7 +208,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
             format="MMMM DD, YYYY"
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.toDate())}
+            onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
             invalidLabel=""
             minDate={props.formikBag.values.start}
           />
