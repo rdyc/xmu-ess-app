@@ -171,6 +171,7 @@
   "travel.request.field.item.amount.placeholder": "Diem Value",
   "travel.settlement.field.item.adjustmentNote": "Adjustment Note",
   "travel.request.field.item.adjustmentNote.placeholder": "Adjustment Note",
+  "travel.request.field.items.minimum": "Must have at least one item",
 
   "travel.request.field.isSettlement": "Ready to Settle Only",
   "travel.request.field.isRejected": "Rejected Only",

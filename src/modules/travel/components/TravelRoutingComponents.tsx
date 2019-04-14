@@ -3,7 +3,8 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { TravelRequestDetail } from './request/detail/TravelRequestDetail';
-import RequestEditor from './request/editor/RequestEditor';
+// import RequestEditor from './request/editor/RequestEditor';
+import { TravelRequestForm } from './request/form/TravelRequestForm';
 import { TravelRequestList } from './request/list/TravelRequestList';
 import { TravelRequestApprovalDetail } from './requestApproval/detail/TravelRequestApprovalDetail';
 import { TravelApprovalList } from './requestApproval/list/TravelApprovalList';
@@ -15,7 +16,7 @@ import { TravelSettlementApprovalList } from './settlementApproval/list/TravelSe
 
 const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={RequestEditor} />
+    <Route path={`${props.match.path}/form`} component={TravelRequestForm} />
     <Route path={`${props.match.path}/:travelUid`} component={TravelRequestDetail} />
     <Route path={`${props.match.path}`} component={TravelRequestList} />
   </Switch>

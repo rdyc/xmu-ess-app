@@ -12,7 +12,8 @@ import {
   travelRequestMessage, 
   travelRequestOption,
   travelRequestPage,
-  travelRequestSection
+  travelRequestSection,
+  travelRequestSubmission
 } from './travelRequestMessage';
 import { 
   travelSettlementApprovalConfirm, 
@@ -35,6 +36,7 @@ export const travelMessage = {
     dialog: travelRequestDialog,
     option: travelRequestOption,
     confirm: travelRequestConfirm,
+    submission: travelRequestSubmission,
     section: travelRequestSection,
     field: travelRequestField,
     fieldFor: travelRequestFieldHelperFor,

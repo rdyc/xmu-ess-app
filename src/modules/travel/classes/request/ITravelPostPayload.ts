@@ -9,8 +9,8 @@ export interface ITravelPostPayload extends IBasePayload {
   projectUid: string;
   siteUid?: string;
   activityType: string;
-  objective: string;
-  target: string;
-  comment: string;
-  items?: ITravelPostItem[];
+  objective?: string;
+  target?: string;
+  comment?: string;
+  items: ITravelPostItem[];
 }
