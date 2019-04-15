@@ -79,7 +79,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleSetProjectFilter: (customerUid: string, values: ITimesheetEntryFormValue) => void;
+  handleSetProjectFilter: (customerUid: string, activityType: string) => void;
   handleSetProjectSiteFilter: (projectUid: string) => void;
   handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleOnLoadDetail: () => void;
@@ -242,14 +242,14 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
       });
     }
   },
-  handleSetProjectFilter: (props: TimesheetEntryFormProps) => (customerUid: string, values: ITimesheetEntryFormValue) => {
+  handleSetProjectFilter: (props: TimesheetEntryFormProps) => (customerUid: string, activityType: string) => {
     const { user } = props.userState;
 
     const filterProject: IProjectAssignmentGetListFilter = {
       customerUid,
       employeeUid: user && user.uid,
-      projectTypes: values.activityType === 'SAT02' ? ProjectType.PreSales : 
-                    values.activityType === 'SAT04' ? ProjectType.Maintenance :
+      projectTypes: activityType === 'SAT02' ? ProjectType.PreSales : 
+                    activityType === 'SAT04' ? ProjectType.Maintenance :
                     [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
     };
 
@@ -435,7 +435,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           this.props.handleSetMinDate(amountResponse.data.days, thisResponse.data.changes && thisResponse.data.changes.createdAt);
         }
 
-        this.props.handleSetProjectFilter(thisResponse.data.customerUid, initialValues);
+        this.props.handleSetProjectFilter(thisResponse.data.customerUid, thisResponse.data.activityType);
         this.props.handleSetProjectSiteFilter(thisResponse.data.projectUid);
         this.props.setInitialValues(initialValues);
       }
