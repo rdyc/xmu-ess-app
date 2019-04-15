@@ -79,6 +79,8 @@
 
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
   "travel.approval.confirm.submission.content": "You are about to submitting travel request for this approval request. Do you want to continue?",
+
+  "travel.request.submission.form": "Travel Request Submission",
   
   "travel.settlementApproval.confirm.submission.title": "Travel Settlement Approval Submission",
   "travel.settlementApproval.confirm.submission.content": "You are about to submitting travel settlement for this approval request. Do you want to continue?",
@@ -172,6 +174,7 @@
   "travel.request.field.item.amount.placeholder": "Diem Value",
   "travel.settlement.field.item.adjustmentNote": "Adjustment Note",
   "travel.request.field.item.adjustmentNote.placeholder": "Adjustment Note",
+  "travel.request.field.items.minimum": "Must have at least one item",
 
   "travel.request.field.isSettlement": "Ready to Settle Only",
   "travel.request.field.isRejected": "Rejected Only",

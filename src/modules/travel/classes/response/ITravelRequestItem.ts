@@ -14,16 +14,16 @@ export interface ITravelRequestItem {
   destination: string;
   departureDate: string;
   returnDate: string;
-  costTransport?: number;
+  costTransport: number;
   isTransportByCompany: boolean;
   hotel?: string;
-  costHotel?: number;
+  costHotel: number;
   isHotelByCompany: boolean;
   notes?: string;
-  duration?: number;
+  duration: number;
   amount: number;
   currencyUid?: string;
   currency?: ILookupCurrency;
-  diemValue?: number;
+  diemValue: number;
   changes?: IBaseChanges;
 }

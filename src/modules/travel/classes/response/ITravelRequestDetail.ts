@@ -35,7 +35,7 @@ export interface ITravelRequestDetail {
   histories?: History[];
   workflow?: IOrganizationWorkflow;
   changes?: IBaseChanges;
-  items?: ITravelRequestItem[];
+  items: ITravelRequestItem[];
   settlement?: ITravelSettlementList;
   summary?: ITravelSummary;
 }
