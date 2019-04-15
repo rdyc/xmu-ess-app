@@ -1,11 +1,12 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkFormData } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { ISettlementApprovalPostPayload } from '@purchase/classes/request/settlementApproval';
 import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
@@ -29,14 +30,13 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
 interface OwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleValidate: (payload: WorkflowApprovalRemarkFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalRemarkFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
         break;
     }
   },
-  handleValidate: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+  handleValidate: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => {
     const errors = {
     };
 
@@ -140,7 +140,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 
     return errors;
   },
-  handleSubmit: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+  handleSubmit: (props: SettlementApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => {
     const { match, intl } = props;
     const { user } = props.userState;
     const { createRequest } = props.settlementApprovalDispatch;
