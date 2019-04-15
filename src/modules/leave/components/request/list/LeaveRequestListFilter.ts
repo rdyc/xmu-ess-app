@@ -223,6 +223,12 @@ const handlerCreators: HandleCreators<LeaveRequestListFilterProps, IOwnHandler> 
   // filter rejected
   handleFilterRejectedOnChange: (props: LeaveRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);
+
+    if (checked) {
+      props.setFilterCompletion();
+    } else {
+      props.setFilterCompletion({value: 'pending', name: 'Pending'});
+    }
   }
 };
 
