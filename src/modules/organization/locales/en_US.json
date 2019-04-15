@@ -6,9 +6,9 @@
   "workflow.approval.option.accept": "Accept",
   "workflow.approval.option.reject": "Reject",
 
-  "workflow.approval.field.isApproved": "Your decision",
-  "workflow.approval.field.isApproved.required": "Your decision is required",
-  "workflow.approval.field.isApproved.placeholder": "Select a decision",
+  "workflow.approval.field.statusType": "Approval status",
+  "workflow.approval.field.statusType.required": "Approval status is required",
+  "workflow.approval.field.statusType.placeholder": "Select a approval status",
   "workflow.approval.field.remark": "Rejected reason",
   "workflow.approval.field.remark.placeholder": "Type any reason",
   "workflow.approval.field.remark.required": "Rejected reason is required",

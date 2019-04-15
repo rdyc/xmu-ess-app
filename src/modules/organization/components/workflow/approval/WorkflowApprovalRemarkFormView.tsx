@@ -22,8 +22,8 @@ export const WorkflowApprovalRemarkFormView: React.SFC<WorkflowApprovalRemarkFor
           <Field
             name="isApproved"
             required={true}
-            label={props.intl.formatMessage(organizationMessage.workflow.field.isApproved)}
-            placeholder={props.intl.formatMessage(organizationMessage.workflow.field.isApprovedPlaceholder)}
+            label={props.intl.formatMessage(organizationMessage.workflow.field.statusType)}
+            placeholder={props.intl.formatMessage(organizationMessage.workflow.field.statusTypePlaceholder)}
             choices={props.approvalChoices}
             component={RadioGroup}
           />
