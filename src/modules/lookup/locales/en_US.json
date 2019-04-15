@@ -169,6 +169,7 @@
   "lookup.company.field.code": "Code",
   "lookup.company.field.code.placeholder": "Type a company code",
   "lookup.company.field.code.required": "Company code is required",
+  "lookup.company.field.code.min": "Code must be exactly 3 characters",
   "lookup.company.field.name": "Name",
   "lookup.company.field.name.placeholder": "Type a company name",
   "lookup.company.field.name.required": "Company name is required",

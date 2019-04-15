@@ -44,6 +44,7 @@ export const companyField = defineMessages({
   code: {id: `${prefix}.field.code`},
   codeRequired: {id: `${prefix}.field.code.required`},
   codePlaceholder: {id: `${prefix}.field.code.placeholder`},
+  codeMin: {id: `${prefix}.field.code.min`},
   
   name: {id: `${prefix}.field.name`},
   nameRequired: {id: `${prefix}.field.name.required`},

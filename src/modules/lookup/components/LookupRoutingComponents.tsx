@@ -11,7 +11,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
-import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
+import { LookupCompanyForm } from './company/form/LookupCompanyForm';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
@@ -29,7 +29,6 @@ import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
-// import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
@@ -39,7 +38,6 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
-// import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
 
 const role = (props: RouteComponentProps) => (
@@ -52,7 +50,7 @@ const role = (props: RouteComponentProps) => (
 
 const company = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyForm} />
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
     <Route path={`${props.match.path}`} component={LookupCompanyList} />
   </Switch>
