@@ -14,7 +14,7 @@ type LookupCurrencyDetailPartialFormProps = {
   intl: InjectedIntl;
 };
 
-const LookupCurrenyDetailPartialForm: React.ComponentType<LookupCurrencyDetailPartialFormProps> = props => (
+const LookupCurrencyDetailPartialForm: React.ComponentType<LookupCurrencyDetailPartialFormProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(lookupMessage.currency.section.infoTitle)}
@@ -119,4 +119,4 @@ const LookupCurrenyDetailPartialForm: React.ComponentType<LookupCurrencyDetailPa
   </Card>
 );
 
-export default LookupCurrenyDetailPartialForm;
+export default LookupCurrencyDetailPartialForm;

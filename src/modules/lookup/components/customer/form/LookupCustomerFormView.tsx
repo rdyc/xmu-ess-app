@@ -7,19 +7,19 @@ import { layoutMessage } from '@layout/locales/messages';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { CurrencyFormProps, ICurrencyFormValue } from './LookupCurrencyForm';
-import LookupCurrencyDetailPartialForm from './partial/LookupCurrencyDetailPartialForm';
+import { CustomerFormProps, ICustomerFormValue } from './LookupCustomerForm';
+import LookupCustomerDetailPartialForm from './partial/LookupCustomerDetailPartialForm';
 
-export const LookupCurrencyFormView: React.SFC<CurrencyFormProps> = props => (
+export const LookupCustomerFormView: React.SFC<CustomerFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCurrency,
+      uid: AppMenu.LookupCustomer,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/currencies',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.currency.form.newTitle : lookupMessage.currency.form.editTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.currency.form.newSubTitle : lookupMessage.currency.form.editSubTitle)
+      parentUrl: '/lookup/customers',
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.customer.page.newTitle : lookupMessage.customer.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.customer.page.newSubHeader : lookupMessage.customer.page.modifySubHeader)
     }}
-    state={props.lookupCurrencyState.detail}
+    state={props.lookupCustomerState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -27,15 +27,16 @@ export const LookupCurrencyFormView: React.SFC<CurrencyFormProps> = props => (
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<ICurrencyFormValue>) => (
+      render={(formikBag: FormikProps<ICustomerFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <LookupCurrencyDetailPartialForm 
+                <LookupCustomerDetailPartialForm 
+                  formikBag={formikBag}
                   formMode={props.formMode}
                   intl={props.intl}
-                  formikBag={formikBag}
+                  filterLookupCompany={props.filterLookupCompany}
                 />
               </div>
             </div>
@@ -43,7 +44,7 @@ export const LookupCurrencyFormView: React.SFC<CurrencyFormProps> = props => (
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(lookupMessage.shared.submission.form, {state: 'Currency'})}
+                  title={props.intl.formatMessage(lookupMessage.shared.submission.form, {state: 'Customer'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -53,7 +54,7 @@ export const LookupCurrencyFormView: React.SFC<CurrencyFormProps> = props => (
                   }}
                   confirmationDialogProps={{
                     title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createTitle : lookupMessage.shared.confirm.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createDescription : lookupMessage.shared.confirm.modifyDescription, {state: 'Currency'}),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createDescription : lookupMessage.shared.confirm.modifyDescription, {state: 'Customer'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
