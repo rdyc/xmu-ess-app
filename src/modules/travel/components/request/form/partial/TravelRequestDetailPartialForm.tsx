@@ -32,6 +32,7 @@ type TravelRequestDetailPartialFormProps = {
   filterProjectSite?: IProjectSiteGetRequest;
   diemData?: IDiem[];
   setProjectFilter: (customerUid: string) => void;
+  SetProjectSiteFilter: (projectUid: string) => void;
 };
 
 const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPartialFormProps> = props => (
@@ -102,7 +103,8 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                   const destinationType = selected && selected.value || '';
 
                   props.formikBag.setFieldValue(field.name, destinationType);
-
+                  
+                  let total = 0;
                   if (props.formikBag.values.projectType !== '') {
                     const diems = props.diemData && props.diemData.filter(item => item.destinationType === destinationType && item.projectType === props.formikBag.values.projectType)[0];
 
@@ -114,8 +116,12 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                       props.formikBag.setFieldValue(`items.${index}.currencyUid`, diems && diems.currency && diems.currency.name);
                       props.formikBag.setFieldValue(`items.${index}.diemValue`, diems && diems.value);
                       props.formikBag.setFieldValue(`items.${index}.currencyRate`, diems && diems.currency && diems.currency.rate);
+                      props.formikBag.setFieldValue(`items.${index}.amount`, diems && diems.currency && diems.currency.rate * diems.value * item.duration);
+                      total = total + ((diems && diems.currency && diems.currency.rate || 0) * (diems && diems.value || 0) * item.duration) + item.costHotel + item.costTransport;
                     });
-                  }
+
+                    props.formikBag.setFieldValue('total', total);
+                  }                  
                 }}
               />
             </CommonSystemOption>
@@ -222,6 +228,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 const projectUid = selected && selected.value || '';
 
                 props.formikBag.setFieldValue(field.name, projectUid);
+                props.SetProjectSiteFilter(projectUid);
 
                 let projectType = 'SPT01';
                 if (selected && selected.data && selected.data.projectType === 'SPT01') {
@@ -233,6 +240,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 // set projectType 
                 props.formikBag.setFieldValue('projectType', projectType);
 
+                let total = 0;
                 if (props.formikBag.values.destinationType !== '') {
                   const diems = props.diemData && props.diemData.filter(item => item.destinationType === props.formikBag.values.destinationType && item.projectType === projectType)[0];
 
@@ -244,7 +252,11 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                     props.formikBag.setFieldValue(`items.${index}.currencyUid`, diems && diems.currency && diems.currency.name);
                     props.formikBag.setFieldValue(`items.${index}.diemValue`, diems && diems.value);
                     props.formikBag.setFieldValue(`items.${index}.currencyRate`, diems && diems.currency && diems.currency.rate);
+                    props.formikBag.setFieldValue(`items.${index}.amount`, diems && diems.currency && diems.currency.rate * diems.value * item.duration);
+                    total = total + ((diems && diems.currency && diems.currency.rate || 0) * (diems && diems.value || 0) * item.duration) + item.costHotel + item.costTransport;
                   });
+                  
+                  props.formikBag.setFieldValue('total', total);
                 }
               }}
             />

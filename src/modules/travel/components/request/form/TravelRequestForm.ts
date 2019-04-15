@@ -103,6 +103,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setProjectFilter: StateHandler<IOwnState>;
   setDiemData: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
   // setDiem: StateHandler<IOwnState>;
 }
 
@@ -309,6 +310,10 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
   }),
   setDiemData: () => (diemData: IDiem[]): Partial<IOwnState> => ({
     diemData
+  }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
   // setDiem: () => (diem: IDiem): Partial<IOwnState> => ({
   //   diem

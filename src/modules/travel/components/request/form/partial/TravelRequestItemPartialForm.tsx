@@ -83,7 +83,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
               <Card square>
                 <CardHeader
                   title={`#${index + 1} - ${item.uid || 'Draft'}`}
-                  // subheader={`${item.status && item.status.value || 'Draft'} ${item.rejectedReason || ''}`}
                   titleTypographyProps={{ variant: 'body2' }}
                   action={
                     <IconButton
@@ -92,10 +91,15 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         fields.remove(index);
 
                         // calculate total cost 
-                        // let totalCost = 0;
-                        // props.formikBag.values.items.forEach((travelItem, itemIndex) => {
+                        let totalCost = 0;
+                        props.formikBag.values.items.forEach((travelItem, itemIndex) => {
+                          if (index !== itemIndex) {
+                            totalCost = travelItem.costTransport + travelItem.costHotel + travelItem.amount;
+                          }
+                        });
 
-                        // })
+                        // set totalCost 
+                        props.formikBag.setFieldValue('total', totalCost);
                       }}
                     >
                       <DeleteForever />

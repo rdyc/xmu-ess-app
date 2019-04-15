@@ -43,6 +43,7 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
                   diemData={props.diemData}
                   filterProject={props.filterProject}
                   setProjectFilter={props.handleSetProjectFilter}
+                  SetProjectSiteFilter={props.handleSetProjectSiteFilter}
                   filterProjectSite={props.filterProjectSite}
                 />
               </div>
@@ -72,8 +73,8 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.confirm.newTitle : travelMessage.request.confirm.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.confirm.newMessage : travelMessage.request.confirm.modifyDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.dialog.createTitle : travelMessage.request.dialog.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.dialog.createDescription : travelMessage.request.dialog.modifyDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}
