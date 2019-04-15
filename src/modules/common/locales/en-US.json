@@ -14,6 +14,7 @@
   "common.form.editTitle": "Modify Type",
   "common.form.editSubTitle": " ",
 
+  "common.submit": "Type Submission",
   "common.infoTitle": "Type",
   "common.infoSubTitle": " ",
 
@@ -29,6 +30,7 @@
   "common.text.inActive": "Inactive",
   "common.text.businessUnit": "(Business Unit)",
 
+  "common.field.id": "Type ID",
   "common.field.category": "Category",
   "common.field.companyUid": "Company",
   "common.field.companyUid.placeholder": "Select a Company",
