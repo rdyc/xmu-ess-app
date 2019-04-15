@@ -6,6 +6,7 @@ import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardActions, CardContent, CardHeader, Checkbox, FormControlLabel, IconButton, TextField } from '@material-ui/core';
 import { AccessTime, ChevronLeft, ChevronRight, DateRange, DeleteForever, GroupAdd } from '@material-ui/icons';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
@@ -135,30 +136,31 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                   />
 
                   <Field
-                    name={`items.${index}.transportType`}
+                    name="transportType"
                     render={({ field, form }: FieldProps<ITravelRequestFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.transportType`);
                       const touch = getIn(form.touched, `items.${index}.transportType`);
 
                       return (
-                        <CommonSystemOption category="transportation" filter={props.filterCommonSystem}>
-                          <SelectField
-                            isSearchable
-                            isDisabled={props.formikBag.isSubmitting}
-                            isClearable={field.value !== ''}
-                            escapeClearsValue={true}
-                            valueString={field.value}
-                            textFieldProps={{
-                              label: props.intl.formatMessage(travelMessage.request.field.transportType),
-                              placeholder: props.intl.formatMessage(travelMessage.request.field.transportTypePlaceholder),
-                              required: true,
-                              helperText: touch && error,
-                              error: touch && Boolean(error)
-                            }}
-                            onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                            onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
-                          />
-                        </CommonSystemOption>
+                        <React.Fragment>
+                          <CommonSystemOption category="transportation" filter={props.filterCommonSystem}>
+                            <SelectField
+                              isSearchable
+                              isDisabled={props.formikBag.isSubmitting}
+                              isClearable={props.formikBag.values.items[index].transportType !== ''}
+                              escapeClearsValue={true}
+                              valueString={props.formikBag.values.items[index].transportType}
+                              textFieldProps={{
+                                label: props.intl.formatMessage(travelMessage.request.field.transportType),
+                                required: true,
+                                helperText: touch && error,
+                                error: touch && Boolean(error)
+                              }}
+                              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(`items.${index}.transportType`, selected && selected.value || '')}
+                            />
+                          </CommonSystemOption>
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -507,6 +509,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       return (
                         <TextField
                           {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
                           fullWidth
                           disabled={form.isSubmitting}
                           margin="normal"
@@ -532,6 +535,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       return (
                         <TextField
                           {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
                           fullWidth
                           disabled={form.isSubmitting}
                           margin="normal"
@@ -540,9 +544,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.diemValuePlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
-                          InputProps={{
-                            inputComponent: NumberFormatter,
-                          }}
                         />
                       );
                     }}
@@ -557,6 +558,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       return (
                         <TextField
                           {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
                           fullWidth
                           margin="normal"
                           autoComplete="off"
@@ -579,6 +581,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       return (
                         <TextField
                           {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
                           fullWidth
                           disabled={form.isSubmitting}
                           margin="normal"
@@ -587,9 +590,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.currencyRatePlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
-                          InputProps={{
-                            inputComponent: NumberFormatter,
-                          }}
                         />
                       );
                     }}
@@ -604,6 +604,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       return (
                         <TextField
                           {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
                           fullWidth
                           disabled={form.isSubmitting}
                           margin="normal"
@@ -612,9 +613,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.amountPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
-                          InputProps={{
-                            inputComponent: NumberFormatter,
-                          }}
                         />
                       );
                     }}
@@ -660,9 +658,9 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                   notes: '',
                   duration: 0,
                   amount: 0,
-                  currencyUid: '',
-                  currencyRate: 0,
-                  diemValue: 0,
+                  currencyUid: props.formikBag.values.currency,
+                  currencyRate: props.formikBag.values.currencyRate,
+                  diemValue: props.formikBag.values.diemValue,
                 })}
               >
                 <GroupAdd className={props.classes.marginFarRight} />

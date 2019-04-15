@@ -11,6 +11,7 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import styles from '@styles';
 import { ITravelPostPayload, ITravelPutPayload } from '@travel/classes/request';
 import { ITravelRequest } from '@travel/classes/response';
@@ -51,7 +52,7 @@ interface ITravelRequestItemFormValue {
   costHotel: number;
   isHotelByCompany: boolean;
   notes?: string;
-  duration?: number;
+  duration: number;
   amount: number | 0;
   currencyUid?: string;
   currencyRate: number;
@@ -74,6 +75,9 @@ export interface ITravelRequestFormValue {
   target?: string;
   comment?: string;
   total: number;
+  currency: string;
+  currencyRate: number;
+  diemValue: number;
   items: ITravelRequestItemFormValue[];
 }
 
@@ -84,7 +88,6 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   diemData?: IDiem[];
-  diem?: IDiem;
 
   initialValues: ITravelRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ITravelRequestFormValue>>>;
@@ -92,6 +95,7 @@ interface IOwnState {
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem: ISystemListFilter;
   filterProject: IProjectRegistrationGetListFilter;
+  filterProjectSite?: IProjectSiteGetRequest;
   filterAccountEmployee?: IEmployeeListFilter;
 }
 
@@ -99,15 +103,16 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setProjectFilter: StateHandler<IOwnState>;
   setDiemData: StateHandler<IOwnState>;
-  setDiem: StateHandler<IOwnState>;
+  // setDiem: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleSetProjectFilter: (customerUid: string) => void;
+  handleSetProjectSiteFilter: (projectUid: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ITravelRequestFormValue, action: FormikActions<ITravelRequestFormValue>) => void;
   handleSetDiemData: (data: IDiem[] | null) => void;
-  handleSetDiem: (projectType: string, destinationType: string) => void;
+  // handleSetDiem: (projectType: string, destinationType: string) => void;
 }
 
 export type TravelRequestFormProps
@@ -143,6 +148,9 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
     target: '',
     comment: '',
     total: 0,
+    currency: '',
+    currencyRate: 0,
+    diemValue: 0,
     items: []
   },
 
@@ -301,28 +309,36 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
   }),
   setDiemData: () => (diemData: IDiem[]): Partial<IOwnState> => ({
     diemData
-  }),
-  setDiem: () => (diem: IDiem): Partial<IOwnState> => ({
-    diem
   })
+  // setDiem: () => (diem: IDiem): Partial<IOwnState> => ({
+  //   diem
+  // })
 };
 
 const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
   handleSetDiemData: (props: TravelRequestFormProps) => (data: IDiem[]) => {
     props.setDiemData(data);
   },
-  handleSetDiem: (props: TravelRequestFormProps) => (projectType: string, destinationType: string) => {
-    const diem = props.diemData && props.diemData.filter(item => item.destinationType === destinationType && item.projectType === projectType)[0];
-
-    console.log(projectType);
-    console.log(destinationType);
-    console.log(diem);
-    console.log(props.diemData);
-    props.setDiem(diem);
-    // console.log(diem);
-  },
+  // handleSetDiem: (props: TravelRequestFormProps) => (projectType: string, destinationType: string) => {
+  //   const diem = props.diemData && props.diemData.filter(item => item.destinationType === destinationType && item.projectType === projectType)[0];
+  //   props.setDiem(diem);
+  // },
   handleSetProjectFilter: (props: TravelRequestFormProps) => (customerUid: string) => {
     props.setProjectFilter(customerUid);
+  },
+  handleSetProjectSiteFilter: (props: TravelRequestFormProps) => (projectUid: string) => {
+    const { user } = props.userState;
+
+    if (user) {
+      const filterProjectSite: IProjectSiteGetRequest = {
+        projectUid,
+        companyUid: user.company.uid,
+      };
+
+      props.stateUpdate({
+        filterProjectSite
+      });
+    }
   },
   handleOnLoadDetail: (props: TravelRequestFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
@@ -515,13 +531,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
           end: response.data.end,
           customerUid: response.data.customerUid,
           projectUid: response.data.projectUid,
-          projectType: response.data.project && response.data.project.projectType || 'N/A',
+          projectType: response.data.project && response.data.project.projectType === 'SPT01' ? 'SPT01' : 'SPT04',
           siteUid: response.data.siteUid,
           activityType: response.data.activityType,
           objective: response.data.objective,
           target: response.data.target,
           comment: response.data.comment,
           total: response.data.total,
+          currency: 'N/A',
+          currencyRate: 0,
+          diemValue: 0,
           items: []
         };
 
@@ -552,6 +571,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
 
         // set initial values
         this.props.setInitialValues(initialValues);
+        this.props.handleSetProjectSiteFilter(response.data.projectUid);
       }
     }
 

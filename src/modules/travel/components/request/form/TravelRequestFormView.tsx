@@ -40,11 +40,10 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
                   intl={props.intl}
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCustomer={props.filterLookupCustomer}
-                  diem={props.diem}
                   diemData={props.diemData}
                   filterProject={props.filterProject}
                   setProjectFilter={props.handleSetProjectFilter}
-                  handleSetDiem={props.handleSetDiem}
+                  filterProjectSite={props.filterProjectSite}
                 />
               </div>
             </div>

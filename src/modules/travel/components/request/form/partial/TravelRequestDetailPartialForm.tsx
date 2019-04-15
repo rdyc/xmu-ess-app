@@ -4,13 +4,16 @@ import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { IDiem } from '@lookup/classes/response';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import { ProjectOption } from '@project/components/options/project/ProjectOption';
+import { ProjectSiteOption } from '@project/components/options/projectSite/ProjectSiteOption';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { Field, FieldProps, FormikProps } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
@@ -25,11 +28,10 @@ type TravelRequestDetailPartialFormProps = {
   intl: InjectedIntl;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
-  diem?: IDiem;
-  diemData?: IDiem[];
   filterProject?: IProjectRegistrationGetListFilter;
+  filterProjectSite?: IProjectSiteGetRequest;
+  diemData?: IDiem[];
   setProjectFilter: (customerUid: string) => void;
-  handleSetDiem: (projectType: string, destinationType: string) => void;
 };
 
 const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPartialFormProps> = props => (
@@ -41,6 +43,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
         render={({ field }: FieldProps<ITravelRequestFormValue>) => (
           <TextField
             {...field}
+            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
             disabled
             margin="normal"
@@ -55,6 +58,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
         render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
           <TextField
             {...field}
+            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
             disabled
             margin="normal"
@@ -67,6 +71,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
         render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
           <TextField
             {...field}
+            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
             disabled
             margin="normal"
@@ -99,8 +104,11 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                   props.formikBag.setFieldValue(field.name, destinationType);
 
                   if (props.formikBag.values.projectType !== '') {
-                    props.handleSetDiem(props.formikBag.values.projectType, destinationType);
                     const diems = props.diemData && props.diemData.filter(item => item.destinationType === destinationType && item.projectType === props.formikBag.values.projectType)[0];
+
+                    props.formikBag.setFieldValue('currency', diems && diems.currency && diems.currency.name);
+                    props.formikBag.setFieldValue('currencyRate', diems && diems.currency && diems.currency.rate);
+                    props.formikBag.setFieldValue('diemValue', diems && diems.value);
 
                     props.formikBag.values.items.forEach((item, index) => {
                       props.formikBag.setFieldValue(`items.${index}.currencyUid`, diems && diems.currency && diems.currency.name);
@@ -226,8 +234,11 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 props.formikBag.setFieldValue('projectType', projectType);
 
                 if (props.formikBag.values.destinationType !== '') {
-                  props.handleSetDiem(projectType, props.formikBag.values.destinationType);
                   const diems = props.diemData && props.diemData.filter(item => item.destinationType === props.formikBag.values.destinationType && item.projectType === projectType)[0];
+
+                  props.formikBag.setFieldValue('currency', diems && diems.currency && diems.currency.name);
+                  props.formikBag.setFieldValue('currencyRate', diems && diems.currency && diems.currency.rate);
+                  props.formikBag.setFieldValue('diemValue', diems && diems.value);
 
                   props.formikBag.values.items.forEach((item, index) => {
                     props.formikBag.setFieldValue(`items.${index}.currencyUid`, diems && diems.currency && diems.currency.name);
@@ -240,6 +251,32 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
           </ProjectOption>
         )}
       />
+
+      <Field
+        name="siteUid"
+        render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
+          <React.Fragment>
+            <ProjectSiteOption filter={props.filterProjectSite}>
+              <SelectField
+                isSearchable
+                isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName')),
+                  required: false,
+                  helperText: form.touched.siteUid && form.errors.siteUid,
+                  error: form.touched.siteUid && Boolean(form.errors.siteUid)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+              />
+            </ProjectSiteOption>
+          </React.Fragment>
+        )}
+      />
+
       <Field
         name="activityType"
         render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
@@ -319,6 +356,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
         render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
           <TextField
             {...field}
+            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
             disabled
             margin="normal"
