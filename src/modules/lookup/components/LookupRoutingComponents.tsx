@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
-import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
@@ -13,6 +12,7 @@ import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import { LookupCompanyForm } from './company/form/LookupCompanyForm';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { LookupCurrencyForm } from './currency/form/LookupCurrencyForm';
 import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
 import { LookupCustomerList } from './customer/list/LookupCustomerList';
@@ -57,7 +57,7 @@ const company = (props: RouteComponentProps) => (
 );
 const currency = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupCurrencyForm} />
     <Route path={`${props.match.path}/:currencyUid`} component={CurrencyDetail} />
     <Route path={`${props.match.path}`} component={CurrencyList} />
   </Switch>
