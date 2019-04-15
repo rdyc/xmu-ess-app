@@ -6,7 +6,7 @@ import { WithNotification, withNotification } from '@layout/hoc/withNotification
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkFormData } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchaseApproval';
 import { PurchaseApprovalUserAction } from '@purchase/classes/types';
@@ -40,8 +40,8 @@ interface IOwnRouteParams {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleValidate: (payload: WorkflowApprovalRemarkFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalRemarkFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, IOwnHandler> 
         break;
     }
   },
-  handleValidate: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+  handleValidate: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => {
     const errors = {
     };
 
@@ -140,7 +140,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, IOwnHandler> 
 
     return errors;
   },
-  handleSubmit: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+  handleSubmit: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => {
     const { match, intl } = props;
     const { user } = props.userState;
     const { createRequest } = props.purchaseApprovalDispatch;

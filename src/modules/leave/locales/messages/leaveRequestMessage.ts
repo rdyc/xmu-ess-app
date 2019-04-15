@@ -86,6 +86,8 @@ export const leaveRequestField = defineMessages({
   reason: { id: `${prefix}.field.reason` },
   reasonRequired: { id: `${prefix}.field.reason.required` },
   reasonPlaceholder: { id: `${prefix}.field.reason.placeholder` },
+  
+  rejectedReason: { id: `${prefix}.field.rejectedReason` },
 
   requestedLeave: { id: `${prefix}.field.requestedLeave` },
 
@@ -127,6 +129,7 @@ export const leaveRequestFieldHelperFor = (field: string, type: 'fieldName' | 'f
       case 'address': return leaveRequestField.address;
       case 'contactNumber': return leaveRequestField.contactNumber;
       case 'reason': return leaveRequestField.reason;
+      case 'rejectedReason': return leaveRequestField.rejectedReason;
       case 'employeeUid': return leaveRequestField.employeeUid;
 
       default: return { id: field };
