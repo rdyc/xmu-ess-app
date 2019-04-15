@@ -58,6 +58,7 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
                   marginFarRight: props.classes.marginFarRight
                 }}
                 filterAccountEmployee={props.filterAccountEmployee}
+                filterCommonSystem={props.filterCommonSystem}
               />
             </div>
 
