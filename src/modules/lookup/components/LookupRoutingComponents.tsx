@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
-import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
@@ -11,10 +10,11 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
-import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
+import { LookupCompanyForm } from './company/form/LookupCompanyForm';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { LookupCurrencyForm } from './currency/form/LookupCurrencyForm';
 import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
-import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
+import { LookupCustomerForm } from './customer/form/LookupCustomerForm';
 import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
@@ -29,7 +29,6 @@ import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
-// import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
@@ -39,7 +38,6 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
-// import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
 
 const role = (props: RouteComponentProps) => (
@@ -52,14 +50,14 @@ const role = (props: RouteComponentProps) => (
 
 const company = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyForm} />
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
     <Route path={`${props.match.path}`} component={LookupCompanyList} />
   </Switch>
 );
 const currency = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupCurrencyForm} />
     <Route path={`${props.match.path}/:currencyUid`} component={CurrencyDetail} />
     <Route path={`${props.match.path}`} component={CurrencyList} />
   </Switch>
@@ -113,7 +111,7 @@ const position = (props: RouteComponentProps) => (
 
 const lookupCustomer = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupCustomerForm} />
     <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
     <Route path={`${props.match.path}/`} component={LookupCustomerList} />
   </Switch>

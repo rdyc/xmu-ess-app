@@ -193,7 +193,6 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
     // handling promise
     promise
       .then((response: ISystemLimit) => {
-        console.log(response);
 
         // set submitting status
         actions.setSubmitting(false);
