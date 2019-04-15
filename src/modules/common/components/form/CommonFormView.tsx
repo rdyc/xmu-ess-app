@@ -6,21 +6,21 @@ import { layoutMessage } from '@layout/locales/messages/layoutMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
-import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import { commonMessage } from '@common/locales/messages/commonMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { CommonFormProps, ICommonFormValue } from './CommonForm';
-import ExpenseDetailPartialForm from './partials/CommonDetailPartialForm';
+import CommonDetailPartialForm from './partials/CommonDetailPartialForm';
 
-export const ExpenseRequestFormView: React.SFC<CommonFormProps> = props => (
+export const CommonFormView: React.SFC<CommonFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.ExpenseRequest,
-      parentUid: AppMenu.Expense,
-      parentUrl: '/expense/requests',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.page.createTitle : expenseMessage.request.page.editTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.page.createSubTitle : expenseMessage.request.page.editSubTitle)
+      uid: AppMenu.Common,
+      parentUid: AppMenu.Lookup,
+      parentUrl: `/common/system/${props.match.params.category}`,
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.page.createTitle : commonMessage.system.page.editTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.page.createSubTitle : commonMessage.system.page.editSubTitle)
     }}
-    state={props.expenseRequestState.detail}
+    state={props.commonSystemState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -34,15 +34,13 @@ export const ExpenseRequestFormView: React.SFC<CommonFormProps> = props => (
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <ExpenseDetailPartialForm 
+                <CommonDetailPartialForm 
                   formikBag={formikBag}
                   formMode={props.formMode}
                   intl={props.intl}
+                  category={props.match.params.category}
                   filterCommonSystem={props.filterCommonSystem}
-                  filterLookupCustomer={props.filterLookupCustomer}
-                  filterProject={props.filterProject}
-                  setProjectFilter={props.handleSetProjectFilter}
-                  minDate={props.minDate}
+                  filterLookupCompany={props.filterLookupCompany}
                 />
               </div>
             </div>
@@ -51,7 +49,7 @@ export const ExpenseRequestFormView: React.SFC<CommonFormProps> = props => (
 
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(expenseMessage.request.section.submit)}
+                  title={props.intl.formatMessage(commonMessage.system.section.submit)}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -60,8 +58,8 @@ export const ExpenseRequestFormView: React.SFC<CommonFormProps> = props => (
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.dialog.createTitle : expenseMessage.request.dialog.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.dialog.createDescription : expenseMessage.request.dialog.modifyDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.dialog.createTitle : commonMessage.system.dialog.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.dialog.createDescription : commonMessage.system.dialog.modifyDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 

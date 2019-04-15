@@ -1,9 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types/FormMode';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -25,17 +23,13 @@ import {
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
-import { WorkflowStatusType } from '@common/classes/types';
-import { SystemLimitType } from '@common/classes/types/SystemLimitType';
-import { IExpenseRequestPostPayload, IExpenseRequestPutPayload } from '@expense/classes/request/request';
-import { IExpense } from '@expense/classes/response';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { expenseMessage } from '@expense/locales/messages/expenseMessage';
-import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
-import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import * as moment from 'moment';
-import { ExpenseRequestFormView } from './CommonFormView';
+import { ISystemPostPayload, ISystemPutPayload } from '@common/classes/request';
+import { ISystem } from '@common/classes/response';
+import { categoryTypeTranslator } from '@common/helper';
+import { commonMessage } from '@common/locales/messages/commonMessage';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { CommonFormView } from './CommonFormView';
 
 export interface ICommonFormValue {
   id: string;
@@ -61,6 +55,7 @@ interface IOwnState {
   initialValues: ICommonFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICommonFormValue>>>;
   
+  filterLookupCompany: ILookupCompanyGetListFilter;
   filterCommonSystem: ISystemListFilter;
 }
 
@@ -101,10 +96,31 @@ const createProps: mapper<CommonFormProps, IOwnState> = (props: CommonFormProps)
 
   // validation props
   validationSchema: Yup.object().shape<Partial<ICommonFormValue>>({
-    
+    companyUid: Yup.string()
+      .label(props.intl.formatMessage(commonMessage.system.field.companyUid)),
+
+    parentCode: Yup.string()
+      .label(props.intl.formatMessage(commonMessage.system.field.parentCode)),
+
+    name: Yup.string()
+      .max(50)
+      .label(props.intl.formatMessage(commonMessage.system.field.name))
+      .required(),
+
+    description: Yup.string()
+      .max(100)
+      .label(props.intl.formatMessage(commonMessage.system.field.description)),
+      
+    isActive: Yup.boolean()
+      .label(props.intl.formatMessage(commonMessage.system.field.isActive)),
   }),
 
   // filter props
+  filterLookupCompany: {
+    orderBy: 'name',
+    direction: 'ascending'
+  },
+  
   filterCommonSystem: {
     orderBy: 'value',
     direction: 'ascending'
@@ -118,111 +134,73 @@ const stateUpdaters: StateUpdaters<CommonFormProps, IOwnState, IOwnStateUpdater>
 };
 
 const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
-  handleSetMinDate: (props: CommonFormProps) => (days: number, fromDate?: Date | null) => {
-    let today = moment(); // create date today
-
-    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
-      today = moment(fromDate);
-    }
-
-    const minDate = today.subtract(days, 'days'); // substract date using momentjs, because using native date in js sucks
-
-    if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { // only update minDate state once
-      props.setMinDate(minDate.toDate());
-    }
-  },
-  handleSetProjectFilter: (props: CommonFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
-  },
   handleOnLoadDetail: (props: CommonFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
-      const user = props.userState.user;
-      const expenseUid = props.history.location.state.uid;
-      const { isLoading } = props.expenseRequestState.detail;
+      const id = props.history.location.state.id;
+      const { isLoading } = props.commonSystemState.detail;
 
-      if (user && expenseUid && !isLoading) {
-        props.expenseRequestDispatch.loadDetailRequest({
-          expenseUid,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid
+      if (id && !isLoading) {
+        props.commonDispatch.systemDetailRequest({
+          id,
+          category: categoryTypeTranslator(props.match.params.category)
         });
       }
     }
   },
   handleOnSubmit: (props: CommonFormProps) => (values: ICommonFormValue, actions: FormikActions<ICommonFormValue>) => {
-    const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
-    if (user) {
-      // creating
-      if (props.formMode === FormMode.New) {
+    if (props.formMode === FormMode.New) {
+      // fill payload
+      const payload: ISystemPostPayload = {
+        companyUid: values.companyUid || '',
+        parentCode: values.parentCode || '',
+        name: values.name,
+        description: values.description,
+        isActive: values.isActive,
+      };
+      
+      // set the promise
+      promise = new Promise((resolve, reject) => {
+        props.commonDispatch.systemCreateRequest({
+          resolve,
+          reject,
+          category: categoryTypeTranslator(props.match.params.category),
+          data: payload
+        });
+      });
+    }
+
+    // editing
+    if (props.formMode === FormMode.Edit) {
+      const id = props.history.location.state.id;
+
+      // must have expenseUid
+      if (id) {
         // fill payload
-        const payload: IExpenseRequestPostPayload = {
-          date: values.date,
-          expenseType: values.expenseType,
-          customerUid: values.customerUid,
-          projectUid: values.projectUid,
-          value: values.value,
-          location: values.location,
-          address: values.address,
-          client: {
-            name: values.client.name,
-            title: values.client.title,
-          },
-          notes: values.notes,
+        const payload: ISystemPutPayload = {
+          companyUid: values.companyUid || '',
+          parentCode: values.parentCode || '',
+          name: values.name,
+          description: values.description,
+          isActive: values.isActive,
         };
-        
-        // set the promise
+
         promise = new Promise((resolve, reject) => {
-          props.expenseRequestDispatch.createRequest({
-            resolve,
+          props.commonDispatch.systemUpdateRequest({
+            id, 
+            resolve, 
             reject,
-            companyUid: user.company.uid,
-            positionUid: user.position.uid,
-            data: payload
+            category: categoryTypeTranslator(props.match.params.category),
+            data: payload, 
           });
         });
-      }
-
-      // editing
-      if (props.formMode === FormMode.Edit) {
-        const expenseUid = props.history.location.state.uid;
-
-        // must have expenseUid
-        if (expenseUid) {
-          // fill payload
-          const payload: IExpenseRequestPutPayload = {
-            date: values.date,
-            expenseType: values.expenseType,
-            customerUid: values.customerUid,
-            projectUid: values.projectUid,
-            value: values.value,
-            location: values.location,
-            address: values.address,
-            client: {
-              name: values.client.name,
-              title: values.client.title,
-            },
-            notes: values.notes,
-          };
-
-          promise = new Promise((resolve, reject) => {
-            props.expenseRequestDispatch.updateRequest({
-              expenseUid, 
-              resolve, 
-              reject,
-              companyUid: user.company.uid,
-              positionUid: user.position.uid,
-              data: payload as IExpenseRequestPutPayload, 
-            });
-          });
-        }
       }
     }
 
     // handling promise
     promise
-      .then((response: IExpense) => {
+      .then((response: ISystem) => {
         console.log(response);
         
         // set submitting status
@@ -233,10 +211,10 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.message.createSuccess : expenseMessage.request.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.message.createSuccess : commonMessage.system.message.updateSuccess, { uid: response.type })
         });
        
-        props.history.push(`/expense/requests/${response.uid}`);
+        props.history.push(`/common/system/${props.match.params.category}/${response.id}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -254,60 +232,35 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? expenseMessage.request.message.createFailure : expenseMessage.request.message.updateFailure)
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.message.createFailure : commonMessage.system.message.updateFailure)
         });
       });
   }
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = {
-  componentDidMount() {
-    const { loadAmountRequest } = this.props.systemLimitDispatch;
-    const { user } = this.props.userState;
-
-    if (user) {
-      loadAmountRequest({
-        companyUid: user.company.uid,
-        categoryType: SystemLimitType.Expense
-      });
-    }    
+  // tslint:disable-next-line:no-empty
+  componentDidMount() {   
   },
   componentDidUpdate(prevProps: CommonFormProps) {
     // handle project detail response
-    const { response } = this.props.expenseRequestState.detail;
-    const { response: amountResponse } = this.props.systemLimitState.amount;
+    const { response } = this.props.commonSystemState.detail;
 
-    if (response !== prevProps.expenseRequestState.detail.response) {
+    if (response !== prevProps.commonSystemState.detail.response) {
       if (response && response.data) {
         // define initial values
         const initialValues: ICommonFormValue = {
-          uid: response.data.uid,
-          date: response.data.date || '',
-          expenseType: response.data.expenseType,
-          customerUid: response.data.customerUid,
-          projectUid: response.data.projectUid,
-          value: response.data.value,
-          location: response.data.location,
-          address: response.data.address,
-          client: {
-            name: response.data.client && response.data.client.name || '',
-            title: response.data.client && response.data.client.title || '',
-          },
-          notes: response.data.notes || '',
+          id: response.data.id.toString(),
+          category: this.props.match.params.category,
+          companyUid: response.data.companyUid || '',
+          parentCode: response.data.parentCode || '',
+          name: response.data.name,
+          description: response.data.description || '',
+          isActive: response.data.isActive,
         };
 
         // set initial values
         this.props.setInitialValues(initialValues);
-      }
-    }
-
-    if (amountResponse !== prevProps.systemLimitState.detail.response) {
-      if (amountResponse && amountResponse.data) {
-        if (this.props.formMode === FormMode.New) {
-          this.props.handleSetMinDate(amountResponse.data.days);
-        } else {
-          this.props.handleSetMinDate(amountResponse.data.days, response && response.data.changes && response.data.changes.createdAt);
-        }        
       }
     }
   }
@@ -316,6 +269,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = 
 export const CommonForm = compose<CommonFormProps, IOwnOption>(
   setDisplayName('CommonForm'),
   withRouter,
+  withMasterPage,
   withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
