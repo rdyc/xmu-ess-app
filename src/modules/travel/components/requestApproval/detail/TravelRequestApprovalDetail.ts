@@ -7,7 +7,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkFormData } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { TravelUserAction } from '@travel/classes/types';
 import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
@@ -37,8 +37,8 @@ import { TravelRequestApprovalDetailView } from './TravelRequestApprovalDetailVi
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleValidate: (payload: WorkflowApprovalRemarkFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalRemarkFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, IOwnHand
         break;
     }
   },
-  handleValidate: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleValidate: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => { 
     const errors = {};
   
     const requiredFields = formData.isApproved !== props.approvalTrueValue
@@ -135,7 +135,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, IOwnHand
     
     return errors;
   },
-  handleSubmit: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleSubmit: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalRemarkFormData) => { 
     const { match, intl } = props;
     const { user } = props.userState;
     const { createRequest } = props.travelApprovalDispatch;
