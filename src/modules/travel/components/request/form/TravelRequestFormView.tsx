@@ -74,7 +74,7 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
                   }}
                   confirmationDialogProps={{
                     title: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.dialog.createTitle : travelMessage.request.dialog.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.dialog.createDescription : travelMessage.request.dialog.modifyDescription),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? travelMessage.request.dialog.createDescription : travelMessage.request.dialog.editDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}

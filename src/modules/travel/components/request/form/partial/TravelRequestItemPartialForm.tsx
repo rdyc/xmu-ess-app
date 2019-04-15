@@ -322,7 +322,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         <TextField
                           {...field}
                           fullWidth
-                          required
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
@@ -396,7 +395,6 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         <TextField
                           {...field}
                           fullWidth
-                          required
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"

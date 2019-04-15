@@ -219,10 +219,12 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .required(),
 
           from: Yup.string()
+            .max(50)
             .label(props.intl.formatMessage(travelMessage.request.field.from))
             .required(),
 
           destination: Yup.string()
+            .max(50)
             .label(props.intl.formatMessage(travelMessage.request.field.destination))
             .required(),
 
@@ -243,6 +245,7 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .label(props.intl.formatMessage(travelMessage.request.field.transportCost)),
 
           hotel: Yup.string()
+            .max(50)
             .label(props.intl.formatMessage(travelMessage.request.field.hotel)),
 
           isHotelByCompany: Yup.boolean()
