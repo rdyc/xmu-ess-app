@@ -1,47 +1,42 @@
 import { FinanceStatusType, WorkflowStatusType } from '@common/classes/types';
-import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
-
 import { IFinanceApprovalBulkPostPayload, IFinanceApprovalItem } from '@finance/classes/request/approval';
 import { IFinance } from '@finance/classes/response';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
+import { IWorkflowApprovalFormValue } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
+import { FormikActions } from 'formik';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { FinanceApprovalPaymentView } from './FinanceApprovalPaymentView';
 
-interface OwnHandler {
-  handleLoadData: () => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+interface IOwnRouteParams {
 }
 
-interface OwnRouteParams {
-}
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-  setDataload: StateHandler<OwnState>;
-}
-
-interface OwnState {
+interface IOwnState {
   financeUids: string[];
   finances: IFinance[];
   shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
-  approvalChoices: RadioGroupChoice[];
-  approvalTrueValue: string;
+  approvalStatusTypes: RadioGroupChoice[];
+  approvalTrueValues: string[];
   approvalDialogTitle: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
@@ -50,17 +45,28 @@ interface OwnState {
   approvalRemarkPlaceholder: string;
 }
 
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
+  setDataload: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleLoadData: () => void;
+  handleOnSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;
+}
+
 export type FinanceApprovalPaymentProps
   = WithFinanceApproval
   & WithUser
   & WithLayout
-  & RouteComponentProps<OwnRouteParams> 
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnHandler
-  & OwnStateUpdaters
-  & OwnState;
+  & IOwnHandler
+  & IOwnStateUpdater
+  & IOwnState;
 
-const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: FinanceApprovalPaymentProps): OwnState => {
+const createProps: mapper<FinanceApprovalPaymentProps, IOwnState> = (props: FinanceApprovalPaymentProps): IOwnState => {
   const { intl, location } = props;
 
   return {
@@ -69,12 +75,12 @@ const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: Finan
     financeUids: location.state.values || [],
     approvalTitle: intl.formatMessage(financeMessage.approval.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(financeMessage.approval.section.approvalSubTitle),
-    approvalChoices: [
+    approvalStatusTypes: [
       { value: FinanceStatusType.Paid, label: intl.formatMessage(financeMessage.approval.action.paid) },
       { value: FinanceStatusType.Hold, label: intl.formatMessage(financeMessage.approval.action.hold) },
       { value: FinanceStatusType.NotPaid, label: intl.formatMessage(financeMessage.approval.action.notPaid) }
     ],
-    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalTrueValues: [WorkflowStatusType.Approved],
     approvalDialogTitle: intl.formatMessage(financeMessage.approval.dialog.approvalTitle),
     approvalDialogContentText: intl.formatMessage(financeMessage.approval.dialog.approvalSubTitle),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
@@ -83,17 +89,17 @@ const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: Finan
     approvalRemarkPlaceholder: intl.formatMessage(financeMessage.approval.field.notesPlaceholder)
   };
 };
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-    stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
+    stateUpdate: (prevState: IOwnState) => (newState: any) => ({
       ...prevState,
       ...newState
     }),
-    setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    setDataload: (prevState: IOwnState) => (): Partial<IOwnState> => ({
       shouldDataReload: !prevState.shouldDataReload
     })
   };
 
-const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> = {
+const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, IOwnHandler> = {
   handleLoadData: (props: FinanceApprovalPaymentProps) => () => {
     const { financeUids, stateUpdate, history } = props;
     const { response } = props.financeApprovalState.all;
@@ -126,88 +132,84 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
       history.push('/finance/approvals');
     }
   },
-  handleValidate: (props: FinanceApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
-    const errors = {};
-  
-    const requiredFields = ['isApproved', 'remark'];
-  
-    requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
-      }
-    });
-    
-    return errors;
-  },
-  handleSubmit: (props: FinanceApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
-    const { location, intl, financeUids } = props;
+  handleOnSubmit: (props: FinanceApprovalPaymentProps) => (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => {
     const { user } = props.userState;
-    const { bulkCreateRequest } = props.financeApprovalDispatch;
+    let promise = new Promise((resolve, reject) => undefined);
 
-    // user checking
-    if (!user) {
-      return Promise.reject('user was not found');
-    }
+    if (user) {
+      // must have projectUid
+      if (props.financeUids.length) {
+        const _financeUids = props.financeUids.map((financeUid: string) => {
+          const uids: IFinanceApprovalItem = ({
+            uid: financeUid
+          });
 
-    // props checking
-    if (!location.state.values) {
-      const message = intl.formatMessage(projectApprovalMessage.emptyProps);
-
-      return Promise.reject(message);
-    }
+          return uids;
+        });
     
-    const _financeUids = financeUids.map((financeUid: string) => {
-      const uids: IFinanceApprovalItem = ({
-        uid: financeUid
-      });
-      return uids;
-    });
+        // fill payload
+        const payload: IFinanceApprovalBulkPostPayload = {
+          financeUids: _financeUids,
+          statusType: values.statusType,
+          notes: values.remark
+        };
 
-    // generate payload
-    const payload: IFinanceApprovalBulkPostPayload = {
-      financeUids: _financeUids,
-      statusType: !isNullOrUndefined(formData.isApproved) ? formData.isApproved : FinanceStatusType.Approved,
-      notes: !isNullOrUndefined(formData.remark) ? formData.remark : ''
-    };
-
-    // dispatch update request
-    return new Promise((resolve, reject) => {
-      bulkCreateRequest({
-        resolve, 
-        reject,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        data: payload, 
-      });
-    });
-  },
-  handleSubmitSuccess: (props: FinanceApprovalPaymentProps) => () => {
-    const { intl, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    alertAdd({
-      time: new Date(),
-      message: intl.formatMessage(projectApprovalMessage.submitSuccess),
-    });
-
-    history.push('/finance/approvals');
-  },
-  handleSubmitFail: (props: FinanceApprovalPaymentProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    if (errors) {
-      // validation errors from server (400: Bad Request)
-      alertAdd({
-        time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
-      });
-    } else {
-      alertAdd({
-        time: new Date(),
-        message: intl.formatMessage(projectApprovalMessage.submitFailure),
-        details: isObject(submitError) ? submitError.message : submitError
-      });
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.financeApprovalDispatch.bulkCreateRequest({
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload, 
+          });
+        });
+      }
     }
+
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(financeMessage.approval.message.createSuccess)
+        });
+
+        // redirect to approval list
+        props.history.push('/finance/approvals');
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => {
+            // in case to handle incorrect field on other fields
+            let field = item.field;
+
+            if (item.field === 'financeUid') {
+              field = 'statusType';
+            }
+
+            actions.setFieldError(field, props.intl.formatMessage({id: item.message}));
+          });
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(financeMessage.approval.message.createFailure)
+        });
+      });
   }
 };
 
@@ -215,6 +217,7 @@ export const FinanceApprovalPayment = compose(
   withRouter,
   withUser,
   withLayout,
+  withMasterPage,
   withFinanceApproval,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
