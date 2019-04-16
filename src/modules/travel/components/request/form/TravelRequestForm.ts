@@ -241,7 +241,7 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .required(),
 
           costTransport: Yup.number()
-            .min(1)
+            .min(0)
             .label(props.intl.formatMessage(travelMessage.request.field.transportCost)),
 
           hotel: Yup.string()
@@ -253,7 +253,7 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .required(),
 
           costHotel: Yup.number()
-            .min(1)
+            .min(0)
             .label(props.intl.formatMessage(travelMessage.request.field.hotelCost)),
 
           notes: Yup.string()
