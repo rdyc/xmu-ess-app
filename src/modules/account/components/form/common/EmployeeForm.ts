@@ -432,7 +432,7 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
         actions.setSubmitting(false);
-        console.log(error);
+        // console.log(error);
 
         // set form status
         actions.setStatus(error);

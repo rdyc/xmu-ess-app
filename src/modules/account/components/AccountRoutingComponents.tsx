@@ -15,13 +15,14 @@ import { AccountEmployeeRateDetail } from './detail/rate/AccountEmployeeRateDeta
 import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployeeTrainingDetail';
 import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
 // import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
-import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
+// import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
 import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
 import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
 import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
+import { EducationForm } from './form/education/EducationForm';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
 import { AccountEmployeeList } from './list/common/AccountEmployeeList';
@@ -63,7 +64,7 @@ const employee = (props: RouteComponentProps) => (
 
 const employeeEducation = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={AccountEmployeeEducationEditor} />    
+    <Route path={`${props.match.path}/form`} component={EducationForm} />    
     <Route path={`${props.match.path}/:educationUid`} component={AccountEmployeeEducationDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeEducationList} />
   </Switch>

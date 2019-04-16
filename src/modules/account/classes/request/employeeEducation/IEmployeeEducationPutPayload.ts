@@ -5,5 +5,5 @@ export interface IEmployeeEducationPutPayload {
   institution: string;
   major: string;
   start: number;
-  end: number;
+  end?: number;
 }
