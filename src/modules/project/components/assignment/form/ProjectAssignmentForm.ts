@@ -1,3 +1,4 @@
+import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { ICommonSystem } from '@common/classes';
 import { WorkflowStatusType } from '@common/classes/types';
@@ -37,6 +38,7 @@ import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 interface IProjectAssignmentItemFormValue {
   uid?: string;
   employeeUid: string;
+  employee?: IAccountEmployee;
   role: string;
   jobDescription: string;
   mandays: number;
@@ -325,6 +327,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectAssignmentFormProps, IO
           initialValues.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
+            employee: item.employee,
             role: item.role || '',
             jobDescription: item.jobDescription || '',
             mandays: item.mandays,
