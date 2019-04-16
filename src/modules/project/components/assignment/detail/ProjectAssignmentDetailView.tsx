@@ -29,25 +29,9 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
         showProjectHours={true}
       />
     ])}
-    secondary={(data: IProjectAssignmentDetail) => {
-      const components: JSX.Element[] = [];
-  
-      if (data.items) {
-        data.items.forEach((item, index) => {
-          const element: JSX.Element = (
-            <ProjectAssignmentItem 
-              data={item} 
-              title={`Assignment #${index + 1}`} 
-              subHeader={item.status && item.status.value || 'N/A'} 
-            />
-          );
-          
-          components.push(element);
-        });
-      }
-          
-      return components;
-    }}
+    secondary={(data: IProjectAssignmentDetail) => ([
+      <ProjectAssignmentItem items={data.items} />
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

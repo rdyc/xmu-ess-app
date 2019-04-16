@@ -4,10 +4,20 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Button, Card, CardActions, CardContent, CardHeader, IconButton, TextField } from '@material-ui/core';
-import { DeleteForever, GroupAdd } from '@material-ui/icons';
+import {
+  Card,
+  CardHeader,
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelActions,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  IconButton,
+  ListItemText,
+  TextField,
+} from '@material-ui/core';
+import { DeleteForever, ExpandMore, GroupAdd } from '@material-ui/icons';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
@@ -31,42 +41,60 @@ const ProjectAssingmentMemberPartialForm: React.ComponentType<ProjectAssignmentM
     name="items"
     render={(fields: FieldArrayRenderProps) => (
       <React.Fragment>
+        <Card square>
+          <CardHeader 
+            title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)}
+            subheader={
+              props.formikBag.submitCount > 0 &&
+              typeof props.formikBag.errors.items === 'string' &&
+              props.formikBag.errors.items ||
+              `${props.formikBag.values.items.length} Item(s)`
+            }
+            subheaderTypographyProps={{
+              color: props.formikBag.errors.items && 'error',
+              variant: 'body1'
+            }}
+            action={
+              <IconButton
+                color="primary"
+                disabled={props.formikBag.isSubmitting}
+                onClick={() => fields.push({
+                  employeeUid: '',
+                  role: '',
+                  jobDescription: '',
+                  mandays: 0,
+                  allocatedHours: 0,
+                  consumedHours: 0,
+                  statusType: ''
+                })}
+              >
+                <GroupAdd/>
+              </IconButton>
+            }
+          />
+        </Card>
+        
         {
           props.formikBag.values.items.length > 0 &&
           props.formikBag.values.items.map((item, index) =>
-            <div className={props.classes.flexContent} key={index}>
-              <Card square>
-                <CardHeader 
-                  title={`#${index + 1} - ${item.uid || 'Draft'}`}
-                  subheader={`${item.status && item.status.value || 'Draft'} ${item.rejectedReason || ''}`}
-                  titleTypographyProps={{variant: 'body2'}}
-                  action={
-                    <IconButton 
-                      disabled={item.consumedHours && item.consumedHours >= 0 || false}
-                      onClick={() => {
-                        // remove current
-                        fields.remove(index);
-
-                        // calculate total allocatedHours
-                        let assignedHours = 0;
-                        props.formikBag.values.items.forEach((assignedItem, itemIndex) => {
-                          if (itemIndex !== index && assignedItem.statusType !== WorkflowStatusType.Rejected) {
-                            assignedHours = assignedHours + (assignedItem.allocatedHours || 0);
-                          }
-                        });
-
-                        // set assignedHours
-                        props.formikBag.setFieldValue('assignedHours', assignedHours);
-
-                        // set unassignedHours
-                        props.formikBag.setFieldValue('unassignedHours', props.formikBag.values.maxHours - assignedHours);
-                      }}
-                    >
-                      <DeleteForever />
-                    </IconButton>
-                  }
+            <ExpansionPanel key={index} defaultExpanded={!item.uid || (index === 0 && props.formikBag.values.items.length <= 3)}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+                <ListItemText
+                  primary={item.employee && item.employee.fullName || 'Unselected Name'}
+                  secondary={`${props.intl.formatNumber(item.mandays)} Mandays | ${props.intl.formatNumber(item.allocatedHours || 0)} Allocated Hours | ${props.intl.formatNumber(item.consumedHours || 0)} Consumed Hours`}
+                  primaryTypographyProps={{
+                    color: getIn(props.formikBag.errors, `items.${index}`) && 'error'
+                  }}
+                  secondaryTypographyProps={{
+                    color: getIn(props.formikBag.errors, `items.${index}`) && 'error'
+                  }}
                 />
-                <CardContent>
+              </ExpansionPanelSummary>
+
+              <Divider/>
+              
+              <ExpansionPanelDetails>
+                <div>
                   <Field
                     name={`items.${index}.employeeUid`}
                     render={({ field, form }: FieldProps<IProjectAssignmentFormValue>) => {
@@ -92,7 +120,10 @@ const ProjectAssingmentMemberPartialForm: React.ComponentType<ProjectAssignmentM
                               error: touch && Boolean(error)
                             }}
                             onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                            onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                            onChange={(selected: ISelectFieldOption) => {
+                              props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                              props.formikBag.setFieldValue(`items.${index}.employee`, selected && selected.data);
+                            }}
                           />
                         </AccountEmployeeOption>
                       );
@@ -233,49 +264,39 @@ const ProjectAssingmentMemberPartialForm: React.ComponentType<ProjectAssignmentM
                       />
                     )}
                   />
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </ExpansionPanelDetails>
+
+              <Divider/>
+
+              <ExpansionPanelActions>
+                <IconButton 
+                  disabled={item.consumedHours && item.consumedHours >= 0 || false}
+                  onClick={() => {
+                    // remove current
+                    fields.remove(index);
+
+                    // calculate total allocatedHours
+                    let assignedHours = 0;
+                    props.formikBag.values.items.forEach((assignedItem, itemIndex) => {
+                      if (itemIndex !== index && assignedItem.statusType !== WorkflowStatusType.Rejected) {
+                        assignedHours = assignedHours + (assignedItem.allocatedHours || 0);
+                      }
+                    });
+
+                    // set assignedHours
+                    props.formikBag.setFieldValue('assignedHours', assignedHours);
+
+                    // set unassignedHours
+                    props.formikBag.setFieldValue('unassignedHours', props.formikBag.values.maxHours - assignedHours);
+                  }}
+                >
+                  <DeleteForever />
+                </IconButton>
+              </ExpansionPanelActions>
+            </ExpansionPanel>
           )
         }
-
-        <div className={props.classes.flexContent}>
-          <Card square>
-            <CardHeader 
-              title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)}
-              subheader={
-                props.formikBag.submitCount > 0 &&
-                typeof props.formikBag.errors.items === 'string' &&
-                props.formikBag.errors.items
-              }
-              subheaderTypographyProps={{
-                color: 'error',
-                variant: 'body1'
-              }}
-            />
-            <CardActions>
-              <Button
-                fullWidth
-                color="primary" 
-                disabled={props.formikBag.isSubmitting}
-                onClick={() => fields.push({
-                  employeeUid: '',
-                  role: '',
-                  jobDescription: '',
-                  mandays: 0,
-                  allocatedHours: 0,
-                  consumedHours: 0,
-                  statusType: ''
-                })}
-              >
-                <GroupAdd className={props.classes.marginFarRight}/>
-
-                {props.intl.formatMessage(layoutMessage.action.add)}
-              </Button>
-            </CardActions>
-          </Card>
-          
-        </div>
       </React.Fragment>
     )}
   />
