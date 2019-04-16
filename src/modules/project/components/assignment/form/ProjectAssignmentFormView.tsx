@@ -49,16 +49,18 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
               formikBag.values.projectUid !== '' &&
               <React.Fragment>
                 <div className={props.classes.flexColumn}>
-                  <ProjectAssingmentMemberPartialForm
-                    formikBag={formikBag}
-                    formMode={props.formMode}
-                    intl={props.intl}
-                    classes={{
-                      flexContent: props.classes.flexContent,
-                      marginFarRight: props.classes.marginFarRight
-                    }}
-                    filterAccountEmployee={props.filterAccountEmployee}
-                  />
+                  <div className={props.classes.flexContent}>
+                    <ProjectAssingmentMemberPartialForm
+                      formikBag={formikBag}
+                      formMode={props.formMode}
+                      intl={props.intl}
+                      classes={{
+                        flexContent: props.classes.flexContent,
+                        marginFarRight: props.classes.marginFarRight
+                      }}
+                      filterAccountEmployee={props.filterAccountEmployee}
+                    />
+                  </div>
                 </div>
 
                 <div className={props.classes.flexColumn}>

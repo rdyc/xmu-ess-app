@@ -156,28 +156,9 @@ export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps
         }
       </ProjectAssignment>
     ])}
-    secondary={(data: IProjectAssignmentDetail) => {
-      const components: JSX.Element[] = [];
-
-      if (data.items) {
-        data.items
-          .filter(item => item.employeeUid === (props.userState.user ? props.userState.user.uid : undefined))
-          .forEach((item, index) => {
-            const element: JSX.Element = (
-              <ProjectAssignmentItem 
-                data={item} 
-                title={`Assignment #${index + 1}`} 
-                subHeader={item.status && item.status.value || 'N/A'}
-                onClickItem={() => props.handleOnClickItem(item.uid)}
-              />
-            );
-              
-            components.push(element);
-        });
-      }
-          
-      return components;
-    }}
+    secondary={(data: IProjectAssignmentDetail) => ([
+      <ProjectAssignmentItem items={data.items.filter(item => item.employeeUid === (props.userState.user ? props.userState.user.uid : undefined))} />
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

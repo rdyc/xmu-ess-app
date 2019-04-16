@@ -26,11 +26,9 @@ export const ProjectAcceptanceApprovalView: React.SFC<ProjectAcceptanceApprovalP
       <ProjectInformationSimple data={data.project} />
     ])}
     secondary={(data: IProjectAssignmentDetailItem) => ([
-      <ProjectAssignmentItem 
-        data={data} 
-        title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)} 
-        // subHeader={props.intl.formatMessage(projectMessage.assignment.section.itemSubHeader)} 
-      />,
+      <ProjectAssignmentItem  items={[data]} />
+    ])}
+    tertiary={(data: IProjectAssignmentDetailItem) => ([
       <React.Fragment>
         {
           data.statusType === WorkflowStatusType.Submitted &&
