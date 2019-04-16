@@ -55,4 +55,5 @@ export const accountSharedConfirm = defineMessages({
 export const accountSharedSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
   infoSubHeader: { id: `${prefix}.section.info.subHeader`},
+  submission: { id: `${prefix}.section.submission`},
 });

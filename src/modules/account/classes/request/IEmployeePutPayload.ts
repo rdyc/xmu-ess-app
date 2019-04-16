@@ -1,23 +1,19 @@
 export interface IEmployeePutPayload {
   uid: string;
+  // information
   companyUid: string;
   employmentNumber: string;
   employmentType: string;
+  fullName: string;
   joinDate: string;
   inactiveDate?: string | null;
-  fullName: string;
   dateOfBirth: string;
   birthPlace: string;
-  email: string;
-  emailPersonal: string;
-  phone: string;
-  mobilePhone?: string | null;
-  address: string;
-  addressAdditional: string;
   genderType: string;
-  religionType?: string | null;
-  taxType: string;
+  taxType?: string;
+  religionType: string | null;
   bloodType?: string | null;
+  // bank
   familyCardNumber: string;
   citizenNumber: string;
   taxNumber: string;
@@ -26,9 +22,16 @@ export interface IEmployeePutPayload {
   bankAccount: string;
   bankAccountName: string;
   bankAccountBranch?: string | null;
+  // contact  
+  address: string;
+  addressAdditional?: string;
+  email?: string;
+  emailPersonal?: string;
+  phone?: string;
+  mobilePhone?: string | null;
   emergencyContactName?: string | null;
   emergencyContactRelation?: string | null;
   emergencyContactPhone?: string | null;
   emergencyContactPhoneAdditional?: string | null;
-  image?: any;
+  image?: string | null;
 }

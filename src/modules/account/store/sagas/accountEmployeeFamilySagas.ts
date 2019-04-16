@@ -21,6 +21,7 @@ import {
   accountEmployeeFamilyPutRequest,
   accountEmployeeFamilyPutSuccess,
 } from '@account/store/actions';
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -117,16 +118,9 @@ function* watchPostRequest() {
         put(accountEmployeeFamilyPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based form section name
-            information: flattenObject(response.body.errors) 
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeeFamilyPostError(error.message)),
@@ -164,17 +158,9 @@ function* watchPutRequest() {
         put(accountEmployeeFamilyPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeeFamilyPutError(error.message)),
