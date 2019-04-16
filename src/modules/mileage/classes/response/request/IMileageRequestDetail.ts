@@ -10,21 +10,21 @@ import { ITimesheet } from '@timesheet/classes/response';
 
 export interface IMileageRequestDetail {
   hierarchyUid: string;
-  hierarchy?: IOrganizationHierarchy | null;
-  items?: IMileageRequestItem[] | null;
-  histories?: History[] | null;
-  timesheets?: ITimesheet[] | null;
+  hierarchy?: IOrganizationHierarchy;
+  items?: IMileageRequestItem[];
+  histories?: History[];
+  timesheets?: ITimesheet[];
   workflow?: IOrganizationWorkflow;
-  changes?: IBaseChanges | null;
+  changes?: IBaseChanges;
   uid: string;
   employeeUid: string;
-  employee?: IAccountEmployee | null;
+  employee?: IAccountEmployee;
   month: number;
   year: number;
-  period?: string | null;
+  period?: string;
   amount: number;
   statusType: string;
-  status?: ICommonSystem | null;
-  notes?: string | null;
+  status?: ICommonSystem;
+  notes?: string;
   isNotified: boolean;
 }
