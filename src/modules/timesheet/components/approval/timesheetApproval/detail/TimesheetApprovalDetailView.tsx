@@ -21,11 +21,13 @@ export const TimesheetApprovalDetailView: React.SFC<TimesheetApprovalDetailProps
     }}
     state={props.timesheetApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ITimesheetDetail) => (
+    primary={(data: ITimesheetDetail) => ([
       <TimesheetInformation data={data} />
-    )}
+    ])}
     secondary={(data: ITimesheetDetail) => ([
-      <WorkflowHistory data={data.workflow} />,
+      <WorkflowHistory data={data.workflow} />
+    ])}
+    tertiary={(data: ITimesheetDetail) => ([
       <React.Fragment>
         {
           data.workflow && 

@@ -32,6 +32,7 @@ interface IOwnOption {
   title: string;
   statusTypes: RadioGroupChoice[];
   trueTypes: string[];
+  disabled?: boolean;
   remarkFieldProps?: IWorkflowApprovalRemarkFieldProps;
   confirmationDialogProps: ISubmissionDialogProps;
   onSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;

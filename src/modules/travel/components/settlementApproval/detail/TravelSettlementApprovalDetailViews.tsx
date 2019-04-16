@@ -36,22 +36,8 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
       }}
       state={props.travelSettlementApprovalState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: ITravelSettlementRequestDetail) => (
-        <TravelSettlementSummary
-          data={data.settlement}
-          travelData={data.request}
-        />
-      )}
-      secondary={(data: ITravelSettlementRequestDetail) => ([
-        <TravelSettlementItem data={data.settlement.items} />,
-        <TravelRequestItem data={data.request && data.request.items} />,
-        <TravelSettlementInformation data={data.settlement} />,
-        <React.Fragment>
-          {
-            data.request &&
-            <TravelInformation data={data.request} />
-          }
-        </React.Fragment>,
+      primary={(data: ITravelSettlementRequestDetail) => ([
+        <TravelSettlementSummary data={data.settlement} travelData={data.request} />,
         <WorkflowHistory data={data.settlement.workflow} />,
         <React.Fragment>
           {
@@ -78,6 +64,19 @@ export const TravelSettlementApprovalDetailViews: React.SFC<TravelSettlementAppr
             />
           }
         </React.Fragment>
+      ])}
+      secondary={(data: ITravelSettlementRequestDetail) => ([
+        <TravelRequestItem data={data.request && data.request.items} />,
+        <React.Fragment>
+          {
+            data.request &&
+            <TravelInformation data={data.request} />
+          }
+        </React.Fragment>
+      ])}
+      tertiary={(data: ITravelSettlementRequestDetail) => ([
+        <TravelSettlementItem data={data.settlement.items} />,
+        <TravelSettlementInformation data={data.settlement} />
       ])}
       appBarComponent={
         props.menuOptions &&

@@ -22,13 +22,13 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
     }}
     state={props.projectAssignmentState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectAssignmentDetail) => (
+    primary={(data: IProjectAssignmentDetail) => ([
       <ProjectAssignment 
         formMode={FormMode.View}
         data={data}
         showProjectHours={true}
       />
-    )}
+    ])}
     secondary={(data: IProjectAssignmentDetail) => {
       const components: JSX.Element[] = [];
   

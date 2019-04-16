@@ -21,11 +21,13 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
     }}
     state={props.purchaseSettlementState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ISettlementDetail) => (
+    primary={(data: ISettlementDetail) => ([
       <SettlementInformation data={data} />
-    )}
+    ])}
     secondary={(data: ISettlementDetail) => ([
-      <SettlementItemContainer data={data} />,
+      <SettlementItemContainer data={data} />
+    ])}
+    tertiary={(data: ISettlementDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={

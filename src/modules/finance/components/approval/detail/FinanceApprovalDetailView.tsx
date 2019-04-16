@@ -40,12 +40,12 @@ export const FinanceApprovalDetailView: React.SFC<FinanceApprovalDetailProps> = 
     }
     state={props.financeApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IFinanceDetail) => (
+    primary={(data: IFinanceDetail) => ([
       <FinanceInformation 
         data={data}
         handleToDocument={props.handleToDocument} 
       />
-    )}
+    ])}
     secondary={(data: IFinanceDetail) => ([
       <React.Fragment>
         {

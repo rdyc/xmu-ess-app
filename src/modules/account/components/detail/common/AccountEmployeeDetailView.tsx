@@ -30,9 +30,9 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
         }}
         state={props.accountEmployeeState.detail}
         onLoadApi={props.handleOnLoadApi}
-        primary={(data: IEmployeeDetail) => (
+        primary={(data: IEmployeeDetail) => ([
           <AccountEmployeeInformation data={data} />
-        )}
+        ])}
         secondary={(data: IEmployeeDetail) => ([
           <AccountEmployeeContact data={data}/>,
           <AccountEmployeeBank data={data}/> 

@@ -24,9 +24,9 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
     }}
     state={props.projectApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectDetail) => (
+    primary={(data: IProjectDetail) => ([
       <ProjectInformation data={data} />
-    )}
+    ])}
     secondary={(data: IProjectDetail) => ([
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
@@ -35,7 +35,9 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
         data={data.documentPreSales}
-      />,
+      />
+    ])}
+    tertiary={(data: IProjectDetail) => ([
       <ProjectSales data={data.sales} />,
       <ProjectSite data={data.sites} />,
       <WorkflowHistory data={data.workflow} />,
