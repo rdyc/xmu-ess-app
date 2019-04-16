@@ -21,37 +21,41 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
-interface OwnProps {
-  items: IMileageRequestItem[] | null | undefined;
-  handleCheckbox: (ItemUid: string) => void;
+interface IOwnProps {
+  items?: IMileageRequestItem[];
   ItemUids: string[];
+  onChecked: (itemUid: string) => void;
 }
 
-interface OwnState {
-  active: string | undefined;
+interface IOwnState {
+  active?: string;
   isExpanded: boolean;
 }
 
-interface OwnStateHandler extends StateHandlerMap<OwnState> {
-  handleToggle: (uid: string) => OwnState;
+interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
+  handleToggle: (uid: string) => IOwnState;
 }
 
-type AllProps = OwnProps & OwnState & OwnStateHandler & InjectedIntlProps;
+type MileageApprovalDetailItemProps 
+  = IOwnProps 
+  & IOwnState 
+  & IOwnStateHandler 
+  & InjectedIntlProps;
 
-const createProps: mapper<AllProps, OwnState> = (): OwnState => ({
+const createProps: mapper<MileageApprovalDetailItemProps, IOwnState> = (): IOwnState => ({
   active: undefined,
   isExpanded: false
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
-  handleToggle: (state: OwnState) => (uid: string) => ({
+const stateUpdaters: StateUpdaters<MileageApprovalDetailItemProps, IOwnState, IOwnStateHandler> = {
+  handleToggle: (state: IOwnState) => (uid: string) => ({
     active: uid,
     isExpanded: state.active === uid ? !state.isExpanded : true
   })
 };
 
-const mileageApprovalItem: React.SFC<AllProps> = props => {
-  const { items, active, isExpanded, intl, handleCheckbox, ItemUids, handleToggle } = props;
+const mileageApprovalDetailItem: React.SFC<MileageApprovalDetailItemProps> = props => {
+  const { items, active, isExpanded, intl, onChecked: handleCheckbox, ItemUids, handleToggle } = props;
   const len = items && items.length - 1;
 
   const isChecked = (mileageItemUid: string) => {
@@ -68,7 +72,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
         )}
       />
       <CardContent>
-      <List>
+        <List>
           {
             items &&
             items.map((item, index) =>
@@ -150,14 +154,14 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
             )
           }
         </List>
-        </CardContent>
+      </CardContent>
     </Card>
   );
 
   return render;
 };
 
-export const MileageApprovalItem = compose<AllProps, OwnProps>(
+export const MileageApprovalDetailItem = compose<MileageApprovalDetailItemProps, IOwnProps>(
   injectIntl,
-  withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
-)(mileageApprovalItem);
+  withStateHandlers(createProps, stateUpdaters)
+)(mileageApprovalDetailItem);

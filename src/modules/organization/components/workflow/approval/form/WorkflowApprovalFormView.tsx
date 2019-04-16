@@ -130,7 +130,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               fullWidth
               type="reset"
               color="secondary"
-              disabled={!formikBag.dirty || formikBag.isSubmitting}
+              disabled={props.disabled || !formikBag.dirty || formikBag.isSubmitting}
             >
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -139,7 +139,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               fullWidth
               type="button"
               color="primary"
-              disabled={formikBag.isSubmitting}
+              disabled={props.disabled || formikBag.isSubmitting}
               onClick={() => props.setOpen()}
             >
               {props.intl.formatMessage(formikBag.isSubmitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
