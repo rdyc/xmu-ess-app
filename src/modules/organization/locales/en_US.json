@@ -88,6 +88,8 @@
   "organization.hierarchy.section.info.subHeader": " ",
   "organization.hierarchy.section.history.title": "History Hierarchy",
   "organization.hierarchy.section.history.subHeader": " ",
+  "organization.hierarchy.section.submit": "Hierarchy Submission",
+  "organization.hierarchy.section.itemTitle": "Hierarchy Item",
 
   "organization.hierarchy.dialog.modify.title": "Modify Confirmation",
   "organization.hierarchy.dialog.modify.description": "You are about to modify this data. Do you want to continue?",
