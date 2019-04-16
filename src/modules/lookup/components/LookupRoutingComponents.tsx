@@ -17,7 +17,7 @@ import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import { LookupCustomerForm } from './customer/form/LookupCustomerForm';
 import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
-import LookupDiemEditor from './diem/editor/LookupDiemEditor';
+import { LookupDiemForm } from './diem/form/LookupDiemForm';
 import { LookupDiemList } from './diem/list/LookupDiemList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
 import GalleryEditor from './gallery/editor/GalleryEditor';
@@ -119,7 +119,7 @@ const lookupCustomer = (props: RouteComponentProps) => (
 
 const diem = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupDiemForm} />
     <Route path={`${props.match.path}/:diemUid`} component={LookupDiemDetail} />
     <Route path={`${props.match.path}`} component={LookupDiemList} />
   </Switch>

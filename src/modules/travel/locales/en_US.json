@@ -308,7 +308,7 @@
   "travel.field.information.item.departureDate.required": "Departure date is required",
   "travel.field.information.item.returnDate.required": "Return date is required",
 
-  "travel.request.message.items.empty": "Empty Travel Item",
+  "travel.request.message.emptyItem": "Travel items are empty ",
 
   "travel.request.message.emptyProps": "Some props are empty",
   "travel.settlement.message.emptyProps": "Some props are empty",

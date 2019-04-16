@@ -4,7 +4,7 @@ import { ICompanyList } from '@lookup/classes/response';
 
 export interface IDiemDetail {
   uid: string; 
-  companyUid?: string;
+  companyUid: string;
   company?: ICompanyList;
   currencyUid: string;
   currency: string;  // ICurrencyList;   
