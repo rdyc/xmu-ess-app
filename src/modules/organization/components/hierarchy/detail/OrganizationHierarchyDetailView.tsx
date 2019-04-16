@@ -29,11 +29,9 @@ export const OrganizationHierarchyDetailView: React.SFC<OrganizationHierarchyDet
     }
     state={props.organizationHierarchyState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IHierarchyDetail) => (
-      <OrganizationHierarchyInformation 
-      data={data} 
-    />
-    )}
+    primary={(data: IHierarchyDetail) => ([
+      <OrganizationHierarchyInformation data={data} />
+    ])}
     secondary={(data: IHierarchyDetail) => ([
       <div>
       {

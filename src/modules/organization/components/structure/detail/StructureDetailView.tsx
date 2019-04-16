@@ -20,9 +20,9 @@ export const StructureDetailView: React.SFC<OrganizationStructureDetailProps> = 
     }}
     state={props.organizationStructureState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IStructureDetail) => (
+    primary={(data: IStructureDetail) => ([
       <StructureInformation data={data} />
-    )}
+    ])}
     secondary={(data: IStructureDetail) => ([
       <StructureItemInformation data={data.reportTo ? data.reportTo : []} />
     ])}

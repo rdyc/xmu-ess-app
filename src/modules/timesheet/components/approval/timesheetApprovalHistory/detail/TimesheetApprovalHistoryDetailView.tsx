@@ -20,9 +20,9 @@ export const TimesheetApprovalHistoryDetailView: React.SFC<TimesheetApprovalHist
     }}
     state={props.timesheetApprovalHistoryState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ITimesheetDetail) => (
+    primary={(data: ITimesheetDetail) => ([
       <TimesheetInformation data={data} />
-    )}
+    ])}
     secondary={(data: ITimesheetDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}

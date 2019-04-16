@@ -20,9 +20,9 @@ export const AccountEmployeeAccessHistoryDetailView: React.SFC<AccountEmployeeAc
       }}
       state={props.accountEmployeeAccessHistoryState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: IEmployeeAccessHistory) => (
+      primary={(data: IEmployeeAccessHistory) => ([
         <AccountEmployeeAccessHistoryInformation data={data} employeeUid={props.match.params.employeeUid}/>
-      )}
+      ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu 

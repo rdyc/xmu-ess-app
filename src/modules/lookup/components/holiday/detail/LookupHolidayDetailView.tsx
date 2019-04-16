@@ -20,9 +20,9 @@ export const LookupHolidayDetailView: React.SFC<HolidayDetailProps> = props => (
     }}
     state={props.lookupHolidayState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILookupHolidayDetail) => (
+    primary={(data: ILookupHolidayDetail) => ([
       <LookupHolidayInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

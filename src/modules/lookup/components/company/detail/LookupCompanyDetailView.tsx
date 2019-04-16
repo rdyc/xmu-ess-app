@@ -18,9 +18,9 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
     }}
     state={props.lookupCompanyState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ICompanyDetail) => (
+    primary={(data: ICompanyDetail) => ([
       <CompanyInformation data={data}/>
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

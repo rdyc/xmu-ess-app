@@ -21,12 +21,14 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
     }}
     state={props.leaveApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILeaveDetail) => (
+    primary={(data: ILeaveDetail) => ([
       <LeaveInformation data={data} />
-    )}
+    ])}
     secondary={(data: ILeaveDetail) => ([
       <AccountLeave employeeUid={data.employeeUid}/>,
-      <WorkflowHistory data={data.workflow} />,
+      <WorkflowHistory data={data.workflow} />
+    ])}
+    tertiary={(data: ILeaveDetail) => ([
       <React.Fragment>
         {
           data.workflow && 

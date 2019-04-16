@@ -21,12 +21,14 @@ export const MileageRequestDetailView: React.SFC<MileageRequestDetailProps> = pr
     }}
     state={props.mileageRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IMileageRequestDetail) => (
+    primary={(data: IMileageRequestDetail) => ([
       <MileageInformation data={data} />
-    )}
+    ])}
     secondary={(data: IMileageRequestDetail) => ([
       <MileageItem items={data.items}/>,
-      <TimesheetItem data={data.timesheets} />,
+      <TimesheetItem data={data.timesheets} />
+    ])}
+    tertiary={(data: IMileageRequestDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={

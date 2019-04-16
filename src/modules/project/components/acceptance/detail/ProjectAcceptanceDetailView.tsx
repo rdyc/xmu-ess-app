@@ -134,7 +134,7 @@ export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps
     }}
     state={props.projectAssignmentState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectAssignmentDetail) => (
+    primary={(data: IProjectAssignmentDetail) => ([
       <ProjectAssignment 
         formMode={FormMode.View} 
         data={data}
@@ -155,7 +155,7 @@ export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps
           </React.Fragment>
         }
       </ProjectAssignment>
-    )}
+    ])}
     secondary={(data: IProjectAssignmentDetail) => {
       const components: JSX.Element[] = [];
 

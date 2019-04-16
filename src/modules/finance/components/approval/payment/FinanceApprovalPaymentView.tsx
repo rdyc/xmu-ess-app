@@ -16,11 +16,9 @@ export const FinanceApprovalPaymentView: React.SFC<FinanceApprovalPaymentProps> 
     }}
     state={props.financeApprovalState.detail}
     onLoadApi={props.handleLoadData}
-    primary={() => (
-      <FinanceBulkInformation 
-        data={props.finances} 
-      />
-    )}
+    primary={() => ([
+      <FinanceBulkInformation data={props.finances}/>
+    ])}
     secondary={() => ([
       <React.Fragment>
         {
