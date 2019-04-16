@@ -22,9 +22,9 @@ export const ProjectAcceptanceApprovalView: React.SFC<ProjectAcceptanceApprovalP
     }}
     state={props.projectAcceptanceState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectAssignmentDetailItem) => (
+    primary={(data: IProjectAssignmentDetailItem) => ([
       <ProjectInformationSimple data={data.project} />
-    )}
+    ])}
     secondary={(data: IProjectAssignmentDetailItem) => ([
       <ProjectAssignmentItem 
         data={data} 

@@ -21,9 +21,9 @@ export const AccountEmployeeFamilyDetailView: React.SFC<AccountEmployeeFamilyDet
       }}
       state={props.accountEmployeeFamilyState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: IEmployeeFamily) => (
+      primary={(data: IEmployeeFamily) => ([
         <AccountEmployeeFamilyInformation data={data} employeeUid={props.match.params.employeeUid}/>
-      )}
+      ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu 

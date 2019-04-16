@@ -28,12 +28,12 @@ export const CommonDetailView: React.SFC<CommonDetailProps> = props => (
     }
     state={props.commonSystemState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ISystemDetail) => (
+    primary={(data: ISystemDetail) => ([
       <CommonInformation 
         data={data} 
         category={props.match.params.category}
       />
-    )}
+    ])}
     secondary={() => ([])}
   >
     <DialogConfirmation 
