@@ -114,7 +114,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                       const touch = getIn(form.touched, `items.${index}.employeeUid`);
 
                       return (
-                        <AccountEmployeeOption filter={props.filterAccountEmployee}>
+                        <AccountEmployeeOption filter={props.filterAccountEmployee} default={item.employee}>
                           <SelectField
                             autoFocus
                             isSearchable
