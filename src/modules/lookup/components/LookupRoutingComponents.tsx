@@ -31,7 +31,7 @@ import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMi
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
-import { PositionEditor } from './position/editor/PositionEditor';
+import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
@@ -103,7 +103,7 @@ const systemLimit = (props: RouteComponentProps) => (
 
 const position = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={PositionEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupPositionForm} />
     <Route path={`${props.match.path}/:companyUid/:positionUid`} component={PositionDetail} />
     <Route path={`${props.match.path}`} component={PositionList} />
   </Switch>
