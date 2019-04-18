@@ -25,10 +25,10 @@ export const MileageRequestDetailView: React.SFC<MileageRequestDetailProps> = pr
       <MileageInformation data={data} />
     ])}
     secondary={(data: IMileageRequestDetail) => ([
-      <MileageItem items={data.items}/>,
-      <TimesheetItem data={data.timesheets} />
+      <MileageItem items={data.items}/>
     ])}
     tertiary={(data: IMileageRequestDetail) => ([
+      <TimesheetItem data={data.timesheets} />,
       <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={

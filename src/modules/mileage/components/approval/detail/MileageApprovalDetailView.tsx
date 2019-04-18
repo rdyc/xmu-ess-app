@@ -40,7 +40,8 @@ export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = 
       <MileageInformation data={data} />
     ])}
     secondary={(data: IMileageRequestDetail) => ([
-      data.workflow && data.workflow.isApproval ? (
+      data.workflow && 
+      data.workflow.isApproval ? (
           <MileageApprovalDetailItem 
             items={data.items}
             ItemUids={props.mileageItemUids}
@@ -48,10 +49,10 @@ export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = 
           />     
         ) : (
           <MileageItem items={data.items} />      
-        ),
-      <TimesheetItem data={data.timesheets} />
+        )
     ])}
     tertiary={(data: IMileageRequestDetail) => ([
+      <TimesheetItem data={data.timesheets} />,
       <WorkflowHistory data={data.workflow} />,
       <React.Fragment>
         {
