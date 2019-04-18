@@ -40,7 +40,7 @@
 
   "mileage.request.field.isNotify": "Notify Only",
   "mileage.request.field.isRejected": "Rejected Only",
-  "mileage.request.field.completion": "Completion",
+  "mileage.request.field.completion": "Approval Completion",
 
   "mileage.request.field.information.noData": "N/A",
 

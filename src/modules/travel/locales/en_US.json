@@ -179,7 +179,7 @@
   "travel.request.field.isSettlement": "Ready to Settle Only",
   "travel.request.field.isRejected": "Rejected Only",
   "travel.request.field.isAdjustmentNeeded": "Need for Adjustment Only",
-  "travel.request.field.completion": "Completion",
+  "travel.request.field.completion": "Approval Completion",
   "travel.request.field.isNotify": "Notified Only",
 
   "travel.title": "Travels",

@@ -72,7 +72,7 @@
   "leave.request.field.requestedLeave": "Requested Leave",
   "leave.request.field.isNotify": "Notified Only",
   "leave.request.field.isRejected": "Rejected Only",
-  "leave.request.field.completion": "Completion",
+  "leave.request.field.completion": "Approval Completion",
   "leave.request.field.employeeUid": "Employee",
 
   "leave.field.information.uid": "Leave ID",
