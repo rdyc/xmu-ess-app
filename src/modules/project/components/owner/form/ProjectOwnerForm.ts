@@ -170,7 +170,7 @@ const stateUpdaters: StateUpdaters<ProjectOwnerFormProps, IOwnState, IOwnStateUp
   setFilterAccountEmployee: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     filterAccountEmployee: {
       ...state.filterAccountEmployee,
-      roleUids: ''
+      roleUids: values
     }
   })
 };
