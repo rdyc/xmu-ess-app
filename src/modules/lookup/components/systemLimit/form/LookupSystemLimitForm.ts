@@ -32,7 +32,7 @@ import * as Yup from 'yup';
 import { SystemLimitFormView } from './LookupSystemLimitFormView';
 
 export interface ISystemLimitFormValue {
-  uid?: string;
+  uid: string;
   companyUid: string;
   categoryType: string;
   days: number;
@@ -193,7 +193,6 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
     // handling promise
     promise
       .then((response: ISystemLimit) => {
-        console.log(response);
 
         // set submitting status
         actions.setSubmitting(false);

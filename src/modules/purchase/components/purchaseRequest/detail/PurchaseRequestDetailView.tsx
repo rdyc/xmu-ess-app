@@ -21,11 +21,13 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
     }}
     state={props.purchaseRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IPurchaseDetail) => (
+    primary={(data: IPurchaseDetail) => ([
       <PurchaseInformation data={data} />
-    )}
+    ])}
     secondary={(data: IPurchaseDetail) => ([
-      <PurchaseItemContainer data={data} />,
+      <PurchaseItemContainer data={data} />
+    ])}
+    tertiary={(data: IPurchaseDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={

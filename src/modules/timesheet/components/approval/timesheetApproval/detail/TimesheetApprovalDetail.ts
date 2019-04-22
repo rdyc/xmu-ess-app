@@ -2,16 +2,19 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
+import { IWorkflowApprovalFormValue } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { ITimesheetApprovalPostPayload } from '@timesheet/classes/request/approval';
 import { TimesheetUserAction } from '@timesheet/classes/types';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -27,9 +30,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { TimesheetApprovalDetailView } from './TimesheetApprovalDetailView';
 
@@ -40,10 +40,7 @@ interface IOwnRouteParams {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleOnSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;
 }
 
 interface IOwnState {
@@ -51,8 +48,8 @@ interface IOwnState {
   shouldLoad: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
-  approvalChoices: RadioGroupChoice[];
-  approvalTrueValue: string;
+  approvalStatusTypes: RadioGroupChoice[];
+  approvalTrueValues: string[];
   approvalDialogTitle: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
@@ -67,6 +64,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 export type TimesheetApprovalDetailProps
   = WithUser
   & WithLayout
+  & WithMasterPage
   & WithTimesheetApproval
   & WithNotification
   & RouteComponentProps<IOwnRouteParams>
@@ -79,11 +77,11 @@ const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: Tim
   shouldLoad: false,
   approvalTitle: props.intl.formatMessage(timesheetMessage.approval.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(timesheetMessage.approval.section.approvalSubHeader),
-  approvalChoices: [
+  approvalStatusTypes: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
     { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
   ],
-  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalTrueValues: [WorkflowStatusType.Approved],
   approvalDialogTitle: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitle),
   approvalDialogContentText: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionContent),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
@@ -119,89 +117,87 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
         break;
     }
   },
-  handleValidate: (props: TimesheetApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
-    const errors = {};
-
-    const requiredFields = ['isApproved', 'remark'];
-
-    requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
-      }
-    });
-
-    return errors;
-  },
-  handleSubmit: (props: TimesheetApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
-    const { match, intl } = props;
+  handleOnSubmit: (props: TimesheetApprovalDetailProps) => (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => {
     const { user } = props.userState;
-    const { createRequest } = props.timesheetApprovalDispatch;
+    let promise = new Promise((resolve, reject) => undefined);
 
-    // user checking
-    if (!user) {
-      return Promise.reject('user was not found');
+    if (user) {
+      // must have timesheetUid
+      if (props.match.params.timesheetUid) {
+        // compare approval status string
+        const isApproved = props.approvalTrueValues.indexOf(values.statusType) !== -1;
+
+        // fill payload
+        const payload: IWorkflowApprovalPayload = {
+          isApproved,
+          remark: !isApproved ? values.remark : undefined
+        };
+
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.timesheetApprovalDispatch.createRequest({
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            timesheetUid: props.match.params.timesheetUid, 
+            data: payload, 
+          });
+        });
+      }
     }
 
-    // props checking
-    if (!match.params.timesheetUid) {
-      const message = intl.formatMessage(timesheetMessage.entry.message.emptyProps);
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        // set submitting status
+        actions.setSubmitting(false);
 
-      return Promise.reject(message);
-    }
+        // clear form status
+        actions.setStatus();
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(timesheetMessage.approval.message.submitSuccess)
+        });
+       
+        // notification: mark as complete
+        props.notificationDispatch.markAsComplete({
+          moduleUid: ModuleDefinitionType.Timesheet,
+          detailType: NotificationType.Approval,
+          itemUid: props.match.params.timesheetUid
+        });
 
-    // compare approval status string
-    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+        // set next load
+        props.setShouldLoad();
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => {
+            // in case to handle incorrect field on other fields
+            let field = item.field;
 
-    // generate payload
-    const payload: ITimesheetApprovalPostPayload = {
-      isApproved,
-      remark: !isApproved ? formData.remark : undefined
-    };
+            if (item.field === 'projectUid') {
+              field = 'statusType';
+            }
 
-    // dispatch create request
-    return new Promise((resolve, reject) => {
-      createRequest({
-        resolve,
-        reject,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        timesheetUid: match.params.timesheetUid,
-        data: payload,
+            actions.setFieldError(field, props.intl.formatMessage({id: item.message}));
+          });
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(timesheetMessage.approval.message.submitFailure)
+        });
       });
-    });
-  },
-  handleSubmitSuccess: (props: TimesheetApprovalDetailProps) => () => {
-    // add success alert
-    props.layoutDispatch.alertAdd({
-      time: new Date(),
-      message: props.intl.formatMessage(timesheetMessage.approval.message.submitSuccess)
-    });
-
-    // notification: mark as complete
-    props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinitionType.Timesheet,
-      detailType: NotificationType.Approval,
-      itemUid: props.match.params.timesheetUid
-    });
-
-    // set next load
-    props.setShouldLoad();
-  },
-  handleSubmitFail: (props: TimesheetApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    if (errors) {
-      // validation errors from server (400: Bad Request)
-      props.layoutDispatch.alertAdd({
-        time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
-      });
-    } else {
-      props.layoutDispatch.alertAdd({
-        time: new Date(),
-        message: props.intl.formatMessage(timesheetMessage.approval.message.submitFailure),
-        details: isObject(submitError) ? submitError.message : submitError
-      });
-    }
-  },
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalDetailProps, IOwnState> = {
@@ -241,6 +237,7 @@ export const TimesheetApprovalDetail = compose<TimesheetApprovalDetailProps, {}>
   withRouter,
   withUser,
   withLayout,
+  withMasterPage,
   withTimesheetApproval,
   withNotification,
   injectIntl,

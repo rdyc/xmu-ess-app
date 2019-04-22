@@ -1,4 +1,18 @@
+import { FinanceStatusType, ModuleType, WorkflowStatusType } from '@common/classes/types';
+import { IFinanceApprovalPostPayload } from '@finance/classes/request/approval';
+import { FinanceUserAction } from '@finance/classes/types';
+import { DocumentPath } from '@finance/classes/types/DocumentPath';
+import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
+import { IWorkflowApprovalFormValue } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -15,45 +29,27 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { FinanceStatusType, ModuleType, WorkflowStatusType } from '@common/classes/types';
-import { IFinanceApprovalPostPayload } from '@finance/classes/request/approval';
-import { FinanceUserAction } from '@finance/classes/types';
-import { DocumentPath } from '@finance/classes/types/DocumentPath';
-import { withFinanceApproval, WithFinanceApproval } from '@finance/hoc/withFinanceApproval';
-import { financeMessage } from '@finance/locales/messages/financeMessage';
-import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { IPopupMenuOption } from '@layout/components/PopupMenu';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { layoutMessage } from '@layout/locales/messages';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { FinanceApprovalDetailView } from './FinanceApprovalDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   financeUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleToDocument: (moduleUid: string, documentUid: string) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleOnSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   action?: FinanceUserAction;
   shouldReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
-  approvalChoices: RadioGroupChoice[];
-  approvalTrueValue: string;
+  approvalStatusTypes: RadioGroupChoice[];
+  approvalTrueValues: string[];
   approvalDialogTitle: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
@@ -62,35 +58,35 @@ interface OwnState {
   approvalRemarkPlaceholder: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setOptions: StateHandler<OwnState>;
-  stateUpdate: StateHandler<OwnState>;
-  setShouldLoad: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setOptions: StateHandler<IOwnState>;
+  setShouldLoad: StateHandler<IOwnState>;
 }
 
 export type FinanceApprovalDetailProps 
   = WithUser
   & WithFinanceApproval
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps
   & WithLayout
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & WithMasterPage
+  & RouteComponentProps<IOwnRouteParams>
+  & InjectedIntlProps
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler;
 
-const createProps: mapper<FinanceApprovalDetailProps, OwnState> = (props: FinanceApprovalDetailProps): OwnState => {
+const createProps: mapper<FinanceApprovalDetailProps, IOwnState> = (props: FinanceApprovalDetailProps): IOwnState => {
   const { intl } = props;
 
   return {
     shouldReload: false,
     approvalTitle: intl.formatMessage(financeMessage.approval.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(financeMessage.approval.section.approvalSubTitle),
-    approvalChoices: [
+    approvalStatusTypes: [
       { value: FinanceStatusType.Paid, label: intl.formatMessage(financeMessage.approval.action.paid) },
       { value: FinanceStatusType.Hold, label: intl.formatMessage(financeMessage.approval.action.hold) },
       { value: FinanceStatusType.NotPaid, label: intl.formatMessage(financeMessage.approval.action.notPaid) }
     ],
-    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalTrueValues: [WorkflowStatusType.Approved],
     approvalDialogTitle: intl.formatMessage(financeMessage.approval.dialog.approvalTitle),
     approvalDialogContentText: intl.formatMessage(financeMessage.approval.dialog.approvalSubTitle),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
@@ -100,20 +96,16 @@ const createProps: mapper<FinanceApprovalDetailProps, OwnState> = (props: Financ
   };
 };
 
-const stateUpdaters: StateUpdaters<FinanceApprovalDetailProps, OwnState, OwnStateUpdaters> = {
-  setOptions: () => (options?: IPopupMenuOption[]): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<FinanceApprovalDetailProps, IOwnState, IOwnStateUpdater> = {
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  }),
-  setShouldLoad: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setShouldLoad: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     shouldReload: !prevState.shouldReload
   })
 };
 
-const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<FinanceApprovalDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: FinanceApprovalDetailProps) => () => { 
     if (props.userState.user && props.match.params.financeUid && !props.financeApprovalState.detail.isLoading) {
       props.financeApprovalDispatch.loadDetailRequest({
@@ -131,91 +123,6 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
     
       default:
         break;
-    }
-  },
-  handleValidate: (props: FinanceApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
-    const errors = {};
-  
-    const requiredFields = ['isApproved', 'remark'];    
-  
-    requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
-      }
-    });
-    
-    return errors;
-  },
-  handleSubmit: (props: FinanceApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
-    const { match, intl, stateUpdate } = props;
-    const { user } = props.userState;
-    const { createRequest } = props.financeApprovalDispatch;
-
-    // user checking
-    if (!user) {
-      return Promise.reject('user was not found');
-    }
-
-    // props checking
-    if (!match.params.financeUid) {
-      const message = intl.formatMessage(financeMessage.approval.message.emptyProps);
-
-      return Promise.reject(message);
-    }
-
-    // compare approval status string
-    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
-
-    stateUpdate({
-      isApprove: isApproved,
-    });
-    
-    // generate payload
-    const payload: IFinanceApprovalPostPayload = {
-      statusType: !isNullOrUndefined(formData.isApproved) ? formData.isApproved : FinanceStatusType.Approved,
-      notes: !isNullOrUndefined(formData.remark) ? formData.remark : ''
-    };
-
-    // dispatch create request
-    return new Promise((resolve, reject) => {
-      createRequest({
-        resolve, 
-        reject,
-        financeUid: match.params.financeUid, 
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        data: payload, 
-      });
-    });
-  },
-  handleSubmitSuccess: (props: FinanceApprovalDetailProps) => () => {
-    const { intl, } = props;
-    const { alertAdd } = props.layoutDispatch;
-    let message: string = '';
-    message = intl.formatMessage(financeMessage.approval.message.createSuccess);
-    alertAdd({
-      message,
-      time: new Date()
-    });
-
-    props.setShouldLoad();
-  },
-  handleSubmitFail: (props: FinanceApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    if (errors) {
-      // validation errors from server (400: Bad Request)
-      alertAdd({
-        time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
-      });
-    } else {
-      alertAdd({
-        time: new Date(),
-        message: intl.formatMessage(financeMessage.approval.message.createFailure),
-        details: isObject(submitError) ? submitError.message : submitError
-      });
     }
   },
   handleToDocument: (props: FinanceApprovalDetailProps) => (moduleUid: string, documentUid: string) => {
@@ -252,10 +159,81 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
     }
 
     history.push(`/${path}/${documentUid}`, {financeUid: props.match.params.financeUid});
+  },
+  handleOnSubmit: (props: FinanceApprovalDetailProps) => (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise((resolve, reject) => undefined);
+
+    if (user) {
+      // must have financeUid
+      if (props.match.params.financeUid) {
+        // fill payload
+        const payload: IFinanceApprovalPostPayload = {
+          statusType: values.statusType,
+          notes: values.remark
+        };
+
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.financeApprovalDispatch.createRequest({
+            resolve, 
+            reject,
+            financeUid: props.match.params.financeUid, 
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload, 
+          });
+        });
+      }
+    }
+
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(financeMessage.approval.message.createSuccess)
+        });
+
+        // set next load
+        props.setShouldLoad();
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => {
+            // in case to handle incorrect field on other fields
+            let field = item.field;
+
+            if (item.field === 'financeUid') {
+              field = 'statusType';
+            }
+
+            actions.setFieldError(field, props.intl.formatMessage({id: item.message}));
+          });
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(financeMessage.approval.message.createFailure)
+        });
+      });
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<FinanceApprovalDetailProps, IOwnState> = {
   componentDidUpdate(prevProps: FinanceApprovalDetailProps) {
     if (this.props.shouldReload && this.props.shouldReload !== prevProps.shouldReload) {
       // turn of shoul load
@@ -289,9 +267,10 @@ export const FinanceApprovalDetail = compose(
   withRouter,
   withUser,
   withLayout,
+  withMasterPage,
   withFinanceApproval,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
+  lifecycle(lifecycles)
 )(FinanceApprovalDetailView);

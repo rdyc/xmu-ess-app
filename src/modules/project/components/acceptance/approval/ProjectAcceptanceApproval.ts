@@ -2,17 +2,19 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { IWorkflowApprovalFormValue } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAcceptance, withProjectAcceptance } from '@project/hoc/withProjectAcceptance';
-import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
 import { projectMessage } from '@project/locales/messages/projectMessage';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -28,9 +30,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { ProjectAcceptanceApprovalView } from './ProjectAcceptanceApprovalView';
 
@@ -44,8 +43,8 @@ interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   approvalTitle: string;
   approvalSubHeader: string;
-  approvalChoices: RadioGroupChoice[];
-  approvalTrueValue: string;
+  approvalStatusTypes: RadioGroupChoice[];
+  approvalTrueValues: string[];
   approvalDialogTitle: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
@@ -60,16 +59,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleOnValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleOnSubmit: (payload: WorkflowApprovalFormData) => void;
-  handleOnSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleOnSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleOnSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;  
 }
 
 export type ProjectAcceptanceApprovalProps
   = WithProjectAcceptance
   & WithUser
   & WithLayout
+  & WithMasterPage
   & WithNotification
   & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
@@ -81,11 +78,11 @@ const createProps: mapper<ProjectAcceptanceApprovalProps, IOwnState> = (props: P
   shouldLoad: false,
   approvalTitle: props.intl.formatMessage(projectMessage.acceptance.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(projectMessage.acceptance.section.approvalSubHeader),
-  approvalChoices: [
+  approvalStatusTypes: [
     { value: WorkflowStatusType.Accepted, label: props.intl.formatMessage(organizationMessage.workflow.option.accept) },
     { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
   ],
-  approvalTrueValue: WorkflowStatusType.Accepted,
+  approvalTrueValues: [WorkflowStatusType.Accepted],
   approvalDialogTitle: props.intl.formatMessage(projectMessage.acceptance.confirm.approvalTitle),
   approvalDialogContentText: props.intl.formatMessage(projectMessage.acceptance.confirm.approvalContent),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
@@ -120,88 +117,85 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, IOwnHandle
         break;
     }
   },
-  handleOnValidate: (props: ProjectAcceptanceApprovalProps) => (formData: WorkflowApprovalFormData) => { 
-    const errors = {};
-  
-    const requiredFields = ['isApproved', 'remark'];
-  
-    requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
-      }
-    });
-    
-    return errors;
-  },
-  handleOnSubmit: (props: ProjectAcceptanceApprovalProps) => (formData: WorkflowApprovalFormData) => { 
-    const { match, intl } = props;
+  handleOnSubmit: (props: ProjectAcceptanceApprovalProps) => (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => {
     const { user } = props.userState;
-    const { createRequest } = props.projectAcceptanceDispatch;
+    let promise = new Promise((resolve, reject) => undefined);
 
-    // user checking
-    if (!user) {
-      return Promise.reject('user was not found');
+    if (user) {
+      // must have assignmentUid
+      if (props.match.params.assignmentUid) {
+        // compare approval status string
+        const isApproved = props.approvalTrueValues.indexOf(values.statusType) !== -1;
+
+        // fill payload
+        const payload: IWorkflowApprovalPayload = {
+          isApproved,
+          remark: !isApproved ? values.remark : undefined
+        };
+
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.projectAcceptanceDispatch.createRequest({
+            resolve, 
+            reject,
+            assignmentUid: props.match.params.assignmentUid, 
+            assignmentItemUid: props.match.params.assignmentItemUid, 
+            data: payload,
+          });
+        });
+      }
     }
 
-    // props checking
-    if (!match.params.assignmentUid) {
-      const message = intl.formatMessage(projectApprovalMessage.emptyProps);
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        // set submitting status
+        actions.setSubmitting(false);
 
-      return Promise.reject(message);
-    }
+        // clear form status
+        actions.setStatus();
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(projectMessage.acceptance.message.approvalSuccess)
+        });
+       
+        // notification: mark as complete
+        props.notificationDispatch.markAsComplete({
+          moduleUid: ModuleDefinitionType.ProjectAssignment,
+          detailType: NotificationType.Assignment,
+          itemUid: props.match.params.assignmentUid
+        });
 
-    // compare approval status string
-    const isApproved = formData.isApproved === WorkflowStatusType.Accepted;
+        // set next load
+        props.setShouldLoad();
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => {
+            // in case to handle incorrect field on other fields
+            let field = item.field;
 
-    // generate payload
-    const payload: IWorkflowApprovalPayload = {
-      isApproved,
-      remark: !isApproved ? formData.remark : undefined
-    };
+            if ((['assignmentUid', 'assignmentItemUid']).indexOf(item.field) !== -1) {
+              field = 'statusType';
+            }
 
-    // dispatch request
-    return new Promise((resolve, reject) => {
-      createRequest({
-        resolve, 
-        reject,
-        assignmentUid: match.params.assignmentUid, 
-        assignmentItemUid: match.params.assignmentItemUid, 
-        data: payload, 
+            actions.setFieldError(field, props.intl.formatMessage({id: item.message}));
+          });
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(projectMessage.acceptance.message.approvalFailure)
+        });
       });
-    });
-  },
-  handleOnSubmitSuccess: (props: ProjectAcceptanceApprovalProps) => (response: boolean) => {
-    props.layoutDispatch.alertAdd({
-      time: new Date(),
-      message: props.intl.formatMessage(projectMessage.acceptance.message.approvalSuccess),
-    });
-
-    props.setShouldLoad();
-
-    // notification: mark as complete
-    props.notificationDispatch.markAsComplete({
-      moduleUid: ModuleDefinitionType.ProjectAssignment,
-      detailType: NotificationType.Assignment,
-      itemUid: props.match.params.assignmentUid
-    });
-  },
-  handleOnSubmitFail: (props: ProjectAcceptanceApprovalProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    if (errors) {
-      // validation errors from server (400: Bad Request)
-      alertAdd({
-        time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
-      });
-    } else {
-      alertAdd({
-        time: new Date(),
-        message: intl.formatMessage(projectMessage.acceptance.message.approvalFailure),
-        details: isObject(submitError) ? submitError.message : submitError
-      });
-    }
   }
 };
 
@@ -243,6 +237,7 @@ export const ProjectAcceptanceApproval = compose<ProjectAcceptanceApprovalProps,
   withUser,
   withLayout,
   withProjectAcceptance,
+  withMasterPage,
   withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

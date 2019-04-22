@@ -2,11 +2,11 @@ import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { Grid } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
+
 import { TravelInformation } from './shared/TravelInformation';
 import { TravelRequestItem } from './shared/TravelRequestItem';
 import { TravelRequestSummary } from './shared/TravelRequestSummary';
@@ -23,27 +23,15 @@ export const TravelRequestDetailView: React.SFC<TravelRequestDetailProps> = prop
     }}
     state={props.travelRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ITravelRequestDetail) => (
-      <React.Fragment>
-      <Grid
-        container
-        spacing={16}
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-      >
-        <Grid item xs={12}>
-          <TravelRequestSummary data={data} />
-        </Grid>
-        <Grid item xs={12}>
-          <TravelInformation data={data} />
-        </Grid>
-      </Grid>
-    </React.Fragment>
-    )}
+    primary={(data: ITravelRequestDetail) => ([
+      <TravelRequestSummary data={data} />,
+      <TravelInformation data={data} />
+    ])}
     secondary={(data: ITravelRequestDetail) => ([
-      <TravelRequestItem data={data.items} />,
-      <WorkflowHistory data={data.workflow} />,
+      <TravelRequestItem data={data.items} />
+    ])}
+    tertiary={(data: ITravelRequestDetail) => ([
+      <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={
       props.menuOptions &&

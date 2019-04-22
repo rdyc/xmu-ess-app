@@ -5,7 +5,7 @@ import { PopupMenu } from '@layout/components/PopupMenu';
 import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { LeaveApprovalDetailProps } from './LeaveApprovalDetail';
@@ -21,29 +21,29 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
     }}
     state={props.leaveApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILeaveDetail) => (
+    primary={(data: ILeaveDetail) => ([
       <LeaveInformation data={data} />
-    )}
+    ])}
     secondary={(data: ILeaveDetail) => ([
       <AccountLeave employeeUid={data.employeeUid}/>,
-      <WorkflowHistory data={data.workflow} />,
+      <WorkflowHistory data={data.workflow} />
+    ])}
+    tertiary={(data: ILeaveDetail) => ([
       <React.Fragment>
         {
           data.workflow && 
           data.workflow.isApproval &&
-          <WorkflowApprovalForm
-            approvalTitle={props.approvalTitle}
-            approvalSubHeader={props.approvalSubHeader}
-            approvalChoices={props.approvalChoices}
-            approvalTrueValue={props.approvalTrueValue}
-            approvalDialogTitle={props.approvalDialogTitle}
-            approvalDialogContentText={props.approvalDialogContentText}
-            approvalDialogCancelText={props.approvalDialogCancelText}
-            approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit} 
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
+          <WorkflowApprovalForm 
+            title={props.approvalTitle}
+            statusTypes={props.approvalStatusTypes}
+            trueTypes={props.approvalTrueValues}
+            confirmationDialogProps={{
+              title: props.approvalDialogTitle,
+              message: props.approvalDialogContentText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            }}
+            onSubmit={props.handleOnSubmit}
           />
         }
       </React.Fragment>

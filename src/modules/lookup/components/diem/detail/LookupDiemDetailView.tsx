@@ -19,9 +19,9 @@ export const LookupDiemDetailView: React.SFC<LookupDiemDetailProps> = props => (
     }}
     state={props.lookupDiemState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IDiem) => (
+    primary={(data: IDiem) => ([
       <LookupDiemInformation data={data}/>
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

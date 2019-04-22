@@ -43,6 +43,8 @@ export const TimesheetEntryFormView: React.SFC<TimesheetEntryFormProps> = props 
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCustomer={props.filterLookupCustomer}
                   filterProject={props.filterProject}
+                  filterProjectSite={props.filterProjectSite}
+                  handleSetProjectSiteFilter={props.handleSetProjectSiteFilter}
                   handleSetProjectFilter={props.handleSetProjectFilter}
                 />
               </div>

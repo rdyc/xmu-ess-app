@@ -65,7 +65,7 @@
   "expense.field.notes.required": "Notes is Required",  
   "expense.field.isNotify": "Notified Only",
   "expense.field.isRejected": "Rejected Only",
-  "expense.field.completion": "Completion",
+  "expense.field.completion": "Approval Completion",
   "expense.field.start": "Start Date",
   "expense.field.end": "End Date",
 

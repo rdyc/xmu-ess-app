@@ -39,7 +39,7 @@ export interface IProjectDetail {
   valueIdr: number;
   isNotifyToOwner: boolean;
   isNotified: boolean;
-  sites?: IProjectSite[];
+  sites: IProjectSite[];
   sales: IProjectSales[];
   documents: IProjectDocument[];
   documentPreSales: IProjectDocument[];

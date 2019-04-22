@@ -43,6 +43,7 @@ export const projectRegistrationSubmission = defineMessages({
   form: { id: `${prefix}.submission.form` },
   formOwner: { id: `${prefix}.submission.owner.form` },
   formHour: { id: `${prefix}.submission.hour.form` },
+  formStatus: { id: `${prefix}.submission.status.form` },
   formSite: { id: `${prefix}.submission.site.form` }
 });
 

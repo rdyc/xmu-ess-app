@@ -28,12 +28,25 @@ const ProjectOwnerDetailPartialForm: React.ComponentType<ProjectDetailPartialFor
     <CardHeader title={props.intl.formatMessage(projectMessage.registration.section.infoTitle)} />
     <CardContent>
       <Field
-        name="uid"
+        name="statusType"
         render={({ field, form }: FieldProps<IProjectOwnerFormValue>) => (
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             {...field}
             label={props.intl.formatMessage(projectMessage.registration.fieldFor(field.name, 'fieldName'))}
+          />
+        )}
+      />
+
+      <Field
+        name="projectUid"
+        render={({ field, form }: FieldProps<IProjectOwnerFormValue>) => (
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            {...field}
+            label={props.intl.formatMessage(projectMessage.registration.field.uid)}
+            helperText={form.errors.projectUid}
+            error={Boolean(form.errors.projectUid)}
           />
         )}
       />

@@ -15,7 +15,6 @@ import {
 
 interface IOwnState {
   options: ISelectFieldOption[];
-  // year: number[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -28,7 +27,6 @@ export type InputYearOptionProps
 
 const createProps: mapper<InputYearOptionProps, IOwnState> = (): IOwnState => ({
   options: [{ label: '', value: ''}],
-  // year: []
 });
 
 const stateUpdaters: StateUpdaters<InputYearOptionProps, IOwnState, IOwnStateUpdater> = {
@@ -52,7 +50,7 @@ const lifeCycle: ReactLifeCycleFunctions<InputYearOptionProps, IOwnState> = {
   componentDidMount() {    
     const getYear: number = Number(moment().format('YYYY'));
   
-    const year: number[] = [getYear - 1, getYear, getYear + 1];
+    const year: number[] = [getYear - 1, getYear];
 
     this.props.setOptions(year);
   }

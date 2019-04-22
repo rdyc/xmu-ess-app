@@ -22,11 +22,8 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
     <CardContent>
       {
         props.data.map((finance, index) => finance &&
-          <div>
-            <ListItem 
-            key={finance.uid}
-            disableGutters
-            >
+          <div key={finance.uid}>
+            <ListItem disableGutters>
               <Grid 
                 container 
                 spacing={16}
