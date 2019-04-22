@@ -17,12 +17,13 @@ import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAcce
 // import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
 // import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
 import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
-import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
+// import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
 import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
 import { EducationForm } from './form/education/EducationForm';
+import { FamilyForm } from './form/family/FamilyForm';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
 import { AccountEmployeeList } from './list/common/AccountEmployeeList';
@@ -79,7 +80,7 @@ const employeeHistory = (props: RouteComponentProps) => (
 
 const employeeFamily = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={AccountEmployeeFamilyEditor} />    
+    <Route path={`${props.match.path}/form`} component={FamilyForm} />    
     <Route path={`${props.match.path}/:familyUid`} component={AccountEmployeeFamilyDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeFamilyList} />
   </Switch>

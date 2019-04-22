@@ -1,6 +1,6 @@
-import { IEmployeeEducationPostPayload, IEmployeeEducationPutPayload } from '@account/classes/request/employeeEducation';
-import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
-import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
+import { IEmployeeFamilyPostPayload, IEmployeeFamilyPutPayload } from '@account/classes/request/employeeFamily';
+import { IEmployeeFamily } from '@account/classes/response/employeeFamily';
+import { WithAccountEmployeeFamily, withAccountEmployeeFamily } from '@account/hoc/withAccountEmployeeFamily';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
@@ -28,21 +28,21 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-import { EducationFormView } from './EducationFormView';
+import { FamilyFormView } from './FamilyFormView';
 
-export interface IEducationFormValue {
+export interface IFamilyFormValue {
   uid: string;
   employeeUid: string;
-  degreeType: string;
-  institution: string;
-  major: string;
-  start: string;
-  end?: string;
+  familyType: string;
+  fullName: string;
+  genderType: string;
+  birthPlace: string;
+  birthDate?: string;
 }
 
 interface IOwnRouteParams {
   employeeUid: string;
-  educationUid: string;  
+  familyUid: string;  
 }
 
 interface IOwnOption {
@@ -52,8 +52,8 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
 
-  initialValues?: IEducationFormValue;
-  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IEducationFormValue>>>;
+  initialValues?: IFamilyFormValue;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IFamilyFormValue>>>;
 
   filterCommonSystem?: ISystemListFilter;
 }
@@ -64,11 +64,11 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
-  handleOnSubmit: (values: IEducationFormValue, actions: FormikActions<IEducationFormValue>) => void;
+  handleOnSubmit: (values: IFamilyFormValue, actions: FormikActions<IFamilyFormValue>) => void;
 }
 
-export type EducationFormProps
-  = WithAccountEmployeeEducation
+export type FamilyFormProps
+  = WithAccountEmployeeFamily
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -80,7 +80,7 @@ export type EducationFormProps
   & IOwnStateUpdater
   & IOwnHandler;
 
-const createProps: mapper<EducationFormProps, IOwnState> = (props: EducationFormProps): IOwnState => ({
+const createProps: mapper<FamilyFormProps, IOwnState> = (props: FamilyFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   
@@ -89,37 +89,34 @@ const createProps: mapper<EducationFormProps, IOwnState> = (props: EducationForm
     // information
     employeeUid: props.match.params.employeeUid,
     uid: 'Auto Generated',
-    degreeType: '',
-    institution: '',
-    major: '',
-    start: '',
-    end: ''
+    familyType: '',
+    fullName: '',
+    genderType: '',
+    birthPlace: '',
+    birthDate: ''
   },
 
   // validation props
-  validationSchema: Yup.object().shape<Partial<IEducationFormValue>>({
+  validationSchema: Yup.object().shape<Partial<IFamilyFormValue>>({
     // information
-    degreeType: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.degree))
+    familyType: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.family.field.familyType))
       .required(),
 
-    institution: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.institution))
-      .max(50)
+    fullName: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.family.field.fullName))
       .required(),
 
-    major: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.major))
-      .max(50)
+    genderType: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.family.field.genderType))
       .required(),
 
-    start: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.start))
+    birthPlace: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.family.field.birthPlace))
       .required(),
 
-    end: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.end))
-      .required(),
+    birthDate: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.family.field.birthDate)),
 
   }),
 
@@ -130,29 +127,29 @@ const createProps: mapper<EducationFormProps, IOwnState> = (props: EducationForm
   }
 });
 
-const stateUpdaters: StateUpdaters<EducationFormProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<FamilyFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   })
 };
 
-const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
-  handleOnLoadDetail: (props: EducationFormProps) => () => {
+const handlerCreators: HandleCreators<FamilyFormProps, IOwnHandler> = {
+  handleOnLoadDetail: (props: FamilyFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const employeeUid = props.match.params.employeeUid;
-      const educationUid = props.history.location.state.educationUid;
-      const { isLoading } = props.accountEmployeeEducationState.detail;
+      const familyUid = props.history.location.state.familyUid;
+      const { isLoading } = props.accountEmployeeFamilyState.detail;
 
-      if (user && employeeUid && educationUid && !isLoading) {
-        props.accountEmployeeEducationDispatch.loadDetailRequest({
+      if (user && employeeUid && familyUid && !isLoading) {
+        props.accountEmployeeFamilyDispatch.loadDetailRequest({
           employeeUid,
-          educationUid
+          familyUid
         });
       }
     }
   },
-  handleOnSubmit: (props: EducationFormProps) => (values: IEducationFormValue, actions: FormikActions<IEducationFormValue>) => {
+  handleOnSubmit: (props: FamilyFormProps) => (values: IFamilyFormValue, actions: FormikActions<IFamilyFormValue>) => {
     const { user } = props.userState;
     const employeeUid = props.match.params.employeeUid;
     let promise = new Promise((resolve, reject) => undefined);
@@ -161,17 +158,17 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
       // New
       if (props.formMode === FormMode.New) {
         // fill payload
-        const payload: IEmployeeEducationPostPayload = {
-          degreeType: values.degreeType,
-          institution: values.institution,
-          major: values.major,
-          start: Number(values.start),
-          end: Number(values.end)
+        const payload: IEmployeeFamilyPostPayload = {
+          familyType: values.familyType,
+          fullName: values.fullName,
+          genderType: values.genderType,
+          birthPlace: values.birthPlace,
+          birthDate: values.birthDate || ''
         };
 
         // set the promise
         promise = new Promise((resolve, reject) => {
-          props.accountEmployeeEducationDispatch.createRequest({
+          props.accountEmployeeFamilyDispatch.createRequest({
             resolve,
             reject,
             employeeUid,
@@ -182,22 +179,22 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
 
       // Edit
       if (props.formMode === FormMode.Edit) {
-        const educationUid = props.history.location.state.educationUid;
+        const familyUid = props.history.location.state.familyUid;
 
-        // must have educationUid
-        if (educationUid) {
-          const payload: IEmployeeEducationPutPayload = {
+        // must have familyUid
+        if (familyUid) {
+          const payload: IEmployeeFamilyPutPayload = {
             uid: values.uid,
-            degreeType: values.degreeType,
-            institution: values.institution,
-            major: values.major,
-            start: Number(values.start),
-            end: Number(values.end)
+            familyType: values.familyType,
+            fullName: values.fullName,
+            genderType: values.genderType,
+            birthPlace: values.birthPlace,
+            birthDate: values.birthDate || ''
           };
 
           // set the promise
           promise = new Promise((resolve, reject) => {
-            props.accountEmployeeEducationDispatch.updateRequest({
+            props.accountEmployeeFamilyDispatch.updateRequest({
               resolve,
               reject,
               employeeUid,
@@ -210,7 +207,7 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
 
     // handling promise
     promise
-      .then((response: IEmployeeEducation) => {
+      .then((response: IEmployeeFamily) => {
 
         // set submitting status
         actions.setSubmitting(false);
@@ -220,11 +217,11 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? accountMessage.shared.message.createSuccess : accountMessage.shared.message.updateSuccess, { uid: response.uid, state: 'Education' })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? accountMessage.shared.message.createSuccess : accountMessage.shared.message.updateSuccess, { uid: response.uid, state: 'Family' })
         });
 
         // redirect to detail
-        props.history.push(`/account/employee/${employeeUid}/education/${response.uid}`);
+        props.history.push(`/account/employee/${employeeUid}/family/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -251,25 +248,25 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<EducationFormProps, IOwnState> = {
+const lifeCycleFunctions: ReactLifeCycleFunctions<FamilyFormProps, IOwnState> = {
   componentDidMount() {
     //
   },
-  componentDidUpdate(prevProps: EducationFormProps) {
-    const { response: thisResponse } = this.props.accountEmployeeEducationState.detail;
-    const { response: prevResponse } = prevProps.accountEmployeeEducationState.detail;
+  componentDidUpdate(prevProps: FamilyFormProps) {
+    const { response: thisResponse } = this.props.accountEmployeeFamilyState.detail;
+    const { response: prevResponse } = prevProps.accountEmployeeFamilyState.detail;
     
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values
-        const initialValues: IEducationFormValue = {
+        const initialValues: IFamilyFormValue = {
             uid: thisResponse.data.uid,
             employeeUid: this.props.match.params.employeeUid,
-            degreeType: thisResponse.data.degreeType,
-            institution: thisResponse.data.institution,
-            major: thisResponse.data.major,
-            start: thisResponse.data.start.toString(),
-            end: thisResponse.data.end ? thisResponse.data.end.toString() : ''
+            familyType: thisResponse.data.familyType,
+            fullName: thisResponse.data.fullName,
+            genderType: thisResponse.data.genderType,
+            birthPlace: thisResponse.data.birthPlace,
+            birthDate: thisResponse.data.birthDate || ''
         };
 
         this.props.setInitialValues(initialValues);
@@ -278,16 +275,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<EducationFormProps, IOwnState>
   }
 };
 
-export const EducationForm = compose<EducationFormProps, IOwnOption>(
-  setDisplayName('EducationForm'),
+export const FamilyForm = compose<FamilyFormProps, IOwnOption>(
+  setDisplayName('FamilyForm'),
   withUser,
   withMasterPage,
   withRouter,
-  withAccountEmployeeEducation,
+  withAccountEmployeeFamily,
   withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycleFunctions),
   withStyles(styles)
-)(EducationFormView);
+)(FamilyFormView);
