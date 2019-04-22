@@ -25,19 +25,6 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
     />
     <CardContent>
       <Field 
-        name="uid"
-        render={({ field}: FieldProps<IEducationFormValue>) => (
-          <TextField 
-            {...field}
-            fullWidth
-            disabled
-            margin="normal"
-            label={props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName'))}
-          />
-        )}
-      />
-
-      <Field 
         name="employeeUid"
         render={({ field}: FieldProps<IEducationFormValue>) => (
           <TextField 
@@ -47,6 +34,19 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
             margin="normal"
             label={props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName'))}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+          />
+        )}
+      />
+
+      <Field 
+        name="uid"
+        render={({ field}: FieldProps<IEducationFormValue>) => (
+          <TextField 
+            {...field}
+            fullWidth
+            disabled
+            margin="normal"
+            label={props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName'))}
           />
         )}
       />
@@ -95,6 +95,7 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                props.formikBag.setFieldValue('end', '');
               }}
             />
           </InputYearDegreeOption>
@@ -104,17 +105,18 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
       <Field
         name="end"
         render={({ field, form }: FieldProps<IEducationFormValue>) => (
-          <InputYearDegreeOption>
+          <InputYearDegreeOption start={props.formikBag.values.start}>
             <SelectField
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={!props.formikBag.values.start || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
                 label: props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName')),
+                required: true,
                 helperText: form.touched.end && form.errors.end,
                 error: form.touched.end && Boolean(form.errors.end)
               }}

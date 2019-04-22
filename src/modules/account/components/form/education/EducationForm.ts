@@ -118,7 +118,8 @@ const createProps: mapper<EducationFormProps, IOwnState> = (props: EducationForm
       .required(),
 
     end: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.education.field.end)),
+      .label(props.intl.formatMessage(accountMessage.education.field.end))
+      .required(),
 
   }),
 
@@ -161,7 +162,6 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: IEmployeeEducationPostPayload = {
-          employeeUid: values.employeeUid,
           degreeType: values.degreeType,
           institution: values.institution,
           major: values.major,
@@ -188,7 +188,6 @@ const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
         if (educationUid) {
           const payload: IEmployeeEducationPutPayload = {
             uid: values.uid,
-            employeeUid: values.employeeUid,
             degreeType: values.degreeType,
             institution: values.institution,
             major: values.major,

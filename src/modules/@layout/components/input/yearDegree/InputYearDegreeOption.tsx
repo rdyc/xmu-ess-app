@@ -13,6 +13,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+interface IOwnOption {
+  start?: string;
+}
+
 interface IOwnState {
   options: ISelectFieldOption[];
 }
@@ -23,6 +27,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 export type InputYearDegreeOptionProps
   = IOwnState
+  & IOwnOption
   & IOwnStateUpdater;
 
 const createProps: mapper<InputYearDegreeOptionProps, IOwnState> = (): IOwnState => ({
@@ -47,15 +52,27 @@ const stateUpdaters: StateUpdaters<InputYearDegreeOptionProps, IOwnState, IOwnSt
 };
 
 const lifeCycle: ReactLifeCycleFunctions<InputYearDegreeOptionProps, IOwnState> = {
-  componentDidMount() {    
+  componentDidMount() {
     const getYear: number = Number(moment().format('YYYY'));
-    // const until: number = 30;
     const year: number[] = [];
-    for (let i = 0; i < 30; i += 1 ) {
-      year.push(getYear - i);      
+
+    for (let i = getYear; i >= (getYear - 30); i -= 1 ) {
+      year.push(i);      
     }
-    
+        
     this.props.setOptions(year);
+  },
+  componentWillUpdate(nextProps: InputYearDegreeOptionProps) {
+    const getYear: number = Number(moment().format('YYYY'));
+    const year: number[] = [];
+
+    if (this.props.start !== nextProps.start) {
+      for (let i = getYear; i >= Number(nextProps.start); i -= 1) {
+        year.push(i);
+      }
+
+      this.props.setOptions(year);
+    }
   }
 };
 
@@ -78,7 +95,7 @@ const component: React.SFC<InputYearDegreeOptionProps> = props => {
   return <div></div>;
 };
 
-export const InputYearDegreeOption = compose<InputYearDegreeOptionProps, {}>(
+export const InputYearDegreeOption = compose<InputYearDegreeOptionProps, IOwnOption>(
   setDisplayName('InputYearDegreeOption'),
   withStateHandlers(createProps, stateUpdaters),
   lifecycle(lifeCycle)
