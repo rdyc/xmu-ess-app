@@ -1,5 +1,4 @@
 export interface IEmployeeEducationPostPayload {
-  employeeUid: string;
   degreeType: string;
   institution: string;
   major: string;

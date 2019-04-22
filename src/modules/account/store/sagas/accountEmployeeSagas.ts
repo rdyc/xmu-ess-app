@@ -106,7 +106,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetByIdDispose()),
@@ -140,7 +140,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetByIdDispose()),
@@ -180,7 +180,7 @@ function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetAllDispose()),

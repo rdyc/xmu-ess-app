@@ -1,6 +1,5 @@
 export interface IEmployeeTrainingPutPayload {
   uid: string;
-  employeeUid: string;
   trainingType: string;
   certificationType: string;
   name: string;
