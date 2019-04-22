@@ -1,6 +1,6 @@
 export interface IEmployeePostPayload {
   // information
-  companyUid: string;
+  // companyUid: string;
   employmentNumber: string;
   employmentType: string;
   fullName: string;

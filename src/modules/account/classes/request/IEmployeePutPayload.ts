@@ -1,7 +1,7 @@
 export interface IEmployeePutPayload {
   uid: string;
   // information
-  companyUid: string;
+  // companyUid: string;
   employmentNumber: string;
   employmentType: string;
   fullName: string;

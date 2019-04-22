@@ -308,7 +308,7 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
         // fill payload
         const payload: IEmployeePostPayload = {
           // information
-          companyUid: values.companyUid,
+          // companyUid: values.companyUid,
           employmentNumber: values.employmentNumber,
           employmentType: values.employmentType,
           fullName: values.fullName,
@@ -349,6 +349,7 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
           props.accountEmployeeDispatch.createRequest({
             resolve,
             reject,
+            companyUid: values.companyUid,
             data: payload
           });
         });
@@ -363,7 +364,7 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
           const payload: IEmployeePutPayload = {
             // information
             uid: values.uid,
-            companyUid: values.companyUid,
+            // companyUid: values.companyUid,
             employmentNumber: values.employmentNumber,
             employmentType: values.employmentType,
             fullName: values.fullName,
@@ -404,6 +405,7 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
             props.accountEmployeeDispatch.updateRequest({
               resolve,
               reject,
+              companyUid: values.companyUid,
               data: payload
             });
           });

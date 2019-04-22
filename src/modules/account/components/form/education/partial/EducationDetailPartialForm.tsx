@@ -33,7 +33,6 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
             disabled
             margin="normal"
             label={props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName'))}
-            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
       />
@@ -47,6 +46,7 @@ const EducationDetailPartialForm: React.ComponentType<EducationDetailPartialForm
             disabled
             margin="normal"
             label={props.intl.formatMessage(accountMessage.education.fieldFor(field.name, 'fieldName'))}
+            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
       />
