@@ -5,7 +5,7 @@ import { OrganizationHierarchyDetail } from './hierarchy/detail/OrganizationHier
 import { OrganizationHierarchyForm } from './hierarchy/form/OrganizationHierarchyForm';
 import { OrganizationHierarchyList } from './hierarchy/list/OrganizationHierarchyList';
 import { StructureDetail } from './structure/detail/StructureDetail';
-import OrganizationStructureEditor from './structure/editor/OrganizationStructureEditor';
+import { OrganizationStructureForm } from './structure/form/OrganizationStructureForm';
 import { StructureList } from './structure/list/StructureList';
 import { OrganizationWorkflowDetail } from './workflow/request/detail/OrganizationWorkflowDetail';
 import OrganizationWorkflowEditor from './workflow/request/editor/OrganizationWorkflowEditor';
@@ -21,7 +21,7 @@ const OrganizationHierarchy = (props: RouteComponentProps) => (
 
 const OrganizationStructure = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={OrganizationStructureEditor} />
+    <Route path={`${props.match.path}/form`} component={OrganizationStructureForm} />
     <Route path={`${props.match.path}/:structureUid`} component={StructureDetail} />
     <Route path={`${props.match.path}`} component={StructureList} />
   </Switch>
