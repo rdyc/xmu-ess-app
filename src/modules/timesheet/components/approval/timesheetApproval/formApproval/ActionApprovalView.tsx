@@ -18,9 +18,9 @@ export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => (
     }}
     state={props.timesheetApprovalState.detail}
     onLoadApi={props.handleLoadData}
-    primary={(data: ITimesheetDetail) => (
+    primary={(data: ITimesheetDetail) => ([
       <TimesheetBulkInformation data={props.timesheets} />
-    )}
+    ])}
     secondary={(data: ITimesheetDetail) => ([
       <React.Fragment>
         {

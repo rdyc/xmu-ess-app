@@ -1,3 +1,4 @@
+import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withAccountSalesRoles';
 import { ISystemListFilter } from '@common/classes/filters';
@@ -52,6 +53,7 @@ interface IProjectDocumentFormValue {
 interface IProjectSalesFormValue {
   uid?: string;
   employeeUid: string;
+  employee?: IAccountEmployee;
 }
 
 export interface IProjectRegistrationFormValue {
@@ -607,7 +609,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, 
         // fill sales
         response.data.sales.forEach(item => initialValues.sales.push({
           uid: item.uid,
-          employeeUid: item.employeeUid
+          employeeUid: item.employeeUid,
+          employee: item.employee
         }));
 
         // set initial values

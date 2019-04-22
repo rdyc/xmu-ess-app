@@ -179,7 +179,7 @@
   "travel.request.field.isSettlement": "Ready to Settle Only",
   "travel.request.field.isRejected": "Rejected Only",
   "travel.request.field.isAdjustmentNeeded": "Need for Adjustment Only",
-  "travel.request.field.completion": "Completion",
+  "travel.request.field.completion": "Approval Completion",
   "travel.request.field.isNotify": "Notified Only",
 
   "travel.title": "Travels",
@@ -308,7 +308,7 @@
   "travel.field.information.item.departureDate.required": "Departure date is required",
   "travel.field.information.item.returnDate.required": "Return date is required",
 
-  "travel.request.message.items.empty": "Empty Travel Item",
+  "travel.request.message.emptyItem": "Travel items are empty ",
 
   "travel.request.message.emptyProps": "Some props are empty",
   "travel.settlement.message.emptyProps": "Some props are empty",

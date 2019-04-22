@@ -24,6 +24,10 @@ export const positionDialog = defineMessages({
 
 // page
 export const positionPage = defineMessages({
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
   listTitle: { id: `${prefix}.page.list.title` },
   listSubHeader: { id: `${prefix}.page.list.subHeader` },
   detailTitle: { id: `${prefix}.page.detail.title` },

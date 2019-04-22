@@ -1,3 +1,4 @@
+import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployeeListRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
@@ -21,6 +22,7 @@ import {
 
 interface IOwnOption {
   filter?: IEmployeeListFilter;
+  default?: IAccountEmployee;
 }
 
 interface IOwnState {
@@ -46,21 +48,39 @@ export type AccountEmployeeOptionProps
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   isLoading: false,
-  options: [{ label: '', value: ''}]
+  options: [
+    { label: '', value: ''}
+  ]
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: (state: IOwnState) => (values: IEmployee[]): Partial<IOwnState> => {
+  setOptions: (state: IOwnState, props: AccountEmployeeOptionProps) => (values: IEmployee[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
         
+    // inject default when doesn't exist in values
+    if (props.default) {
+      const employee = props.default;
+      const index = values.findIndex(item => item.uid === employee.uid);
+
+      if (index === -1) {
+        options.push({
+          value: employee.uid,
+          label: employee.fullName,
+          data: employee
+        });
+      }
+    }
+
+    // iterate each values
     values.forEach(item => options.push({ 
       value: item.uid, 
-      label: item.fullName 
+      label: item.fullName,
+      data: item 
     }));
 
     return {

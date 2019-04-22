@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { OrganizationHierarchyDetail } from './hierarchy/detail/OrganizationHierarchyDetail';
-import OrganizationHierarchyEditor from './hierarchy/editor/OrganizationHierarchyEditor';
+import { OrganizationHierarchyForm } from './hierarchy/form/OrganizationHierarchyForm';
 import { OrganizationHierarchyList } from './hierarchy/list/OrganizationHierarchyList';
 import { StructureDetail } from './structure/detail/StructureDetail';
 import OrganizationStructureEditor from './structure/editor/OrganizationStructureEditor';
@@ -13,7 +13,7 @@ import { workflowMenuList } from './workflow/request/list/WorkflowMenuList';
 
 const OrganizationHierarchy = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={OrganizationHierarchyEditor} />
+    <Route path={`${props.match.path}/form`} component={OrganizationHierarchyForm} />
     <Route path={`${props.match.path}/:hierarchyUid`} component={OrganizationHierarchyDetail} />
     <Route path={`${props.match.path}`} component={OrganizationHierarchyList} />
   </Switch>

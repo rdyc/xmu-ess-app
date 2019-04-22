@@ -118,7 +118,7 @@
   "project.registration.field.isNotify": "Notified Only",
   "project.registration.field.isRejected": "Rejected Only",
   "project.registration.field.isNewOwner": "New Owner Only",
-  "project.registration.field.completion": "Completion",
+  "project.registration.field.completion": "Approval Completion",
   
   "project.registration.message.emptyProps": "Some props are empty",
   "project.registration.message.emptySales": "Sales not found",
@@ -197,7 +197,7 @@
   
   "project.assignment.section.project.title": "Project",
   "project.assignment.section.project.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "project.assignment.section.item.title": "Assignment",
+  "project.assignment.section.item.title": "Assignment Items",
   "project.assignment.section.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.add.title": "Add Member",
   "project.assignment.section.member.add.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

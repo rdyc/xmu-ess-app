@@ -22,15 +22,13 @@ export const ProjectAcceptanceApprovalView: React.SFC<ProjectAcceptanceApprovalP
     }}
     state={props.projectAcceptanceState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectAssignmentDetailItem) => (
+    primary={(data: IProjectAssignmentDetailItem) => ([
       <ProjectInformationSimple data={data.project} />
-    )}
+    ])}
     secondary={(data: IProjectAssignmentDetailItem) => ([
-      <ProjectAssignmentItem 
-        data={data} 
-        title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)} 
-        // subHeader={props.intl.formatMessage(projectMessage.assignment.section.itemSubHeader)} 
-      />,
+      <ProjectAssignmentItem  items={[data]} />
+    ])}
+    tertiary={(data: IProjectAssignmentDetailItem) => ([
       <React.Fragment>
         {
           data.statusType === WorkflowStatusType.Submitted &&

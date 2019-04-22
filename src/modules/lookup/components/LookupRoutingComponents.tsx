@@ -17,7 +17,7 @@ import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import { LookupCustomerForm } from './customer/form/LookupCustomerForm';
 import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
-import LookupDiemEditor from './diem/editor/LookupDiemEditor';
+import { LookupDiemForm } from './diem/form/LookupDiemForm';
 import { LookupDiemList } from './diem/list/LookupDiemList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
 import GalleryEditor from './gallery/editor/GalleryEditor';
@@ -31,7 +31,7 @@ import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMi
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
-import { PositionEditor } from './position/editor/PositionEditor';
+import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
@@ -103,7 +103,7 @@ const systemLimit = (props: RouteComponentProps) => (
 
 const position = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={PositionEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupPositionForm} />
     <Route path={`${props.match.path}/:companyUid/:positionUid`} component={PositionDetail} />
     <Route path={`${props.match.path}`} component={PositionList} />
   </Switch>
@@ -119,7 +119,7 @@ const lookupCustomer = (props: RouteComponentProps) => (
 
 const diem = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupDiemForm} />
     <Route path={`${props.match.path}/:diemUid`} component={LookupDiemDetail} />
     <Route path={`${props.match.path}`} component={LookupDiemList} />
   </Switch>

@@ -70,7 +70,7 @@ const ProjectSalesPartialForm: React.ComponentType<ProjectSalesPartialFormProps>
                           <React.Fragment>
                             <ListItem disableGutters>
                               <ListItemText>
-                                <AccountEmployeeOption filter={props.filterAccountEmployee}>
+                                <AccountEmployeeOption filter={props.filterAccountEmployee} default={item.employee}>
                                   <SelectField
                                     autoFocus
                                     isSearchable

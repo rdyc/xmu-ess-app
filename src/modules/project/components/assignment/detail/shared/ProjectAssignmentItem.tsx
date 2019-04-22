@@ -2,7 +2,19 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelActions,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ListItemText,
+  TextField,
+} from '@material-ui/core';
+import { ExpandMore } from '@material-ui/icons';
 import { IProjectAssignmentDetailItem } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
@@ -10,9 +22,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface IOwnProps {
-  data: IProjectAssignmentDetailItem;
-  title: string;
-  subHeader?: string;
+  items?: IProjectAssignmentDetailItem[];
   onClickItem?: () => void | undefined;
 }
 
@@ -21,102 +31,127 @@ type AllProps
   & InjectedIntlProps;
 
 const projectAssignmentItem: React.SFC<AllProps> = props => (
-  <Card square>
-    <CardHeader 
-      title={props.title}
-      // subheader={props.subHeader}
-    />
-    <CardContent>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.itemUid)}
-        value={props.data.uid}
+  <React.Fragment>
+    <Card square>
+      <CardHeader 
+        title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)}
+        subheader={`${props.items && props.items.length || 0} Item(s)`}
       />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
-        value={props.data.employee && props.data.employee.fullName || props.data.employeeUid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.role)}
-        value={props.data.role || '-'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        multiline={true}
-        label={props.intl.formatMessage(projectMessage.assignment.field.jobDesc)}
-        value={props.data.jobDescription || '-'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.mandays)}
-        value={props.intl.formatNumber(props.data.mandays)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.allocatedHours)}
-        value={props.intl.formatNumber(props.data.allocatedHours)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.consumedHours)}
-        value={props.intl.formatNumber(props.data.consumedHours)}
-      />
-      {/* <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
-        value={props.data.status && props.data.status.value || 'N/A'}
-      /> */}
-      {
-        props.data.statusType === WorkflowStatusType.Rejected &&
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(projectMessage.assignment.field.reason)}
-          value={props.data.rejectedReason || '-'}
-        />
-      }
-      
-      {
-        props.data.changes &&
-        <React.Fragment>
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
-            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
-          />
-
-          {
-            (props.data.changes.updated && props.data.changes.updatedAt) &&
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
-              value={props.data.changes.updated.fullName || 'N/A'}
-              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
-            />
-          }
-        </React.Fragment>
-      }
-
-      {props.children}
-    </CardContent>
+    </Card>
 
     {
-      props.data.statusType === WorkflowStatusType.Submitted &&
-      props.onClickItem &&
-      <CardActions>
-        <Button 
-          color="primary"
-          size="small"
-          fullWidth={true}
-          onClick={() => props.onClickItem && props.onClickItem()}
-        >
-          {props.intl.formatMessage(projectMessage.assignment.option.acceptance)}
-        </Button>
-      </CardActions>
+      props.items &&
+      props.items.map((item, index) =>
+      <ExpansionPanel key={index} defaultExpanded={index === 0}>
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+          <ListItemText
+            primary={item.employee && item.employee.fullName}
+            secondary={`${props.intl.formatNumber(item.mandays)} Mandays | ${props.intl.formatNumber(item.allocatedHours || 0)} Allocated Hours | ${props.intl.formatNumber(item.consumedHours || 0)} Consumed Hours`}
+          />
+        </ExpansionPanelSummary>
+    
+        <Divider/>
+    
+        <ExpansionPanelDetails>
+          <div>
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.itemUid)}
+              value={item.uid}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
+              value={item.employee && item.employee.fullName || item.employeeUid}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.role)}
+              value={item.role || '-'}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              multiline={true}
+              label={props.intl.formatMessage(projectMessage.assignment.field.jobDesc)}
+              value={item.jobDescription || '-'}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.mandays)}
+              value={props.intl.formatNumber(item.mandays)}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.allocatedHours)}
+              value={props.intl.formatNumber(item.allocatedHours)}
+            />
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.consumedHours)}
+              value={props.intl.formatNumber(item.consumedHours)}
+            />
+            {/* <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
+              value={props.data.status && props.data.status.value || 'N/A'}
+            /> */}
+            {
+              item.statusType === WorkflowStatusType.Rejected &&
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.assignment.field.reason)}
+                value={item.rejectedReason || '-'}
+              />
+            }
+            
+            {
+              item.changes &&
+              <React.Fragment>
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+                  value={item.changes.created && item.changes.created.fullName || 'N/A'}
+                  helperText={props.intl.formatDate(item.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+                />
+    
+                {
+                  (item.changes.updated && item.changes.updatedAt) &&
+                  <TextField
+                    {...GlobalStyle.TextField.ReadOnly}
+                    label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+                    value={item.changes.updated.fullName || 'N/A'}
+                    helperText={props.intl.formatDate(item.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+                  />
+                }
+              </React.Fragment>
+            }
+    
+            {props.children}
+          </div>
+        </ExpansionPanelDetails>
+    
+        {
+          item.statusType === WorkflowStatusType.Submitted &&
+          props.onClickItem &&
+          <React.Fragment>
+            <Divider/>
+    
+            <ExpansionPanelActions>
+              <Button 
+                color="primary"
+                size="small"
+                fullWidth={true}
+                onClick={() => props.onClickItem && props.onClickItem()}
+              >
+                {props.intl.formatMessage(projectMessage.assignment.option.acceptance)}
+              </Button>
+            </ExpansionPanelActions>
+          </React.Fragment>
+        }
+      </ExpansionPanel> 
+      )
     }
-  </Card> 
+  </React.Fragment>
 );
 
 export const ProjectAssignmentItem = compose<AllProps, IOwnProps>(

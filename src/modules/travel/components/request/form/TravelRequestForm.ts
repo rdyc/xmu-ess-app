@@ -1,3 +1,4 @@
+import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { ISystemListFilter } from '@common/classes/filters';
 import { WorkflowStatusType } from '@common/classes/types';
@@ -40,6 +41,7 @@ import { TravelRequestFormView } from './TravelRequestFormView';
 interface ITravelRequestItemFormValue {
   uid?: string;
   employeeUid: string;
+  employee?: IAccountEmployee;
   transportType: string;
   isRoundTrip: boolean;
   from: string;
@@ -241,7 +243,7 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .required(),
 
           costTransport: Yup.number()
-            .min(1)
+            .min(0)
             .label(props.intl.formatMessage(travelMessage.request.field.transportCost)),
 
           hotel: Yup.string()
@@ -253,7 +255,7 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
             .required(),
 
           costHotel: Yup.number()
-            .min(1)
+            .min(0)
             .label(props.intl.formatMessage(travelMessage.request.field.hotelCost)),
 
           notes: Yup.string()
@@ -557,6 +559,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
           initialValues.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
+            employee: item.employee,
             transportType: item.transportType,
             isRoundTrip: item.isRoundTrip,
             from: item.from,

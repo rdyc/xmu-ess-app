@@ -242,6 +242,12 @@
   "lookup.position.page.list.title": "Position",
   "lookup.position.page.list.subHeader": " ",
 
+  "lookup.position.page.new.title": "New Position",
+  "lookup.position.page.new.subHeader": " ",
+
+  "lookup.position.page.modify.title": "Modify Position",
+  "lookup.position.page.modify.subHeader": " ",
+
   "lookup.position.page.detail.title": "Position Detail",
   "lookup.position.page.detail.subHeader": " ",
 

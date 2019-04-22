@@ -39,11 +39,13 @@ export const ExpenseApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = 
     }
     state={props.expenseApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IExpenseDetail) => (
+    primary={(data: IExpenseDetail) => ([
       <ExpenseInformation data={data} />
-    )}
+    ])}
     secondary={(data: IExpenseDetail) => ([
-      <WorkflowHistory data={data.workflow} />,
+      <WorkflowHistory data={data.workflow} />
+    ])}
+    tertiary={(data: IExpenseDetail) => ([
       <React.Fragment>
         {
           data.workflow && 

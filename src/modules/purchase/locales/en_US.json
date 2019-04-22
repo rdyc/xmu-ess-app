@@ -110,7 +110,7 @@
   "purchase.field.isNeedAdjust": "Need for Adjustment Only",
   "purchase.field.isSettlement": "Ready to Settle Only",
   "purchase.field.statusType": "Status",
-  "purchase.field.completion": "Completion",
+  "purchase.field.completion": "Approval Completion",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",

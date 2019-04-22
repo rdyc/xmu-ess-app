@@ -21,9 +21,9 @@ export const TimesheetEntryDetailView: React.SFC<TimesheetEntryDetailProps> = pr
     }}
     state={props.timesheetEntryState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ITimesheetDetail) => (
+    primary={(data: ITimesheetDetail) => ([
       <TimesheetInformation data={data} />
-    )}
+    ])}
     secondary={(data: ITimesheetDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}

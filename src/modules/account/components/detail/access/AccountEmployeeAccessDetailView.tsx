@@ -21,9 +21,9 @@ export const AccountEmployeeAccessDetailView: React.SFC<AccountEmployeeAccessDet
       }}
       state={props.accountEmployeeAccessState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: IEmployeeAccess) => (
+      primary={(data: IEmployeeAccess) => ([
         <AccountEmployeeAccessInformation data={data} employeeUid={props.match.params.employeeUid}/>
-      )}
+      ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu 

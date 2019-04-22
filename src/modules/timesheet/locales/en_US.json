@@ -60,7 +60,7 @@
   "timesheet.entry.field.totalHours": "Total Hours",
   "timesheet.entry.field.rejectReason": "Rejected Reason",
   "timesheet.entry.field.statusType": "Status",
-  "timesheet.entry.field.completion": "Completion",
+  "timesheet.entry.field.completion": "Approval Completion",
   "timesheet.entry.field.isRejected": "Rejected Only",
   "timesheet.entry.field.isNotify": "Notify Only",
   
