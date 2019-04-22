@@ -1,5 +1,4 @@
 import { ISystemListFilter } from '@common/classes/filters';
-import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
@@ -13,6 +12,7 @@ import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
+
 import { IHolidayFormValue } from '../LookupHolidayForm';
 
 type LookupHolidayDetailPartialFormProps = {
@@ -73,27 +73,20 @@ const LookupHolidayDetailPartialForm: React.ComponentType<LookupHolidayDetailPar
       <Field
         name="description"
         render={({ field, form }: FieldProps<IHolidayFormValue>) => (
-          <CommonSystemOption category="limiter" filter={props.filterCommonSystem}>
-            <SelectField
-              isSearchable
-              menuPlacement="auto"
-              menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(lookupMessage.holiday.fieldFor(field.name, 'fieldName')),
-                required: true,
-                helperText: form.touched.description && form.errors.description,
-                error: form.touched.description && Boolean(form.errors.description)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
-            />
-          </CommonSystemOption>
-        )}
-      />
+          <TextField
+          {...field}
+          fullWidth={true}
+          disabled={form.isSubmitting}
+          margin="normal"
+          autoComplete="off"
+          required={true}
+          label={props.intl.formatMessage(lookupMessage.holiday.fieldFor(field.name, 'fieldName'))}
+          placeholder={props.intl.formatMessage(lookupMessage.holiday.fieldFor(field.name, 'fieldPlaceholder'))}
+          helperText={form.touched.description && form.errors.description}
+          error={form.touched.description && Boolean(form.errors.description)}
+        />
+      )}
+    />
 
       <Field
         name="date"

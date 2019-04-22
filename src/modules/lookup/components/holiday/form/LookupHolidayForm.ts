@@ -1,5 +1,3 @@
-import { ISystemListFilter } from '@common/classes/filters';
-import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -54,7 +52,6 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IHolidayFormValue>>>;
 
   filterLookupCompany?: ILookupCompanyGetListFilter;
-  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -68,7 +65,6 @@ interface IOwnHandler {
 
 export type HolidayFormProps
   = WithLookupHoliday
-  & WithCommonSystem
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -111,11 +107,6 @@ const createProps: mapper<HolidayFormProps, IOwnState> = (props: HolidayFormProp
     orderBy: 'name',
     direction: 'ascending'
   },
-
-  filterCommonSystem: {
-    orderBy: 'value',
-    direction: 'ascending'
-  }
 });
 
 const stateUpdaters: StateUpdaters<HolidayFormProps, IOwnState, IOwnStateUpdater> = {
@@ -262,7 +253,6 @@ export const HolidayForm = compose<HolidayFormProps, IOwnOption>(
   withMasterPage,
   withRouter,
   withLookupHoliday,
-  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

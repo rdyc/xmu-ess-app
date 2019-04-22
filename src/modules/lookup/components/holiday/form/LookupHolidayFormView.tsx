@@ -37,7 +37,6 @@ export const HolidayFormView: React.SFC<HolidayFormProps> = props => (
                   formMode={props.formMode}
                   intl={props.intl}
                   filterLookupCompany={props.filterLookupCompany}
-                  filterCommonSystem={props.filterCommonSystem}
                 />
               </div>
             </div>
@@ -45,7 +44,7 @@ export const HolidayFormView: React.SFC<HolidayFormProps> = props => (
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(lookupMessage.shared.submission.form, {state: 'System Limit'})}
+                  title={props.intl.formatMessage(lookupMessage.shared.submission.form, {state: 'Holiday'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -55,7 +54,7 @@ export const HolidayFormView: React.SFC<HolidayFormProps> = props => (
                   }}
                   confirmationDialogProps={{
                     title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createTitle : lookupMessage.shared.confirm.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createDescription : lookupMessage.shared.confirm.modifyDescription, {state: 'System Limit'}),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.shared.confirm.createDescription : lookupMessage.shared.confirm.modifyDescription, {state: 'Holiday'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 

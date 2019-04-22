@@ -85,7 +85,7 @@ export type LeaveFormProps
 const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  
+
   // form values
   initialValues: {
     uid: 'Auto Generated',
@@ -103,13 +103,27 @@ const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): 
       .label(props.intl.formatMessage(lookupMessage.leave.field.company))
       .required(),
 
-    description: Yup.string()
-      .label(props.intl.formatMessage(lookupMessage.leave.field.description))
+    categoryType: Yup.string()
+      .label(props.intl.formatMessage(lookupMessage.leave.field.category))
       .required(),
 
-   date: Yup.string()
-      .label(props.intl.formatMessage(lookupMessage.leave.field.date))
+    year: Yup.number()
+      .integer()
+      .label(props.intl.formatMessage(lookupMessage.leave.field.year))
       .required(),
+
+    name: Yup.string()
+      .label(props.intl.formatMessage(lookupMessage.leave.field.name))
+      .required(),
+
+    allocation: Yup.number()
+      .integer()
+      .label(props.intl.formatMessage(lookupMessage.leave.field.allocation))
+      .min(1)
+      .required(),
+
+    isWithinHoliday: Yup.boolean()
+      .label(props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday)),
   }),
 
   // filter props
@@ -154,8 +168,11 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: ILookupLeavePostPayload = {
-          description: values.description,
-          date: values.date
+          categoryType: values.categoryType,
+          year: values.year,
+          name: values.name,
+          allocation: values.allocation,
+          isWithinHoliday: values.isWithinHoliday
         };
 
         // set the promise
@@ -177,8 +194,11 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         // must have leaveUid
         if (leaveUid && companyUid) {
           const payload: ILookupLeavePutPayload = {
-            description: values.description,
-            date: values.date
+            categoryType: values.categoryType,
+            year: values.year,
+            name: values.name,
+            allocation: values.allocation,
+            isWithinHoliday: values.isWithinHoliday
           };
 
           // set the promise
@@ -217,14 +237,14 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
         actions.setSubmitting(false);
-        
+
         // set form status
         actions.setStatus(error);
-        
+
         // error on form fields
         if (error.errors) {
-          error.errors.forEach(item => 
-            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          error.errors.forEach(item =>
+            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
           );
         }
 
@@ -245,15 +265,18 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveFormProps, IOwnState> = {
   componentDidUpdate(prevProps: LeaveFormProps) {
     const { response: thisResponse } = this.props.lookupLeaveState.detail;
     const { response: prevResponse } = prevProps.lookupLeaveState.detail;
-    
+
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values
         const initialValues: ILeaveFormValue = {
           uid: thisResponse.data.uid,
           companyUid: thisResponse.data.companyUid,
-          description: thisResponse.data.description,
-          date: thisResponse.data.date
+          categoryType: thisResponse.data.categoryType,
+          year: thisResponse.data.year,
+          name: thisResponse.data.name,
+          allocation: thisResponse.data.allocation,
+          isWithinHoliday: thisResponse.data.isWithinHoliday
         };
 
         this.props.setInitialValues(initialValues);

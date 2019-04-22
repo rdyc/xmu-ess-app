@@ -7,7 +7,6 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-
 import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import { LookupCompanyForm } from './company/form/LookupCompanyForm';
@@ -22,10 +21,10 @@ import { LookupDiemList } from './diem/list/LookupDiemList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
 import GalleryEditor from './gallery/editor/GalleryEditor';
 import { ImageGalleryList } from './gallery/list/ImageGalleryList';
-import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
+import { HolidayForm } from './holiday/form/LookupHolidayForm';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
-import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
+import { LeaveForm } from './leave/form/LookupLeaveForm';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
@@ -73,7 +72,7 @@ const mileageException = (props: RouteComponentProps) => (
 
 const holiday = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupHolidayEditor} />
+    <Route path={`${props.match.path}/form`} component={HolidayForm} />
     <Route path={`${props.match.path}/:holidayUid`} component={LookupHolidayDetail} />
     <Route path={`${props.match.path}`} component={LookupHolidayList} />
   </Switch>
@@ -81,7 +80,7 @@ const holiday = (props: RouteComponentProps) => (
 
 const leave = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupLeaveEditor} />
+    <Route path={`${props.match.path}/form`} component={LeaveForm} />
     <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
     <Route path={`${props.match.path}`} component={LookupLeaveList} />
   </Switch>
