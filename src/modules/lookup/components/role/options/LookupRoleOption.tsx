@@ -75,6 +75,7 @@ const handlerCreators: HandleCreators<LookupRoleOptionProps, IOwnHandler> = {
 
     const filter: ILookupRoleGetListFilter = {
       companyUid,
+      orderBy: 'name',
       direction: 'ascending'
     };
 
