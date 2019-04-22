@@ -5,5 +5,5 @@ export interface IEmployeeTrainingPutPayload {
   name: string;
   organizer: string;
   start: string;
-  end: string;
+  end?: string;
 }
