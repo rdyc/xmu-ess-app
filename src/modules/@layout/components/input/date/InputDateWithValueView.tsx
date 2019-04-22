@@ -39,7 +39,7 @@ export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props 
           format={'MMM DD, YYYY'}
           showTodayButton={true}
           label={label}
-          onChange={(moment: Moment) => props.onSelected(moment.toISOString(true))}
+          onChange={(moment: Moment) => props.onSelected(moment.format('YYYY-MM-DD'))}
           labelFunc={labelFunction}
           invalidLabel={''}
           disableFuture={disableFuture}
