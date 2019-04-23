@@ -80,7 +80,7 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
       <Field
         name="positionUid"
         render={({ field, form }: FieldProps<IOrganizationStructureFormValue>) => (
-          <LookupPositionOption filter={props.filterLookupPosition}>
+          <LookupPositionOption companyUid={props.formikBag.values.companyUid}>
             <SelectField
               isSearchable
               menuPlacement="auto"
