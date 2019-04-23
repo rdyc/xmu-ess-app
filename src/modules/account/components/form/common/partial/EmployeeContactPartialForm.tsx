@@ -41,6 +41,7 @@ const EmployeeContactPartialForm: React.ComponentType<EmployeeContactPartialForm
           <TextField
             {...field}
             fullWidth={true}
+            required={true}
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
@@ -58,6 +59,7 @@ const EmployeeContactPartialForm: React.ComponentType<EmployeeContactPartialForm
           <TextField
             {...field}
             fullWidth={true}
+            required={true}
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
@@ -75,6 +77,7 @@ const EmployeeContactPartialForm: React.ComponentType<EmployeeContactPartialForm
           <TextField
             {...field}
             fullWidth={true}
+            required={true}
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"

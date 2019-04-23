@@ -241,17 +241,20 @@ const createProps: mapper<EmployeeFormProps, IOwnState> = (props: EmployeeFormPr
 
     email: Yup.string()
       .email()
-      .label(props.intl.formatMessage(accountMessage.employee.field.companyEmail)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.companyEmail))
+      .required(),
 
     emailPersonal: Yup.string()
       .email()
-      .label(props.intl.formatMessage(accountMessage.employee.field.email)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.email))
+      .required(),
 
     phone: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.phone)),
 
     mobilePhone: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.mobile)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.mobile))
+      .required(),
 
     emergencyContactName: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.emergencyName)),

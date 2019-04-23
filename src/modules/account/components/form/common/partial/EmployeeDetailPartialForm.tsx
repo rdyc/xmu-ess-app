@@ -256,6 +256,7 @@ const EmployeeDetailPartialForm: React.ComponentType<EmployeeDetailPartialFormPr
               valueString={field.value}
               textFieldProps={{
                 label: props.intl.formatMessage(accountMessage.employee.fieldFor(field.name, 'fieldName')),
+                required: true,
                 helperText: form.touched.taxType && form.errors.taxType,
                 error: form.touched.taxType && Boolean(form.errors.taxType)
               }}
