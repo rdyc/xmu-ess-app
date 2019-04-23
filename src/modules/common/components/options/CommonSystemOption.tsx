@@ -69,7 +69,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (request: ISystemListRequest) => void;
 }
 
 export type CommonSystemOptionProps
@@ -105,14 +105,9 @@ const stateUpdaters: StateUpdaters<CommonSystemOptionProps, IOwnState, IOwnState
 };
 
 const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: CommonSystemOptionProps) => () => {
+  handleOnLoadApi: (props: CommonSystemOptionProps) => (request: ISystemListRequest) => {
     const { isExpired, isLoading } = fnGetContext(props);
     const { commonDispatch } = props;
-
-    const request: ISystemListRequest = {
-      category: props.category,
-      filter: props.filter
-    };
 
     if (isExpired || !isLoading) {
       switch (props.category) {
@@ -233,22 +228,84 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
 const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
   componentDidMount() {
     const { request, response } = fnGetContext(this.props);
-
-    // 1st load only when request are empty
+    
+    // 1st load only when request are empty and have filter
     if (!request) {
-      this.props.handleOnLoadApi();
+      if (this.props.filter) {
+        const filter: ISystemListRequest = {
+          category: this.props.category,
+          filter: this.props.filter
+        };
+
+        this.props.handleOnLoadApi(filter);
+      }
     } else {
       // 2nd load only when request filter are present
-      if (request.filter) {
+      if (request && request.filter && this.props.filter) {
         // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
-  
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter);
+        const filter: ISystemListRequest = {
+          category: this.props.category,
+          filter: this.props.filter
+        };
+
         // then should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi();
+          this.props.handleOnLoadApi(filter);
         } else {
           if (response && response.data) {
             this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
+  },
+  componentWillUpdate(nextProps: CommonSystemOptionProps) {
+    const { request, response } = fnGetContext(this.props);
+
+    // if no filter before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.filter && nextProps.filter) {
+
+      const filter: ISystemListRequest = {
+        category: nextProps.category,
+        filter: nextProps.filter
+      };
+
+      // when no data then load
+      if (!request) {
+        this.props.handleOnLoadApi(filter);
+      } else if (request && request.filter) {
+        // if request(data) is exist then compare
+        const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+
+        // should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi(filter);
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
+
+    // this used for update list when changing the filter *not the 1st time load
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter !== nextProps.filter) {
+        const filter: ISystemListRequest = {
+          category: nextProps.category,
+          filter: nextProps.filter
+        };
+
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(filter);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
           }
         }
       }

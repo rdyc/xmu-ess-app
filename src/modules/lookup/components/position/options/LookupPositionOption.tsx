@@ -19,7 +19,8 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: IPositionGetListFilter;
+  // filter?: IPositionGetListFilter;
+  companyUid?: string;
 }
 
 interface IOwnState {
@@ -33,7 +34,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (filter: IPositionGetListFilter) => void;
+  handleOnLoadApi: (companyUid: string) => void;
 }
 
 export type LookupPositionOptionProps
@@ -69,9 +70,15 @@ const stateUpdaters: StateUpdaters<LookupPositionOptionProps, IOwnState, IOwnSta
 };
 
 const handlerCreators: HandleCreators<LookupPositionOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: LookupPositionOptionProps) => (filter: IPositionGetListFilter) => {
+  handleOnLoadApi: (props: LookupPositionOptionProps) => (companyUid: string) => {
     const { isExpired, isLoading } = props.lookupPositionState.list;
     const { loadListRequest } = props.lookupPositionDispatch;
+    
+    const filter: IPositionGetListFilter = {
+      companyUid,
+      orderBy: 'name',
+      direction: 'ascending'
+    };
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
@@ -87,21 +94,23 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
 
     // 1st load only when request are empty
     if (!request) {
-      if (this.props.filter) {
-        this.props.handleOnLoadApi(this.props.filter);
+      if (this.props.companyUid) {
+        this.props.handleOnLoadApi(this.props.companyUid);
       }
     } else {
       // 2nd load only when request filter are present
-      if (request && request.filter && this.props.filter) {
-        // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter);
-  
-        // then should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi(this.props.filter);
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
+      if (request && request.filter) {
+        if (request.filter.companyUid && this.props.companyUid) {
+          // comparing some props
+          const shouldUpdate = !shallowEqual(request.filter.companyUid, this.props.companyUid);
+    
+          // then should update the list?
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(this.props.companyUid);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
           }
         }
       }
@@ -110,34 +119,36 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
   componentWillUpdate(nextProps: LookupPositionOptionProps) {
     const { request, response } = this.props.lookupPositionState.list;
 
-    // if no filter before, and next one is exist *this happen for field that need other field data
-    if ( !this.props.filter && nextProps.filter) {
+    // if no filter(company) before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.companyUid && nextProps.companyUid) {
       // when no data then load
       if (!request) {
-        this.props.handleOnLoadApi(nextProps.filter);
+        this.props.handleOnLoadApi(nextProps.companyUid);
       } else if (request && request.filter) {
-        // if request(data) is exist then compare
-        const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
-
-        // should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi(nextProps.filter);
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
+        if (request.filter.companyUid && nextProps.companyUid) {
+          // if request(data) is exist then compare
+          const shouldUpdate = !shallowEqual(request.filter.companyUid, nextProps.companyUid);
+  
+          // should update the list?
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.companyUid);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
           }
         }
       }
     }
 
-    // this used for update list when changing the filter *not the 1st time load
-    if (this.props.filter && nextProps.filter) {
-      if (this.props.filter !== nextProps.filter) {
-        if (request && request.filter) {
-          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+    // this used for update list when changing the filter(company) *not the 1st time load
+    if (this.props.companyUid && nextProps.companyUid) {
+      if (this.props.companyUid !== nextProps.companyUid) {
+        if (request && request.filter && request.filter.companyUid) {
+          const shouldUpdate = !shallowEqual(request.filter.companyUid, nextProps.companyUid);
   
           if (shouldUpdate) {
-            this.props.handleOnLoadApi(nextProps.filter);
+            this.props.handleOnLoadApi(nextProps.companyUid);
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);

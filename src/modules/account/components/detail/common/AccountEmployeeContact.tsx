@@ -43,7 +43,7 @@ const accountEmployeeContact: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.companyEmail)}
+        label={intl.formatMessage(accountMessage.employee.field.email)}
         value={data.emailPersonal ? data.emailPersonal : 'N/A'}
       />
       <TextField

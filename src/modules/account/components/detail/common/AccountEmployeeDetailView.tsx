@@ -34,8 +34,10 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
           <AccountEmployeeInformation data={data} />
         ])}
         secondary={(data: IEmployeeDetail) => ([
-          <AccountEmployeeContact data={data}/>,
           <AccountEmployeeBank data={data}/> 
+        ])}
+        tertiary={(data: IEmployeeDetail) => ([
+          <AccountEmployeeContact data={data}/>
         ])}
         appBarComponent={
           props.menuOptions &&

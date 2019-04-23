@@ -205,6 +205,7 @@ const handlerCreators: HandleCreators<MileageExceptionFormProps, IOwnHandler> = 
         companyUid,
         activeOnly: true,
         statusTypes: WorkflowStatusType.Approved,
+        direction: 'ascending'
       };
   
       props.stateUpdate({

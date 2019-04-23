@@ -1,4 +1,4 @@
-import { IEmployeeDeletePayload } from '@account/classes/request';
+// import { IEmployeeDeletePayload } from '@account/classes/request';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';
@@ -177,29 +177,29 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, IOwnHandler> =
     }
   },
   handleSubmit: (props: AccountEmployeeDetailProps) => () => {
-    const { match, intl } = props;
-    const { user } = props.userState;
-    const { deleteRequest } = props.accountEmployeeDispatch;
+    // const { match, intl } = props;
+    // const { user } = props.userState;
+    // // const { deleteRequest } = props.accountEmployeeDispatch;
 
-    if (!user) {
-      return Promise.reject('user was not found');
-    }
+    // if (!user) {
+    //   return Promise.reject('user was not found');
+    // }
 
-    // props checking
-    if (!match.params.employeeUid) {
-      const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
-      return Promise.reject(message);
-    }
-    const payload = {
-      uid: match.params.employeeUid
-    };
-    return new Promise((resolve, reject) => {
-      deleteRequest({
-        resolve,
-        reject,
-        data: payload as IEmployeeDeletePayload
-      });
-    });
+    // // props checking
+    // if (!match.params.employeeUid) {
+    //   const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
+    //   return Promise.reject(message);
+    // }
+    // const payload = {
+    //   uid: match.params.employeeUid
+    // };
+    // return new Promise((resolve, reject) => {
+    //   deleteRequest({
+    //     resolve,
+    //     reject,
+    //     data: payload as IEmployeeDeletePayload
+    //   });
+    // });
   },
   handleSubmitSuccess: (props: AccountEmployeeDetailProps) => (response: boolean) => {
     props.history.push('/account/employee/');

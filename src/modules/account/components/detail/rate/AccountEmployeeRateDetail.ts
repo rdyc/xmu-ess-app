@@ -139,12 +139,12 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
 
     // define vars
     let employeeUid: string | undefined;
-    let rateUid: string | undefined;
+    let rateId: string | undefined;
 
     // get project uid
     if (response.data) {
       employeeUid = props.match.params.employeeUid;
-      rateUid = response.data.uid;
+      rateId = response.data.uid;
     }
 
     // actions with new page
@@ -169,7 +169,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
       });
 
       props.history.push(next, { 
-        rateUid
+        rateId
       });
     }
   },

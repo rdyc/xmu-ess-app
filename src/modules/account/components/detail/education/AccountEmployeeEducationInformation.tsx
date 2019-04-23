@@ -40,18 +40,6 @@ const accountEmployeeEducationInformation: React.SFC<AllProps> = props => {
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.education.field.institution)}
-          value={data.institution}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={intl.formatMessage(accountMessage.education.field.major)}
-          value={data.major}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
           label={intl.formatMessage(accountMessage.education.field.degree)}
           value={data.degree ? data.degree.value : 'N/A'}
         />
@@ -66,6 +54,18 @@ const accountEmployeeEducationInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(accountMessage.education.field.end)}
           value={data.end ? data.end : 'N/A'}
+        />
+        <TextField 
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.education.field.institution)}
+          value={data.institution}
+        />
+        <TextField 
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.education.field.major)}
+          value={data.major}
         />
         {
           props.data.changes &&

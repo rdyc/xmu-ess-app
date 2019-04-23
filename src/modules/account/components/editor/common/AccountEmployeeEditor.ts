@@ -1,4 +1,4 @@
-import { IEmployeePostPayload, IEmployeePutPayload } from '@account/classes/request';
+// import { IEmployeePostPayload, IEmployeePutPayload } from '@account/classes/request';
 import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
@@ -113,7 +113,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   handleSubmit: (props: AccountEmployeeEditorProps) => (formData: AccountEmployeeFormData) => { 
     const { formMode, employeeUid, intl } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.accountEmployeeDispatch;
+    // const { createRequest, updateRequest } = props.accountEmployeeDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -129,11 +129,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     // creating
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
-        createRequest({
-          resolve, 
-          reject,
-          data: payload as IEmployeePostPayload
-        });
+        console.log(payload);
+        // createRequest({
+        //   resolve, 
+        //   reject,
+        //   data: payload as IEmployeePostPayload
+        // });
       });
     }
 
@@ -146,11 +147,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
-        updateRequest({
-          resolve, 
-          reject,
-          data: payload as IEmployeePutPayload, 
-        });
+        console.log(payload);
+        // updateRequest({
+        //   resolve, 
+        //   reject,
+        //   data: payload as IEmployeePutPayload, 
+        // });
       });
     }
 

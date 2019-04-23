@@ -59,8 +59,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <LookupCompanyOption filter={props.filterLookupCompany}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
               isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -90,8 +88,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <LookupRoleOption companyUid={props.formikBag.values.companyUid}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
               isDisabled={props.formMode === FormMode.Edit || props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -117,8 +113,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <CommonSystemOption category="site" filter={props.filterCommonSystem}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -142,8 +136,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <ProjectOption filter={props.filterProject}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
               isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -170,8 +162,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <ProjectSiteOption filter={props.filterProjectSite}>
             <SelectField
               isSearchable
-              // menuPlacement="auto"
-              // menuPosition="fixed"
               isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.values.projectUid === '' || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -262,7 +252,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
             margin="normal"
             clearable
             disabled={form.isSubmitting}
-            // showTodayButton
             label={props.intl.formatMessage(lookupMessage.mileageException.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(lookupMessage.mileageException.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}
