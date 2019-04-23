@@ -27,7 +27,7 @@ type HierarchyItemPartialFormProps = {
 
 const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProps> = props => (
   <FieldArray
-    name="items"
+    name="reportTo"
     render={(fields: FieldArrayRenderProps) => (
       <React.Fragment>
         {
@@ -168,7 +168,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                 color="primary" 
                 disabled={props.formikBag.isSubmitting}
                 onClick={() => fields.push({
-                  uid: '',
+                  structureItemUid: '',
                   positionUid: '',
                   start: '',
                   end: '',
