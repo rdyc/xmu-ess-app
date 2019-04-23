@@ -65,7 +65,7 @@ interface IOwnState {
 
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem?: ISystemListFilter;
-  filterProject?: IProjectAssignmentGetListFilter;
+  filterProjectAssignment?: IProjectAssignmentGetListFilter;
   filterProjectSite?: IProjectSiteGetRequest;
   initialValues?: ITimesheetEntryFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ITimesheetEntryFormValue>>>;
@@ -186,8 +186,8 @@ const stateUpdaters: StateUpdaters<TimesheetEntryFormProps, IOwnState, IOwnState
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: (state: IOwnState) => (filterProject: IProjectAssignmentGetListFilter) => ({
-    filterProject
+  setProjectFilter: (state: IOwnState) => (filterProjectAssignment: IProjectAssignmentGetListFilter) => ({
+    filterProjectAssignment
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
@@ -245,7 +245,7 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
   handleSetProjectFilter: (props: TimesheetEntryFormProps) => (customerUid: string, activityType: string) => {
     const { user } = props.userState;
 
-    const filterProject: IProjectAssignmentGetListFilter = {
+    const filterProjectAssignment: IProjectAssignmentGetListFilter = {
       customerUid,
       employeeUid: user && user.uid,
       projectTypes: activityType === 'SAT02' ? ProjectType.PreSales : 
@@ -253,7 +253,7 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
                     [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
     };
 
-    props.setProjectFilter(filterProject);
+    props.setProjectFilter(filterProjectAssignment);
   },
   handleOnSubmit: (props: TimesheetEntryFormProps) => (values: ITimesheetEntryFormValue, actions: FormikActions<ITimesheetEntryFormValue>) => {
     const { user } = props.userState;
