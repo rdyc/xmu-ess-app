@@ -46,14 +46,14 @@ const accountEmployeeAccessInformation: React.SFC<AllProps> = props => {
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.access.field.unitType)}
-          value={data.unit && data.unit.value || 'N/A'}
+          label={intl.formatMessage(accountMessage.access.field.roleUid)}
+          value={data.role && data.role.name || 'N/A'}
         />
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.access.field.departmentType)}
-          value={data.department && data.department.value || 'N/A'}
+          label={intl.formatMessage(accountMessage.access.field.positionUid)}
+          value={data.position && data.position.name || 'N/A'}
         />
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
@@ -64,15 +64,15 @@ const accountEmployeeAccessInformation: React.SFC<AllProps> = props => {
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.access.field.roleUid)}
-          value={data.role && data.role.name || 'N/A'}
+          label={intl.formatMessage(accountMessage.access.field.unitType)}
+          value={data.unit && data.unit.value || 'N/A'}
         />
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.access.field.positionUid)}
-          value={data.position && data.position.name || 'N/A'}
-        />
+          label={intl.formatMessage(accountMessage.access.field.departmentType)}
+          value={data.department && data.department.value || 'N/A'}
+        />        
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
