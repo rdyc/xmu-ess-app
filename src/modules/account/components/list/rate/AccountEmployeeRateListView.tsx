@@ -45,7 +45,7 @@ export const AccountEmployeeRateListView: React.SFC<AccountEmployeeRateListProps
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/form`, { rateUid: item.uid })}
+                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/rate/form`, { rateId: item.uid })}
               >
                 {props.intl.formatMessage(layoutMessage.action.modify)}
               </Button>

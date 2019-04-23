@@ -19,7 +19,7 @@ import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployee
 // import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
 // import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
 // import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
-import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
+// import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccessForm } from './form/access/AccessForm';
 // import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
@@ -27,6 +27,7 @@ import { EducationForm } from './form/education/EducationForm';
 import { ExperienceForm } from './form/experience/ExperienceForm';
 import { FamilyForm } from './form/family/FamilyForm';
 import { NoteForm } from './form/note/NoteForm';
+import { RateForm } from './form/rate/RateForm';
 import { TrainingForm } from './form/training/TrainingForm';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
@@ -116,7 +117,7 @@ const employeeMultiAccess = (props: RouteComponentProps) => (
 
 const employeeRate = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={AccountEmployeeRateEditor} />    
+    <Route path={`${props.match.path}/form`} component={RateForm} />    
     <Route path={`${props.match.path}/:rateUid`} component={AccountEmployeeRateDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeRateList} />
   </Switch>
