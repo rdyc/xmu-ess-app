@@ -32,7 +32,7 @@ import { organizationMessage } from '@organization/locales/messages/organization
 import { OrganizationHierarchyFormView as OrganizationStructureFormView } from './OrganizationStructureFormView';
 
 interface IStructureItemFormValue {
-  uid?: string;
+  structureItemUid?: string;
   positionUid: string;
   start: string;
   end: string;
@@ -44,7 +44,7 @@ export interface IOrganizationStructureFormValue {
   positionUid: string;
   description?: string;
   inactiveDate: string;
-  items: IStructureItemFormValue[];
+  reportTo: IStructureItemFormValue[];
 }
 
 interface IOwnOption {
@@ -95,8 +95,8 @@ const createProps: mapper<OrganizationStructureFormProps, IOwnState> = (props: O
     positionUid: '',
     description: '',
     inactiveDate: '',
-    items: [{
-      uid: '',
+    reportTo: [{
+      structureItemUid: '',
       positionUid: '',
       start: '',
       end: '',
@@ -120,7 +120,7 @@ const createProps: mapper<OrganizationStructureFormProps, IOwnState> = (props: O
     inactiveDate: Yup.string()
       .label(props.intl.formatMessage(organizationMessage.structure.field.inactiveDate)),
 
-    items: Yup.array()
+    reportTo: Yup.array()
       .of(
         Yup.object().shape({
           positionUid: Yup.string()
@@ -194,7 +194,7 @@ const handlerCreators: HandleCreators<OrganizationStructureFormProps, IOwnHandle
       };
 
       // fill items
-      values.items.forEach(item => payload.reportTo && payload.reportTo.push({
+      values.reportTo.forEach(item => payload.reportTo && payload.reportTo.push({
         positionUid: item.positionUid,
         start: item.start,
         end: item.end,
@@ -227,7 +227,8 @@ const handlerCreators: HandleCreators<OrganizationStructureFormProps, IOwnHandle
         };
   
         // fill items
-        values.items.forEach(item => payload.reportTo && payload.reportTo.push({
+        values.reportTo.forEach(item => payload.reportTo && payload.reportTo.push({
+          structureItemUid: item.structureItemUid,
           positionUid: item.positionUid,
           start: item.start,
           end: item.end,
@@ -302,13 +303,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<OrganizationStructureFormProps
           positionUid: response.data.positionUid,
           description: response.data.description || '',
           inactiveDate: response.data.inactiveDate || '',
-          items: [],
+          reportTo: [],
         };
 
         // fill items
         if (response.data.reportTo) {
-          response.data.reportTo.forEach(item => initialValues.items && initialValues.items.push({
-            uid: item.uid,
+          response.data.reportTo.forEach(item => initialValues.reportTo && initialValues.reportTo.push({
+            structureItemUid: item.uid,
             positionUid: item.positionUid,
             start: item.start,
             end: item.end || '',

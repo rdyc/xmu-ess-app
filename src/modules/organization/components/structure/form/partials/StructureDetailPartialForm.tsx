@@ -66,7 +66,7 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
                 props.setPositionFilter(selected && selected.value || '');
 
                 if (props.formikBag.values.companyUid !== (selected && selected.value)) {
-                  props.formikBag.values.items.forEach((item, index) =>
+                  props.formikBag.values.reportTo.forEach((item, index) =>
                     props.formikBag.setFieldValue(`items.${index}.positionUid`, '')
                   );
                 }

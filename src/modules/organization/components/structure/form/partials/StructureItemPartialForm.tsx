@@ -31,12 +31,12 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
     render={(fields: FieldArrayRenderProps) => (
       <React.Fragment>
         {
-          props.formikBag.values.items.length > 0 &&
-          props.formikBag.values.items.map((item, index) =>
+          props.formikBag.values.reportTo.length > 0 &&
+          props.formikBag.values.reportTo.map((item, index) =>
             <div className={props.classes.flexContent} key={index}>
               <Card square>
                 <CardHeader 
-                  title={`#${index + 1} - ${item.uid || 'Draft'}`}
+                  title={`#${index + 1} - ${item.structureItemUid || 'Draft'}`}
                   action={
                     <IconButton 
                       onClick={() => {
@@ -52,8 +52,8 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                   <Field
                     name="positionUid"
                     render={({ form }: FieldProps<IOrganizationStructureFormValue>) => {
-                      const error = getIn(form.errors, `items.${index}.positionUid`);
-                      const touch = getIn(form.touched, `items.${index}.positionUid`);
+                      const error = getIn(form.errors, `reportTo.${index}.positionUid`);
+                      const touch = getIn(form.touched, `reportTo.${index}.positionUid`);
 
                       return (
                         <LookupPositionOption filter={props.filterLookupPosition}>
@@ -62,18 +62,18 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                             menuPlacement="auto"
                             menuPosition="fixed"
                             isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
-                            isClearable={props.formikBag.values.items[index].positionUid !== ''}
+                            isClearable={props.formikBag.values.reportTo[index].positionUid !== ''}
                             escapeClearsValue={true}
-                            valueString={props.formikBag.values.items[index].positionUid}
+                            valueString={props.formikBag.values.reportTo[index].positionUid}
                             textFieldProps={{
                               label: props.intl.formatMessage(organizationMessage.structure.field.positionUid),
                               required: true,
                               helperText: touch && error,
                               error: touch && Boolean(error)
                             }}
-                            onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.positionUid`)}
+                            onMenuClose={() => props.formikBag.setFieldTouched(`reportTo.${index}.positionUid`)}
                             onChange={(selected: ISelectFieldOption) => {
-                              props.formikBag.setFieldValue(`items.${index}.positionUid`, selected && selected.value || '');
+                              props.formikBag.setFieldValue(`reportTo.${index}.positionUid`, selected && selected.value || '');
                             }}
                           />
                         </LookupPositionOption>
@@ -84,8 +84,8 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                   <Field
                     name="start"
                     render={({ field, form }: FieldProps<IOrganizationStructureFormValue>) => {
-                      const error = getIn(form.errors, `items.${index}.start`);
-                      const touch = getIn(form.touched, `items.${index}.start`);
+                      const error = getIn(form.errors, `reportTo.${index}.start`);
+                      const touch = getIn(form.touched, `reportTo.${index}.start`);
 
                       return (
                         <DatePicker
@@ -97,15 +97,15 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           required
                           label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
                           placeholder={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldPlaceholder'))}
-                          value={props.formikBag.values.items[index].start}
+                          value={props.formikBag.values.reportTo[index].start}
                           leftArrowIcon={<ChevronLeft />}
                           rightArrowIcon={<ChevronRight />}
                           format="MMMM DD, YYYY"
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           onChange={(moment: Moment) => 
-                            moment ? props.formikBag.setFieldValue(`items.${index}.start`, moment.format('YYYY-MM-DD'))
-                            : props.formikBag.setFieldValue(`items.${index}.start`, '')}
+                            moment ? props.formikBag.setFieldValue(`reportTo.${index}.start`, moment.format('YYYY-MM-DD'))
+                            : props.formikBag.setFieldValue(`reportTo.${index}.start`, '')}
                           invalidLabel=""
                         />
                       );
@@ -115,8 +115,8 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                   <Field
                     name="end"
                     render={({ field, form }: FieldProps<IOrganizationStructureFormValue>) => {
-                      const error = getIn(form.errors, `items.${index}.end`);
-                      const touch = getIn(form.touched, `items.${index}.end`);
+                      const error = getIn(form.errors, `reportTo.${index}.end`);
+                      const touch = getIn(form.touched, `reportTo.${index}.end`);
 
                       return (
                         <DatePicker
@@ -127,16 +127,16 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           showTodayButton
                           label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
                           placeholder={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldPlaceholder'))}
-                          value={props.formikBag.values.items[index].end}
+                          value={props.formikBag.values.reportTo[index].end}
                           leftArrowIcon={<ChevronLeft />}
                           rightArrowIcon={<ChevronRight />}
                           format="MMMM DD, YYYY"
-                          minDate={props.formikBag.values.items[index].start}
+                          minDate={props.formikBag.values.reportTo[index].start}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           onChange={(moment: Moment) => 
-                            moment ? props.formikBag.setFieldValue(`items.${index}.end`, moment.format('YYYY-MM-DD'))
-                            : props.formikBag.setFieldValue(`items.${index}.end`, '')}
+                            moment ? props.formikBag.setFieldValue(`reportTo.${index}.end`, moment.format('YYYY-MM-DD'))
+                            : props.formikBag.setFieldValue(`reportTo.${index}.end`, '')}
                           invalidLabel=""
                         />
                       );
@@ -154,8 +154,8 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
               title={props.intl.formatMessage(organizationMessage.hierarchy.section.itemTitle)}
               subheader={
                 props.formikBag.submitCount > 0 &&
-                typeof props.formikBag.errors.items === 'string' &&
-                props.formikBag.errors.items
+                typeof props.formikBag.errors.reportTo === 'string' &&
+                props.formikBag.errors.reportTo
               }
               subheaderTypographyProps={{
                 color: 'error',
