@@ -8,6 +8,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ModuleDefinitionType, NotificationType } from '@layout/types';
+import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { IWorkflowApprovalFormValue } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -15,6 +16,7 @@ import { TimesheetUserAction } from '@timesheet/classes/types';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { FormikActions } from 'formik';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -30,6 +32,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+// import { isNullOrUndefined } from 'util';
 
 import { TimesheetApprovalDetailView } from './TimesheetApprovalDetailView';
 
@@ -54,10 +57,14 @@ interface IOwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  holidaysList: string[];
+  isHoliday: boolean;
+  holidayCheck: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
+  setHoliday: StateHandler<IOwnState>;
   setShouldLoad: StateHandler<IOwnState>;
 }
 
@@ -66,6 +73,7 @@ export type TimesheetApprovalDetailProps
   & WithLayout
   & WithMasterPage
   & WithTimesheetApproval
+  & WithLookupHoliday
   & WithNotification
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -85,7 +93,11 @@ const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: Tim
   approvalDialogTitle: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitle),
   approvalDialogContentText: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionContent),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
+
+  holidaysList: [],
+  isHoliday: false,
+  holidayCheck: false
 });
 
 const stateUpdaters: StateUpdaters<TimesheetApprovalDetailProps, IOwnState, IOwnStateUpdaters> = {
@@ -94,6 +106,10 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalDetailProps, IOwnState, IOwn
   }),
   setOptions: (state: IOwnState, props: TimesheetApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
+  }),
+  setHoliday: (state: IOwnState, props: TimesheetApprovalDetailProps) => (isHoliday?: boolean): Partial<IOwnState> => ({
+    isHoliday,
+    holidayCheck: true
   })
 };
 
@@ -201,6 +217,31 @@ const handlerCreators: HandleCreators<TimesheetApprovalDetailProps, IOwnHandler>
 };
 
 const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalDetailProps, IOwnState> = {
+  componentDidMount() {
+    const { loadListRequest } = this.props.lookupHolidayDispatch;
+    const { user } = this.props.userState;
+    if (user) {
+      loadListRequest({
+        filter: {
+          companyUid: user.company.uid
+        }
+      });
+    }
+  },
+  componentWillUpdate(nextProps: TimesheetApprovalDetailProps) {
+    const { response } = this.props.lookupHolidayState.list;
+
+    if (response && response.data && this.props.holidaysList.length === 0) {
+      const year = new Date().getFullYear();
+      response.data.map(holiday => {
+        if (holiday.date) {
+          if (moment(holiday.date).year() === year) {
+            this.props.holidaysList.push(holiday.date);
+          }
+        }
+      });
+    }
+  },
   componentDidUpdate(prevProps: TimesheetApprovalDetailProps) {
     // handle updated should load
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
@@ -229,6 +270,18 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalDetailProps, IOwnStat
 
       this.props.setOptions(options);
     }
+
+    // const { response, isLoading } = this.props.timesheetApprovalState.detail;
+
+    // if (isLoading && response && response.data && this.props.holidaysList.length !== 0 && !this.props.holidayCheck) {
+    //   const date = moment(response.data.date);
+    //   if (date.day() === 0 || date.day() === 6 || this.props.holidaysList.find(item => moment(item).format('YYYY-MM-DD') === response.data.date)) {
+    //     this.props.setHoliday(true);
+    //   } else {
+    //     this.props.setHoliday(false);
+    //   }
+    //   console.log(`THIS IS${this.props.isHoliday}`);
+    // }
   }
 };
 
@@ -239,6 +292,7 @@ export const TimesheetApprovalDetail = compose<TimesheetApprovalDetailProps, {}>
   withLayout,
   withMasterPage,
   withTimesheetApproval,
+  withLookupHoliday,
   withNotification,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
