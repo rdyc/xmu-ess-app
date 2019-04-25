@@ -1,4 +1,6 @@
 export interface Menus {
   uid: string;
-  parentUid: string | undefined;
+  parentUid?: string;
+  name: string;
+  isAccess: boolean;
 }

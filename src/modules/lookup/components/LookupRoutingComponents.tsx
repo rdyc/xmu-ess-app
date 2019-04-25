@@ -33,7 +33,8 @@ import { PositionDetail } from './position/detail/PositionDetail';
 import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
-import LookupRoleEditor from './role/editor/LookupRoleEditor';
+import { LookupRoleForm } from './role/form/LookupRoleForm';
+// import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
@@ -41,7 +42,7 @@ import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList'
 
 const role = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupRoleForm} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
     <Route path={`${props.match.path}`} component={LookupRoleList} />
   </Switch>

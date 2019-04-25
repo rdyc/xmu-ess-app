@@ -311,7 +311,8 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
             control={
               <Checkbox 
                 {...field} 
-                value={field.value}
+                value={field.name}
+                disabled={props.formikBag.isSubmitting} 
                 checked={props.formikBag.values.isActive}
               />
             }
