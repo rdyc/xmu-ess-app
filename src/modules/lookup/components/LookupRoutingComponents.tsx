@@ -7,7 +7,7 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-import { AchievementEditor } from './achievement/AchievementEditor';
+import { LookupAchievementForm } from './achievement/form/LookupAchievementForm';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import { LookupCompanyForm } from './company/form/LookupCompanyForm';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -126,7 +126,7 @@ const diem = (props: RouteComponentProps) => (
 
 const achievement = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={AchievementEditor} />
+    <Route path={`${props.match.path}`} component={LookupAchievementForm} />
   </Switch>
 );
 
