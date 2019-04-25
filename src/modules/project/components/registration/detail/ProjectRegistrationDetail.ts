@@ -343,7 +343,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin)
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.Close,
@@ -373,7 +373,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.ManageSites,
           name: this.props.intl.formatMessage(projectMessage.registration.option.site),
           enabled: !isLoading,
-          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && this.props.isAdmin
+          visible: isContains(_statusType, [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened]) && this.props.isAdmin
         }
       ];
 
