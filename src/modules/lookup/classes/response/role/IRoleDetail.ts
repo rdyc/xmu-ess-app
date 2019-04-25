@@ -7,7 +7,7 @@ export interface IRoleDetail {
   uid: string;
   companyUid: string;
   company?: ICompanyList;
-  gradeType: string;
+  gradeType?: string;
   grade?: ICommonSystem;
   name: string;
   description?: string;

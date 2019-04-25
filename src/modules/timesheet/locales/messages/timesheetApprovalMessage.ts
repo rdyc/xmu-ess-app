@@ -38,5 +38,9 @@ export const timesheetApprovalSection = defineMessages({
 // confirm
 export const timesheetApprovalConfirm = defineMessages({
   submissionTitle: { id: `${prefix}.confirm.submission.title` },
-  submissionContent: { id: `${prefix}.confirm.submission.content` }
+  submissionTitleAttention: { id: `${prefix}.confirm.submission.title.attention` },
+  submissionContent: { id: `${prefix}.confirm.submission.content` },
+  submissionIsHoliday: { id: `${prefix}.confirm.submission.isHoliday` },
+  submissionIsWeekend: { id: `${prefix}.confirm.submission.isWeekend` },
+  submissionIsHolidayOrWeekend: { id: `${prefix}.confirm.submission.isHolidayOrWeekend` },
 });

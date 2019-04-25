@@ -93,9 +93,9 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
           initialValues.menu.menus.push({
             [`${item.menuUid}`]: item.isAccess
           });
-          if (item.isAccess) {
-            isCheckedMenus.push({uid: item.menuUid, parentUid: item.menu && item.menu.parentUid});
-          }
+          // if (item.isAccess) {
+          //   isCheckedMenus.push({uid: item.menuUid, parentUid: item.menu && item.menu.parentUid});
+          // }
           }
         );
       }

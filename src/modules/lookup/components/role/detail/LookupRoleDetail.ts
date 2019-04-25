@@ -155,9 +155,11 @@ const handlerCreators: HandleCreators<LookupRoleDetailProps, IOwnHandler> = {
 
     // define vars
     let roleUid: string | undefined;
+    let companyUid: string | undefined;
 
     if (response.data) {
       roleUid = response.data.uid;
+      companyUid = response.data.companyUid;
     }
 
     // actions with new page
@@ -182,6 +184,7 @@ const handlerCreators: HandleCreators<LookupRoleDetailProps, IOwnHandler> = {
       });
 
       props.history.push(next, { 
+        companyUid,
         uid: roleUid 
       });
     }
