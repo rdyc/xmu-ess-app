@@ -42,6 +42,17 @@ export const TimesheetApprovalDetailView: React.SFC<TimesheetApprovalDetailProps
               labelCancel: props.approvalDialogCancelText,
               labelConfirm: props.approvalDialogConfirmedText
             }}
+            confirmationBeforeDialogProps={data.isHoliday && {
+              title: props.approvalDialogTitleAttention,
+              message: props.approvalDialogIsHolidayText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            } || data.isWeekend && {
+              title: props.approvalDialogTitleAttention,
+              message: props.approvalDialogIsWeekendText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            } || undefined}
             onSubmit={props.handleOnSubmit}
           />
         }

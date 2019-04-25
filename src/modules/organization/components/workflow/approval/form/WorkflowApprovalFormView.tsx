@@ -1,4 +1,5 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
+import { BeforeDialogConfirmation } from '@layout/components/dialogs/BeforeDialogConfirmation';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -140,12 +141,33 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               type="button"
               color="primary"
               disabled={props.disabled || formikBag.isSubmitting}
-              onClick={() => props.setOpen()}
+              onClick={() => {
+                props.confirmationBeforeDialogProps ?
+                props.setOpenBeforeDialog()
+                : props.setOpen();
+              }}
             >
               {props.intl.formatMessage(formikBag.isSubmitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
             </Button>
           </CardActions>
         </Card>
+
+        {
+          props.confirmationBeforeDialogProps && 
+          <BeforeDialogConfirmation 
+          title={props.confirmationBeforeDialogProps.title}
+          content={props.confirmationBeforeDialogProps.message}
+          labelCancel={props.confirmationBeforeDialogProps.labelCancel}
+          labelConfirm={props.confirmationBeforeDialogProps.labelConfirm}
+          isOpen={props.isOpenBeforeDialog}
+          fullScreen={props.confirmationBeforeDialogProps.fullScreen}
+          onClickCancel={() => props.setOpenBeforeDialog()}
+          onClickConfirm={() => {
+            props.setOpenBeforeDialog();
+            props.setOpen();
+          }}
+        />
+        }
 
         <DialogConfirmation
           title={props.confirmationDialogProps.title}

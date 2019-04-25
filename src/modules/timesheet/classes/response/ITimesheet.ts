@@ -31,5 +31,7 @@ export interface ITimesheet {
   status?: ICommonSystem;
   notes?: string;
   isMileage: boolean;
+  isHoliday: boolean;
+  isWeekend: boolean;
   changes?: IBaseChanges;
 }
