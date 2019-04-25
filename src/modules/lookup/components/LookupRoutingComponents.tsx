@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
+import { COGSUploadForm } from '@infor/components/form/COGSUploadForm';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -132,7 +132,7 @@ const achievement = (props: RouteComponentProps) => (
 
 const cogsUpload = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={COGSUploadEditor} />
+    <Route path={`${props.match.path}`} component={COGSUploadForm} />
   </Switch>
 );
 
