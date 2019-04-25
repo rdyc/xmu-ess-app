@@ -39,6 +39,7 @@ export const accountSharedMessage = defineMessages({
   updateFailure: { id: `${prefix}.message.update.failure` },
   deleteSuccess: { id: `${prefix}.message.delete.success` },
   deleteFailure: { id: `${prefix}.message.delete.failure` },
+  newEmployee: { id: `${prefix}.message.new.employee.success` }
 });
 
 // confirmation

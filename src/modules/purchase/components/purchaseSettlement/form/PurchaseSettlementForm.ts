@@ -178,7 +178,7 @@ const createProps: mapper<PurchaseSettlementFormProps, IOwnState> = (props: Purc
             .label(props.intl.formatMessage(purchaseMessage.settlement.items.request)),
 
           amount: Yup.number()
-            .min(1)
+            .min(0)
             .label(props.intl.formatMessage(purchaseMessage.settlement.items.actual))
             .required(),
 

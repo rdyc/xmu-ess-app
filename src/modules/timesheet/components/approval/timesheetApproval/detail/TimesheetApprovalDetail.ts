@@ -51,9 +51,12 @@ interface IOwnState {
   approvalStatusTypes: RadioGroupChoice[];
   approvalTrueValues: string[];
   approvalDialogTitle: string;
+  approvalDialogTitleAttention: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  approvalDialogIsHolidayText: string;
+  approvalDialogIsWeekendText: string;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -85,7 +88,11 @@ const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: Tim
   approvalDialogTitle: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitle),
   approvalDialogContentText: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionContent),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
+
+  approvalDialogTitleAttention: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitleAttention),
+  approvalDialogIsHolidayText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHoliday),
+  approvalDialogIsWeekendText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsWeekend),
 });
 
 const stateUpdaters: StateUpdaters<TimesheetApprovalDetailProps, IOwnState, IOwnStateUpdaters> = {
