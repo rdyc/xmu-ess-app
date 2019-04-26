@@ -77,8 +77,8 @@ export interface ITravelRequestFormValue {
   target?: string;
   comment?: string;
   total: number;
-  currency: string;
-  currencyRate: number;
+  currency?: string;
+  currencyRate?: number;
   diemValue: number;
   items: ITravelRequestItemFormValue[];
 }
@@ -548,9 +548,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
           target: response.data.target,
           comment: response.data.comment,
           total: response.data.total,
-          currency: 'N/A',
-          currencyRate: 0,
-          diemValue: 0,
+          currency: response.data.items[0].currency && response.data.items[0].currency.name,
+          currencyRate: response.data.items[0].currency && response.data.items[0].currency.rate,
+          diemValue: response.data.items[0].diemValue,
           items: []
         };
 

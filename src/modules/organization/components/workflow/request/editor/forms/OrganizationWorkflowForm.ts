@@ -7,7 +7,7 @@ import { OrganizationWorkflowFormView } from './OrganizationWorkflowFormView';
 const formName = 'organizationWorkflow';
 
 export type WorkflowHierarchyFormData = {
-  uid: string | null;
+  uid?: string;
   hierarchyUid: string;
   hierarchyName: string | undefined;
   priority: number;

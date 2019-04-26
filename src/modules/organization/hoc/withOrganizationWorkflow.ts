@@ -4,10 +4,12 @@ import {
   IOrganizationWorkflowByIdRequest, 
   IOrganizationWorkflowDeleteRequest, 
   IOrganizationWorkflowListRequest, 
+  IOrganizationWorkflowMenuRequest, 
   IOrganizationWorkflowPostRequest, 
-  IOrganizationWorkflowPutRequest 
+  IOrganizationWorkflowPutRequest
 } from '@organization/classes/queries/workflow';
 import { IWorkflow, IWorkflowList } from '@organization/classes/response/workflow';
+import { IWorkflowMenu } from '@organization/classes/response/workflow/IWorkflowMenu';
 import {
   organizationWorkflowDeleteDispose,
   organizationWorkflowDeleteRequest,
@@ -15,6 +17,8 @@ import {
   organizationWorkflowGetAllRequest,
   organizationWorkflowGetByIdDispose,
   organizationWorkflowGetByIdRequest,
+  organizationWorkflowGetByMenuDispose,
+  organizationWorkflowGetByMenuRequest,
   organizationWorkflowGetListDispose,
   organizationWorkflowGetListRequest,
   organizationWorkflowPostDispose,
@@ -30,6 +34,7 @@ interface PropsFromState {
     all: IQueryCollectionState<IOrganizationWorkflowAllRequest, IWorkflow>;
     list: IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflowList>;
     detail: IQuerySingleState<IOrganizationWorkflowByIdRequest, IWorkflow>;
+    certain: IQuerySingleState<IOrganizationWorkflowMenuRequest, IWorkflowMenu>;
   };
 }
 
@@ -50,16 +55,19 @@ interface PropsFromDispatch {
     loadListDispose: typeof organizationWorkflowGetListDispose;
     loadDetailRequest: typeof organizationWorkflowGetByIdRequest;
     loadDetailDispose: typeof organizationWorkflowGetByIdDispose;
+    loadCertainRequest: typeof organizationWorkflowGetByMenuRequest;
+    loadCertainDispose: typeof organizationWorkflowGetByMenuDispose;
   };
 }
 
 export interface WithOrganizationWorkflow extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ organizationWorkflowGetAll, organizationWorkflowGetList, organizationWorkflowGetById }: IAppState) => ({
+const mapStateToProps = ({ organizationWorkflowGetAll, organizationWorkflowGetList, organizationWorkflowGetById, organizationWorkflowGetByMenu }: IAppState) => ({
   organizationWorkflowState: {
     all: organizationWorkflowGetAll,
     list: organizationWorkflowGetList,
     detail: organizationWorkflowGetById,
+    certain: organizationWorkflowGetByMenu,    
   }
 });
 
@@ -80,6 +88,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadListDispose: () => dispatch(organizationWorkflowGetListDispose()),
     loadDetailRequest: (request: IOrganizationWorkflowByIdRequest) => dispatch(organizationWorkflowGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(organizationWorkflowGetByIdDispose()),
+    loadCertainRequest: (request: IOrganizationWorkflowMenuRequest) => dispatch(organizationWorkflowGetByMenuRequest(request)),
+    loadCertainDispose: () => dispatch(organizationWorkflowGetByMenuDispose()),
   }
 });
 
