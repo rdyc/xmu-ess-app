@@ -115,7 +115,7 @@ const handlerCreators: HandleCreators<GalleryFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(lookupMessage.achievement.message.createSuccess)
+          message: props.intl.formatMessage(lookupMessage.gallery.message.createSuccess)
         });
 
         // redirect to detail
@@ -139,7 +139,7 @@ const handlerCreators: HandleCreators<GalleryFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(lookupMessage.achievement.message.createFailure)
+          message: props.intl.formatMessage(lookupMessage.gallery.message.createFailure)
         });
       });
   }
