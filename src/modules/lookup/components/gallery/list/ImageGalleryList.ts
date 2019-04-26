@@ -57,6 +57,7 @@ interface OwnState {
 
 interface OwnHandler {
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
+  handleOnLoad: () => void;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -87,7 +88,7 @@ export type ImageGalleryListProps
   & WithStyles<typeof styles>
   & WithWidth;
 
-const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
+const createProps: mapper<OwnOption, OwnState> = (): OwnState => ({
   customComponentFlag: true,
   forceReload: false,
   isLoading: false,
@@ -111,9 +112,9 @@ const handlerCreators: HandleCreators<ImageGalleryListProps, OwnHandler> = {
       props.setSearchDefault();
     }
   },
-  handleCustomComponent: (props: ImageGalleryListProps) => (item: any) => {
-    // props.setCustomComponent(item);
-  }
+  handleOnLoad: (props: ImageGalleryListProps) => () => {
+    loadData(props);
+  },
 };
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
@@ -121,20 +122,20 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: toFirst ? 1 : prev.page,
     forceReload: true
   }),
-  setImage: (prevState: OwnState) => (newState: string) => ({
+  setImage: () => (newState: string) => ({
     imageUid: newState ? newState !== '' ? newState : undefined : undefined
   }),
   setPageNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
     forceReload: true
   }),
-  setSearchDefault: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
+  setSearchDefault: () => () => ({
     find: undefined,
     findBy: undefined,
     page: 1,
     forceReload: true
   }),
-  setSearchResult: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
+  setSearchResult: () => (find: string, field: ICollectionValue | undefined) => ({
     find,
     findBy: field ? field.value : undefined,
     page: 1,
@@ -144,30 +145,30 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: prevState.page > 1 ? prevState.page - 1 : 1,
     forceReload: true
   }),
-  setPageOne: (prevState: OwnState) => () => ({
+  setPageOne: () => () => ({
     page: 1,
     size: 12,
     forceReload: true
   }),
-  setField: (prevState: OwnState) => (field: string) => ({
+  setField: () => (field: string) => ({
     orderBy: field,
     page: 1,
     forceReload: true
   }),
-  setOrder: (prevState: OwnState) => (direction: DirectionType) => ({
+  setOrder: () => (direction: DirectionType) => ({
     direction,
     page: 1,
     forceReload: true
   }),
-  setSize: (prevState: OwnState) => (size: number) => ({
+  setSize: () => (size: number) => ({
     size,
     page: 1,
     forceReload: true
   }),
-  setCustomComponent: (prevState: OwnState) => (customComponent: React.ReactNode) => ({
+  setCustomComponent: () => (customComponent: React.ReactNode) => ({
     customComponent
   }),
-  setCustomComponentFlag: (prevState: OwnState) => () => ({
+  setCustomComponentFlag: () => () => ({
     customComponentFlag: false
   })
 };
@@ -188,7 +189,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: ImageGalleryListProps, state: OwnState) {
+  componentDidUpdate(props: ImageGalleryListProps) {
     // if (this.props.forceReload) {
     //   loadData(this.props);
     // }
@@ -197,7 +198,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       this.props.orderBy !== props.orderBy ||
       this.props.direction !== props.direction ||
       this.props.page !== props.page ||
-      this.props.size !== props.size
+      this.props.size !== props.size ||
+      this.props.forceReload !== props.forceReload
     ) {
       loadData(this.props);
     }
