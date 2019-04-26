@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
+import { COGSUploadForm } from '@infor/components/form/COGSUploadForm';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -7,8 +7,7 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-
-import { AchievementEditor } from './achievement/AchievementEditor';
+import { LookupAchievementForm } from './achievement/form/LookupAchievementForm';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import { LookupCompanyForm } from './company/form/LookupCompanyForm';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -20,12 +19,12 @@ import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import { LookupDiemForm } from './diem/form/LookupDiemForm';
 import { LookupDiemList } from './diem/list/LookupDiemList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
-import GalleryEditor from './gallery/editor/GalleryEditor';
+import { LookupGalleryForm } from './gallery/form/LookupGalleryForm';
 import { ImageGalleryList } from './gallery/list/ImageGalleryList';
-import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
+import { HolidayForm } from './holiday/form/LookupHolidayForm';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
-import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
+import { LeaveForm } from './leave/form/LookupLeaveForm';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
@@ -34,7 +33,8 @@ import { PositionDetail } from './position/detail/PositionDetail';
 import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
-import LookupRoleEditor from './role/editor/LookupRoleEditor';
+import { LookupRoleForm } from './role/form/LookupRoleForm';
+// import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
@@ -42,7 +42,7 @@ import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList'
 
 const role = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupRoleForm} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
     <Route path={`${props.match.path}`} component={LookupRoleList} />
   </Switch>
@@ -73,7 +73,7 @@ const mileageException = (props: RouteComponentProps) => (
 
 const holiday = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupHolidayEditor} />
+    <Route path={`${props.match.path}/form`} component={HolidayForm} />
     <Route path={`${props.match.path}/:holidayUid`} component={LookupHolidayDetail} />
     <Route path={`${props.match.path}`} component={LookupHolidayList} />
   </Switch>
@@ -81,7 +81,7 @@ const holiday = (props: RouteComponentProps) => (
 
 const leave = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupLeaveEditor} />
+    <Route path={`${props.match.path}/form`} component={LeaveForm} />
     <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
     <Route path={`${props.match.path}`} component={LookupLeaveList} />
   </Switch>
@@ -127,20 +127,20 @@ const diem = (props: RouteComponentProps) => (
 
 const achievement = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={AchievementEditor} />
+    <Route path={`${props.match.path}`} component={LookupAchievementForm} />
   </Switch>
 );
 
 const cogsUpload = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={COGSUploadEditor} />
+    <Route path={`${props.match.path}`} component={COGSUploadForm} />
   </Switch>
 );
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/announcement`} component={AnnouncementEditor} />
-    <Route path={`${props.match.path}/form`} component={GalleryEditor} />
+    <Route path={`${props.match.path}/form`} component={LookupGalleryForm} />
     <Route path={`${props.match.path}`} component={ImageGalleryList} />
   </Switch>
 );

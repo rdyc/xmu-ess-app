@@ -68,7 +68,7 @@ interface IOwnState {
 
   filterLookupCustomer: ILookupCustomerGetListFilter;
   filterCommonSystem: ISystemListFilter;
-  filterProject: IProjectRegistrationGetListFilter;
+  filterProject?: IProjectRegistrationGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -182,10 +182,10 @@ const createProps: mapper<ExpenseRequestFormProps, IOwnState> = (props: ExpenseR
     orderBy: 'value',
     direction: 'ascending'
   },
-  filterProject: {
-    statusTypes: ([WorkflowStatusType.Approved]).toString(),
-    direction: 'ascending'
-  },
+  // filterProject: {
+  //   statusTypes: ([WorkflowStatusType.Approved]).toString(),
+  //   direction: 'ascending'
+  // },
 });
 
 const stateUpdaters: StateUpdaters<ExpenseRequestFormProps, IOwnState, IOwnStateUpdater> = {

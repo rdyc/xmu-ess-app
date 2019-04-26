@@ -26,7 +26,7 @@ type TimesheetEntryDetailPartialFormProps = {
   minDate: Date;
   companyUid: string;
   filterCommonSystem?: ISystemListFilter;
-  filterProject?: IProjectAssignmentGetListFilter;
+  filterProjectAssignment?: IProjectAssignmentGetListFilter;
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterProjectSite?: IProjectSiteGetRequest;
   handleSetProjectFilter: (customerUid: string, activityType: string) => void;
@@ -112,7 +112,7 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
         name="projectUid"
         render={({ field, form }: FieldProps<ITimesheetEntryFormValue>) => (
           <React.Fragment>
-            <ProjectAssignmentOption filter={props.filterProject}>
+            <ProjectAssignmentOption filter={props.filterProjectAssignment}>
               <SelectField
                 isSearchable
                 isDisabled={props.formikBag.values.customerUid === '' || props.formikBag.values.activityType === '' || props.formikBag.isSubmitting}

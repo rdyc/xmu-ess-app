@@ -21,9 +21,11 @@
   "account.shared.message.update.failure": "Unable to process your submission",
   "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
+  "account.shared.message.new.employe.success": "New {state} Data has been created. Add access is required for a new employee.",
 
   "account.shared.section.info.title": "Employee {state}",
   "account.shared.section.info.subHeader": " ",
+  "account.shared.section.submission": "{state} Submission",
 
   "account.shared.field.no": "No",
   "account.shared.field.action": "Actions",

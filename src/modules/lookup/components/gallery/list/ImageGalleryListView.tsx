@@ -1,7 +1,7 @@
-import { DataContainer } from '@layout/components/pages/dataContainer/DataContainer';
+import { CollectionPageDataContainer } from '@layout/components/pages/collectionPage/CollectionPageDataContainer';
 import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
-import { Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import * as React from 'react';
@@ -12,10 +12,10 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
 
   const cusCompt: React.ReactNode = (
     <div>
-      <IconButton onClick={() => props.history.push('/lookup/imagegalleries/announcement')}>
+      <IconButton color="inherit" onClick={() => props.history.push('/lookup/imagegalleries/announcement')}>
         <PictureInPictureIcon/>
       </IconButton>
-      <IconButton onClick={() => props.history.push('/lookup/imagegalleries/form')}>
+      <IconButton color="inherit" onClick={() => props.history.push('/lookup/imagegalleries/form')}>
         <AddCircleIcon/>
       </IconButton>
     </div>
@@ -42,25 +42,19 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
   const render = (
     <React.Fragment>
       <Grid container spacing={8}>
-        {
-          isLoading &&
-          <Typography>
-            {props.intl.formatMessage(layoutMessage.text.loading)}
-          </Typography>
-        }
         <Grid item xs={12}>
-          <DataContainer
-            isLoading={props.isLoading}
-            state={{
+          <CollectionPageDataContainer
+            state={props.imageGalleryState.all}
+            pagination={{
               field: props.orderBy,
               direction: props.direction,
               page: props.page,
               size: props.size,
             }}
-            className={props.classes.flex}
-            metadata={response && response.metadata}
+            metadata={props.imageGalleryState.all.response && props.imageGalleryState.all.response.metadata}
             fields={props.fields}
-            onClickSync={() => props.setPageOne()}
+            onClickSync={() => props.handleOnLoad()}
+            onClickRetry={() => props.handleOnLoad()}
             onClickNext={() => props.setPageNext()}
             onClickPrevious={() => props.setPagePrevious()}
             onChangeField={props.setField}
@@ -68,12 +62,29 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
             onChangeSize={props.setSize}
           >
             {
+              isLoading &&
+              <div className={props.classes.preloader}>
+                <div className={props.classes.preloaderContent}>
+                  <CircularProgress 
+                    style={{margin: 'auto'}} 
+                    color="secondary"
+                  />
+
+                  <Typography
+                    className={props.classes.marginFarTop}
+                  >
+                    {props.intl.formatMessage(layoutMessage.text.waiting)}
+                  </Typography>
+                </div>    
+              </div>
+            }
+            {
               !isLoading &&
               response &&
               response.data &&
               RenderImageList(response.data)
             }
-          </DataContainer>
+          </CollectionPageDataContainer>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -85,7 +96,9 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
         props.customComponentFlag &&
         props.setCustomComponent(cusCompt)
       }
-      {render}
+      {
+        render
+      }
     </React.Fragment>
   );
 };

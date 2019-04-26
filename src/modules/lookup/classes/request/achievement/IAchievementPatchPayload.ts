@@ -1,5 +1,3 @@
-import { IBasePagination } from '@generic/interfaces';
-
-export interface IAchievementPatchPayload extends IBasePagination {
+export interface IAchievementPatchPayload {
   file: FileList;
 }

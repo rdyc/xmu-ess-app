@@ -96,7 +96,7 @@ interface IOwnState {
 
   filterLookupCustomer?: ILookupCustomerGetListFilter;
   filterCommonSystem: ISystemListFilter;
-  filterProject: IProjectRegistrationGetListFilter;
+  filterProject?: IProjectRegistrationGetListFilter;
   filterProjectSite?: IProjectSiteGetRequest;
   filterAccountEmployee?: IEmployeeListFilter;
 }
@@ -290,10 +290,10 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
     orderBy: 'value',
     direction: 'ascending'
   },
-  filterProject: {
-    statusTypes: ([WorkflowStatusType.Approved]).toString(),
-    direction: 'ascending'
-  },
+  // filterProject: {
+  //   statusTypes: ([WorkflowStatusType.Approved]).toString(),
+  //   direction: 'ascending'
+  // },
   filterAccountEmployee: {
     companyUids: props.userState.user && props.userState.user.company.uid,
     useAccess: true,

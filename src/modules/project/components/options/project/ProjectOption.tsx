@@ -91,7 +91,14 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
     // 1st load only when request are empty
     if (!request) {
       if (this.props.filter) {
-        this.props.handleOnLoadApi(this.props.filter);
+        if (this.props.filter.companyUid || 
+          this.props.filter.activeOnly ||
+          this.props.filter.assignmentStatus ||
+          this.props.filter.customerUids ||
+          this.props.filter.projectTypes ||
+          this.props.filter.statusTypes) {
+            this.props.handleOnLoadApi(this.props.filter);
+        }
       }
     } else {
       // 2nd load only when request filter are present
@@ -101,7 +108,14 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
   
         // then should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi(this.props.filter);
+          if (this.props.filter.companyUid || 
+            this.props.filter.activeOnly ||
+            this.props.filter.assignmentStatus ||
+            this.props.filter.customerUids ||
+            this.props.filter.projectTypes ||
+            this.props.filter.statusTypes) {
+              this.props.handleOnLoadApi(this.props.filter);
+          }
         } else {
           if (response && response.data) {
             this.props.setOptions(response.data);
@@ -117,14 +131,28 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
     if ( !this.props.filter && nextProps.filter) {
       // when no data then load
       if (!request) {
-        this.props.handleOnLoadApi(nextProps.filter);
+        if (nextProps.filter.companyUid || 
+          nextProps.filter.activeOnly ||
+          nextProps.filter.assignmentStatus ||
+          nextProps.filter.customerUids ||
+          nextProps.filter.projectTypes ||
+          nextProps.filter.statusTypes) {
+            this.props.handleOnLoadApi(nextProps.filter);
+        }
       } else if (request && request.filter) {
         // if request(data) is exist then compare
         const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
 
         // should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi(nextProps.filter);
+          if (nextProps.filter.companyUid || 
+            nextProps.filter.activeOnly ||
+            nextProps.filter.assignmentStatus ||
+            nextProps.filter.customerUids ||
+            nextProps.filter.projectTypes ||
+            nextProps.filter.statusTypes) {
+              this.props.handleOnLoadApi(nextProps.filter);
+          }
         } else {
           if (response && response.data) {
             this.props.setOptions(response.data);
@@ -140,7 +168,14 @@ const lifeCycle: ReactLifeCycleFunctions<ProjectOptionProps, IOwnState> = {
           const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
   
           if (shouldUpdate) {
-            this.props.handleOnLoadApi(nextProps.filter);
+            if (nextProps.filter.companyUid || 
+              nextProps.filter.activeOnly ||
+              nextProps.filter.assignmentStatus ||
+              nextProps.filter.customerUids ||
+              nextProps.filter.projectTypes ||
+              nextProps.filter.statusTypes) {
+                this.props.handleOnLoadApi(nextProps.filter);
+            }
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);

@@ -25,6 +25,12 @@ const accountEmployeeBank: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.kartuKeluarga)}
+          value={data.familyCardNumber ? data.familyCardNumber : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
           label={intl.formatMessage(accountMessage.employee.field.ktp)}
           value={data.citizenNumber ? data.citizenNumber : 'N/A'}
         />
@@ -33,12 +39,6 @@ const accountEmployeeBank: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(accountMessage.employee.field.npwp)}
           value={data.taxNumber ? data.taxNumber : 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={intl.formatMessage(accountMessage.employee.field.kartuKeluarga)}
-          value={data.familyCardNumber ? data.familyCardNumber : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -40,18 +40,6 @@ const accountEmployeeExperienceInformation: React.SFC<AllProps> = props => {
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.experience.field.company)}
-          value={data.company}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={intl.formatMessage(accountMessage.experience.field.position)}
-          value={data.position}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
           label={intl.formatMessage(accountMessage.experience.field.start)}
           value={data.start}
         />
@@ -60,6 +48,18 @@ const accountEmployeeExperienceInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(accountMessage.experience.field.end)}
           value={data.end ? data.end : 'N/A'}
+        />
+        <TextField 
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.experience.field.company)}
+          value={data.company}
+        />
+        <TextField 
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.experience.field.position)}
+          value={data.position}
         />
         {
           props.data.changes &&

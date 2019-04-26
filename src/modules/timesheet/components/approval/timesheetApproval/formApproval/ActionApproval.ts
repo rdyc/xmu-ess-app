@@ -46,6 +46,8 @@ interface OwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  approvalDialogTitleAttention: string;
+  approvalDialogIsHolidayOrWeekendText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -86,7 +88,10 @@ const createProps: mapper<ApprovalTimesheetsProps, OwnState> = (props: ApprovalT
     approvalDialogTitle: intl.formatMessage(timesheetMessage.approval.confirm.submissionTitle),
     approvalDialogContentText: intl.formatMessage(timesheetMessage.approval.confirm.submissionContent),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
+
+    approvalDialogTitleAttention: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitleAttention),
+    approvalDialogIsHolidayOrWeekendText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekend),
   };
 };
 

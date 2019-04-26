@@ -3,10 +3,9 @@ export interface IEmployeeAccessPutPayload {
   companyUid: string;
   positionUid: string;
   roleUid: string;
-  employeeUid: string;
-  unitType: string;
-  departmentType: string;
+  unitType?: string;
+  departmentType?: string;
   levelType: string;
   start: string;
-  end?: string | null;
+  end?: string;
 }

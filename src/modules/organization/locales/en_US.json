@@ -29,6 +29,7 @@
   "organization.structure.section.info.subHeader": " ",
   "organization.structure.section.item.title": "Super Ordinate",
   "organization.structure.section.item.subHeader": " ",
+  "organization.structure.section.submit": "Organization Structure Submission",
 
   "organization.structure.text.addItem": "Add Item",
   "organization.structure.text.draft": "New Draft",
@@ -74,6 +75,7 @@
   "organization.structure.field.positionUid.required": "Superordinate is required",
   "organization.structure.field.isExpired": "Valid",
   "organization.structure.field.isNotExpired": "Expired",
+  "organization.structure.field.itemsMinimum": "Items Empty",
 
   "organization.hierarchy.page.list.title": "Approval Hierarchy",
   "organization.hierarchy.page.list.subHeader": " ",

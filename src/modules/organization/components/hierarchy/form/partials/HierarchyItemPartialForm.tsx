@@ -102,7 +102,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                       const touch = getIn(form.touched, `items.${index}.positionUid`);
 
                       return (
-                        <LookupPositionOption filter={props.filterLookupPosition}>
+                        <LookupPositionOption companyUid={props.formikBag.values.companyUid}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"

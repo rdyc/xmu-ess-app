@@ -35,17 +35,20 @@ interface IOwnOption {
   disabled?: boolean;
   remarkFieldProps?: IWorkflowApprovalRemarkFieldProps;
   confirmationDialogProps: ISubmissionDialogProps;
+  confirmationBeforeDialogProps?: ISubmissionDialogProps;
   onSubmit: (values: IWorkflowApprovalFormValue, actions: FormikActions<IWorkflowApprovalFormValue>) => void;
 }
 
 interface IOwnState {
   isOpenDialog: boolean;
+  isOpenBeforeDialog: boolean;
   initialValues: IWorkflowApprovalFormValue;
   validationSchema: Yup.ObjectSchema<Yup.Shape<{}, Partial<IWorkflowApprovalFormValue>>>;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setOpen: StateHandler<IOwnState>;
+  setOpenBeforeDialog: StateHandler<IOwnState>;
 }
 
 export type WorkflowApprovalFormProps
@@ -59,6 +62,7 @@ export type WorkflowApprovalFormProps
 const createProps: mapper<WorkflowApprovalFormProps, IOwnState> = (props: WorkflowApprovalFormProps): IOwnState => ({
   // form values
   isOpenDialog: false,
+  isOpenBeforeDialog: false,
   initialValues: {
     statusType: '',
     remark: ''
@@ -84,6 +88,9 @@ const createProps: mapper<WorkflowApprovalFormProps, IOwnState> = (props: Workfl
 const stateUpdaters: StateUpdaters<WorkflowApprovalFormProps, IOwnState, IOwnStateUpdater> = {
   setOpen: (prevState: IOwnState) => () => ({
     isOpenDialog: !prevState.isOpenDialog,
+  }),
+  setOpenBeforeDialog: (prevState: IOwnState) => () => ({
+    isOpenBeforeDialog: !prevState.isOpenBeforeDialog,
   })
 };
 
