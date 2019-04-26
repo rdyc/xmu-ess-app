@@ -8,7 +8,7 @@ import { StructureDetail } from './structure/detail/StructureDetail';
 import { OrganizationStructureForm } from './structure/form/OrganizationStructureForm';
 import { StructureList } from './structure/list/StructureList';
 import { OrganizationWorkflowDetail } from './workflow/request/detail/OrganizationWorkflowDetail';
-import OrganizationWorkflowEditor from './workflow/request/editor/OrganizationWorkflowEditor';
+import { OrganizationWorkflowForm } from './workflow/request/form/OrganizationWorkFlowForm';
 import { workflowMenuList } from './workflow/request/list/WorkflowMenuList';
 
 const OrganizationHierarchy = (props: RouteComponentProps) => (
@@ -29,7 +29,7 @@ const OrganizationStructure = (props: RouteComponentProps) => (
 
 const OrganizationWorkflow = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={OrganizationWorkflowEditor} />
+    <Route path={`${props.match.path}/form`} component={OrganizationWorkflowForm} />
     <Route path={`${props.match.path}/:companyUid/:menuUid`} component={OrganizationWorkflowDetail} />
     <Route path={`${props.match.path}`} component={workflowMenuList} />
     </Switch>

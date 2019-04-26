@@ -12,6 +12,9 @@ import {
   organizationWorkflowGetByIdError,
   organizationWorkflowGetByIdRequest,
   organizationWorkflowGetByIdSuccess,
+  organizationWorkflowGetByMenuError,
+  organizationWorkflowGetByMenuRequest,
+  organizationWorkflowGetByMenuSuccess,
   organizationWorkflowGetListError,
   organizationWorkflowGetListRequest,
   organizationWorkflowGetListSuccess,
@@ -86,6 +89,26 @@ function* watchGetByIdRequest() {
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+function* watchGetByMenuRequest() {
+  const worker = (action: ReturnType<typeof organizationWorkflowGetByMenuRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/organization/workflows/${action.payload.companyUid}/${action.payload.menuUid}`,
+      successEffects: (response: IApiResponse) => ([
+        put(organizationWorkflowGetByMenuSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationWorkflowGetByMenuError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationWorkflowGetByMenuError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_BY_MENU_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -210,6 +233,7 @@ function* organizationWorkflowSagas() {
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
+    fork(watchGetByMenuRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchDeleteRequest)

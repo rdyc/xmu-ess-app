@@ -165,7 +165,6 @@ export const OrganizationWorkflowHierarchyFormView: React.SFC<OrganizationWorkfl
         <Button
           color="secondary"
           onClick={() => props.context.fields.push({
-            uid: null,
             hierarchyUid: '',
             priority: 0,
             hierarchyName: ''

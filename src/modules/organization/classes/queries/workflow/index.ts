@@ -4,3 +4,4 @@ export * from './IOrganizationWorkflowListRequest';
 export * from './IOrganizationWorkflowPostRequest';
 export * from './IOrganizationWorkflowPutRequest';
 export * from './IOrganizationWorkFlowDeleteRequest';
+export * from './IOrganizationWorkflowMenuRequest';
