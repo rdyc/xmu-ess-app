@@ -175,7 +175,7 @@ export interface ILookupState {
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
-  leaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
+  lookupLeaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetAmount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;

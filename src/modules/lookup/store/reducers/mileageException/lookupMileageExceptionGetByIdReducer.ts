@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IPositionGetByIdRequest } from '@lookup/classes/queries';
-import { IPositionDetail } from '@lookup/classes/response';
-import { LookupPositionAction as Action } from '@lookup/store/actions';
+import { IMileageExceptionByIdRequest } from '@lookup/classes/queries';
+import { IMileageExceptionDetail } from '@lookup/classes/response';
+import { LookupMileageExceptionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail> = {
+const initialState: IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail> 
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IPositionGetByIdRequest, IPositionDetai
   }
 };
 
-export { reducer as positionGetByIdReducer };
+export { reducer as lookupMileageExceptionGetByIdReducer };

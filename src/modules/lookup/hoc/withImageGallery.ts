@@ -1,7 +1,14 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '@lookup/classes/queries/gallery';
 import { IGallery } from '@lookup/classes/response/gallery';
-import { imageGalleryGetAllDispose, imageGalleryGetAllRequest, imageGalleryGetByIdDispose, imageGalleryGetByIdRequest, imageGalleryPostDispose, imageGalleryPostRequest } from '@lookup/store/actions';
+import {
+  lookupImageGalleryGetAllDispose,
+  lookupImageGalleryGetAllRequest,
+  lookupImageGalleryGetByIdDispose,
+  lookupImageGalleryGetByIdRequest,
+  lookupImageGalleryPostDispose,
+  lookupImageGalleryPostRequest,
+} from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -15,14 +22,14 @@ interface PropsFromState {
 interface PropsFromDispatch {
   imageGalleryDispatch: {
     // command
-    createRequest: typeof imageGalleryPostRequest;
-    createDispose: typeof imageGalleryPostDispose;
+    createRequest: typeof lookupImageGalleryPostRequest;
+    createDispose: typeof lookupImageGalleryPostDispose;
     
     // query
-    loadAllRequest: typeof imageGalleryGetAllRequest;
-    loadAllDispose: typeof imageGalleryGetAllDispose;
-    loadDetailRequest: typeof imageGalleryGetByIdRequest;
-    loadDetailDispose: typeof imageGalleryGetByIdDispose;
+    loadAllRequest: typeof lookupImageGalleryGetAllRequest;
+    loadAllDispose: typeof lookupImageGalleryGetAllDispose;
+    loadDetailRequest: typeof lookupImageGalleryGetByIdRequest;
+    loadDetailDispose: typeof lookupImageGalleryGetByIdDispose;
   };
 }
 
@@ -38,14 +45,14 @@ const mapStateToProps = ({ imageGalleryGetAll, imageGalleryGetById }: IAppState)
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   imageGalleryDispatch: {
     // command
-    createRequest: (request: IGalleryPostRequest) => dispatch(imageGalleryPostRequest(request)),
-    createDispose: () => dispatch(imageGalleryPostDispose()),
+    createRequest: (request: IGalleryPostRequest) => dispatch(lookupImageGalleryPostRequest(request)),
+    createDispose: () => dispatch(lookupImageGalleryPostDispose()),
 
     // query
-    loadAllRequest: (request: IGalleryGetAllRequest) => dispatch(imageGalleryGetAllRequest(request)),
-    loadAllDispose: () => dispatch(imageGalleryGetAllDispose()),
-    loadDetailRequest: (request: IGalleryGetDetailRequest) => dispatch(imageGalleryGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(imageGalleryGetByIdDispose()),
+    loadAllRequest: (request: IGalleryGetAllRequest) => dispatch(lookupImageGalleryGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupImageGalleryGetAllDispose()),
+    loadDetailRequest: (request: IGalleryGetDetailRequest) => dispatch(lookupImageGalleryGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupImageGalleryGetByIdDispose()),
   }
 });
 

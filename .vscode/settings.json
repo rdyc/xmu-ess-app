@@ -29,7 +29,7 @@
   "typescript.preferences.quoteStyle": "single",
   "breadcrumbs.enabled": true,
   "git.enableSmartCommit": true,
-  "workbench.iconTheme": null,
+  "workbench.iconTheme": "vscode-great-icons",
   "prettier.singleQuote": true,
   "npm-scripts.showStartNotification": false,
   "editor.tabCompletion": "on",
