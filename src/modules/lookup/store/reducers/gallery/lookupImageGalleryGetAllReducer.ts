@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IMenuGetAllRequest } from '@lookup/classes/queries';
-import { IMenu } from '@lookup/classes/response';
-import { LookupMenuAction as Action } from '@lookup/store/actions';
+import { IGalleryGetAllRequest } from '@lookup/classes/queries/gallery';
+import { IGallery } from '@lookup/classes/response/gallery';
+import { ImageGalleryAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IMenuGetAllRequest, IMenu> = {
+const initialState: IQueryCollectionState<IGalleryGetAllRequest, IGallery> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQueryCollectionState<IMenuGetAllRequest, IMenu> = {
   errors: undefined
 };
 
-const reducer: Reducer<IQueryCollectionState<IMenuGetAllRequest, IMenu>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IGalleryGetAllRequest, IGallery>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IMenuGetAllRequest, IMenu>> = (stat
   }
 };
 
-export { reducer as lookupMenuGetAllReducer };
+export { reducer as lookupImageGalleryGetAllReducer };

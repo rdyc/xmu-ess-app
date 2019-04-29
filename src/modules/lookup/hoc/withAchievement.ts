@@ -1,13 +1,13 @@
 import { IAchievementPatchRequest } from '@lookup/classes/queries/achievement';
-import { achievementPatchDispose, achievementPatchRequest } from '@lookup/store/actions';
+import { lookupAchievementPatchDispose, lookupAchievementPatchRequest } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromDispatch {
   achievementDispatch: {
     // command
-    patchRequest: typeof achievementPatchRequest;
-    patchDispose: typeof achievementPatchDispose;
+    patchRequest: typeof lookupAchievementPatchRequest;
+    patchDispose: typeof lookupAchievementPatchDispose;
   };
 }
 
@@ -16,8 +16,8 @@ export interface WithAchievement extends PropsFromDispatch {}
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   achievementDispatch: {
     // command
-    patchRequest: (request: IAchievementPatchRequest) => dispatch(achievementPatchRequest(request)),
-    patchDispose: () => dispatch(achievementPatchDispose()),
+    patchRequest: (request: IAchievementPatchRequest) => dispatch(lookupAchievementPatchRequest(request)),
+    patchDispose: () => dispatch(lookupAchievementPatchDispose()),
   }
 });
 

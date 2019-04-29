@@ -9,18 +9,18 @@ import {
 } from '@lookup/classes/queries';
 import { IPosition, IPositionDetail, IPositionList } from '@lookup/classes/response';
 import {
-  positionDeleteDispose,
-  positionDeleteRequest,
-  positionGetAllDispose,
-  positionGetAllRequest,
-  positionGetByIdDispose,
-  positionGetByIdRequest,
-  positionGetListDispose,
-  positionGetListRequest,
-  positionPostDispose,
-  positionPostRequest,
-  positionPutDispose,
-  positionPutRequest,
+  lookupPositionDeleteDispose,
+  lookupPositionDeleteRequest,
+  lookupPositionGetAllDispose,
+  lookupPositionGetAllRequest,
+  lookupPositionGetByIdDispose,
+  lookupPositionGetByIdRequest,
+  lookupPositionGetListDispose,
+  lookupPositionGetListRequest,
+  lookupPositionPostDispose,
+  lookupPositionPostRequest,
+  lookupPositionPutDispose,
+  lookupPositionPutRequest,
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -36,20 +36,20 @@ interface PropsFromState {
 interface PropsFromDispatch {
   lookupPositionDispatch: {
     // command
-    createRequest: typeof positionPostRequest;
-    createDispose: typeof positionPostDispose;
-    updateRequest: typeof positionPutRequest;
-    updateDispose: typeof positionPutDispose;
-    deleteRequest: typeof positionDeleteRequest;
-    deleteDispose: typeof positionDeleteDispose;
+    createRequest: typeof lookupPositionPostRequest;
+    createDispose: typeof lookupPositionPostDispose;
+    updateRequest: typeof lookupPositionPutRequest;
+    updateDispose: typeof lookupPositionPutDispose;
+    deleteRequest: typeof lookupPositionDeleteRequest;
+    deleteDispose: typeof lookupPositionDeleteDispose;
 
     // query
-    loadAllRequest: typeof positionGetAllRequest;
-    loadAllDispose: typeof positionGetAllDispose;
-    loadListRequest: typeof positionGetListRequest;
-    loadListDispose: typeof positionGetListDispose;
-    loadDetailRequest: typeof positionGetByIdRequest;
-    loadDetailDispose: typeof positionGetByIdDispose;
+    loadAllRequest: typeof lookupPositionGetAllRequest;
+    loadAllDispose: typeof lookupPositionGetAllDispose;
+    loadListRequest: typeof lookupPositionGetListRequest;
+    loadListDispose: typeof lookupPositionGetListDispose;
+    loadDetailRequest: typeof lookupPositionGetByIdRequest;
+    loadDetailDispose: typeof lookupPositionGetByIdDispose;
   };
 }
 
@@ -66,20 +66,20 @@ const mapStateToProps = ({ positionGetAll, positionGetList, positionGetById }: I
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupPositionDispatch: {
     // command
-    createRequest: (request: IPositionPostRequest) => dispatch(positionPostRequest(request)),
-    createDispose: () => dispatch(positionPostDispose()),
-    updateRequest: (request: IPositionPutRequest) => dispatch(positionPutRequest(request)),
-    updateDispose: () => dispatch(positionPutDispose()),
-    deleteRequest: (request: IPositionDeleteRequest) => dispatch(positionDeleteRequest(request)),
-    deleteDispose: () => dispatch(positionDeleteDispose()),
+    createRequest: (request: IPositionPostRequest) => dispatch(lookupPositionPostRequest(request)),
+    createDispose: () => dispatch(lookupPositionPostDispose()),
+    updateRequest: (request: IPositionPutRequest) => dispatch(lookupPositionPutRequest(request)),
+    updateDispose: () => dispatch(lookupPositionPutDispose()),
+    deleteRequest: (request: IPositionDeleteRequest) => dispatch(lookupPositionDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupPositionDeleteDispose()),
 
     // query
-    loadAllRequest: (request: IPositionGetAllRequest) => dispatch(positionGetAllRequest(request)),
-    loadAllDispose: () => dispatch(positionGetAllDispose()),
-    loadListRequest: (request: IPositionGetListRequest) => dispatch(positionGetListRequest(request)),
-    loadListDispose: () => dispatch(positionGetListDispose()),
-    loadDetailRequest: (request: IPositionGetByIdRequest) => dispatch(positionGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(positionGetByIdDispose()),
+    loadAllRequest: (request: IPositionGetAllRequest) => dispatch(lookupPositionGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupPositionGetAllDispose()),
+    loadListRequest: (request: IPositionGetListRequest) => dispatch(lookupPositionGetListRequest(request)),
+    loadListDispose: () => dispatch(lookupPositionGetListDispose()),
+    loadDetailRequest: (request: IPositionGetByIdRequest) => dispatch(lookupPositionGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupPositionGetByIdDispose()),
   }
 });
 

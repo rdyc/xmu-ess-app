@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IMenuListRequest } from '@lookup/classes/queries';
 import { IMenuList } from '@lookup/classes/response';
-import { MenuAction as Action } from '@lookup/store/actions';
+import { LookupMenuAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IMenuListRequest, IMenuList> = {

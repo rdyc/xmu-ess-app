@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IPositionGetListRequest } from '@lookup/classes/queries';
-import { IPositionList } from '@lookup/classes/response';
-import { LookupPositionAction as Action } from '@lookup/store/actions';
+import { IMileageExceptionListRequest } from '@lookup/classes/queries';
+import { IMileageExceptionList } from '@lookup/classes/response';
+import { LookupMileageExceptionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IPositionGetListRequest, IPositionList> = {
+const initialState: IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQueryCollectionState<IPositionGetListRequest, IPositionList
   errors: undefined
 };
 
-const reducer: Reducer<IQueryCollectionState<IPositionGetListRequest, IPositionList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IPositionGetListRequest, IPositionL
   }
 };
 
-export { reducer as positionGetListReducer };
+export { reducer as lookupMileageExceptionGetListReducer };

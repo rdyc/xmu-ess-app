@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IMenuGetByIdRequest } from '@lookup/classes/queries';
-import { IMenuDetail } from '@lookup/classes/response';
-import { LookupMenuAction as Action } from '@lookup/store/actions';
+import { IGalleryGetDetailRequest } from '@lookup/classes/queries/gallery';
+import { IGallery } from '@lookup/classes/response/gallery';
+import { ImageGalleryAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail> = {
+const initialState: IQuerySingleState<IGalleryGetDetailRequest, IGallery> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail> = {
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IGalleryGetDetailRequest, IGallery>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isExpired: false, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isExpired: false, isLoading: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>> = (s
   }
 };
 
-export { reducer as lookupMenuGetByIdReducer };
+export { reducer as lookupImageGalleryGetByIdReducer };
