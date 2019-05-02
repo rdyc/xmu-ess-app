@@ -138,6 +138,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
             required={true}
             margin="normal"
             disabled={form.isSubmitting}
+            disablePast
             showTodayButton
             label={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
@@ -228,7 +229,8 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 const projectUid = selected && selected.value || '';
 
                 props.formikBag.setFieldValue(field.name, projectUid);
-                props.SetProjectSiteFilter(projectUid);
+                props.SetProjectSiteFilter(selected && selected.value);
+                props.formikBag.setFieldValue('siteUid', '');
 
                 let projectType = 'SPT01';
                 if (selected && selected.data && selected.data.projectType === 'SPT01') {
@@ -271,7 +273,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
             <ProjectSiteOption filter={props.filterProjectSite}>
               <SelectField
                 isSearchable
-                isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.isSubmitting}
+                isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.values.projectUid.indexOf('GNLPS') !== -1 || props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}

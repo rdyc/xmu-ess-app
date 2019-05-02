@@ -16,16 +16,16 @@ import {
   IMileageExceptionList
 } from '@lookup/classes/response';
 import {
-  mileageExceptionGetAllDispose,
-  mileageExceptionGetAllRequest,
-  mileageExceptionGetByIdDispose,
-  mileageExceptionGetByIdRequest,
-  mileageExceptionGetListDispose,
-  mileageExceptionGetListRequest,
-  mileageExceptionPostDispose,
-  mileageExceptionPostRequest,
-  mileageExceptionPutDispose,
-  mileageExceptionPutRequest
+  lookupMileageExceptionGetAllDispose,
+  lookupMileageExceptionGetAllRequest,
+  lookupMileageExceptionGetByIdDispose,
+  lookupMileageExceptionGetByIdRequest,
+  lookupMileageExceptionGetListDispose,
+  lookupMileageExceptionGetListRequest,
+  lookupMileageExceptionPostDispose,
+  lookupMileageExceptionPostRequest,
+  lookupMileageExceptionPutDispose,
+  lookupMileageExceptionPutRequest
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -41,21 +41,21 @@ interface PropsFromState {
 interface PropsFromDispatch {
   mileageExceptionDispatch: {
     // command
-    createRequest: typeof mileageExceptionPostRequest;
-    createDispose: typeof mileageExceptionPostDispose;
+    createRequest: typeof lookupMileageExceptionPostRequest;
+    createDispose: typeof lookupMileageExceptionPostDispose;
 
-    updateRequest: typeof mileageExceptionPutRequest;
-    updateDispose: typeof mileageExceptionPutDispose;
+    updateRequest: typeof lookupMileageExceptionPutRequest;
+    updateDispose: typeof lookupMileageExceptionPutDispose;
 
     // query
-    loadAllRequest: typeof mileageExceptionGetAllRequest;
-    loadAllDispose: typeof mileageExceptionGetAllDispose;
+    loadAllRequest: typeof lookupMileageExceptionGetAllRequest;
+    loadAllDispose: typeof lookupMileageExceptionGetAllDispose;
 
-    loadListRequest: typeof mileageExceptionGetListRequest;
-    loadListDispose: typeof mileageExceptionGetListDispose;
+    loadListRequest: typeof lookupMileageExceptionGetListRequest;
+    loadListDispose: typeof lookupMileageExceptionGetListDispose;
 
-    loadDetailRequest: typeof mileageExceptionGetByIdRequest;
-    loadDetailDispose: typeof mileageExceptionGetByIdDispose;
+    loadDetailRequest: typeof lookupMileageExceptionGetByIdRequest;
+    loadDetailDispose: typeof lookupMileageExceptionGetByIdDispose;
   };
 }
 
@@ -72,21 +72,21 @@ const mapStateToProps = ({ mileageExceptionGetAll, mileageExceptionGetById, mile
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   mileageExceptionDispatch: {
     // command
-    createRequest: (request: IMileageExceptionPostRequest) => dispatch(mileageExceptionPostRequest(request)),
-    createDispose: () => dispatch(mileageExceptionPostDispose()),
+    createRequest: (request: IMileageExceptionPostRequest) => dispatch(lookupMileageExceptionPostRequest(request)),
+    createDispose: () => dispatch(lookupMileageExceptionPostDispose()),
 
-    updateRequest: (request: IMileageExceptionPutRequest) => dispatch(mileageExceptionPutRequest(request)), 
-    updateDispose: () => dispatch(mileageExceptionPutDispose()),
+    updateRequest: (request: IMileageExceptionPutRequest) => dispatch(lookupMileageExceptionPutRequest(request)), 
+    updateDispose: () => dispatch(lookupMileageExceptionPutDispose()),
 
     // query
-    loadAllRequest: (request: IMileageExceptionAllRequest) => dispatch(mileageExceptionGetAllRequest(request)),
-    loadAllDispose: () => dispatch(mileageExceptionGetAllDispose()),
+    loadAllRequest: (request: IMileageExceptionAllRequest) => dispatch(lookupMileageExceptionGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupMileageExceptionGetAllDispose()),
 
-    loadListRequest: (request: IMileageExceptionListRequest) => dispatch(mileageExceptionGetListRequest(request)),
-    loadListDispose: () => dispatch(mileageExceptionGetListDispose()),
+    loadListRequest: (request: IMileageExceptionListRequest) => dispatch(lookupMileageExceptionGetListRequest(request)),
+    loadListDispose: () => dispatch(lookupMileageExceptionGetListDispose()),
 
-    loadDetailRequest: (request: IMileageExceptionByIdRequest) => dispatch(mileageExceptionGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(mileageExceptionGetByIdDispose())
+    loadDetailRequest: (request: IMileageExceptionByIdRequest) => dispatch(lookupMileageExceptionGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupMileageExceptionGetByIdDispose())
   }
 });
 

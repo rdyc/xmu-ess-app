@@ -19,20 +19,20 @@ import {
   ISystemLimitList
 } from '@lookup/classes/response';
 import {
-  systemLimitDeleteDispose,
-  systemLimitDeleteRequest,
-  systemLimitGetAllDispose,
-  systemLimitGetAllRequest,
-  systemLimitGetAmountDispose,
-  systemLimitGetAmountRequest,
-  systemLimitGetByIdDispose,
-  systemLimitGetByIdRequest,
-  systemLimitGetListDispose,
-  systemLimitGetListRequest,
-  systemLimitPostDispose,
-  systemLimitPostRequest,
-  systemLimitPutDispose,
-  systemLimitPutRequest
+  lookupSystemLimitDeleteDispose,
+  lookupSystemLimitDeleteRequest,
+  lookupSystemLimitGetAllDispose,
+  lookupSystemLimitGetAllRequest,
+  lookupSystemLimitGetAmountDispose,
+  lookupSystemLimitGetAmountRequest,
+  lookupSystemLimitGetByIdDispose,
+  lookupSystemLimitGetByIdRequest,
+  lookupSystemLimitGetListDispose,
+  lookupSystemLimitGetListRequest,
+  lookupSystemLimitPostDispose,
+  lookupSystemLimitPostRequest,
+  lookupSystemLimitPutDispose,
+  lookupSystemLimitPutRequest
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -49,26 +49,26 @@ interface PropsFromState {
 interface PropsFromDispatch {
   systemLimitDispatch: {
     // command
-    createRequest: typeof systemLimitPostRequest;
-    createDispose: typeof systemLimitPostDispose;
+    createRequest: typeof lookupSystemLimitPostRequest;
+    createDispose: typeof lookupSystemLimitPostDispose;
 
-    updateRequest: typeof systemLimitPutRequest;
-    updateDispose: typeof systemLimitPutDispose;
+    updateRequest: typeof lookupSystemLimitPutRequest;
+    updateDispose: typeof lookupSystemLimitPutDispose;
 
-    deleteRequest: typeof systemLimitDeleteRequest;
-    deleteDispose: typeof systemLimitDeleteDispose;
+    deleteRequest: typeof lookupSystemLimitDeleteRequest;
+    deleteDispose: typeof lookupSystemLimitDeleteDispose;
     // query
-    loadAllRequest: typeof systemLimitGetAllRequest;
-    loadAllDispose: typeof systemLimitGetAllDispose;
+    loadAllRequest: typeof lookupSystemLimitGetAllRequest;
+    loadAllDispose: typeof lookupSystemLimitGetAllDispose;
 
-    loadAmountRequest: typeof systemLimitGetAmountRequest;
-    loadAmountDispose: typeof systemLimitGetAmountDispose;
+    loadAmountRequest: typeof lookupSystemLimitGetAmountRequest;
+    loadAmountDispose: typeof lookupSystemLimitGetAmountDispose;
 
-    loadListRequest: typeof systemLimitGetListRequest;
-    loadListDispose: typeof systemLimitGetListDispose;
+    loadListRequest: typeof lookupSystemLimitGetListRequest;
+    loadListDispose: typeof lookupSystemLimitGetListDispose;
 
-    loadDetailRequest: typeof systemLimitGetByIdRequest;
-    loadDetailDispose: typeof systemLimitGetByIdDispose;
+    loadDetailRequest: typeof lookupSystemLimitGetByIdRequest;
+    loadDetailDispose: typeof lookupSystemLimitGetByIdDispose;
   };
 }
 
@@ -86,27 +86,27 @@ const mapStateToProps = ({systemLimitGetAll, systemLimitGetAmount, systemLimitGe
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   systemLimitDispatch: {
     // command
-    createRequest: (request: ISystemLimitPostRequest) => dispatch(systemLimitPostRequest(request)),
-    createDispose: () => dispatch(systemLimitPostDispose()),
+    createRequest: (request: ISystemLimitPostRequest) => dispatch(lookupSystemLimitPostRequest(request)),
+    createDispose: () => dispatch(lookupSystemLimitPostDispose()),
 
-    updateRequest: (request: ISystemLimitPutRequest) => dispatch(systemLimitPutRequest(request)),
-    updateDispose: () => dispatch(systemLimitPutDispose()),
+    updateRequest: (request: ISystemLimitPutRequest) => dispatch(lookupSystemLimitPutRequest(request)),
+    updateDispose: () => dispatch(lookupSystemLimitPutDispose()),
 
-    deleteRequest: (request: ISystemLimitDeleteRequest) => dispatch(systemLimitDeleteRequest(request)),
-    deleteDispose: () => dispatch(systemLimitDeleteDispose()),
+    deleteRequest: (request: ISystemLimitDeleteRequest) => dispatch(lookupSystemLimitDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupSystemLimitDeleteDispose()),
 
     // query
-    loadAllRequest: (request: ISystemLimitAllRequest) => dispatch(systemLimitGetAllRequest(request)),
-    loadAllDispose: () => dispatch(systemLimitGetAllDispose()),
+    loadAllRequest: (request: ISystemLimitAllRequest) => dispatch(lookupSystemLimitGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupSystemLimitGetAllDispose()),
     
-    loadAmountRequest: (request: ISystemLimitAmountRequest) => dispatch(systemLimitGetAmountRequest(request)),
-    loadAmountDispose: () => dispatch(systemLimitGetAmountDispose()),
+    loadAmountRequest: (request: ISystemLimitAmountRequest) => dispatch(lookupSystemLimitGetAmountRequest(request)),
+    loadAmountDispose: () => dispatch(lookupSystemLimitGetAmountDispose()),
 
-    loadListRequest: (request: ISystemLimitListRequest) => dispatch(systemLimitGetListRequest(request)),
-    loadListDispose: () => dispatch(systemLimitGetListDispose()),
+    loadListRequest: (request: ISystemLimitListRequest) => dispatch(lookupSystemLimitGetListRequest(request)),
+    loadListDispose: () => dispatch(lookupSystemLimitGetListDispose()),
 
-    loadDetailRequest: (request: ISystemLimitByIdRequest) => dispatch(systemLimitGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(systemLimitGetByIdDispose())
+    loadDetailRequest: (request: ISystemLimitByIdRequest) => dispatch(lookupSystemLimitGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupSystemLimitGetByIdDispose())
   }
 });
 

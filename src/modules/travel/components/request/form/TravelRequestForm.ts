@@ -320,19 +320,12 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
     ...prevState,
     ...newState
   })
-  // setDiem: () => (diem: IDiem): Partial<IOwnState> => ({
-  //   diem
-  // })
 };
 
 const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
   handleSetDiemData: (props: TravelRequestFormProps) => (data: IDiem[]) => {
     props.setDiemData(data);
   },
-  // handleSetDiem: (props: TravelRequestFormProps) => (projectType: string, destinationType: string) => {
-  //   const diem = props.diemData && props.diemData.filter(item => item.destinationType === destinationType && item.projectType === projectType)[0];
-  //   props.setDiem(diem);
-  // },
   handleSetProjectFilter: (props: TravelRequestFormProps) => (customerUid: string) => {
     props.setProjectFilter(customerUid);
   },
@@ -582,6 +575,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
 
         // set initial values
         this.props.setInitialValues(initialValues);
+        this.props.handleSetProjectFilter(response.data.customerUid);
         this.props.handleSetProjectSiteFilter(response.data.projectUid);
       }
     }

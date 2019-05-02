@@ -1,6 +1,6 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IPositionDeleteRequest } from '@lookup/classes/queries';
-import { PositionAction as Action } from '@lookup/store/actions';
+import { LookupPositionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IPositionDeleteRequest, boolean> = {
