@@ -119,7 +119,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               valueString={field.value}
               textFieldProps={{
                 label: props.intl.formatMessage(lookupMessage.mileageException.fieldFor(field.name, 'fieldName')),
-                required: true,
                 helperText: form.touched.siteType && form.errors.siteType,
                 error: form.touched.siteType && Boolean(form.errors.siteType)
               }}
@@ -142,7 +141,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               valueString={field.value}
               textFieldProps={{
                 label: props.intl.formatMessage(lookupMessage.mileageException.fieldFor(field.name, 'fieldName')),
-                required: true,
                 helperText: form.touched.projectUid && form.errors.projectUid,
                 error: form.touched.projectUid && Boolean(form.errors.projectUid)
               }}
@@ -168,7 +166,6 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
               valueString={field.value}
               textFieldProps={{
                 label: props.intl.formatMessage(lookupMessage.mileageException.fieldFor(field.name, 'fieldName')),
-                required: true,
                 helperText: form.touched.siteUid && form.errors.siteUid,
                 error: form.touched.siteUid && Boolean(form.errors.siteUid)
               }}
@@ -215,6 +212,7 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <TextField
             {...field}
             fullWidth={true}
+            required={true}
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
@@ -232,6 +230,7 @@ const LookupMileageExceptionDetailPartialForm: React.ComponentType<LookupMileage
           <TextField
             {...field}
             fullWidth={true}
+            required={true}
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
