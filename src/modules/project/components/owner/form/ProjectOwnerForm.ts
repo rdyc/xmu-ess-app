@@ -249,7 +249,7 @@ const handlerCreators: HandleCreators<ProjectOwnerFormProps, IOwnHandler> = {
         if (props.isRequestor) {
           props.history.push('/project/requests');
         } else {
-          props.history.push(`/project/requests/${response.childProjectUid}`);
+          props.history.push(`/project/requests/${response.childProjectUid || response.uid}`);
         }
       })
       .catch((error: IValidationErrorResponse) => {
