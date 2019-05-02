@@ -39,12 +39,12 @@ export interface IMileageExceptionFormValue {
   uid: string;
   companyUid: string;
   roleUid: string;
-  siteType: string;
-  projectUid: string;
-  siteUid: string;
+  projectUid?: string;
+  siteType?: string;
+  siteUid?: string;
   percentage: number;
-  description?: string;
-  reason?: string;
+  description: string;
+  reason: string;
   inactiveDate?: string;
 }
 
@@ -122,29 +122,28 @@ const createProps: mapper<MileageExceptionFormProps, IOwnState> = (props: Mileag
       .required(),
 
     siteType: Yup.string()
-      .label(props.intl.formatMessage(lookupMessage.mileageException.field.site))
-      .required(),
+      .label(props.intl.formatMessage(lookupMessage.mileageException.field.site)),
 
     projectUid: Yup.string()
-      .label(props.intl.formatMessage(lookupMessage.mileageException.field.projectUid))
-      .required(),
+      .label(props.intl.formatMessage(lookupMessage.mileageException.field.projectUid)),
 
     siteUid: Yup.string()
-      .label(props.intl.formatMessage(lookupMessage.mileageException.field.projectSite))
-      .required(),
+      .label(props.intl.formatMessage(lookupMessage.mileageException.field.projectSite)),
 
     percentage: Yup.number()
       .label(props.intl.formatMessage(lookupMessage.mileageException.field.percentage))
       .integer()
-      .min(1)
+      .min(0)
       .required(),
 
     description: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.mileageException.field.description))
+      .required()
       .max(200),
     
     reason: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.mileageException.field.reason))
+      .required()
       .max(100),
 
     inactiveDate: Yup.string()
@@ -223,12 +222,12 @@ const handlerCreators: HandleCreators<MileageExceptionFormProps, IOwnHandler> = 
         // fill payload
         const payload: IMileageExceptionPostPayload = {
           roleUid: values.roleUid,
-          siteType: values.siteType,
-          projectUid: values.projectUid,
-          siteUid: values.siteUid,
+          siteType: values.siteType || '',
+          projectUid: values.projectUid || '',
+          siteUid: values.siteUid || '',
           percentage: values.percentage,
-          description: values.description || '',
-          reason: values.reason || '',
+          description: values.description,
+          reason: values.reason,
           inactiveDate: values.inactiveDate || ''
         };
 
@@ -251,12 +250,12 @@ const handlerCreators: HandleCreators<MileageExceptionFormProps, IOwnHandler> = 
 
           const payload: IMileageExceptionPutPayload = {
             roleUid: values.roleUid,
-            siteType: values.siteType,
-            projectUid: values.projectUid,
-            siteUid: values.siteUid,
+            siteType: values.siteType || '',
+            projectUid: values.projectUid || '',
+            siteUid: values.siteUid || '',
             percentage: values.percentage,
-            description: values.description || '',
-            reason: values.reason || '',
+            description: values.description,
+            reason: values.reason,
             inactiveDate: values.inactiveDate || ''
           };
 
@@ -333,8 +332,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<MileageExceptionFormProps, IOw
           projectUid: thisResponse.data.projectUid || '',
           siteUid: thisResponse.data.siteUid || '',
           percentage: thisResponse.data.percentage,
-          description: thisResponse.data.description || '',
-          reason: thisResponse.data.reason || '',
+          description: thisResponse.data.description,
+          reason: thisResponse.data.reason,
           inactiveDate: thisResponse.data.inactiveDate || ''
         };
 
