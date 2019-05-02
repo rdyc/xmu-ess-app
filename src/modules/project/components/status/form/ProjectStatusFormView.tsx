@@ -62,6 +62,7 @@ export const ProjectStatusFormView: React.SFC<ProjectStatusFormProps> = props =>
                   formikBag={formikBag}
                   formMode={props.formMode}
                   intl={props.intl}
+                  filterCommonSystem={props.filterCommonSystem}
                   allowedStatusTypes={props.statusTypes}
                 />
               </div>
