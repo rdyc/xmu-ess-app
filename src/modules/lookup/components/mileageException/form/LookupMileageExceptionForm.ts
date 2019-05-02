@@ -332,8 +332,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<MileageExceptionFormProps, IOw
           projectUid: thisResponse.data.projectUid || '',
           siteUid: thisResponse.data.siteUid || '',
           percentage: thisResponse.data.percentage,
-          description: thisResponse.data.description,
-          reason: thisResponse.data.reason,
+          description: thisResponse.data.description || '',
+          reason: thisResponse.data.reason || '',
           inactiveDate: thisResponse.data.inactiveDate || ''
         };
 
