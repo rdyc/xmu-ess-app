@@ -98,6 +98,8 @@ export const leaveRequestField = defineMessages({
   completion: { id: `${prefix}.field.completion` },
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },
+
+  isHoliday: {id: `${prefix}.field.isHoliday`}
 });
 
 // submission

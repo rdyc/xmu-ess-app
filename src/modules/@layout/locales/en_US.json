@@ -72,7 +72,7 @@
 
   "holiday_unregistered":"holiday is unregistered",
   "holiday_date_already_exist":"holiday date already exists",
-  "holiday_the_date_is_public_holiday":"holiday date is in public holiday",
+  "holiday_the_date_is_public_holiday":"date is in public holiday",
 
   "mileage_exception_unregistered":"mileage exception is unregistered",
 

@@ -10,9 +10,11 @@ import { ILeave } from '@leave/classes/response';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
+import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -56,12 +58,17 @@ interface IOwnState {
 
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem: ISystemListFilter;
+
+  holidayList: string[];
+  isHoliday: boolean;
+  holidayCheck: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setFilterLeave: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setHoliday: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -73,6 +80,7 @@ interface IOwnHandler {
 export type LeaveRequestFormProps
   = WithLeaveRequest
   & WithCommonSystem
+  & WithLookupHoliday
   & WithUser
   & WithMasterPage
   & WithStyles<typeof styles>
@@ -148,6 +156,11 @@ const createProps: mapper<LeaveRequestFormProps, IOwnState> = (props: LeaveReque
     orderBy: 'value',
     direction: 'ascending'
   },
+
+  holidayList: [],
+  isHoliday: false,
+  holidayCheck: false
+
 });
 
 const stateUpdaters: StateUpdaters<LeaveRequestFormProps, IOwnState, IOwnStateUpdater> = {
@@ -160,6 +173,10 @@ const stateUpdaters: StateUpdaters<LeaveRequestFormProps, IOwnState, IOwnStateUp
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
+  }),
+  setHoliday: (state: IOwnState, props: LeaveRequestFormProps) => (isHoliday?: boolean): Partial<IOwnState> => ({
+    isHoliday,
+    holidayCheck: true
   })
 };
 
@@ -293,9 +310,34 @@ const handlerCreators: HandleCreators<LeaveRequestFormProps, IOwnHandler> = {
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveRequestFormProps, IOwnState> = {
-  componentWillUpdate(nextProps: LeaveRequestFormProps) {
-    //
+  componentDidMount() {
+    const { loadListRequest } = this.props.lookupHolidayDispatch;
+    const { user } = this.props.userState;
+
+    if (user) {
+      loadListRequest({
+        filter: {
+          companyUid: user.company.uid,
+        }
+      });
+    }
   },
+
+  componentWillUpdate(nextProps: LeaveRequestFormProps) {
+    const { response } = this.props.lookupHolidayState.list;
+
+    if (response && response.data && this.props.holidayList.length === 0) {
+      const year = new Date().getFullYear();
+      response.data.map(holiday => {
+        if (holiday.date) {
+          if (moment(holiday.date).year() === year) {
+            this.props.holidayList.push(holiday.date.substring(0, 10));
+          }
+        }
+      });
+    }
+  },
+
   componentDidUpdate(prevProps: LeaveRequestFormProps) {
 
     // handle leave detail response
@@ -319,6 +361,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveRequestFormProps, IOwnSta
         this.props.setInitialValues(initialValues);
       }
     }
+
+    console.log(this.props.holidayList);
   }
 };
 
@@ -328,6 +372,7 @@ export const LeaveRequestForm = compose<LeaveRequestFormProps, IOwnOption>(
   withRouter,
   withLeaveRequest,
   withCommonSystem,
+  withLookupHoliday,
   withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

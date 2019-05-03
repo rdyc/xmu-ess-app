@@ -25,6 +25,7 @@ type LeaveDetailPartialFormProps = {
   intl: InjectedIntl;
   filterLookupLeave?: ILookupLeaveGetListFilter;
   filterCommonSystem?: ISystemListFilter;
+  holidayList: string[];
   handleFilterLeave: (values: string) => void;
 };
 
@@ -121,8 +122,10 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            helperText={form.touched.start && form.errors.start}
-            error={form.touched.start && Boolean(form.errors.start)}
+            helperText={form.touched.start && form.errors.start ||
+              props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+            error={form.touched.start && Boolean(form.errors.start) || 
+              props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 }
             onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
             invalidLabel=""
             disablePast
@@ -162,8 +165,10 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               leftArrowIcon={<ChevronLeft />}
               rightArrowIcon={<ChevronRight />}
               format="MMMM DD, YYYY"
-              helperText={form.touched.end && form.errors.end}
-              error={form.touched.end && Boolean(form.errors.end)}
+              helperText={form.touched.end && form.errors.end ||
+                props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+              error={form.touched.end && Boolean(form.errors.end) || 
+                props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 }
               onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
               invalidLabel=""
               disablePast
