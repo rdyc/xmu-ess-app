@@ -81,7 +81,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         
         return (
           <ExpansionPanel key={`EPS${index}`} tabIndex={index}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+            <ExpansionPanelSummary className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.background : ''} expandIcon={<ExpandMoreIcon/>}>
               {
                 props.onSelection &&
                 <Checkbox
@@ -98,6 +98,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                   <Grid container>
                     <Grid item xs={12} sm={8} md={3}>
                       <Typography
+                        className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''}
                         variant="body2"
                         noWrap={true}
                         paragraph={false}
@@ -108,7 +109,8 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                     <Hidden xsDown>
                       <Grid item sm={4} md={3}>
-                        <Typography 
+                        <Typography
+                          className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''} 
                           variant="body2"
                           noWrap={true}
                           paragraph={false}
@@ -118,7 +120,8 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                       </Grid>
 
                       <Grid item sm={8} md={3}>
-                        <Typography 
+                        <Typography
+                          className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''} 
                           variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}
                           noWrap={true}
                           paragraph={false}
@@ -130,6 +133,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                     <Grid item xs={12} sm={4} md={3}>
                       <Typography 
+                        className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''}
                         variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}
                         noWrap={true}
                         paragraph={false}
@@ -144,6 +148,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                   <Grid container>
                     <Grid item xs={12} md={6}>
                       <Typography 
+                        className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''}
                         variant="body2"
                         noWrap={true}
                         paragraph={false} 
@@ -155,6 +160,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                     <Grid item xs={12} md={6}>
                       <Typography
+                        className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.color : ''}
                         variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}                            
                         noWrap={true}
                         paragraph={false}

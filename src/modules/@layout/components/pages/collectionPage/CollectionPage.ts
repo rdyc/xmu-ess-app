@@ -33,6 +33,11 @@ export interface IDataBindResult {
   senary: string;
 }
 
+interface IListColor {
+  background: string;
+  color: string;
+}
+
 interface IOwnOption {
   state: IQueryCollectionState<any, any>;
   info: IPageInfo;
@@ -48,6 +53,8 @@ interface IOwnOption {
   appBarSearchComponent?: React.ReactNode;
   appBarCustomComponent?: React.ReactNode;
   toolbarDataComponent?: React.ReactNode;
+  listHasColor?: (item: any) => boolean;
+  listColor?: IListColor;
 }
 
 interface IOwnState {
