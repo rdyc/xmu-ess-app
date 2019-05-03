@@ -155,6 +155,8 @@
   "leave.request.submission.form": "Leave Submission",
 
   "leave.request.confirm.new.title": "New Leave Request",
-  "leave.request.confirm.new.description": "You are about creating a new leave request. Do you want to continue?"
+  "leave.request.confirm.new.description": "You are about creating a new leave request. Do you want to continue?",
+
+  "leave.request.field.isHoliday": "date is in public holiday"
 }
 
