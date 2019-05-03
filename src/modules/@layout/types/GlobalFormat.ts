@@ -8,6 +8,13 @@ const DateOption: IntlComponent.DateTimeFormatProps = {
   day: 'numeric'
 };
 
+const DateOptionWithDay: IntlComponent.DateTimeFormatProps = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  weekday: 'long'
+};
+
 const DateTimeOption: IntlComponent.DateTimeFormatProps = {
   year: 'numeric',
   month: 'long',
@@ -63,6 +70,7 @@ const DateEndOption: IntlComponent.DateTimeFormatProps = {
 
 export const GlobalFormat = {
   Date: DateOption,
+  DateWithDay: DateOptionWithDay,
   DateTime: DateTimeOption,
   TimeDate: TimeDateOption,
   Time: TimeOption,

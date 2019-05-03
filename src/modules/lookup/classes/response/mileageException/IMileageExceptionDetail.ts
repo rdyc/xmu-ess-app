@@ -17,8 +17,8 @@ export interface IMileageExceptionDetail {
   siteType?: string;
   type?: ICommonSystem;
   percentage: number;
-  description: string;
-  reason: string;
+  description?: string;
+  reason?: string;
   inactiveDate?: string;
   changes?: IBaseChanges;
 }

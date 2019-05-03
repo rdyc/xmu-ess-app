@@ -742,6 +742,14 @@ const styles = (theme: Theme) =>
     virtualizedNoClick: {
       cursor: 'initial',
     },
+
+    /* Is Tr holiday */
+    isTrHolidayBackground: {
+      background: '#f44336'
+    },
+    colorWhite: {
+      color: '#fff'
+    }
   });
 
 export default styles;

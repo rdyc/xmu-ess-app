@@ -3,7 +3,6 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
-  CardContent,
   CardHeader,
   Checkbox,
   Collapse,
@@ -12,11 +11,14 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  TextField
+  TextField,
+  WithStyles,
+  withStyles
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { IMileageRequestItem } from '@mileage/classes/response';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -40,6 +42,7 @@ type MileageApprovalDetailItemProps
   = IOwnProps 
   & IOwnState 
   & IOwnStateHandler 
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<MileageApprovalDetailItemProps, IOwnState> = (): IOwnState => ({
@@ -71,12 +74,12 @@ const mileageApprovalDetailItem: React.SFC<MileageApprovalDetailItemProps> = pro
           mileageMessage.request.field.itemSubHeader
         )}
       />
-      <CardContent>
         <List>
           {
             items &&
             items.map((item, index) =>
               <React.Fragment key={item.uid}>
+                <Divider />
                 <ListItem 
                   disableGutters
                   button
@@ -103,6 +106,7 @@ const mileageApprovalDetailItem: React.SFC<MileageApprovalDetailItemProps> = pro
                 {len !== index && <Divider />}                
                 <Collapse
                   in={active === item.uid && isExpanded}
+                  className={props.classes.paddingFar}
                   timeout="auto"
                   unmountOnExit
                 >
@@ -154,7 +158,6 @@ const mileageApprovalDetailItem: React.SFC<MileageApprovalDetailItemProps> = pro
             )
           }
         </List>
-      </CardContent>
     </Card>
   );
 
@@ -163,5 +166,6 @@ const mileageApprovalDetailItem: React.SFC<MileageApprovalDetailItemProps> = pro
 
 export const MileageApprovalDetailItem = compose<MileageApprovalDetailItemProps, IOwnProps>(
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters)
 )(mileageApprovalDetailItem);

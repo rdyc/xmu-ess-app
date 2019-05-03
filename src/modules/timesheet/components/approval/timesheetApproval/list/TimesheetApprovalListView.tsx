@@ -38,6 +38,16 @@ export const TimesheetApprovalListView: React.SFC<TimesheetApprovalListProps> = 
       summaryComponent={(item: ITimesheet) => ( 
         <TimesheetEntrySumarry data={item} />
       )}
+
+      listHasColor={(item: ITimesheet) => (
+        item.isHoliday || item.isWeekend ? true : false
+      )}
+      
+      listColor={{
+        background: props.classes.isTrHolidayBackground,
+        color: props.classes.colorWhite
+      }}
+      
       actionComponent={(item: ITimesheet) => (
         <React.Fragment>
           <Button 

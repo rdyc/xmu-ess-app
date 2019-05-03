@@ -3,6 +3,8 @@ import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetEntryField } from '@timesheet/classes/types';
@@ -61,6 +63,7 @@ export type TimesheetApprovalListProps
   & IOwnHandler
   & WithUser
   & WithTimesheetApproval
+  & WithStyles<typeof styles>
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -241,6 +244,7 @@ export const TimesheetApprovalList = compose<TimesheetApprovalListProps, IOwnOpt
   withTimesheetApproval,
   withRouter,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
