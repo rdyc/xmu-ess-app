@@ -17,7 +17,7 @@ enum AppMenu {
   MileageApproval = 'MNU44',
   Account = 'MNU14',
   AccountChangePassword = 'MNU18',
-  AccountDelegation = 'MNU27',
+  AccountInformation = 'MNU27',
   ProjectAssignment = 'MNU08',
   ProjectAssignmentRequest = 'MNU21',
   ProjectAssignmentAcceptance = 'MNU22',

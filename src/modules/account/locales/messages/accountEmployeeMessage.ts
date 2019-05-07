@@ -27,6 +27,13 @@ export const accountEmployeeTab = defineMessages({
   rate: {id: `${prefix}.tab.rate`},
 });
 
+// information tabs
+export const accountInformationTab = defineMessages({
+  information: {id: `${prefix}.tab.information`},
+  position: {id: `${prefix}.tab.position`},
+  kpi: {id: `${prefix}.tab.kpi`},
+});
+
 // filter
 export const accountEmployeeFilter = defineMessages({
   company: { id: `${prefix}.filter.company`},
@@ -38,6 +45,15 @@ export const accountEmployeeField = defineMessages({
   // information detail
   title: { id: `${prefix}.field.information.title`},
   subHeader: { id: `${prefix}.field.information.subHeader`},
+  
+  detailTitle: { id: `${prefix}.field.information.detail.title`},
+  detailSubHeader: { id: `${prefix}.field.information.detail.subHeader`},
+
+  positionTitle: { id: `${prefix}.field.information.position.title`},
+  positionSubHeader: { id: `${prefix}.field.information.position.subHeader`},
+
+  kpiTitle: { id: `${prefix}.field.information.kpi.title`},
+  kpiSubHeader: { id: `${prefix}.field.information.kpi.subHeader`},
 
   contactTitle: { id: `${prefix}.field.information.contact.title`},
   contactSubHeader: { id: `${prefix}.field.information.contact.subHeader`},
@@ -171,6 +187,12 @@ export const accountEmployeeField = defineMessages({
 
   bcaBranch: { id: `${prefix}.field.bca.branch`},
   bcaBranchPlaceholder: { id: `${prefix}.field.bca.branch.placeholder`},
+
+  // information
+  positionCurrent: { id: `${prefix}.field.position.current`},
+  positionNext: { id: `${prefix}.field.position.next`},
+
+  kpi: { id: `${prefix}.field.kpi`},
 });
 
 // confirmation
@@ -196,7 +218,7 @@ export const accountEmployeeSection = defineMessages({
 });
 
 // helper
-export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder' | 'fieldTab') => {
+export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder' | 'fieldTab' | 'fieldInformationTab') => {
   if (type === 'fieldName') {
     switch (field) {
       // basic
@@ -334,6 +356,16 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'access': return accountEmployeeTab.access;
       case 'rate': return accountEmployeeTab.rate;  
   
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldInformationTab') {
+    switch (field) {
+      case 'information': return accountInformationTab.information;
+      case 'position': return accountInformationTab.position;
+      case 'kpi': return accountInformationTab.kpi;
+
       default: return {id: field};
     }
   }

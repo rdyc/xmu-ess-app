@@ -28,6 +28,8 @@ export const accountSharedPage = defineMessages({
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
   deleteTitle: { id: `${prefix}.page.delete.title`},
   deleteSubHeader: { id: `${prefix}.page.delete.subHeader`},
+  informationTitle: { id: `${prefix}.page.information.title`},
+  informationSubHeader: { id: `${prefix}.page.information.subHeader`},
 });
 
 // messages

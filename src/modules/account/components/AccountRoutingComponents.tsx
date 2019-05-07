@@ -10,18 +10,13 @@ import { AccountEmployeeDetail } from './detail/common/AccountEmployeeDetail';
 import { AccountEmployeeEducationDetail } from './detail/education/AccountEmployeeEducationDetail';
 import { AccountEmployeeExperienceDetail } from './detail/experience/AccountEmployeeExperienceDetail';
 import { AccountEmployeeFamilyDetail } from './detail/family/AccountEmployeeFamilyDetail';
+import { InformationDetail } from './detail/information/detail/InformationDetail';
+import { InformationKpi } from './detail/information/kpi/InformationKpi';
+import { InformationPosition } from './detail/information/position/InformationPosition';
 import { AccountEmployeeNoteDetail } from './detail/note/AccountEmployeeNoteDetail';
 import { AccountEmployeeRateDetail } from './detail/rate/AccountEmployeeRateDetail';
 import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployeeTrainingDetail';
-// import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
-// import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
-// import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
-// import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
-// import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
-// import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
-// import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccessForm } from './form/access/AccessForm';
-// import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
 import { EducationForm } from './form/education/EducationForm';
 import { ExperienceForm } from './form/experience/ExperienceForm';
@@ -49,6 +44,14 @@ const access = (props: RouteComponentProps) => (
 const profile = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}`} component={AccountProfile} />
+  </Switch>
+);
+
+const information = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/position`} component={InformationPosition} />
+    <Route path={`${props.match.path}/kpi`} component={InformationKpi} />
+    <Route path={`${props.match.path}`} component={InformationDetail} />
   </Switch>
 );
 
@@ -140,6 +143,12 @@ export const AccountRoutingComponents: React.SFC<RouteComponentProps> = props =>
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployee} 
       component={employee} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/information`}
+      menu={AppMenu.Account} 
+      subMenu={AppMenu.AccountInformation} 
+      component={information} 
     />
   </Switch>
 );

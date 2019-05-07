@@ -39,7 +39,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU27':
-      path = '/account/delegate';
+      path = '/account/information';
       break;
 
     case 'MNU22':

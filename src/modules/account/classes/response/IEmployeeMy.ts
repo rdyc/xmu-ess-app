@@ -35,4 +35,6 @@ export interface IEmployeeMy {
     contact?: IEmployeeContact;
     image?: string;
     access?: IEmployeeAccessList[];
+    joinDate?: string;
+    inactiveDate?: string;
 }

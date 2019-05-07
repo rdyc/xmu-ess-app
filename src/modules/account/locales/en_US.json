@@ -13,6 +13,8 @@
   "account.shared.page.modify.subHeader": " ",
   "account.shared.page.delete.title": "Delete {state}",
   "account.shared.page.delete.subHeader": " ",
+  "account.shared.page.information.title": "{state} information",
+  "account.shared.page.information.subHeader": " ",
 
   "account.shared.message.emptyProps": "Some props are empty",
   "account.shared.message.create.success": "New {state} Data has been created",
@@ -69,6 +71,10 @@
   "account.employee.tab.training": "Training and Certification",
   "account.employee.tab.access": "Multi Company Access",
   "account.employee.tab.rate": "Rate",
+
+  "account.employee.tab.information": "Details",
+  "account.employee.tab.position": "Position",
+  "account.employee.tab.kpi": "KPI",
 
   "account.employee.filter.company": "Company Name",
   "account.employee.filter.role": "Role Name",
@@ -199,6 +205,11 @@
   "account.employee.field.bca.branch": "BCA Account Branch",
   "account.employee.field.bca.branch.placeholder": "Type any BCA account branch",
 
+  "account.employee.field.position.current": "Current Position",
+  "account.employee.field.position.next": "Next Position",
+
+  "account.employee.field.kpi": "KPI",
+
   "account.employee.confirm.create.title": "Create Account",
   "account.employee.confirm.create.subHeader": "You are about to create a new employee data. Do you want to continue?",
  
@@ -208,6 +219,15 @@
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
   
+  "account.employee.field.information.detail.title": "Employee Details",
+  "account.employee.field.information.detail.subHeader": " ",
+
+  "account.employee.field.information.position.title": "Employee Positions",
+  "account.employee.field.information.position.subHeader": " ",
+  
+  "account.employee.field.information.kpi.title": "Employee KPI",
+  "account.employee.field.information.kpi.subHeader": " ",
+
   "account.employee.field.information.contact.title": "Employee Contacts and Address",
   "account.employee.field.information.contact.subHeader": " ",
 
