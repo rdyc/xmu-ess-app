@@ -36,9 +36,9 @@ export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => (
               labelCancel: props.approvalDialogCancelText,
               labelConfirm: props.approvalDialogConfirmedText
             }}
-            confirmationBeforeDialogProps={props.timesheets.findIndex(item => item.isHoliday || item.isWeekend) !== -1 && {
+            confirmationBeforeDialogProps={props.itemUids.length !== 0 && {
               title: props.approvalDialogTitleAttention,
-              message: props.approvalDialogIsHolidayOrWeekendText,
+              message: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekend, {uids: props.itemUids.join(', ')}),
               labelCancel: props.approvalDialogCancelText,
               labelConfirm: props.approvalDialogConfirmedText
             } || undefined}

@@ -19,7 +19,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -48,6 +50,7 @@ interface OwnState {
   approvalDialogConfirmedText: string;
   approvalDialogTitleAttention: string;
   approvalDialogIsHolidayOrWeekendText: string;
+  itemUids: string[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -92,6 +95,8 @@ const createProps: mapper<ApprovalTimesheetsProps, OwnState> = (props: ApprovalT
 
     approvalDialogTitleAttention: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitleAttention),
     approvalDialogIsHolidayOrWeekendText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekend),
+
+    itemUids: []
   };
 };
 
@@ -229,51 +234,41 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   /*
   handleValidate: (props: ApprovalTimesheetsProps) => (formData: WorkflowApprovalFormData) => {
     const errors = {};
-
     const requiredFields = ['isApproved', 'remark'];
-
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
         errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
-
     return errors;
   },
   handleSubmit: (props: ApprovalTimesheetsProps) => (formData: WorkflowApprovalFormData) => {
     const { location, intl, timesheetUids } = props;
     const { user } = props.userState;
     const { createRequestBulk } = props.timesheetApprovalDispatch;
-
     // user checking
     if (!user) {
       return Promise.reject('user was not found');
     }
-
     // props checking
     if (!location.state.values) {
       const message = intl.formatMessage(timesheetMessage.approval.message.emptyProps);
-
       return Promise.reject(message);
     }
-
     const _timesheetUids = timesheetUids.map((timesheetUid: string) => {
       const uids: ITimesheetApprovalItem = ({
         uid: timesheetUid
       });
       return uids;
     });
-
     // compare approval status string
     const isApproved = formData.isApproved === WorkflowStatusType.Approved;
-
     // generate payload
     const payload: ITimesheetApprovalPostBulkPayload = {
       isApproved,
       timesheetUids: _timesheetUids,
       remark: !isApproved ? formData.remark : undefined
     };
-
     // dispatch update request
     return new Promise((resolve, reject) => {
       createRequestBulk({
@@ -288,14 +283,11 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   handleSubmitSuccess: (props: ApprovalTimesheetsProps) => (response: boolean) => {
     const { intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
-
     alertAdd({
       time: new Date(),
       message: intl.formatMessage(timesheetMessage.approval.message.submitSuccess),
     });
-
     history.push('/timesheet/approvals');
-
     // notification: mark as complete
     props.notificationDispatch.markAsComplete({
       moduleUid: ModuleDefinitionType.Timesheet,
@@ -305,7 +297,6 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   },
   handleSubmitFail: (props: ApprovalTimesheetsProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
-
     if (errors) {
       // validation errors from server (400: Bad Request)
       props.layoutDispatch.alertAdd({
@@ -322,6 +313,19 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   }*/
 };
 
+const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, OwnState> = {
+  componentDidUpdate(prevProps: ApprovalTimesheetsProps) {
+
+    if (this.props.timesheets !== prevProps.timesheets) {
+      this.props.timesheets.map(item => {
+        if (item.isHoliday || item.isWeekend) {
+          this.props.itemUids.push(item.uid);
+        }
+      });
+    }
+  }
+};
+
 export const ActionApproval = compose(
   withUser,
   withRouter,
@@ -332,4 +336,5 @@ export const ActionApproval = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(ActionApprovalView);
