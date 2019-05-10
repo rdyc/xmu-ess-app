@@ -88,6 +88,7 @@
   "timesheet.approval.confirm.submission.isHoliday": "This timesheet date {uid} is in public holiday. Do you want to continue?",
   "timesheet.approval.confirm.submission.isWeekend": "This timesheet date {uid} is on the weekend. Do you want to continue?",
   "timesheet.approval.confirm.submission.isHolidayOrWeekend": "These timesheet dates {uids} are in public holiday or weekend. Do you want to continue?",
+  "timesheet.approval.confirm.submission.isHolidayOrWeekend.one": "This timesheet date {uid} is on public holiday or weekend. Do you want to continue?",
   
   "timesheet.approval.message.emptyProps": "Some props are empty",
   "timesheet.approval.message.submit.success": "Successfully processing approval submission",

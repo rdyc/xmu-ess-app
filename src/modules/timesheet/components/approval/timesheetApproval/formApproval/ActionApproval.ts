@@ -314,10 +314,9 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, OwnState> = {
-  componentDidUpdate(prevProps: ApprovalTimesheetsProps) {
-
-    if (this.props.timesheets !== prevProps.timesheets) {
-      this.props.timesheets.map(item => {
+  componentWillUpdate(nextProps: ApprovalTimesheetsProps) {
+    if (this.props.timesheets !== nextProps.timesheets) {
+      nextProps.timesheets.map(item => {
         if (item.isHoliday || item.isWeekend) {
           this.props.itemUids.push(item.uid);
         }
