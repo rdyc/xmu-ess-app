@@ -43,4 +43,5 @@ export const timesheetApprovalConfirm = defineMessages({
   submissionIsHoliday: { id: `${prefix}.confirm.submission.isHoliday` },
   submissionIsWeekend: { id: `${prefix}.confirm.submission.isWeekend` },
   submissionIsHolidayOrWeekend: { id: `${prefix}.confirm.submission.isHolidayOrWeekend` },
+  submissionIsHolidayOrWeekendOne: { id: `${prefix}.confirm.submission.isHolidayOrWeekend.one` },
 });

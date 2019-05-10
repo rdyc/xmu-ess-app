@@ -44,12 +44,12 @@ export const TimesheetApprovalDetailView: React.SFC<TimesheetApprovalDetailProps
             }}
             confirmationBeforeDialogProps={data.isHoliday && {
               title: props.approvalDialogTitleAttention,
-              message: props.approvalDialogIsHolidayText,
+              message: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHoliday, {uid: data.uid}),
               labelCancel: props.approvalDialogCancelText,
               labelConfirm: props.approvalDialogConfirmedText
             } || data.isWeekend && {
               title: props.approvalDialogTitleAttention,
-              message: props.approvalDialogIsWeekendText,
+              message: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsWeekend, {uid: data.uid}),
               labelCancel: props.approvalDialogCancelText,
               labelConfirm: props.approvalDialogConfirmedText
             } || undefined}
