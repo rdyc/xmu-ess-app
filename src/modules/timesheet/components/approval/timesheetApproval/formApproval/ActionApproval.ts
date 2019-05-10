@@ -19,7 +19,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -48,6 +50,7 @@ interface OwnState {
   approvalDialogConfirmedText: string;
   approvalDialogTitleAttention: string;
   approvalDialogIsHolidayOrWeekendText: string;
+  itemUids: string[];
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -92,6 +95,8 @@ const createProps: mapper<ApprovalTimesheetsProps, OwnState> = (props: ApprovalT
 
     approvalDialogTitleAttention: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitleAttention),
     approvalDialogIsHolidayOrWeekendText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekend),
+
+    itemUids: []
   };
 };
 
@@ -322,6 +327,19 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
   }*/
 };
 
+const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, OwnState> = {
+  componentDidUpdate(prevProps: ApprovalTimesheetsProps) {
+
+    if (this.props.timesheets !== prevProps.timesheets) {
+      this.props.timesheets.map(item => {
+        if (item.isHoliday || item.isWeekend) {
+          this.props.itemUids.push(item.uid);
+        }
+      });
+    }
+  }
+};
+
 export const ActionApproval = compose(
   withUser,
   withRouter,
@@ -332,4 +350,5 @@ export const ActionApproval = compose(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(ActionApprovalView);

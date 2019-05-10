@@ -55,8 +55,6 @@ interface IOwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
-  approvalDialogIsHolidayText: string;
-  approvalDialogIsWeekendText: string;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -91,8 +89,6 @@ const createProps: mapper<TimesheetApprovalDetailProps, IOwnState> = (props: Tim
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 
   approvalDialogTitleAttention: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionTitleAttention),
-  approvalDialogIsHolidayText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHoliday),
-  approvalDialogIsWeekendText:  props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsWeekend),
 });
 
 const stateUpdaters: StateUpdaters<TimesheetApprovalDetailProps, IOwnState, IOwnStateUpdaters> = {
