@@ -426,8 +426,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TimesheetEntryFormProps, IOwnS
           projectUid: thisResponse.data.projectUid,
           siteUid: thisResponse.data.siteUid,
           date: thisResponse.data.date,
-          start: moment(thisResponse.data.start).format('YYYY-MM-DD HH:mm'),
-          end: moment(thisResponse.data.end).format('YYYY-MM-DD HH:mm'),
+          start: `${moment(thisResponse.data.date).format('YYYY-MM-DD')} ${thisResponse.data.start.substring(11, 16)}`,
+          end: `${moment(thisResponse.data.date).format('YYYY-MM-DD')} ${thisResponse.data.end.substring(11, 16)}`,
           description: thisResponse.data.description || ''
         };
 
