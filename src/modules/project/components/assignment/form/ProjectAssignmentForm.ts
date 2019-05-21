@@ -177,7 +177,7 @@ const createProps: mapper<ProjectAssignmentFormProps, IOwnState> = (props: Proje
     find: props.userState.user && props.userState.user.uid,
     findBy: 'ownerEmployeeUid',
     companyUid: props.userState.user && props.userState.user.company.uid,
-    statusTypes: WorkflowStatusType.Approved,
+    statusTypes: ([WorkflowStatusType.Approved, WorkflowStatusType.ReOpened]).join(','),
     assignmentStatus: 'unassigned',
   }
 });
