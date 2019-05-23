@@ -105,7 +105,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
                     {expense.documentUid}
                   </TableCell>
                   <TableCell>
-                    {expense.employee && expense.employee.fullName}
+                    {expense.module === 'Supplier' ? expense.supplier : expense.employee && expense.employee.fullName}
                   </TableCell>
                   <TableCell numeric>
                     {intl.formatNumber(expense.amount)}
