@@ -19,6 +19,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WorkflowStatusType } from '@common/classes/types';
 import { ProgressFilterView } from './ProgressFilterView';
 
 export type IProgressFilterResult = Pick<ISummaryGetProgressRequest, 'customerUid' | 'projectUid'>;
@@ -99,6 +100,7 @@ const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilte
     // default filter project dialog
     filterProjectDialog: {
       customerUids: undefined,
+      statusTypes: ([WorkflowStatusType.Approved, WorkflowStatusType.ReOpened, WorkflowStatusType.InProgress]).join(','),
       orderBy: 'uid',
       direction: 'descending',
     }
@@ -124,6 +126,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     filterCustomer: customer,
     filterProjectDialog: {
       customerUids: customer && customer.uid,
+      statusTypes: ([WorkflowStatusType.Approved, WorkflowStatusType.ReOpened, WorkflowStatusType.InProgress]).join(','),
       orderBy: 'uid',
       direction: 'descending',
     }
