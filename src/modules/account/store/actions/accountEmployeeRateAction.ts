@@ -1,11 +1,13 @@
 import { 
   IEmployeeRateAllRequest, 
   IEmployeeRateByIdRequest, 
-  IEmployeeRateListRequest, 
+  IEmployeeRateCurrentRequest, 
+  IEmployeeRateListRequest,
   IEmployeeRatePutRequest 
 } from '@account/classes/queries/employeeRate';
 import { 
   IEmployeeRate, 
+  IEmployeeRateCurrent,
   IEmployeeRateList 
 } from '@account/classes/response/employeeRate';
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
@@ -24,6 +26,10 @@ export const enum AccountEmployeeRateAction {
   GET_BY_ID_SUCCESS = '@@account/employee/rate/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@account/employee/rate/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@account/employee/rate/GET_BY_ID_DISPOSE',
+  GET_CURRENT_REQUEST = '@@account/employee/rate/GET_CURRENT_REQUEST',
+  GET_CURRENT_SUCCESS = '@@account/employee/rate/GET_CURRENT_SUCCESS',
+  GET_CURRENT_ERROR = '@@account/employee/rate/GET_CURRENT_ERROR',
+  GET_CURRENT_DISPOSE = '@@account/employee/rate/GET_CURRENT_DISPOSE',
   PUT_REQUEST = '@@account/employee/rate/PUT_REQUEST',
   PUT_SUCCESS = '@@account/employee/rate/PUT_SUCCESS',
   PUT_ERROR = '@@account/employee/rate/PUT_ERROR',
@@ -53,3 +59,9 @@ export const accountEmployeeRatePutRequest = (request: IEmployeeRatePutRequest) 
 export const accountEmployeeRatePutSuccess = (response: IResponseSingle<IEmployeeRate>) => action(AccountEmployeeRateAction.PUT_SUCCESS, response);
 export const accountEmployeeRatePutError = (error: any) => action(AccountEmployeeRateAction.PUT_ERROR, error);
 export const accountEmployeeRatePutDispose = () => action(AccountEmployeeRateAction.PUT_DISPOSE);
+
+// current
+export const accountEmployeeRateCurrentRequest = (request: IEmployeeRateCurrentRequest) => action(AccountEmployeeRateAction.GET_CURRENT_REQUEST, request);
+export const accountEmployeeRateCurrentSuccess = (response: IResponseSingle<IEmployeeRateCurrent>) => action(AccountEmployeeRateAction.GET_CURRENT_SUCCESS, response);
+export const accountEmployeeRateCurrentError = (error: any) => action(AccountEmployeeRateAction.GET_CURRENT_ERROR, error);
+export const accountEmployeeRateCurrentDispose = () => action(AccountEmployeeRateAction.GET_CURRENT_DISPOSE);
