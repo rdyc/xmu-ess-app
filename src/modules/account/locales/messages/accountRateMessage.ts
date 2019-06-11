@@ -15,7 +15,7 @@ export const accountRateDialog = defineMessages({
 });
 
 export const accountRateField = defineMessages({
-  uid: {id: `${fieldPrefix}.uid`},
+  rateId: {id: `${fieldPrefix}.uid`},
 
   value: {id: `${fieldPrefix}.value`},
   valueRequired: {id: `${fieldPrefix}.value.required`},
@@ -31,7 +31,7 @@ export const accountRateField = defineMessages({
 export const accountRateFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
-      case 'uid': return accountRateField.uid;
+      case 'rateId': return accountRateField.rateId;
       case 'value': return accountRateField.value;
       case 'isActive': return accountRateField.isActive;
       case 'created': return accountRateField.created;

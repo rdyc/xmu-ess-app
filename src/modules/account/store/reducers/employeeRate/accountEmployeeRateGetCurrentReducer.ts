@@ -1,10 +1,10 @@
 import { IEmployeeRateCurrentRequest } from '@account/classes/queries/employeeRate';
-import { IEmployeeRateCurrent } from '@account/classes/response/employeeRate';
+import { IEmployeeRate } from '@account/classes/response/employeeRate';
 import { AccountEmployeeRateAction as Action } from '@account/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRateCurrent> = {
+const initialState: IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRate> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRate
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRateCurrent>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRate>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_CURRENT_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_CURRENT_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
