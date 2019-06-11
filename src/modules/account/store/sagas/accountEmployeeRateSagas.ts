@@ -1,5 +1,8 @@
 import {
   AccountEmployeeRateAction as Action,
+  accountEmployeeRateCurrentError,
+  accountEmployeeRateCurrentRequest,
+  accountEmployeeRateCurrentSuccess,
   accountEmployeeRateGetAllDispose,
   accountEmployeeRateGetAllError,
   accountEmployeeRateGetAllRequest,
@@ -21,6 +24,26 @@ import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
+
+function* watchCurrentRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeRateCurrentRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/account/employees/${action.payload.employeeUid}/rate`,
+      successEffects: (response: IApiResponse) => ([
+        put(accountEmployeeRateCurrentSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(accountEmployeeRateCurrentError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(accountEmployeeRateCurrentError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_CURRENT_REQUEST, worker);
+}
 
 function* watchAllRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeRateGetAllRequest>) => {
@@ -134,6 +157,7 @@ function* watchPutRequest() {
 
 function* accountEmployeeRateSagas() {
   yield all([
+    fork(watchCurrentRequest),
     fork(watchAllRequest),
     fork(watchListRequest),
     fork(watchByIdRequest),

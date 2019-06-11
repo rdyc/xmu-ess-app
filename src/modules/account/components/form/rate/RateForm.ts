@@ -43,7 +43,7 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  // formMode: FormMode;
+  employeeUidRoute: string;
   initialValues?: IRateFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IRateFormValue>>>;
 }
@@ -71,6 +71,8 @@ export type RateFormProps
   & IOwnHandler;
 
 const createProps: mapper<RateFormProps, IOwnState> = (props: RateFormProps): IOwnState => ({
+  employeeUidRoute: props.match.params.employeeUid,
+
   // form values
   initialValues: {
     // information
@@ -99,43 +101,37 @@ const handlerCreators: HandleCreators<RateFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: RateFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const employeeUid = props.match.params.employeeUid;
+      const employeeUid = props.employeeUidRoute;
       const rateId = props.history.location.state.rateId;
       const { isLoading } = props.accountEmployeeRateState.detail;
 
-      if (user && employeeUid && rateId && !isLoading) {
-        props.accountEmployeeRateDispatch.loadDetailRequest({
-          employeeUid,
-          rateId
+      if (user && employeeUid && !isLoading && rateId !== '') {
+        props.accountEmployeeRateDispatch.loadCurrentRequest({
+          employeeUid
         });
       }
     }
   },
   handleOnSubmit: (props: RateFormProps) => (values: IRateFormValue, actions: FormikActions<IRateFormValue>) => {
     const { user } = props.userState;
-    const employeeUid = props.match.params.employeeUid;
+    const employeeUid = props.employeeUidRoute;
     let promise = new Promise((resolve, reject) => undefined);
 
     if (user && employeeUid) {
       // Edit
-      const rateId = props.history.location.state.rateId;
+      const payload: IEmployeeRatePutPayload = {
+        value: values.value
+      };
 
-      // must have rateId
-      if (rateId) {
-        const payload: IEmployeeRatePutPayload = {
-          value: values.value
-        };
-
-        // set the promise
-        promise = new Promise((resolve, reject) => {
-          props.accountEmployeeRateDispatch.updateRequest({
-            resolve,
-            reject,
-            employeeUid,
-            data: payload
-          });
+      // set the promise
+      promise = new Promise((resolve, reject) => {
+        props.accountEmployeeRateDispatch.updateRequest({
+          resolve,
+          reject,
+          employeeUid,
+          data: payload
         });
-      }
+      });
     }
 
     // handling promise
@@ -154,7 +150,7 @@ const handlerCreators: HandleCreators<RateFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/account/employee/${employeeUid}/rate/${response.uid}`);
+        props.history.push(`/account/employee/${employeeUid}/rate`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -186,15 +182,15 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<RateFormProps, IOwnState> = {
     //
   },
   componentDidUpdate(prevProps: RateFormProps) {
-    const { response: thisResponse } = this.props.accountEmployeeRateState.detail;
-    const { response: prevResponse } = prevProps.accountEmployeeRateState.detail;
+    const { response: thisResponse } = this.props.accountEmployeeRateState.current;
+    const { response: prevResponse } = prevProps.accountEmployeeRateState.current;
     
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values
         const initialValues: IRateFormValue = {
             rateId: thisResponse.data.uid,
-            employeeUid: this.props.match.params.employeeUid,
+            employeeUid: this.props.employeeUidRoute,
             value: thisResponse.data.value,
         };
 

@@ -33,7 +33,7 @@ const accountEmployeeRateInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={props.intl.formatMessage(accountMessage.rate.field.uid)}
+          label={props.intl.formatMessage(accountMessage.rate.field.rateId)}
           value={props.data.uid}
         />
         <TextField
