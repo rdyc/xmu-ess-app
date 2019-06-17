@@ -36,7 +36,7 @@ import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEd
 import { AccountEmployeeExperienceList } from './list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeFamilyList } from './list/family/AccountEmployeeFamilyList';
 import { AccountEmployeeNoteList } from './list/note/AccountEmployeeNoteList';
-import { AccountEmployeeRateList } from './list/rate/AccountEmployeeRateList';
+// import { AccountEmployeeRateList } from './list/rate/AccountEmployeeRateList';
 import { AccountEmployeeTrainingList } from './list/training/AccountEmployeeTrainingList';
 import { AccountProfile } from './profile';
 
@@ -119,7 +119,7 @@ const employeeRate = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RateForm} />    
     <Route path={`${props.match.path}/:rateUid`} component={AccountEmployeeRateDetail} />
-    <Route path={`${props.match.path}`} component={AccountEmployeeRateList} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeRateDetail} />
   </Switch>
 );
 

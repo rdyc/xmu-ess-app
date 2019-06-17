@@ -45,16 +45,19 @@ export const expenseInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
           value={data.expense ? data.expense.value : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
           value={data.customer ? data.customer.name : 'N/A'}
         />
@@ -70,6 +73,7 @@ export const expenseInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.address)}
           value={data.address || 'N/A'}
         />

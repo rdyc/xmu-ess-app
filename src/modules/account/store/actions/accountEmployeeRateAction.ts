@@ -7,7 +7,6 @@ import {
 } from '@account/classes/queries/employeeRate';
 import { 
   IEmployeeRate, 
-  IEmployeeRateCurrent,
   IEmployeeRateList 
 } from '@account/classes/response/employeeRate';
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
@@ -62,6 +61,6 @@ export const accountEmployeeRatePutDispose = () => action(AccountEmployeeRateAct
 
 // current
 export const accountEmployeeRateCurrentRequest = (request: IEmployeeRateCurrentRequest) => action(AccountEmployeeRateAction.GET_CURRENT_REQUEST, request);
-export const accountEmployeeRateCurrentSuccess = (response: IResponseSingle<IEmployeeRateCurrent>) => action(AccountEmployeeRateAction.GET_CURRENT_SUCCESS, response);
+export const accountEmployeeRateCurrentSuccess = (response: IResponseSingle<IEmployeeRate>) => action(AccountEmployeeRateAction.GET_CURRENT_SUCCESS, response);
 export const accountEmployeeRateCurrentError = (error: any) => action(AccountEmployeeRateAction.GET_CURRENT_ERROR, error);
 export const accountEmployeeRateCurrentDispose = () => action(AccountEmployeeRateAction.GET_CURRENT_DISPOSE);

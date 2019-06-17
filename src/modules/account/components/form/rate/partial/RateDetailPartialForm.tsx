@@ -25,7 +25,7 @@ const RateDetailPartialForm: React.ComponentType<RateDetailPartialFormProps> = p
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(accountMessage.rate.fieldFor(field.name, 'fieldName'))}
+            label={props.intl.formatMessage(accountMessage.employee.field.uid)}
           />
         )}
       />
