@@ -2,12 +2,13 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { HRTemplateList } from './template/list/HRTemplateList';
 
 const template = (props: RouteComponentProps) => (
   <Switch>
     {/* <Route path={`${props.match.path}/form`} component={} />
     <Route path={`${props.match.path}/:templateUid`} component={} /> */}
-    {/* <Route path={`${props.match.path}`} component={} /> */}
+    <Route path={`${props.match.path}`} component={HRTemplateList} />
   </Switch>
 );
 

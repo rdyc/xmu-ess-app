@@ -1,12 +1,12 @@
 {
   "hr.template.page.list.title": "All KPI Templates",
-  "hr.template.page.list.subHeader": "",
+  "hr.template.page.list.subHeader": "Lorem LOREM",
   "hr.template.page.detail.title": "Detail KPI Template",
-  "hr.template.page.detail.subHeader": "",
+  "hr.template.page.detail.subHeader": "Lorem LOREM",
   "hr.template.page.new.title": "New KPI Template",
-  "hr.template.page.new.subHeader": "",
+  "hr.template.page.new.subHeader": "Lorem LOREM",
   "hr.template.page.modify.title": "Modify KPI Template",
-  "hr.template.page.modify.subHeader": "",
+  "hr.template.page.modify.subHeader": "Lorem LOREM",
 
   "hr.template.submission.form": "KPI Template Submission",
 
@@ -18,6 +18,7 @@
   "hr.template.confirm.modify.title": "Modify KPI Template",
   "hr.template.confirm.modify.description": "You are about to modify current KPI template. Do you want to continue?",
 
+  "hr.template.field.uid": "Template ID",
   "hr.template.field.company": "Company",
   "hr.template.field.position": "Position"
 }
