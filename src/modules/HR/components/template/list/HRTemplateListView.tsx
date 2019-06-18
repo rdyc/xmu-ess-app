@@ -40,7 +40,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
            <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/template/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/kpi/templates/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -48,7 +48,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/template/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/templates/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -67,7 +67,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/kpi/template/form')}
+          onClick={() => props.history.push('/kpi/templates/form')}
         >
           <AddCircle/>
         </IconButton>

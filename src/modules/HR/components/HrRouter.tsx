@@ -2,12 +2,13 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { HRTemplateDetail } from './template/detail/HRTemplateDetail';
 import { HRTemplateList } from './template/list/HRTemplateList';
 
 const template = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={} />
-    <Route path={`${props.match.path}/:templateUid`} component={} /> */}
+    {/* <Route path={`${props.match.path}/form`} component={} /> */}
+    <Route path={`${props.match.path}/:templateUid`} component={HRTemplateDetail} />
     <Route path={`${props.match.path}`} component={HRTemplateList} />
   </Switch>
 );
@@ -15,7 +16,7 @@ const template = (props: RouteComponentProps) => (
 export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
-      path={`${props.match.path}/template`}
+      path={`${props.match.path}/templates`}
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployee} 
       component={template} 
