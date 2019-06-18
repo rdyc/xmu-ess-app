@@ -23,6 +23,7 @@
       "@finance/*": [ "modules/finance/*" ],
       "@summary/*": [ "modules/summary/*" ],
       "@infor/*": [ "modules/infor/*" ],
+      "@hr/*": [ "modules/HR/*" ]
     },
     "outDir": "build/dist",
     "module": "esnext",
