@@ -24,14 +24,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  hrTemplateState: {
+  hrMeasurementState: {
     all: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement>;
     detail: IQuerySingleState<IHRMeasurementGetDetailRequest, IHRMeasurementDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  hrTemplateDispatch: {
+  hrMeasurementDispatch: {
     // command
     createRequest: typeof hrMeasurementPostRequest;
     createDispose: typeof hrMeasurementPostDispose;
