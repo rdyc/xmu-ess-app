@@ -3,6 +3,8 @@ import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetEntryField } from '@timesheet/classes/types';
@@ -61,6 +63,7 @@ export type TimesheetApprovalListProps
   & IOwnHandler
   & WithUser
   & WithTimesheetApproval
+  & WithStyles<typeof styles>
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -84,10 +87,13 @@ const createProps: mapper<TimesheetApprovalListProps, IOwnState> = (props: Times
   } else {
     // fill from previous request if any
     if (request && request.filter) {
+      state.employeeUid = request.filter.employeeUid,
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
       state.status = request.filter.status,
+      state.start = request.filter.start,
+      state.end = request.filter.end,
       state.isNotify = request.filter.isNotify;
     }
   }
@@ -117,8 +123,12 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
     if (user && !isLoading) {
       // predefined filter
       const filter: ITimesheetApprovalGetAllFilter = {
-        companyUid: props.companyUid,
+        companyUid: user.company.uid,
+        positionUid: props.positionUid,
+        start: props.start,
+        end: props.end,
         customerUid: props.customerUid,
+        employeeUid: props.employeeUid,
         activityType: props.activityType,
         statusType: props.statusType,
         status: 'pending',
@@ -183,8 +193,11 @@ const handlerCreators: HandleCreators<TimesheetApprovalListProps, IOwnHandler> =
   },
   handleFilterBadge: (props: TimesheetApprovalListProps) => () => {
     return props.customerUid !== undefined ||
+      props.employeeUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
+      props.start !== undefined ||
+      props.end !== undefined ||
       // props.status !== undefined ||
       props.isNotify === true;
   },
@@ -198,17 +211,23 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalListProps, IOwnState>
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
+        employeeUid: this.props.employeeUid,
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
         status: this.props.status,
+        start: this.props.start,
+        end: this.props.end,
         isNotify: this.props.isNotify
       },
       {
+        employeeUid: prevProps.employeeUid,
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
         status: prevProps.status,
+        start: prevProps.start,
+        end: prevProps.end,
         isNotify: prevProps.isNotify
       }
     );
@@ -225,6 +244,7 @@ export const TimesheetApprovalList = compose<TimesheetApprovalListProps, IOwnOpt
   withTimesheetApproval,
   withRouter,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

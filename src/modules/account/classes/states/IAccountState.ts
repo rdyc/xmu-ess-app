@@ -55,8 +55,9 @@ import {
 import { 
   IEmployeeRateAllRequest, 
   IEmployeeRateByIdRequest, 
+  IEmployeeRateCurrentRequest, 
   IEmployeeRateListRequest, 
-  IEmployeeRatePutRequest 
+  IEmployeeRatePutRequest
 } from '@account/classes/queries/employeeRate';
 import { 
   IEmployeeTrainingAllRequest, 
@@ -151,6 +152,7 @@ export interface IAccountState {
   accountEmployeeTrainingDelete: IQuerySingleState<IEmployeeTrainingDeleteRequest, boolean>;
 
   // account employee rate
+  accountEmployeeRateCurrent: IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRate>;
   accountEmployeeRateGetAll: IQueryCollectionState<IEmployeeRateAllRequest, IEmployeeRate>;
   accountEmployeeRateGetList: IQueryCollectionState<IEmployeeRateListRequest, IEmployeeRateList>;
   accountEmployeeRateGetById: IQuerySingleState<IEmployeeRateByIdRequest, IEmployeeRate>;

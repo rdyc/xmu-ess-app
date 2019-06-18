@@ -31,6 +31,7 @@ export const organizationStructureSection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader`},
   itemTitle: { id: `${prefix}.section.item.title`},
   itemSubHeader: { id: `${prefix}.section.item.subHeader`},
+  submit: { id: `${prefix}.section.submit`}
 });
 
 // option
@@ -72,6 +73,8 @@ export const organizationStructureField = defineMessages({
   reportTo: { id: `${prefix}.field.reportTo`},
   reportToRequired: { id: `${prefix}.field.reportTo.required`},
   reportToPlaceholder: { id: `${prefix}.field.reportTo.placeholder`},
+
+  itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
 });
 
 export const organizationStructureFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -110,6 +113,7 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'inactiveDate': return organizationStructureField.inactiveDatePlaceholder;
       case 'start': return organizationStructureField.startPlaceholder;
       case 'end': return organizationStructureField.endPlaceholder;
+      case 'description': return organizationStructureField.descriptionPlaceholder;
     
       default: return {id: field};
     }

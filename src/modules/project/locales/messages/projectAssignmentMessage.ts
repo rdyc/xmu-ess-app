@@ -30,10 +30,17 @@ export const projectAssignmentOption = defineMessages({
   acceptance: { id: `${prefix}.option.acceptance` },
 });
 
+// submission
+export const projectAssignmentSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
+});
+
 // fields
 export const projectAssignmentField = defineMessages({
   uid: { id: `${prefix}.field.uid` },
   
+  project: { id: `${prefix}.field.project` },
+
   projectUid: { id: `${prefix}.field.projectUid` },
   projectUidRequired: { id: `${prefix}.field.projectUid.required` },
   projectUidPlaceholder: { id: `${prefix}.field.projectUid.placeholder` },
@@ -41,6 +48,7 @@ export const projectAssignmentField = defineMessages({
   assignedHours: { id: `${prefix}.field.assignedHours` },
   unassignedHours: { id: `${prefix}.field.unassignedHours` },
   
+  itemsMinimum: { id: `${prefix}.field.items.minimum` },
   itemUid: { id: `${prefix}.field.item.uid` },
   
   employeeUid: { id: `${prefix}.field.item.employeeUid` },
@@ -74,7 +82,10 @@ export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName'
       case 'projectUid': return projectAssignmentField.projectUid;
       case 'employeeUid': return projectAssignmentField.employeeUid;
       case 'role': return projectAssignmentField.role;
+      case 'jobDescription': return projectAssignmentField.jobDesc;
       case 'mandays': return projectAssignmentField.mandays;
+      case 'assignedHours': return projectAssignmentField.assignedHours;
+      case 'unassignedHours': return projectAssignmentField.unassignedHours;
     
       default: return {id: field};
     }
@@ -85,6 +96,7 @@ export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName'
       case 'projectUid': return projectAssignmentField.projectUidRequired;
       case 'employeeUid': return projectAssignmentField.employeeUidRequired;
       case 'role': return projectAssignmentField.roleRequired;
+      case 'jobDescription': return projectAssignmentField.jobDescRequired;
       case 'mandays': return projectAssignmentField.mandaysRequired;
     
       default: return {id: field};
@@ -96,6 +108,7 @@ export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName'
       case 'projectUid': return projectAssignmentField.projectUidPlaceholder;
       case 'employeeUid': return projectAssignmentField.employeeUidPlaceholder;
       case 'role': return projectAssignmentField.rolePlaceholder;
+      case 'jobDescription': return projectAssignmentField.jobDescPlaceholder;
       case 'mandays': return projectAssignmentField.mandaysPlaceholder;
     
       default: return {id: field};
@@ -107,8 +120,10 @@ export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName'
 
 // confirm
 export const projectAssignmentConfirm = defineMessages({
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newMessage: { id: `${prefix}.confirm.new.message` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyContent: { id: `${prefix}.confirm.modify.content` },
+  modifyMessage: { id: `${prefix}.confirm.modify.message` }
 });
 
 // messages

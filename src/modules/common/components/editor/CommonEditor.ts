@@ -9,6 +9,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -61,6 +63,7 @@ export type CommonEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -259,6 +262,7 @@ export default compose<CommonEditorProps, {}>(
   withRouter,
   withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<CommonEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<CommonEditorProps, {}>(lifecycles),

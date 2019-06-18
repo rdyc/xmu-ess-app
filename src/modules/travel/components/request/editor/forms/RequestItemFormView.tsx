@@ -15,12 +15,12 @@ import {
   TextField,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { RequestItemFormProps } from '@travel/components/request/editor/forms/RequestItemForm';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Field } from 'redux-form';
+import { Field, WrappedFieldArrayProps } from 'redux-form';
+import { RequestFormProps, TravelItemFormData } from './RequestForm';
 
 const calculateDiem = (start: string , end: string): number => {
   let result: number = 0;
@@ -44,25 +44,29 @@ const calculateDiem = (start: string , end: string): number => {
   return result;
 };
 
-export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
-  const { context } = props;
+export const RequestItemFormView: React.SFC<WrappedFieldArrayProps<TravelItemFormData> & RequestFormProps> = props => {
 
-  const diem = props.diemRequest;                
+  const diem = (props.diemRequest) ? 
+                  props.diemRequest.filter(item => item.destinationType === props.destinationtypeValue &&
+                    item.projectType === props.projectType)[0] 
+                  : undefined;
+
   const render = (
     <Grid container spacing={16}>
       {
-        context.fields.map((field, index) => {
-          const item = context.fields.get(index);
+        props.fields.map((field, index) => {
+          const item = props.fields.get(index);
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
               <CardHeader 
                 action={
-                  <IconButton onClick={() => context.fields.remove(index)}>
+                  props.fields.length > 1 &&
+                  <IconButton onClick={() => props.fields.remove(index)}>
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={`Item #${index + 1}`}
+                title={`Travel Item - #${index + 1}`}
               />
               <CardContent>
                 <div>
@@ -110,27 +114,33 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.from`}
                     label={props.intl.formatMessage(travelMessage.request.field.from)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.fromPlaceholder)}
+                    required={true}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
                     label={props.intl.formatMessage(travelMessage.request.field.destination)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.destinationPlaceholder)}
+                    required={true}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
-                    minDate={props.minDate}
-                    maxDate={props.maxDate}
+                    required={true}
+                    minDate={props.startDate}
+                    maxDate={props.endDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
+                    required
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
-                    minDate={props.minDate}
-                    maxDate={props.maxDate}
+                    minDate={props.startDate}
+                    maxDate={props.endDate}
                   />
                   <Field 
                     type="number"
@@ -162,6 +172,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.hotel`}
                     label={props.intl.formatMessage(travelMessage.request.field.hotel)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.hotelPlaceholder)}
                     component={InputText}
                   />
                   <Field 
@@ -194,6 +205,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.notes`}
                     label={props.intl.formatMessage(travelMessage.request.field.note)}
+                    placeholder={props.intl.formatMessage(travelMessage.request.field.notePlaceholder)}
                     component={InputText}
                   />
                   <TextField
@@ -248,7 +260,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
       <Grid item xs={12} md={4}>
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <Button onClick={() => context.fields.push({
+            <Button variant="outlined" color="primary" onClick={() => props.fields.push({
               uid: undefined,
               employeeUid: '',
               fullName: '',
@@ -277,5 +289,6 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
       </Grid>
     </Grid>
   );
+  
   return render;
 };

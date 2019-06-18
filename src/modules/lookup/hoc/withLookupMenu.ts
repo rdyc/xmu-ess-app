@@ -1,7 +1,14 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { IMenuGetAllRequest, IMenuGetByIdRequest, IMenuListRequest } from '@lookup/classes/queries/menu';
 import { IMenu, IMenuDetail, IMenuList } from '@lookup/classes/response/menu';
-import { menuGetAllDispose, menuGetAllRequest, menuGetByIdDispose, menuGetByIdRequest, menuGetListDispose, menuGetListRequest } from '@lookup/store/actions';
+import {
+  lookupMenuGetAllDispose,
+  lookupMenuGetAllRequest,
+  lookupMenuGetByIdDispose,
+  lookupMenuGetByIdRequest,
+  lookupMenuGetListDispose,
+  lookupMenuGetListRequest,
+} from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -18,12 +25,12 @@ interface PropsFromDispatch {
     // command
 
     // query
-    loadAllRequest: typeof menuGetAllRequest;
-    loadAllDispose: typeof menuGetAllDispose;
-    loadListRequest: typeof menuGetListRequest;
-    loadListDispose: typeof menuGetListDispose;
-    loadDetailRequest: typeof menuGetByIdRequest;
-    loadDetailDispose: typeof menuGetByIdDispose;
+    loadAllRequest: typeof lookupMenuGetAllRequest;
+    loadAllDispose: typeof lookupMenuGetAllDispose;
+    loadListRequest: typeof lookupMenuGetListRequest;
+    loadListDispose: typeof lookupMenuGetListDispose;
+    loadDetailRequest: typeof lookupMenuGetByIdRequest;
+    loadDetailDispose: typeof lookupMenuGetByIdDispose;
   };
 }
 
@@ -42,12 +49,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // command
     
     // query
-    loadAllRequest: (request: IMenuGetAllRequest) => dispatch(menuGetAllRequest(request)),
-    loadAllDispose: () => dispatch(menuGetAllDispose()),
-    loadListRequest: (request: IMenuListRequest) => dispatch(menuGetListRequest(request)),
-    loadListDispose: () => dispatch(menuGetListDispose()),
-    loadDetailRequest: (request: IMenuGetByIdRequest) => dispatch(menuGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(menuGetByIdDispose()),
+    loadAllRequest: (request: IMenuGetAllRequest) => dispatch(lookupMenuGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupMenuGetAllDispose()),
+    loadListRequest: (request: IMenuListRequest) => dispatch(lookupMenuGetListRequest(request)),
+    loadListDispose: () => dispatch(lookupMenuGetListDispose()),
+    loadDetailRequest: (request: IMenuGetByIdRequest) => dispatch(lookupMenuGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupMenuGetByIdDispose()),
   }
 });
 

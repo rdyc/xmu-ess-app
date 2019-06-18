@@ -1,6 +1,9 @@
 import { IBaseCommand, ICompanyAccess } from '@generic/interfaces';
-import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
+import { IMileageApprovalPostPayload } from '@mileage/classes/request';
+import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 
-export interface IMileageApprovalPostRequest extends ICompanyAccess, IBaseCommand<IWorkflowApprovalItemPayload> {
+type command = IWorkflowApprovalPayload & IMileageApprovalPostPayload;
+
+export interface IMileageApprovalPostRequest extends ICompanyAccess, IBaseCommand<command> {
   mileageUid: string;
 }

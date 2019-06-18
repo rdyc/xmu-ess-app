@@ -33,6 +33,8 @@ export interface ITimesheetDetail {
   notes?: string;
   isMileage: boolean;
   isNotified: boolean;
+  isHoliday: boolean;
+  isWeekend: boolean;
   histories?: History[];
   workflow?: IOrganizationWorkflow;
   changes?: IBaseChanges;

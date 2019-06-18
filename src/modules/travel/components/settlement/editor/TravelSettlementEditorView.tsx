@@ -1,8 +1,8 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TravelSettlementForm, TravelSettlementFormData } from './forms/TravelSettlementForm';
 import { TravelSettlementEditorProps } from './TravelSettlementEditor';
 
@@ -55,6 +55,25 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
 
   // new
   if (formMode === FormMode.New) {
+    if (isloading) {
+      return (
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
+      );
+    }
+
     if (!isloading && travelResponse && travelResponse.data) {
       // todo: replace values with response data
       const data = travelResponse.data;
@@ -107,11 +126,22 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
 
   // modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
 

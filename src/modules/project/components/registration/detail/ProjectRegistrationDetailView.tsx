@@ -16,7 +16,7 @@ import { ProjectSite } from './shared/ProjectSite';
 export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.ProjectRegistrationRequest,
+      uid: props.location.state && props.location.state.isAdministration ? AppMenu.ProjectAdmnistration : AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
       parentUrl: props.location.state && props.location.state.isAdministration ? '/project/administrations' : '/project/requests',
       title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),
@@ -24,9 +24,9 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
     }}
     state={props.projectRegisterState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectDetail) => (
+    primary={(data: IProjectDetail) => ([
       <ProjectInformation data={data} />
-    )}
+    ])}
     secondary={(data: IProjectDetail) => ([
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
@@ -35,7 +35,9 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
         data={data.documentPreSales}
-      />,
+      />
+    ])}
+    tertiary={(data: IProjectDetail) => ([
       <ProjectSales data={data.sales} />,
       <ProjectSite data={data.sites} />,
       <WorkflowHistory data={data.workflow} />

@@ -47,9 +47,9 @@ interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IStructure, index: number) => IDataBindResult;
-
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IStructureListFilterResult) => void;
+  handleFilterBadge: () => boolean;
 }
 
 export type StructureListProps
@@ -102,7 +102,7 @@ const handlerCreators: HandleCreators<StructureListProps, IOwnHandler> = {
     if (props.userState.user && !isLoading) {
       // predefined filter
       const filter: IOrganizationStructureAllFilter = {
-        companyUid: props.userState.user.company.uid,
+        companyUid: props.companyUid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,

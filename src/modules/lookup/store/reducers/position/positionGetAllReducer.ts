@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IPositionGetAllRequest } from '@lookup/classes/queries';
 import { IPosition } from '@lookup/classes/response';
-import { PositionAction as Action } from '@lookup/store/actions';
+import { LookupPositionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IPositionGetAllRequest, IPosition> = {

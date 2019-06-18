@@ -11,22 +11,22 @@ import { ProjectAdministrationList } from './administration/list/ProjectAdminist
 import { ProjectApprovalDetail } from './approval/detail/ProjectApprovalDetail';
 import { ProjectApprovalList } from './approval/list/ProjectApprovalList';
 import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDetail';
-import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignmentEditor';
+import { ProjectAssignmentForm } from './assignment/form/ProjectAssignmentForm';
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
-import { HourEditor } from './hour/editor/HourEditor';
-import { OwnerEditor } from './owner/editor/OwnerEditor';
-import { ProjectRegistrationEditor } from './registration/editor/ProjectRegistrationEditor';
+import { ProjectHourForm } from './hour/form/ProjectHourForm';
+import { ProjectOwnerForm } from './owner/form/ProjectOwnerForm';
+import { ProjectRegistrationForm } from './registration/form/ProjectRegistrationForm';
 import { ProjectRegistrationList } from './registration/list/ProjectRegistrationList';
-import { SiteEditor } from './sites/SiteEditor';
-import { StatusEditor } from './status/StatusEditor';
+import { ProjectSiteForm } from './sites/form/ProjectSiteForm';
+import { ProjectStatusForm } from './status/form/ProjectStatusForm';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/hour`} component={HourEditor} />
-    <Route path={`${props.match.path}/owner`} component={OwnerEditor} />
-    <Route path={`${props.match.path}/status`} component={StatusEditor} />
-    <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
-    <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} />
+    <Route path={`${props.match.path}/hour`} component={ProjectHourForm} />
+    <Route path={`${props.match.path}/owner`} component={ProjectOwnerForm} />
+    <Route path={`${props.match.path}/status`} component={ProjectStatusForm} />
+    <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={ProjectSiteForm} />
+    <Route path={`${props.match.path}/form`} component={ProjectRegistrationForm} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectRegistrationList} />
   </Switch>
@@ -41,7 +41,7 @@ const approval = (props: RouteComponentProps) => (
 
 const assignment = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={ProjectAssignmentEditorForm} />
+    <Route path={`${props.match.path}/form`} component={ProjectAssignmentForm} />
     <Route path={`${props.match.path}/:assignmentUid`} component={ProjectAssignmentDetail} />
     <Route path={`${props.match.path}`} component={ProjectAssignmentList} />
   </Switch>
@@ -57,6 +57,7 @@ const acceptance = (props: RouteComponentProps) => (
 
 const administration = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={ProjectRegistrationForm} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectAdministrationList} />
   </Switch>
@@ -91,7 +92,7 @@ export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props =>
     <SecureMenuRoute 
       path={`${props.match.path}/administrations`} 
       menu={AppMenu.ProjectRegistration} 
-      subMenu={AppMenu.ProjectRegistrationRequest} 
+      subMenu={AppMenu.ProjectAdmnistration} 
       component={administration}
     />
   </Switch>

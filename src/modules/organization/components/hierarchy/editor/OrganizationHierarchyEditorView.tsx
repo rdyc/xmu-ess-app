@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { HierarchyForm, OrganizationHierarchyFormData } from './forms/HierarchyForm';
 import { OrganizationHierarchyEditorProps } from './OrganizationHierarchyEditor';
 
 export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl,
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
     submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.organizationHierarchyState.detail;
 
@@ -34,9 +34,16 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       description: undefined,
       inactiveDate: undefined,
     },
-    item: {
-      items: []
-    }
+    items: [
+      {
+        uid: undefined,
+        sequence: 1,
+        positionUid: undefined,
+        relationType: undefined
+      }
+    ]
+    // item: {
+    // }
   };
 
   // New
@@ -46,11 +53,22 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          {intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     
@@ -65,8 +83,9 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       initialValues.information.inactiveDate = data.inactiveDate;
 
       if (data.items) {
+        initialValues.items = [];
         data.items.forEach(item => 
-          initialValues.item.items.push({
+          initialValues.items.push({
             uid: item.uid,
             sequence: item.level,
             positionUid: item.positionUid,

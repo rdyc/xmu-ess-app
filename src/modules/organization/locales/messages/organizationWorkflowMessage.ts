@@ -17,9 +17,9 @@ export const organizationWorkflowOption = defineMessages({
 
 // fields
 export const organizationWorkflowField = defineMessages({
-  isApproved: { id: `${prefix}.field.isApproved`},
-  isApprovedRequired: { id: `${prefix}.field.isApproved.required`},
-  isApprovedPlaceholder: { id: `${prefix}.field.isApproved.placeholder`},
+  statusType: { id: `${prefix}.field.statusType`},
+  statusTypeRequired: { id: `${prefix}.field.statusType.required`},
+  statusTypePlaceholder: { id: `${prefix}.field.statusType.placeholder`},
 
   remark: { id: `${prefix}.field.remark`},
   remarkRequired: { id: `${prefix}.field.remark.required`},
@@ -31,7 +31,7 @@ export const organizationWorkflowField = defineMessages({
 export const organizationWorkflowFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
-      case 'isApproved': return organizationWorkflowField.isApproved;
+      case 'statusType': return organizationWorkflowField.statusType;
       case 'remark': return organizationWorkflowField.remark;
     
       default: return {id: field};
@@ -40,7 +40,7 @@ export const organizationWorkflowFieldHelperFor = (field: string, type: 'fieldNa
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'isApproved': return organizationWorkflowField.isApprovedRequired;
+      case 'statusType': return organizationWorkflowField.statusTypeRequired;
       case 'remark': return organizationWorkflowField.remarkRequired;
       case 'item': return organizationWorkflowField.itemRequired;
 
@@ -50,7 +50,7 @@ export const organizationWorkflowFieldHelperFor = (field: string, type: 'fieldNa
 
   if (type === 'fieldPlaceholder') {
     switch (field) {
-      case 'isApproved': return organizationWorkflowField.isApprovedPlaceholder;
+      case 'statusType': return organizationWorkflowField.statusTypePlaceholder;
       case 'remark': return organizationWorkflowField.remarkPlaceholder;
     
       default: return {id: field};

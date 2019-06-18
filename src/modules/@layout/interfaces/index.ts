@@ -14,3 +14,6 @@ export * from './IUserPosition';
 export * from './IUserRole';
 export * from './IUserState';
 export * from './IView';
+export * from './IValidationError';
+export * from './IValidationErrorResponse';
+export * from './IFlashMessage';

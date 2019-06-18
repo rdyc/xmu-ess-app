@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { IProjectDetail } from '@project/classes/response';
 import { ProjectDocument } from '@project/components/registration/detail/shared/ProjectDocument';
@@ -24,9 +24,9 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
     }}
     state={props.projectApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IProjectDetail) => (
+    primary={(data: IProjectDetail) => ([
       <ProjectInformation data={data} />
-    )}
+    ])}
     secondary={(data: IProjectDetail) => ([
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
@@ -35,7 +35,9 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
       <ProjectDocument 
         title={props.intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
         data={data.documentPreSales}
-      />,
+      />
+    ])}
+    tertiary={(data: IProjectDetail) => ([
       <ProjectSales data={data.sales} />,
       <ProjectSite data={data.sites} />,
       <WorkflowHistory data={data.workflow} />,
@@ -43,19 +45,17 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
         {
           data.workflow && 
           data.workflow.isApproval &&
-          <WorkflowApprovalForm
-            approvalTitle={props.approvalTitle}
-            approvalSubHeader={props.approvalSubHeader}
-            approvalChoices={props.approvalChoices}
-            approvalTrueValue={props.approvalTrueValue}
-            approvalDialogTitle={props.approvalDialogTitle}
-            approvalDialogContentText={props.approvalDialogContentText}
-            approvalDialogCancelText={props.approvalDialogCancelText}
-            approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleOnValidate}
-            onSubmit={props.handleOnSubmit} 
-            onSubmitSuccess={props.handleOnSubmitSuccess}
-            onSubmitFail={props.handleOnSubmitFail}
+          <WorkflowApprovalForm 
+            title={props.approvalTitle}
+            statusTypes={props.approvalStatusTypes}
+            trueTypes={props.approvalTrueValues}
+            confirmationDialogProps={{
+              title: props.approvalDialogTitle,
+              message: props.approvalDialogContentText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            }}
+            onSubmit={props.handleOnSubmit}
           />
         }
       </React.Fragment>

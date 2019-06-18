@@ -22,6 +22,36 @@ const accountEmployeeBank: React.SFC<AllProps> = props => {
         subheader={intl.formatMessage(accountMessage.employee.field.bankSubHeader)}
       />
       <CardContent>
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.kartuKeluarga)}
+          value={data.familyCardNumber ? data.familyCardNumber : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.ktp)}
+          value={data.citizenNumber ? data.citizenNumber : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.npwp)}
+          value={data.taxNumber ? data.taxNumber : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.bpjsKetenagakerjaan)}
+          value={data.bpjsEmploymentNumber ? data.bpjsEmploymentNumber : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(accountMessage.employee.field.bpjsKesehatan)}
+          value={data.bpjsHealthCareNumber ? data.bpjsHealthCareNumber : 'N/A'}
+        />
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

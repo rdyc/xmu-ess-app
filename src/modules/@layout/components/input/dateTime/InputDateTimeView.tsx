@@ -1,3 +1,4 @@
+import { AccessTime, DateRange } from '@material-ui/icons';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { DateTimePicker } from 'material-ui-pickers';
@@ -23,6 +24,8 @@ export const InputDateTimeView: React.SFC<InputDateTimeProps> = props => {
 
   const render = (
     <DateTimePicker
+      timeIcon={<AccessTime />}
+      dateRangeIcon={<DateRange />}
       fullWidth
       margin="normal"
       leftArrowIcon={<ChevronLeftIcon />}

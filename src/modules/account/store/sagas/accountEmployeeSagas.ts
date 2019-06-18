@@ -21,11 +21,10 @@ import {
   accountEmployeePutRequest,
   accountEmployeePutSuccess,
 } from '@account/store/actions';
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd } from '@layout/store/actions';
-import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
-import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
@@ -105,7 +104,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetByIdDispose()),
@@ -119,16 +118,9 @@ function* watchPostRequest() {
         put(accountEmployeePostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based form section name
-            information: flattenObject(response.body.errors) 
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeePostError(error.message)),
@@ -146,7 +138,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetByIdDispose()),
@@ -160,17 +152,9 @@ function* watchPutRequest() {
         put(accountEmployeePutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeePutError(error.message)),
@@ -194,7 +178,7 @@ function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
-      path: `/v1/account/employees`,
+      path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetAllDispose()),
@@ -207,17 +191,9 @@ function* watchDeleteRequest() {
         put(accountEmployeeDeleteError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(accountEmployeeDeleteError(error.message)),

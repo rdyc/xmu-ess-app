@@ -2,7 +2,6 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
-  CardContent,
   CardHeader,
   Collapse,
   Divider,
@@ -11,11 +10,14 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   TextField,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { IMileageRequestItem } from '@mileage/classes/response';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -37,6 +39,7 @@ type AllProps
   = OwnProps
   & OwnState
   & OwnStateHandler
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<AllProps, OwnState> = (): OwnState => ({
@@ -59,83 +62,81 @@ const mileageItem: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(mileageMessage.request.item.title)}
-        // subheader={props.intl.formatMessage(mileageMessage.request.item.subHeader)}
       />
-      <CardContent>
-        <List>
-          {
-            items &&
-            items.map((item, index) =>
-              <React.Fragment key={item.uid}>
-                <ListItem 
-                  disableGutters
-                  button
-                  selected={item.uid === active && isExpanded}
-                  onClick={() => handleToggle(item.uid)}
-                >
-                  <ListItemText 
-                    primary={intl.formatDate(item.date, GlobalFormat.Date)} 
-                    secondary={`${item.status && item.status.value} - ${intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}`}
-                  />
-                  <ListItemSecondaryAction>
-                    {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemSecondaryAction>
-                </ListItem>
-                {len !== index && <Divider />}                
-                <Collapse
-                  in={active === item.uid && isExpanded}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemUid)}
-                    value={item.uid}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemStatus)}
-                    value={item.status ? item.status.value : 'N/A'}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemDate)}
-                    value={intl.formatDate(item.date, GlobalFormat.Date)}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemCustomer)}
-                    value={item.customer ? item.customer.name : 'N/A'}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemProject)}
-                    value={`${item.projectUid} - ${item.project && item.project.name}`}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemSite)}
-                    value={item.site ? item.site.name : 'N/A'}
-                  />
-                  <TextField
-                    {...GlobalStyle.TextField.ReadOnly}
-                    margin="dense"
-                    label={intl.formatMessage(mileageMessage.request.field.itemValue)}
-                    value={intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
-                  />
-                  {isExpanded && <Divider />}
-                </Collapse>
-              </React.Fragment>
-            )
-          }
-        </List>
-      </CardContent>
+      <List>
+        {
+          items &&
+          items.map((item, index) =>
+            <React.Fragment key={item.uid}>
+              <Divider />
+              <ListItem
+                button
+                selected={item.uid === active && isExpanded}
+                onClick={() => handleToggle(item.uid)}
+              >
+                <ListItemText 
+                  primary={intl.formatDate(item.date, GlobalFormat.Date)} 
+                  secondary={`${item.status && item.status.value} - ${intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}`}
+                />
+                <ListItemSecondaryAction>
+                  {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                </ListItemSecondaryAction>
+              </ListItem>
+              {len !== index && <Divider />}                
+              <Collapse
+                in={active === item.uid && isExpanded}
+                className={props.classes.paddingFar}
+                timeout="auto"
+                unmountOnExit
+              >
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemUid)}
+                  value={item.uid}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemStatus)}
+                  value={item.status ? item.status.value : 'N/A'}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemDate)}
+                  value={intl.formatDate(item.date, GlobalFormat.Date)}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemCustomer)}
+                  value={item.customer ? item.customer.name : 'N/A'}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  multiline
+                  label={intl.formatMessage(mileageMessage.request.field.itemProject)}
+                  value={`${item.projectUid} - ${item.project && item.project.name}`}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemSite)}
+                  value={item.site ? item.site.name : 'N/A'}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(mileageMessage.request.field.itemValue)}
+                  value={intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
+                />
+              </Collapse>
+            </React.Fragment>
+          )
+        }
+      </List>
     </Card>
   );
 
@@ -144,5 +145,6 @@ const mileageItem: React.SFC<AllProps> = props => {
 
 export const MileageItem = compose<AllProps, OwnProps>(
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
 )(mileageItem);

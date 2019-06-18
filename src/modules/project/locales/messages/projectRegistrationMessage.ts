@@ -23,6 +23,12 @@ export const projectRegistrationPage = defineMessages({
   statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
 });
 
+// page
+export const projectAdministrationPage = defineMessages({
+  listTitle: { id: `project.administration.page.list.title` },
+  listSubHeader: { id: `project.administration.page.list.subHeader` },
+});
+
 // option
 export const projectRegistrationOption = defineMessages({
   close: { id: `${prefix}.option.close` },
@@ -32,8 +38,19 @@ export const projectRegistrationOption = defineMessages({
   site: { id: `${prefix}.option.site` }
 });
 
+// submission
+export const projectRegistrationSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
+  formOwner: { id: `${prefix}.submission.owner.form` },
+  formHour: { id: `${prefix}.submission.hour.form` },
+  formStatus: { id: `${prefix}.submission.status.form` },
+  formSite: { id: `${prefix}.submission.site.form` }
+});
+
 // confimation
 export const projectRegistrationConfirm = defineMessages({
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
   closeTitle: { id: `${prefix}.confirm.close.title` },
@@ -106,6 +123,7 @@ export const projectRegistrationField = defineMessages({
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
   
   contractNumber: { id: `${prefix}.field.contractNumber` },
+  contractNumberRequired: { id: `${prefix}.field.contractNumber.required` },
   contractNumberPlaceholder: { id: `${prefix}.field.contractNumber.placeholder` },
   
   employeeUid: { id: `${prefix}.field.employeeUid` },
@@ -130,9 +148,17 @@ export const projectRegistrationField = defineMessages({
   
   valueIdr: { id: `${prefix}.field.valueIdr` },
   
-  hours: { id: `${prefix}.field.hours` },
-  hoursRequired: { id: `${prefix}.field.hours.required` },
-  hoursPlaceholder: { id: `${prefix}.field.hours.placeholder` },
+  maxHours: { id: `${prefix}.field.maxHours` },
+  maxHoursRequired: { id: `${prefix}.field.maxHours.required` },
+  maxHoursPlaceholder: { id: `${prefix}.field.maxHours.placeholder` },
+
+  sales: { id: `${prefix}.field.sales` },
+  salesRequired: { id: `${prefix}.field.sales.required` },
+  salesPlaceholder: { id: `${prefix}.field.sales.placeholder` },
+
+  salesEmployeeUid: { id: `${prefix}.field.salesEmployeeUid` },
+  salesEmployeeUidRequired: { id: `${prefix}.field.salesEmployeeUid.required` },
+  salesEmployeeUidPlaceholder: { id: `${prefix}.field.salesEmployeeUid.placeholder` },
 
   rejectedReason: { id: `${prefix}.field.rejectedReason` },
 
@@ -146,6 +172,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return projectRegistrationField.uid;
+      case 'childProjectUid': return projectRegistrationField.childUid;
       case 'name': return projectRegistrationField.name;
       case 'description': return projectRegistrationField.description;
       case 'statusType': return projectRegistrationField.statusType;
@@ -160,7 +187,9 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'rate': return projectRegistrationField.rate;
       case 'valueUsd': return projectRegistrationField.valueUsd;
       case 'valueIdr': return projectRegistrationField.valueIdr;
-      case 'hours': return projectRegistrationField.hours;
+      case 'maxHours': return projectRegistrationField.maxHours;
+      case 'sales': return projectRegistrationField.sales;
+      case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUid;
     
       default: return {id: field};
     }
@@ -174,12 +203,15 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'customerUid': return projectRegistrationField.customerUidRequired;
       case 'start': return projectRegistrationField.startRequired;
       case 'end': return projectRegistrationField.endRequired;
+      case 'contractNumber': return projectRegistrationField.contractNumberRequired;
       case 'employeeUid': return projectRegistrationField.employeeUidRequired;
       case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidRequired;
       case 'currencyType': return projectRegistrationField.currencyTypeRequired;
       case 'rate': return projectRegistrationField.rateRequired;
       case 'valueUsd': return projectRegistrationField.valueUsdRequired;
-      case 'hours': return projectRegistrationField.hoursRequired;
+      case 'maxHours': return projectRegistrationField.maxHoursRequired;
+      case 'sales': return projectRegistrationField.salesRequired;
+      case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUidRequired;
 
       default: return {id: field};
     }
@@ -201,7 +233,9 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'currencyType': return projectRegistrationField.currencyTypePlaceholder;
       case 'rate': return projectRegistrationField.ratePlaceholder;
       case 'valueUsd': return projectRegistrationField.valueUsdPlaceholder;
-      case 'hours': return projectRegistrationField.hoursPlaceholder;
+      case 'maxHours': return projectRegistrationField.maxHoursPlaceholder;
+      case 'sales': return projectRegistrationField.salesPlaceholder;
+      case 'salesEmployeeUid': return projectRegistrationField.salesEmployeeUidPlaceholder;
     
       default: return {id: field};
     }

@@ -1,21 +1,24 @@
 import { 
   IEmployeeRateAllRequest, 
   IEmployeeRateByIdRequest, 
+  IEmployeeRateCurrentRequest, 
   IEmployeeRateListRequest, 
-  IEmployeeRatePutRequest 
+  IEmployeeRatePutRequest
 } from '@account/classes/queries/employeeRate';
 import { 
   IEmployeeRate, 
 } from '@account/classes/response/employeeRate';
 import { 
+  accountEmployeeRateCurrentDispose, 
+  accountEmployeeRateCurrentRequest, 
   accountEmployeeRateGetAllDispose, 
   accountEmployeeRateGetAllRequest, 
   accountEmployeeRateGetByIdDispose, 
   accountEmployeeRateGetByIdRequest, 
   accountEmployeeRateGetListDispose, 
   accountEmployeeRateGetListRequest, 
-  accountEmployeeRatePutDispose, 
-  accountEmployeeRatePutRequest 
+  accountEmployeeRatePutDispose,
+  accountEmployeeRatePutRequest
 } from '@account/store/actions';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -23,6 +26,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   accountEmployeeRateState: {
+    current: IQuerySingleState<IEmployeeRateCurrentRequest, IEmployeeRate>;
     all: IQueryCollectionState<IEmployeeRateAllRequest, IEmployeeRate>;
     list: IQueryCollectionState<IEmployeeRateListRequest, IEmployeeRate>;
     detail: IQuerySingleState<IEmployeeRateByIdRequest, IEmployeeRate>;
@@ -36,6 +40,9 @@ interface PropsFromDispatch {
     updateDispose: typeof accountEmployeeRatePutDispose;
 
     // query
+    loadCurrentRequest: typeof accountEmployeeRateCurrentRequest;
+    loadCurrentDispose: typeof accountEmployeeRateCurrentDispose;
+
     loadAllRequest: typeof accountEmployeeRateGetAllRequest;
     loadAllDispose: typeof accountEmployeeRateGetAllDispose;
 
@@ -50,11 +57,13 @@ interface PropsFromDispatch {
 export interface WithAccountEmployeeRate extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ 
+  accountEmployeeRateCurrent,
   accountEmployeeRateGetAll, 
   accountEmployeeRateGetList,
   accountEmployeeRateGetById,
 }: IAppState) => ({
   accountEmployeeRateState: {
+    current: accountEmployeeRateCurrent,
     all: accountEmployeeRateGetAll,
     list: accountEmployeeRateGetList,
     detail: accountEmployeeRateGetById
@@ -68,6 +77,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     updateDispose: () => dispatch(accountEmployeeRatePutDispose()),
 
     // query
+    loadCurrentRequest: (request: IEmployeeRateCurrentRequest) => dispatch(accountEmployeeRateCurrentRequest(request)),
+    loadCurrentDispose: () => dispatch(accountEmployeeRateCurrentDispose()),
+
     loadAllRequest: (request: IEmployeeRateAllRequest) => dispatch(accountEmployeeRateGetAllRequest(request)),
     loadAllDispose: () => dispatch(accountEmployeeRateGetAllDispose()),
 

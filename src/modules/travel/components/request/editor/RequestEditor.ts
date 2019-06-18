@@ -6,6 +6,8 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ITravelPostPayload, ITravelPutPayload } from '@travel/classes/request';
 import { ITravelPutItem } from '@travel/classes/request/ITravelPutItem';
 import { ITravelRequest } from '@travel/classes/response';
@@ -55,6 +57,7 @@ export type RequestEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -63,7 +66,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleValidate: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
     const errors = {
       information: {},
-      item: {}
+      // item: {}
     };
 
     const requiredFields = [
@@ -77,12 +80,12 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     });
 
-    if (formData.item.items) {
-      const requiredItemFields = ['employeeUid', 'transportType'];
+    if (formData.items) {
+      const requiredItemFields = ['employeeUid', 'transportType', 'departureDate', 'from', 'destination', 'returnDate'];
 
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
 
         if (!item) { return ; }
@@ -97,7 +100,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       });
 
       if (itemErrors.length) {
-        Object.assign(errors.item, {
+        Object.assign(errors, {
           items: itemErrors
         });
       }
@@ -115,18 +118,18 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       return Promise.reject('user was not found');
     }
 
-    if (!formData.item.items.length) {
+    if (!formData.items.length) {
       return Promise.reject('At least one item must be entered');
     }
 
     const parsedItems = () => {
-      if (!formData.item.items) {
+      if (!formData.items) {
         return null;
       }
 
       const _items: ITravelPutItem[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         _items.push({
           uid: item.uid,
           employeeUid: item.employeeUid,
@@ -338,6 +341,7 @@ export default compose<RequestEditorProps, {}>(
   withTravelRequest,
   withLookupDiem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<RequestEditorProps, {}>(lifecycles),

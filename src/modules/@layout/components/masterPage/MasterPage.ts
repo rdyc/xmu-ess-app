@@ -1,11 +1,26 @@
 import AppEvent from '@constants/AppEvent';
+import AppStorage from '@constants/AppStorage';
 import { IPageInfo, IRedirection } from '@generic/interfaces';
+import { NotificationProps } from '@home/components/notification';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+import * as store from 'store';
 
 import { ChildPageView, MasterPageView } from './MasterPageView';
 
@@ -15,20 +30,44 @@ interface IOwnOption {
   
 }
 
+interface IOwnState {
+  isUpdateAvailable: boolean;
+}
+
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setUpdateAvailable: StateHandler<IOwnState>;
+}
+
 interface IOwnHandler {
-  handleOnChangeRoute: (event: CustomEvent) => void;
+  handleOnChangeRoute: (event: CustomEvent<IRedirection>) => void;
   handleOnChangePage: (event: CustomEvent<IPageInfo>) => void;
+  handleOnClickReload: (event: React.MouseEvent) => void;
 }
 
 export type MasterPageProps
   = IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithUser
   & WithMasterPage
   & RouteComponentProps;
 
+const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  isUpdateAvailable: false
+});
+
+const stateUpdaters: StateUpdaters<NotificationProps, IOwnState, IOwnStateUpdater> = {
+  setUpdateAvailable: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isUpdateAvailable: !state.isUpdateAvailable
+  })
+};
+
 const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
+  handleOnFoundUpdate: (props: MasterPageProps) => (event: CustomEvent) => {
+    props.setUpdateAvailable();
+  },
   handleOnChangeRoute: (props: MasterPageProps) => (event: CustomEvent<IRedirection>) => {
     props.history.push(event.detail.path, event.detail.state);
   },
@@ -43,6 +82,11 @@ const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
     }	
 
     document.title = `${page.title} - ${webName}`;
+  },
+  handleOnClickReload: (props: MasterPageProps) => (event: React.MouseEvent) => {
+    store.set(AppStorage.Update, false);
+
+    window.location.reload(true);
   }
 };
 
@@ -50,6 +94,14 @@ const lifecycles: ReactLifeCycleFunctions<MasterPageProps, {}> = {
   componentWillMount() {
     addEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
     addEventListener(AppEvent.onChangePage, this.props.handleOnChangePage);
+  },
+  componentDidMount() {
+    // get update status
+    const update: boolean = store.get(AppStorage.Update);
+
+    if (update) {
+      this.props.setUpdateAvailable();
+    }
   },
   componentWillUnmount() {
     removeEventListener(AppEvent.onChangeRoute, this.props.handleOnChangeRoute);
@@ -62,6 +114,7 @@ export const MasterPage = compose<MasterPageProps, IOwnOption>(
   withRouter,
   withUser,
   withMasterPage,
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   withStyles(styles)

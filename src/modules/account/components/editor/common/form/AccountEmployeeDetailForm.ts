@@ -1,7 +1,7 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputDate } from '@layout/components/input/date';
+import { InputBirth, InputDate, InputDateClearable } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -80,9 +80,10 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
         case 'dateOfBirth':
         fieldProps = {
           required: true,
+          type: 'date',
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputDate  
+          component: InputBirth  
         };
         break;
 
@@ -127,16 +128,15 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'inactiveDate':
         fieldProps = {
-          disablePast: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputDate  
+          isClearable: true,
+          component: InputDateClearable 
         };
         break;
 
         case 'bloodType':
         fieldProps = {
-          required: true,
           category: 'blood',
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),

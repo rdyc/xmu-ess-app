@@ -21,9 +21,11 @@
   "account.shared.message.update.failure": "Unable to process your submission",
   "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
+  "account.shared.message.new.employe.success": "New {state} Data has been created. Add access is required for a new employee.",
 
   "account.shared.section.info.title": "Employee {state}",
   "account.shared.section.info.subHeader": " ",
+  "account.shared.section.submission": "{state} Submission",
 
   "account.shared.field.no": "No",
   "account.shared.field.action": "Actions",
@@ -146,17 +148,17 @@
   "account.employee.field.religion.placeholder": "Select a religion",
   "account.employee.field.religion.required": "Religion is required",
 
-  "account.employee.field.kartuKeluarga": "Kartu Keluarga",
-  "account.employee.field.kartuKeluarga.placeholder": "Type any Kartu Keluarga number",
-  "account.employee.field.kartuKeluarga.required": "Kartu Keluarga is required",
+  "account.employee.field.kartuKeluarga": "Family Card",
+  "account.employee.field.kartuKeluarga.placeholder": "Type any Family Card number",
+  "account.employee.field.kartuKeluarga.required": "Family Card is required",
 
-  "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
-  "account.employee.field.bpjsKetenagakerjaan.placeholder": "Type any BPJS Ketenagakerjaan number",
-  "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Ketenagakerjaan is required",
+  "account.employee.field.bpjsKetenagakerjaan": "BPJS Employment Number",
+  "account.employee.field.bpjsKetenagakerjaan.placeholder": "Type any BPJS Employment number",
+  "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Employment Number is required",
 
-  "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
-  "account.employee.field.bpjsKesehatan.placeholder": "Type any BPJS Kesehatan number",
-  "account.employee.field.bpjsKesehatan.required": "BPJS Kesehatan is required",
+  "account.employee.field.bpjsKesehatan": "BPJS Health Care Number",
+  "account.employee.field.bpjsKesehatan.placeholder": "Type any BPJS Health Care number",
+  "account.employee.field.bpjsKesehatan.required": "BPJS Health Care Number is required",
 
   "account.employee.field.mobile": "Mobile",
   "account.employee.field.mobile.placeholder": "Type any mobile phone number",
@@ -206,10 +208,10 @@
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
   
-  "account.employee.field.information.contact.title": "Employee Contacts",
+  "account.employee.field.information.contact.title": "Employee Contacts and Address",
   "account.employee.field.information.contact.subHeader": " ",
 
-  "account.employee.field.information.bank.title": "BCA Account Information",
+  "account.employee.field.information.bank.title": "Employee Identity and BCA Account",
   "account.employee.field.information.bank.subHeader": " ",
 
   "account.employee.section.basic.title": "Employee Basic Data",
@@ -246,6 +248,7 @@
   "account.employee.training.field.end": "Training End Date",
   "account.employee.training.field.end.placeholder": "Select a Training End Date",
   "account.employee.training.field.end.required": "Training End Date is required",
+  "account.employee.training.field.end.before": "End date is less than start date",
 
   "account.employee.training.field.organizer": "Training Organizer",
   "account.employee.training.field.organizer.placeholder": "Type any Training Organizer",

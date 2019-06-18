@@ -8,6 +8,8 @@
   "mileage.approval.submission.dialog.title": "Mileage Approval Submission",
   "mileage.approval.submission.dialog.content": "You are about to submiting mileage approval. Do you want to continue?",
 
+  "mileage.request.submission.form": "Mileage Request Submission",
+  
   "mileage.request.page.list.title": "Mileage Request",
   "mileage.request.page.list.subHeader": " ",
   "mileage.request.page.detail.title": "Mileage Details",
@@ -15,7 +17,7 @@
   "mileage.request.page.new.title": "New Mileage Request",
   "mileage.request.page.new.subHeader": " ",
 
-  "mileage.request.field.item.title": "Mileage Item",
+  "mileage.request.field.item.title": "Mileages",
   "mileage.request.field.item.subHeader": " ",
   "mileage.request.field.information.title": "Request",
   "mileage.request.field.information.subHeader": " ",
@@ -38,7 +40,7 @@
 
   "mileage.request.field.isNotify": "Notify Only",
   "mileage.request.field.isRejected": "Rejected Only",
-  "mileage.request.field.completion": "Completion",
+  "mileage.request.field.completion": "Approval Completion",
 
   "mileage.request.field.information.noData": "N/A",
 
@@ -51,7 +53,9 @@
   "mileage.request.item.subHeader": " ",
   "mileage.request.item.empty": "No Item",
 
-  "mileage.request.field.item.uid": "Mileage Item ID",
+  "mileage.request.field.item.required": "Must have minimum one mileage item",
+  "mileage.request.field.item.uid": "Mileage item ID",
+  "mileage.request.field.item.uid.required": "Mileage item is required",
   "mileage.request.field.item.date": "Report Date",
   "mileage.request.field.item.customer": "Customer",
   "mileage.request.field.item.project": "Project",

@@ -19,12 +19,14 @@ import {
   IOrganizationWorkflowByIdRequest, 
   IOrganizationWorkflowDeleteRequest, 
   IOrganizationWorkflowListRequest,
+  IOrganizationWorkflowMenuRequest,
   IOrganizationWorkflowPostRequest,
   IOrganizationWorkflowPutRequest
 } from '@organization/classes/queries/workflow';
 import { IHierarchy, IHierarchyDetail, IHierarchyList } from '@organization/classes/response/hierarchy';
 import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import { IWorkflow, IWorkflowList } from '@organization/classes/response/workflow';
+import { IWorkflowMenu } from '../response/workflow/IWorkflowMenu';
 
 export interface IOrganizationState {
   organizationStructureGetAll: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
@@ -44,6 +46,7 @@ export interface IOrganizationState {
   organizationWorkflowGetAll: IQueryCollectionState<IOrganizationWorkflowAllRequest, IWorkflow>;
   organizationWorkflowGetList: IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflowList>;
   organizationWorkflowGetById: IQuerySingleState<IOrganizationWorkflowByIdRequest, IWorkflow>;
+  organizationWorkflowGetByMenu: IQuerySingleState<IOrganizationWorkflowMenuRequest, IWorkflowMenu>;
   organizationWorkflowPost: IQuerySingleState<IOrganizationWorkflowPostRequest, IWorkflow>;
   organizationWorkflowPut: IQuerySingleState<IOrganizationWorkflowPutRequest, IWorkflow>;
   organizationWorkflowDelete: IQuerySingleState<IOrganizationWorkflowDeleteRequest, boolean>;

@@ -176,6 +176,7 @@ const TravelRequestItemView: React.SFC<AllProps> = props => (
 
               <TextField
                 {...GlobalStyle.TextField.ReadOnly}
+                multiline
                 margin="dense"
                 label={props.intl.formatMessage(travelMessage.request.field.note)}
                 value={item.notes || '-'}

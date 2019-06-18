@@ -1,11 +1,13 @@
 import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { IProjectDetail, IProjectList } from '@project/classes/response';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { DateType } from 'material-ui-pickers/constants/prop-types';
 import * as moment from 'moment';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import {
   compose,
@@ -19,7 +21,7 @@ import {
   withHandlers,
   withStateHandlers
 }
-  from 'recompose';
+from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'travelRequest';
@@ -65,9 +67,9 @@ export type TravelRequestFormData = {
     comment: string | null | undefined;
     total: number | undefined;
   },
-  item: {
-    items: TravelItemFormData[]
-  }
+  // item: {
+  // }
+  items: TravelItemFormData[]
 };
 
 interface OwnProps {
@@ -107,6 +109,8 @@ interface FormValueProps {
 
 export type RequestFormProps
   = InjectedFormProps<TravelRequestFormData, OwnProps>
+  & InjectedIntlProps
+  & WithUser
   & WithLookupDiem
   & FormValueProps
   & OwnHandlers
@@ -155,8 +159,8 @@ const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
     };
 
     let total: number = 0;
-    if (formValues.item.items) {
-      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + (calculateDiem(item.departureDate, item.returnDate) * (diem && diem.currency ? diem.currency.rate : 0) * (diem ? diem.value : 0)));
+    if (formValues.items) {
+      formValues.items.forEach((item) => total += item.costTransport + item.costHotel + (calculateDiem(item.departureDate, item.returnDate) * (diem && diem.currency ? diem.currency.rate : 0) * (diem ? diem.value : 0)));
     }
     props.change('information.total', total);
     setTotal(total);
@@ -223,6 +227,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestFormProps, OwnState> = {
 // const connectedView = connect(mapStateToProps)(RequestFormView);
 const enhance = compose<RequestFormProps, OwnProps & InjectedFormProps<TravelRequestFormData, OwnProps>>(
   connect(mapStateToProps),
+  withUser,
+  injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlers),
   lifecycle(lifecycles),
@@ -232,7 +238,8 @@ export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true,
+  destroyOnUnmount: true,
+  // enableReinitialize: true,
   onChange: (values: TravelRequestFormData, dispatch: any, props: any) => {
     dispatchEvent(new CustomEvent('TRV_FORM', { detail: values }));
   },

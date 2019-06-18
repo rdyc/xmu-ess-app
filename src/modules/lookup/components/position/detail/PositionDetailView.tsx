@@ -20,9 +20,9 @@ export const PositionDetailView: React.SFC<PositionDetailProps> = props => (
     }}
     state={props.lookupPositionState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IPositionDetail) => (
+    primary={(data: IPositionDetail) => ([
       <PositionInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

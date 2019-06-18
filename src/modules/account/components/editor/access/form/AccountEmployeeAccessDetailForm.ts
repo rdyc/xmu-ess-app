@@ -77,7 +77,6 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'unitType':
           fieldProps = {
-            required: true,
             category: 'unit',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
@@ -89,7 +88,6 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
 
         case 'departmentType':
           fieldProps = {
-            required: true,
             category: 'department',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),

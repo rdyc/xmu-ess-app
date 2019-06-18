@@ -21,11 +21,14 @@ import {
 } from 'recompose';
 import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
+import { isNullOrUndefined } from 'util';
 import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 
 export interface IProjectAssignmentItemFormData {
   uid?: string;
   employeeUid: string;
+  isEmployeeActive: boolean;
+  employeeName: string;
   role?: string;
   jobDescription?: string;
   mandays: number;
@@ -82,6 +85,7 @@ const createProps: mapper<ProjectAssignmentFormProps, IOwnState> = (props: Proje
     projectFilter: {
       find: user ? user.uid : '',
       findBy: 'ownerEmployeeUid',
+      companyUid: user && user.company.uid,
       statusTypes: WorkflowStatusType.Approved,
       assignmentStatus: 'unassigned',
     }
@@ -129,7 +133,12 @@ const handlers: HandleCreators<ProjectAssignmentFormProps, IOwnHandlers> = {
     let hours: number = 0;
 
     if (formValues.items) {
-      formValues.items.forEach(item => hours += item.mandays * 8);
+      formValues.items.forEach(item => {
+        if (isNullOrUndefined(item.statusType) || !(item.statusType && item.statusType === WorkflowStatusType.Rejected)) {
+          return hours += item.mandays * 8;
+        } 
+        return hours += 0;
+      });
     }
 
     setProjectHours(hours);

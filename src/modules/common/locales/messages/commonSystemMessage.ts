@@ -23,6 +23,7 @@ export const commonSystemPage = defineMessages({
 });
 
 export const commonSystemSection = defineMessages({
+  submit: { id: `${prefix}.submit`},
   title: { id: `${prefix}.infoTitle`},
   subTitle: { id: `${prefix}.infoSubTitle`},
 });
@@ -43,6 +44,7 @@ export const commonSystemText = defineMessages({
 });
 
 export const commonSystemField = defineMessages({
+  id: {id: `${fieldPrefix}.id`},
   category: {id: `${fieldPrefix}.category`},
 
   companyUid: {id: `${fieldPrefix}.companyUid`},
@@ -67,6 +69,7 @@ export const commonSystemField = defineMessages({
 export const commonSystemFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
+      case 'id' : return commonSystemField.id;
       case 'category' : return commonSystemField.category;
       case 'companyUid' : return commonSystemField.companyUid;
       case 'parentCode' : return commonSystemField.parentCode;

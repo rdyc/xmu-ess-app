@@ -67,6 +67,13 @@ const lifecycles: ReactLifeCycleFunctions<SelectPositionProps, {}> = {
       }
     }
   },
+  componentDidUpdate(prevProps: SelectPositionProps) {
+    if (prevProps.filter && this.props.filter) {
+      if (prevProps.filter.companyUid !== this.props.filter.companyUid) {
+        this.props.handleOnLoadApi();
+      }
+    }
+  }
 };
 
 export const SelectPosition = compose<SelectPositionProps, OwnProps>(

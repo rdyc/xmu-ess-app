@@ -32,6 +32,8 @@ export const workflowHierarchySection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   historyTitle: { id: `${prefix}.section.history.title` },
   historySubHeader: { id: `${prefix}.section.history.subHeader` },
+  submit: { id: `${prefix}.section.submit` },
+  itemTitle: { id: `${prefix}.section.itemTitle` },
 });
 
 // dialog
@@ -82,6 +84,8 @@ export const workflowHierarchyField = defineMessages({
   
   relationType: {id: `${fieldPrefix}.relationType`},
   relationTypePlaceholder: {id: `${fieldPrefix}.relationType.placeholder`},
+
+  itemsMinimum: {id: `${fieldPrefix}.itemsMinimum`},
 });
 
 export const workflowHierarchyFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

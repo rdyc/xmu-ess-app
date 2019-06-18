@@ -20,9 +20,9 @@ export const LookupRoleDetailView: React.SFC<LookupRoleDetailProps> = props => (
     }}
     state={props.lookupRoleState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IRoleDetail) => (
+    primary={(data: IRoleDetail) => ([
       <LookupRoleInformation data={data} />
-    )}
+    ])}
     secondary={(data: IRoleDetail) => ([
       <LookupRoleMenu
         data={data.menus}

@@ -8,7 +8,9 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -67,6 +69,7 @@ export type AccountEmployeeNoteEditorProps
   & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnOption
   & OwnHandlers
   & OwnState
@@ -262,6 +265,7 @@ export const AccountEmployeeNoteEditor = compose<AccountEmployeeNoteEditorProps,
   withWidth(),
   withAccountEmployeeNote,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeNoteEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeNoteEditorProps, {}>(lifecycles),

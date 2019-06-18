@@ -30,6 +30,8 @@ export const leaveRequestPage = defineMessages({
 export const leaveRequestConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newDescription: { id: `${prefix}.confirm.new.description` },
 });
 
 // dialog
@@ -58,6 +60,7 @@ export const leaveRequestField = defineMessages({
   regularType: { id: `${prefix}.field.regularType` },
   regularTypeRequired: { id: `${prefix}.field.regularType.required` },
   regularTypePlaceholder: { id: `${prefix}.field.regularType.placeholder` },
+  regularTypeActive: { id: `${prefix}.field.regularType.active` },
   
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
@@ -66,6 +69,11 @@ export const leaveRequestField = defineMessages({
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
+  endAuto: { id: `${prefix}.field.end.auto` },
+
+  reEntry: { id: `${prefix}.field.reEntry` },
+  reEntryRequired: { id: `${prefix}.field.reEntry.required` },
+  reEntryPlaceHolder: { id: `${prefix}.field.reEntry.placeholder` },
   
   address: { id: `${prefix}.field.address` },
   addressRequired: { id: `${prefix}.field.address.required` },
@@ -78,6 +86,10 @@ export const leaveRequestField = defineMessages({
   reason: { id: `${prefix}.field.reason` },
   reasonRequired: { id: `${prefix}.field.reason.required` },
   reasonPlaceholder: { id: `${prefix}.field.reason.placeholder` },
+  
+  rejectedReason: { id: `${prefix}.field.rejectedReason` },
+
+  requestedLeave: { id: `${prefix}.field.requestedLeave` },
 
   employeeUid: { id: `${prefix}.field.employeeUid` },
   employeeUidRequired: { id: `${prefix}.field.employeeUid.required` },
@@ -86,6 +98,13 @@ export const leaveRequestField = defineMessages({
   completion: { id: `${prefix}.field.completion` },
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },
+
+  isHoliday: {id: `${prefix}.field.isHoliday`}
+});
+
+// submission
+export const leaveRequestSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
 });
 
 // section
@@ -112,6 +131,7 @@ export const leaveRequestFieldHelperFor = (field: string, type: 'fieldName' | 'f
       case 'address': return leaveRequestField.address;
       case 'contactNumber': return leaveRequestField.contactNumber;
       case 'reason': return leaveRequestField.reason;
+      case 'rejectedReason': return leaveRequestField.rejectedReason;
       case 'employeeUid': return leaveRequestField.employeeUid;
 
       default: return { id: field };

@@ -20,9 +20,9 @@ export const LookupLeaveDetailView: React.SFC<LeaveDetailProps> = props => (
     }}
     state={props.lookupLeaveState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILookupLeaveDetail) => (
+    primary={(data: ILookupLeaveDetail) => ([
       <LookupLeaveInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

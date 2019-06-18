@@ -43,10 +43,12 @@
     "@types/redux-form": "^7.4.8",
     "@types/store": "^2.0.0",
     "@types/victory": "^31.0.3",
+    "@types/yup": "^0.26.12",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "connected-react-router": "^4.5.0",
     "dotenv-expand": "^4.2.0",
+    "formik": "^1.5.1",
     "history": "^4.7.2",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
@@ -79,7 +81,8 @@
     "typeface-roboto": "0.0.54",
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.1.1",
-    "utility-types": "^2.1.0"
+    "utility-types": "^2.1.0",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "@types/qs": "^6.5.1"

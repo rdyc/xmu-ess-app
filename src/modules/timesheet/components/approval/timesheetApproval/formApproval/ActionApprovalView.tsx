@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
@@ -18,27 +18,38 @@ export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => (
     }}
     state={props.timesheetApprovalState.detail}
     onLoadApi={props.handleLoadData}
-    primary={(data: ITimesheetDetail) => (
+    primary={(data: ITimesheetDetail) => ([
       <TimesheetBulkInformation data={props.timesheets} />
-    )}
+    ])}
     secondary={(data: ITimesheetDetail) => ([
       <React.Fragment>
         {
           data.workflow && 
           data.workflow.isApproval &&
-          <WorkflowApprovalForm
-            approvalTitle={props.approvalTitle}
-            approvalSubHeader={props.approvalSubHeader}
-            approvalChoices={props.approvalChoices}
-            approvalTrueValue={props.approvalTrueValue}
-            approvalDialogTitle={props.approvalDialogTitle}
-            approvalDialogContentText={props.approvalDialogContentText}
-            approvalDialogCancelText={props.approvalDialogCancelText}
-            approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit} 
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
+          <WorkflowApprovalForm 
+            title={props.approvalTitle}
+            statusTypes={props.approvalStatusTypes}
+            trueTypes={props.approvalTrueValues}
+            confirmationDialogProps={{
+              title: props.approvalDialogTitle,
+              message: props.approvalDialogContentText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            }}
+            confirmationBeforeDialogProps={props.itemUids.length >= 2 && {
+              title: props.approvalDialogTitleAttention,
+              message: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekend, {uids: props.itemUids.join(', ')}),
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            } || 
+            props.itemUids.length === 1 && {
+              title: props.approvalDialogTitleAttention,
+              message: props.intl.formatMessage(timesheetMessage.approval.confirm.submissionIsHolidayOrWeekendOne, {uid: props.itemUids.join(', ')}),
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            } || 
+            undefined}
+            onSubmit={props.handleOnSubmit}
           />
         }
       </React.Fragment>

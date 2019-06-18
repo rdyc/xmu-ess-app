@@ -19,6 +19,6 @@ export interface ICustomerDetail {
   contactPersonAdditional?: string;
   contactTitle?: string;
   contactTitleAdditional?: string;
-  isActive: boolean;
+  isActive?: boolean;
   changes?: IBaseChanges;
 }

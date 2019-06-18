@@ -1,3 +1,4 @@
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
   OrganizationWorkflowAction as Action,
@@ -11,6 +12,9 @@ import {
   organizationWorkflowGetByIdError,
   organizationWorkflowGetByIdRequest,
   organizationWorkflowGetByIdSuccess,
+  organizationWorkflowGetByMenuError,
+  organizationWorkflowGetByMenuRequest,
+  organizationWorkflowGetByMenuSuccess,
   organizationWorkflowGetListError,
   organizationWorkflowGetListRequest,
   organizationWorkflowGetListSuccess,
@@ -21,9 +25,7 @@ import {
   organizationWorkflowPutRequest,
   organizationWorkflowPutSuccess,
 } from '@organization/store/actions';
-import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
-import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -89,6 +91,26 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchGetByMenuRequest() {
+  const worker = (action: ReturnType<typeof organizationWorkflowGetByMenuRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/organization/workflows/${action.payload.companyUid}/${action.payload.menuUid}`,
+      successEffects: (response: IApiResponse) => ([
+        put(organizationWorkflowGetByMenuSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationWorkflowGetByMenuError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationWorkflowGetByMenuError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_BY_MENU_REQUEST, worker);
+}
+
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowPostRequest>) => {
     return saiyanSaga.fetch({
@@ -106,16 +128,9 @@ function* watchPostRequest() {
         put(organizationWorkflowPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based form section name
-            information: flattenObject(response.body.errors) 
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(organizationWorkflowPostError(error.message)),
@@ -152,17 +167,9 @@ function* watchPutRequest() {
         put(organizationWorkflowPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(organizationWorkflowPutError(error.message)),
@@ -199,17 +206,9 @@ function* watchDeleteRequest() {
         put(organizationWorkflowDeleteError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based on form section name
-            information: flattenObject(response.body.errors) 
-          };
-          
-          // action.payload.reject(new SubmissionError(response.body.errors));
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(organizationWorkflowDeleteError(error.message)),
@@ -234,6 +233,7 @@ function* organizationWorkflowSagas() {
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
+    fork(watchGetByMenuRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchDeleteRequest)

@@ -51,21 +51,21 @@ import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
-import achievementPatchSagas from '@lookup/store/sagas/achievementPatchSagas';
-import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
-import imageGallerySagas from '@lookup/store/sagas/imageGallerySagas';
-import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
+import lookupAchievementSagas from '@lookup/store/sagas/lookupAchievementSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
+import lookupCurrencySagas from '@lookup/store/sagas/lookupCurrencySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/lookupHolidaySagas';
+import lookupImageGallerySagas from '@lookup/store/sagas/lookupImageGallerySagas';
+import lookupLeaveCalculationSagas from '@lookup/store/sagas/lookupLeaveCalculationSagas';
 import lookupLeaveSagas from '@lookup/store/sagas/lookupLeaveSagas';
+import lookupMenuSagas from '@lookup/store/sagas/lookupMenuSagas';
+import lookupMileageExceptionSagas from '@lookup/store/sagas/lookupMileageExceptionSagas';
+import lookupPositionSagas from '@lookup/store/sagas/lookupPositionSagas';
 import lookupRoleSagas from '@lookup/store/sagas/lookupRoleSagas';
+import lookupSystemLimitSagas from '@lookup/store/sagas/lookupSystemLimitSagas';
 import lookupVersionSagas from '@lookup/store/sagas/lookupVersionSagas';
-import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
-import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
-import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
-import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
 import organizationHierarchySagas from '@organization/store/sagas/organizationHierarchySagas';
@@ -132,7 +132,7 @@ export function* rootSaga() {
     fork(commonLevelSagas),
 
     // lookup
-    fork(leaveCalculationSagas),
+    fork(lookupLeaveCalculationSagas),
     fork(lookupCustomerSagas),
     fork(lookupMileageExceptionSagas),
     fork(lookupCompanySagas),
@@ -144,10 +144,10 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
-    fork(achievementPatchSagas),
+    fork(lookupAchievementSagas),
 
     fork(lookupVersionSagas),
-    fork(imageGallerySagas),
+    fork(lookupImageGallerySagas),
     
     // organization
     fork(organizationHierarchySagas),

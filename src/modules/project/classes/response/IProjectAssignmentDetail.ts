@@ -24,6 +24,6 @@ export interface IProjectAssignmentDetail {
   maxHours: number;
   assignedHours: number;
   unassignedHours: number;
-  items?: IProjectAssignmentDetailItem[];
+  items: IProjectAssignmentDetailItem[];
   changes?: IBaseChanges;
 }

@@ -11,3 +11,8 @@ export const lookupConfirm = defineMessages({
   deleteTitle: { id: `${prefix}.confirm.delete.title` },
   deleteDescription: { id: `${prefix}.confirm.delete.description` },
 });
+
+// submission
+export const lookupSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
+});

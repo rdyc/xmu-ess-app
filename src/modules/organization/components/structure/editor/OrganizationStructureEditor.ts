@@ -6,10 +6,12 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationStructurePostPayload, IOrganizationStructurePutPayload } from '@organization/classes/request/structure';
 import { IStructure } from '@organization/classes/response/structure';
 import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -63,6 +65,7 @@ export type OrganizationStructureEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -83,12 +86,12 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
       }
     });
 
-    if (formData.item.items) {
+    if (formData.items) {
       const requiredItemFields = ['positionUid', 'start'];
       
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
         
         if (!item) { return ; }
@@ -127,7 +130,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     const parsedItemsPost = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           positionUid: item.positionUid,
           start: item.start,
@@ -141,7 +144,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     const parsedItemsPut = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           uid: item.uid,
           positionUid: item.positionUid,
@@ -351,6 +354,7 @@ export default compose<OrganizationStructureEditorProps, {}>(
   withRouter,
   withOrganizationStructure,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<OrganizationStructureEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<OrganizationStructureEditorProps, {}>(lifecycles),

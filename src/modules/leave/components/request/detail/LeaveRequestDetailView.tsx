@@ -1,4 +1,4 @@
-// import { AccountLeave } from '@account/components/leave/AccountLeave';
+import { AccountLeave } from '@account/components/leave/AccountLeave';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
@@ -21,11 +21,13 @@ export const LeaveRequestDetailView: React.SFC<LeaveRequestDetailProps> = props 
     }}
     state={props.leaveRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILeaveDetail) => (
+    primary={(data: ILeaveDetail) => ([
       <LeaveInformation data={data} />
-    )}
+    ])}
     secondary={(data: ILeaveDetail) => ([
-      // <AccountLeave employeeUid={data.employeeUid}/>,
+      <AccountLeave employeeUid={data.employeeUid}/>
+    ])}
+    tertiary={(data: ILeaveDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}
     appBarComponent={

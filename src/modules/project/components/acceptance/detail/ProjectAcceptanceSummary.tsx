@@ -78,7 +78,7 @@ const summaryView: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.registration.field.employeeUid)}
+        label={props.intl.formatMessage(projectMessage.registration.field.ownerEmployeeUid)}
         value={props.data.owner ? props.data.owner.fullName : 'N/A'}
       />
     </Grid>

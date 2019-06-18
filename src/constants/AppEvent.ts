@@ -1,4 +1,5 @@
 enum AppEvent {
+  onFoundUpdate = 'found.update',
   onChangeTheme = 'theme.change',
   onChangeRoute = 'route.change',
   onChangePage = 'page.change',
@@ -9,6 +10,7 @@ enum AppEvent {
   onChangeCustomComponent = 'custom.change',
   onChangeDrawerLeft = 'drawer.left',
   onChangeDrawerRight = 'drawer.right',
+  onFlashMessage = 'flash.message'
 }
 
 export default AppEvent;

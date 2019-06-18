@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IPositionPostRequest } from '@lookup/classes/queries';
 import { IPosition } from '@lookup/classes/response';
-import { PositionAction as Action } from '@lookup/store/actions';
+import { LookupPositionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IPositionPostRequest, IPosition> = {

@@ -1,3 +1,5 @@
+import { IEmployee } from '@account/classes/response';
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
@@ -7,6 +9,7 @@ import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCu
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -29,7 +32,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify'>;
+export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'employeeUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify' | 'positionUid' | 'start' | 'end'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -41,6 +44,10 @@ interface IOwnOption {
 interface IOwnState {
   completionStatus: ICollectionValue[];
 
+  // filter employee
+  isFilterEmployeeOpen: boolean;
+  filterEmployee?: IEmployee;
+  
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -52,6 +59,14 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
+
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
 
   // filter completion
   isFilterCompletionOpen: boolean;
@@ -65,6 +80,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // main filter
   setFilterReset: StateHandler<IOwnState>;
 
+  // filter Employee
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;
+
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
@@ -76,6 +95,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
@@ -89,6 +116,12 @@ interface IOwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+
+  // filter Employee
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (data?: IEmployee) => void;
+  handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnClose: () => void;
 
   // filter customer
   handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -107,6 +140,18 @@ interface IOwnHandler {
   handleFilterStatusOnSelected: (data: ISystemList) => void;
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
+
+  // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
 
   // filter completion
   handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -127,14 +172,18 @@ export type TimesheetApprovalHistoryListFilterProps
   & WithUser
   & WithLookupCustomer
   & WithCommonSystem
+  & WithAccountEmployee
   & InjectedIntlProps;
 
 const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = (props: TimesheetApprovalHistoryListFilterProps): IOwnState => ({
   completionStatus,
+  isFilterEmployeeOpen: false,
   isFilterCustomerOpen: false,
   isFilterActivityTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify
@@ -143,11 +192,23 @@ const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = 
 const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
+    filterEmployee: undefined,
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
+    filterStart: undefined,
+    filterEnd: undefined,
     filterCompletion: undefined,
     filterNotify: undefined
+  }),
+
+  // filter Employee
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
+    isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
+  }),
+  setFilterEmployee: (prevState: IOwnState) => (data?: IEmployee) => ({
+    isFilterEmployeeOpen: false,
+    filterEmployee: data
   }),
 
   // filter customer
@@ -177,6 +238,24 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwn
     filterStatus: data
   }),
 
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: () => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
+  }),
+
   // filter completion
   setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
     isFilterCompletionOpen: !prevState.isFilterCompletionOpen
@@ -199,12 +278,29 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
   },
   handleFilterOnApply: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
+      employeeUid: props.filterEmployee && props.filterEmployee.uid,
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      start: props.filterStart,
+      end: props.filterEnd,
       isNotify: props.filterNotify
     });
+  },
+
+  // filter Employee
+  handleFilterEmployeeVisibility: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
+  },
+  handleFilterEmployeeOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (data?: IEmployee) => {
+    props.setFilterEmployee(data);
+  },
+  handleFilterEmployeeOnClear: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterEmployee();
+  },
+  handleFilterEmployeeOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
   },
 
   // filter customer
@@ -249,6 +345,40 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
     props.setFilterStatusVisibility();
   },
 
+  // filter Start
+  handleFilterStartVisibility: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (data: string) => {
+    props.setFilterStart(data);
+    if (moment(data).isAfter(props.filterEnd)) {
+      props.setFilterEnd();
+    }
+  },
+  handleFilterStartOnClear: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStart();
+  },
+  handleFilterStartOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (data: string) => {
+    props.setFilterEnd(data);
+    if (moment(data).isBefore(props.filterStart)) {
+      props.setFilterStart();
+    }
+  },
+  handleFilterEndOnClear: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEnd();
+  },
+  handleFilterEndOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
+    props.setFilterEndVisibility();
+  },
+
   // filter completion
   handleFilterCompletionVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
@@ -273,7 +403,18 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProp
   componentDidMount() { 
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { customerUid, activityType, statusType, status } = this.props.initialProps;
+      const { customerUid, activityType, statusType, status, start, end, employeeUid } = this.props.initialProps;
+
+      // filter employee
+      if (employeeUid) {
+        const { response } = this.props.accountEmployeeState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === employeeUid);
+
+          this.props.setFilterEmployee(selected);
+        }
+      }
 
       // filter customer
       if (customerUid) {
@@ -314,6 +455,16 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListFilterProp
           
         this.props.setFilterCompletion(selected);
       }
+
+      // filter start
+      if (start) {
+        this.props.setFilterStart(start);
+      }
+
+      // filter end
+      if (end) {
+        this.props.setFilterEnd(end);
+      }
     }
   }
 };
@@ -323,6 +474,7 @@ export const TimesheetApprovalHistoryListFilter = compose<TimesheetApprovalHisto
   withUser,
   withLookupCustomer,
   withCommonSystem,
+  withAccountEmployee,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

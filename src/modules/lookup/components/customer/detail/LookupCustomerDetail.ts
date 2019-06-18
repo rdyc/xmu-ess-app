@@ -196,7 +196,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = 
       });
 
       props.history.push(next, { 
-        uid: customerUid 
+        uid: customerUid,
+        companyUid: response.data.companyUid 
       });
     }
   },

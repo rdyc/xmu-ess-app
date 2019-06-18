@@ -3,13 +3,11 @@ import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-import { flattenObject } from '@utils/flattenObject';
-import { SubmissionError } from 'redux-form';
+import { handleResponse } from '@layout/helper/handleResponse';
 import {
   AnnouncementAction as Action,
   announcementGetDispose,
   announcementGetError,
-  announcementGetRequest,
   announcementGetSuccess,
   announcementPatchError,
   announcementPatchRequest,
@@ -17,7 +15,7 @@ import {
 } from '../actions/announcementActions';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof announcementGetRequest>) => {
+  const worker = () => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/announcement/slider`,
@@ -64,16 +62,9 @@ function* watchPatchRequest() {
         put(announcementPatchError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = { 
-            // information -> based form section name
-            information: flattenObject(response.body.errors) 
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(announcementPatchError(error.message)),

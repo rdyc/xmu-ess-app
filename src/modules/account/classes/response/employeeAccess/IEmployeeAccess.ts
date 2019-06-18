@@ -4,22 +4,22 @@ import { ILookupCompany, ILookupPosition, ILookupRole, ILookupRoleMenuList } fro
 
 export interface IEmployeeAccess {
   uid: string;
-  companyUid: string | null;
-  company: ILookupCompany | null;
-  roleUid: string | null;
-  role: ILookupRole | null;
-  positionUid: string | null;
-  position: ILookupPosition | null;
-  menus: ILookupRoleMenuList[] | null;
-  unitType: string | null;
-  unit: ICommonSystem | null;
-  departmentType: string | null;
-  department: ICommonSystem | null;
-  levelType: string | null;
-  level: ICommonSystem | null;
-  start: string | null;
-  end: string | null;
+  companyUid: string;
+  company?: ILookupCompany;
+  roleUid: string;
+  role?: ILookupRole;
+  positionUid: string;
+  position?: ILookupPosition;
+  menus?: ILookupRoleMenuList[];
+  unitType?: string;
+  unit?: ICommonSystem;
+  departmentType?: string;
+  department?: ICommonSystem;
+  levelType: string;
+  level?: ICommonSystem;
+  start: string;
+  end?: string;
   isActive: boolean;
   isExpired: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

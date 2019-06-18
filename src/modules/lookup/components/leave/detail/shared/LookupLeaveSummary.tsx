@@ -39,6 +39,7 @@ const lookupLeaveSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.leave.field.name)}
         value={props.data.name || 'N/A'}
+        multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}

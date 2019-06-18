@@ -32,10 +32,17 @@ export const travelRequestOption = defineMessages({
 
 // confimation
 export const travelRequestConfirm = defineMessages({
+  newTitle: { id: `${prefix}.confirm.new.title` },
+  newMessage: { id: `${prefix}.confirm.new.message` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
   addSettlementTitle: { id: `${prefix}.confirm.addSettlement.title` },
   addSettlementDescription: { id: `${prefix}.confirm.addSettlement.description` },
+});
+
+// submission
+export const travelRequestSubmission = defineMessages({
+  form: { id: `${prefix}.submission.form` },
 });
 
 // section
@@ -122,6 +129,9 @@ export const travelRequestField = defineMessages({
   totalHotelCost: { id: `${prefix}.field.totalHotelCost` },
 
   //// item
+
+  itemsMinimum: { id: `${prefix}.field.items.minimum` },
+  itemUid: { id: `${prefix}.field.item.uid` },
   
   itemEmployeeUid: { id: `${prefix}.field.item.itemEmployeeUid` },
   itemEmployeeUidRequired: { id: `${prefix}.field.item.itemEmployeeUid.required` },

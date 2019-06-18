@@ -23,7 +23,7 @@ export type LookupCustomerFormData = {
     contactTitle: string | null | undefined; 
     contactPersonAdditional: string | null | undefined;
     contactTitleAdditional: string | null | undefined; 
-    isActive: boolean | false; 
+    isActive: boolean | false | null | undefined; 
   }
 };
 

@@ -1,7 +1,9 @@
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { InputDateWithValue } from '@layout/components/input/date';
 import { layoutMessage } from '@layout/locales/messages';
-import { ModuleDefinitionType } from '@layout/types';
+import { GlobalFormat, ModuleDefinitionType } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -16,8 +18,10 @@ import {
   ListItemText,
   Switch,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
@@ -52,7 +56,14 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
           </Typography>
 
           {
-            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterCompletion || props.filterNotify || props.filterProject) &&
+            (props.filterCustomer || 
+              props.filterEmployee || 
+              props.filterActivityType || 
+              props.filterStatus || 
+              props.filterStart || props.filterEnd || 
+              props.filterCompletion || 
+              props.filterNotify || 
+              props.filterProject) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -61,6 +72,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
           <Button
             color="inherit"
             onClick={props.handleFilterOnApply}
+            disabled={(props.filterStart && !props.filterEnd ) || (!props.filterStart && props.filterEnd) ? true : false }
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
@@ -71,6 +83,27 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
+
+        <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.employee)}
+              secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterEmployee &&
+                <IconButton onClick={props.handleFilterEmployeeOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterEmployeeVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
           <ListItem button onClick={props.handleFilterCustomerVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
@@ -84,7 +117,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
                 </IconButton>
               }
 
-              <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -104,7 +137,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
                 </IconButton>
               }
 
-              <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <IconButton onClick={props.handleFilterActivityTypeVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -131,6 +164,60 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
           </ListItem>
           <Divider />
 
+          <ListItem button onClick={props.handleFilterStartVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.start)}
+              secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterStart &&
+                <IconButton onClick={props.handleFilterStartOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+              {
+                props.filterEnd && !props.filterStart &&
+                <Tooltip title={props.intl.formatMessage(timesheetMessage.entry.field.startRequired)}>
+                  <IconButton onClick={props.handleFilterStartVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
+              <IconButton onClick={props.handleFilterStartVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterEndVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.end)}
+              secondary={props.filterEnd && props.intl.formatDate(props.filterEnd, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterEnd &&
+                <IconButton onClick={props.handleFilterEndOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+              {
+                props.filterStart && !props.filterEnd &&
+                <Tooltip title={props.intl.formatMessage(timesheetMessage.entry.field.endRequired)}>
+                  <IconButton onClick={props.handleFilterEndVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
+              <IconButton onClick={props.handleFilterEndVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+          
           {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
@@ -169,6 +256,20 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
       </DialogContent>
     </Dialog>
 
+    <AccountEmployeeDialog
+      isOpen={props.isFilterEmployeeOpen}
+      title={props.intl.formatMessage(timesheetMessage.entry.field.employee)}
+      value={props.filterEmployee && props.filterEmployee.uid}
+      filter={{
+        companyUids: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'fullName',
+        direction: 'ascending'
+      }}
+      hideBackdrop={true}
+      onSelected={props.handleFilterEmployeeOnSelected}
+      onClose={props.handleFilterEmployeeOnClose}
+    />
+
     <LookupCustomerDialog
       isOpen={props.isFilterCustomerOpen}
       value={props.filterCustomer && props.filterCustomer.uid}
@@ -201,6 +302,24 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
+      val={props.filterStart}
+      onSelected={props.handleFilterStartOnSelected}
+      isOpen={props.isFilterStartOpen}
+      onClose={props.handleFilterStartOnClose}
+      // disableFuture={true}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
+      val={props.filterEnd}
+      onSelected={props.handleFilterEndOnSelected}
+      isOpen={props.isFilterEndOpen}
+      onClose={props.handleFilterEndOnClose}
+      // disableFuture={true}
     />
 
     <DialogValue

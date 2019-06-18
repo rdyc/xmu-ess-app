@@ -38,6 +38,16 @@ export const TimesheetApprovalListView: React.SFC<TimesheetApprovalListProps> = 
       summaryComponent={(item: ITimesheet) => ( 
         <TimesheetEntrySumarry data={item} />
       )}
+
+      listHasColor={(item: ITimesheet) => (
+        item.isHoliday || item.isWeekend ? true : false
+      )}
+      
+      listColor={{
+        background: props.classes.isTrHolidayBackground,
+        color: props.classes.colorWhite
+      }}
+      
       actionComponent={(item: ITimesheet) => (
         <React.Fragment>
           <Button 
@@ -89,10 +99,13 @@ export const TimesheetApprovalListView: React.SFC<TimesheetApprovalListProps> = 
     <TimesheetApprovalListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
+        employeeUid: props.employeeUid,
         customerUid: props.customerUid,
         activityType: props.activityType,
         statusType: props.statusType,
         status: props.status,
+        start: props.start,
+        end: props.end,
         isNotify: props.isNotify
       }}
       onClose={props.handleFilterVisibility}

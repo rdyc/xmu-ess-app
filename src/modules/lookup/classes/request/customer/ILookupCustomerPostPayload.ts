@@ -16,5 +16,5 @@ export interface ILookupCustomerPostPayload extends IBasePayload {
   contactPersonAdditional?: string;
   contactTitle?: string;
   contactTitleAdditional?: string;
-  isActive: boolean;
+  isActive?: boolean;
 }
