@@ -42,6 +42,7 @@ export const ProjectRegistrationContainerFormView: React.SFC<ProjectRegistration
       isCurrencyIdr={formIsCurrencyIDR}
       isRequestor={isRequestor}
       isAdmin={isAdmin}
+      formIsPresales={formIsPresales}
       formCurrencyType={formCurrencyType}
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}

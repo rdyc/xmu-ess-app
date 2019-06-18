@@ -21,8 +21,10 @@
   
   "purchase.request.section.info.title": "Request Detail",
   "purchase.request.section.info.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.request.section.submit": "Submit Purchase Request",
   "purchase.settlement.section.info.title": "Settlement Detail",
   "purchase.settlement.section.info.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.settlement.section.submit": "Submit Purchase Settlement",
   
   "purchase.item.purchaseTitle": "Requested Item",
   "purchase.item.purchaseSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -30,15 +32,18 @@
   "purchase.item.settlementTitle": "Settled Item",
   "purchase.item.settlementSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "purchase.item.uid": "Item ID: ",
-  "purchase.item.description": "Description: ",
-  "purchase.item.request": "Request Value:",
-  "purchase.item.request.required": "Value needed",
-  "purchase.item.request.placeholder": "Fill Request Value: ",
-  "purchase.item.actual": "Actual Value: ",
+  "purchase.item.uid": "Item ID ",
+  "purchase.item.description": "Description ",
+  "purchase.item.description.required": "Description is required",
+  "purchase.item.description.placeholder": "Type any description",
+  "purchase.item.request": "Request Value",
+  "purchase.item.request.required": "Request value is required",
+  "purchase.item.request.placeholder": "Fill Request Value",
+  "purchase.item.actual": "Actual Value ",
   "purchase.item.actual.required": "Value neeeded",
-  "purchase.item.actual.placeholder": "Fill Actual Value: ",
-  "purchase.item.variance": "Difference: ",
+  "purchase.item.actual.placeholder": "Fill Actual Value",
+  "purchase.item.variance": "Difference ",
+  "purchase.item.itemsMinimum": "Must have at least one item",
   
   "purchase.confirm.create.title": "Create Confirmation",
   "purchase.confirm.create.description": "You're about to submit a new purchase request for the selected project. Do you want to continue?",
@@ -58,6 +63,7 @@
   "purchase.field.information.projectUid.required": "Project name is required",
   "purchase.field.information.projectUid.placeholder": "Type a purchase name",
   "purchase.field.information.notes": "Notes",
+  "purchase.field.information.notes.required": "Notes is required",
   "purchase.field.information.notes.placeholder": "Type a note",
   "purchase.field.information.status": "Status",
   "purchase.field.information.balanceDue": "Balance Left",
@@ -104,11 +110,11 @@
   "purchase.field.isNeedAdjust": "Need for Adjustment Only",
   "purchase.field.isSettlement": "Ready to Settle Only",
   "purchase.field.statusType": "Status",
-  "purchase.field.completion": "Completion",
+  "purchase.field.completion": "Approval Completion",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
-  "purchase.action.add": "Add",
+  "purchase.action.add": "Add Item",
 
   "purchase.message.request.empty.purchaseUid": "Purchase ID isn't available",
   "purchase.message.request.item.duplication": "Item(s) already added",
@@ -129,9 +135,11 @@
 
 
   "purchase.form.request.editTitle": "Edit Request",
+  "purchase.form.request.editSubTitle": "Edit Request",
   "purchase.form.request.newTitle": "Create New Request",
+  "purchase.form.request.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.form.settlement.editTitle": "Edit Settlement",
-  "purchase.form.settlement.newTitle": "Make Settlement",
+  "purchase.form.settlement.newTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "purchase.form.approval.newTitle": "Purchase Approval Form",
   "purchase.form.approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

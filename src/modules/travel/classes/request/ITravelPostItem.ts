@@ -2,14 +2,14 @@ export interface ITravelPostItem {
   employeeUid: string;
   isRoundTrip: boolean;
   transportType: string;
-  from?: string;
+  from: string;
   departureDate: string;
-  destination?: string;
+  destination: string;
   returnDate: string;
-  costTransport: number;
+  costTransport?: number;
   isTransportByCompany: boolean;
   hotel?: string;
-  costHotel: number;
+  costHotel?: number;
   isHotelByCompany: boolean;
   notes?: string;
 }

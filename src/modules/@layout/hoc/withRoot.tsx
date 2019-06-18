@@ -106,6 +106,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
+  handleOnFoundUpdate: (event: CustomEvent) => void;
   handleOnChangeTheme: (event: CustomEvent) => void;
   handleOnChangeAnchor: (event: CustomEvent) => void;
 }
@@ -132,6 +133,10 @@ const stateUpdaters: StateUpdaters<LayoutThemeProps, IOwnState, IOwnStateUpdater
 };
 
 const handlerCreators: HandleCreators<LayoutThemeProps, IOwnHandler> = {
+  handleOnFoundUpdate: (props: LayoutThemeProps) => (event: CustomEvent) => {
+    // save local update status
+    store.set(AppStorage.Update, true);
+  },
   handleOnChangeTheme: (props: LayoutThemeProps) => (event: CustomEvent) => {
     const direction = props.direction;
     const type = props.theme.palette.type === 'light' ? 'dark' : 'light';
@@ -162,6 +167,7 @@ const handlerCreators: HandleCreators<LayoutThemeProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<LayoutThemeProps, IOwnState> = {
   componentWillMount() {
+    addEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
     addEventListener(AppEvent.onChangeTheme, this.props.handleOnChangeTheme);
     addEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
   },
@@ -177,6 +183,7 @@ const lifecycles: ReactLifeCycleFunctions<LayoutThemeProps, IOwnState> = {
     }
   },
   componentWillUnmount() {
+    removeEventListener(AppEvent.onFoundUpdate, this.props.handleOnFoundUpdate);
     removeEventListener(AppEvent.onChangeTheme, this.props.handleOnChangeTheme);
     removeEventListener(AppEvent.onChangeAnchor, this.props.handleOnChangeAnchor);
   }

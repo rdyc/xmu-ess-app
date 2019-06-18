@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
-import { Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { RequestForm, TravelRequestFormData } from './forms/RequestForm';
 import { RequestEditorProps } from './RequestEditor';
 
@@ -45,9 +45,32 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       comment: undefined,
       total: 0,
     },
-    item: {
-      items: []
-    }
+    items: [
+      {
+        uid: undefined,
+        employeeUid: '',
+        fullName: '',
+        transportType: '',
+        isRoundTrip: false,
+        from: '',
+        destination: '',
+        departureDate: '',
+        returnDate: '',
+        costTransport: 0,
+        isTransportByCompany: false,
+        hotel: '',
+        costHotel: 0,
+        isHotelByCompany: false,
+        notes: '',
+        duration: 0,
+        amount: 0,            
+        currencyUid: '',
+        currencyRate: 0,
+        diemValue: 0 ,
+      }
+    ]
+    // item: {
+    // }
   };
 
   const dateFormatEditor = (date: string): string => {
@@ -75,11 +98,22 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
 
   // modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
 
@@ -104,10 +138,9 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.total = data.total;
 
       if (data.items) {
-        
-        data.items.forEach(item =>
-          
-          initialValues.item.items.push({
+        initialValues.items = [];
+        data.items.forEach(item =>       
+          initialValues.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
             fullName: item.employee ? item.employee.fullName : 'N/A',
@@ -115,7 +148,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: dateFormatEditor (item.departureDate),
+            departureDate: dateFormatEditor(item.departureDate),
             returnDate: dateFormatEditor(item.returnDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,

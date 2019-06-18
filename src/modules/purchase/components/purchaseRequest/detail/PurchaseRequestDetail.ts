@@ -194,7 +194,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, IOwnHandler> =
       props.setDefault();
 
       props.history.push(next, { 
-        uid: purchaseUid 
+        uid: purchaseUid
       });
     }
   },
@@ -218,10 +218,12 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, IOwnState>
       const { isLoading, response } = this.props.purchaseRequestState.detail;
 
       // find status type
-      let _statusType: string | undefined = undefined;
+      let _statusType: string | undefined;
+      let _settlementStatusType: boolean | undefined;
 
       if (response && response.data) {
         _statusType = response.data.statusType;
+        _settlementStatusType = response.data.settlement;
       }
 
       // checking status types
@@ -247,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, IOwnState>
           id: PurchaseUserAction.Settle,
           name: this.props.intl.formatMessage(purchaseMessage.action.settle),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [WorkflowStatusType.Approved]),
+          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && !_settlementStatusType || false,
         },
       ];
 

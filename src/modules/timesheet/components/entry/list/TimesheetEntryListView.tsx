@@ -107,9 +107,12 @@ export const TimesheetEntryListView: React.SFC<TimesheetEntryListProps> = props 
       isOpen={props.isFilterOpen}
       initialProps={{
         customerUid: props.customerUid,
+        projectUid: props.projectUid,
         activityType: props.activityType,
         statusType: props.statusType,
         status: props.status,
+        start: props.start,
+        end: props.end,
         isRejected: props.isRejected,
       }}
       onClose={props.handleFilterVisibility}

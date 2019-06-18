@@ -26,6 +26,8 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { LookupCompanyFormData } from './form/LookupCompanyForm';
 import { LookupCompanyEditorView } from './LookupCompanyEditorView';
 
@@ -60,6 +62,7 @@ export type CompanyEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -242,6 +245,7 @@ export default compose<CompanyEditorProps, {}>(
   withRouter,
   withLookupCompany,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<CompanyEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<CompanyEditorProps, {}>(lifecycles),

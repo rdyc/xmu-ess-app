@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeTrainingContainerFormView } from './AccountEmployeeTrainingContainerFormView';
 
 const formName = 'accountEmployeeTraining';
@@ -29,6 +29,7 @@ interface OwnProps {
 
 interface FormValueProps {
   formName: string;
+  formStart?: string | undefined;
 }
 
 export type AccountEmployeeTrainingContainerFormProps
@@ -36,9 +37,13 @@ export type AccountEmployeeTrainingContainerFormProps
   & FormValueProps
   & OwnProps;
 
-const mapStateToProps = (): FormValueProps => {
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const start = selector(state, 'training.start');
   return {
     formName,
+    formStart: start
   };
 };
 

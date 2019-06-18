@@ -20,9 +20,9 @@ export const LookupMileageExceptionDetailView: React.SFC<LookupMileageExceptionD
     }}
     state={props.mileageExceptionState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IMileageExceptionDetail) => (
+    primary={(data: IMileageExceptionDetail) => ([
       <LookupMileageExceptionInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

@@ -6,12 +6,12 @@ import { AccountEmployeeTrainingContainerFormProps } from './AccountEmployeeTrai
 import { AccountEmployeeTrainingDetailForm } from './AccountEmployeeTrainingDetailForm';
 
 export const AccountEmployeeTrainingContainerFormView: React.SFC<AccountEmployeeTrainingContainerFormProps> = props => {
-  const { formMode, initialValues } = props;
+  const { formMode, initialValues, formStart } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.training);
 
   const componentTraining = (context: BaseFieldsProps) => (
-    <AccountEmployeeTrainingDetailForm formMode={formMode} context={context} />
+    <AccountEmployeeTrainingDetailForm formMode={formMode} context={context} start={formStart}/>
   );
 
   const render = (

@@ -13,8 +13,10 @@ import {
   projectAssignmentOption,
   projectAssignmentPage,
   projectAssignmentSection,
+  projectAssignmentSubmission,
 } from './projectAssignmentMessage';
 import {
+  projectAdministrationPage,
   projectRegistrationConfirm,
   projectRegistrationField,
   projectRegistrationFieldHelperFor,
@@ -22,8 +24,10 @@ import {
   projectRegistrationOption,
   projectRegistrationPage,
   projectRegistrationSection,
+  projectRegistrationSubmission,
 } from './projectRegistrationMessage';
 import {
+  projectSiteConfirm,
   projectSiteField,
   projectSiteFieldHelperFor,
   projectSiteMessage,
@@ -36,11 +40,15 @@ export const projectMessage = {
   registration: {
     page: projectRegistrationPage,
     option: projectRegistrationOption,
+    submission: projectRegistrationSubmission,
     confirm: projectRegistrationConfirm,
     section: projectRegistrationSection,
     field: projectRegistrationField,
     fieldFor: projectRegistrationFieldHelperFor,
     message: projectRegistrationMessage
+  },
+  administration: {
+    page: projectAdministrationPage
   },
   approval: {
     page: projectApprovalPage,
@@ -52,12 +60,14 @@ export const projectMessage = {
     section: projectSiteSection,
     field: projectSiteField,
     fieldFor: projectSiteFieldHelperFor,
+    confirm: projectSiteConfirm,
     message: projectSiteMessage
   },
   assignment: {
     page: projectAssignmentPage,
     section: projectAssignmentSection,
     option: projectAssignmentOption,
+    submission: projectAssignmentSubmission,
     field: projectAssignmentField,
     fieldFor: projectAssignmentFieldHelperFor,
     confirm: projectAssignmentConfirm,

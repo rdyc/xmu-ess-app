@@ -4,14 +4,8 @@ const prefix = 'project.site';
 
 // page
 export const projectSitePage = defineMessages({
-  listTitle: { id: `${prefix}.page.list.title` },
-  listSubHeader: { id: `${prefix}.page.list.subHeader` },
-  newTitle: { id: `${prefix}.page.new.title` },
-  newSubHeader: { id: `${prefix}.page.new.subHeader` },
-  modifyTitle: { id: `${prefix}.page.modify.title` },
-  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
-  deleteTitle: { id: `${prefix}.page.delete.title` },
-  deleteSubHeader: { id: `${prefix}.page.delete.subHeader` },
+  title: { id: `${prefix}.page.title` },
+  subHeader: { id: `${prefix}.page.subHeader` },
 });
 
 // option
@@ -27,19 +21,22 @@ export const projectSiteSection = defineMessages({
   itemSubHeader: { id: `${prefix}.section.item.subHeader` },
 });
 
+// confirm
+export const projectSiteConfirm = defineMessages({
+  patchTitle: { id: `${prefix}.confirm.patch.title` },
+  patchContent: { id: `${prefix}.confirm.patch.content` },
+});
+
 // messages
 export const projectSiteMessage = defineMessages({
-  emptyProps: { id: `${prefix}.message.emptyProps` },
-  createSuccess: { id: `${prefix}.message.create.success` },
-  createFailure: { id: `${prefix}.message.create.failure` },
-  updateSuccess: { id: `${prefix}.message.update.success` },
-  updateFailure: { id: `${prefix}.message.update.failure` },
-  deleteSuccess: { id: `${prefix}.message.delete.success` },
-  deleteFailure: { id: `${prefix}.message.delete.failure` },
+  patchSuccess: { id: `${prefix}.message.patch.success` },
+  patchFailure: { id: `${prefix}.message.patch.failure` }
 });
 
 // fields
 export const projectSiteField = defineMessages({
+  uid: { id: `${prefix}.field.uid` },
+
   name: { id: `${prefix}.field.name` },
   nameRequired: { id: `${prefix}.field.name.required` },
   namePlaceholder: { id: `${prefix}.field.name.placeholder` },
@@ -51,6 +48,8 @@ export const projectSiteField = defineMessages({
   value: { id: `${prefix}.field.value` },
   valueRequired: { id: `${prefix}.field.value.required` },
   valuePlaceholder: { id: `${prefix}.field.value.placeholder` },
+
+  itemsMinimum: { id: `${prefix}.field.itemsMinimum` }
 });
 
 export const projectSiteFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

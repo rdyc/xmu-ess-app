@@ -28,13 +28,13 @@ const lookupcustomerInformation: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.customer.field.uid)}
-        value={props.data.name}
+        label={props.intl.formatMessage(lookupMessage.customer.field.companyUid)}
+        value={props.data.company ? props.data.company.name : props.data.companyUid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.customer.field.companyUid)}
-        value={props.data.company ? props.data.company.name : props.data.companyUid}
+        label={props.intl.formatMessage(lookupMessage.customer.field.name)}
+        value={props.data.name}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -83,12 +83,6 @@ const lookupcustomerInformation: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(lookupMessage.customer.field.emailAddress)}
         value={props.data.email ? props.data.email : 'N/A'}
       />
-      <FormControlLabel
-        control={
-          <Checkbox checked={props.data.isActive} />
-        }
-        label={props.intl.formatMessage(lookupMessage.customer.field.isActive)}
-      />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.customer.field.contactPerson)}
@@ -102,7 +96,18 @@ const lookupcustomerInformation: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.customer.field.contactPersonAdditional)}
+        value={props.data.contactPersonAdditional ? props.data.contactPersonAdditional : 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.customer.field.contactTitleAdditional)}
         value={props.data.contactTitleAdditional ? props.data.contactTitleAdditional : 'N/A'}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox checked={props.data.isActive} />
+        }
+        label={props.intl.formatMessage(lookupMessage.customer.field.isActive)}
       />
     </CardContent>
   </Card>

@@ -19,6 +19,8 @@ import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -76,6 +78,7 @@ export type ExpenseRequestEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -312,7 +315,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     this.props.masterPage.changePage({
       uid: AppMenu.ExpenseRequest,
       parentUid: AppMenu.Expense,
-      parentUrl: '/project/request',
+      parentUrl: '/expense/requests',
       title: intl.formatMessage(view.title),
     });
   },
@@ -336,6 +339,7 @@ export default compose<ExpenseRequestEditorProps, {}>(
   withExpenseRequest,
   withLookupSystemLimit,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<ExpenseRequestEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<ExpenseRequestEditorProps, {}>(lifecycles),

@@ -9,12 +9,12 @@ import { TimesheetApprovalList } from './approval/timesheetApproval/list/Timeshe
 import { TimesheetApprovalHistoryDetail } from './approval/timesheetApprovalHistory/detail/TimesheetApprovalHistoryDetail';
 import { TimesheetApprovalHistoryList } from './approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryList';
 import { TimesheetEntryDetail } from './entry/detail/TimesheetEntryDetail';
-import TimesheetEntryEditor from './entry/editor/TimesheetEntryEditor';
+import { TimesheetEntryForm } from './entry/form/TimesheetEntryForm';
 import { TimesheetEntryList } from './entry/list/TimesheetEntryList';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={TimesheetEntryEditor} />
+    <Route path={`${props.match.path}/form`} component={TimesheetEntryForm} />
     <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetEntryDetail} />
     <Route path={`${props.match.path}`} component={TimesheetEntryList} />
   </Switch>

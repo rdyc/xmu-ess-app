@@ -7,6 +7,7 @@ import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   data: ILeave;
@@ -41,6 +42,7 @@ const leaveSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(leaveMessage.request.field.regularType)}
         value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'Regular Type' : 'Regular Type'}
+        multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -52,10 +54,19 @@ const leaveSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(leaveMessage.request.field.reason)}
         value={props.data.reason || 'N/A'}
+        multiline
       />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
+      {
+        !isNullOrUndefined(props.data.rejectedReason) ?
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.rejectedReason)}
+          value={props.data.rejectedReason || 'N/A'}
+        /> : ''
+      }
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(leaveMessage.request.field.start)}

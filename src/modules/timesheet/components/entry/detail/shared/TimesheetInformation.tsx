@@ -2,7 +2,8 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField, WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
@@ -14,6 +15,7 @@ interface OwnProps {
 }
 type AllProps
   = OwnProps
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const timesheetInformation: React.SFC<AllProps> = props => {
@@ -36,8 +38,11 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          inputProps={{
+            className: props.data.isHoliday || props.data.isWeekend ? props.classes.colorRed : ''
+          }}
           label={props.intl.formatMessage(timesheetMessage.entry.field.date)}
-          value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
+          value={props.intl.formatDate(props.data.date, GlobalFormat.DateWithDay)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -152,4 +157,4 @@ const timesheetInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const TimesheetInformation = compose<AllProps, OwnProps>(injectIntl)(timesheetInformation);
+export const TimesheetInformation = compose<AllProps, OwnProps>(injectIntl, withStyles(styles))(timesheetInformation);

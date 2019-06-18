@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
@@ -17,10 +18,10 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.ProjectRegistrationRequest,
+        uid: AppMenu.ProjectAdmnistration,
         parentUid: AppMenu.ProjectRegistration,
-        title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
-        description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader)
+        title: props.intl.formatMessage(projectMessage.administration.page.listTitle),
+        description: props.intl.formatMessage(projectMessage.administration.page.listSubHeader)
       }}
 
       // state & fields
@@ -41,6 +42,17 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
       )}
       actionComponent={(item: IProject) => (
         <React.Fragment>
+          {
+            props.isAdmin &&
+            item.statusType ===  WorkflowStatusType.Approved && 
+            <Button 
+              size="small"
+              color="secondary"
+              onClick={() => props.history.push(`/project/administrations/form`, { uid: item.uid, isAdministration : true })}
+            >
+              {props.intl.formatMessage(layoutMessage.action.modify)}
+            </Button>
+          }
           <Button 
             size="small"
             color="secondary"
@@ -91,9 +103,9 @@ export const ProjectAdministrationListView: React.SFC<ProjectAdministrationListP
     <ProjectAdministrationListFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        customerUid: props.customerUid,
-        projectType: props.projectType,
-        statusType: props.statusType,
+        customerUids: props.customerUids,
+        projectTypes: props.projectTypes,
+        statusTypes: props.statusTypes,
         status: props.status,
         isRejected: props.isRejected,
         isNewOwner: props.isNewOwner

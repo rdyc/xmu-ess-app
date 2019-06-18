@@ -2,21 +2,16 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import { RequestFormProps } from '@travel/components/request/editor/forms/RequestForm';
 import * as React from 'react';
-import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
+import { BaseFieldsProps, FieldArray, Fields, FormSection } from 'redux-form';
 import { RequestDetailForm } from './RequestDetailForm';
-import { RequestItemForm } from './RequestItemForm';
+import { RequestItemFormView } from './RequestItemFormView';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
     formMode, customerUidValue, projectUidValue, 
-    destinationtypeValue, isProjectSelected, diemRequest,
+    destinationtypeValue, isProjectSelected,
     TotalCost
   } = props;
-  
-  const diem = (diemRequest) ? 
-                  diemRequest.filter(item => item.destinationType === destinationtypeValue &&
-                    item.projectType === props.projectType)[0] 
-                  : undefined;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
@@ -33,17 +28,6 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       startDate={props.startDate}
       isGeneralPurpose={props.isGeneralPurpose}
 
-    />    
-  );
-
-  const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
-    <RequestItemForm 
-      context={context}
-      diemRequest={diem}
-      destinationTypeValue={destinationtypeValue}
-      projectTypeValue={props.projectType}
-      minDate={props.startDate}
-      maxDate={props.endDate}
     />    
   );
 
@@ -66,12 +50,13 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <FormSection name="item">
+          {/* <FormSection name="item"> */}
             <FieldArray 
               name="items" 
-              component={componentTravelItem}
+              props={props}
+              component={RequestItemFormView}
             />
-          </FormSection>
+          {/* </FormSection> */}
         </Grid>
         <Grid item xs={12} md={4}>
           <Submission 

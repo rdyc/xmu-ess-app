@@ -2,15 +2,15 @@ import AppMenu from '@constants/AppMenu';
 import { ExpenseApprovalDetail } from '@expense/components/approval/detail/ExpenseApprovalDetail';
 import { ExpenseApprovalList } from '@expense/components/approval/list/ExpenseApprovalList';
 import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
-import RequestEditor from '@expense/components/request/editor/ExpenseRequestEditor';
 import { ExpenseRequestList } from '@expense/components/request/list/ExpenseRequestList';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { ExpenseRequestForm } from './request/form/ExpenseRequestForm';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={RequestEditor} />
+    <Route path={`${props.match.path}/form`} component={ExpenseRequestForm} />
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseRequestDetail} />
     <Route path={`${props.match.path}`} component={ExpenseRequestList} />
   </Switch>

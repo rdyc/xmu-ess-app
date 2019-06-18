@@ -20,9 +20,9 @@ export const LookupSystemLimitDetailView: React.SFC<SystemLimitDetailProps> = pr
     }}
     state={props.systemLimitState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ISystemLimitDetail) => (
+    primary={(data: ISystemLimitDetail) => ([
       <LookupSystemLimitInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

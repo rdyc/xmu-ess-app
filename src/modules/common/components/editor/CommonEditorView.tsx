@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { CommonEditorProps } from './CommonEditor';
 import { CommonForm, CommonFormData } from './forms/CommonForm';
 
 export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl, match,
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, match,
     submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.commonSystemState.detail;
 
@@ -44,11 +44,22 @@ export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          {intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     

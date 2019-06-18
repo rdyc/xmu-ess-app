@@ -80,10 +80,13 @@ const createProps: mapper<TimesheetApprovalHistoryListProps, IOwnState> = (props
   } else {
     // fill from previous request if any
     if (request && request.filter) {
+      state.employeeUid = request.filter.employeeUid,
       state.customerUid = request.filter.customerUid,
       state.activityType = request.filter.activityType,
       state.statusType = request.filter.statusType,
-      state.status = request.filter.status;
+      state.status = request.filter.status,
+      state.start = request.filter.start,
+      state.end = request.filter.end,
       state.isNotify = request.filter.isNotify;
     }
   }
@@ -110,7 +113,11 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListProps, IOwnHan
     if (user && !isLoading) {
       // predefined filter
       const filter: ITimesheetApprovalGetAllFilter = {
-        companyUid: props.companyUid,
+        companyUid: user.company.uid,
+        positionUid: props.positionUid,
+        start: props.start,
+        end: props.end,
+        employeeUid: props.employeeUid,
         customerUid: props.customerUid,
         activityType: props.activityType,
         statusType: props.statusType,
@@ -176,8 +183,11 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListProps, IOwnHan
   },
   handleFilterBadge: (props: TimesheetApprovalHistoryListProps) => () => {
     return props.customerUid !== undefined ||
+      props.employeeUid !== undefined ||
       props.activityType !== undefined ||
       props.statusType !== undefined ||
+      props.start !== undefined ||
+      props.end !== undefined ||
       // props.status !== undefined ||
       props.isNotify === true;
   },
@@ -188,17 +198,23 @@ const lifecycles: ReactLifeCycleFunctions<TimesheetApprovalHistoryListProps, IOw
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
+        employeeUid: this.props.employeeUid,
         customerUid: this.props.customerUid,
         activityType: this.props.activityType,
         statusType: this.props.statusType,
         status: this.props.status,
+        start: this.props.start,
+        end: this.props.end,
         isNotify: this.props.isNotify
       },
       {
+        employeeUid: prevProps.employeeUid,
         customerUid: prevProps.customerUid,
         activityType: prevProps.activityType,
         statusType: prevProps.statusType,
         status: prevProps.status,
+        start: prevProps.start,
+        end: prevProps.end,
         isNotify: prevProps.isNotify
       }
     );

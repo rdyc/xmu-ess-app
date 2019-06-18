@@ -6,6 +6,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import {
   IPurchaseItemPostPayload,
   IPurchaseItemPutPayload,
@@ -20,6 +21,7 @@ import {
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -73,6 +75,7 @@ export type PurchaseRequestEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -106,9 +109,9 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
-      items: {
-        items: [{}]
-      }
+      // items: {
+      //   items: [{}]
+      // }
     };
 
     const requiredFields = [
@@ -126,14 +129,14 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       const requiredItemFields = ['description', 'request'];
       const itemErrors: any[] = [];
 
-      formData.items.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
 
         if (!item) { return; }
 
         requiredItemFields.forEach(field => {
           if (!item[field] || isNullOrUndefined(item[field])) {
-            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `travel.field.information.item.${field}.required` }) });
+            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `purchase.item.${field}.required` }) });
           }
         });
 
@@ -167,7 +170,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       const _items: IPurchaseItemPostPayload[] = [];
       
       if (formMode === FormMode.New)  {
-        formData.items.items.forEach(item =>
+        formData.items.forEach(item =>
           _items.push({
             description: item.description,
             request: item.request
@@ -186,7 +189,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       const _itemsPut: IPurchaseItemPutPayload[] = [];
 
       if (formMode === FormMode.Edit) {
-        formData.items.items.forEach(item =>
+        formData.items.forEach(item =>
           _itemsPut.push({
             uid: item.uid,
             description: item.description,
@@ -382,6 +385,7 @@ export const PurchaseRequestEditor = compose<PurchaseRequestEditorProps, {}>(
   withRouter,
   withPurchaseRequest,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<PurchaseRequestEditorProps, OwnHandlers>(handlers),
   lifecycle<PurchaseRequestEditorProps, {}>(lifecycles),

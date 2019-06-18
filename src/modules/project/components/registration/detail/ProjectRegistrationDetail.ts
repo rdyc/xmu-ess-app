@@ -22,6 +22,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 import { ProjectRegistrationDetailView } from './ProjectRegistrationDetailView';
 
@@ -248,7 +249,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
         case ProjectUserAction.Modify:
           next = '/project/requests/form';
           break;
-          
+
         case ProjectUserAction.ChangeOwner:
           next = '/project/requests/owner';
           break;
@@ -272,9 +273,16 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandle
 
       props.setDefault();
 
-      props.history.push(next, { 
-        uid: projectUid 
-      });
+      if (props.location.state && props.location.state.isAdministration) {
+        props.history.push(next, { 
+          uid: projectUid,
+          isAdministration : true
+        });
+      } else {
+        props.history.push(next, { 
+          uid: projectUid 
+        });
+      }
     }
   },
 };
@@ -316,7 +324,12 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
         isOwner = user.uid === response.data.ownerEmployeeUid;
       }
 
-      const isAdministration = this.props.location.state && this.props.location.state.isAdministration;
+      // find child project uid
+      let _haschildProject = false;
+
+      if (response && response.data) {
+        _haschildProject = !isNullOrUndefined(response.data.childProjectUid);
+      }
 
       // generate option menus
       const options: IPopupMenuOption[] = [
@@ -330,37 +343,37 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: _statusType !== undefined,
-          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner && !isAdministration
+          visible: isContains(_statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.Close,
           name: this.props.intl.formatMessage(projectMessage.registration.option.close),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin) && !isAdministration
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin)
         },
         {
           id: ProjectUserAction.ReOpen,
           name: this.props.intl.formatMessage(projectMessage.registration.option.reOpen),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Closed ]) && this.props.isAdmin && !isAdministration
+          visible: isContains(_statusType, [ WorkflowStatusType.Closed ]) && this.props.isAdmin
         },
         {
           id: ProjectUserAction.AdjustHour,
           name: this.props.intl.formatMessage(projectMessage.registration.option.hour),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin && !isAdministration
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin
         },
         {
           id: ProjectUserAction.ChangeOwner,
           name: this.props.intl.formatMessage(projectMessage.registration.option.owner),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin) && !isAdministration
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin) && !_haschildProject
         },
         {
           id: ProjectUserAction.ManageSites,
           name: this.props.intl.formatMessage(projectMessage.registration.option.site),
           enabled: !isLoading,
-          visible: isContains(_statusType, [WorkflowStatusType.Approved]) && this.props.isAdmin && !isAdministration
+          visible: isContains(_statusType, [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened]) && this.props.isAdmin
         }
       ];
 

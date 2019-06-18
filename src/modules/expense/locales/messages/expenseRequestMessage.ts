@@ -26,6 +26,7 @@ export const expenseRequestPage = defineMessages({
 export const expenseRequestSection = defineMessages({
   title: { id: `${prefix}.infoTitle`},
   subTitle: { id: `${prefix}.infoSubTitle`},
+  submit: { id: `${prefix}.submitTitle`},
 });
 
 export const expenseRequestAction = defineMessages({

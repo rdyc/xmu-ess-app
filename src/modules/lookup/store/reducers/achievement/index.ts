@@ -1,1 +1,1 @@
-export * from './achievementReducer';
+export * from './lookupAchievementReducer';

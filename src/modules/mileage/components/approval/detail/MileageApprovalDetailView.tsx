@@ -1,28 +1,27 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { layoutMessage } from '@layout/locales/messages';
 import { IMileageRequestDetail } from '@mileage/classes/response';
-import { MileageApprovalItem } from '@mileage/components/approval/detail/MileageApprovalItem';
+import { MileageApprovalDetailItem } from '@mileage/components/approval/detail/MileageApprovalDetailItem';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
 import { TimesheetItem } from '@mileage/components/request/detail/shared/TimeSheetItem';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 
 import { MileageApprovalDetailProps } from './MileageApprovalDetail';
-import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
 const parentUrl = (props: MileageApprovalDetailProps): string => {
   let path = '';
+
   if (props.location.state && props.location.state.financeUid) {
     path = `/finance/approvals/${props.location.state.financeUid}`;
   } else {
     path = '/mileage/approvals';
   }
+
   return path;
 };
 
@@ -37,43 +36,42 @@ export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = 
     }}
     state={props.mileageApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IMileageRequestDetail) => (
+    primary={(data: IMileageRequestDetail) => ([
       <MileageInformation data={data} />
-    )}
+    ])}
     secondary={(data: IMileageRequestDetail) => ([
-      data.workflow && data.workflow.isApproval ? (
-          <MileageApprovalItem 
+      data.workflow && 
+      data.workflow.isApproval ? (
+          <MileageApprovalDetailItem 
             items={data.items}
             ItemUids={props.mileageItemUids}
-            handleCheckbox={props.handleCheckbox}
+            onChecked={props.handleCheckbox}
           />     
         ) : (
           <MileageItem items={data.items} />      
-        ),
+        )
+    ])}
+    tertiary={(data: IMileageRequestDetail) => ([
       <TimesheetItem data={data.timesheets} />,
       <WorkflowHistory data={data.workflow} />,
       <React.Fragment>
-        {data.workflow && data.workflow.isApproval &&
-        <WorkflowMileageApproval 
-            itemTrue={props.mileageItemUids.length < 1 ? true : false}
-            approvalTitle={props.intl.formatMessage(mileageMessage.approval.submission.title)}
-            approvalSubHeader={props.intl.formatMessage(mileageMessage.approval.submission.subHeader)}
-            approvalChoices={[
-              { value: WorkflowStatusType.Approved, 
-                label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
-              { value: WorkflowStatusType.Rejected, 
-                label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
-            ]}
-            approvalTrueValue={WorkflowStatusType.Approved}
-            approvalDialogTitle={props.intl.formatMessage(mileageMessage.approval.submission.dialogTitle)}
-            approvalDialogContentText={props.intl.formatMessage(mileageMessage.approval.submission.dialogContent)}
-            approvalDialogCancelText={props.intl.formatMessage(layoutMessage.action.cancel)}
-            approvalDialogConfirmedText={props.intl.formatMessage(layoutMessage.action.continue)}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit}
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
-          />}
+        {
+          data.workflow && 
+          data.workflow.isApproval &&
+          <WorkflowApprovalForm
+            title={props.approvalTitle}
+            statusTypes={props.approvalStatusTypes}
+            trueTypes={props.approvalTrueValues}
+            disabled={props.mileageItemUids.length === 0}
+            confirmationDialogProps={{
+              title: props.approvalDialogTitle,
+              message: props.approvalDialogContentText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            }}
+            onSubmit={props.handleOnSubmit}
+          />
+        }
       </React.Fragment>
     ])}
     appBarComponent={

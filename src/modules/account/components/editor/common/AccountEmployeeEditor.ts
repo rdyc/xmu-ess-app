@@ -1,4 +1,4 @@
-import { IEmployeePostPayload, IEmployeePutPayload } from '@account/classes/request';
+// import { IEmployeePostPayload, IEmployeePutPayload } from '@account/classes/request';
 import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
@@ -8,6 +8,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -57,8 +59,10 @@ export type AccountEmployeeEditorProps
   & WithUser
   & WithLayout
   & WithMasterPage
+  & WithStyles<typeof styles>
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -73,12 +77,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   
     const requiredFields = [
       'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 
-      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType'
+      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType'
     ];
   
     const requiredBank = [
       'citizenNumber', 'taxNumber', 'familyCardNumber', 
-      'bankAccount', 'bankAccountName', 'bpjsEmploymentNumber', 'bpjsHealthCareNumber'
+      'bankAccount', 'bankAccountName'
     ];
 
     const requiredContact = [
@@ -109,7 +113,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   handleSubmit: (props: AccountEmployeeEditorProps) => (formData: AccountEmployeeFormData) => { 
     const { formMode, employeeUid, intl } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.accountEmployeeDispatch;
+    // const { createRequest, updateRequest } = props.accountEmployeeDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -125,11 +129,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     // creating
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
-        createRequest({
-          resolve, 
-          reject,
-          data: payload as IEmployeePostPayload
-        });
+        console.log(payload);
+        // createRequest({
+        //   resolve, 
+        //   reject,
+        //   data: payload as IEmployeePostPayload
+        // });
       });
     }
 
@@ -142,11 +147,12 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
-        updateRequest({
-          resolve, 
-          reject,
-          data: payload as IEmployeePutPayload, 
-        });
+        console.log(payload);
+        // updateRequest({
+        //   resolve, 
+        //   reject,
+        //   data: payload as IEmployeePutPayload, 
+        // });
       });
     }
 
@@ -163,7 +169,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee' });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee', uid: response.uid });
     }
 
     alertAdd({
@@ -274,6 +280,7 @@ export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withMasterPage,
   withRouter,
   withAccountEmployee,
+  withStyles(styles),
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeEditorProps, OwnHandlers>(handlerCreators),

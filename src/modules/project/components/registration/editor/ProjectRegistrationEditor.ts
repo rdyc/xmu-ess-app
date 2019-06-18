@@ -6,6 +6,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
 import {
   IProjectRegistrationPatchPayload,
   IProjectRegistrationPostPayload,
@@ -20,6 +21,7 @@ import {
 import { ProjectRegistrationEditorView } from '@project/components/registration/editor/ProjectRegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -71,6 +73,7 @@ export type ProjectRegistrationEditorProps
   & WithMasterPage
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & IOwnHandlers
   & IOwnState
   & IOwnStateUpdaters;
@@ -156,14 +159,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
         });
       };
   
-      if (formData.information.projectType === ProjectType.Project) {
-        formData.document.project.forEach(fillDocuments);
-      }
-      
       if (formData.information.projectType === ProjectType.PreSales) {
         formData.document.preSales.forEach(fillDocuments);
+      } else {
+        formData.document.project.forEach(fillDocuments);
       }
-      
       return documents;
     };
 
@@ -267,7 +267,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       time: new Date()
     });
 
-    history.push(`/project/requests/${response.uid}`);
+    if (props.location.state && props.location.state.isAdministration) {
+      history.push(`/project/administrations/${response.uid}`, {isAdministration : true});
+    } else {
+      history.push(`/project/requests/${response.uid}`);
+    }
   },
   handleSubmitFail: (props: ProjectRegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -365,9 +369,9 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     }
 
     this.props.masterPage.changePage({
-      uid: AppMenu.ProjectRegistrationRequest,
+      uid: this.props.location.state && this.props.location.state.isAdministration ? AppMenu.ProjectAdmnistration : AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      parentUrl: '/project/requests',
+      parentUrl: this.props.location.state && this.props.location.state.isAdministration ? '/project/administrations' : '/project/requests',
       title: intl.formatMessage(view.title),
       description : intl.formatMessage(view.subTitle)
     });
@@ -404,6 +408,7 @@ export const ProjectRegistrationEditor = compose<ProjectRegistrationEditorProps,
   withRouter,
   withProjectRegistration,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

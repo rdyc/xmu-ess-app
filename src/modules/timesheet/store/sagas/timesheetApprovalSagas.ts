@@ -1,3 +1,4 @@
+import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import {
   TimesheetApprovalAction as Action,
@@ -16,10 +17,8 @@ import {
   timesheetApprovalPostRequest,
   timesheetApprovalPostSuccess,
 } from '@timesheet/store/actions';
-import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
-import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
@@ -95,16 +94,9 @@ function* watchPostRequest() {
         put(timesheetApprovalPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = {
-            // information -> based form section name
-            information: flattenObject(response.body.errors)
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(timesheetApprovalPostError(error.message)),
@@ -142,16 +134,9 @@ function* watchPostBulkRequest() {
         put(timesheetApprovalPostBulkError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
-        if (response.status === 400) {
-          const errors: any = {
-            // information -> based form section name
-            information: flattenObject(response.body.errors)
-          };
-
-          action.payload.reject(new SubmissionError(errors));
-        } else {
-          action.payload.reject(response.statusText);
-        }
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
         put(timesheetApprovalPostBulkError(error.message)),

@@ -14,7 +14,6 @@ import { AccountEmployeeRateDetailView } from './AccountRateDetailView';
 
 interface IOwnRouteParams {
   employeeUid: string;
-  rateUid: string;
 }
 
 interface IOwnState {
@@ -102,10 +101,9 @@ const stateUpdaters: StateUpdaters<AccountEmployeeRateDetailProps, IOwnState, IO
 
 const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeRateDetailProps) => () => { 
-    if (props.userState.user && props.match.params.employeeUid && props.match.params.rateUid && !props.accountEmployeeRateState.detail.isLoading) {
-      props.accountEmployeeRateDispatch.loadDetailRequest({
-        employeeUid: props.match.params.employeeUid,
-        rateId: props.match.params.rateUid
+    if (props.userState.user && props.match.params.employeeUid && !props.accountEmployeeRateState.detail.isLoading) {
+      props.accountEmployeeRateDispatch.loadCurrentRequest({
+        employeeUid: props.match.params.employeeUid
       });
     }
   },
@@ -130,22 +128,15 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
     });
   },
   handleOnConfirm: (props: AccountEmployeeRateDetailProps) => () => {
-    const { response } = props.accountEmployeeRateState.detail;
+    const { response } = props.accountEmployeeRateState.current;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
       return;
     }
 
-    // define vars
-    let employeeUid: string | undefined;
-    let rateUid: string | undefined;
-
     // get project uid
-    if (response.data) {
-      employeeUid = props.match.params.employeeUid;
-      rateUid = response.data.uid;
-    }
+    const employeeUid = props.match.params.employeeUid;
 
     // actions with new page
     const actions = [
@@ -169,7 +160,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
       });
 
       props.history.push(next, { 
-        rateUid
+        rateId: response && response.data && response.data.uid || ''
       });
     }
   },
@@ -184,14 +175,13 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnSt
     }
 
     // handle updated route params
-    if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid ||
-        this.props.match.params.rateUid !== prevProps.match.params.rateUid) {
+    if (this.props.match.params.employeeUid !== prevProps.match.params.employeeUid) {
       this.props.handleOnLoadApi();
     }
 
     // handle updated response state
-    if (this.props.accountEmployeeRateState.detail.response !== prevProps.accountEmployeeRateState.detail.response) {
-      const { isLoading } = this.props.accountEmployeeRateState.detail;
+    if (this.props.accountEmployeeRateState.current.response !== prevProps.accountEmployeeRateState.current.response) {
+      const { isLoading } = this.props.accountEmployeeRateState.current;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
@@ -205,7 +195,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnSt
           id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: this.props.accountEmployeeRateState.detail.response && this.props.accountEmployeeRateState.detail.response.data.isActive || false
+          visible: true
         },
       ];
 

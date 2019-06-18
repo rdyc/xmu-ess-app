@@ -20,9 +20,9 @@ export const ExpenseRequestDetailView: React.SFC<ExpenseRequestDetailProps> = pr
     }}
     state={props.expenseRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IExpenseDetail) => (
+    primary={(data: IExpenseDetail) => ([
       <ExpenseInformation data={data} />
-    )}
+    ])}
     secondary={(data: IExpenseDetail) => ([
       <WorkflowHistory data={data.workflow} />
     ])}

@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { PositionEditorProps } from '@lookup/components/position/editor/PositionEditor';
-import { LinearProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { PositionForm, PositionFormData } from './PositionForm';
 
@@ -42,9 +43,22 @@ export const PositionEditorView: React.SFC<PositionEditorProps> = props => {
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <LinearProgress variant="query" />
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
 

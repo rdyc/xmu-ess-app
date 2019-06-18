@@ -8,6 +8,8 @@ import { ILookupCustomerPostPayload, ILookupCustomerPutPayload } from '@lookup/c
 import { ICustomer } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { 
@@ -59,6 +61,7 @@ export type LookupCustomerEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -246,6 +249,7 @@ export default compose<LookupCustomerEditorProps, {}>(
   withRouter,
   withLookupCustomer,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<LookupCustomerEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<LookupCustomerEditorProps, {}>(lifecycles),

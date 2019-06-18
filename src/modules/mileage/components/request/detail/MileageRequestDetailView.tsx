@@ -21,11 +21,13 @@ export const MileageRequestDetailView: React.SFC<MileageRequestDetailProps> = pr
     }}
     state={props.mileageRequestState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IMileageRequestDetail) => (
+    primary={(data: IMileageRequestDetail) => ([
       <MileageInformation data={data} />
-    )}
+    ])}
     secondary={(data: IMileageRequestDetail) => ([
-      <MileageItem items={data.items}/>,
+      <MileageItem items={data.items}/>
+    ])}
+    tertiary={(data: IMileageRequestDetail) => ([
       <TimesheetItem data={data.timesheets} />,
       <WorkflowHistory data={data.workflow} />
     ])}

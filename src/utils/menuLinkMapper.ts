@@ -58,6 +58,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/project/approvals';
       break;
 
+    case 'MNU65':
+      path = '/project/administrations';
+      break;
+
     case 'MNU58':
       path = '/reports/billable';
       break;

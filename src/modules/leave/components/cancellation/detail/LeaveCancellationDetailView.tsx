@@ -20,9 +20,9 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
     }}
     state={props.leaveCancellationState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ILeaveDetail) => (
+    primary={(data: ILeaveDetail) => ([
       <LeaveInformation data={data} />
-    )}
+    ])}
     secondary={(data: ILeaveDetail) => ([
       <React.Fragment>
         {

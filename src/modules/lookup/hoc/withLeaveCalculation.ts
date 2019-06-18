@@ -3,7 +3,7 @@ import {
   ILeaveCalculationGetAllRequest,
 } from '@lookup/classes/queries';
 import { ILeaveCalculation } from '@lookup/classes/response';
-import { leaveCalculationGetAllDispose, leaveCalculationGetAllRequest } from '@lookup/store/actions/leaveCalculationActions';
+import { lookupLeaveCalculationGetAllDispose, lookupLeaveCalculationGetAllRequest } from '@lookup/store/actions/lookupLeaveCalculationActions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -16,14 +16,14 @@ interface PropsFromState {
 interface PropsFromDispatch {
   leaveCalculationDispatch: {
     // query
-    loadAllRequest: typeof leaveCalculationGetAllRequest;
-    loadAllDispose: typeof leaveCalculationGetAllDispose;
+    loadAllRequest: typeof lookupLeaveCalculationGetAllRequest;
+    loadAllDispose: typeof lookupLeaveCalculationGetAllDispose;
   };
 }
 
 export interface WithLeaveCalculation extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ leaveCalculationGetAll }: IAppState) => ({
+const mapStateToProps = ({ lookupLeaveCalculationGetAll: leaveCalculationGetAll }: IAppState) => ({
   leaveCalculationState: {
     all: leaveCalculationGetAll,
   }
@@ -32,8 +32,8 @@ const mapStateToProps = ({ leaveCalculationGetAll }: IAppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   leaveCalculationDispatch: {
     // query
-    loadAllRequest: (request: ILeaveCalculationGetAllRequest) => dispatch(leaveCalculationGetAllRequest(request)),
-    loadAllDispose: () => dispatch(leaveCalculationGetAllDispose()),
+    loadAllRequest: (request: ILeaveCalculationGetAllRequest) => dispatch(lookupLeaveCalculationGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupLeaveCalculationGetAllDispose()),
   }
 });
 

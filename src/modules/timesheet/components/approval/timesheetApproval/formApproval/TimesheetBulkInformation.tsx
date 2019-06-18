@@ -1,7 +1,8 @@
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, TextField } from '@material-ui/core';
+import { Card, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import styles from '@styles';
 import { ITimesheet } from '@timesheet/classes/response';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
@@ -25,6 +26,7 @@ type AllProps
   = OwnProps
   & OwnState
   & OwnStateHandler
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const timesheetBulkInformation: React.SFC<AllProps> = props => {
@@ -37,20 +39,28 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
         title={intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
       // subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
-      <CardContent>
         <List>
           {
             data.map((item, index) => item &&
-              <div key={item.uid}>
+              <React.Fragment key={item.uid}>
+                <Divider />
                 <ListItem
-                  disableGutters
                   button
+                  style={{background: item.isHoliday || item.isWeekend ? '#f44336' : ''}}
                   selected={item.uid === active && isExpanded}
                   onClick={() => handleToggle(item.uid)}
                 >
                   <ListItemText
-                    primary={item.uid}
-                    secondary={`${item.employee && item.employee.fullName} - ${props.intl.formatDate(item.date, GlobalFormat.Date)}`}
+                    primary={
+                      <Typography style={{color: item.isHoliday || item.isWeekend ? '#ffffff' : ''}}>
+                        {item.uid}
+                      </Typography>
+                    }
+                    secondary={
+                      <Typography style={{color: item.isHoliday || item.isWeekend ? '#ffffff' : ''}}>
+                        {item.employee && item.employee.fullName} - {props.intl.formatDate(item.date, GlobalFormat.Date)}
+                      </Typography> 
+                    }
                   />
                   <ListItemSecondaryAction>
                     {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
@@ -59,6 +69,7 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
                 {len !== index && <Divider />}
                 <Collapse
                   in={active === item.uid && isExpanded}
+                  className={props.classes.paddingFar}
                   timeout="auto"
                   unmountOnExit
                 >
@@ -141,11 +152,10 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
                   }
                   {isExpanded && <Divider />}
                 </Collapse>
-              </div>
+              </React.Fragment>
             )
           }
         </List>
-      </CardContent>
     </Card>
   );
   return render;
@@ -165,5 +175,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 export const TimesheetBulkInformation = compose<AllProps, OwnProps>(
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
 )(timesheetBulkInformation);

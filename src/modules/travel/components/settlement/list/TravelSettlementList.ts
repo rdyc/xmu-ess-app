@@ -115,6 +115,8 @@ const handlerCreators: HandleCreators<TravelSettlementListProps, IOwnHandler> = 
     if (props.userState.user && !isLoading) {
       // predefined filter
       const filter: ITravelSettlementGetAllFilter = {
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
         customerUid: props.customerUid,
         statusType: props.statusType,
         status: props.status,

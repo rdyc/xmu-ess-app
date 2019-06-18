@@ -231,6 +231,7 @@ const styles = (theme: Theme) =>
     },
     searchIcon: {
       width: theme.spacing.unit * 9,
+      color: theme.palette.grey[900],
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -243,7 +244,7 @@ const styles = (theme: Theme) =>
       width: '100%',
     },
     searchInput: {
-      color: theme.palette.common.white,
+      color: theme.palette.grey[900],
       paddingTop: theme.spacing.unit,
       paddingRight: theme.spacing.unit,
       paddingBottom: theme.spacing.unit,
@@ -256,6 +257,9 @@ const styles = (theme: Theme) =>
           width: 200,
         },
       },
+    },
+    searchRightIcon: {
+      color: theme.palette.grey[900],
     },
 
     // App Tabs
@@ -480,6 +484,37 @@ const styles = (theme: Theme) =>
     /* grid card */
     gridCard: {
       minWidth: 350
+    },
+
+    /* forms */
+    flexRow: {
+      display: 'flex',
+      flexWrap: 'wrap'
+    },
+
+    flexColumn: {
+      padding: 0,
+      [theme.breakpoints.up('xs')]: {
+        width: '100%'
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% / 2)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: `calc(100% / 3)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: `calc(100% / 4)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      }
+    },
+
+    flexContent: {
+      marginBottom: theme.spacing.unit * 2,
+      verticalAlign: 'middle',
+      width: '100%'
     },
 
     /* -------- generic classes start----------*/
@@ -707,6 +742,14 @@ const styles = (theme: Theme) =>
     virtualizedNoClick: {
       cursor: 'initial',
     },
+
+    /* Is Tr holiday */
+    isTrHolidayBackground: {
+      background: '#f44336'
+    },
+    colorWhite: {
+      color: '#fff'
+    }
   });
 
 export default styles;

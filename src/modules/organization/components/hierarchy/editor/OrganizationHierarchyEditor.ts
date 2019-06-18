@@ -6,10 +6,12 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationHierarchyPostPayload, IOrganizationHierarchyPutPayload } from '@organization/classes/request/hierarchy';
 import { IHierarchy } from '@organization/classes/response/hierarchy';
 import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -63,6 +65,7 @@ export type OrganizationHierarchyEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -74,7 +77,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'name', 'positionUid', 'items'
+      'companyUid', 'name'
     ];
   
     requiredFields.forEach(field => {
@@ -83,12 +86,12 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       }
     });
 
-    if (formData.item.items) {
-      const requiredItemFields = ['sequence', 'RelationType'];
+    if (formData.items) {
+      const requiredItemFields = ['sequence', 'positionUid'];
       
       const itemErrors: any[] = [];
       
-      formData.item.items.forEach((item, index) => {
+      formData.items.forEach((item, index) => {
         const itemError: any = {};
         
         if (!item) { return ; }
@@ -127,7 +130,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     const parsedItemsPost = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           sequence: item.sequence,
           positionUid: item.positionUid,
@@ -141,7 +144,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     const parsedItemsPut = () => {
       const payloadItems: any[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.items.forEach(item => 
         payloadItems.push({
           uid: item.uid,
           sequence: item.sequence,
@@ -350,6 +353,7 @@ export default compose<OrganizationHierarchyEditorProps, {}>(
   withRouter,
   withOrganizationHierarchy,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<OrganizationHierarchyEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<OrganizationHierarchyEditorProps, {}>(lifecycles),

@@ -19,9 +19,9 @@ export const LookupCustomerDetailView: React.SFC<LookupCustomerDetailProps> = pr
     }}
     state={props.lookupCustomerState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ICustomerDetail) => (
+    primary={(data: ICustomerDetail) => ([
       <LookupCustomerInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

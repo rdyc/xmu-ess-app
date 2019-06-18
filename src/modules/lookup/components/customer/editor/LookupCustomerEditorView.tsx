@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
-import { Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { CircularProgress, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { LookupCustomerForm, LookupCustomerFormData } from './forms/LookupCustomerForm';
 import { LookupCustomerEditorProps } from './LookupCustomerEditor';
 
@@ -55,11 +55,22 @@ export const LookupCustomerEditorView: React.SFC<LookupCustomerEditorProps> = pr
 
   // Modify
   if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+    if (isLoading) {
       return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
       );
     }
     

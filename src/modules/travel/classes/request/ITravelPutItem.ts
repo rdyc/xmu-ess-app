@@ -7,10 +7,10 @@ export interface ITravelPutItem {
   departureDate: string;
   destination?: string;
   returnDate: string;
-  costTransport: number;
+  costTransport?: number;
   isTransportByCompany: boolean;
   hotel?: string;
-  costHotel: number;
+  costHotel?: number;
   isHotelByCompany: boolean;
   notes?: string;
 }

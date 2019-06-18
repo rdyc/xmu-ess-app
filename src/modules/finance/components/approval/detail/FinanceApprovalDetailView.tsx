@@ -1,12 +1,12 @@
-import AppMenu from '@constants/AppMenu';
-import * as React from 'react';
-
 import { FinanceStatusType } from '@common/classes/types';
+import AppMenu from '@constants/AppMenu';
 import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/form/WorkflowApprovalForm';
+import * as React from 'react';
+
 import { FinanceApprovalDetailProps } from './FinanceApprovalDetail';
 import { FinanceInformation } from './shared/FinanceInformation';
 
@@ -40,31 +40,31 @@ export const FinanceApprovalDetailView: React.SFC<FinanceApprovalDetailProps> = 
     }
     state={props.financeApprovalState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IFinanceDetail) => (
+    primary={(data: IFinanceDetail) => ([
       <FinanceInformation 
         data={data}
         handleToDocument={props.handleToDocument} 
       />
-    )}
+    ])}
     secondary={(data: IFinanceDetail) => ([
       <React.Fragment>
         {
           isApproval(data.statusType) &&
-          <WorkflowApprovalForm
-            approvalTitle={props.approvalTitle}
-            approvalSubHeader={props.approvalSubHeader}
-            approvalChoices={props.approvalChoices}
-            approvalTrueValue={props.approvalTrueValue}
-            approvalDialogTitle={props.approvalDialogTitle}
-            approvalDialogContentText={props.approvalDialogContentText}
-            approvalDialogCancelText={props.approvalDialogCancelText}
-            approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-            validate={props.handleValidate}
-            onSubmit={props.handleSubmit} 
-            onSubmitSuccess={props.handleSubmitSuccess}
-            onSubmitFail={props.handleSubmitFail}
-            approvalRemarkLabel={props.approvalRemarkLabel}
-            approvalRemarkPlaceholder={props.approvalRemarkPlaceholder}
+          <WorkflowApprovalForm 
+            title={props.approvalTitle}
+            statusTypes={props.approvalStatusTypes}
+            trueTypes={props.approvalTrueValues}
+            remarkFieldProps={{
+              label: props.approvalRemarkLabel,
+              placeholder: props.approvalRemarkPlaceholder
+            }}
+            confirmationDialogProps={{
+              title: props.approvalDialogTitle,
+              message: props.approvalDialogContentText,
+              labelCancel: props.approvalDialogCancelText,
+              labelConfirm: props.approvalDialogConfirmedText
+            }}
+            onSubmit={props.handleOnSubmit}
           />
         }
       </React.Fragment>,

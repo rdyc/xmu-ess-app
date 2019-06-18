@@ -149,6 +149,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           required: true,
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
+          maxChar: 200,
+          multiline: true,
           component: InputText
         };
         break;

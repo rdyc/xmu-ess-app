@@ -31,8 +31,8 @@ interface IOwnProps {
 interface FormValueProps {
   formIsRegularType: boolean | false;
   formName: string;
-  formRegularType: string | null;
-  formValue: string | null;
+  formRegularType: string | undefined;
+  formStart: string | undefined;
 }
 
 export type RequestFormProps 
@@ -45,12 +45,13 @@ const selector = formValueSelector(formName);
 const mapStateToProps = (state: any): FormValueProps => {
   const leaveType = selector(state, 'information.leaveType');
   const start = selector(state, 'information.start');
+  const regularType = selector(state, 'information.regularType');
   
   return {
     formName,
     formIsRegularType: leaveType === LeaveType.CutiKhusus,
-    formRegularType: leaveType,
-    formValue: start,
+    formRegularType: regularType,
+    formStart: start,
   };
 };
 

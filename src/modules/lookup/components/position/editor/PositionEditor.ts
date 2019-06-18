@@ -8,6 +8,8 @@ import { IPositionPostPayload, IPositionPutPayload } from '@lookup/classes/reque
 import { IPosition } from '@lookup/classes/response';
 import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -49,6 +51,7 @@ export type PositionEditorProps
   & WithMasterPage
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -261,6 +264,7 @@ export const PositionEditor = compose<PositionEditorProps, {}>(
   withRouter,
   withLookupPosition,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<PositionEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<PositionEditorProps, {}>(lifecycles),

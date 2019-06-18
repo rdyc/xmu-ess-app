@@ -47,7 +47,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
     
     const projectFilter: any = {
       customerUids: formCustomer,
-      statusTypes: WorkflowStatusType.Approved,
+      statusTypes: ([WorkflowStatusType.Approved]).toString(),
     };
 
     const fieldName = name.replace('information.', '');

@@ -19,9 +19,9 @@ export const CurrencyDetailView: React.SFC<CurrencyDetailProps> = props => (
     }}
     state={props.lookupCurrencyState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: ICurrencyDetail) => (
+    primary={(data: ICurrencyDetail) => ([
       <CurrencyInformation data={data} />
-    )}
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 

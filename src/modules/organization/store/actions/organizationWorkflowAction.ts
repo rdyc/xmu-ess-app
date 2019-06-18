@@ -4,10 +4,12 @@ import {
   IOrganizationWorkflowByIdRequest, 
   IOrganizationWorkflowDeleteRequest, 
   IOrganizationWorkflowListRequest, 
+  IOrganizationWorkflowMenuRequest, 
   IOrganizationWorkflowPostRequest, 
-  IOrganizationWorkflowPutRequest 
+  IOrganizationWorkflowPutRequest
 } from '@organization/classes/queries/workflow';
 import { IWorkflow, IWorkflowList } from '@organization/classes/response/workflow';
+import { IWorkflowMenu } from '@organization/classes/response/workflow/IWorkflowMenu';
 import { action } from 'typesafe-actions';
 
 export const enum OrganizationWorkflowAction {
@@ -23,6 +25,10 @@ export const enum OrganizationWorkflowAction {
   GET_BY_ID_SUCCESS = '@@organization/workflow/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@organization/workflow/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@organization/workflow/GET_BY_ID_DISPOSE',
+  GET_BY_MENU_REQUEST = '@@organization/workflow/GET_BY_MENU_REQUEST',
+  GET_BY_MENU_SUCCESS = '@@organization/workflow/GET_BY_MENU_SUCCESS',
+  GET_BY_MENU_ERROR = '@@organization/workflow/GET_BY_MENU_ERROR',
+  GET_BY_MENU_DISPOSE = '@@organization/workflow/GET_BY_MENU_DISPOSE',
   POST_REQUEST = '@@organization/workflow/POST_REQUEST',
   POST_SUCCESS = '@@organization/workflow/POST_SUCCESS',
   POST_ERROR = '@@organization/workflow/POST_ERROR',
@@ -51,9 +57,15 @@ export const organizationWorkflowGetListDispose = () => action(OrganizationWorkf
 
 // get by id
 export const organizationWorkflowGetByIdRequest = (request: IOrganizationWorkflowByIdRequest) => action(OrganizationWorkflowAction.GET_BY_ID_REQUEST, request);
-export const organizationWorkflowGetByIdSuccess = (response: IResponseCollection<IWorkflow>) => action(OrganizationWorkflowAction.GET_BY_ID_SUCCESS, response);
+export const organizationWorkflowGetByIdSuccess = (response: IResponseSingle<IWorkflow>) => action(OrganizationWorkflowAction.GET_BY_ID_SUCCESS, response);
 export const organizationWorkflowGetByIdError = (error: any) => action(OrganizationWorkflowAction.GET_BY_ID_ERROR, error);
 export const organizationWorkflowGetByIdDispose = () => action(OrganizationWorkflowAction.GET_BY_ID_DISPOSE);
+
+// get by menu
+export const organizationWorkflowGetByMenuRequest = (request: IOrganizationWorkflowMenuRequest) => action(OrganizationWorkflowAction.GET_BY_MENU_REQUEST, request);
+export const organizationWorkflowGetByMenuSuccess = (response: IResponseSingle<IWorkflowMenu>) => action(OrganizationWorkflowAction.GET_BY_MENU_SUCCESS, response);
+export const organizationWorkflowGetByMenuError = (error: any) => action(OrganizationWorkflowAction.GET_BY_MENU_ERROR, error);
+export const organizationWorkflowGetByMenuDispose = () => action(OrganizationWorkflowAction.GET_BY_MENU_DISPOSE);
 
 // post
 export const organizationWorkflowPostRequest = (request: IOrganizationWorkflowPostRequest) => action(OrganizationWorkflowAction.POST_REQUEST, request);

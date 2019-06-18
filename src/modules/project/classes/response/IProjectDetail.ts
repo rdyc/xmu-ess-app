@@ -23,7 +23,7 @@ export interface IProjectDetail {
   currencyType: string;
   currency?: ICommonSystem;
   contractNumber?: string;
-  ownerEmployeeUid?: string;
+  ownerEmployeeUid: string;
   owner?: IAccountEmployee;
   name: string;
   description?: string;
@@ -36,11 +36,11 @@ export interface IProjectDetail {
   rejectedReason?: string;
   rate: number;
   valueUsd: number;
-  valueIdr?: number;
+  valueIdr: number;
   isNotifyToOwner: boolean;
   isNotified: boolean;
-  sites?: IProjectSite[];
-  sales?: IProjectSales[];
+  sites: IProjectSite[];
+  sales: IProjectSales[];
   documents: IProjectDocument[];
   documentPreSales: IProjectDocument[];
   histories?: History[];
