@@ -44,6 +44,7 @@ export const hrTemplatenConfirm = defineMessages({
 
 // fields
 export const hrTemplateField = defineMessages({
+  uid: { id: `${prefix}.field.uid`},
   company: { id: `${prefix}.field.company`},
   position: { id: `${prefix}.field.position`},
 });
