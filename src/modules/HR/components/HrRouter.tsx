@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { HRTemplateDetail } from './template/detail/HRTemplateDetail';
 import { HRTemplateList } from './template/list/HRTemplateList';
+// import { HRMeasurementList } from './measurement/list/HRMeasurementList';
 
 const template = (props: RouteComponentProps) => (
   <Switch>
@@ -16,7 +17,7 @@ const template = (props: RouteComponentProps) => (
 export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
-      path={`${props.match.path}/templates`}
+      path={`${props.match.path}/measurement`}
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployee} 
       component={template} 
