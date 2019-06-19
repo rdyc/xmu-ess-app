@@ -17,7 +17,7 @@ const template = (props: RouteComponentProps) => (
 export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
-      path={`${props.match.path}/measurement`}
+      path={`${props.match.path}/templates`}
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployee} 
       component={template} 

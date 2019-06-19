@@ -1,5 +1,6 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
+import { IHRMeasurement } from '../measurement';
 
 export interface IHRTemplateItem {
   uid: string;
@@ -7,7 +8,7 @@ export interface IHRTemplateItem {
   categoryType: string;
   category?: ICommonSystem | null;
   measurementUid: string;
-  measurement?:  | null;
+  measurement?: IHRMeasurement | null;
   target: string;
   weight: number;
   changes: IBaseChanges | null;
