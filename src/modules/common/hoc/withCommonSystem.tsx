@@ -31,6 +31,8 @@ import {
   genderGetListRequest,
   gradeGetListDispose,
   gradeGetListRequest,
+  kpiGetListDispose,
+  kpiGetListRequest,
   leaveGetListDispose,
   leaveGetListRequest,
   levelGetListDispose,
@@ -114,6 +116,7 @@ interface PropsFromState {
   commonDegreeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonKpiListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -154,6 +157,7 @@ interface PropsFromDispatch {
     degreeListRequest: typeof degreeGetListRequest;
     levelListRequest: typeof levelGetListRequest;
     familyListRequest: typeof familyGetListRequest;
+    kpiListRequest: typeof kpiGetListRequest;
 
     unitListDispose: typeof unitGetListDispose;
     activityListDispose: typeof activityGetListDispose;
@@ -184,6 +188,7 @@ interface PropsFromDispatch {
     degreeListDispose: typeof degreeGetListDispose;
     levelListDispose: typeof levelGetListDispose;
     familyListDispose: typeof familyGetListDispose;
+    kpiListDispose: typeof kpiGetListDispose;
     
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -236,7 +241,8 @@ const mapStateToProps = ({
   commonDegreeList,
   commonFamilyList,
   commonCertificationList,
-  commonLevelList
+  commonLevelList,
+  commonKpiList
 
 }: IAppState) => ({
   // system
@@ -279,6 +285,7 @@ const mapStateToProps = ({
   commonFamilyListState: commonFamilyList,
   commonDepartmentListState: commonDepartmentList,
   commonLevelListState: commonLevelList,
+  commonKpiListState: commonKpiList,
 
   // detail
  
@@ -320,6 +327,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
     certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
     levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
+    kpiListRequest: (request: ISystemListRequest) => dispatch(kpiGetListRequest(request)),
 
     unitListDispose: () => dispatch(unitGetListDispose()),
     activityListDispose: () => dispatch(activityGetListDispose()),
@@ -350,6 +358,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListDispose: () => dispatch(familyGetListDispose()),
     certificationListDispose: () => dispatch(certificationGetListDispose()),
     levelListDispose: () => dispatch(levelGetListDispose()),
+    kpiListDispose: () => dispatch(kpiGetListDispose()),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

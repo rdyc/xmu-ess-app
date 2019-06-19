@@ -49,6 +49,7 @@ const fnGetContext = (props: CommonSystemOptionProps) => {
     case 'department': return props.commonDepartmentListState;
     case 'family': return props.commonFamilyListState;
     case 'level': return props.commonLevelListState;
+    case 'kPI': return props.commonKpiListState;
 
     default: return props.commonActivityListState;
   }
@@ -218,6 +219,10 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
           commonDispatch.levelListRequest(request);
           break;
           
+        case 'kPI':
+          commonDispatch.kpiListRequest(request);
+          break;
+
         default:
           break;
       }

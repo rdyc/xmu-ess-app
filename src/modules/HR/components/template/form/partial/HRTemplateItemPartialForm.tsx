@@ -78,7 +78,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                       const touch = getIn(form.touched, `items.${index}.categoryType`);
 
                       return (
-                        <CommonSystemOption category="certification" filter={props.filterCommonSystem}>
+                        <CommonSystemOption category="kPI" filter={props.filterCommonSystem}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"
