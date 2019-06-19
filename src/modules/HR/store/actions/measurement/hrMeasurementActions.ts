@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IHRMeasurementDeleteRequest, IHRMeasurementGetAllRequest, IHRMeasurementGetDetailRequest, IHRMeasurementPostRequest, IHRMeasurementPutRequest } from 'modules/HR/classes/queries/measurement';
+import { IHRMeasurementDeleteRequest, IHRMeasurementGetAllRequest, IHRMeasurementGetDetailRequest, IHRMeasurementGetListRequest, IHRMeasurementPostRequest, IHRMeasurementPutRequest } from 'modules/HR/classes/queries/measurement';
 import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from 'modules/HR/classes/response/measurement';
 import { action } from 'typesafe-actions';
 
@@ -37,7 +37,7 @@ export const hrMeasurementGetAllError = (error: any) => action(HRMeasurementActi
 export const hrMeasurementGetAllDispose = () => action(HRMeasurementAction.GET_ALL_DISPOSE);
 
 // get list
-export const hrMeasurementGetListRequest = (request: IHRMeasurementGetDetailRequest) => action(HRMeasurementAction.GET_LIST_REQUEST, request);
+export const hrMeasurementGetListRequest = (request: IHRMeasurementGetListRequest) => action(HRMeasurementAction.GET_LIST_REQUEST, request);
 export const hrMeasurementGetListSuccess = (response: IResponseCollection<IHRMeasurementList>) => action(HRMeasurementAction.GET_LIST_SUCCESS, response);
 export const hrMeasurementGetListError = (error: any) => action(HRMeasurementAction.GET_LIST_ERROR, error);
 export const hrMeasurementGetListDispose = () => action(HRMeasurementAction.GET_LIST_DISPOSE);
