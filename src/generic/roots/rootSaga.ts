@@ -45,6 +45,7 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import hrMeasurementSagas from '@hr/store/sagas/hrMeasurementSagas';
 import hrTemplateSagas from '@hr/store/sagas/hrTemplateSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
@@ -224,6 +225,8 @@ export function* rootSaga() {
     fork(newsFeedSagas),
 
     // hr
-    fork(hrTemplateSagas)
+    fork(hrTemplateSagas),
+    fork(hrMeasurementSagas)
+
   ]);
 }
