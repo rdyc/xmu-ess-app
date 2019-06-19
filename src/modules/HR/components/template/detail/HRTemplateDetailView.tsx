@@ -8,6 +8,7 @@ import * as React from 'react';
 
 import { HRTemplateDetailProps } from './HRTemplateDetail';
 import { HRTemplateInformation } from './HRTemplateInformation';
+import { HRTemplateItem } from './shared/HRTemplateItem';
 
 export const HRTemplateDetailView: React.SFC<HRTemplateDetailProps> = props => (
   <PreviewPage
@@ -22,6 +23,9 @@ export const HRTemplateDetailView: React.SFC<HRTemplateDetailProps> = props => (
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IHRTemplateDetail) => ([
       <HRTemplateInformation data={data} />
+    ])}
+    secondary={(data: IHRTemplateDetail) => ([
+      <HRTemplateItem items={data.items}/>
     ])}
     appBarComponent={
       props.menuOptions &&

@@ -8,6 +8,6 @@ export interface IHRTemplate {
   company?: ICompany | null;
   positionUid: string;
   position?: IPosition | null;
-  items?: IHRTemplateItem | null;
+  items?: IHRTemplateItem[] | null;
   changes: IBaseChanges | null;
 }

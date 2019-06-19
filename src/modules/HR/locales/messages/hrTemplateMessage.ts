@@ -32,6 +32,8 @@ export const hrTemplatenSubmission = defineMessages({
 export const hrTemplatenSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  itemTitle: { id: `${prefix}.section.item.title` },
+  itemSubHeader: { id: `${prefix}.section.item.subHeader` },
 });
 
 // confimation
@@ -47,6 +49,12 @@ export const hrTemplateField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   company: { id: `${prefix}.field.company`},
   position: { id: `${prefix}.field.position`},
+
+  // item
+  itemUid: { id: `${prefix}.field.itemUid`},
+  target: { id: `${prefix}.field.target`},
+  category: { id: `${prefix}.field.category`},
+  weight: { id: `${prefix}.field.weight`},
 });
 
 // helper

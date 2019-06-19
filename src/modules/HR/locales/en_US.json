@@ -12,6 +12,8 @@
 
   "hr.template.section.info.title": "KPI Template",
   "hr.template.section.info.subHeader": "LOREM LOREM",
+  "hr.template.section.item.title": "KPI Template Item",
+  "hr.template.section.item.subHeader": "LOREM LOREM",
 
   "hr.template.confirm.new.title": "New KPI Template",
   "hr.template.confirm.new.description": "You are about creating a new KPI template. Do you want to continue?",
@@ -20,5 +22,14 @@
 
   "hr.template.field.uid": "Template ID",
   "hr.template.field.company": "Company",
-  "hr.template.field.position": "Position"
+  "hr.template.field.position": "Position",
+  "hr.template.field.itemUid": "Template Item ID",
+  "hr.template.field.target": "Target",
+  "hr.template.field.category": "Category",
+  "hr.template.field.weight": "Weight",
+
+  "hr.measurement.field.uid": "Measurement ID",
+  "hr.measurement.field.description": "Description",
+  "hr.measurement.field.measurementType": "Measurement Type",
+  "hr.measurement.field.weight": "Weight"
 }
