@@ -24,12 +24,20 @@ export const hrTemplateMessage = defineMessages({
 });
 
 // submission
-export const hrTemplatenSubmission = defineMessages({
+export const hrTemplateSubmission = defineMessages({
   form: { id: `${prefix}.submission.form` }
 });
 
+// dialog
+export const hrTemplateDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // section
-export const hrTemplatenSection = defineMessages({
+export const hrTemplateSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   itemTitle: { id: `${prefix}.section.item.title` },
@@ -37,7 +45,7 @@ export const hrTemplatenSection = defineMessages({
 });
 
 // confimation
-export const hrTemplatenConfirm = defineMessages({
+export const hrTemplateConfirm = defineMessages({
   newTitle: { id: `${prefix}.confirm.new.title` },
   newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
@@ -52,6 +60,8 @@ export const hrTemplateField = defineMessages({
 
   // item
   itemUid: { id: `${prefix}.field.itemUid`},
+  measurementUid: { id: `${prefix}.field.measurementUid`},
+  itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
   target: { id: `${prefix}.field.target`},
   category: { id: `${prefix}.field.category`},
   weight: { id: `${prefix}.field.weight`},

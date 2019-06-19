@@ -8,7 +8,18 @@
   "hr.template.page.modify.title": "Modify KPI Template",
   "hr.template.page.modify.subHeader": "Lorem LOREM",
 
+  "hr.template.dialog.newTitle": "Create new template",
+  "hr.template.dialog.newDescription": "Do you want to create a new template?",
+  "hr.template.dialog.modifyTitle": "Modify template",
+  "hr.template.dialog.modifyDescription": "You are about to modify current template. Do you want to continue ?",
+
   "hr.template.submission.form": "KPI Template Submission",
+
+  "hr.template.message.emptyProps": "Some props are empty",
+  "hr.template.message.create.success": "A new Templae {uid} has been created",
+  "hr.template.message.create.failure": "Unable to process your submission",
+  "hr.template.message.update.success": "Existing Template {uid} has been updated",
+  "hr.template.message.update.failure": "Unable to process your submission",
 
   "hr.template.section.info.title": "KPI Template",
   "hr.template.section.info.subHeader": "LOREM LOREM",
@@ -23,6 +34,8 @@
   "hr.template.field.uid": "Template ID",
   "hr.template.field.company": "Company",
   "hr.template.field.position": "Position",
+  "hr.template.field.measurementUid": "Measurement ID",
+  "hr.template.field.itemsMinimum": "Must have at least one item",
   "hr.template.field.itemUid": "Template Item ID",
   "hr.template.field.target": "Target",
   "hr.template.field.category": "Category",
