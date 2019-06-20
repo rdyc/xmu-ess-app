@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<HRTemplateDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case HRTemplateUserAction.Modify:
-          next = '/kpi/template/form';
+          next = '/kpi/templates/form';
           break;
 
         default:

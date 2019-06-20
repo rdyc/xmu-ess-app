@@ -9,6 +9,8 @@ import { InjectedIntl } from 'react-intl';
 
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
+import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
+import { HRMeasurementOption } from '@hr/components/measurement/options/HRMeasurementOption';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -19,6 +21,7 @@ type HRTemplateItemPartialFormProps = {
   formikBag: FormikProps<IHRTemplateFormValue>;
   intl: InjectedIntl;
   filterCommonSystem: ISystemListFilter;
+  filterMeasurement: IHRMeasurementGetListFilter;
   classes: {
     flexContent: string;
     marginFarRight: string;
@@ -109,18 +112,26 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                       const touch = getIn(form.touched, `items.${index}.measurementUid`);
 
                       return (
-                        <TextField
-                          {...field}
-                          fullWidth
-                          required
-                          disabled={form.isSubmitting}
-                          margin="normal"
-                          autoComplete="off"
-                          label={props.intl.formatMessage(hrMessage.template.field.measurementUid)}
-                          placeholder={props.intl.formatMessage(hrMessage.template.field.measurementUid)}
-                          helperText={touch && error}
-                          error={touch && Boolean(error)}
-                        />
+                        <HRMeasurementOption filter={props.filterMeasurement}>
+                          <SelectField
+                            isSearchable
+                            menuPlacement="auto"
+                            menuPosition="fixed"
+                            isDisabled={props.formikBag.isSubmitting}
+                            isClearable={props.formikBag.values.items[index].measurementUid !== ''}
+                            escapeClearsValue={true}
+                            valueString={props.formikBag.values.items[index].measurementUid}
+                            textFieldProps={{
+                              label: props.intl.formatMessage(hrMessage.template.field.measurementUid),
+                              helperText: touch && error,
+                              error: touch && Boolean(error)
+                            }}
+                            onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.measurementUid`)}
+                            onChange={(selected: ISelectFieldOption) => {
+                              props.formikBag.setFieldValue(`items.${index}.measurementUid`, selected && selected.value || '');
+                            }}
+                          />
+                        </HRMeasurementOption>
                       );
                     }}
                   />
@@ -168,6 +179,22 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                           error={touch && Boolean(error)}
                           InputProps={{
                             inputComponent: NumberFormatter,
+                          }}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            let value = 0;
+
+                            if (e.target.value === '') {
+                              // set current field to 0
+                              props.formikBag.setFieldValue(field.name, 0);
+                              value = 0;
+                            } else {
+                              value = parseFloat(e.target.value);
+                              // set current field
+                              props.formikBag.setFieldValue(field.name, value);
+                            }
+                            
+                            // set value field
+                            // props.formikBag.setFieldValue(`items.${index}.weight`, value);
                           }}
                         />
                       );

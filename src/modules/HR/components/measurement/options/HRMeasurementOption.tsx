@@ -1,0 +1,150 @@
+import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
+import { IHRMeasurementList } from '@hr/classes/response/measurement';
+import { WithHRMeasurement, withHRMeasurement } from '@hr/hoc/withHRMeasurement';
+import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
+import * as React from 'react';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  shallowEqual,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
+interface IOwnOption {
+  filter?: IHRMeasurementGetListFilter;
+}
+
+interface IOwnState {
+  isLoading: boolean;
+  options: ISelectFieldOption[];
+}
+
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setLoading: StateHandler<IOwnState>;
+  setOptions: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleOnLoadApi: () => void;
+}
+
+export type HRMeasurementOptionProps
+  = WithHRMeasurement
+  & IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler;
+
+const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
+  isLoading: false,
+  options: [{ label: '', value: ''}]
+});
+
+const stateUpdaters: StateUpdaters<HRMeasurementOptionProps, IOwnState, IOwnStateUpdater> = {
+  setLoading: () => (values: any): Partial<IOwnState> => ({
+    isLoading: values
+  }),
+  setOptions: () => (values: IHRMeasurementList[]): Partial<IOwnState> => {
+    const options: ISelectFieldOption[] = [
+      { label: '', value: ''}
+    ];
+        
+    values.forEach(item => options.push({ 
+      value: item.uid, 
+      label: item.description 
+    }));
+
+    return {
+      options
+    };
+  }
+};
+
+const handlerCreators: HandleCreators<HRMeasurementOptionProps, IOwnHandler> = {
+  handleOnLoadApi: (props: HRMeasurementOptionProps) => () => {
+    const { isExpired, isLoading } = props.hrMeasurementState.list;
+    const { loadListRequest } = props.hrMeasurementDispatch;
+
+    if (isExpired || !isLoading) {
+      loadListRequest({ 
+        filter: props.filter 
+      });
+    }
+  }
+};
+
+const lifeCycle: ReactLifeCycleFunctions<HRMeasurementOptionProps, IOwnState> = {
+  componentDidMount() {
+    const { request, response } = this.props.hrMeasurementState.list;
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
+  },
+  componentDidUpdate(prevProps: HRMeasurementOptionProps) {
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.hrMeasurementState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.hrMeasurementState.list;
+
+    if (thisIsLoading !== prevIsLoading) {
+      this.props.setLoading(thisIsLoading);
+    }
+
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
+        this.props.setOptions(thisResponse.data);
+      }
+    }
+  }
+};
+
+const component: React.SFC<HRMeasurementOptionProps> = props => {
+  const children = props.children as React.ReactElement<SelectFieldProps>;
+
+  if (children) {
+    return (
+      <React.Fragment>
+        {
+          React.cloneElement(children, { 
+            isLoading: props.isLoading,
+            options: props.options,
+            value: props.options.find(option => option.value === children.props.valueString)
+          })
+        }
+      </React.Fragment>
+    );
+  }
+
+  return <div></div>;
+};
+
+export const HRMeasurementOption = compose<HRMeasurementOptionProps, IOwnOption>(
+  setDisplayName('HRMeasurementOption'),
+  withHRMeasurement,
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifeCycle)
+)(component);

@@ -1,9 +1,9 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
+import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
 import { IHRTemplatePostPayload, IHRTemplatePutPayload } from '@hr/classes/request';
 import { IHRTemplate } from '@hr/classes/response';
-// import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { WithHRTemplate, withHRTemplate } from '@hr/hoc/withHRTemplate';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -62,7 +62,7 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IHRTemplateFormValue>>>;
 
   filterLookupCompany?: ILookupCompanyGetListFilter;
-  // filterLookupPosition: IPositionGetListFilter;
+  filterMeasurement: IHRMeasurementGetListFilter;
   filterCommonSystem: ISystemListFilter;
 }
 
@@ -143,6 +143,10 @@ const createProps: mapper<HRTemplateFormProps, IOwnState> = (props: HRTemplateFo
 
   filterCommonSystem: {
     orderBy: 'value',
+    direction: 'ascending'
+  },
+  filterMeasurement: {
+    orderBy: 'measurementType',
     direction: 'ascending'
   }
 });
