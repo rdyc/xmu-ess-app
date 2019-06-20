@@ -8,6 +8,10 @@ import {
   hrMeasurementGetByIdError,
   hrMeasurementGetByIdRequest,
   hrMeasurementGetByIdSuccess,
+  hrMeasurementGetListDispose,
+  hrMeasurementGetListError,
+  hrMeasurementGetListRequest,
+  hrMeasurementGetListSuccess,
   hrMeasurementPostError,
   hrMeasurementPostRequest,
   hrMeasurementPostSuccess,
@@ -48,6 +52,34 @@ function* watchGetAllRequest() {
   };
 
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
+}
+
+function* watchGetListRequest() {
+  const worker = (action: ReturnType<typeof hrMeasurementGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/kpi/measurements/list?${params}`,
+      successEffects: (response: IApiResponse) => [
+        put(hrMeasurementGetListSuccess(response.body)),
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(hrMeasurementGetListError(response))
+      ],
+      errorEffects: (error: TypeError) => [
+        put(hrMeasurementGetListError(error.message))
+      ],
+      finallyEffects: [
+        // nothing
+      ]
+    });
+  };
+
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
 function* watchGetByIdRequest() {
@@ -154,6 +186,7 @@ function* watchSwitchAccess() {
   function* worker() { 
     yield all([
       put(hrMeasurementGetAllDispose()),
+      put(hrMeasurementGetListDispose()),
       put(hrMeasurementGetByIdDispose())
     ]);
   }
@@ -164,6 +197,7 @@ function* watchSwitchAccess() {
 function* hrMeasurementSagas() {
   yield all([
     fork(watchGetAllRequest),
+    fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

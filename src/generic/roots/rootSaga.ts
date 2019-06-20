@@ -24,6 +24,7 @@ import commonFamilySagas from '@common/store/sagas/familySagas';
 import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
+import commonKpiSagas from '@common/store/sagas/kpiSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
@@ -131,6 +132,7 @@ export function* rootSaga() {
     fork(commonDepartmentSagas),
     fork(commonFamilySagas),
     fork(commonLevelSagas),
+    fork(commonKpiSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),
@@ -227,6 +229,5 @@ export function* rootSaga() {
     // hr
     fork(hrTemplateSagas),
     fork(hrMeasurementSagas)
-
   ]);
 }

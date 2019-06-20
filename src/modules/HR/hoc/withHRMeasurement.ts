@@ -7,19 +7,22 @@ import {
   IHRMeasurementDeleteRequest, 
   IHRMeasurementGetAllRequest, 
   IHRMeasurementGetDetailRequest, 
-  IHRMeasurementPostRequest,
+  IHRMeasurementGetListRequest,
+  IHRMeasurementPostRequest,   
   IHRMeasurementPutRequest
 } from '@hr/classes/queries/measurement';
-import { IHRMeasurement, IHRMeasurementDetail } from '@hr/classes/response/measurement';
+import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from '@hr/classes/response/measurement';
 import { 
   hrMeasurementDeleteDispose, 
   hrMeasurementDeleteRequest, 
   hrMeasurementGetAllDispose, 
   hrMeasurementGetAllRequest, 
   hrMeasurementGetByIdDispose, 
-  hrMeasurementGetByIdRequest, 
+  hrMeasurementGetByIdRequest,  
+  hrMeasurementGetListDispose, 
+  hrMeasurementGetListRequest, 
   hrMeasurementPostDispose,
-  hrMeasurementPostRequest,
+  hrMeasurementPostRequest, 
   hrMeasurementPutDispose,
   hrMeasurementPutRequest
 } from '@hr/store/actions';
@@ -29,6 +32,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   hrMeasurementState: {
     all: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement>;
+    list: IQueryCollectionState<IHRMeasurementGetListRequest, IHRMeasurementList>;
     detail: IQuerySingleState<IHRMeasurementGetDetailRequest, IHRMeasurementDetail>;
   };
 }
@@ -46,6 +50,8 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof hrMeasurementGetAllRequest;
     loadAllDispose: typeof hrMeasurementGetAllDispose;
+    loadListRequest: typeof hrMeasurementGetListRequest;
+    loadListDispose: typeof hrMeasurementGetListDispose;
     loadDetailRequest: typeof hrMeasurementGetByIdRequest;
     loadDetailDispose: typeof hrMeasurementGetByIdDispose;
   };
@@ -53,9 +59,10 @@ interface PropsFromDispatch {
 
 export interface WithHRMeasurement extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrMeasurementGetAll, hrMeasurementGetById }: IAppState) => ({
+const mapStateToProps = ({ hrMeasurementGetAll, hrMeasurementGetList, hrMeasurementGetById }: IAppState) => ({
   hrMeasurementState: {
     all: hrMeasurementGetAll,
+    list: hrMeasurementGetList,
     detail: hrMeasurementGetById
   }
 });
@@ -73,6 +80,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IHRMeasurementGetAllRequest) => dispatch(hrMeasurementGetAllRequest(request)),
     loadAllDispose: () => dispatch(hrMeasurementGetAllDispose()),
+    loadListRequest: (request: IHRMeasurementGetListRequest) => dispatch(hrMeasurementGetListRequest(request)),
+    loadListDispose: () => dispatch(hrMeasurementGetListDispose()),
     loadDetailRequest: (request: IHRMeasurementGetDetailRequest) => dispatch(hrMeasurementGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(hrMeasurementGetByIdDispose()),
   }

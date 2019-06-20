@@ -28,3 +28,4 @@ export * from './departmentActions';
 export * from './familyActions';
 export * from './levelActions';
 export * from './trainingActions';
+export * from './kpiActions';

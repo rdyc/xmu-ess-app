@@ -16,6 +16,7 @@ import familyReducers from './family/familyReducers';
 import financeReducers from './finance/financeReducer';
 import genderReducers from './gender/genderReducers';
 import gradeReducers from './grade/gradeReducer';
+import kpiReducers from './kpi/kpiReducers';
 import levelReducers from './level/levelReducers';
 import limiterReducers from './limiter/limiterReducers';
 import paymentReducers from './payment/paymentReducer';
@@ -59,7 +60,8 @@ const commonReducers = {
   ...departmentReducers,
   ...familyReducers,
   ...levelReducers,
-  ...trainingReducers
+  ...trainingReducers,
+  ...kpiReducers
 };
 
 export default commonReducers;
