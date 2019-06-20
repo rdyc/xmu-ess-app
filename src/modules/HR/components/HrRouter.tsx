@@ -3,12 +3,13 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { HRTemplateDetail } from './template/detail/HRTemplateDetail';
+import { HRTemplateForm } from './template/form/HRTemplateForm';
 import { HRTemplateList } from './template/list/HRTemplateList';
 // import { HRMeasurementList } from './measurement/list/HRMeasurementList';
 
 const template = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={} /> */}
+    <Route path={`${props.match.path}/form`} component={HRTemplateForm} />
     <Route path={`${props.match.path}/:templateUid`} component={HRTemplateDetail} />
     <Route path={`${props.match.path}`} component={HRTemplateList} />
   </Switch>

@@ -8,13 +8,14 @@ import {
   hrMeasurementSubmission 
 } from './hrMeasurementMessage';
 import {
+  hrTemplateConfirm,
+  hrTemplateDialog,
   hrTemplateField,
   hrTemplateFieldHelperFor,
   hrTemplateMessage,
-  hrTemplatenConfirm,
-  hrTemplatenSection,
-  hrTemplatenSubmission,
-  hrTemplatePage
+  hrTemplatePage,
+  hrTemplateSection,
+  hrTemplateSubmission
 } from './hrTemplateMessage';
 
 export const hrMessage = {
@@ -23,9 +24,10 @@ export const hrMessage = {
     fieldFor: hrTemplateFieldHelperFor,
     message: hrTemplateMessage,
     page: hrTemplatePage,
-    confirm: hrTemplatenConfirm,
-    section: hrTemplatenSection,
-    submission: hrTemplatenSubmission
+    confirm: hrTemplateConfirm,
+    section: hrTemplateSection,
+    submission: hrTemplateSubmission,
+    dialog: hrTemplateDialog
   },
   measurement: {
     field: hrMeasurementField,
