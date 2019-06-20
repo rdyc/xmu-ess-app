@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IHRMeasurementGetAllRequest } from '@hr/classes/queries/measurement';
 import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { HRMeasurementAction as Action } from '@hr/store/actions/measurement/hrMeasurementActions';
+import { HRMeasurementAction as Action } from '@hr/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement> = {

@@ -4,21 +4,24 @@ import {
   IQuerySingleState
 } from '@generic/interfaces';
 import { 
+  IHRMeasurementDeleteRequest, 
   IHRMeasurementGetAllRequest, 
   IHRMeasurementGetDetailRequest, 
-  IHRMeasurementPostRequest, 
-  IHRMeasurementPutRequest 
+  IHRMeasurementPostRequest,
+  IHRMeasurementPutRequest
 } from '@hr/classes/queries/measurement';
 import { IHRMeasurement, IHRMeasurementDetail } from '@hr/classes/response/measurement';
 import { 
+  hrMeasurementDeleteDispose, 
+  hrMeasurementDeleteRequest, 
   hrMeasurementGetAllDispose, 
   hrMeasurementGetAllRequest, 
   hrMeasurementGetByIdDispose, 
   hrMeasurementGetByIdRequest, 
-  hrMeasurementPostDispose, 
-  hrMeasurementPostRequest, 
-  hrMeasurementPutDispose, 
-  hrMeasurementPutRequest 
+  hrMeasurementPostDispose,
+  hrMeasurementPostRequest,
+  hrMeasurementPutDispose,
+  hrMeasurementPutRequest
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof hrMeasurementPostDispose;
     updateRequest: typeof hrMeasurementPutRequest;
     updateDispose: typeof hrMeasurementPutDispose;
+    deleteRequest: typeof hrMeasurementDeleteRequest;
+    deleteDispose: typeof hrMeasurementDeleteDispose;
 
     // query
     loadAllRequest: typeof hrMeasurementGetAllRequest;
@@ -56,12 +61,14 @@ const mapStateToProps = ({ hrMeasurementGetAll, hrMeasurementGetById }: IAppStat
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hrTemplateDispatch: {
+  hrMeasurementDispatch: {
     // command
     createRequest: (request: IHRMeasurementPostRequest) => dispatch(hrMeasurementPostRequest(request)),
     createDispose: () => dispatch(hrMeasurementPostDispose()),
     updateRequest: (request: IHRMeasurementPutRequest) => dispatch(hrMeasurementPutRequest(request)),
     updateDispose: () => dispatch(hrMeasurementPutDispose()),
+    deleteRequest: (request: IHRMeasurementDeleteRequest) => dispatch(hrMeasurementDeleteRequest(request)),
+    deleteDispose: () => dispatch(hrMeasurementDeleteDispose()),
     
     // query
     loadAllRequest: (request: IHRMeasurementGetAllRequest) => dispatch(hrMeasurementGetAllRequest(request)),

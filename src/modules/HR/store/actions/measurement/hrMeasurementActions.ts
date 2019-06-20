@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { IHRMeasurementDeleteRequest, IHRMeasurementGetAllRequest, IHRMeasurementGetDetailRequest, IHRMeasurementPostRequest, IHRMeasurementPutRequest } from 'modules/HR/classes/queries/measurement';
-import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from 'modules/HR/classes/response/measurement';
+import { IHRMeasurement, IHRMeasurementDetail } from 'modules/HR/classes/response/measurement';
 import { action } from 'typesafe-actions';
 
 export const enum HRMeasurementAction {
@@ -8,10 +8,10 @@ export const enum HRMeasurementAction {
   GET_ALL_SUCCESS = '@@hr/measurement/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@hr/measurement/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@hr/measurement/GET_ALL_DISPOSE',
-  GET_LIST_REQUEST = '@@hr/measurement/GET_LIST_REQUEST',
-  GET_LIST_SUCCESS = '@@hr/measurement/GET_LIST_SUCCESS',
-  GET_LIST_ERROR = '@@hr/measurement/GET_LIST_ERROR',
-  GET_LIST_DISPOSE = '@@hr/measurement/GET_LIST_DISPOSE',
+  // GET_LIST_REQUEST = '@@hr/measurement/GET_LIST_REQUEST',
+  // GET_LIST_SUCCESS = '@@hr/measurement/GET_LIST_SUCCESS',
+  // GET_LIST_ERROR = '@@hr/measurement/GET_LIST_ERROR',
+  // GET_LIST_DISPOSE = '@@hr/measurement/GET_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@hr/measurement/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@hr/measurement/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@hr/measurement/GET_BY_ID_ERROR',
@@ -36,11 +36,11 @@ export const hrMeasurementGetAllSuccess = (response: IResponseCollection<IHRMeas
 export const hrMeasurementGetAllError = (error: any) => action(HRMeasurementAction.GET_ALL_ERROR, error);
 export const hrMeasurementGetAllDispose = () => action(HRMeasurementAction.GET_ALL_DISPOSE);
 
-// get list
-export const hrMeasurementGetListRequest = (request: IHRMeasurementGetDetailRequest) => action(HRMeasurementAction.GET_LIST_REQUEST, request);
-export const hrMeasurementGetListSuccess = (response: IResponseCollection<IHRMeasurementList>) => action(HRMeasurementAction.GET_LIST_SUCCESS, response);
-export const hrMeasurementGetListError = (error: any) => action(HRMeasurementAction.GET_LIST_ERROR, error);
-export const hrMeasurementGetListDispose = () => action(HRMeasurementAction.GET_LIST_DISPOSE);
+// // get list
+// export const hrMeasurementGetListRequest = (request: IHRMeasurementGetDetailRequest) => action(HRMeasurementAction.GET_LIST_REQUEST, request);
+// export const hrMeasurementGetListSuccess = (response: IResponseCollection<IHRMeasurementList>) => action(HRMeasurementAction.GET_LIST_SUCCESS, response);
+// export const hrMeasurementGetListError = (error: any) => action(HRMeasurementAction.GET_LIST_ERROR, error);
+// export const hrMeasurementGetListDispose = () => action(HRMeasurementAction.GET_LIST_DISPOSE);
 
 // get by id
 export const hrMeasurementGetByIdRequest = (request: IHRMeasurementGetDetailRequest) => action(HRMeasurementAction.GET_BY_ID_REQUEST, request);

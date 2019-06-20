@@ -20,5 +20,28 @@
 
   "hr.template.field.uid": "Template ID",
   "hr.template.field.company": "Company",
-  "hr.template.field.position": "Position"
+  "hr.template.field.position": "Position",
+
+  "hr.measurement.page.list.title": "All KPI measurements",
+  "hr.measurement.page.list.subHeader": "Lorem LOREM",
+  "hr.measurement.page.detail.title": "Detail KPI measurement",
+  "hr.measurement.page.detail.subHeader": "Lorem LOREM",
+  "hr.measurement.page.new.title": "New KPI measurement",
+  "hr.measurement.page.new.subHeader": "Lorem LOREM",
+  "hr.measurement.page.modify.title": "Modify KPI measurement",
+  "hr.measurement.page.modify.subHeader": "Lorem LOREM",
+
+  "hr.measurement.submission.form": "KPI measurement Submission",
+
+  "hr.measurement.section.info.title": "KPI measurement",
+  "hr.measurement.section.info.subHeader": "LOREM LOREM",
+
+  "hr.measurement.confirm.new.title": "New KPI measurement",
+  "hr.measurement.confirm.new.description": "You are about creating a new KPI measurement. Do you want to continue?",
+  "hr.measurement.confirm.modify.title": "Modify KPI measurement",
+  "hr.measurement.confirm.modify.description": "You are about to modify current KPI measurement. Do you want to continue?",
+
+  "hr.measurement.field.uid": "measurement ID",
+  "hr.measurement.field.company": "Company",
+  "hr.measurement.field.position": "Position"
 }

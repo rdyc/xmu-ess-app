@@ -23,6 +23,7 @@ const hrMeasurementSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.measurement.field.uid)}
         value={props.data.uid}
+        multiline
       />
     </Grid>
 
@@ -31,6 +32,7 @@ const hrMeasurementSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.measurement.field.description)}
         value={props.data.description}
+        multiline
       />
     </Grid>
 
