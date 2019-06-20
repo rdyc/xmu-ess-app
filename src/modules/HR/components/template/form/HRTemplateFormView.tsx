@@ -53,6 +53,7 @@ export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
                   marginFarRight: props.classes.marginFarRight
                 }}
                 filterCommonSystem={props.filterCommonSystem}
+                filterMeasurement={props.filterMeasurement}
               />
             </div>
 

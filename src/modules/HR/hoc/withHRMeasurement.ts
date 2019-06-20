@@ -63,7 +63,7 @@ const mapStateToProps = ({ hrMeasurementGetAll, hrMeasurementGetList, hrMeasurem
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hrTemplateDispatch: {
+  hrMeasurementDispatch: {
     // command
     createRequest: (request: IHRMeasurementPostRequest) => dispatch(hrMeasurementPostRequest(request)),
     createDispose: () => dispatch(hrMeasurementPostDispose()),
