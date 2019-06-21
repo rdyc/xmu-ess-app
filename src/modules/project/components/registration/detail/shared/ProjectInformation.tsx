@@ -60,6 +60,7 @@ const projectInformation: React.SFC<AllProps> = props => (
         value={props.data.project ? props.data.project.value : 'N/A'}
       />
       <TextField
+        multiline
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.registration.field.name)}
         value={props.data.name}
