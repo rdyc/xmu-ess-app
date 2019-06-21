@@ -262,6 +262,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
       value={props.filterEmployee && props.filterEmployee.uid}
       filter={{
         companyUids: props.userState.user && props.userState.user.company.uid,
+        useAccess: true,
         orderBy: 'fullName',
         direction: 'ascending'
       }}
