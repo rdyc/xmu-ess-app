@@ -183,9 +183,13 @@ const TimesheetEntryDetailPartialForm: React.ComponentType<TimesheetEntryDetailP
               props.formikBag.setFieldValue('date', moment.format('YYYY-MM-DD'));
               if (props.formikBag.values.start !== '') {
                 props.formikBag.setFieldValue('start', `${moment.format('YYYY-MM-DD')} ${(props.formikBag.values.start).substring(11)}`);
+              } else {
+                props.formikBag.setFieldValue('start', `${moment.format('YYYY-MM-DD')} 00:00`);
               }
               if (props.formikBag.values.end !== '') {
                 props.formikBag.setFieldValue('end', `${moment.format('YYYY-MM-DD')} ${(props.formikBag.values.end).substring(11)}`);
+              } else {
+                props.formikBag.setFieldValue('end', `${moment.format('YYYY-MM-DD')} 00:00`);
               }
             }}
             disableFuture

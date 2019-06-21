@@ -1,5 +1,5 @@
 import { ISystemListFilter } from '@common/classes/filters';
-import { ProjectType } from '@common/classes/types';
+import { ProjectType, WorkflowStatusType } from '@common/classes/types';
 import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
@@ -250,7 +250,8 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
       employeeUid: user && user.uid,
       projectTypes: activityType === 'SAT02' ? ProjectType.PreSales : 
                     activityType === 'SAT04' ? ProjectType.Maintenance :
-                    [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
+                    [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(','),
+      statusTypes: `${[WorkflowStatusType.Approved, WorkflowStatusType.ReOpened]}`,
     };
 
     props.setProjectFilter(filterProjectAssignment);
