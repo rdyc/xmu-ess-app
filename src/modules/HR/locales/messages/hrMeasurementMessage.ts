@@ -54,6 +54,14 @@ export const hrMeasurementField = defineMessages({
   weight: { id: `${prefix}.field.weight`},
 });
 
+// dialog
+export const hrMeasurementDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // helper
 export const hrMeasurementFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
