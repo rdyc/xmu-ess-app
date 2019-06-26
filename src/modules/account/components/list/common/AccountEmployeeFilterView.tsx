@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -18,7 +19,6 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { FilterCompany } from '@lookup/components/company/select';
 import { FilterRole } from '@lookup/components/role/select';
 import { AccountEmployeeFilterFilterProps } from './AccountEmployeeFilter';
@@ -43,7 +43,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterStatus || props.filterStatus) &&
+            (props.filterCompany || props.filterStatus) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -101,22 +101,17 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         </ListItem>
         <Divider /> */}
 
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
+        <ListItem>
           <ListItemText 
             primary={props.intl.formatMessage(accountMessage.employee.filter.isActive)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.all)}
+            secondary={props.intl.formatMessage(props.filterStatus ? layoutMessage.action.yes : layoutMessage.action.no) }
           />
           <ListItemSecondaryAction>
-            {
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
+            <Switch
+              color="secondary"
+              checked={props.filterStatus || false}
+              onChange={props.handleFilterStatusOnChange}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -140,17 +135,6 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         onSelected={props.handleFilterRoleOnSelected}
         onClose={props.handleFilterRoleOnClose}
         filter={props.filterRoleValue}
-      />
-
-      <DialogValue
-        title={props.intl.formatMessage(accountMessage.employee.filter.isActive)}
-        isOpen={props.isFilterStatusOpen}
-        hideBackdrop={true}
-        items={props.employeeStatus}
-        value={props.filterStatus && props.filterStatus.value}
-        onSelected={props.handleFilterStatusOnSelected}
-        onClose={props.handleFilterStatusOnClose}
-        isCompletion={true}
       />
     </Dialog>
   </React.Fragment>

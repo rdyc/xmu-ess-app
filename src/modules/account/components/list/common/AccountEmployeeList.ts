@@ -103,7 +103,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       const filter: IEmployeeAllFilter = {
         companyUids: props.companyUids,
         useAccess: false,
-        isActive: props.isActive || undefined,
+        isActive: props.isActive ? false : true,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
   handleFilterBadge: (props: AccountEmployeeListProps) => () => {
     return props.companyUids !== undefined || 
       props.roleUids !== undefined ||
-      props.isActive !== undefined;
+      props.isActive === true;
   },
 };
 
