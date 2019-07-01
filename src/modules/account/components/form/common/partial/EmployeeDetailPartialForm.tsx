@@ -236,7 +236,6 @@ const EmployeeDetailPartialForm: React.ComponentType<EmployeeDetailPartialFormPr
               moment ? props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD')) : 
               props.formikBag.setFieldValue(field.name, '');
             }}
-            disablePast
             invalidLabel=""
           />
         )}

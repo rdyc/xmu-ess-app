@@ -22,7 +22,7 @@ import {
 
 import { AccountEmployeeFilterView } from './AccountEmployeeFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -32,6 +32,7 @@ interface OwnOption {
 }
 
 interface OwnState {
+
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
@@ -40,6 +41,9 @@ interface OwnState {
   filterRoleValue?: ILookupRoleGetListFilter;
   isFilterRoleOpen: boolean;
   filterRole?: ILookupRole;
+
+  // filter status
+  filterStatus?: boolean; 
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -53,6 +57,9 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   // filter role
   setFilterRoleVisibility: StateHandler<OwnState>;
   setFilterRole: StateHandler<OwnState>;
+
+  // filter status
+  setFilterStatus: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -71,6 +78,9 @@ interface OwnHandler {
   handleFilterRoleOnSelected: (data: ILookupRole) => void;
   handleFilterRoleOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterRoleOnClose: () => void;
+
+  // filter status
+  handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type AccountEmployeeFilterFilterProps
@@ -82,16 +92,19 @@ export type AccountEmployeeFilterFilterProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (): OwnState => ({
+const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (props: AccountEmployeeFilterFilterProps): OwnState => ({
   isFilterCompanyOpen: false,
   isFilterRoleOpen: false,
+
+  filterStatus: props.initialProps && props.initialProps.isActive
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
-    filterRole: undefined
+    filterRole: undefined,
+    filterStatus: false
   }),
 
   // filter company
@@ -114,6 +127,11 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
     isFilterRoleOpen: false,
     filterRole: data
   }),
+
+  // filter status
+  setFilterStatus: () => (checked: boolean) => ({
+    filterStatus: checked
+  }),
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandler> = {
@@ -124,7 +142,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   handleFilterOnApply: (props: AccountEmployeeFilterFilterProps) => () => {
     props.onApply({
       companyUids: props.filterCompany && props.filterCompany.uid,
-      roleUids: props.filterRole && props.filterRole.uid
+      roleUids: props.filterRole && props.filterRole.uid,
+      isActive: props.filterStatus
     });
   },
 
@@ -155,6 +174,11 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   },
   handleFilterRoleOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
     props.setFilterRoleVisibility();
+  },
+
+  // filter status
+  handleFilterStatusOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterStatus(checked);
   },
 };
 

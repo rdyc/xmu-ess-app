@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -42,7 +43,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </Typography>
 
           {
-            (props.filterCompany) &&
+            (props.filterCompany || props.filterStatus) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -99,6 +100,21 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </ListItemSecondaryAction>
         </ListItem>
         <Divider /> */}
+
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(accountMessage.employee.filter.isActive)}
+            secondary={props.intl.formatMessage(props.filterStatus ? layoutMessage.action.yes : layoutMessage.action.no) }
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="secondary"
+              checked={props.filterStatus || false}
+              onChange={props.handleFilterStatusOnChange}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
 
       </List>
 
