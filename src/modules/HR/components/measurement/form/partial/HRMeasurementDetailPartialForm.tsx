@@ -59,7 +59,7 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
         name="measurementType"
         render={({ field, form }: FieldProps<IHRMeasurementFormValue>) => (
           <React.Fragment>
-            <CommonSystemOption category="kPI" filter={props.filterCommonSystem}>
+            <CommonSystemOption category="measurement" filter={props.filterCommonSystem}>
               <SelectField
                 isSearchable
                 menuPlacement="auto"
