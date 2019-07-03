@@ -116,5 +116,15 @@
 
   "summary.winningRatio.hover.closed": "Detail Closed",
   "summary.winningRatio.hover.onProgress": "Detail On Progress",
-  "summary.winningRatio.hover.win": "Detail Winning"
+  "summary.winningRatio.hover.win": "Detail Winning",
+
+  "summary.resourceMapping.field.company": "Company",
+  "summary.resourceMapping.field.company.required": "Company is required",
+  "summary.resourceMapping.field.year": "Year",
+  "summary.resourceMapping.field.year.required": "Year is required",
+  "summary.resourceMapping.field.null": "No Data",
+
+  "summary.resourceMapping.page.title": "Project Resource Mapping",
+  "summary.resourceMapping.page.subHeader": " ",
+  "summary.resourceMapping.page.detail.title" : "Details Project Resource Mapping"
 }

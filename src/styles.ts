@@ -749,6 +749,14 @@ const styles = (theme: Theme) =>
     },
     colorWhite: {
       color: '#fff'
+    },
+
+    // chart resource mapping
+    amChart: {
+      width: '100%',
+      fontFamily: theme.typography.fontFamily,
+      textTransform: 'capitalize'
+      // color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white
     }
   });
 
