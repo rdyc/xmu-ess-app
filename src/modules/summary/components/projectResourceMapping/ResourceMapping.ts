@@ -38,15 +38,19 @@ interface OwnState extends IResourceMappingFilterResult {
   isAdmin: boolean;
   reloadData: boolean;
   isDetailOpen: boolean;
+  isEmployeeOpen: boolean;
   isStartup: boolean;
   chartData?: IResourceMappingChart;
+  employeeData?: IAccountEmployee;
 }
 
 interface OwnHandlers {
   handleOpenDetail: () => void;
+  handleOpenEmployee: () => void;
   handleReloadData: () => void;
   handleChangeFilter: (filter: IResourceMappingFilterResult) => void;
   handleChartData: (data: any) => void;
+  handleEmployeeData: (data: any) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -89,6 +93,7 @@ const createProps: mapper<ResourceMappingProps, OwnState> = (
     isAdmin,
     reloadData: false,
     isDetailOpen: false,
+    isEmployeeOpen: false,
     isStartup: true,
     chartData: undefined,
     companyUid: '',
@@ -135,6 +140,11 @@ const handlerCreators: HandleCreators<ResourceMappingProps, OwnHandlers> = {
       isDetailOpen: !props.isDetailOpen
     });
   },
+  handleOpenEmployee: (props: ResourceMappingProps) => () => {
+    props.stateUpdate({
+      isEmployeeOpen: !props.isEmployeeOpen
+    });
+  },
   handleChartData: (props: ResourceMappingProps) => (data: any) => {
     props.stateUpdate({
       chartData: {
@@ -143,7 +153,13 @@ const handlerCreators: HandleCreators<ResourceMappingProps, OwnHandlers> = {
       },
       isDetailOpen: !props.isDetailOpen
     });
-  }
+  },
+  handleEmployeeData: (props: ResourceMappingProps) => (data: any) => {
+    props.stateUpdate({
+      employeeData: data.employee,
+      isEmployeeOpen: !props.isEmployeeOpen
+    });
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, OwnState> = {

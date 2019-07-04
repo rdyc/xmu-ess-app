@@ -2,6 +2,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 
+import { EmployeeDetailPage } from './employeeDetail/EmployeeDetailPage';
 import { ResourceMappingProps } from './ResourceMapping';
 import { ResourceMappingChartView } from './ResourceMappingChartView';
 import { ResourceMappingDetail } from './ResourceMappingDetail';
@@ -14,8 +15,11 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
     handleReloadData,
     handleOpenDetail,
     handleChartData,
+    handleEmployeeData,
+    handleOpenEmployee,
     isStartup,
-    year
+    year,
+    employeeData
   } = props;
 
   const render = (
@@ -59,11 +63,18 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
               handleOpenDetail={handleOpenDetail}
               data={props.chartData}
             />
+            <EmployeeDetailPage 
+              employee={employeeData}
+              companyUid={props.companyUid}
+              handleOpenEmployee={handleOpenEmployee}
+              isEmployeeOpen={props.isEmployeeOpen}
+            />
             <ResourceMappingChartView
               dataLength={response.data.length}
               data={response.data}
               year={year}
               handleChartData={handleChartData}
+              handleEmployeeData={handleEmployeeData}
             />
           </React.Fragment>
         }

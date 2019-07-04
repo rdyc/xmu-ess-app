@@ -5,7 +5,8 @@ const prefix = 'summary.resourceMapping';
 export const summaryResourceMappingPage = defineMessages({
   title: { id: `${prefix}.page.title`},
   subHeader: { id: `${prefix}.page.subHeader`},
-  detail: { id: `${prefix}.page.detail.title`}
+  detail: { id: `${prefix}.page.detail.title`},
+  employee: { id: `${prefix}.page.employee.detail`},
 });
 
 export const summaryResourceMappingField = defineMessages({
@@ -23,5 +24,5 @@ export const summaryResourceMappingField = defineMessages({
   projectDescription: { id: `${prefix}.field.project.description`},
   projectStart: { id: `${prefix}.field.project.start`},
   projectEnd: { id: `${prefix}.field.project.end`},
-  null: { id: `${prefix}.field.null`}
+  null: { id: `${prefix}.field.null`},
 });

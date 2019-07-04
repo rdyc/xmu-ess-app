@@ -133,7 +133,8 @@
   "summary.resourceMapping.field.project.start": "Start Date",
   "summary.resourceMapping.field.project.end": "End Date",
   "summary.resourceMapping.field.null": "No Data",
-
+  
+  "summary.resourceMapping.page.employee.detail": "{name}",
   "summary.resourceMapping.page.title": "Project Resource Mapping",
   "summary.resourceMapping.page.subHeader": " ",
   "summary.resourceMapping.page.detail.title" : "Details Project Resource Mapping"

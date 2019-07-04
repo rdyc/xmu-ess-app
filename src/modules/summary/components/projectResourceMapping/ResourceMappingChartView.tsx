@@ -21,6 +21,7 @@ interface IOwnOption {
   year?: number;
   data: ISummaryMapping[];
   handleChartData: (data: any) => void;
+  handleEmployeeData: (data: any) => void;
 }
 
 interface IOwnState {
@@ -35,7 +36,7 @@ const createProps: mapper<ResourceMappingChartProps, IOwnState> = (props: Resour
 
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
   componentDidMount() {
-    const { data, year, handleChartData } = this.props;
+    const { data, year, handleChartData, handleEmployeeData } = this.props;
 
     const chart = am4core.create('chartdiv', am4charts.XYChart);
     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
@@ -64,8 +65,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
                 // color: colorSet.getIndex(0).brighten(Number(index % 3 === 1 ? 0 : (index % 3 === 2 ? 0.4 : 0.8 ))),
                 color: colorChart[chartCounter % 5],
                 projectName: project.name,
-                employee: item.employee,
-                employeeId: item.employee.uid
+                employee: item.employee
               });
               chartCounter += 1;
             }
@@ -73,7 +73,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
       } else {
         chart.data.push({
           name: (item.employee.fullName.toLowerCase()),
-          employeeId: item.employee.uid
+          employee: item.employee,
         }); 
         chartCounter += 1;
       }
@@ -86,8 +86,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     nameAxis.renderer.inversed = true;
     // nameAxis.renderer.labels.template.propertyFields.url = 'employeeId';
     nameAxis.renderer.labels.template.events.on('hit', (e) => {
-      console.log('HIT AXIS');
-      console.log(e.target.dataItem.dataContext);
+      // console.log(e.target.dataItem.dataContext);
+      handleEmployeeData(e.target.dataItem.dataContext);
     });
     
     const dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());

@@ -33,7 +33,6 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
     return props.filterCompany !== undefined ||
       props.filterYear !== undefined;
   };
-
   const filter = () => {
     return (
     <React.Fragment>

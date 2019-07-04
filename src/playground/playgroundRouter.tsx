@@ -2,9 +2,6 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Amchart } from './chart/Amchart';
-import Canvas from './chart/Canvas';
-import Nivo from './chart/Nivo';
-import { Pure } from './chart/Pure';
 import { SimpleForm } from './formik/SimpleForm';
 import { DemoSinglePage } from './pages/DemoSinglePage';
 import { Enhancer } from './recompose/Enhancer';
@@ -28,9 +25,6 @@ export const playgroundRouter: React.SFC<AllProps> = props => (
     <Route path={`${props.match.path}/redux/form/upload`} component={upload} />
     <Route path={`${props.match.path}/formik/simpleform`} component={() => <SimpleForm/>} />
     <Route path={`${props.match.path}/recompose/enhancer`} component={enhancer} />
-    <Route path={`${props.match.path}/chart/nivo`} component={Nivo}/>
-    <Route path={`${props.match.path}/chart/canvas`} component={Canvas}/>
     <Route path={`${props.match.path}/chart/amchart`} component={Amchart}/>
-    <Route path={`${props.match.path}/chart/pure`} component={Pure}/>
   </Switch>
 );

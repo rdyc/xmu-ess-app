@@ -102,28 +102,11 @@ export type ResourceMappingFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: ResourceMappingFilterProps): IOwnState => {
-  // const { user } = props.userState;
-  // let getCompany: ILookupCompany = {
-  //   uid: '',
-  //   code: '',
-  //   name: ''
-  // };
-
-  // if (user) {
-  //   getCompany = {
-  //     uid: user.company.uid,
-  //     code: user.company.code,
-  //     name: user.company.name
-  //   };
-  // }
-
   return {
     yearList,
     isFilterCompanyOpen: false,
     isFilterYearOpen: false,
     isFilterOpen: true,
-    // filterCompany: getCompany,
-    // filterCompanyNonAdmin: user && user.company.name,
   };
 };
 
@@ -187,11 +170,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
     props.setFilterCompany(data);
   },
   handleFilterCompanyOnClear: (props: ResourceMappingFilterProps) => () => {
-    // props.setFilterCompany(props.resetCompany);
     props.setFilterCompany();
-    // if (props.isAdmin) {
-    //   props.setFilterEmployee();
-    // }
   },
   handleFilterCompanyOnClose: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompanyVisibility();
@@ -235,7 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
         this.props.setFilterYear(selected);
       }
     }
-  }
+  },
 };
 
 export const ResourceMappingFilter = compose<ResourceMappingFilterProps, IOwnOption>(
