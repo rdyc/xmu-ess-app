@@ -8,18 +8,12 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, mapper, ReactLifeCycleFunctions, withStateHandlers } from 'recompose';
 
-const colorChart = [
-  '#f44336', 
-  '#4caf50',
-  '#03a9f4',
-  '#ffc107',
-  '#795548'
-];
-
 interface IOwnOption {
   dataLength: number;
-  year?: number;
+  year: number;
   data: ISummaryMapping[];
+  handleDialogDetail: () => void;
+  handleDetail: (uid: string) => void;
   handleChartData: (data: any) => void;
 }
 
@@ -49,33 +43,27 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     colorSet.saturation = 0.4;
 
     chart.data = [];
-    let chartCounter: number = 0;
     data.map((item) => {
-      if (item.projects && item.projects.length > 0 && year) {
+      if (item.projects && item.projects.length > 0) {
         item.projects.map((project, index) => {
           if (Number(moment(project.start).format('YYYY')) >= year ||
             Number(moment(project.end).format('YYYY')) >= year) {
               chart.data.push({
                 project,
-                name: (item.employee.fullName.toLowerCase()),
+                name: (item.employee.fullName.charAt(0) + item.employee.fullName.slice(1).toLowerCase()),
                 start: moment(project.start).format('YYYY') !== year.toString() ? moment()
                 .startOf('year').format('YYYY-MM-DD') : moment(project.start).format('YYYY-MM-DD'),
                 end: moment(project.end).format('YYYY-MM-DD'),
-                // color: colorSet.getIndex(0).brighten(Number(index % 3 === 1 ? 0 : (index % 3 === 2 ? 0.4 : 0.8 ))),
-                color: colorChart[chartCounter % 5],
+                color: colorSet.getIndex(0).brighten(Number(index % 3 === 1 ? 0 : (index % 3 === 2 ? 0.4 : 0.8 ))),
                 projectName: project.name,
                 employee: item.employee,
-                employeeId: item.employee.uid
               });
-              chartCounter += 1;
-            }
+          }
         });
       } else {
         chart.data.push({
-          name: (item.employee.fullName.toLowerCase()),
-          employeeId: item.employee.uid
+          name: (item.employee.fullName.charAt(0) + item.employee.fullName.slice(1).toLowerCase()),
         }); 
-        chartCounter += 1;
       }
     });
 
@@ -83,16 +71,23 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     const nameAxis = chart.yAxes.push(new am4charts.CategoryAxis());
     nameAxis.dataFields.category = 'name';
     nameAxis.clickable = true;
+    // nameAxis.renderer.grid.template.location = 0;
     nameAxis.renderer.inversed = true;
-    // nameAxis.renderer.labels.template.propertyFields.url = 'employeeId';
-    nameAxis.renderer.labels.template.events.on('hit', (e) => {
-      console.log('HIT AXIS');
-      console.log(e.target.dataItem.dataContext);
+    nameAxis.events.on('hit', (e) => {
+      console.log('CATEGORY HIT');
     });
-    
+
+    // for date *bottom axis
+    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    // dateAxis.renderer.minGridDistance = 70;
+    // dateAxis.baseInterval = { count: 1, timeUnit: 'day' };
+    // dateAxis.renderer.tooltipLocation = 0;
+
+    // for date *top axis
     const dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
+    // dateAxis2.renderer.minGridDistance = 70;
     dateAxis2.baseInterval = { count: 1, timeUnit: 'day' };
-    // for date *top axis, just need to remove it for place the dateaxis in bottom
+    // dateAxis2.renderer.tooltipLocation = 0;
     dateAxis2.renderer.opposite = true;
 
     // for the value
@@ -112,6 +107,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
 
     // top scrollbar
     chart.scrollbarX = new am4core.Scrollbar();
+    // chart.scrollbarY = new am4core.Scrollbar();
 
     // // Set up tooltips
     if (series1.tooltip) {
@@ -120,6 +116,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
       series1.tooltip.pointerOrientation = 'vertical';
     }
     series1.columns.template.events.on('hit', (e) => {
+      console.log('HIT ISI');
       const value = e.target.dataItem && e.target.dataItem.dataContext;
       handleChartData(value);
     });

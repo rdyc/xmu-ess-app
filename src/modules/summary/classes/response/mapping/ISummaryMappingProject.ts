@@ -16,5 +16,4 @@ export interface ISummaryMappingProject {
   statusType: string;
   status?: ICommonSystem;
   childProjectUid?: string;
-  owner: string;
 }

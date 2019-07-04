@@ -1,10 +1,10 @@
+// import { PreloaderWithError } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
 import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 
 import { ResourceMappingProps } from './ResourceMapping';
 import { ResourceMappingChartView } from './ResourceMappingChartView';
-import { ResourceMappingDetail } from './ResourceMappingDetail';
 import { ResourceMappingFilter } from './ResourceMappingFilter';
 
 export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
@@ -12,7 +12,8 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
   const { 
     handleChangeFilter, 
     handleReloadData,
-    handleOpenDetail,
+    handleDialogDetail,
+    handleDetail,
     handleChartData,
     isStartup,
     year
@@ -54,15 +55,19 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
           response &&
           response.data &&
           <React.Fragment>
-            <ResourceMappingDetail
+            {/* <ResourceMappingDetail
+              uid={props.uid}
+              type={props.type}
               isDetailOpen={props.isDetailOpen}
-              handleOpenDetail={handleOpenDetail}
-              data={props.chartData}
-            />
+              handleDialogDetail={handleDialogDetail}
+              data={response && response.data}
+            /> */}
             <ResourceMappingChartView
               dataLength={response.data.length}
               data={response.data}
               year={year}
+              handleDetail={handleDetail}
+              handleDialogDetail={handleDialogDetail}
               handleChartData={handleChartData}
             />
           </React.Fragment>

@@ -11,6 +11,7 @@ import styles from '@styles';
 import { ISummaryMappingProject } from '@summary/classes/response/mapping';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -29,7 +30,7 @@ import {
 import { IResourceMappingFilterResult } from './ResourceMappingFilter';
 import { ResourceMappingView } from './ResourceMappingView';
 
-export interface IResourceMappingChart {
+export interface IChartData {
   employee: IAccountEmployee;
   project: ISummaryMappingProject;
 }
@@ -39,11 +40,11 @@ interface OwnState extends IResourceMappingFilterResult {
   reloadData: boolean;
   isDetailOpen: boolean;
   isStartup: boolean;
-  chartData?: IResourceMappingChart;
+  chartData?: IChartData;
 }
 
 interface OwnHandlers {
-  handleOpenDetail: () => void;
+  handleDialogDetail: () => void;
   handleReloadData: () => void;
   handleChangeFilter: (filter: IResourceMappingFilterResult) => void;
   handleChartData: (data: any) => void;
@@ -92,7 +93,7 @@ const createProps: mapper<ResourceMappingProps, OwnState> = (
     isStartup: true,
     chartData: undefined,
     companyUid: '',
-    year: undefined,
+    year: Number(moment().format('YYYY')),
   };
 
   if (request && request.filter) {
@@ -130,7 +131,7 @@ const handlerCreators: HandleCreators<ResourceMappingProps, OwnHandlers> = {
       reloadData: true
     });
   },
-  handleOpenDetail: (props: ResourceMappingProps) => () => {
+  handleDialogDetail: (props: ResourceMappingProps) => () => {
     props.stateUpdate({
       isDetailOpen: !props.isDetailOpen
     });

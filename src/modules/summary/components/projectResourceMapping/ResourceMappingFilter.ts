@@ -136,7 +136,7 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   // main filter
   setFilterReset: (prevState: IOwnState, props: ResourceMappingFilterProps) => () => ({
     filterCompany: undefined,
-    filterYear: undefined
+    filterYear: {value: getYear, name: (getYear).toString() }
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
