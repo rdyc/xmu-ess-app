@@ -6,8 +6,7 @@ import { Profitability } from '@summary/components/profitability/Profitability';
 import { Progress } from '@summary/components/progress/Progress';
 import { WinningRatio } from '@summary/components/winningRatio/WinningRatio';
 import * as React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router';
-import { ResourceMapping } from './projectResourceMapping/ResourceMapping';
+import { RouteComponentProps, Switch } from 'react-router';
 
 export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
@@ -41,12 +40,5 @@ export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props =>
       subMenu={AppMenu.ReportProgress} 
       component={Progress} 
     />
-    <Route path={`${props.match.path}/resourcemapping`} component={ResourceMapping}  />
-    {/* <SecureMenuRoute 
-      path={`${props.match.path}/resourcemapping`}
-      menu={AppMenu.Report} 
-      subMenu={AppMenu.ReportWinningRatio} 
-      component={ResourceMapping} 
-    /> */}
   </Switch>
 );

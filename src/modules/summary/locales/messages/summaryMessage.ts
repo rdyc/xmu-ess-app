@@ -3,7 +3,6 @@ import { summaryEffectivenessHeader, summaryEffectivenessPage } from './summaryE
 import { summaryFilterField } from './summaryFilterMessages';
 import { summaryProfitabilityDialog, summaryProfitabilityHeader, summaryProfitabilityHeaderHelper, summaryProfitabilityPage } from './summaryProfitabilityMessages';
 import { summaryProgressDialog, summaryProgressHeader, summaryProgressHeaderHelper, summaryProgressPage } from './summaryProgressMessages';
-import { summaryResourceMappingField, summaryResourceMappingPage } from './summaryResourceMappingMessage';
 import { summaryWinningRatioField, summaryWinningRatioHover, summaryWinningRatioPage } from './summaryWinningRatioMessage';
 
 export const summaryMessage = {
@@ -35,8 +34,4 @@ export const summaryMessage = {
     field: summaryWinningRatioField,
     hover: summaryWinningRatioHover
   },
-  mapping: {
-    page: summaryResourceMappingPage,
-    field: summaryResourceMappingField
-  }
 };
