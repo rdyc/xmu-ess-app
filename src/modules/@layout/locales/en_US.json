@@ -140,6 +140,7 @@
   "timesheet_conflict_hours":"timesheet's conflict hours",
   "timesheet_has_been_approved":"timesheet has been approved",
   "timesheet_mileage_not_found":"timesheet mileage is not found",
+  "timesheet_exceed_project_date":"timesheet date exceed project dates",
   "timesheet_mileage_already_exist":"timesheet mileage already exists",
 
   "leave_unregistered":"leave is unregistered",
