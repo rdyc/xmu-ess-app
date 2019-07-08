@@ -89,9 +89,13 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     nameAxis.renderer.labels.template.tooltipY = 30;
     nameAxis.renderer.labels.template.tooltipText = '{name}';
 
-    // if (nameAxis.renderer.labels.template.tooltip) {
-    //   nameAxis.renderer.labels.template.tooltip.pointerOrientation = 'vertical';
-    // }
+    if (nameAxis.tooltip) {
+      nameAxis.tooltip.keepTargetHover = true;
+    }
+    if (nameAxis.renderer.labels.template.tooltip) {
+      nameAxis.renderer.labels.template.tooltip.keepTargetHover = true;
+      // nameAxis.renderer.labels.template.tooltip.pointerOrientation = 'vertical';
+    }
     nameAxis.renderer.labels.template.events.on('hit', (e) => {
       // console.log(e.target.dataItem.dataContext);
       handleEmployeeData(e.target.dataItem.dataContext);
