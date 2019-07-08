@@ -1,3 +1,4 @@
+import { AccountEmployeeTrainingList } from '@account/components/list/training/AccountEmployeeTrainingList';
 import { AppBar, Dialog, DialogContent, Grid, IconButton, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
@@ -46,13 +47,17 @@ export const EmployeeDetailPageView: React.SFC<EmployeeDetailPageProps> = props 
             <Tab label="Training" />
           </Tabs>
 
-          <DialogContent>
-            <Grid container spacing={8}>
-              <Grid item xs={4}>
-                {props.tabValue === 0 && <EmployeeInformation data={employee} company={company} />}
-              </Grid>
-            </Grid>
-            {props.tabValue === 1 && <Typography>Trainng</Typography>}
+          <DialogContent style={{padding: 0}}>
+            {
+              props.tabValue === 0 && (
+                <Grid container spacing={8}>
+                  <Grid item xs={4} style={{marginLeft: '24px', marginTop: '10px'}}>
+                  <EmployeeInformation data={employee} company={company} />
+                  </Grid>
+                </Grid>
+              )
+            }
+            {props.tabValue === 1 && <AccountEmployeeTrainingList employeeId={employee.uid} />}
           </DialogContent>
           
         </Dialog>

@@ -1,21 +1,21 @@
 import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4core from '@amcharts/amcharts4/core';
-import { Card, CardContent, CardHeader, withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
 const amchart: React.SFC<AmchartProps> = props => {
-  // return <div id="chartdiv" style={{ width: '100%', height: `${55 * 60}px` }} />;
-  return (
-    <React.Fragment>
-      <Card>
-        <CardHeader title={'Cobs'}/>
-        <CardContent id="chartdiv" className={props.classes.amChart} />
-      </Card>
-    </React.Fragment>
-  );
+  return <div id="chartdiv" style={{ width: '100%', height: `550px` }} />;
+  // return (
+  //   <React.Fragment>
+  //     <Card>
+  //       <CardHeader title={'Cobs'}/>
+  //       <CardContent id="chartdiv" className={props.classes.amChart} />
+  //     </Card>
+  //   </React.Fragment>
+  // );
 };
 
 interface IOwnState {
@@ -257,6 +257,18 @@ const lifecycles: ReactLifeCycleFunctions<AmchartProps, {}> = {
     categoryAxis.events.on('hit', () => {
       console.log('CATEGORY HIT');
     });
+    categoryAxis.renderer.labels.template.tooltipText = '{category}';
+    // categoryAxis.renderer.labels.template.tooltipX = 100;
+    categoryAxis.renderer.labels.template.tooltipY = 30;
+    categoryAxis.renderer.tooltipLocation = 0;
+
+    if (categoryAxis.tooltip) {
+      categoryAxis.tooltip.keepTargetHover = true;
+      categoryAxis.tooltip.pointerOrientation = 'left';
+    }
+    if (categoryAxis.renderer.labels.template.tooltip) {
+      categoryAxis.renderer.labels.template.tooltip.pointerOrientation = 'left';
+    }
 
     // for date *bottom value
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -266,7 +278,9 @@ const lifecycles: ReactLifeCycleFunctions<AmchartProps, {}> = {
 
     // for the value
     const series1 = chart.series.push(new am4charts.ColumnSeries());
-    series1.columns.template.height = am4core.percent(50);
+    series1.columns.template.height = am4core.percent(100);
+    series1.columns.template.tooltipX = 0;
+    series1.columns.template.tooltipY = 3;
     series1.columns.template.tooltipText =
       '{task}: [bold]{openDateX}[/] - [bold]{dateX}[/]';
 
@@ -283,15 +297,18 @@ const lifecycles: ReactLifeCycleFunctions<AmchartProps, {}> = {
 
     // // Set up tooltips
     if (series1.tooltip) {
-      series1.tooltip.label.interactionsEnabled = true;
+      // series1.tooltip.label.interactionsEnabled = true;
       series1.tooltip.keepTargetHover = true;
+      // series1.tooltip.contentAlign = 'right';
+      series1.tooltip.pointerOrientation = 'vertical';
+
     }
     series1.columns.template.clickable = true;
     series1.columns.template.events.on('hit', () => {
       console.log('HIT WOIII');
     });
     series1.columns.template.tooltipHTML =
-      '<b>{category}</b><br><a href="https://en.wikipedia.org/wiki/{category.urlEncode()}">More info</a>';
+      '<b>{category}</b>';
   }
 };
 

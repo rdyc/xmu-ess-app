@@ -97,7 +97,7 @@ const createProps: mapper<ResourceMappingProps, OwnState> = (
     isStartup: true,
     chartData: undefined,
     companyUid: '',
-    year: undefined,
+    year: undefined
   };
 
   if (request && request.filter) {
@@ -142,7 +142,7 @@ const handlerCreators: HandleCreators<ResourceMappingProps, OwnHandlers> = {
   },
   handleOpenEmployee: (props: ResourceMappingProps) => () => {
     props.stateUpdate({
-      isEmployeeOpen: !props.isEmployeeOpen
+      isEmployeeOpen: !props.isEmployeeOpen,
     });
   },
   handleChartData: (props: ResourceMappingProps) => (data: any) => {
@@ -172,7 +172,6 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, OwnState> = {
       uid: AppMenu.ReportWinningRatio,
       parentUid: AppMenu.Report,
       title: intl.formatMessage(summaryMessage.mapping.page.title),
-      description : intl.formatMessage(summaryMessage.mapping.page.subHeader)
     });
 
     // only load data when response are empty
@@ -199,11 +198,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, OwnState> = {
   },
   componentWillUnmount() {
     const { masterPage } = this.props;
-    const { loadMappingDispose } = this.props.summaryDispatch;
 
     masterPage.resetPage();
-
-    loadMappingDispose();
   }
 };
 

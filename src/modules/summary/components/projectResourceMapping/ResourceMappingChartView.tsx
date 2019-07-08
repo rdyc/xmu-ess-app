@@ -84,7 +84,14 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     nameAxis.dataFields.category = 'name';
     nameAxis.clickable = true;
     nameAxis.renderer.inversed = true;
-    // nameAxis.renderer.labels.template.propertyFields.url = 'employeeId';
+
+    nameAxis.renderer.labels.template.tooltipX = 100;
+    nameAxis.renderer.labels.template.tooltipY = 30;
+    nameAxis.renderer.labels.template.tooltipText = '{name}';
+
+    // if (nameAxis.renderer.labels.template.tooltip) {
+    //   nameAxis.renderer.labels.template.tooltip.pointerOrientation = 'vertical';
+    // }
     nameAxis.renderer.labels.template.events.on('hit', (e) => {
       // console.log(e.target.dataItem.dataContext);
       handleEmployeeData(e.target.dataItem.dataContext);
@@ -98,7 +105,9 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     // for the value
     // When hovering
     const series1 = chart.series.push(new am4charts.ColumnSeries());
-    series1.columns.template.height = am4core.percent(100);
+    series1.columns.template.height = am4core.percent(70);
+    series1.columns.template.tooltipX = 0;
+    series1.columns.template.tooltipY = 3;
     series1.columns.template.tooltipText =
       '{projectName}: [bold]{openDateX}[/] - [bold]{dateX}[/]';
 
@@ -108,7 +117,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
 
     series1.columns.template.propertyFields.fill = 'color'; // get color from data
     series1.columns.template.propertyFields.stroke = 'color';
-    series1.columns.template.strokeOpacity = 1;
+    series1.columns.template.strokeOpacity = 0.5;
 
     // top scrollbar
     chart.scrollbarX = new am4core.Scrollbar();
@@ -123,9 +132,6 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
       const value = e.target.dataItem && e.target.dataItem.dataContext;
       handleChartData(value);
     });
-    // series1.columns.template.clickable = true;
-    // series1.columns.template.tooltipHTML =
-    //   '<b>{category}</b><br><a href="https://en.wikipedia.org/wiki/{category.urlEncode()}">More info</a>';
   }
 };
 

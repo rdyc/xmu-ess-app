@@ -18,7 +18,7 @@ const employeeInformation: React.SFC<AllProps> = props => {
   const { data, intl, company } = props;
 
   const render = (
-    <Card square style={{marginTop: '10px'}}>
+    <Card square>
     <CardHeader
       title={intl.formatMessage(accountMessage.employee.field.title)}
       subheader={intl.formatMessage(accountMessage.employee.field.subHeader)}

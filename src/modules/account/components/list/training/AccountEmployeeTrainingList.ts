@@ -25,6 +25,10 @@ import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeFiel
 import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { AccountEmployeeTrainingListView } from './AccountEmployeeTrainingListView';
 
+interface IOwnOption {
+  employeeId?: string;
+}
+
 interface IOwnRouteParams {
   employeeUid: string;
 }
@@ -44,6 +48,7 @@ interface IOwnHandler {
 
 export type AccountEmployeeTrainingListProps 
   = IOwnRouteParams
+  & IOwnOption
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -89,10 +94,17 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
       
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
-          filter,
-          employeeUid: props.match.params.employeeUid,
-        });
+        if (props.employeeId) {
+          loadAllRequest({
+            filter,
+            employeeUid: props.employeeId,
+          });
+        } else {
+          loadAllRequest({
+            filter,
+            employeeUid: props.match.params.employeeUid,
+          });
+        }
       }
     }
   },
@@ -120,7 +132,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingListProps, IOwn
   }
 };
 
-export const AccountEmployeeTrainingList = compose(
+export const AccountEmployeeTrainingList = compose<AccountEmployeeTrainingListProps, IOwnOption>(
   setDisplayName('AccountEmployeeTrainingList'),
   withUser,
   withAccountEmployeeTraining,
