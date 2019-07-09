@@ -76,7 +76,8 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
   // fill from previous request if any
   if (request && request.filter) {
     state.companyUids = request.filter.companyUids,
-    state.roleUids = request.filter.roleUids;
+    state.roleUids = request.filter.roleUids,
+    state.isActive = request.filter.isActive;
   }
 
   return state;
@@ -102,6 +103,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       const filter: IEmployeeAllFilter = {
         companyUids: props.companyUids,
         useAccess: false,
+        isActive: props.isActive ? false : true,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -163,7 +165,8 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
   },
   handleFilterBadge: (props: AccountEmployeeListProps) => () => {
     return props.companyUids !== undefined || 
-      props.roleUids !== undefined;
+      props.roleUids !== undefined ||
+      props.isActive === true;
   },
 };
 
@@ -173,11 +176,13 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeListProps, IOwnState> =
     const isFilterChanged = !shallowEqual(
       {
         companyUids: this.props.companyUids,
-        roleUids: this.props.roleUids
+        roleUids: this.props.roleUids,
+        isActive: this.props.isActive
       },
       {
         companyUids: prevProps.companyUids,
-        roleUids: prevProps.roleUids
+        roleUids: prevProps.roleUids,
+        isActive: prevProps.isActive
       }
     );
 
