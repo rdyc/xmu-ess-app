@@ -39,7 +39,7 @@ export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props =>
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/hr/measurement/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/kpi/measurement/form`, { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
@@ -47,7 +47,7 @@ export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props =>
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/hr/measurement/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/measurement/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -65,7 +65,7 @@ export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props =>
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/hr/measurement/form')}
+          onClick={() => props.history.push('/kpi/measurement/form')}
         >
           <AddCircle/>
         </IconButton>

@@ -19,6 +19,7 @@ import gradeReducers from './grade/gradeReducer';
 import kpiReducers from './kpi/kpiReducers';
 import levelReducers from './level/levelReducers';
 import limiterReducers from './limiter/limiterReducers';
+import measurementReducers from './measurement/measurementReducers';
 import paymentReducers from './payment/paymentReducer';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
@@ -61,7 +62,8 @@ const commonReducers = {
   ...familyReducers,
   ...levelReducers,
   ...trainingReducers,
-  ...kpiReducers
+  ...kpiReducers,
+  ...measurementReducers
 };
 
 export default commonReducers;

@@ -28,6 +28,7 @@ import commonKpiSagas from '@common/store/sagas/kpiSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
+import commonMeasurementSagas from '@common/store/sagas/measurementSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
@@ -133,6 +134,7 @@ export function* rootSaga() {
     fork(commonFamilySagas),
     fork(commonLevelSagas),
     fork(commonKpiSagas),
+    fork(commonMeasurementSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),

@@ -1,6 +1,6 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { IHRTemplateGetAllRequest, IHRTemplateGetByIdRequest, IHRTemplatePostRequest, IHRTemplatePutRequest } from '../queries';
-import { IHRMeasurementGetAllRequest, IHRMeasurementGetDetailRequest, IHRMeasurementGetListRequest, IHRMeasurementPostRequest, IHRMeasurementPutRequest } from '../queries/measurement';
+import { IHRMeasurementDeleteRequest, IHRMeasurementGetAllRequest, IHRMeasurementGetDetailRequest, IHRMeasurementGetListRequest, IHRMeasurementPostRequest, IHRMeasurementPutRequest } from '../queries/measurement';
 import { IHRTemplate, IHRTemplateDetail } from '../response';
 import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from '../response/measurement';
 
@@ -17,4 +17,5 @@ export interface IHRState {
   hrMeasurementGetById: IQuerySingleState<IHRMeasurementGetDetailRequest, IHRMeasurementDetail>;
   hrMeasurementPost: IQuerySingleState<IHRMeasurementPostRequest, IHRMeasurement>;
   hrMeasurementPut: IQuerySingleState<IHRMeasurementPutRequest, IHRMeasurement>;
+  hrMeasurementDelete: IQuerySingleState<IHRMeasurementDeleteRequest, Boolean>;
 }

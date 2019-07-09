@@ -21,6 +21,8 @@ export const hrMeasurementMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
 // submission
@@ -39,7 +41,9 @@ export const hrMeasurementConfirm = defineMessages({
   newTitle: { id: `${prefix}.confirm.new.title` },
   newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyDescription: { id: `${prefix}.confirm.modify.description` }
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.description` },
 });
 
 // fields
@@ -48,6 +52,14 @@ export const hrMeasurementField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   measurementType: { id: `${prefix}.field.measurementType`},
   weight: { id: `${prefix}.field.weight`},
+});
+
+// dialog
+export const hrMeasurementDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
 });
 
 // helper

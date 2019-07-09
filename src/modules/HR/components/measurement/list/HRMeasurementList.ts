@@ -104,7 +104,7 @@ const handlerCreators: HandleCreators<HRMeasurementListProps, IOwnHandler> = {
   handleOnBind: (props: HRMeasurementListProps) => (item: IHRMeasurement, index: number) => ({
     key: index,
     primary: item.uid,
-    secondary: item.measurement && item.measurement.description || item.measurementType,
+    secondary: item.measurement && item.measurement.description || '',
     tertiary: item.description,
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',

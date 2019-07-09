@@ -1,11 +1,12 @@
 import { 
   hrMeasurementConfirm, 
+  hrMeasurementDialog, 
   hrMeasurementField, 
   hrMeasurementFieldHelperFor, 
   hrMeasurementMessage, 
   hrMeasurementPage, 
   hrMeasurementSection, 
-  hrMeasurementSubmission 
+  hrMeasurementSubmission
 } from './hrMeasurementMessage';
 import {
   hrTemplateConfirm,
@@ -36,6 +37,7 @@ export const hrMessage = {
     page: hrMeasurementPage,
     confirm: hrMeasurementConfirm,
     section: hrMeasurementSection,
-    submission: hrMeasurementSubmission
+    submission: hrMeasurementSubmission,
+    dialog: hrMeasurementDialog
   }
 };

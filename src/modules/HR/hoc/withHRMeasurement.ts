@@ -4,21 +4,24 @@ import {
   IQuerySingleState
 } from '@generic/interfaces';
 import { 
+  IHRMeasurementDeleteRequest, 
   IHRMeasurementGetAllRequest, 
   IHRMeasurementGetDetailRequest, 
-  IHRMeasurementGetListRequest, 
-  IHRMeasurementPostRequest, 
+  IHRMeasurementGetListRequest,
+  IHRMeasurementPostRequest,   
   IHRMeasurementPutRequest
 } from '@hr/classes/queries/measurement';
 import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from '@hr/classes/response/measurement';
 import { 
+  hrMeasurementDeleteDispose, 
+  hrMeasurementDeleteRequest, 
   hrMeasurementGetAllDispose, 
   hrMeasurementGetAllRequest, 
   hrMeasurementGetByIdDispose, 
-  hrMeasurementGetByIdRequest, 
+  hrMeasurementGetByIdRequest,  
   hrMeasurementGetListDispose, 
   hrMeasurementGetListRequest, 
-  hrMeasurementPostDispose, 
+  hrMeasurementPostDispose,
   hrMeasurementPostRequest, 
   hrMeasurementPutDispose,
   hrMeasurementPutRequest
@@ -41,6 +44,8 @@ interface PropsFromDispatch {
     createDispose: typeof hrMeasurementPostDispose;
     updateRequest: typeof hrMeasurementPutRequest;
     updateDispose: typeof hrMeasurementPutDispose;
+    deleteRequest: typeof hrMeasurementDeleteRequest;
+    deleteDispose: typeof hrMeasurementDeleteDispose;
 
     // query
     loadAllRequest: typeof hrMeasurementGetAllRequest;
@@ -69,6 +74,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(hrMeasurementPostDispose()),
     updateRequest: (request: IHRMeasurementPutRequest) => dispatch(hrMeasurementPutRequest(request)),
     updateDispose: () => dispatch(hrMeasurementPutDispose()),
+    deleteRequest: (request: IHRMeasurementDeleteRequest) => dispatch(hrMeasurementDeleteRequest(request)),
+    deleteDispose: () => dispatch(hrMeasurementDeleteDispose()),
     
     // query
     loadAllRequest: (request: IHRMeasurementGetAllRequest) => dispatch(hrMeasurementGetAllRequest(request)),

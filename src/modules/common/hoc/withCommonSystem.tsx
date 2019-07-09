@@ -37,6 +37,8 @@ import {
   leaveGetListRequest,
   levelGetListDispose,
   levelGetListRequest,
+  measurementGetListDispose,
+  measurementGetListRequest,
   paymentGetListDispose,
   paymentGetListRequest,
   projectGetListDispose,
@@ -117,6 +119,7 @@ interface PropsFromState {
   commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonKpiListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonMeasurementListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -158,6 +161,7 @@ interface PropsFromDispatch {
     levelListRequest: typeof levelGetListRequest;
     familyListRequest: typeof familyGetListRequest;
     kpiListRequest: typeof kpiGetListRequest;
+    measurementListRequest: typeof measurementGetListRequest;
 
     unitListDispose: typeof unitGetListDispose;
     activityListDispose: typeof activityGetListDispose;
@@ -189,6 +193,7 @@ interface PropsFromDispatch {
     levelListDispose: typeof levelGetListDispose;
     familyListDispose: typeof familyGetListDispose;
     kpiListDispose: typeof kpiGetListDispose;
+    measurementListDispose: typeof measurementGetListDispose;
     
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -242,7 +247,8 @@ const mapStateToProps = ({
   commonFamilyList,
   commonCertificationList,
   commonLevelList,
-  commonKpiList
+  commonKpiList,
+  commonMeasurementList
 
 }: IAppState) => ({
   // system
@@ -286,6 +292,7 @@ const mapStateToProps = ({
   commonDepartmentListState: commonDepartmentList,
   commonLevelListState: commonLevelList,
   commonKpiListState: commonKpiList,
+  commonMeasurementListState: commonMeasurementList,
 
   // detail
  
@@ -328,6 +335,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
     levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
     kpiListRequest: (request: ISystemListRequest) => dispatch(kpiGetListRequest(request)),
+    measurementListRequest: (request: ISystemListRequest) => dispatch(measurementGetListRequest(request)),
 
     unitListDispose: () => dispatch(unitGetListDispose()),
     activityListDispose: () => dispatch(activityGetListDispose()),
@@ -359,6 +367,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     certificationListDispose: () => dispatch(certificationGetListDispose()),
     levelListDispose: () => dispatch(levelGetListDispose()),
     kpiListDispose: () => dispatch(kpiGetListDispose()),
+    measurementListDispose: () => dispatch(measurementGetListDispose()),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),
