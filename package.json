@@ -61,6 +61,7 @@
     "react-dom": "^16.7.0",
     "react-emotion": "^9.2.12",
     "react-intl": "^2.7.0",
+    "react-markdown": "^4.1.0",
     "react-number-format": "^3.6.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
