@@ -7,6 +7,8 @@ import { ResourceMappingProps } from './ResourceMapping';
 import { ResourceMappingChartView } from './ResourceMappingChartView';
 import { ResourceMappingDetail } from './ResourceMappingDetail';
 import { ResourceMappingFilter } from './ResourceMappingFilter';
+import { ResourceMappingChartSummaryView } from './summary/ResourceMappingChartSummary';
+import { ResourceMappingDetailSummary } from './summary/ResourceMappingDetailSummary';
 
 export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
   const { isLoading, response } = props.summaryState.mapping;
@@ -34,6 +36,9 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
         onClickSync={handleReloadData}
         onApply={handleChangeFilter}
         isStartup={isStartup}
+        isSummary={props.isSummary}
+        handleSummary={props.handleSummary}
+        setSummary={props.setSummary}
       />
       <Paper square elevation={1}>
       {
@@ -63,19 +68,35 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
               handleOpenDetail={handleOpenDetail}
               data={props.chartData}
             />
+            <ResourceMappingDetailSummary 
+              isDetailSumOpen={props.isDetailSumOpen}
+              handleOpenDetailSum={props.handleOpenDetailSum}
+              data={props.chartSummary}
+            />
             <EmployeeDetailPage 
               employee={employeeData}
               companyUid={props.companyUid}
               handleOpenEmployee={handleOpenEmployee}
               isEmployeeOpen={props.isEmployeeOpen}
             />
-            <ResourceMappingChartView
-              dataLength={response.data.length}
-              data={response.data}
-              year={year}
-              handleChartData={handleChartData}
-              handleEmployeeData={handleEmployeeData}
-            />
+            {
+              props.isSummary && props.summaryData.length !== 0 ?
+              <ResourceMappingChartSummaryView 
+                dataLength={response.data.length}
+                data={props.summaryData}
+                year={year}
+                handleChartSummaryData={props.handleChartSummaryData}
+                handleEmployeeData={handleEmployeeData}
+              />
+              :
+              <ResourceMappingChartView
+                dataLength={response.data.length}
+                data={response.data}
+                year={year}
+                handleChartData={handleChartData}
+                handleEmployeeData={handleEmployeeData}
+              />
+            }
           </React.Fragment>
         }
       </Paper>

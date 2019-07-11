@@ -132,6 +132,7 @@
   "summary.resourceMapping.field.project.description": "Description",
   "summary.resourceMapping.field.project.start": "Start Date",
   "summary.resourceMapping.field.project.end": "End Date",
+  "summary.resourceMapping.field.summary": "Summary Data",
   "summary.resourceMapping.field.null": "No Data",
   
   "summary.resourceMapping.page.employee.detail": "{name}",

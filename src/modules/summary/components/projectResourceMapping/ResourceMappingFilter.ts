@@ -39,6 +39,9 @@ interface IOwnOption {
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IResourceMappingFilterResult) => void;
+  isSummary: boolean;
+  handleSummary: (checked: boolean) => void;
+  setSummary: (checked: boolean) => void;
 }
 
 interface IOwnState {
@@ -54,6 +57,9 @@ interface IOwnState {
   // filter year
   isFilterYearOpen: boolean;
   filterYear?: ICollectionValue;
+
+  // filter summary
+  filterSummary?: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -70,6 +76,9 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter year
   setFilterYearVisibility: StateHandler<IOwnState>;
   setFilterYear: StateHandler<IOwnState>;
+
+  // filter summary
+  setFilterSummary: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -89,6 +98,9 @@ interface IOwnHandler {
   handleFilterYearOnSelected: (data: ICollectionValue) => void;
   handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterYearOnClose: () => void;
+
+  // filter summary
+  handleFilterSummaryOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type ResourceMappingFilterProps 
@@ -107,6 +119,9 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     isFilterCompanyOpen: false,
     isFilterYearOpen: false,
     isFilterOpen: true,
+
+    // pass inital value
+    filterSummary: props.isSummary
   };
 };
 
@@ -119,7 +134,8 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   // main filter
   setFilterReset: (prevState: IOwnState, props: ResourceMappingFilterProps) => () => ({
     filterCompany: undefined,
-    filterYear: undefined
+    filterYear: undefined,
+    filterSummary: false
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
@@ -142,6 +158,11 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
     isFilterYearOpen: false,
     filterYear: data
   }),
+  
+  // filter summary
+  setFilterSummary: () => (checked: boolean) => ({
+    filterSummary: checked
+  })
 };
 
 const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> = {
@@ -189,6 +210,12 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   handleFilterYearOnClose: (props: ResourceMappingFilterProps) => () => {
     props.setFilterYearVisibility();
   },
+
+  // filter summary
+  handleFilterSummaryOnChange: (props: ResourceMappingFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterSummary(checked);
+    props.setSummary(checked);
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState> = {

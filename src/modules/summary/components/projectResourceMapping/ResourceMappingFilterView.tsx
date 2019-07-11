@@ -13,6 +13,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Paper,
+  Switch,
   Toolbar,
   Tooltip,
   Typography,
@@ -63,7 +64,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
             </Typography>
 
             {
-              (props.filterCompany || props.filterYear) &&
+              (props.filterCompany || props.filterYear || props.filterSummary) &&
               <Button color="inherit" onClick={props.handleFilterOnReset}>
                 {props.intl.formatMessage(layoutMessage.action.reset)}
               </Button>
@@ -117,6 +118,21 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
               <IconButton onClick={props.handleFilterYearVisibility}>
                 <ChevronRightIcon />
               </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText 
+              primary={props.intl.formatMessage(summaryMessage.mapping.field.summary)}
+              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="secondary"
+                checked={props.filterSummary || false}
+                onChange={props.handleFilterSummaryOnChange}
+              />
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
