@@ -12,6 +12,7 @@ import accountEmployeeTrainingSagas from '@account/store/sagas/accountEmployeeTr
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonBloodSagas from '@common/store/sagas/bloodSagas';
 import commonCertificationSagas from '@common/store/sagas/certificationSagas';
+import commonCompetencySagas from '@common/store/sagas/competencySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDegreeSagas from '@common/store/sagas/degreeSagas';
 import commonDepartmentSagas from '@common/store/sagas/departmentSagas';
@@ -28,6 +29,7 @@ import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
+import commonProfessionSagas from '@common/store/sagas/professionSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonRelationSagas from '@common/store/sagas/relationSagas';
@@ -129,6 +131,8 @@ export function* rootSaga() {
     fork(commonDepartmentSagas),
     fork(commonFamilySagas),
     fork(commonLevelSagas),
+    fork(commonCompetencySagas),
+    fork(commonProfessionSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),
