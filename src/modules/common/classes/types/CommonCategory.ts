@@ -29,4 +29,6 @@ export enum CommonCategory {
   relation = 'Relation',
   status = 'Status',
   transportation = 'Transport Type',
+  profession = 'Profession Category',
+  competency = 'Professional Competency',
 }

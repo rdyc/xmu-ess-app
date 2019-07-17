@@ -7,6 +7,8 @@ import {
   bloodGetListRequest,
   certificationGetListDispose,
   certificationGetListRequest,
+  competencyGetListDispose,
+  competencyGetListRequest,
   currencyGetListDispose,
   currencyGetListRequest,
   degreeGetListDispose,
@@ -37,6 +39,8 @@ import {
   levelGetListRequest,
   paymentGetListDispose,
   paymentGetListRequest,
+  professionGetListDispose,
+  professionGetListRequest,
   projectGetListDispose,
   projectGetListRequest,
   purposeGetListDispose,
@@ -236,7 +240,9 @@ const mapStateToProps = ({
   commonDegreeList,
   commonFamilyList,
   commonCertificationList,
-  commonLevelList
+  commonLevelList,
+  commonCompetencyList,
+  commonProfessionList
 
 }: IAppState) => ({
   // system
@@ -279,6 +285,8 @@ const mapStateToProps = ({
   commonFamilyListState: commonFamilyList,
   commonDepartmentListState: commonDepartmentList,
   commonLevelListState: commonLevelList,
+  commonCompetencyListState: commonCompetencyList,
+  commonProfessionListState: commonProfessionList,
 
   // detail
  
@@ -320,6 +328,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
     certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
     levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
+    competencyListRequest: (request: ISystemListRequest) => dispatch(competencyGetListRequest(request)),
+    professionListRequest: (request: ISystemListRequest) => dispatch(professionGetListRequest(request)),
 
     unitListDispose: () => dispatch(unitGetListDispose()),
     activityListDispose: () => dispatch(activityGetListDispose()),
@@ -350,6 +360,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListDispose: () => dispatch(familyGetListDispose()),
     certificationListDispose: () => dispatch(certificationGetListDispose()),
     levelListDispose: () => dispatch(levelGetListDispose()),
+    competencyListDispose: () => dispatch(competencyGetListDispose()),
+    professionListDispose: () => dispatch(professionGetListDispose()),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

@@ -11,4 +11,5 @@ export type CommonCategoryType =
   'payment' | 'purpose' | 'project' | 
   'relation' | 'religion' | 
   'status' | 'site' | 
-  'tax' | 'training' | 'transportation';
+  'tax' | 'training' | 'transportation' |
+  'profession' | 'competency';
