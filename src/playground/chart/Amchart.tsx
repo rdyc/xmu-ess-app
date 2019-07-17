@@ -32,7 +32,7 @@ const lifecycles: ReactLifeCycleFunctions<AmchartProps, {}> = {
     chart.paddingRight = 30;
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd HH:mm';
 
-    chart.dateFormatter.dateFormat = 'yyyy-MM-dd';
+    chart.dateFormatter.dateFormat = 'dd MMM yyyy';
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd';
     const colorSet = new am4core.ColorSet();
     colorSet.saturation = 0.4;
@@ -307,8 +307,8 @@ const lifecycles: ReactLifeCycleFunctions<AmchartProps, {}> = {
     series1.columns.template.events.on('hit', () => {
       console.log('HIT WOIII');
     });
-    series1.columns.template.tooltipHTML =
-      '<b>{category}</b>';
+    // series1.columns.template.tooltipHTML =
+    //   '<b>{category}</b>';
   }
 };
 

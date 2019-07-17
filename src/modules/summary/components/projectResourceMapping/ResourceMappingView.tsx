@@ -31,14 +31,15 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
         initialProps={{
           companyUid: props.companyUid,
           year: props.year,
+          summary: props.isSummary
         }}
         isLoading={isLoading}
         onClickSync={handleReloadData}
         onApply={handleChangeFilter}
         isStartup={isStartup}
-        isSummary={props.isSummary}
-        handleSummary={props.handleSummary}
-        setSummary={props.setSummary}
+        // isSummary={props.isSummary}
+        // handleSummary={props.handleSummary}
+        // setSummary={props.setSummary}
       />
       <Paper square elevation={1}>
       {
@@ -80,10 +81,10 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
               isEmployeeOpen={props.isEmployeeOpen}
             />
             {
-              props.isSummary && props.summaryData.length !== 0 ?
+              props.isSummary ?
               <ResourceMappingChartSummaryView 
                 dataLength={response.data.length}
-                data={props.summaryData}
+                data={response.data}
                 year={year}
                 handleChartSummaryData={props.handleChartSummaryData}
                 handleEmployeeData={handleEmployeeData}

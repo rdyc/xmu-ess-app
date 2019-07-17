@@ -44,7 +44,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     chart.paddingRight = 20;
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd HH:mm';
 
-    chart.dateFormatter.dateFormat = 'yyyy-MM-dd';
+    chart.dateFormatter.dateFormat = 'dd MMM yyyy';
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd';
     const colorSet = new am4core.ColorSet();
     colorSet.saturation = 0.4;

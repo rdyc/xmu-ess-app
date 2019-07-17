@@ -30,7 +30,7 @@ const yearList: ICollectionValue[] = [
   {value: getYear + 1, name: (getYear + 1).toString() },
 ];
 
-export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year'>;
+export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary'>;
 
 interface IOwnOption {
   isAdmin: boolean;
@@ -39,9 +39,8 @@ interface IOwnOption {
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IResourceMappingFilterResult) => void;
-  isSummary: boolean;
-  handleSummary: (checked: boolean) => void;
-  setSummary: (checked: boolean) => void;
+  // isSummary: boolean;
+  // setSummary: (checked: boolean) => void;
 }
 
 interface IOwnState {
@@ -121,7 +120,7 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     isFilterOpen: true,
 
     // pass inital value
-    filterSummary: props.isSummary
+    // filterSummary: props.isSummary
   };
 };
 
@@ -175,6 +174,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
       props.onApply({
         companyUid: props.filterCompany.uid,
         year: props.filterYear.value,
+        summary: props.filterSummary
       });
     }
     props.setFilterVisibility();
@@ -214,7 +214,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   // filter summary
   handleFilterSummaryOnChange: (props: ResourceMappingFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSummary(checked);
-    props.setSummary(checked);
+    // props.setSummary(checked);
   }
 };
 

@@ -8,10 +8,9 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import { ISummaryMapping, ISummaryMappingProject } from '@summary/classes/response/mapping';
+import { ISummaryMappingProject } from '@summary/classes/response/mapping';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
-import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -40,16 +39,16 @@ export interface IResourceMappingChartSummary {
   projects: ISummaryMappingProject[];
 }
 
-export interface IMappingProjectSummary {
-  start: string;
-  end: string;
-  projects: ISummaryMappingProject[];
-}
+// export interface IMappingProjectSummary {
+//   start: string;
+//   end: string;
+//   projects: ISummaryMappingProject[];
+// }
 
-export interface IResourceMappingSummary {
-  employee: IAccountEmployee;
-  summary: IMappingProjectSummary[];
-}
+// export interface IResourceMappingSummary {
+//   employee: IAccountEmployee;
+//   summary: IMappingProjectSummary[];
+// }
 
 interface IOwnState extends IResourceMappingFilterResult {
   isAdmin: boolean;
@@ -70,7 +69,6 @@ interface IOwnState extends IResourceMappingFilterResult {
 
   // data storage?
   employeeData?: IAccountEmployee;
-  summaryData: IResourceMappingSummary[];
 }
 
 interface IOwnHandlers {
@@ -82,22 +80,17 @@ interface IOwnHandlers {
 
   // filter
   handleChangeFilter: (filter: IResourceMappingFilterResult) => void;
-  handleSummary: (checked: boolean) => void;
 
   // data handler from chart
   handleChartData: (data: any) => void;
   handleChartSummaryData: (data: any) => void;
   handleEmployeeData: (data: any) => void;
-
-  // handle data to summary
-  handleSummaryData: (data: ISummaryMapping[]) => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
   setSummary: StateHandler<IOwnState>;
-  setSummaryData: StateHandler<IOwnState>;
 }
 
 export type ResourceMappingProps = WithSummary &
@@ -145,7 +138,7 @@ const createProps: mapper<ResourceMappingProps, IOwnState> = (
     year: undefined,
     
     chartData: undefined,
-    summaryData: []
+    // summaryData: []
   };
 
   if (request && request.filter) {
@@ -161,16 +154,16 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
     ...prevState,
     ...newState
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IResourceMappingFilterResult) => ({
+  setFilterApplied: () => (filter: IResourceMappingFilterResult) => ({
     ...filter,
     page: 1
   }),
   setSummary: () => (checked: boolean) => ({
     isSummary: checked
   }),
-  setSummaryData: () => (summaryData: IResourceMappingSummary[]) => ({
-    summaryData
-  })
+  // setSummaryData: () => (summaryData: IResourceMappingSummary[]) => ({
+  //   summaryData
+  // })
 };
 
 const handlerCreators: HandleCreators<ResourceMappingProps, IOwnHandlers> = {
@@ -183,6 +176,7 @@ const handlerCreators: HandleCreators<ResourceMappingProps, IOwnHandlers> = {
         isStartup: false
       });
     }
+    filter.summary ? props.setSummary(true) : props.setSummary(false);
   },
   handleReloadData: (props: ResourceMappingProps) => () => {
     props.stateUpdate({
@@ -217,7 +211,7 @@ const handlerCreators: HandleCreators<ResourceMappingProps, IOwnHandlers> = {
     props.stateUpdate({
       chartSummary: {
         employee: data.employee,
-        projects: data.project
+        projects: data.projects
       },
       isDetailSumOpen: !props.isDetailSumOpen
     });
@@ -228,57 +222,57 @@ const handlerCreators: HandleCreators<ResourceMappingProps, IOwnHandlers> = {
       isEmployeeOpen: !props.isEmployeeOpen
     });
   },
-  handleSummary: (props: ResourceMappingProps) => (checked: boolean) => {
-    props.setSummary(checked);
-  },
-  handleSummaryData: (props: ResourceMappingProps) => (data: ISummaryMapping[]) => {
-    const tempData: IResourceMappingSummary[] = [];
-    data.map((item, itemIdx) => {
-      if (item.projects && item.projects.length > 0) {
-        let counter: number = 0;
-        let start: string = '';
-        let end: string = '';
-        item.projects.map((project, index) => {
-          if (index === 0) {
-            start = project.start;
-            end = project.end;
-            tempData.push({
-              employee: item.employee,
-              summary: [{
-                start,
-                end,
-                projects: [project]
-              }]
-            });
-          } else {
-            start = tempData[itemIdx].summary[counter].start;
-            end = tempData[itemIdx].summary[counter].end;
-            if (moment(project.start).isBetween(start, end)) {
-              if (moment(project.end).isAfter(end)) {
-                tempData[itemIdx].summary[counter].end = project.end;
-              }
-              tempData[itemIdx].summary[counter].projects.push(project);
-            } else {
-              start = project.start;
-              end = project.end;
-              tempData[itemIdx].summary.push({
-                start,
-                end,
-                projects: [project]
-              });
-              counter += 1;
-            }
-          }
-        });
-      } else {
-        tempData.push({
-          employee: item.employee,
-          summary: []
-        });
-      }
-    });
-    props.setSummaryData(tempData);
-  },
+  // handleSummary: (props: ResourceMappingProps) => (checked: boolean) => {
+  //   props.setSummary(checked);
+  // },
+  // handleSummaryData: (props: ResourceMappingProps) => (data: ISummaryMapping[]) => {
+  //   const tempData: IResourceMappingSummary[] = [];
+  //   data.map((item, itemIdx) => {
+  //     if (item.projects && item.projects.length > 0) {
+  //       let counter: number = 0;
+  //       let start: string = '';
+  //       let end: string = '';
+  //       item.projects.map((project, index) => {
+  //         if (index === 0) {
+  //           start = project.start;
+  //           end = project.end;
+  //           tempData.push({
+  //             employee: item.employee,
+  //             summary: [{
+  //               start,
+  //               end,
+  //               projects: [project]
+  //             }]
+  //           });
+  //         } else {
+  //           start = tempData[itemIdx].summary[counter].start;
+  //           end = tempData[itemIdx].summary[counter].end;
+  //           if (moment(project.start).isBetween(start, end)) {
+  //             if (moment(project.end).isAfter(end)) {
+  //               tempData[itemIdx].summary[counter].end = project.end;
+  //             }
+  //             tempData[itemIdx].summary[counter].projects.push(project);
+  //           } else {
+  //             start = project.start;
+  //             end = project.end;
+  //             tempData[itemIdx].summary.push({
+  //               start,
+  //               end,
+  //               projects: [project]
+  //             });
+  //             counter += 1;
+  //           }
+  //         }
+  //       });
+  //     } else {
+  //       tempData.push({
+  //         employee: item.employee,
+  //         summary: []
+  //       });
+  //     }
+  //   });
+  //   props.setSummaryData(tempData);
+  // },
 };
 
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
@@ -300,7 +294,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
       }
     }
   },
-  componentWillUpdate(nextProps: ResourceMappingProps, state: IOwnState) {
+  componentWillUpdate(nextProps: ResourceMappingProps) {
     if (
       this.props.companyUid !== nextProps.companyUid ||
       this.props.year !== nextProps.year
@@ -313,16 +307,6 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
       nextProps.stateUpdate({
         reloadData: false
       });
-    }
-
-    const { response } = this.props.summaryState.mapping;
-    if (nextProps.isSummary && this.props.summaryData.length === 0 && response && response.data) {
-      nextProps.handleSummaryData(response.data);
-    }
-  },
-  componentDidUpdate() {
-    if (this.props.summaryData && this.props.summaryData.length !== 0) {
-      console.log(this.props.summaryData);
     }
   },
   componentWillUnmount() {

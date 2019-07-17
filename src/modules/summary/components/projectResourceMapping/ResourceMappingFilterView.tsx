@@ -125,7 +125,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           <ListItem>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.mapping.field.summary)}
-              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+              secondary={props.intl.formatMessage(props.filterSummary ? layoutMessage.action.yes : layoutMessage.action.no)}
             />
             <ListItemSecondaryAction>
               <Switch

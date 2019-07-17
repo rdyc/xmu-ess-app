@@ -2,16 +2,16 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4core from '@amcharts/amcharts4/core';
 import { withStyles, WithStyles } from '@material-ui/core';
 import styles from '@styles';
+import { ISummaryMapping } from '@summary/classes/response/mapping';
 import * as moment from 'moment';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, mapper, ReactLifeCycleFunctions, withStateHandlers } from 'recompose';
-import { IResourceMappingSummary } from '../ResourceMapping';
 
 interface IOwnOption {
   dataLength: number;
   year?: number;
-  data: IResourceMappingSummary[];
+  data: ISummaryMapping[];
   handleChartSummaryData: (data: any) => void;
   handleEmployeeData: (data: any) => void;
 }
@@ -36,25 +36,27 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
     chart.paddingRight = 20;
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd HH:mm';
 
-    chart.dateFormatter.dateFormat = 'yyyy-MM-dd';
+    chart.dateFormatter.dateFormat = 'dd MMM yyyy';
     chart.dateFormatter.inputDateFormat = 'yyyy-MM-dd';
     const colorSet = new am4core.ColorSet();
     colorSet.saturation = 0.4;
 
     chart.data = [];
     data.map((item) => {
-      if (item.summary && item.summary.length > 0 && year) {
-        item.summary.map(sum => {
+      if (item.projectGroups && item.projectGroups.length > 0 && year) {
+        item.projectGroups.map(sum => {
           if (Number(moment(sum.start).format('YYYY')) >= year ||
             Number(moment(sum.end).format('YYYY')) >= year) {
               chart.data.push({
-                project: sum.projects,
+                projects: sum.projects,
                 name: (item.employee.fullName.toLowerCase()),
                 start: moment(sum.start).format('YYYY') !== year.toString() ? moment()
                 .startOf('year').format('YYYY-MM-DD') : moment(sum.start).format('YYYY-MM-DD'),
                 end: moment(sum.end).format('YYYY-MM-DD'),
                 color: '#f44336',
-                employee: item.employee
+                employee: item.employee,
+                totalProject: sum.totalProjects,
+                totalMandays: sum.totalMandays
               });
             }
         });
@@ -96,11 +98,11 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
     // for the value
     // When hovering
     const series1 = chart.series.push(new am4charts.ColumnSeries());
-    // series1.columns.template.height = am4core.percent(70);
-    // series1.columns.template.tooltipX = 0;
-    // series1.columns.template.tooltipY = 3;
-    series1.columns.template.tooltipText =
-      '[bold]{openDateX}[/] - [bold]{dateX}[/]';
+    series1.columns.template.tooltipY = 3;
+    series1.columns.template.tooltipHTML = 
+      '<b>{openDateX} - {dateX}</b> </br> Total project: {totalProject} </br> Total mandays: {totalMandays}';
+    // series1.columns.template.tooltipText =
+    //   '[bold]{openDateX}[/] - [bold]{dateX}[/]';
 
     series1.dataFields.openDateX = 'start';
     series1.dataFields.dateX = 'end';
