@@ -22,10 +22,12 @@
   "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
   "account.shared.message.new.employe.success": "New {state} Data has been created. Add access is required for a new employee.",
+  "account.shared.message.empty.competency": "Competency not found",
 
   "account.shared.section.info.title": "Employee {state}",
   "account.shared.section.info.subHeader": " ",
   "account.shared.section.submission": "{state} Submission",
+  "account.shared.section.competency": "Competency",
 
   "account.shared.field.no": "No",
   "account.shared.field.action": "Actions",
@@ -317,13 +319,13 @@
   "account.experience.field.employeeUid": "Employee ID",
   "account.experience.field.employeeUid.placeholder": "Employee ID",
 
-  "account.experience.field.company": "Company Name",
-  "account.experience.field.company.required": "Company Name is required",
-  "account.experience.field.company.placeholder": "Type any Company Name",
+  "account.experience.field.company": "Company",
+  "account.experience.field.company.required": "Company is required",
+  "account.experience.field.company.placeholder": "Type any Company",
 
-  "account.experience.field.position": "Position Name",
-  "account.experience.field.position.required": "Position Name is required",
-  "account.experience.field.position.placeholder": "Type any Position Name",
+  "account.experience.field.position": "Position",
+  "account.experience.field.position.required": "Position is required",
+  "account.experience.field.position.placeholder": "Type any position",
 
   "account.experience.field.start": "Start Year",
   "account.experience.field.start.required": "Start Year is required",
@@ -332,6 +334,10 @@
   "account.experience.field.end": "End Year",
   "account.experience.field.end.required": "End Year is required",
   "account.experience.field.end.placeholder": "Select a End Year",
+
+  "account.experience.field.profession": "Profession",
+  "account.experience.field.profession.required": "Profession is required",
+  "account.experience.field.profession.placeholder": "Please select profession",
 
   "account.access.message.emptyProps": "Some props are empty",
   "account.access.message.create.success": "New Employee Access Data has been created",

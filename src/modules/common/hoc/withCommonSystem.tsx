@@ -118,7 +118,9 @@ interface PropsFromState {
   commonDegreeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
-
+  commonProfessionListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCompetencyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  
   // detail
 }
 
@@ -158,6 +160,8 @@ interface PropsFromDispatch {
     degreeListRequest: typeof degreeGetListRequest;
     levelListRequest: typeof levelGetListRequest;
     familyListRequest: typeof familyGetListRequest;
+    professionListRequest: typeof professionGetListRequest;
+    competencyListRequest: typeof competencyGetListRequest;
 
     unitListDispose: typeof unitGetListDispose;
     activityListDispose: typeof activityGetListDispose;
@@ -188,7 +192,9 @@ interface PropsFromDispatch {
     degreeListDispose: typeof degreeGetListDispose;
     levelListDispose: typeof levelGetListDispose;
     familyListDispose: typeof familyGetListDispose;
-    
+    professionListDispose: typeof professionGetListDispose;
+    competencyListDispose: typeof competencyGetListDispose;
+
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
     systemDetailDispose: typeof systemGetByIdDispose;

@@ -43,7 +43,7 @@ export const AccountEmployeeExperienceListView: React.SFC<AccountEmployeeExperie
             <Button 
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`, { educationUid: item.uid })}
+              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`, { experienceUid: item.uid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>

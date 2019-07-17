@@ -8,6 +8,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { ExperienceFormProps, IExperienceFormValue } from './ExperienceForm';
+import ExperienceCompetencyPartialForm from './partial/ExperienceCompetencyPartialForm';
 import ExperienceDetailPartialForm from './partial/ExperienceDetailPartialForm';
 
 export const ExperienceFormView: React.SFC<ExperienceFormProps> = props => (
@@ -36,6 +37,17 @@ export const ExperienceFormView: React.SFC<ExperienceFormProps> = props => (
                   formikBag={formikBag}
                   formMode={props.formMode}
                   intl={props.intl}
+                  filterCommonSystem={props.filterCommonSystem}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <ExperienceCompetencyPartialForm 
+                  formikBag={formikBag}
+                  formMode={props.formMode}
+                  intl={props.intl}
                 />
               </div>
             </div>
@@ -59,9 +71,6 @@ export const ExperienceFormView: React.SFC<ExperienceFormProps> = props => (
                   }} 
                 />
               </div>
-            </div>
-
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>

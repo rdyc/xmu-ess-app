@@ -100,8 +100,8 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
     primary: item.uid,
     secondary: item.company,
     tertiary: item.position,
-    quaternary: `${item.start.toString()} - ${item.end.toString()}` ,
-    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    quaternary: item.profession && item.profession.value || 'N/A',
+    quinary: `${item.start.toString()} - ${item.end.toString()}`,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   })
 };

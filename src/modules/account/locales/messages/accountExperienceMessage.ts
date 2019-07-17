@@ -25,6 +25,10 @@ export const accountExperienceField = defineMessages({
   end: { id: `${prefix}.field.end`},
   endPlaceholder: { id: `${prefix}.field.end.placeholder`},
   endRequired: { id: `${prefix}.field.end.required`},
+
+  profession: { id: `${prefix}.field.profession`},
+  professionPlaceholder: { id: `${prefix}.field.profession.placeholder`},
+  professionRequired: { id: `${prefix}.field.profession.required`},
 });
 
 // helper
@@ -37,6 +41,7 @@ export const accountExperienceFieldHelperFor = (field: string, type: 'fieldName'
       case 'position': return accountExperienceField.position;
       case 'start': return accountExperienceField.start;
       case 'end': return accountExperienceField.end;
+      case 'professionType': return accountExperienceField.profession;
 
       default: return {id: field};
     }
@@ -48,6 +53,7 @@ export const accountExperienceFieldHelperFor = (field: string, type: 'fieldName'
       case 'position': return accountExperienceField.positionRequired;
       case 'start': return accountExperienceField.startRequired;
       case 'end': return accountExperienceField.endRequired;
+      case 'professionType': return accountExperienceField.professionRequired;
 
       default: return {id: field};
     }
@@ -61,6 +67,7 @@ export const accountExperienceFieldHelperFor = (field: string, type: 'fieldName'
       case 'position': return accountExperienceField.positionPlaceholder;
       case 'start': return accountExperienceField.startPlaceholder;
       case 'end': return accountExperienceField.endPlaceholder;
+      case 'professionType': return accountExperienceField.professionPlaceholder;
 
       default: return {id: field};
     }

@@ -49,6 +49,7 @@ const fnGetContext = (props: CommonSystemOptionProps) => {
     case 'department': return props.commonDepartmentListState;
     case 'family': return props.commonFamilyListState;
     case 'level': return props.commonLevelListState;
+    case 'profession': return props.commonProfessionListState;
 
     default: return props.commonActivityListState;
   }
@@ -217,6 +218,10 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'level':
           commonDispatch.levelListRequest(request);
           break;
+          
+        case 'profession':
+          commonDispatch.professionListRequest(request);
+          break; 
           
         default:
           break;
