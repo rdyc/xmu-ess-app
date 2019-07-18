@@ -5,5 +5,6 @@ export interface ISummaryMappingProjectGroup {
   end: string;
   totalProjects: number;
   totalMandays: number;
+  totalActualMandays: number;
   projects?: ISummaryMappingProject[];
 }

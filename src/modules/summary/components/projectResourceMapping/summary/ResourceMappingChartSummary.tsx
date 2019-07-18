@@ -56,7 +56,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
                 color: '#f44336',
                 employee: item.employee,
                 totalProject: sum.totalProjects,
-                totalMandays: sum.totalMandays
+                totalMandays: sum.totalMandays,
+                actualMandays: sum.totalActualMandays
               });
             }
         });
@@ -100,7 +101,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
     const series1 = chart.series.push(new am4charts.ColumnSeries());
     series1.columns.template.tooltipY = 3;
     series1.columns.template.tooltipHTML = 
-      '<b>{openDateX} - {dateX}</b> </br> Total project: {totalProject} </br> Total mandays: {totalMandays}';
+      '<b>{openDateX} - {dateX}</b> </br> Total project: {totalProject} </br> Total mandays: {totalMandays} </br> Actual mandays: {actualMandays}';
     // series1.columns.template.tooltipText =
     //   '[bold]{openDateX}[/] - [bold]{dateX}[/]';
 
