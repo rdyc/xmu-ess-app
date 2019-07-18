@@ -1,3 +1,5 @@
+import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
@@ -30,7 +32,7 @@ const yearList: ICollectionValue[] = [
   {value: getYear + 1, name: (getYear + 1).toString() },
 ];
 
-export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary'>;
+export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary' | 'professionTypes' | 'competencyTypes'>;
 
 interface IOwnOption {
   isAdmin: boolean;
@@ -57,6 +59,14 @@ interface IOwnState {
   isFilterYearOpen: boolean;
   filterYear?: ICollectionValue;
 
+  // filter profession
+  isFilterProfessionOpen: boolean;
+  filterProfession?: ISystemList;
+
+  // filter competency
+  isFilterCompetencyOpen: boolean;
+  filterCompetency?: ISystemList;
+
   // filter summary
   filterSummary?: boolean;
 }
@@ -75,6 +85,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter year
   setFilterYearVisibility: StateHandler<IOwnState>;
   setFilterYear: StateHandler<IOwnState>;
+
+  // filter profession
+  setFilterProfessionVisibility: StateHandler<IOwnState>;
+  setFilterProfession: StateHandler<IOwnState>;
+
+  // filter competency
+  setFilterCompetencyVisibility: StateHandler<IOwnState>;
+  setFilterCompetency: StateHandler<IOwnState>;
 
   // filter summary
   setFilterSummary: StateHandler<IOwnState>;
@@ -98,6 +116,18 @@ interface IOwnHandler {
   handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterYearOnClose: () => void;
 
+  // filter profession
+  handleFilterProfessionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProfessionOnSelected: (data: ISystemList) => void;
+  handleFilterProfessionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProfessionOnClose: () => void;
+
+  // filter competency
+  handleFilterCompetencyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompetencyOnSelected: (data: ISystemList) => void;
+  handleFilterCompetencyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompetencyOnClose: () => void;
+
   // filter summary
   handleFilterSummaryOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
@@ -108,6 +138,7 @@ export type ResourceMappingFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithLookupCompany
+  & WithCommonSystem
   & WithStyles<typeof styles> 
   & WithUser 
   & InjectedIntlProps;
@@ -118,6 +149,8 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     isFilterCompanyOpen: false,
     isFilterYearOpen: false,
     isFilterOpen: true,
+    isFilterCompetencyOpen: false,
+    isFilterProfessionOpen: false,
 
     // pass inital value
     // filterSummary: props.isSummary
@@ -134,6 +167,8 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   setFilterReset: (prevState: IOwnState, props: ResourceMappingFilterProps) => () => ({
     filterCompany: undefined,
     filterYear: undefined,
+    filterProfession: undefined,
+    filterCompetency: undefined,
     filterSummary: false
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
@@ -158,6 +193,24 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
     filterYear: data
   }),
   
+  // filter profession
+  setFilterProfessionVisibility: (prevState: IOwnState) => () => ({
+    isFilterProfessionOpen: !prevState.isFilterProfessionOpen
+  }),
+  setFilterProfession: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterProfessionOpen: false,
+    filterProfession: data
+  }),
+
+  // filter competency
+  setFilterCompetencyVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompetencyOpen: !prevState.isFilterCompetencyOpen
+  }),
+  setFilterCompetency: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterCompetencyOpen: false,
+    filterCompetency: data
+  }),
+
   // filter summary
   setFilterSummary: () => (checked: boolean) => ({
     filterSummary: checked
@@ -174,6 +227,8 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
       props.onApply({
         companyUid: props.filterCompany.uid,
         year: props.filterYear.value,
+        professionTypes: props.filterProfession && props.filterProfession.type,
+        competencyTypes: props.filterCompetency && props.filterCompetency.type,
         summary: props.filterSummary
       });
     }
@@ -211,6 +266,33 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
     props.setFilterYearVisibility();
   },
 
+  // filter Profession
+  handleFilterProfessionVisibility: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterProfessionVisibility();
+  },
+  handleFilterProfessionOnSelected: (props: ResourceMappingFilterProps) => (data: ISystemList) => {
+    props.setFilterProfession(data);
+  },
+  handleFilterProfessionOnClear: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterProfession();
+  },
+  handleFilterProfessionOnClose: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterProfessionVisibility();
+  },
+
+  // filter Competency
+  handleFilterCompetencyVisibility: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterCompetencyVisibility();
+  },
+  handleFilterCompetencyOnSelected: (props: ResourceMappingFilterProps) => (data: ISystemList) => {
+    props.setFilterCompetency(data);
+  },
+  handleFilterCompetencyOnClear: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterCompetency();
+  },
+  handleFilterCompetencyOnClose: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterCompetencyVisibility();
+  },
   // filter summary
   handleFilterSummaryOnChange: (props: ResourceMappingFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSummary(checked);
@@ -221,7 +303,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
-      const { companyUid, year } = this.props.initialProps;
+      const { companyUid, year, competencyTypes, professionTypes } = this.props.initialProps;
 
       // filter company
       if (companyUid) {
@@ -240,6 +322,28 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
 
         this.props.setFilterYear(selected);
       }
+
+      // filter profession
+      if (professionTypes) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === professionTypes);
+
+          this.props.setFilterProfession(selected);
+        }
+      }
+
+      // filter competency
+      if (competencyTypes) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === competencyTypes);
+
+          this.props.setFilterProfession(selected);
+        }
+      }
     }
   },
 };
@@ -247,6 +351,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
 export const ResourceMappingFilter = compose<ResourceMappingFilterProps, IOwnOption>(
   setDisplayName('ResourceMappingFilter'),
   withUser,
+  withCommonSystem,
   withLookupCompany,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

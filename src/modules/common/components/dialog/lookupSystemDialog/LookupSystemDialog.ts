@@ -144,6 +144,13 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = 
           case 'finance':
             commonDispatch.financeListRequest(params);
             break;
+          case 'profession':
+            commonDispatch.professionListRequest(params);
+            break;
+
+          case 'competency':
+            commonDispatch.competencyListRequest(params);
+            break;
 
           default:
             break;
@@ -180,7 +187,9 @@ const fnGetContext = (props: LookupSystemDialogProps) => {
     case 'grade': return props.commonGradeListState;
     case 'payment': return props.commonPaymentListState;
     case 'finance': return props.commonFinanceListState;
-  
+    case 'profession': return props.commonProfessionListState;
+    case 'competency': return props.commonCompetencyListState;
+    
     default: return props.commonActivityListState;
   }
 };

@@ -31,7 +31,9 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
         initialProps={{
           companyUid: props.companyUid,
           year: props.year,
-          summary: props.isSummary
+          summary: props.isSummary,
+          competencyTypes: props.competencyTypes,
+          professionTypes: props.professionTypes
         }}
         isLoading={isLoading}
         onClickSync={handleReloadData}

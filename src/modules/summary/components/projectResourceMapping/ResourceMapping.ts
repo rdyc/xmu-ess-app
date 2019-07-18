@@ -39,17 +39,6 @@ export interface IResourceMappingChartSummary {
   projects: ISummaryMappingProject[];
 }
 
-// export interface IMappingProjectSummary {
-//   start: string;
-//   end: string;
-//   projects: ISummaryMappingProject[];
-// }
-
-// export interface IResourceMappingSummary {
-//   employee: IAccountEmployee;
-//   summary: IMappingProjectSummary[];
-// }
-
 interface IOwnState extends IResourceMappingFilterResult {
   isAdmin: boolean;
   reloadData: boolean;
@@ -138,12 +127,13 @@ const createProps: mapper<ResourceMappingProps, IOwnState> = (
     year: undefined,
     
     chartData: undefined,
-    // summaryData: []
   };
 
   if (request && request.filter) {
     state.companyUid = request.filter.companyUid,
-    state.year = request.filter.year;
+    state.year = request.filter.year,
+    state.competencyTypes = request.filter.competencyTypes,
+    state.professionTypes = request.filter.professionTypes;
   }
 
   return state;
@@ -297,7 +287,9 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
   componentWillUpdate(nextProps: ResourceMappingProps) {
     if (
       this.props.companyUid !== nextProps.companyUid ||
-      this.props.year !== nextProps.year
+      this.props.year !== nextProps.year ||
+      this.props.professionTypes !== nextProps.professionTypes ||
+      this.props.competencyTypes !== nextProps.competencyTypes
     ) {
       loadData(nextProps);
     }
@@ -317,7 +309,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
 };
 
 const loadData = (props: ResourceMappingProps): void => {
-  const { companyUid, year } = props;
+  const { companyUid, year, competencyTypes, professionTypes } = props;
   const { user } = props.userState;
   const { loadMappingRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
@@ -329,6 +321,8 @@ const loadData = (props: ResourceMappingProps): void => {
       filter: {
         companyUid,
         year,
+        professionTypes,
+        competencyTypes,
         orderBy: 'fullName'
       }
     });

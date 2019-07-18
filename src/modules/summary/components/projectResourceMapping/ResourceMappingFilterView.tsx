@@ -1,3 +1,4 @@
+import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { FilterCompany } from '@lookup/components/company/select';
@@ -64,7 +65,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
             </Typography>
 
             {
-              (props.filterCompany || props.filterYear || props.filterSummary) &&
+              (props.filterCompany || props.filterYear || props.filterProfession || props.filterCompetency || props.filterSummary) &&
               <Button color="inherit" onClick={props.handleFilterOnReset}>
                 {props.intl.formatMessage(layoutMessage.action.reset)}
               </Button>
@@ -122,6 +123,46 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           </ListItem>
           <Divider />
 
+          <ListItem button onClick={props.handleFilterProfessionVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(summaryMessage.mapping.field.profession)}
+              secondary={props.filterProfession && props.filterProfession.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterProfession &&
+                <IconButton onClick={props.handleFilterProfessionOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterProfessionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterCompetencyVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(summaryMessage.mapping.field.competency)}
+              secondary={props.filterCompetency && props.filterCompetency.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterCompetency &&
+                <IconButton onClick={props.handleFilterCompetencyOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompetencyVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
           <ListItem>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.mapping.field.summary)}
@@ -156,6 +197,26 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           value={props.filterYear && props.filterYear.value}
           onSelected={props.handleFilterYearOnSelected}
           onClose={props.handleFilterYearOnClose}
+        />
+
+        <LookupSystemDialog
+          title={props.intl.formatMessage(summaryMessage.mapping.field.profession)}
+          category="profession"
+          hideBackdrop={true}
+          isOpen={props.isFilterProfessionOpen}
+          value={props.filterProfession && props.filterProfession.type}
+          onSelected={props.handleFilterProfessionOnSelected}
+          onClose={props.handleFilterProfessionOnClose}
+        />
+
+        <LookupSystemDialog
+          title={props.intl.formatMessage(summaryMessage.mapping.field.competency)}
+          category="competency"
+          hideBackdrop={true}
+          isOpen={props.isFilterCompetencyOpen}
+          value={props.filterCompetency && props.filterCompetency.type}
+          onSelected={props.handleFilterCompetencyOnSelected}
+          onClose={props.handleFilterCompetencyOnClose}
         />
       </Dialog>
     </React.Fragment>
