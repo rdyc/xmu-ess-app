@@ -70,14 +70,15 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
     fields: Object.keys(AccountEmployeeField).map(key => ({ 
       value: key, 
       name: AccountEmployeeField[key] 
-    }))
+    })),
+    isActive: false
   };
 
   // fill from previous request if any
   if (request && request.filter) {
     state.companyUids = request.filter.companyUids,
     state.roleUids = request.filter.roleUids,
-    state.isActive = request.filter.isActive;
+    state.isActive = !request.filter.isActive;
   }
 
   return state;
