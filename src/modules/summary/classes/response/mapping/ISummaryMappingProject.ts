@@ -1,5 +1,7 @@
+import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { ILookupCustomer } from '@lookup/classes';
+import { ISummaryMappingAssignments } from './ISummaryMappingAssignment';
 
 export interface ISummaryMappingProject {
   uid: string;
@@ -16,5 +18,11 @@ export interface ISummaryMappingProject {
   statusType: string;
   status?: ICommonSystem;
   childProjectUid?: string;
-  owner: string;
+  ownerEmployeeUid: string;
+  ownerEmployee?: IAccountEmployee;
+  allocatedHours: number;
+  actualHours: number;
+  allocatedMandays: number;
+  actualMandays: number;
+  assignments?: ISummaryMappingAssignments;
 }

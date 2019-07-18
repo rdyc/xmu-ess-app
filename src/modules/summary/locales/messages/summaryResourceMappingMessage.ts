@@ -24,6 +24,10 @@ export const summaryResourceMappingField = defineMessages({
   projectDescription: { id: `${prefix}.field.project.description`},
   projectStart: { id: `${prefix}.field.project.start`},
   projectEnd: { id: `${prefix}.field.project.end`},
+  allocatedHours: { id: `${prefix}.field.allocated.hours`},
+  actualHours: { id: `${prefix}.field.actual.hours`},
+  allocatedMandays: { id: `${prefix}.field.allocated.mandays`},
+  actualMandays: { id: `${prefix}.field.actual.mandays`},  
   summary: { id: `${prefix}.field.summary`},  
   null: { id: `${prefix}.field.null`},
 });

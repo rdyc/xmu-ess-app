@@ -30,7 +30,7 @@ const summaryInformation: React.SFC<AllProps> = props => {
             {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={intl.formatMessage(summaryMessage.mapping.field.projectOwner)}
-            value={data.owner || 'N/A'}
+            value={data.ownerEmployee && data.ownerEmployee.fullName || 'N/A'}
           />
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
@@ -71,6 +71,18 @@ const summaryInformation: React.SFC<AllProps> = props => {
             margin="dense"
             label={intl.formatMessage(summaryMessage.mapping.field.projectEnd)}
             value={intl.formatDate(data.end, GlobalFormat.Date)}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={intl.formatMessage(summaryMessage.mapping.field.allocatedMandays)}
+            value={data.allocatedMandays}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={intl.formatMessage(summaryMessage.mapping.field.actualMandays)}
+            value={data.actualMandays}
           />
         </CardContent>
       </Card>

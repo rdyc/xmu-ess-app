@@ -132,6 +132,11 @@
   "summary.resourceMapping.field.project.description": "Description",
   "summary.resourceMapping.field.project.start": "Start Date",
   "summary.resourceMapping.field.project.end": "End Date",
+  "summary.resourceMapping.field.allocated.hours": "Allocated Hours",
+  "summary.resourceMapping.field.actual.hours": "Actual Hours",
+  "summary.resourceMapping.field.allocated.mandays": "Allocated Mandays",
+  "summary.resourceMapping.field.actual.mandays": "Actual Mandays",
+
   "summary.resourceMapping.field.summary": "Summary Data",
   "summary.resourceMapping.field.null": "No Data",
   
