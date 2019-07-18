@@ -28,7 +28,7 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
         
         // row components
         summaryComponent={(item: IEmployeeTraining) => ( 
-          <AccountEmployeeTrainingSummary data={item} employeeUid={props.match.params.employeeUid} />
+          <AccountEmployeeTrainingSummary data={item} employeeUid={props.employeeId || 'N/A'} />
         )}
       />
       :

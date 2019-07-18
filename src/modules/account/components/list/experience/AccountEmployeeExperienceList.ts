@@ -24,6 +24,10 @@ import {
 } from 'recompose';
 import { AccountEmployeeExperienceListView } from './AccountEmployeeExperienceListView';
 
+interface IOwnOption {
+  employeeId?: string;
+}
+
 interface IOwnRouteParams {
   employeeUid: string;
 }
@@ -44,6 +48,7 @@ interface IOwnHandler {
 export type AccountEmployeeExperienceListProps 
   = IOwnRouteParams
   & IOwnState
+  & IOwnOption
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
@@ -85,13 +90,20 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
-      
+
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
-          filter,
-          employeeUid: props.match.params.employeeUid,
-        });
+        if (props.employeeId) {
+          loadAllRequest({
+            filter,
+            employeeUid: props.employeeId
+          });
+        } else {
+          loadAllRequest({
+            filter,
+            employeeUid: props.match.params.employeeUid,
+          });
+        }
       }
     }
   },
@@ -108,18 +120,20 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceListProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-    //   if (this.props.location.state.employeeName) {
-
-    //   }
+    const { employeeId, employeeUid, handleOnLoadApi } = this.props;
+    const { request } = this.props.accountEmployeeExperienceState.all;
+    if (request) {
+      if (request.employeeUid !== employeeId || request.employeeUid !== employeeUid) {
+        handleOnLoadApi(undefined, true, true);
+      }
     }
   },
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: AccountEmployeeExperienceListProps) {
     //
   }
 };
 
-export const AccountEmployeeExperienceList = compose(
+export const AccountEmployeeExperienceList = compose<AccountEmployeeExperienceListProps, IOwnOption>(
   setDisplayName('AccountEmployeeExperienceList'),
   withUser,
   withAccountEmployeeExperience,

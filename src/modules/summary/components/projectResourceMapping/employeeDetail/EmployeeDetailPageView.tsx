@@ -1,3 +1,4 @@
+import { AccountEmployeeExperienceList } from '@account/components/list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeTrainingList } from '@account/components/list/training/AccountEmployeeTrainingList';
 import { AppBar, Dialog, DialogContent, Grid, IconButton, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -45,6 +46,7 @@ export const EmployeeDetailPageView: React.SFC<EmployeeDetailPageProps> = props 
           }}>
             <Tab label="Profile" />
             <Tab label="Training" />
+            <Tab label="Experience" />
           </Tabs>
 
           <DialogContent style={{padding: 0}}>
@@ -58,6 +60,7 @@ export const EmployeeDetailPageView: React.SFC<EmployeeDetailPageProps> = props 
               )
             }
             {props.tabValue === 1 && <AccountEmployeeTrainingList employeeId={employee.uid} />}
+            {props.tabValue === 2 && <AccountEmployeeExperienceList employeeId={employee.uid} />}
           </DialogContent>
           
         </Dialog>

@@ -91,7 +91,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
-      
+
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
         if (props.employeeId) {
@@ -121,10 +121,12 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingListProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-    //   if (this.props.location.state.employeeName) {
-
-    //   }
+    const { employeeId, employeeUid, handleOnLoadApi } = this.props;
+    const { request } = this.props.accountEmployeeTrainingState.all;
+    if (request) {
+      if (request.employeeUid !== employeeId || request.employeeUid !== employeeUid) {
+        handleOnLoadApi(undefined, true, true);
+      }
     }
   },
   componentDidUpdate(prevProps: AccountEmployeeTrainingListProps) {
