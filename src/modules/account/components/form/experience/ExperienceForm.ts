@@ -295,9 +295,9 @@ const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState> = {
   componentDidMount() {
-    if (!this.props.commonCompetencyListState.request) {
-      this.props.handleOnLoadCompetencies();
-    }
+    this.props.handleOnLoadCompetencies();
+    // if (!this.props.commonCompetencyListState.response) {
+    // }
     // // new mode
     // if (isNullOrUndefined(this.props.history.location.state)) {
     //   // load common system
@@ -308,10 +308,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState
     const { response: thisResponse } = this.props.accountEmployeeExperienceState.detail;
     const { response: prevResponse } = prevProps.accountEmployeeExperienceState.detail;
     const { response: thisCompetency } = this.props.commonCompetencyListState;
-    const { response: prevCompetency } = prevProps.commonCompetencyListState;
+    const { initialValues: initVal } = this.props;
 
     // handle competency response
-    if (thisCompetency !== prevCompetency) {
+    if (initVal && initVal.competencies.length === 0) {
       if (thisCompetency && thisCompetency.data) {
         const checklist: IExperienceCompetency[] = [];
 
@@ -339,24 +339,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState
             competencies: []
         };
 
-        if (thisResponse.data.competencies.length === 0 || !thisResponse.data.competencies) {
-          // for old data that has no competencies yet
-          if (thisCompetency && thisCompetency.data) {
-            thisCompetency.data.forEach(item => initialValues.competencies.push({
-              label: item.name,
-              value: item.type,
-              isChecked: false
-            }));
-          }
-        } else {
-          // fill competencies
-          thisResponse.data.competencies.forEach(item => initialValues.competencies.push({
-            uid: item.uid,
-            label: item.competency && item.competency.value || item.competencyType,
-            value: item.competencyType,
-            isChecked: item.isAvailable
-          }));
-        }
+        // fill competencies
+        thisResponse.data.competencies.forEach(item => initialValues.competencies.push({
+          uid: item.uid,
+          label: item.competency && item.competency.value || item.competencyType,
+          value: item.competencyType,
+          isChecked: item.isAvailable
+        }));
+
         this.props.setInitialValues(initialValues);
       }
     }
