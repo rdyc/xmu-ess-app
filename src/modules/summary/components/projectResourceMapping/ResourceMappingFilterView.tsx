@@ -1,3 +1,4 @@
+import { DataCheck, LookupSystemCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
@@ -35,6 +36,16 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
     return props.filterCompany !== undefined ||
       props.filterYear !== undefined;
   };
+  const showCompetency = (data: DataCheck[]) => {
+    const dataTrue: string[] = [];
+    data.map(item => 
+      item.isCheck &&
+      dataTrue.push(item.item.name)
+    );
+
+    return dataTrue.join();
+  };
+
   const filter = () => {
     return (
     <React.Fragment>
@@ -146,7 +157,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           <ListItem button onClick={props.handleFilterCompetencyVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.mapping.field.competency)}
-              secondary={props.filterCompetency && props.filterCompetency.name || props.intl.formatMessage(layoutMessage.text.none)}
+              secondary={props.filterCompetency && showCompetency(props.filterCompetency) || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
               {
@@ -209,13 +220,13 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           onClose={props.handleFilterProfessionOnClose}
         />
 
-        <LookupSystemDialog
+        <LookupSystemCheck
           title={props.intl.formatMessage(summaryMessage.mapping.field.competency)}
           category="competency"
           hideBackdrop={true}
           isOpen={props.isFilterCompetencyOpen}
-          value={props.filterCompetency && props.filterCompetency.type}
-          onSelected={props.handleFilterCompetencyOnSelected}
+          value={props.filterCompetency}
+          onApply={props.handleFilterCompetencyOnSelected}
           onClose={props.handleFilterCompetencyOnClose}
         />
       </Dialog>

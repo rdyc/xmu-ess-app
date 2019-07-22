@@ -1,4 +1,5 @@
 import { ISystemList } from '@common/classes/response';
+import { DataCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -41,8 +42,6 @@ interface IOwnOption {
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IResourceMappingFilterResult) => void;
-  // isSummary: boolean;
-  // setSummary: (checked: boolean) => void;
 }
 
 interface IOwnState {
@@ -65,7 +64,7 @@ interface IOwnState {
 
   // filter competency
   isFilterCompetencyOpen: boolean;
-  filterCompetency?: ISystemList;
+  filterCompetency?: DataCheck[];
 
   // filter summary
   filterSummary?: boolean;
@@ -124,7 +123,7 @@ interface IOwnHandler {
 
   // filter competency
   handleFilterCompetencyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompetencyOnSelected: (data: ISystemList) => void;
+  handleFilterCompetencyOnSelected: (data: DataCheck[]) => void;
   handleFilterCompetencyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompetencyOnClose: () => void;
 
@@ -153,6 +152,7 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     isFilterProfessionOpen: false,
 
     // pass inital value
+    // filterCompetency: []
     // filterSummary: props.isSummary
   };
 };
@@ -206,7 +206,7 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   setFilterCompetencyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompetencyOpen: !prevState.isFilterCompetencyOpen
   }),
-  setFilterCompetency: (prevState: IOwnState) => (data?: ISystemList) => ({
+  setFilterCompetency: (prevState: IOwnState) => (data?: DataCheck[]) => ({
     isFilterCompetencyOpen: false,
     filterCompetency: data
   }),
@@ -224,11 +224,20 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   },
   handleFilterOnApply: (props: ResourceMappingFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     if (props.filterCompany && props.filterYear) {
+      const competency: string[] = [];
+      if (props.filterCompetency) {
+        props.filterCompetency.map(data => {
+          if (data.isCheck) {
+            competency.push(data.item.type);
+          }
+        });
+      }
+      
       props.onApply({
         companyUid: props.filterCompany.uid,
         year: props.filterYear.value,
         professionTypes: props.filterProfession && props.filterProfession.type,
-        competencyTypes: props.filterCompetency && props.filterCompetency.type,
+        competencyTypes: competency.length > 0 ? competency.join() : undefined,
         summary: props.filterSummary
       });
     }
@@ -284,7 +293,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   handleFilterCompetencyVisibility: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompetencyVisibility();
   },
-  handleFilterCompetencyOnSelected: (props: ResourceMappingFilterProps) => (data: ISystemList) => {
+  handleFilterCompetencyOnSelected: (props: ResourceMappingFilterProps) => (data: DataCheck[]) => {
     props.setFilterCompetency(data);
   },
   handleFilterCompetencyOnClear: (props: ResourceMappingFilterProps) => () => {
@@ -325,7 +334,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
 
       // filter profession
       if (professionTypes) {
-        const { response } = this.props.commonStatusListState;
+        const { response } = this.props.commonProfessionListState;
 
         if (response && response.data) {
           const selected = response.data.find(item => item.type === professionTypes);
@@ -336,12 +345,29 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
 
       // filter competency
       if (competencyTypes) {
-        const { response } = this.props.commonStatusListState;
+        const { response } = this.props.commonCompetencyListState;
 
         if (response && response.data) {
-          const selected = response.data.find(item => item.type === competencyTypes);
+          const comp: DataCheck[] = [];
+          const temp: string[] = competencyTypes.split(',');
+          
+          response.data.map(item => {
+            const isTrue = temp.find(tempx => tempx === item.type);
 
-          this.props.setFilterProfession(selected);
+            if (isTrue) {
+              comp.push({
+                item,
+                isCheck: true
+              });
+            } else {
+              comp.push({
+                item,
+                isCheck: false
+              });
+            }
+          });
+
+          this.props.setFilterCompetency(comp);
         }
       }
     }
