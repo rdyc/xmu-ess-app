@@ -43,6 +43,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
 
     chart.data = [];
     data.map((item) => {
+      const profs: string = item.professions && item.professions.join() || 'No Profession';
+
       if (item.projectGroups && item.projectGroups.length > 0 && year) {
         item.projectGroups.map(sum => {
           if (Number(moment(sum.start).format('YYYY')) >= year ||
@@ -57,7 +59,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
                 employee: item.employee,
                 totalProject: sum.totalProjects,
                 totalMandays: sum.totalMandays,
-                actualMandays: sum.totalActualMandays
+                actualMandays: sum.totalActualMandays,
+                professions: profs
               });
             }
         });
@@ -77,7 +80,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
 
     nameAxis.renderer.labels.template.tooltipX = 100;
     nameAxis.renderer.labels.template.tooltipY = 30;
-    nameAxis.renderer.labels.template.tooltipText = '{name}';
+    nameAxis.renderer.labels.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+    nameAxis.renderer.labels.template.tooltipHTML = '{professions}';
 
     if (nameAxis.tooltip) {
       nameAxis.tooltip.keepTargetHover = true;
@@ -100,6 +104,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
     // When hovering
     const series1 = chart.series.push(new am4charts.ColumnSeries());
     series1.columns.template.tooltipY = 3;
+    series1.columns.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
     series1.columns.template.tooltipHTML = 
       '<b>{openDateX} - {dateX}</b> </br> Total project: {totalProject} </br> Total mandays: {totalMandays} </br> Actual mandays: {actualMandays}';
     // series1.columns.template.tooltipText =
@@ -131,7 +136,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
 
 const resourceMappingChartSummaryView: React.SFC<ResourceMappingChartSummaryProps> = props => {
   const { dataLength, classes } = props;
-  return <div id="chartdiv" className={classes.amChart} style={{height: `${50 * dataLength}px`}} />;
+  return <div id="chartdiv" className={classes.amChart} style={{height: `${100 + (48 * dataLength)}px`, minHeight: '100px'}} />;
 };
 
 export const ResourceMappingChartSummaryView = compose<ResourceMappingChartSummaryProps, IOwnOption>(

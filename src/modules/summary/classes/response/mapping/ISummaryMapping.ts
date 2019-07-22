@@ -6,4 +6,5 @@ export interface ISummaryMapping {
   employee: IAccountEmployee;
   projects?: ISummaryMappingProject[];
   projectGroups?: ISummaryMappingProjectGroup[];
+  professions?: string[];
 }

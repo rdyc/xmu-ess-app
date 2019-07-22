@@ -52,6 +52,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     chart.data = [];
     let chartCounter: number = 0;
     data.map((item) => {
+      const profs: string = item.professions && item.professions.join() || 'No Profession';
+
       if (item.projects && item.projects.length > 0 && year) {
         item.projects.map((project, index) => {
           if (Number(moment(project.start).format('YYYY')) >= year ||
@@ -65,7 +67,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
                 // color: colorSet.getIndex(0).brighten(Number(index % 3 === 1 ? 0 : (index % 3 === 2 ? 0.4 : 0.8 ))),
                 color: colorChart[chartCounter % 5],
                 projectName: project.name,
-                employee: item.employee
+                employee: item.employee,
+                professions: profs
               });
               chartCounter += 1;
             }
@@ -87,7 +90,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
 
     nameAxis.renderer.labels.template.tooltipX = 100;
     nameAxis.renderer.labels.template.tooltipY = 30;
-    nameAxis.renderer.labels.template.tooltipText = '{name}';
+    nameAxis.renderer.labels.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+    nameAxis.renderer.labels.template.tooltipHTML = '{professions}';
 
     if (nameAxis.tooltip) {
       nameAxis.tooltip.keepTargetHover = true;
@@ -112,6 +116,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     series1.columns.template.height = am4core.percent(70);
     series1.columns.template.tooltipX = 0;
     series1.columns.template.tooltipY = 3;
+    series1.columns.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
     series1.columns.template.tooltipText =
       '{projectName}: [bold]{openDateX}[/] - [bold]{dateX}[/]';
 
@@ -141,7 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
 
 const resourceMappingChartView: React.SFC<ResourceMappingChartProps> = props => {
   const { dataLength, classes } = props;
-  return <div id="chartdiv" className={classes.amChart} style={{height: `${50 * dataLength}px`}} />;
+  return <div id="chartdiv" className={classes.amChart} style={{height: `${100 + (48 * dataLength)}px`, minHeight: '100px'}} />;
 };
 
 export const ResourceMappingChartView = compose<ResourceMappingChartProps, IOwnOption>(
