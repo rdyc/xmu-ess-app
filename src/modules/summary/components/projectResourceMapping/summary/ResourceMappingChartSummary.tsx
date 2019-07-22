@@ -68,6 +68,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
         chart.data.push({
           name: (item.employee.fullName.toLowerCase()),
           employee: item.employee,
+          professions: profs
         }); 
       }
     });
@@ -81,7 +82,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
     nameAxis.renderer.labels.template.tooltipX = 100;
     nameAxis.renderer.labels.template.tooltipY = 30;
     nameAxis.renderer.labels.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-    nameAxis.renderer.labels.template.tooltipHTML = '{professions}';
+    // nameAxis.renderer.labels.template.tooltipHTML = '{professions}';
 
     if (nameAxis.tooltip) {
       nameAxis.tooltip.keepTargetHover = true;
