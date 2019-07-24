@@ -260,39 +260,37 @@ const handlerCreators: HandleCreators<RoleFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<RoleFormProps, IOwnState> = {
   componentDidMount() {
-    const { lookupMenuState, lookupMenuDispatch, formMode } = this.props;
+    const { lookupMenuState, lookupMenuDispatch } = this.props;
     
-    if (formMode === FormMode.New) {
-      if (!lookupMenuState.list.response) {
-        lookupMenuDispatch.loadListRequest({
-          filter: {
-            orderBy: 'uid',
-            direction: 'ascending'
-          }
-        });
-      } else if (lookupMenuState.list.response && lookupMenuState.list.response.data) {
-        const menuList: Menus[] = [];
-        lookupMenuState.list.response.data.map(item => 
-          menuList.push({
-            uid: item.uid,
-            parentUid: item.parentUid,
-            name: item.name || '',
-            isAccess: false
-          })  
-        );
-  
-        const initialValues: IRoleFormValue = {
-          uid: 'Auto Generated',
-          companyUid: '',
-          name: '',
-          gradeType: '',  
-          description: '',
-          isActive: false,
-          menus: menuList
-        };
-  
-        this.props.setInitialValues(initialValues);
-      }
+    if (!lookupMenuState.list.response) {
+      lookupMenuDispatch.loadListRequest({
+        filter: {
+          orderBy: 'uid',
+          direction: 'ascending'
+        }
+      });
+    } else if (lookupMenuState.list.response && lookupMenuState.list.response.data) {
+      const menuList: Menus[] = [];
+      lookupMenuState.list.response.data.map(item => 
+        menuList.push({
+          uid: item.uid,
+          parentUid: item.parentUid,
+          name: item.name || '',
+          isAccess: false
+        })  
+      );
+
+      const initialValues: IRoleFormValue = {
+        uid: 'Auto Generated',
+        companyUid: '',
+        name: '',
+        gradeType: '',  
+        description: '',
+        isActive: false,
+        menus: menuList
+      };
+
+      this.props.setInitialValues(initialValues);
     }
   },
   componentWillUpdate(nextProps: RoleFormProps) {
