@@ -330,22 +330,34 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<RoleFormProps, IOwnState> = {
   componentDidUpdate(prevProps: RoleFormProps) {
     const { response: thisResponse } = this.props.lookupRoleState.detail;
     const { response: prevResponse } = prevProps.lookupRoleState.detail;
+    const { response: menuResponse } = this.props.lookupMenuState.list;
     const { formMode } = this.props;
 
     if (formMode === FormMode.Edit) {
       if (thisResponse !== prevResponse) {
         if (thisResponse && thisResponse.data) {
           const menuList: Menus[] = [];
-          if (thisResponse.data.menus) {
-            thisResponse.data.menus.map(item => 
+          if (menuResponse && menuResponse.data) {
+            menuResponse.data.map(item => {
+
               menuList.push({
-                uid: item.menuUid,
-                parentUid: item.menu && item.menu.parentUid,
-                name: item.menu && item.menu.name || '',
-                isAccess: item.isAccess
-              })  
-            );
+                uid: item.uid,
+                parentUid: item.parentUid,
+                name: item.name || '',
+                isAccess: Boolean(thisResponse.data.menus && thisResponse.data.menus.find(menu => item.uid === menu.menuUid && menu.isAccess)) || false
+              });
+            });
           }
+          // if (thisResponse.data.menus) {
+          //   thisResponse.data.menus.map(item => 
+          //     menuList.push({
+          //       uid: item.menuUid,
+          //       parentUid: item.menu && item.menu.parentUid,
+          //       name: item.menu && item.menu.name || '',
+          //       isAccess: item.isAccess
+          //     })  
+          //   );
+          // }
           // define initial values
           const initialValues: IRoleFormValue = {
             uid: thisResponse.data.uid,
