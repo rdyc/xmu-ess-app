@@ -272,7 +272,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
     const { isLoading, response } = this.props.summaryState.mapping;
 
     this.props.masterPage.changePage({
-      uid: AppMenu.ReportWinningRatio,
+      uid: AppMenu.ReportResourceMapping,
       parentUid: AppMenu.Report,
       title: intl.formatMessage(summaryMessage.mapping.page.title),
     });
