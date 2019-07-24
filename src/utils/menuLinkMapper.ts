@@ -214,6 +214,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU66':
+      path = '/reports/resourcemapping';
+      break;
+
     default:
       path = '/home/dashboard';
       break;

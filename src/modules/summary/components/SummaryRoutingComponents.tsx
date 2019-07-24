@@ -4,17 +4,10 @@ import { Billable } from '@summary/components/billable/Billable';
 import { Effectiveness } from '@summary/components/effectiveness/Effectiveness';
 import { Profitability } from '@summary/components/profitability/Profitability';
 import { Progress } from '@summary/components/progress/Progress';
-// import { WinningRatio } from '@summary/components/winningRatio/WinningRatio';
+import { WinningRatio } from '@summary/components/winningRatio/WinningRatio';
 import * as React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { RouteComponentProps, Switch } from 'react-router';
 import { ResourceMapping } from './projectResourceMapping/ResourceMapping';
-
-// const resourceMapping = (props: RouteComponentProps) => (
-//   <Switch>
-//     <Route path={`${props.match.params}/:employeeUid`} componet={EmployeeDetailPage} />
-//     <Route path={`${props.match.params}`} componet={ResourceMapping} />
-//   </Switch>
-// );
 
 export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
@@ -34,7 +27,7 @@ export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props =>
       path={`${props.match.path}/winningratio`}
       menu={AppMenu.Report} 
       subMenu={AppMenu.ReportWinningRatio} 
-      component={ResourceMapping} 
+      component={WinningRatio} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/profitability`}
@@ -48,6 +41,11 @@ export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props =>
       subMenu={AppMenu.ReportProgress} 
       component={Progress} 
     />
-    <Route path={`${props.match.path}/resourcemapping`} component={ResourceMapping}  />
+    <SecureMenuRoute 
+      path={`${props.match.path}/resourcemapping`}
+      menu={AppMenu.Report} 
+      subMenu={AppMenu.ReportResourceMapping} 
+      component={ResourceMapping} 
+    />
   </Switch>
 );
