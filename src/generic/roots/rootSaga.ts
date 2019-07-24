@@ -92,6 +92,8 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
+import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -221,5 +223,9 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
+
+    // markdown
+    fork(markdownSagas),
+    fork(markdownCategorySagas)
   ]);
 }

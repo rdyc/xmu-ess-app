@@ -16,6 +16,7 @@ import { ISummaryState } from '@summary/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
 import { ITravelState } from '@travel/classes/states';
 import { IInforState } from 'modules/infor/classes/states';
+import { IMarkdownState } from 'playground/markdown/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -35,7 +36,8 @@ export interface IAppState extends
   IOrganizationState,
   IHomeState,
   ISummaryState,
-  IInforState {
+  IInforState,
+  IMarkdownState {
   oidc: UserState;
   user: IUserState;
   layout: ILayoutState;

@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 import './MarkdownStyle.css';
@@ -18,6 +18,9 @@ export const PlayMarkdownView: React.SFC<PlayMarkdownProps> = props => (
       <Grid item xs={6} style={{border: '2px solid gray'}}>
         <ReactMarkdown source={props.value} escapeHtml={false} />
       </Grid>
+      <Button variant="contained" color="primary" onClick={() => props.handleSubmit()}>
+        Submit
+      </Button>
     </Grid>
   </React.Fragment>
 );

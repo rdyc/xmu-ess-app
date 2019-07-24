@@ -28,6 +28,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleValue: (value: string) => void;
+  handleSubmit: () => void;
 }
 
 export type PlayMarkdownProps
@@ -49,6 +50,10 @@ const stateUpdaters: StateUpdaters<PlayMarkdownProps, IOwnState, IOwnStateUpdate
 const handlerCreators: HandleCreators<PlayMarkdownProps, IOwnHandler> = {
   handleValue: (props: PlayMarkdownProps) => (value: string) => {
     props.setValue(value);
+  },
+  handleSubmit: (props: PlayMarkdownProps) => () => {
+    const { value } = props;
+    console.log(value);
   }
 };
 
