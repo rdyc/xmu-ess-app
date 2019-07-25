@@ -52,9 +52,12 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartSummaryProps, {}> 
               chart.data.push({
                 projects: sum.projects,
                 name: (item.employee.fullName.toLowerCase()),
-                start: moment(sum.start).format('YYYY') !== year.toString() ? moment()
-                .startOf('year').format('YYYY-MM-DD') : moment(sum.start).format('YYYY-MM-DD'),
-                end: moment(sum.end).format('YYYY-MM-DD'),
+                start: moment(sum.start).format('YYYY') !== year.toString() ? 
+                  moment().startOf('year').format('YYYY-MM-DD') : 
+                  moment(sum.start).format('YYYY-MM-DD'),
+                end: moment(sum.end).format('YYYY') > year.toString() ? 
+                  moment().endOf('year').format('YYYY-MM-DD') : 
+                  moment(sum.end).format('YYYY-MM-DD'),
                 color: '#f44336',
                 employee: item.employee,
                 totalProject: sum.totalProjects,
