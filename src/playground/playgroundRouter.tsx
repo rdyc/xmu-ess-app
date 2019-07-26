@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { SimpleForm } from './formik/SimpleForm';
-import { MarkdownForm } from './markdown/form/MarkdownForm';
+import { MarkdownForm } from './markdown/component/markdown/form/MarkdownForm';
 import { PlayMarkdown } from './markdown/PlayMarkdown';
 import { DemoSinglePage } from './pages/DemoSinglePage';
 import { Enhancer } from './recompose/Enhancer';

@@ -22,13 +22,13 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-import { IMarkdownCategoryGetListFilter } from '../classes/filters/category/IMarkdownCategoryGetListFilter';
-import { IMarkdownPostPayload, IMarkdownPutPayload } from '../classes/request';
-import { WithMarkdown, withMarkdown } from '../hoc/withMarkdown';
-import { WithMarkdownCategory, withMarkdownCategory } from '../hoc/withMarkdownCategory';
+import { IMarkdownCategoryGetListFilter } from '../../../classes/filters/category/IMarkdownCategoryGetListFilter';
+import { IMarkdownPostPayload, IMarkdownPutPayload } from '../../../classes/request';
+import { WithMarkdown, withMarkdown } from '../../../hoc/withMarkdown';
+import { WithMarkdownCategory, withMarkdownCategory } from '../../../hoc/withMarkdownCategory';
 import { MarkdownFormView } from './MarkdownFormView';
 
-import { IMarkdown } from '../classes/response';
+import { IMarkdown } from '../../../classes/response';
 
 export interface IMarkdownFormValue {
   title: string;
@@ -55,7 +55,8 @@ interface IOwnState {
 
   filterCategory?: IMarkdownCategoryGetListFilter;
 
-  catMoreIsOpen: boolean;
+  moreOpen: boolean;
+  isCategoryOpen: boolean;
   anchor: any;
 }
 
@@ -68,7 +69,8 @@ interface IOwnHandler {
   handleOnLoadDetail: () => void;
   handleOnLoadCategory: () => void;
   handleOnSubmit: (values: IMarkdownFormValue, actions: FormikActions<IMarkdownFormValue>) => void;
-  handleCategoryMore: (event: any) => void;
+  handleMoreOption: (event: any) => void;
+  handleCategoryVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export type MarkdownFormProps
@@ -113,7 +115,8 @@ const createProps: mapper<MarkdownFormProps, IOwnState> = (props: MarkdownFormPr
     isActive: true
   },
 
-  catMoreIsOpen: false,
+  moreOpen: false,
+  isCategoryOpen: false,
   anchor: ''
 });
 
@@ -151,10 +154,23 @@ const handlerCreators: HandleCreators<MarkdownFormProps, IOwnHandler> = {
       });
     }
   },
-  handleCategoryMore: (props: MarkdownFormProps) => (event: any) => {
+  handleMoreOption: (props: MarkdownFormProps) => (event: any) => {
     props.stateUpdate({
-      catMoreIsOpen: !props.catMoreIsOpen,
-      anchor: event.currentTarget
+      moreOpen: !props.moreOpen,
+    });
+    if (event) {
+      props.stateUpdate({
+        anchor: event.currentTarget
+      });
+    } else {
+      props.stateUpdate({
+        anchor: undefined
+      });
+    }
+  },
+  handleCategoryVisibility: (props: MarkdownFormProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.stateUpdate({
+      isCategoryOpen: !props.isCategoryOpen
     });
   },
   handleOnSubmit: (props: MarkdownFormProps) => (values: IMarkdownFormValue, actions: FormikActions<IMarkdownFormValue>) => {
