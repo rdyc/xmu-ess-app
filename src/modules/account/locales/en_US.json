@@ -335,6 +335,9 @@
   "account.experience.field.end.required": "End Year is required",
   "account.experience.field.end.placeholder": "Select a End Year",
 
+  "account.experience.field.date": "Start - End Year",
+  "account.experience.field.competencies": "Competencies",
+
   "account.experience.field.profession": "Profession",
   "account.experience.field.profession.required": "Profession is required",
   "account.experience.field.profession.placeholder": "Please select profession",

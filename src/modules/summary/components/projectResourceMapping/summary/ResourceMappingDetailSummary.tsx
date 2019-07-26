@@ -3,7 +3,6 @@ import {
   AppBar,
   Dialog,
   DialogContent,
-  DialogTitle,
   Grid,
   IconButton,
   Toolbar,
@@ -58,17 +57,13 @@ const resourceMappingDetailSummary: React.SFC<AllProps> = props => {
               </IconButton>
 
               <Typography variant="h6" color="inherit" className={props.classes.flex}>
-                {props.intl.formatMessage(summaryMessage.mapping.page.detail)}
+                {props.intl.formatMessage(summaryMessage.mapping.page.detail)} &bull; {data.employee.fullName}
               </Typography>
 
             </Toolbar>
           </AppBar>
           
-          <DialogTitle>
-            {data.employee.fullName}
-          </DialogTitle>
-          
-          <DialogContent>
+          <DialogContent style={{marginTop: '1rem'}}>
             <Grid container spacing={8}>
               {
                 data &&

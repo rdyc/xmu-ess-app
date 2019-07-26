@@ -29,6 +29,10 @@ export const accountExperienceField = defineMessages({
   profession: { id: `${prefix}.field.profession`},
   professionPlaceholder: { id: `${prefix}.field.profession.placeholder`},
   professionRequired: { id: `${prefix}.field.profession.required`},
+  
+  date: { id: `${prefix}.field.date`},
+
+  competencies: { id: `${prefix}.field.competencies`},
 });
 
 // helper

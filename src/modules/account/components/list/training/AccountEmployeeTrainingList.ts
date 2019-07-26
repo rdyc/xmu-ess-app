@@ -2,6 +2,7 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -44,6 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IEmployeeTraining, index: number) => IDataBindResult;
+  handleMappingOnBind: (item: IEmployeeTraining, index: number) => IDataBindResult;
 }
 
 export type AccountEmployeeTrainingListProps 
@@ -116,6 +118,15 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
     quaternary: item.certification ? item.certification.value : 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  }),
+  handleMappingOnBind: (props: AccountEmployeeTrainingListProps) => (item: IEmployeeTraining, index: number) => ({
+    key: index,
+    primary: item.name,
+    secondary: item.training ? item.training.value : 'N/A',
+    tertiary: item.organizer,
+    quaternary: item.certification ? item.certification.value : 'N/A',
+    quinary: item.start ? props.intl.formatDate(item.start, GlobalFormat.Date) : 'N/A',
+    senary: item.end ? props.intl.formatDate(item.end, GlobalFormat.Date) : 'N/A'
   })
 };
 

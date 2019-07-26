@@ -43,6 +43,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
+  handleMappingOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
 }
 
 export type AccountEmployeeExperienceListProps 
@@ -115,6 +116,15 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
     quaternary: item.profession && item.profession.value || 'N/A',
     quinary: `${item.start.toString()} - ${item.end.toString()}`,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  }),
+  handleMappingOnBind: () => (item: IEmployeeExperience, index: number) => ({
+    key: index,
+    primary: item.company,
+    secondary: item.position,
+    tertiary: item.profession && item.profession.value || 'N/A',
+    quaternary: item.competencies && item.competencies.join() || 'N/A',
+    quinary: item.start.toString(),
+    senary: item.end.toString()
   })
 };
 

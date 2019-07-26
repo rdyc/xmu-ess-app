@@ -11,6 +11,7 @@ import { DetailPage } from '@account/components/detail/DetailPage';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AccountEmployeeTrainingListProps } from './AccountEmployeeTrainingList';
 import { AccountEmployeeTrainingSummary } from './AccountEmployeeTrainingSummary';
+import { ResourceMappingTrainingSummary } from './ResourceMappingTrainingSummary';
 
 export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingListProps> = props => (
   <React.Fragment>
@@ -24,11 +25,11 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
 
         // callback
         onLoadApi={props.handleOnLoadApi}
-        onBind={props.handleOnBind}
+        onBind={props.handleMappingOnBind}
         
         // row components
         summaryComponent={(item: IEmployeeTraining) => ( 
-          <AccountEmployeeTrainingSummary data={item} employeeUid={props.employeeId || 'N/A'} />
+          <ResourceMappingTrainingSummary data={item} />
         )}
       />
       :

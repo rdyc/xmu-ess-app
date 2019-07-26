@@ -10,6 +10,7 @@ import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 import { AccountEmployeeExperienceSummary } from './AcccountEmployeeExperienceSummary';
 import { AccountEmployeeExperienceListProps } from './AccountEmployeeExperienceList';
+import { ResourceMappingExperienceSummary } from './ResourceMappingExperienceSummary';
 
 export const AccountEmployeeExperienceListView: React.SFC<AccountEmployeeExperienceListProps> = props => (
   <React.Fragment>
@@ -22,11 +23,11 @@ export const AccountEmployeeExperienceListView: React.SFC<AccountEmployeeExperie
 
         // callback
         onLoadApi={props.handleOnLoadApi}
-        onBind={props.handleOnBind}
+        onBind={props.handleMappingOnBind}
         
         // row components
         summaryComponent={(item: IEmployeeExperience) => ( 
-          <AccountEmployeeExperienceSummary data={item} employeeUid={props.employeeId || 'N/A'} />
+          <ResourceMappingExperienceSummary data={item} />
         )}
       />
       :
