@@ -1,6 +1,6 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IKPIMeasurementDeleteRequest } from '@KPI/classes/queries/measurement';
-import { KPIMeasurementAction as Action } from '@KPI/store/actions';
+import { IKPIMeasurementDeleteRequest } from '@kpi/classes/queries/measurement';
+import { KPIMeasurementAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IKPIMeasurementDeleteRequest, boolean> = {
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IKPIMeasurementDeleteRequest, boolean>>
   }
 };
 
-export { reducer as KPIMeasurementDeleteReducer };
+export { reducer as kpiMeasurementDeleteReducer };

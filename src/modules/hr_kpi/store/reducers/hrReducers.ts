@@ -1,7 +1,9 @@
-import KPIMeasurementReducers from './measurement/KPIMeasurementReducers';
-import KPITemplateReducers from './template/KPITemplateReducers';
+import kpiCategoryReducers from './category/kpiCategoryReducers';
+import kpiMeasurementReducers from './measurement/kpiMeasurementReducers';
+import kpiTemplateReducers from './template/kpiTemplateReducers';
 
-export const KPIReducers = {
-  ...KPITemplateReducers,
-  ...KPIMeasurementReducers
+export const kpiReducers = {
+  ...kpiCategoryReducers,
+  ...kpiTemplateReducers,
+  ...kpiMeasurementReducers
 };

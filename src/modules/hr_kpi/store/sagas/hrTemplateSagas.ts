@@ -14,7 +14,7 @@ import {
   KPITemplatePutError,
   KPITemplatePutRequest,
   KPITemplatePutSuccess,
-} from '@KPI/store/actions';
+} from '@kpi/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -161,7 +161,7 @@ function* watchSwitchAccess() {
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
-function* KPITemplateSagas() {
+function* kpiTemplateSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
@@ -171,4 +171,4 @@ function* KPITemplateSagas() {
   ]);
 }
 
-export default KPITemplateSagas;
+export default kpiTemplateSagas;

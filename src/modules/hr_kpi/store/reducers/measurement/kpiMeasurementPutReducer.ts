@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IKPIMeasurementPutRequest } from '@KPI/classes/queries/measurement';
-import { IKPIMeasurement } from '@KPI/classes/response/measurement';
-import { KPIMeasurementAction as Action } from '@KPI/store/actions';
+import { IKPIMeasurementPutRequest } from '@kpi/classes/queries/measurement';
+import { IKPIMeasurement } from '@kpi/classes/response/measurement';
+import { KPIMeasurementAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IKPIMeasurementPutRequest, IKPIMeasurement> = {
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IKPIMeasurementPutRequest, IKPIMeasurem
   }
 };
 
-export { reducer as KPIMeasurementPutReducer };
+export { reducer as kpiMeasurementPutReducer };

@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IKPIMeasurementGetAllRequest } from '@KPI/classes/queries/measurement';
-import { IKPIMeasurement } from '@KPI/classes/response/measurement';
-import { KPIMeasurementAction as Action } from '@KPI/store/actions';
+import { IKPIMeasurementGetAllRequest } from '@kpi/classes/queries/measurement';
+import { IKPIMeasurement } from '@kpi/classes/response/measurement';
+import { KPIMeasurementAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement> = {
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIM
   }
 };
 
-export { reducer as KPIMeasurementGetAllReducer };
+export { reducer as kpiMeasurementGetAllReducer };

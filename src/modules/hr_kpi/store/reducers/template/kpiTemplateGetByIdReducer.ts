@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IKPITemplateGetByIdRequest } from '@KPI/classes/queries';
-import { IKPITemplateDetail } from '@KPI/classes/response';
-import { KPITemplateAction as Action } from '@KPI/store/actions';
+import { IKPITemplateGetByIdRequest } from '@kpi/classes/queries';
+import { IKPITemplateDetail } from '@kpi/classes/response';
+import { KPITemplateAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail> = {
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplat
   }
 };
 
-export { reducer as KPITemplateGetByIdReducer };
+export { reducer as kpiTemplateGetByIdReducer };

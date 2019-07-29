@@ -1,27 +1,23 @@
 import {
-  KPIMeasurementAction as Action,
-  KPIMeasurementGetAllDispose,
-  KPIMeasurementGetAllError,
-  KPIMeasurementGetAllRequest,
-  KPIMeasurementGetAllSuccess,
-  KPIMeasurementGetByCategoryDispose,
-  KPIMeasurementGetByCategoryError,
-  KPIMeasurementGetByCategoryRequest,
-  KPIMeasurementGetByCategorySuccess,
-  KPIMeasurementGetByIdDispose,
-  KPIMeasurementGetByIdError,
-  KPIMeasurementGetByIdRequest,
-  KPIMeasurementGetByIdSuccess,
-  KPIMeasurementGetListDispose,
-  KPIMeasurementGetListError,
-  KPIMeasurementGetListRequest,
-  KPIMeasurementGetListSuccess,
-  KPIMeasurementPostError,
-  KPIMeasurementPostRequest,
-  KPIMeasurementPostSuccess,
-  KPIMeasurementPutError,
-  KPIMeasurementPutRequest,
-  KPIMeasurementPutSuccess,
+  KPICategoryAction as Action,
+  KPICategoryGetAllDispose,
+  KPICategoryGetAllError,
+  KPICategoryGetAllRequest,
+  KPICategoryGetAllSuccess,
+  KPICategoryGetByIdDispose,
+  KPICategoryGetByIdError,
+  KPICategoryGetByIdRequest,
+  KPICategoryGetByIdSuccess,
+  KPICategoryGetListDispose,
+  KPICategoryGetListError,
+  KPICategoryGetListRequest,
+  KPICategoryGetListSuccess,
+  KPICategoryPostError,
+  KPICategoryPostRequest,
+  KPICategoryPostSuccess,
+  KPICategoryPutError,
+  KPICategoryPutRequest,
+  KPICategoryPutSuccess,
 } from '@kpi/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
@@ -31,7 +27,7 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof KPICategoryGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -39,15 +35,15 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/measurements?${params}`,
+      path: `/v1/kpi/categories?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetAllSuccess(response.body)),
+        put(KPICategoryGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetAllError(response))
+        put(KPICategoryGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIMeasurementGetAllError(error.message))
+        put(KPICategoryGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -58,36 +54,8 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchGetByCategoryRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementGetByCategoryRequest>) => {
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true
-    });
-
-    return saiyanSaga.fetch({
-      method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}?${params}`,
-      successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByCategorySuccess(response.body)),
-      ],
-      failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByCategoryError(response))
-      ],
-      errorEffects: (error: TypeError) => [
-        put(KPIMeasurementGetByCategoryError(error.message))
-      ],
-      finallyEffects: [
-        // nothing
-      ]
-    });
-  };
-
-  yield takeEvery(Action.GET_BYCATEGORY_REQUEST, worker);
-}
-
 function* watchGetListRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementGetListRequest>) => {
+  const worker = (action: ReturnType<typeof KPICategoryGetListRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -95,15 +63,15 @@ function* watchGetListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/measurements/list?${params}`,
+      path: `/v1/kpi/categories/list?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetListSuccess(response.body)),
+        put(KPICategoryGetListSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetListError(response))
+        put(KPICategoryGetListError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIMeasurementGetListError(error.message))
+        put(KPICategoryGetListError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -115,18 +83,18 @@ function* watchGetListRequest() {
 }
 
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof KPICategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
+      path: `/v1/kpi/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByIdSuccess(response.body))
+        put(KPICategoryGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByIdError(response))
+        put(KPICategoryGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIMeasurementGetByIdError(error.message))
+        put(KPICategoryGetByIdError(error.message))
       ]
     });
   };
@@ -135,21 +103,21 @@ function* watchGetByIdRequest() {
 }
 
 function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementPostRequest>) => {
+  const worker = (action: ReturnType<typeof KPICategoryPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/kpi/measurements`,
+      path: `/v1/kpi/categories`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByIdDispose()),
-        put(KPIMeasurementGetAllDispose()),
-        put(KPIMeasurementPostSuccess(response.body))
+        put(KPICategoryGetByIdDispose()),
+        put(KPICategoryGetAllDispose()),
+        put(KPICategoryPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementPostError(response.statusText))
+        put(KPICategoryPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -157,7 +125,7 @@ function* watchPostRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(KPIMeasurementPostError(error.message)),
+        put(KPICategoryPostError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -175,21 +143,21 @@ function* watchPostRequest() {
 }
 
 function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof KPIMeasurementPutRequest>) => {
+  const worker = (action: ReturnType<typeof KPICategoryPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
+      path: `/v1/kpi/categorys/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(KPIMeasurementGetByIdDispose()),
-        put(KPIMeasurementGetAllDispose()),
-        put(KPIMeasurementPutSuccess(response.body))
+        put(KPICategoryGetByIdDispose()),
+        put(KPICategoryGetAllDispose()),
+        put(KPICategoryPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(KPIMeasurementPutError(response.statusText))
+        put(KPICategoryPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -197,7 +165,7 @@ function* watchPutRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(KPIMeasurementPutError(error.message)),
+        put(KPICategoryPutError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -217,20 +185,18 @@ function* watchPutRequest() {
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
-      put(KPIMeasurementGetAllDispose()),
-      put(KPIMeasurementGetByCategoryDispose()),
-      put(KPIMeasurementGetListDispose()),
-      put(KPIMeasurementGetByIdDispose())
+      put(KPICategoryGetAllDispose()),
+      put(KPICategoryGetListDispose()),
+      put(KPICategoryGetByIdDispose())
     ]);
   }
 
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
-function* kpiMeasurementSagas() {
+function* kpiCategorySagas() {
   yield all([
     fork(watchGetAllRequest),
-    fork(watchGetByCategoryRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
@@ -239,4 +205,4 @@ function* kpiMeasurementSagas() {
   ]);
 }
 
-export default kpiMeasurementSagas;
+export default kpiCategorySagas;
