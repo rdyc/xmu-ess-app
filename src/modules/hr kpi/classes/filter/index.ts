@@ -1,2 +1,2 @@
-export * from './template/IHRTemplateGetAllFilter';
-export * from './template/IHRTemplateGetByIdFilter';
+export * from './template/IKPITemplateGetAllFilter';
+export * from './template/IKPITemplateGetByIdFilter';

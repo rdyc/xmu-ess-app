@@ -1,5 +1,5 @@
-import { IHRTemplateItem } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPITemplateItem } from '@KPI/classes/response';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
@@ -22,7 +22,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
 interface OwnProps {
-  items: IHRTemplateItem[] | null | undefined;
+  items: IKPITemplateItem[] | null | undefined;
 }
 
 interface OwnState {
@@ -53,14 +53,14 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
   })
 };
 
-const hrTemplateItem: React.SFC<AllProps> = props => {
+const KPITemplateItem: React.SFC<AllProps> = props => {
   const { items, intl, active, isExpanded, handleToggle } = props;
   const len = items && items.length - 1;
 
   const render = (
     <Card square>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.template.section.itemTitle)}
+        title={props.intl.formatMessage(KPIMessage.template.section.itemTitle)}
       />
       <List>
         {
@@ -91,54 +91,54 @@ const hrTemplateItem: React.SFC<AllProps> = props => {
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.template.field.itemUid)}
+                  label={intl.formatMessage(KPIMessage.template.field.itemUid)}
                   value={item.uid}
                 />
                 <TextField
                   multiline
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.template.field.category)}
+                  label={intl.formatMessage(KPIMessage.template.field.category)}
                   value={item.category ? item.category.value : 'N/A'}
                 />
                 <TextField
                   multiline
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.template.field.target)}
+                  label={intl.formatMessage(KPIMessage.template.field.target)}
                   value={item.target}
                 />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.template.field.weight)}
+                  label={intl.formatMessage(KPIMessage.template.field.weight)}
                   value={item.weight}
                 />
                 <Divider />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.measurement.field.uid)}
+                  label={intl.formatMessage(KPIMessage.measurement.field.uid)}
                   value={item.measurementUid}
                 />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
                   multiline
-                  label={intl.formatMessage(hrMessage.measurement.field.measurementType)}
+                  label={intl.formatMessage(KPIMessage.measurement.field.measurementType)}
                   value={item.measurement && item.measurement.measurement && `${item.measurement.measurementType} - ${item.measurement.measurement.value}` || 'N/A'}
                 />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
                   multiline
-                  label={intl.formatMessage(hrMessage.measurement.field.description)}
+                  label={intl.formatMessage(KPIMessage.measurement.field.description)}
                   value={item.measurement && item.measurement.description || 'N/A'}
                 />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(hrMessage.measurement.field.weight)}
+                  label={intl.formatMessage(KPIMessage.measurement.field.weight)}
                   value={item.weight}
                 />
               </Collapse>
@@ -152,8 +152,8 @@ const hrTemplateItem: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HRTemplateItem = compose<AllProps, OwnProps>(
+export const KPITemplateItem = compose<AllProps, OwnProps>(
   injectIntl,
   withStyles(styles),
   withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
-)(hrTemplateItem);
+)(KPITemplateItem);

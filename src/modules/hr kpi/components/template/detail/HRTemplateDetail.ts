@@ -1,13 +1,13 @@
 import { AppRole } from '@constants/AppRole';
-import { HRTemplateUserAction } from '@hr/classes/types';
-import { WithHRTemplate, withHRTemplate } from '@hr/hoc/withHRTemplate';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPITemplateUserAction } from '@KPI/classes/types';
+import { WithKPITemplate, withKPITemplate } from '@KPI/hoc/withKPITemplate';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -22,7 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { HRTemplateDetailView } from './HRTemplateDetailView';
+import { KPITemplateDetailView } from './KPITemplateDetailView';
 
 interface IOwnRouteParams {
   templateUid: string;
@@ -32,7 +32,7 @@ interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
   shouldLoad: boolean;
-  action?: HRTemplateUserAction;
+  action?: KPITemplateUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -55,17 +55,17 @@ interface IOwnHandler {
   handleOnConfirm: () => void;
 }
 
-export type HRTemplateDetailProps
+export type KPITemplateDetailProps
   = WithUser
   & WithOidc
-  & WithHRTemplate
+  & WithKPITemplate
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<HRTemplateDetailProps, IOwnState> = (props: HRTemplateDetailProps): IOwnState => {
+const createProps: mapper<KPITemplateDetailProps, IOwnState> = (props: KPITemplateDetailProps): IOwnState => {
   // checking admin status
   const { user } = props.oidcState;
   let isAdmin: boolean = false;
@@ -89,19 +89,19 @@ const createProps: mapper<HRTemplateDetailProps, IOwnState> = (props: HRTemplate
   };
 };
 
-const stateUpdaters: StateUpdaters<HRTemplateDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setShouldLoad: (state: IOwnState, props: HRTemplateDetailProps) => (): Partial<IOwnState> => ({
+const stateUpdaters: StateUpdaters<KPITemplateDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState, props: KPITemplateDetailProps) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: IOwnState, props: HRTemplateDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+  setOptions: (prevState: IOwnState, props: KPITemplateDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
-  setModify: (prevState: IOwnState, props: HRTemplateDetailProps) => (): Partial<IOwnState> => ({
-    action: HRTemplateUserAction.Modify,
+  setModify: (prevState: IOwnState, props: KPITemplateDetailProps) => (): Partial<IOwnState> => ({
+    action: KPITemplateUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.template.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(hrMessage.template.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(KPIMessage.template.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(KPIMessage.template.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
@@ -116,20 +116,20 @@ const stateUpdaters: StateUpdaters<HRTemplateDetailProps, IOwnState, IOwnStateUp
   })
 };
 
-const handlerCreators: HandleCreators<HRTemplateDetailProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HRTemplateDetailProps) => () => { 
-    if (props.userState.user && props.match.params.templateUid && !props.hrTemplateState.detail.isLoading) {
-      props.hrTemplateDispatch.loadDetailRequest({
+const handlerCreators: HandleCreators<KPITemplateDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: KPITemplateDetailProps) => () => { 
+    if (props.userState.user && props.match.params.templateUid && !props.KPITemplateState.detail.isLoading) {
+      props.KPITemplateDispatch.loadDetailRequest({
         templateUid: props.match.params.templateUid
       });
     }
   },
-  handleOnSelectedMenu: (props: HRTemplateDetailProps) => (item: IPopupMenuOption) => { 
+  handleOnSelectedMenu: (props: KPITemplateDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
-      case HRTemplateUserAction.Refresh:
+      case KPITemplateUserAction.Refresh:
         props.setShouldLoad();
         break;
-      case HRTemplateUserAction.Modify:
+      case KPITemplateUserAction.Modify:
         props.setModify();
         break;
 
@@ -137,11 +137,11 @@ const handlerCreators: HandleCreators<HRTemplateDetailProps, IOwnHandler> = {
         break;
     }
   },
-  handleOnCloseDialog: (props: HRTemplateDetailProps) => () => {
+  handleOnCloseDialog: (props: KPITemplateDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: HRTemplateDetailProps) => () => {
-    const { response } = props.hrTemplateState.detail;
+  handleOnConfirm: (props: KPITemplateDetailProps) => () => {
+    const { response } = props.KPITemplateState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -158,14 +158,14 @@ const handlerCreators: HandleCreators<HRTemplateDetailProps, IOwnHandler> = {
 
     // actions with new page
     const actions = [
-      HRTemplateUserAction.Modify
+      KPITemplateUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case HRTemplateUserAction.Modify:
+        case KPITemplateUserAction.Modify:
           next = '/kpi/templates/form';
           break;
 
@@ -182,8 +182,8 @@ const handlerCreators: HandleCreators<HRTemplateDetailProps, IOwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<HRTemplateDetailProps, IOwnState> = {
-  componentDidUpdate(prevProps: HRTemplateDetailProps) {
+const lifecycles: ReactLifeCycleFunctions<KPITemplateDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: KPITemplateDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       this.props.setShouldLoad();
@@ -196,19 +196,19 @@ const lifecycles: ReactLifeCycleFunctions<HRTemplateDetailProps, IOwnState> = {
     }
 
     // handle updated response state
-    if (this.props.hrTemplateState.detail.response !== prevProps.hrTemplateState.detail.response) {
-      const { isLoading } = this.props.hrTemplateState.detail;
+    if (this.props.KPITemplateState.detail.response !== prevProps.KPITemplateState.detail.response) {
+      const { isLoading } = this.props.KPITemplateState.detail;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
         {
-          id: HRTemplateUserAction.Refresh,
+          id: KPITemplateUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true
         },
         {
-          id: HRTemplateUserAction.Modify,
+          id: KPITemplateUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true
@@ -220,14 +220,14 @@ const lifecycles: ReactLifeCycleFunctions<HRTemplateDetailProps, IOwnState> = {
   }
 };
 
-export const HRTemplateDetail = compose(
-  withRouter,
+export const KPITemplateDetail = compose(
+  witKPIouter,
   withOidc,
   withUser,
-  withHRTemplate,
+  withKPITemplate,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   setDisplayName('LookupMileageExceptionDetail')
-)(HRTemplateDetailView);
+)(KPITemplateDetailView);

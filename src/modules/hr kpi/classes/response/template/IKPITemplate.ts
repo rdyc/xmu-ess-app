@@ -1,0 +1,13 @@
+import { IBaseChanges } from '@generic/interfaces';
+import { ICompany, IPosition } from '@lookup/classes/response';
+import { IKPITemplateItem } from './IKPITemplateItem';
+
+export interface IKPITemplate {
+  uid: string;
+  companyUid: string;
+  company?: ICompany | null;
+  positionUid: string;
+  position?: IPosition | null;
+  items?: IKPITemplateItem[] | null;
+  changes: IBaseChanges | null;
+}

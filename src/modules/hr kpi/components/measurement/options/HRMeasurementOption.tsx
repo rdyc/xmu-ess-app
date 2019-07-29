@@ -1,6 +1,6 @@
-import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
-import { IHRMeasurementList } from '@hr/classes/response/measurement';
-import { WithHRMeasurement, withHRMeasurement } from '@hr/hoc/withHRMeasurement';
+import { IKPIMeasurementGetListFilter } from '@KPI/classes/filter/measurement';
+import { IKPIMeasurementList } from '@KPI/classes/response/measurement';
+import { WithKPIMeasurement, withKPIMeasurement } from '@KPI/hoc/withKPIMeasurement';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
 import {
@@ -19,7 +19,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: IHRMeasurementGetListFilter;
+  filter?: IKPIMeasurementGetListFilter;
 }
 
 interface IOwnState {
@@ -36,8 +36,8 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
 }
 
-export type HRMeasurementOptionProps
-  = WithHRMeasurement
+export type KPIMeasurementOptionProps
+  = WithKPIMeasurement
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -48,11 +48,11 @@ const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   options: [{ label: '', value: ''}]
 });
 
-const stateUpdaters: StateUpdaters<HRMeasurementOptionProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: () => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: () => (values: IHRMeasurementList[]): Partial<IOwnState> => {
+  setOptions: () => (values: IKPIMeasurementList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
@@ -68,10 +68,10 @@ const stateUpdaters: StateUpdaters<HRMeasurementOptionProps, IOwnState, IOwnStat
   }
 };
 
-const handlerCreators: HandleCreators<HRMeasurementOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HRMeasurementOptionProps) => () => {
-    const { isExpired, isLoading } = props.hrMeasurementState.list;
-    const { loadListRequest } = props.hrMeasurementDispatch;
+const handlerCreators: HandleCreators<KPIMeasurementOptionProps, IOwnHandler> = {
+  handleOnLoadApi: (props: KPIMeasurementOptionProps) => () => {
+    const { isExpired, isLoading } = props.KPIMeasurementState.list;
+    const { loadListRequest } = props.KPIMeasurementDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
@@ -81,9 +81,9 @@ const handlerCreators: HandleCreators<HRMeasurementOptionProps, IOwnHandler> = {
   }
 };
 
-const lifeCycle: ReactLifeCycleFunctions<HRMeasurementOptionProps, IOwnState> = {
+const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.hrMeasurementState.list;
+    const { request, response } = this.props.KPIMeasurementState.list;
 
     // 1st load only when request are empty
     if (!request) {
@@ -105,9 +105,9 @@ const lifeCycle: ReactLifeCycleFunctions<HRMeasurementOptionProps, IOwnState> = 
       }
     }
   },
-  componentDidUpdate(prevProps: HRMeasurementOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.hrMeasurementState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.hrMeasurementState.list;
+  componentDidUpdate(prevProps: KPIMeasurementOptionProps) {
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.KPIMeasurementState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.KPIMeasurementState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
@@ -121,7 +121,7 @@ const lifeCycle: ReactLifeCycleFunctions<HRMeasurementOptionProps, IOwnState> = 
   }
 };
 
-const component: React.SFC<HRMeasurementOptionProps> = props => {
+const component: React.SFC<KPIMeasurementOptionProps> = props => {
   const children = props.children as React.ReactElement<SelectFieldProps>;
 
   if (children) {
@@ -141,9 +141,9 @@ const component: React.SFC<HRMeasurementOptionProps> = props => {
   return <div></div>;
 };
 
-export const HRMeasurementOption = compose<HRMeasurementOptionProps, IOwnOption>(
-  setDisplayName('HRMeasurementOption'),
-  withHRMeasurement,
+export const KPIMeasurementOption = compose<KPIMeasurementOptionProps, IOwnOption>(
+  setDisplayName('KPIMeasurementOption'),
+  withKPIMeasurement,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

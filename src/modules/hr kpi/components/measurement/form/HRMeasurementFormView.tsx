@@ -1,25 +1,25 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { HRMeasurementFormProps, IHRMeasurementFormValue } from './HRMeasurementForm';
-import HRMeasurementDetailPartialForm from './partial/HRMeasurementDetailPartialForm';
+import { KPIMeasurementFormProps, IKPIMeasurementFormValue } from './KPIMeasurementForm';
+import KPIMeasurementDetailPartialForm from './partial/KPIMeasurementDetailPartialForm';
 
-export const HRMeasurementFormView: React.SFC<HRMeasurementFormProps> = props => (
+export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props => (
   <FormPage
     info={{
       uid: AppMenu.LookupEmployee,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/measurement',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.page.newTitle : hrMessage.measurement.page.modifyTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.page.newSubHeader : hrMessage.measurement.page.modifySubHeader)
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.page.newTitle : KPIMessage.measurement.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.page.newSubHeader : KPIMessage.measurement.page.modifySubHeader)
     }}
-    state={props.hrMeasurementState.detail}
+    state={props.KPIMeasurementState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -27,13 +27,13 @@ export const HRMeasurementFormView: React.SFC<HRMeasurementFormProps> = props =>
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<IHRMeasurementFormValue>) => (
+      render={(formikBag: FormikProps<IKPIMeasurementFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <HRMeasurementDetailPartialForm
+                <KPIMeasurementDetailPartialForm
                   formMode={props.formMode}
                   formikBag={formikBag}
                   intl={props.intl}
@@ -44,7 +44,7 @@ export const HRMeasurementFormView: React.SFC<HRMeasurementFormProps> = props =>
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm
-                  title={props.intl.formatMessage(hrMessage.measurement.submission.form)}
+                  title={props.intl.formatMessage(KPIMessage.measurement.submission.form)}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -53,8 +53,8 @@ export const HRMeasurementFormView: React.SFC<HRMeasurementFormProps> = props =>
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.dialog.createTitle : hrMessage.measurement.dialog.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.dialog.createDescription : hrMessage.measurement.dialog.modifyDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.dialog.createTitle : KPIMessage.measurement.dialog.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.dialog.createDescription : KPIMessage.measurement.dialog.modifyDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}

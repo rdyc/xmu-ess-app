@@ -4,88 +4,88 @@ import {
   IQuerySingleState
 } from '@generic/interfaces';
 import { 
-  IHRMeasurementDeleteRequest, 
-  IHRMeasurementGetAllRequest, 
-  IHRMeasurementGetDetailRequest, 
-  IHRMeasurementGetListRequest,
-  IHRMeasurementPostRequest,   
-  IHRMeasurementPutRequest
-} from '@hr/classes/queries/measurement';
-import { IHRMeasurement, IHRMeasurementDetail, IHRMeasurementList } from '@hr/classes/response/measurement';
+  IKPIMeasurementDeleteRequest, 
+  IKPIMeasurementGetAllRequest, 
+  IKPIMeasurementGetDetailRequest, 
+  IKPIMeasurementGetListRequest,
+  IKPIMeasurementPostRequest,   
+  IKPIMeasurementPutRequest
+} from '@KPI/classes/queries/measurement';
+import { IKPIMeasurement, IKPIMeasurementDetail, IKPIMeasurementList } from '@KPI/classes/response/measurement';
 import { 
-  hrMeasurementDeleteDispose, 
-  hrMeasurementDeleteRequest, 
-  hrMeasurementGetAllDispose, 
-  hrMeasurementGetAllRequest, 
-  hrMeasurementGetByIdDispose, 
-  hrMeasurementGetByIdRequest,  
-  hrMeasurementGetListDispose, 
-  hrMeasurementGetListRequest, 
-  hrMeasurementPostDispose,
-  hrMeasurementPostRequest, 
-  hrMeasurementPutDispose,
-  hrMeasurementPutRequest
-} from '@hr/store/actions';
+  KPIMeasurementDeleteDispose, 
+  KPIMeasurementDeleteRequest, 
+  KPIMeasurementGetAllDispose, 
+  KPIMeasurementGetAllRequest, 
+  KPIMeasurementGetByIdDispose, 
+  KPIMeasurementGetByIdRequest,  
+  KPIMeasurementGetListDispose, 
+  KPIMeasurementGetListRequest, 
+  KPIMeasurementPostDispose,
+  KPIMeasurementPostRequest, 
+  KPIMeasurementPutDispose,
+  KPIMeasurementPutRequest
+} from '@KPI/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  hrMeasurementState: {
-    all: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement>;
-    list: IQueryCollectionState<IHRMeasurementGetListRequest, IHRMeasurementList>;
-    detail: IQuerySingleState<IHRMeasurementGetDetailRequest, IHRMeasurementDetail>;
+  KPIMeasurementState: {
+    all: IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement>;
+    list: IQueryCollectionState<IKPIMeasurementGetListRequest, IKPIMeasurementList>;
+    detail: IQuerySingleState<IKPIMeasurementGetDetailRequest, IKPIMeasurementDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  hrMeasurementDispatch: {
+  KPIMeasurementDispatch: {
     // command
-    createRequest: typeof hrMeasurementPostRequest;
-    createDispose: typeof hrMeasurementPostDispose;
-    updateRequest: typeof hrMeasurementPutRequest;
-    updateDispose: typeof hrMeasurementPutDispose;
-    deleteRequest: typeof hrMeasurementDeleteRequest;
-    deleteDispose: typeof hrMeasurementDeleteDispose;
+    createRequest: typeof KPIMeasurementPostRequest;
+    createDispose: typeof KPIMeasurementPostDispose;
+    updateRequest: typeof KPIMeasurementPutRequest;
+    updateDispose: typeof KPIMeasurementPutDispose;
+    deleteRequest: typeof KPIMeasurementDeleteRequest;
+    deleteDispose: typeof KPIMeasurementDeleteDispose;
 
     // query
-    loadAllRequest: typeof hrMeasurementGetAllRequest;
-    loadAllDispose: typeof hrMeasurementGetAllDispose;
-    loadListRequest: typeof hrMeasurementGetListRequest;
-    loadListDispose: typeof hrMeasurementGetListDispose;
-    loadDetailRequest: typeof hrMeasurementGetByIdRequest;
-    loadDetailDispose: typeof hrMeasurementGetByIdDispose;
+    loadAllRequest: typeof KPIMeasurementGetAllRequest;
+    loadAllDispose: typeof KPIMeasurementGetAllDispose;
+    loadListRequest: typeof KPIMeasurementGetListRequest;
+    loadListDispose: typeof KPIMeasurementGetListDispose;
+    loadDetailRequest: typeof KPIMeasurementGetByIdRequest;
+    loadDetailDispose: typeof KPIMeasurementGetByIdDispose;
   };
 }
 
-export interface WithHRMeasurement extends PropsFromState, PropsFromDispatch {}
+export interface WithKPIMeasurement extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrMeasurementGetAll, hrMeasurementGetList, hrMeasurementGetById }: IAppState) => ({
-  hrMeasurementState: {
-    all: hrMeasurementGetAll,
-    list: hrMeasurementGetList,
-    detail: hrMeasurementGetById
+const mapStateToProps = ({ KPIMeasurementGetAll, KPIMeasurementGetList, KPIMeasurementGetById }: IAppState) => ({
+  KPIMeasurementState: {
+    all: KPIMeasurementGetAll,
+    list: KPIMeasurementGetList,
+    detail: KPIMeasurementGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hrMeasurementDispatch: {
+  KPIMeasurementDispatch: {
     // command
-    createRequest: (request: IHRMeasurementPostRequest) => dispatch(hrMeasurementPostRequest(request)),
-    createDispose: () => dispatch(hrMeasurementPostDispose()),
-    updateRequest: (request: IHRMeasurementPutRequest) => dispatch(hrMeasurementPutRequest(request)),
-    updateDispose: () => dispatch(hrMeasurementPutDispose()),
-    deleteRequest: (request: IHRMeasurementDeleteRequest) => dispatch(hrMeasurementDeleteRequest(request)),
-    deleteDispose: () => dispatch(hrMeasurementDeleteDispose()),
+    createRequest: (request: IKPIMeasurementPostRequest) => dispatch(KPIMeasurementPostRequest(request)),
+    createDispose: () => dispatch(KPIMeasurementPostDispose()),
+    updateRequest: (request: IKPIMeasurementPutRequest) => dispatch(KPIMeasurementPutRequest(request)),
+    updateDispose: () => dispatch(KPIMeasurementPutDispose()),
+    deleteRequest: (request: IKPIMeasurementDeleteRequest) => dispatch(KPIMeasurementDeleteRequest(request)),
+    deleteDispose: () => dispatch(KPIMeasurementDeleteDispose()),
     
     // query
-    loadAllRequest: (request: IHRMeasurementGetAllRequest) => dispatch(hrMeasurementGetAllRequest(request)),
-    loadAllDispose: () => dispatch(hrMeasurementGetAllDispose()),
-    loadListRequest: (request: IHRMeasurementGetListRequest) => dispatch(hrMeasurementGetListRequest(request)),
-    loadListDispose: () => dispatch(hrMeasurementGetListDispose()),
-    loadDetailRequest: (request: IHRMeasurementGetDetailRequest) => dispatch(hrMeasurementGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(hrMeasurementGetByIdDispose()),
+    loadAllRequest: (request: IKPIMeasurementGetAllRequest) => dispatch(KPIMeasurementGetAllRequest(request)),
+    loadAllDispose: () => dispatch(KPIMeasurementGetAllDispose()),
+    loadListRequest: (request: IKPIMeasurementGetListRequest) => dispatch(KPIMeasurementGetListRequest(request)),
+    loadListDispose: () => dispatch(KPIMeasurementGetListDispose()),
+    loadDetailRequest: (request: IKPIMeasurementGetDetailRequest) => dispatch(KPIMeasurementGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(KPIMeasurementGetByIdDispose()),
   }
 });
 
-export const withHRMeasurement = (component: React.ComponentType) =>
+export const withKPIMeasurement = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

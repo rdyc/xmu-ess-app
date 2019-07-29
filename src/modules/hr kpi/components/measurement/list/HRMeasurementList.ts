@@ -1,16 +1,16 @@
 import { IBasePagingFilter } from '@generic/interfaces';
-import { IHRMeasurementGetAllFilter } from '@hr/classes/filter/measurement';
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { HRMeasurementField } from '@hr/classes/types';
-import { WithHRMeasurement, withHRMeasurement } from '@hr/hoc/withHRMeasurement';
+import { IKPIMeasurementGetAllFilter } from '@KPI/classes/filter/measurement';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMeasurementField } from '@KPI/classes/types';
+import { WithKPIMeasurement, withKPIMeasurement } from '@KPI/hoc/withKPIMeasurement';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import { compose, HandleCreators, mapper, setDisplayName, shallowEqual, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { HRMeasurementListView } from './HRMeasurementListView';
+import { KPIMeasurementListView } from './KPIMeasurementListView';
 
 interface IOwnState {
   fields: ICollectionValue[];
@@ -22,41 +22,41 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IHRMeasurement, index: number) => IDataBindResult;
+  handleOnBind: (item: IKPIMeasurement, index: number) => IDataBindResult;
 }
 
-export type HRMeasurementListProps
+export type KPIMeasurementListProps
   = IOwnState
   & IOwnHandler
   & IOwnStateUpdater
   & WithUser
-  & WithHRMeasurement
+  & WithKPIMeasurement
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<HRMeasurementListProps, IOwnState> = (): IOwnState => {
+const createProps: mapper<KPIMeasurementListProps, IOwnState> = (): IOwnState => {
   const state: IOwnState = {
-    fields: Object.keys(HRMeasurementField).map(key => ({
+    fields: Object.keys(KPIMeasurementField).map(key => ({
       value: key,
-      name: HRMeasurementField[key]
+      name: KPIMeasurementField[key]
     }))
   };
 
   return state;
 };
 
-const stateUpdaters: StateUpdaters<HRMeasurementListProps, IOwnState, {}> = {
+const stateUpdaters: StateUpdaters<KPIMeasurementListProps, IOwnState, {}> = {
 };
 
-const handlerCreators: HandleCreators<HRMeasurementListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HRMeasurementListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.hrMeasurementState.all;
-    const { loadAllRequest } = props.hrMeasurementDispatch;
+const handlerCreators: HandleCreators<KPIMeasurementListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: KPIMeasurementListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { isExpired, isLoading, request } = props.KPIMeasurementState.all;
+    const { loadAllRequest } = props.KPIMeasurementDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
       // predefined filter
-      const filter: IHRMeasurementGetAllFilter = {
+      const filter: IKPIMeasurementGetAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -76,9 +76,9 @@ const handlerCreators: HandleCreators<HRMeasurementListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnLoadApiSearch: (props: HRMeasurementListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.hrMeasurementState.all;
-    const { loadAllRequest } = props.hrMeasurementDispatch;
+  handleOnLoadApiSearch: (props: KPIMeasurementListProps) => (find?: string, findBy?: string) => {
+    const { isLoading, request } = props.KPIMeasurementState.all;
+    const { loadAllRequest } = props.KPIMeasurementDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<HRMeasurementListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: (props: HRMeasurementListProps) => (item: IHRMeasurement, index: number) => ({
+  handleOnBind: (props: KPIMeasurementListProps) => (item: IKPIMeasurement, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.measurement && item.measurement.description || '',
@@ -112,12 +112,12 @@ const handlerCreators: HandleCreators<HRMeasurementListProps, IOwnHandler> = {
   }),
 };
 
-export const HRMeasurementList = compose(
-  setDisplayName('HRMeasurementList'),
+export const KPIMeasurementList = compose(
+  setDisplayName('KPIMeasurementList'),
   withUser,
-  withHRMeasurement,
-  withRouter,
+  withKPIMeasurement,
+  witKPIouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-)(HRMeasurementListView);
+)(KPIMeasurementListView);

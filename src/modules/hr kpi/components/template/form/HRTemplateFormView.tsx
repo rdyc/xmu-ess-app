@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
@@ -8,20 +8,20 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
-import { HRTemplateFormProps, IHRTemplateFormValue } from './HRTemplateForm';
-import HRTemplateDetailPartialForm from './partial/HRTemplateDetailPartialForm';
-import HRTemplateItemPartialForm from './partial/HRTemplateItemPartialForm';
+import { KPITemplateFormProps, IKPITemplateFormValue } from './KPITemplateForm';
+import KPITemplateDetailPartialForm from './partial/KPITemplateDetailPartialForm';
+import KPITemplateItemPartialForm from './partial/KPITemplateItemPartialForm';
 
-export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
+export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
   <FormPage
     info={{
       uid: AppMenu.LookupEmployee,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/templates',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.page.newTitle : hrMessage.template.page.modifyTitle),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.page.newSubHeader : hrMessage.template.page.modifySubHeader)
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.page.newTitle : KPIMessage.template.page.modifyTitle),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.page.newSubHeader : KPIMessage.template.page.modifySubHeader)
     }}
-    state={props.hrTemplateState.detail}
+    state={props.KPITemplateState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -29,13 +29,13 @@ export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<IHRTemplateFormValue>) => (
+      render={(formikBag: FormikProps<IKPITemplateFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <HRTemplateDetailPartialForm
+                <KPITemplateDetailPartialForm
                   formMode={props.formMode}
                   formikBag={formikBag}
                   intl={props.intl}
@@ -44,7 +44,7 @@ export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
               </div>
             </div>
             <div className={props.classes.flexColumn}>
-              <HRTemplateItemPartialForm
+              <KPITemplateItemPartialForm
                 formikBag={formikBag}
                 formMode={props.formMode}
                 intl={props.intl}
@@ -60,7 +60,7 @@ export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm
-                  title={props.intl.formatMessage(hrMessage.template.submission.form)}
+                  title={props.intl.formatMessage(KPIMessage.template.submission.form)}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -69,8 +69,8 @@ export const HRTemplateFormView: React.SFC<HRTemplateFormProps> = props => (
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.dialog.createTitle : hrMessage.template.dialog.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.dialog.createDescription : hrMessage.template.dialog.modifyDescription),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.dialog.createTitle : KPIMessage.template.dialog.modifyTitle),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.dialog.createDescription : KPIMessage.template.dialog.modifyDescription),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}

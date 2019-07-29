@@ -1,2 +1,2 @@
-export * from './template/hrTemplateActions';
-export * from './measurement/hrMeasurementActions';
+export * from './template/KPITemplateActions';
+export * from './measurement/KPIMeasurementActions';

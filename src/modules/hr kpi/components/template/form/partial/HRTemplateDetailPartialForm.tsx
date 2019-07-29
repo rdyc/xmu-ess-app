@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
@@ -9,30 +9,30 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IHRTemplateFormValue } from '../HRTemplateForm';
+import { IKPITemplateFormValue } from '../KPITemplateForm';
 
-type HRTemplateDetailPartialFormProps = {
+type KPITemplateDetailPartialFormProps = {
   formMode: FormMode; 
-  formikBag: FormikProps<IHRTemplateFormValue>;
+  formikBag: FormikProps<IKPITemplateFormValue>;
   intl: InjectedIntl;
   filterLookupCompany?: ILookupCompanyGetListFilter;
 };
 
-const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFormProps> = props => (
+const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartialFormProps> = props => (
   <Card square>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.template.section.infoTitle)}
+      title={props.intl.formatMessage(KPIMessage.template.section.infoTitle)}
     />
     <CardContent>
       <Field 
         name="uid"
-        render={({ field}: FieldProps<IHRTemplateFormValue>) => (
+        render={({ field}: FieldProps<IKPITemplateFormValue>) => (
           <TextField 
             {...field}
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(hrMessage.template.field.uid)}
+            label={props.intl.formatMessage(KPIMessage.template.field.uid)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
@@ -40,7 +40,7 @@ const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFo
       
       <Field
         name="companyUid"
-        render={({ field, form }: FieldProps<IHRTemplateFormValue>) => (
+        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => (
           <LookupCompanyOption filter={props.filterLookupCompany}>
             <SelectField
               isSearchable
@@ -51,7 +51,7 @@ const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFo
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.template.field.company),
+                label: props.intl.formatMessage(KPIMessage.template.field.company),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -68,7 +68,7 @@ const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFo
 
       <Field
         name="positionUid"
-        render={({ field, form }: FieldProps<IHRTemplateFormValue>) => {
+        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
           return (
             <LookupPositionOption companyUid={props.formikBag.values.companyUid}>
               <SelectField
@@ -80,7 +80,7 @@ const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFo
                 escapeClearsValue={true}
                 valueString={field.value}
                 textFieldProps={{
-                  label: props.intl.formatMessage(hrMessage.template.field.position),
+                  label: props.intl.formatMessage(KPIMessage.template.field.position),
                   required: true,
                   helperText: form.touched.positionUid && form.errors.positionUid,
                   error: form.touched.positionUid && Boolean(form.errors.positionUid)
@@ -97,4 +97,4 @@ const HRTemplateDetailPartialForm: React.ComponentType<HRTemplateDetailPartialFo
   </Card>
 );
 
-export default HRTemplateDetailPartialForm;
+export default KPITemplateDetailPartialForm;

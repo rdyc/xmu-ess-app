@@ -1,20 +1,20 @@
 import {
-  HRTemplateAction as Action,
-  hrTemplateGetAllDispose,
-  hrTemplateGetAllError,
-  hrTemplateGetAllRequest,
-  hrTemplateGetAllSuccess,
-  hrTemplateGetByIdDispose,
-  hrTemplateGetByIdError,
-  hrTemplateGetByIdRequest,
-  hrTemplateGetByIdSuccess,
-  hrTemplatePostError,
-  hrTemplatePostRequest,
-  hrTemplatePostSuccess,
-  hrTemplatePutError,
-  hrTemplatePutRequest,
-  hrTemplatePutSuccess,
-} from '@hr/store/actions';
+  KPITemplateAction as Action,
+  KPITemplateGetAllDispose,
+  KPITemplateGetAllError,
+  KPITemplateGetAllRequest,
+  KPITemplateGetAllSuccess,
+  KPITemplateGetByIdDispose,
+  KPITemplateGetByIdError,
+  KPITemplateGetByIdRequest,
+  KPITemplateGetByIdSuccess,
+  KPITemplatePostError,
+  KPITemplatePostRequest,
+  KPITemplatePostSuccess,
+  KPITemplatePutError,
+  KPITemplatePutRequest,
+  KPITemplatePutSuccess,
+} from '@KPI/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -23,7 +23,7 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof hrTemplateGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof KPITemplateGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -33,13 +33,13 @@ function* watchGetAllRequest() {
       method: 'get',
       path: `/v1/kpi/templates?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(hrTemplateGetAllSuccess(response.body)),
+        put(KPITemplateGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(hrTemplateGetAllError(response))
+        put(KPITemplateGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(hrTemplateGetAllError(error.message))
+        put(KPITemplateGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -51,18 +51,18 @@ function* watchGetAllRequest() {
 }
 
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof hrTemplateGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof KPITemplateGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/kpi/templates/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
-        put(hrTemplateGetByIdSuccess(response.body))
+        put(KPITemplateGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(hrTemplateGetByIdError(response))
+        put(KPITemplateGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(hrTemplateGetByIdError(error.message))
+        put(KPITemplateGetByIdError(error.message))
       ]
     });
   };
@@ -71,21 +71,21 @@ function* watchGetByIdRequest() {
 }
 
 function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof hrTemplatePostRequest>) => {
+  const worker = (action: ReturnType<typeof KPITemplatePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
       path: `/v1/kpi/templates`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(hrTemplateGetByIdDispose()),
-        put(hrTemplateGetAllDispose()),
-        put(hrTemplatePostSuccess(response.body))
+        put(KPITemplateGetByIdDispose()),
+        put(KPITemplateGetAllDispose()),
+        put(KPITemplatePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(hrTemplatePostError(response.statusText))
+        put(KPITemplatePostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -93,7 +93,7 @@ function* watchPostRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(hrTemplatePostError(error.message)),
+        put(KPITemplatePostError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -111,21 +111,21 @@ function* watchPostRequest() {
 }
 
 function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof hrTemplatePutRequest>) => {
+  const worker = (action: ReturnType<typeof KPITemplatePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
       path: `/v1/kpi/templates/${action.payload.templateUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(hrTemplateGetByIdDispose()),
-        put(hrTemplateGetAllDispose()),
-        put(hrTemplatePutSuccess(response.body))
+        put(KPITemplateGetByIdDispose()),
+        put(KPITemplateGetAllDispose()),
+        put(KPITemplatePutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(hrTemplatePutError(response.statusText))
+        put(KPITemplatePutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -133,7 +133,7 @@ function* watchPutRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(hrTemplatePutError(error.message)),
+        put(KPITemplatePutError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -153,15 +153,15 @@ function* watchPutRequest() {
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
-      put(hrTemplateGetAllDispose()),
-      put(hrTemplateGetByIdDispose())
+      put(KPITemplateGetAllDispose()),
+      put(KPITemplateGetByIdDispose())
     ]);
   }
 
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
-function* hrTemplateSagas() {
+function* KPITemplateSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
@@ -171,4 +171,4 @@ function* hrTemplateSagas() {
   ]);
 }
 
-export default hrTemplateSagas;
+export default KPITemplateSagas;

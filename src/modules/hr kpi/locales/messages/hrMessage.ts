@@ -1,43 +1,43 @@
 import { 
-  hrMeasurementConfirm, 
-  hrMeasurementDialog, 
-  hrMeasurementField, 
-  hrMeasurementFieldHelperFor, 
-  hrMeasurementMessage, 
-  hrMeasurementPage, 
-  hrMeasurementSection, 
-  hrMeasurementSubmission
-} from './hrMeasurementMessage';
+  KPIMeasurementConfirm, 
+  KPIMeasurementDialog, 
+  KPIMeasurementField, 
+  KPIMeasurementFieldHelperFor, 
+  KPIMeasurementMessage, 
+  KPIMeasurementPage, 
+  KPIMeasurementSection, 
+  KPIMeasurementSubmission
+} from './KPIMeasurementMessage';
 import {
-  hrTemplateConfirm,
-  hrTemplateDialog,
-  hrTemplateField,
-  hrTemplateFieldHelperFor,
-  hrTemplateMessage,
-  hrTemplatePage,
-  hrTemplateSection,
-  hrTemplateSubmission
-} from './hrTemplateMessage';
+  KPITemplateConfirm,
+  KPITemplateDialog,
+  KPITemplateField,
+  KPITemplateFieldHelperFor,
+  KPITemplateMessage,
+  KPITemplatePage,
+  KPITemplateSection,
+  KPITemplateSubmission
+} from './KPITemplateMessage';
 
-export const hrMessage = {
+export const KPIMessage = {
   template: {
-    field: hrTemplateField,
-    fieldFor: hrTemplateFieldHelperFor,
-    message: hrTemplateMessage,
-    page: hrTemplatePage,
-    confirm: hrTemplateConfirm,
-    section: hrTemplateSection,
-    submission: hrTemplateSubmission,
-    dialog: hrTemplateDialog
+    field: KPITemplateField,
+    fieldFor: KPITemplateFieldHelperFor,
+    message: KPITemplateMessage,
+    page: KPITemplatePage,
+    confirm: KPITemplateConfirm,
+    section: KPITemplateSection,
+    submission: KPITemplateSubmission,
+    dialog: KPITemplateDialog
   },
   measurement: {
-    field: hrMeasurementField,
-    fieldFor: hrMeasurementFieldHelperFor,
-    message: hrMeasurementMessage,
-    page: hrMeasurementPage,
-    confirm: hrMeasurementConfirm,
-    section: hrMeasurementSection,
-    submission: hrMeasurementSubmission,
-    dialog: hrMeasurementDialog
+    field: KPIMeasurementField,
+    fieldFor: KPIMeasurementFieldHelperFor,
+    message: KPIMeasurementMessage,
+    page: KPIMeasurementPage,
+    confirm: KPIMeasurementConfirm,
+    section: KPIMeasurementSection,
+    submission: KPIMeasurementSubmission,
+    dialog: KPIMeasurementDialog
   }
 };

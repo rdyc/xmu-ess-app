@@ -1,5 +1,5 @@
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -9,36 +9,36 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IHRMeasurement;
+  data: IKPIMeasurement;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const hrMeasurementInformation: React.SFC<AllProps> = props => {
+const KPIMeasurementInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={props.intl.formatMessage(hrMessage.measurement.section.infoTitle)}
+        title={props.intl.formatMessage(KPIMessage.measurement.section.infoTitle)}
       // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.measurement.field.uid)}
+          label={props.intl.formatMessage(KPIMessage.measurement.field.uid)}
           value={props.data.uid}
           multiline
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.measurement.field.description)}
+          label={props.intl.formatMessage(KPIMessage.measurement.field.description)}
           value={props.data.description}
           multiline
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.measurement.field.weight)}
+          label={props.intl.formatMessage(KPIMessage.measurement.field.weight)}
           value={props.data.weight}
         />
         {
@@ -69,4 +69,4 @@ const hrMeasurementInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HRMeasurementInformation = compose<AllProps, OwnProps>(injectIntl)(hrMeasurementInformation);
+export const KPIMeasurementInformation = compose<AllProps, OwnProps>(injectIntl)(KPIMeasurementInformation);

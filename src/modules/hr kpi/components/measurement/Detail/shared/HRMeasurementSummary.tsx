@@ -1,5 +1,5 @@
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -9,19 +9,19 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IHRMeasurement;
+  data: IKPIMeasurement;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const hrMeasurementSummary: React.SFC<AllProps> = props => (
+const KPIMeasurementSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.measurement.field.uid)}
+        label={props.intl.formatMessage(KPIMessage.measurement.field.uid)}
         value={props.data.uid}
         multiline
       />
@@ -30,7 +30,7 @@ const hrMeasurementSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.measurement.field.description)}
+        label={props.intl.formatMessage(KPIMessage.measurement.field.description)}
         value={props.data.description}
         multiline
       />
@@ -39,7 +39,7 @@ const hrMeasurementSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.measurement.field.measurementType)}
+        label={props.intl.formatMessage(KPIMessage.measurement.field.measurementType)}
         value={props.data.measurement && props.data.measurement.description }
       />
     </Grid>
@@ -68,6 +68,6 @@ const hrMeasurementSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const HRMeasurementSumarry = compose<AllProps, OwnProps>(
+export const KPIMeasurementSumarry = compose<AllProps, OwnProps>(
   injectIntl
-)(hrMeasurementSummary);
+)(KPIMeasurementSummary);

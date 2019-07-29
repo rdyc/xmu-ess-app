@@ -1,4 +1,4 @@
-import { IHRTemplateGetAllFilter } from '@hr/classes/filter';
+import { IKPITemplateGetAllFilter } from '@KPI/classes/filter';
 import { ILookupCompany } from '@lookup/classes';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { IPositionList } from '@lookup/classes/response';
@@ -21,16 +21,16 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { HRTemplateListFilterView } from './HRTemplateListFilterView';
+import { KPITemplateListFilterView } from './KPITemplateListFilterView';
 
-export type IHRTemplateFilterResult = Pick<IHRTemplateGetAllFilter,
+export type IKPITemplateFilterResult = Pick<IKPITemplateGetAllFilter,
   'companyUid' | 'positionUid'>;
 
 interface OwnOption {
   isOpen: boolean;
-  initialProps?: IHRTemplateFilterResult;
+  initialProps?: IKPITemplateFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IHRTemplateFilterResult) => void;
+  onApply: (filter: IKPITemplateFilterResult) => void;
 }
 
 interface OwnState {
@@ -75,7 +75,7 @@ interface OwnHandler {
   handleFilterPositionOnClose: () => void;
 }
 
-export type HRTemplateListFilterProps
+export type KPITemplateListFilterProps
   = OwnOption
   & OwnState
   & OwnHandler
@@ -85,12 +85,12 @@ export type HRTemplateListFilterProps
   & WithLookupPosition
   & InjectedIntlProps;
 
-const createProps: mapper<HRTemplateListFilterProps, OwnState> = (): OwnState => ({
+const createProps: mapper<KPITemplateListFilterProps, OwnState> = (): OwnState => ({
   isFilterCompanyOpen: false,
   isFilterPositionOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<HRTemplateListFilterProps, OwnState, OwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPITemplateListFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
@@ -120,12 +120,12 @@ const stateUpdaters: StateUpdaters<HRTemplateListFilterProps, OwnState, OwnState
   }),
 };
 
-const handlerCreators: HandleCreators<HRTemplateListFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<KPITemplateListFilterProps, OwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: HRTemplateListFilterProps) => () => {
+  handleFilterOnReset: (props: KPITemplateListFilterProps) => () => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: HRTemplateListFilterProps) => () => {
+  handleFilterOnApply: (props: KPITemplateListFilterProps) => () => {
     props.onApply({
       companyUid: props.filterCompany && props.filterCompany.uid,
       positionUid: props.filterPosition && props.filterPosition.uid
@@ -133,36 +133,36 @@ const handlerCreators: HandleCreators<HRTemplateListFilterProps, OwnHandler> = {
   },
 
   // filter company
-  handleFilterCompanyVisibility: (props: HRTemplateListFilterProps) => () => {
+  handleFilterCompanyVisibility: (props: KPITemplateListFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
-  handleFilterCompanyOnSelected: (props: HRTemplateListFilterProps) => (data: ILookupCompany) => {
+  handleFilterCompanyOnSelected: (props: KPITemplateListFilterProps) => (data: ILookupCompany) => {
     props.setFilterCompany(data);
   },
-  handleFilterCompanyOnClear: (props: HRTemplateListFilterProps) => () => {
+  handleFilterCompanyOnClear: (props: KPITemplateListFilterProps) => () => {
     props.setFilterCompany();
     props.setFilterPosition();
   },
-  handleFilterCompanyOnClose: (props: HRTemplateListFilterProps) => () => {
+  handleFilterCompanyOnClose: (props: KPITemplateListFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
 
   // filter position
-  handleFilterPositionVisibility: (props: HRTemplateListFilterProps) => () => {
+  handleFilterPositionVisibility: (props: KPITemplateListFilterProps) => () => {
     props.setFilterPositionVisibility();
   },
-  handleFilterPositionOnSelected: (props: HRTemplateListFilterProps) => (data: IPositionList) => {
+  handleFilterPositionOnSelected: (props: KPITemplateListFilterProps) => (data: IPositionList) => {
     props.setFilterPosition(data);
   },
-  handleFilterPositionOnClear: (props: HRTemplateListFilterProps) => () => {
+  handleFilterPositionOnClear: (props: KPITemplateListFilterProps) => () => {
     props.setFilterPosition();
   },
-  handleFilterPositionOnClose: (props: HRTemplateListFilterProps) => () => {
+  handleFilterPositionOnClose: (props: KPITemplateListFilterProps) => () => {
     props.setFilterPositionVisibility();
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<HRTemplateListFilterProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<KPITemplateListFilterProps, OwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
       const { companyUid, positionUid } = this.props.initialProps;
@@ -190,8 +190,8 @@ const lifecycles: ReactLifeCycleFunctions<HRTemplateListFilterProps, OwnState> =
   }
 };
 
-export const HRTemplateFilter = compose<HRTemplateListFilterProps, OwnOption>(
-  setDisplayName('HRTemplateFilter'),
+export const KPITemplateFilter = compose<KPITemplateListFilterProps, OwnOption>(
+  setDisplayName('KPITemplateFilter'),
   withLookupCompany,
   withLookupPosition,
   injectIntl,
@@ -199,4 +199,4 @@ export const HRTemplateFilter = compose<HRTemplateListFilterProps, OwnOption>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
-)(HRTemplateListFilterView);
+)(KPITemplateListFilterView);

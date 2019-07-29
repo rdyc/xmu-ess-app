@@ -1,11 +1,11 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
-import { IHRTemplatePostPayload, IHRTemplatePutPayload } from '@hr/classes/request';
-import { IHRTemplate } from '@hr/classes/response';
-import { WithHRTemplate, withHRTemplate } from '@hr/hoc/withHRTemplate';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurementGetListFilter } from '@KPI/classes/filter/measurement';
+import { IKPITemplatePostPayload, IKPITemplatePutPayload } from '@KPI/classes/request';
+import { IKPITemplate } from '@KPI/classes/response';
+import { WithKPITemplate, withKPITemplate } from '@KPI/hoc/withKPITemplate';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
@@ -14,7 +14,7 @@ import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -30,9 +30,9 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-import { HRTemplateFormView } from './HRTemplateFormView';
+import { KPITemplateFormView } from './KPITemplateFormView';
 
-interface IHRTemplateItemFormValue {
+interface IKPITemplateItemFormValue {
   uid?: string;
   measurementUid: string;
   categoryType: string;
@@ -40,11 +40,11 @@ interface IHRTemplateItemFormValue {
   weight: number;
 }
 
-export interface IHRTemplateFormValue {
+export interface IKPITemplateFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  items: IHRTemplateItemFormValue[];
+  items: IKPITemplateItemFormValue[];
 }
 
 interface IOwnRouteParams {
@@ -58,11 +58,11 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
 
-  initialValues: IHRTemplateFormValue;
-  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IHRTemplateFormValue>>>;
+  initialValues: IKPITemplateFormValue;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPITemplateFormValue>>>;
 
   filterLookupCompany?: ILookupCompanyGetListFilter;
-  filterMeasurement: IHRMeasurementGetListFilter;
+  filterMeasurement: IKPIMeasurementGetListFilter;
   filterCommonSystem: ISystemListFilter;
 }
 
@@ -74,11 +74,11 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   // handleSetPositionFilter: (companyUid: string) => void;
   handleOnLoadDetail: () => void;
-  handleOnSubmit: (values: IHRTemplateFormValue, action: FormikActions<IHRTemplateFormValue>) => void;
+  handleOnSubmit: (values: IKPITemplateFormValue, action: FormikActions<IKPITemplateFormValue>) => void;
 }
 
-export type HRTemplateFormProps
-  = WithHRTemplate
+export type KPITemplateFormProps
+  = WithKPITemplate
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -90,7 +90,7 @@ export type HRTemplateFormProps
   & IOwnStateUpdater
   & IOwnHandler;
 
-const createProps: mapper<HRTemplateFormProps, IOwnState> = (props: HRTemplateFormProps): IOwnState => ({
+const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplateFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
@@ -107,38 +107,38 @@ const createProps: mapper<HRTemplateFormProps, IOwnState> = (props: HRTemplateFo
     }]
   },
 
-  validationSchema: Yup.object().shape<Partial<IHRTemplateFormValue>>({
+  validationSchema: Yup.object().shape<Partial<IKPITemplateFormValue>>({
     companyUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.template.field.company))
+      .label(props.intl.formatMessage(KPIMessage.template.field.company))
       .required(),
 
     positionUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.template.field.position))
+      .label(props.intl.formatMessage(KPIMessage.template.field.position))
       .required(),
 
     items: Yup.array()
       .of(
         Yup.object().shape({
           measurementUid: Yup.string()
-            .label(props.intl.formatMessage(hrMessage.template.field.measurementUid))
+            .label(props.intl.formatMessage(KPIMessage.template.field.measurementUid))
             .required(),
 
           categoryType: Yup.string()
-            .label(props.intl.formatMessage(hrMessage.template.field.category))
+            .label(props.intl.formatMessage(KPIMessage.template.field.category))
             .required(),
 
           target: Yup.string()
-            .label(props.intl.formatMessage(hrMessage.template.field.target))
+            .label(props.intl.formatMessage(KPIMessage.template.field.target))
             .required(),
 
           weight: Yup.number()
-            .label(props.intl.formatMessage(hrMessage.template.field.weight))
+            .label(props.intl.formatMessage(KPIMessage.template.field.weight))
             .integer()
             .min(0)
             .required(),
         })
       )
-      .min(1, props.intl.formatMessage(hrMessage.template.field.itemsMinimum))
+      .min(1, props.intl.formatMessage(KPIMessage.template.field.itemsMinimum))
   }),
 
   filterCommonSystem: {
@@ -151,7 +151,7 @@ const createProps: mapper<HRTemplateFormProps, IOwnState> = (props: HRTemplateFo
   }
 });
 
-const stateUpdaters: StateUpdaters<HRTemplateFormProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPITemplateFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
@@ -161,21 +161,21 @@ const stateUpdaters: StateUpdaters<HRTemplateFormProps, IOwnState, IOwnStateUpda
   })
 };
 
-const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
-  handleOnLoadDetail: (props: HRTemplateFormProps) => () => {
+const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
+  handleOnLoadDetail: (props: KPITemplateFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const templateUid = props.history.location.state.uid;
-      const { isLoading } = props.hrTemplateState.detail;
+      const { isLoading } = props.KPITemplateState.detail;
 
       if (user && templateUid && !isLoading) {
-        props.hrTemplateDispatch.loadDetailRequest({
+        props.KPITemplateDispatch.loadDetailRequest({
           templateUid
         });
       }
     }
   },
-  handleOnSubmit: (props: HRTemplateFormProps) => (values: IHRTemplateFormValue, actions: FormikActions<IHRTemplateFormValue>) => {
+  handleOnSubmit: (props: KPITemplateFormProps) => (values: IKPITemplateFormValue, actions: FormikActions<IKPITemplateFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
@@ -183,7 +183,7 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
       // creating 
       if (props.formMode === FormMode.New) {
         // fill payload 
-        const payload: IHRTemplatePostPayload = {
+        const payload: IKPITemplatePostPayload = {
           companyUid: values.companyUid,
           positionUid: values.positionUid,
           items: []
@@ -198,7 +198,7 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
         }));
 
         promise = new Promise((resolve, reject) => {
-          props.hrTemplateDispatch.createRequest({
+          props.KPITemplateDispatch.createRequest({
             resolve,
             reject,
             data: payload
@@ -214,7 +214,7 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
         if (templateUid) {
 
           // fill payload 
-          const payload: IHRTemplatePutPayload = {
+          const payload: IKPITemplatePutPayload = {
             companyUid: values.companyUid,
             positionUid: values.positionUid,
             items: []
@@ -230,11 +230,11 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
           }));
 
           promise = new Promise((resolve, reject) => {
-            props.hrTemplateDispatch.updateRequest({
+            props.KPITemplateDispatch.updateRequest({
               templateUid,
               resolve,
               reject,
-              data: payload as IHRTemplatePutPayload,
+              data: payload as IKPITemplatePutPayload,
             });
           });
         }
@@ -243,7 +243,7 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
 
     // handling promise 
     promise
-      .then((response: IHRTemplate) => {
+      .then((response: IKPITemplate) => {
         // set submitting status 
         actions.setSubmitting(false);
 
@@ -252,7 +252,7 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.message.createSuccess : hrMessage.template.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.message.createSuccess : KPIMessage.template.message.updateSuccess, { uid: response.uid })
         });
 
         props.history.push(`/kpi/templates/${response.uid}`);
@@ -273,25 +273,25 @@ const handleCreators: HandleCreators<HRTemplateFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.template.message.createFailure : hrMessage.template.message.updateFailure)
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.template.message.createFailure : KPIMessage.template.message.updateFailure)
         });
       });
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<HRTemplateFormProps, IOwnState> = {
+const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnState> = {
   componentDidMount() {
     //
   },
-  componentDidUpdate(prevProps: HRTemplateFormProps) {
+  componentDidUpdate(prevProps: KPITemplateFormProps) {
     // handle template detail response
-    const { response: thisResponse } = this.props.hrTemplateState.detail;
-    const { response: prevResponse } = prevProps.hrTemplateState.detail;
+    const { response: thisResponse } = this.props.KPITemplateState.detail;
+    const { response: prevResponse } = prevProps.KPITemplateState.detail;
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values 
-        const initialValues: IHRTemplateFormValue = {
+        const initialValues: IKPITemplateFormValue = {
           uid: thisResponse.data.uid,
           companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
@@ -318,11 +318,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HRTemplateFormProps, IOwnState
   }
 };
 
-export const HRTemplateForm = compose<HRTemplateFormProps, IOwnOption>(
-  setDisplayName('HRTemplateForm'),
+export const KPITemplateForm = compose<KPITemplateFormProps, IOwnOption>(
+  setDisplayName('KPITemplateForm'),
   withUser,
-  withRouter,
-  withHRTemplate,
+  witKPIouter,
+  withKPITemplate,
   withCommonSystem,
   withMasterPage,
   injectIntl,
@@ -330,4 +330,4 @@ export const HRTemplateForm = compose<HRTemplateFormProps, IOwnOption>(
   withHandlers(handleCreators),
   lifecycle(lifeCycleFunctions),
   withStyles(styles)
-)(HRTemplateFormView);
+)(KPITemplateFormView);

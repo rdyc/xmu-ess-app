@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
-const prefix = 'hr.measurement';
+const prefix = 'KPI.measurement';
 
 // page
-export const hrMeasurementPage = defineMessages({
+export const KPIMeasurementPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },
   listSubHeader: { id: `${prefix}.page.list.subHeader` },
   detailTitle: { id: `${prefix}.page.detail.title` },
@@ -15,7 +15,7 @@ export const hrMeasurementPage = defineMessages({
 });
 
 // message
-export const hrMeasurementMessage = defineMessages({
+export const KPIMeasurementMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createFailure: { id: `${prefix}.message.create.failure` },
@@ -26,18 +26,18 @@ export const hrMeasurementMessage = defineMessages({
 });
 
 // submission
-export const hrMeasurementSubmission = defineMessages({
+export const KPIMeasurementSubmission = defineMessages({
   form: { id: `${prefix}.submission.form` }
 });
 
 // section
-export const hrMeasurementSection = defineMessages({
+export const KPIMeasurementSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
 });
 
 // confimation
-export const hrMeasurementConfirm = defineMessages({
+export const KPIMeasurementConfirm = defineMessages({
   newTitle: { id: `${prefix}.confirm.new.title` },
   newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
@@ -47,7 +47,7 @@ export const hrMeasurementConfirm = defineMessages({
 });
 
 // fields
-export const hrMeasurementField = defineMessages({
+export const KPIMeasurementField = defineMessages({
   description: { id: `${prefix}.field.description`},
   uid: { id: `${prefix}.field.uid`},
   measurementType: { id: `${prefix}.field.measurementType`},
@@ -55,7 +55,7 @@ export const hrMeasurementField = defineMessages({
 });
 
 // dialog
-export const hrMeasurementDialog = defineMessages({
+export const KPIMeasurementDialog = defineMessages({
   modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
   createTitle: { id: `${prefix}.dialog.newTitle`},
@@ -63,7 +63,7 @@ export const hrMeasurementDialog = defineMessages({
 });
 
 // helper
-export const hrMeasurementFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+export const KPIMeasurementFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
 

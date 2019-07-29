@@ -1,3 +1,3 @@
-export * from './IHRMeasurementPostPayload';
-export * from './IHRMeasurementPutPayload';
-export * from './IHRMeasurementDeletePayload';
+export * from './IKPIMeasurementPostPayload';
+export * from './IKPIMeasurementPutPayload';
+export * from './IKPIMeasurementDeletePayload';

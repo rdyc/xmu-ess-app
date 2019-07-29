@@ -4,7 +4,7 @@ import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -20,18 +20,18 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IHRTemplateGetAllFilter } from '@hr/classes/filter';
-import { IHRTemplate } from '@hr/classes/response';
-import { HRTemplateField } from '@hr/classes/types';
-import { withHRTemplate, WithHRTemplate } from '@hr/hoc/withHRTemplate';
-import { IHRTemplateFilterResult } from './HRTemplateListFilter';
-import { HRTemplateListView } from './HRTemplateListView';
+import { IKPITemplateGetAllFilter } from '@KPI/classes/filter';
+import { IKPITemplate } from '@KPI/classes/response';
+import { KPITemplateField } from '@KPI/classes/types';
+import { withKPITemplate, WithKPITemplate } from '@KPI/hoc/withKPITemplate';
+import { IKPITemplateFilterResult } from './KPITemplateListFilter';
+import { KPITemplateListView } from './KPITemplateListView';
 
 interface IOwnOption {
 
 }
 
-interface IOwnState extends IHRTemplateFilterResult {
+interface IOwnState extends IKPITemplateFilterResult {
   fields: ICollectionValue[];
   isFilterOpen: boolean;
 }
@@ -44,30 +44,30 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IHRTemplate, index: number) => IDataBindResult;
+  handleOnBind: (item: IKPITemplate, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IHRTemplateFilterResult) => void;
+  handleFilterApplied: (filter: IKPITemplateFilterResult) => void;
   handleFilterBadge: () => boolean;
 }
 
-export type HRTemplateListProps 
+export type KPITemplateListProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithHRTemplate
+  & WithKPITemplate
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<HRTemplateListProps, IOwnState> = (props: HRTemplateListProps): IOwnState => {
-  const { request } = props.hrTemplateState.all;
+const createProps: mapper<KPITemplateListProps, IOwnState> = (props: KPITemplateListProps): IOwnState => {
+  const { request } = props.KPITemplateState.all;
 
   const state: IOwnState = {
     isFilterOpen: false,
-    fields: Object.keys(HRTemplateField).map(key => ({
+    fields: Object.keys(KPITemplateField).map(key => ({
       value: key,
-      name: HRTemplateField[key]
+      name: KPITemplateField[key]
     }))
   };
 
@@ -80,25 +80,25 @@ const createProps: mapper<HRTemplateListProps, IOwnState> = (props: HRTemplateLi
   return state;
 };
 
-const stateUpdaters: StateUpdaters<HRTemplateListProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPITemplateListProps, IOwnState, IOwnStateUpdater> = {
   setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (state: IOwnState) => (filter: IHRTemplateFilterResult): Partial<IOwnState> => ({
+  setFilterApplied: (state: IOwnState) => (filter: IKPITemplateFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
 };
 
-const handlerCreators: HandleCreators<HRTemplateListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HRTemplateListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.hrTemplateState.all;
-    const { loadAllRequest } = props.hrTemplateDispatch;
+const handlerCreators: HandleCreators<KPITemplateListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: KPITemplateListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { isExpired, isLoading, request } = props.KPITemplateState.all;
+    const { loadAllRequest } = props.KPITemplateDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
       // predefined filter
-      const filter: IHRTemplateGetAllFilter = {
+      const filter: IKPITemplateGetAllFilter = {
         companyUid: props.companyUid,
         positionUid: props.companyUid ? props.positionUid : undefined,
         find: request && request.filter && request.filter.find,
@@ -120,9 +120,9 @@ const handlerCreators: HandleCreators<HRTemplateListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnLoadApiSearch: (props: HRTemplateListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.hrTemplateState.all;
-    const { loadAllRequest } = props.hrTemplateDispatch;
+  handleOnLoadApiSearch: (props: KPITemplateListProps) => (find?: string, findBy?: string) => {
+    const { isLoading, request } = props.KPITemplateState.all;
+    const { loadAllRequest } = props.KPITemplateDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -145,7 +145,7 @@ const handlerCreators: HandleCreators<HRTemplateListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: (props: HRTemplateListProps) => (item: IHRTemplate, index: number) => ({
+  handleOnBind: (props: KPITemplateListProps) => (item: IKPITemplate, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.company && item.company.name || 'N/A',
@@ -154,20 +154,20 @@ const handlerCreators: HandleCreators<HRTemplateListProps, IOwnHandler> = {
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
   }),
-  handleFilterVisibility: (props: HRTemplateListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: KPITemplateListProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: HRTemplateListProps) => (filter: IHRTemplateFilterResult) => {
+  handleFilterApplied: (props: KPITemplateListProps) => (filter: IKPITemplateFilterResult) => {
     props.setFilterApplied(filter);
   },
-  handleFilterBadge: (props: HRTemplateListProps) => () => {
+  handleFilterBadge: (props: KPITemplateListProps) => () => {
     return props.companyUid !== undefined ||
       props.positionUid !== undefined;
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<HRTemplateListProps, IOwnState> = {
-  componentDidUpdate(prevProps: HRTemplateListProps) {
+const lifecycles: ReactLifeCycleFunctions<KPITemplateListProps, IOwnState> = {
+  componentDidUpdate(prevProps: KPITemplateListProps) {
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
@@ -186,13 +186,13 @@ const lifecycles: ReactLifeCycleFunctions<HRTemplateListProps, IOwnState> = {
   }
 };
 
-export const HRTemplateList = compose(
-  setDisplayName('HRTemplateList'),
+export const KPITemplateList = compose(
+  setDisplayName('KPITemplateList'),
   withUser,
-  withHRTemplate,
-  withRouter,
+  withKPITemplate,
+  witKPIouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-)(HRTemplateListView);
+)(KPITemplateListView);

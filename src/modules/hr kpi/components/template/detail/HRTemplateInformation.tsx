@@ -1,5 +1,5 @@
-import { IHRTemplateDetail } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPITemplateDetail } from '@KPI/classes/response';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -9,33 +9,33 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IHRTemplateDetail;
+  data: IKPITemplateDetail;
 }
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const hrTemplateInformation: React.SFC<AllProps> = props => {
+const KPITemplateInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={props.intl.formatMessage(hrMessage.template.section.infoTitle)}
+        title={props.intl.formatMessage(KPIMessage.template.section.infoTitle)}
         // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.template.field.uid)}
+          label={props.intl.formatMessage(KPIMessage.template.field.uid)}
           value={props.data.uid}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.template.field.company)}
+          label={props.intl.formatMessage(KPIMessage.template.field.company)}
           value={props.data.company && props.data.company.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.template.field.position)}
+          label={props.intl.formatMessage(KPIMessage.template.field.position)}
           value={props.data.position && props.data.position.name || 'N/A'}
         />
         {
@@ -66,4 +66,4 @@ const hrTemplateInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HRTemplateInformation = compose<AllProps, OwnProps>(injectIntl)(hrTemplateInformation);
+export const KPITemplateInformation = compose<AllProps, OwnProps>(injectIntl)(KPITemplateInformation);

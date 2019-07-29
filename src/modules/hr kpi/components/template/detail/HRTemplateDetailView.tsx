@@ -1,31 +1,31 @@
 import AppMenu from '@constants/AppMenu';
-import { IHRTemplateDetail } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPITemplateDetail } from '@KPI/classes/response';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
-import { HRTemplateDetailProps } from './HRTemplateDetail';
-import { HRTemplateInformation } from './HRTemplateInformation';
-import { HRTemplateItem } from './shared/HRTemplateItem';
+import { KPITemplateDetailProps } from './KPITemplateDetail';
+import { KPITemplateInformation } from './KPITemplateInformation';
+import { KPITemplateItem } from './shared/KPITemplateItem';
 
-export const HRTemplateDetailView: React.SFC<HRTemplateDetailProps> = props => (
+export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props => (
   <PreviewPage
     info={{
       uid: AppMenu.LookupEmployee,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/templates',
-      title: props.intl.formatMessage(hrMessage.template.page.detailTitle),
-      description: props.intl.formatMessage(hrMessage.template.page.detailSubHeader),
+      title: props.intl.formatMessage(KPIMessage.template.page.detailTitle),
+      description: props.intl.formatMessage(KPIMessage.template.page.detailSubHeader),
     }}
-    state={props.hrTemplateState.detail}
+    state={props.KPITemplateState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IHRTemplateDetail) => ([
-      <HRTemplateInformation data={data} />
+    primary={(data: IKPITemplateDetail) => ([
+      <KPITemplateInformation data={data} />
     ])}
-    secondary={(data: IHRTemplateDetail) => ([
-      <HRTemplateItem items={data.items}/>
+    secondary={(data: IKPITemplateDetail) => ([
+      <KPITemplateItem items={data.items}/>
     ])}
     appBarComponent={
       props.menuOptions &&

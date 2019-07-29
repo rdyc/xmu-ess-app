@@ -1,2 +1,2 @@
-export * from './IHRMeasurementGetAllFilter';
-export * from './IHRMeasurementGetListFilter';
+export * from './IKPIMeasurementGetAllFilter';
+export * from './IKPIMeasurementGetListFilter';

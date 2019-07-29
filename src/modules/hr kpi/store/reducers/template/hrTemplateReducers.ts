@@ -1,15 +1,15 @@
 import {
-  hrTemplateGetAllReducer,
-  hrTemplateGetByIdReducer,
-  hrTemplatePostReducer,
-  hrTemplatePutReducer
-} from '@hr/store/reducers/template';
+  KPITemplateGetAllReducer,
+  KPITemplateGetByIdReducer,
+  KPITemplatePostReducer,
+  KPITemplatePutReducer
+} from '@KPI/store/reducers/template';
 
-const hrTemplateReducers = {
-  hrTemplateGetAll: hrTemplateGetAllReducer,
-  hrTemplateGetById: hrTemplateGetByIdReducer,
-  hrTemplatePost: hrTemplatePostReducer,
-  hrTemplatePut: hrTemplatePutReducer
+const KPITemplateReducers = {
+  KPITemplateGetAll: KPITemplateGetAllReducer,
+  KPITemplateGetById: KPITemplateGetByIdReducer,
+  KPITemplatePost: KPITemplatePostReducer,
+  KPITemplatePut: KPITemplatePutReducer
 };
 
-export default hrTemplateReducers;
+export default KPITemplateReducers;

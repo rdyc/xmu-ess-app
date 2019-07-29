@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IHRTemplatePostRequest } from '@hr/classes/queries';
-import { IHRTemplate } from '@hr/classes/response';
-import { HRTemplateAction as Action } from '@hr/store/actions';
+import { IKPITemplatePostRequest } from '@KPI/classes/queries';
+import { IKPITemplate } from '@KPI/classes/response';
+import { KPITemplateAction as Action } from '@KPI/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IHRTemplatePostRequest, IHRTemplate> = {
+const initialState: IQuerySingleState<IKPITemplatePostRequest, IKPITemplate> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IHRTemplatePostRequest, IHRTemplate> = {
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IHRTemplatePostRequest, IHRTemplate>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IKPITemplatePostRequest, IKPITemplate>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IHRTemplatePostRequest, IHRTemplate>> =
   }
 };
 
-export { reducer as hrTemplatePostReducer };
+export { reducer as KPITemplatePostReducer };

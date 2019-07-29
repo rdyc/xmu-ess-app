@@ -9,26 +9,26 @@ import { InjectedIntl } from 'react-intl';
 
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
-import { IHRMeasurementGetListFilter } from '@hr/classes/filter/measurement';
-import { HRMeasurementOption } from '@hr/components/measurement/options/HRMeasurementOption';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurementGetListFilter } from '@KPI/classes/filter/measurement';
+import { KPIMeasurementOption } from '@KPI/components/measurement/options/KPIMeasurementOption';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { IHRTemplateFormValue } from '../HRTemplateForm';
+import { IKPITemplateFormValue } from '../KPITemplateForm';
 
-type HRTemplateItemPartialFormProps = {
+type KPITemplateItemPartialFormProps = {
   formMode: FormMode; 
-  formikBag: FormikProps<IHRTemplateFormValue>;
+  formikBag: FormikProps<IKPITemplateFormValue>;
   intl: InjectedIntl;
   filterCommonSystem: ISystemListFilter;
-  filterMeasurement: IHRMeasurementGetListFilter;
+  filterMeasurement: IKPIMeasurementGetListFilter;
   classes: {
     flexContent: string;
     marginFarRight: string;
   };
 };
 
-const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormProps> = props => (
+const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialFormProps> = props => (
   <FieldArray
     name="items"
     render={(fields: FieldArrayRenderProps) => (
@@ -58,7 +58,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                     props.formMode === FormMode.Edit &&
                     <Field
                       name={`items.${index}.uid`}
-                      render={({ field }: FieldProps<IHRTemplateFormValue>) => {
+                      render={({ field }: FieldProps<IKPITemplateFormValue>) => {
                         return (
                           <TextField
                             {...field}
@@ -66,7 +66,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                             fullWidth
                             disabled
                             margin="normal"
-                            label={props.intl.formatMessage(hrMessage.template.field.itemUid)}
+                            label={props.intl.formatMessage(KPIMessage.template.field.itemUid)}
                             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
                           />
                         );
@@ -76,7 +76,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
 
                   <Field
                     name="categoryType"
-                    render={({ form }: FieldProps<IHRTemplateFormValue>) => {
+                    render={({ form }: FieldProps<IKPITemplateFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.categoryType`);
                       const touch = getIn(form.touched, `items.${index}.categoryType`);
 
@@ -91,7 +91,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                             escapeClearsValue={true}
                             valueString={props.formikBag.values.items[index].categoryType}
                             textFieldProps={{
-                              label: props.intl.formatMessage(hrMessage.template.field.category),
+                              label: props.intl.formatMessage(KPIMessage.template.field.category),
                               helperText: touch && error,
                               error: touch && Boolean(error)
                             }}
@@ -107,12 +107,12 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
 
                   <Field
                     name={`items.${index}.measurementUid`}
-                    render={({ field, form }: FieldProps<IHRTemplateFormValue>) => {
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.measurementUid`);
                       const touch = getIn(form.touched, `items.${index}.measurementUid`);
 
                       return (
-                        <HRMeasurementOption filter={props.filterMeasurement}>
+                        <KPIMeasurementOption filter={props.filterMeasurement}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"
@@ -122,7 +122,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                             escapeClearsValue={true}
                             valueString={props.formikBag.values.items[index].measurementUid}
                             textFieldProps={{
-                              label: props.intl.formatMessage(hrMessage.template.field.measurementUid),
+                              label: props.intl.formatMessage(KPIMessage.template.field.measurementUid),
                               helperText: touch && error,
                               error: touch && Boolean(error)
                             }}
@@ -131,14 +131,14 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                               props.formikBag.setFieldValue(`items.${index}.measurementUid`, selected && selected.value || '');
                             }}
                           />
-                        </HRMeasurementOption>
+                        </KPIMeasurementOption>
                       );
                     }}
                   />
 
                   <Field
                     name={`items.${index}.target`}
-                    render={({ field, form }: FieldProps<IHRTemplateFormValue>) => {
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.target`);
                       const touch = getIn(form.touched, `items.${index}.target`);
 
@@ -150,8 +150,8 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
-                          label={props.intl.formatMessage(hrMessage.template.field.target)}
-                          placeholder={props.intl.formatMessage(hrMessage.template.field.target)}
+                          label={props.intl.formatMessage(KPIMessage.template.field.target)}
+                          placeholder={props.intl.formatMessage(KPIMessage.template.field.target)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />
@@ -161,7 +161,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
 
                   <Field
                     name={`items.${index}.weight`}
-                    render={({ field, form }: FieldProps<IHRTemplateFormValue>) => {
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.weight`);
                       const touch = getIn(form.touched, `items.${index}.weight`);
 
@@ -173,8 +173,8 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
-                          label={props.intl.formatMessage(hrMessage.template.field.weight)}
-                          placeholder={props.intl.formatMessage(hrMessage.template.field.weight)}
+                          label={props.intl.formatMessage(KPIMessage.template.field.weight)}
+                          placeholder={props.intl.formatMessage(KPIMessage.template.field.weight)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           InputProps={{
@@ -209,7 +209,7 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
         <div className={props.classes.flexContent}>
           <Card square>
             <CardHeader 
-              title={props.intl.formatMessage(hrMessage.template.section.itemTitle)}
+              title={props.intl.formatMessage(KPIMessage.template.section.itemTitle)}
               subheader={
                 props.formikBag.submitCount > 0 &&
                 typeof props.formikBag.errors.items === 'string' &&
@@ -246,4 +246,4 @@ const HRTemplateItemPartialForm: React.ComponentType<HRTemplateItemPartialFormPr
   />
 );
 
-export default HRTemplateItemPartialForm;
+export default KPITemplateItemPartialForm;

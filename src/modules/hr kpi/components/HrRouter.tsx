@@ -2,30 +2,30 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-import { HRMeasurementDetail } from './measurement/Detail/HRMeasurementDetail';
-import { HRmeasurementForm } from './measurement/form/HRMeasurementForm';
-import { HRMeasurementList } from './measurement/list/HRMeasurementList';
-import { HRTemplateDetail } from './template/detail/HRTemplateDetail';
-import { HRTemplateForm } from './template/form/HRTemplateForm';
-import { HRTemplateList } from './template/list/HRTemplateList';
+import { KPIMeasurementDetail } from './measurement/Detail/KPIMeasurementDetail';
+import { KPImeasurementForm } from './measurement/form/KPIMeasurementForm';
+import { KPIMeasurementList } from './measurement/list/KPIMeasurementList';
+import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
+import { KPITemplateForm } from './template/form/KPITemplateForm';
+import { KPITemplateList } from './template/list/KPITemplateList';
 
 const template = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={HRTemplateForm} />
-    <Route path={`${props.match.path}/:templateUid`} component={HRTemplateDetail} />
-    <Route path={`${props.match.path}`} component={HRTemplateList} />
+    <Route path={`${props.match.path}/form`} component={KPITemplateForm} />
+    <Route path={`${props.match.path}/:templateUid`} component={KPITemplateDetail} />
+    <Route path={`${props.match.path}`} component={KPITemplateList} />
   </Switch>
 );
 
 const measurement = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={HRmeasurementForm} /> 
-    <Route path={`${props.match.path}/:measurementUid`} component={HRMeasurementDetail} />
-    <Route path={`${props.match.path}`} component={HRMeasurementList} />
+    <Route path={`${props.match.path}/form`} component={KPImeasurementForm} /> 
+    <Route path={`${props.match.path}/:measurementUid`} component={KPIMeasurementDetail} />
+    <Route path={`${props.match.path}`} component={KPIMeasurementList} />
   </Switch>
 );
 
-export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
+export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
       path={`${props.match.path}/templates`}

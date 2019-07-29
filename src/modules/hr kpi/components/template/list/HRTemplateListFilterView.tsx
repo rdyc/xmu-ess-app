@@ -1,4 +1,4 @@
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -20,9 +20,9 @@ import * as React from 'react';
 
 import { FilterCompany } from '@lookup/components/company/select';
 import { FilterPosition } from '@lookup/components/position/select';
-import { HRTemplateListFilterProps } from './HRTemplateListFilter';
+import { KPITemplateListFilterProps } from './KPITemplateListFilter';
 
-export const HRTemplateListFilterView: React.SFC<HRTemplateListFilterProps> = props => (
+export const KPITemplateListFilterView: React.SFC<KPITemplateListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -68,7 +68,7 @@ export const HRTemplateListFilterView: React.SFC<HRTemplateListFilterProps> = pr
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.template.field.company)}
+            primary={props.intl.formatMessage(KPIMessage.template.field.company)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -88,7 +88,7 @@ export const HRTemplateListFilterView: React.SFC<HRTemplateListFilterProps> = pr
 
         <ListItem button onClick={props.handleFilterPositionVisibility} disabled={props.filterPositionValue && props.filterCompany ? false : true}>
           <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.template.field.position)}
+            primary={props.intl.formatMessage(KPIMessage.template.field.position)}
             secondary={props.filterCompany && props.filterPosition && props.filterPosition.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -109,7 +109,7 @@ export const HRTemplateListFilterView: React.SFC<HRTemplateListFilterProps> = pr
       </List>
 
       <FilterCompany 
-        title={props.intl.formatMessage(hrMessage.template.field.company)}
+        title={props.intl.formatMessage(KPIMessage.template.field.company)}
         hideBackdrop={true}
         isOpen={props.isFilterCompanyOpen}
         value={props.filterCompany && props.filterCompany.uid}
@@ -118,7 +118,7 @@ export const HRTemplateListFilterView: React.SFC<HRTemplateListFilterProps> = pr
       />
 
       <FilterPosition
-        title={props.intl.formatMessage(hrMessage.template.field.position)}
+        title={props.intl.formatMessage(KPIMessage.template.field.position)}
         hideBackdrop={true}
         isOpen={props.isFilterPositionOpen}
         value={props.filterPosition && props.filterPosition.uid}

@@ -1,7 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
@@ -9,30 +9,30 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IHRMeasurementFormValue } from '../HRMeasurementForm';
+import { IKPIMeasurementFormValue } from '../KPIMeasurementForm';
 
-type HRmeasurementDetailPartialFormProps = {
+type KPImeasurementDetailPartialFormProps = {
   formMode: FormMode;
-  formikBag: FormikProps<IHRMeasurementFormValue>;
+  formikBag: FormikProps<IKPIMeasurementFormValue>;
   intl: InjectedIntl;
   filterCommonSystem: ISystemListFilter;
 };
 
-const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPartialFormProps> = props => (
+const KPIMeasurementDetailPartialForm: React.ComponentType<KPImeasurementDetailPartialFormProps> = props => (
   <Card square>
     <CardHeader
-      title={props.intl.formatMessage(hrMessage.measurement.section.infoTitle)}
+      title={props.intl.formatMessage(KPIMessage.measurement.section.infoTitle)}
     />
     <CardContent>
       <Field
         name="uid"
-        render={({ field }: FieldProps<IHRMeasurementFormValue>) => (
+        render={({ field }: FieldProps<IKPIMeasurementFormValue>) => (
           <TextField
             {...field}
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(hrMessage.measurement.field.uid)}
+            label={props.intl.formatMessage(KPIMessage.measurement.field.uid)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
@@ -40,15 +40,15 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
 
       <Field
         name="description"
-        render={({ field, form }: FieldProps<IHRMeasurementFormValue>) => (
+        render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
           <TextField
             {...field}
             fullWidth
             margin="normal"
             autoComplete="off"
             disabled={form.isSubmitting}
-            label={props.intl.formatMessage(hrMessage.measurement.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(hrMessage.measurement.fieldFor(field.name, 'fieldPlaceholder'))}
+            label={props.intl.formatMessage(KPIMessage.measurement.fieldFor(field.name, 'fieldName'))}
+            placeholder={props.intl.formatMessage(KPIMessage.measurement.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.description && form.errors.description}
             error={form.touched.description && Boolean(form.errors.description)}
           />
@@ -57,7 +57,7 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
 
       <Field
         name="measurementType"
-        render={({ field, form }: FieldProps<IHRMeasurementFormValue>) => (
+        render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
           <React.Fragment>
             <CommonSystemOption category="measurement" filter={props.filterCommonSystem}>
               <SelectField
@@ -69,7 +69,7 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
                 escapeClearsValue={true}
                 valueString={field.value}
                 textFieldProps={{
-                  label: props.intl.formatMessage(hrMessage.measurement.fieldFor(field.name, 'fieldName')),
+                  label: props.intl.formatMessage(KPIMessage.measurement.fieldFor(field.name, 'fieldName')),
                   required: true,
                   helperText: form.touched.measurementType && form.errors.measurementType,
                   error: form.touched.measurementType && Boolean(form.errors.measurementType)
@@ -84,12 +84,12 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
 
       <Field
         name="weight"
-        render={({ field, form }: FieldProps<IHRMeasurementFormValue>) => (
+        render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
           <TextField
             {...field}
             fullWidth
             margin="normal"
-            label={props.intl.formatMessage(hrMessage.measurement.fieldFor(field.name, 'fieldName'))}
+            label={props.intl.formatMessage(KPIMessage.measurement.fieldFor(field.name, 'fieldName'))}
             InputProps={{
               inputComponent: NumberFormatter
             }}
@@ -110,4 +110,4 @@ const HRMeasurementDetailPartialForm: React.ComponentType<HRmeasurementDetailPar
   </Card>
 );
 
-export default HRMeasurementDetailPartialForm;
+export default KPIMeasurementDetailPartialForm;

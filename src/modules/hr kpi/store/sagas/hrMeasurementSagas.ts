@@ -1,24 +1,24 @@
 import {
-  HRMeasurementAction as Action,
-  hrMeasurementGetAllDispose,
-  hrMeasurementGetAllError,
-  hrMeasurementGetAllRequest,
-  hrMeasurementGetAllSuccess,
-  hrMeasurementGetByIdDispose,
-  hrMeasurementGetByIdError,
-  hrMeasurementGetByIdRequest,
-  hrMeasurementGetByIdSuccess,
-  hrMeasurementGetListDispose,
-  hrMeasurementGetListError,
-  hrMeasurementGetListRequest,
-  hrMeasurementGetListSuccess,
-  hrMeasurementPostError,
-  hrMeasurementPostRequest,
-  hrMeasurementPostSuccess,
-  hrMeasurementPutError,
-  hrMeasurementPutRequest,
-  hrMeasurementPutSuccess,
-} from '@hr/store/actions';
+  KPIMeasurementAction as Action,
+  KPIMeasurementGetAllDispose,
+  KPIMeasurementGetAllError,
+  KPIMeasurementGetAllRequest,
+  KPIMeasurementGetAllSuccess,
+  KPIMeasurementGetByIdDispose,
+  KPIMeasurementGetByIdError,
+  KPIMeasurementGetByIdRequest,
+  KPIMeasurementGetByIdSuccess,
+  KPIMeasurementGetListDispose,
+  KPIMeasurementGetListError,
+  KPIMeasurementGetListRequest,
+  KPIMeasurementGetListSuccess,
+  KPIMeasurementPostError,
+  KPIMeasurementPostRequest,
+  KPIMeasurementPostSuccess,
+  KPIMeasurementPutError,
+  KPIMeasurementPutRequest,
+  KPIMeasurementPutSuccess,
+} from '@KPI/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -27,7 +27,7 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof hrMeasurementGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof KPIMeasurementGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -37,13 +37,13 @@ function* watchGetAllRequest() {
       method: 'get',
       path: `/v1/kpi/measurements?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetAllSuccess(response.body)),
+        put(KPIMeasurementGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetAllError(response))
+        put(KPIMeasurementGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(hrMeasurementGetAllError(error.message))
+        put(KPIMeasurementGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -55,7 +55,7 @@ function* watchGetAllRequest() {
 }
 
 function* watchGetListRequest() {
-  const worker = (action: ReturnType<typeof hrMeasurementGetListRequest>) => {
+  const worker = (action: ReturnType<typeof KPIMeasurementGetListRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -65,13 +65,13 @@ function* watchGetListRequest() {
       method: 'get',
       path: `/v1/kpi/measurements/list?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetListSuccess(response.body)),
+        put(KPIMeasurementGetListSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetListError(response))
+        put(KPIMeasurementGetListError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(hrMeasurementGetListError(error.message))
+        put(KPIMeasurementGetListError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -83,18 +83,18 @@ function* watchGetListRequest() {
 }
 
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof hrMeasurementGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof KPIMeasurementGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
       successEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetByIdSuccess(response.body))
+        put(KPIMeasurementGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetByIdError(response))
+        put(KPIMeasurementGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(hrMeasurementGetByIdError(error.message))
+        put(KPIMeasurementGetByIdError(error.message))
       ]
     });
   };
@@ -103,21 +103,21 @@ function* watchGetByIdRequest() {
 }
 
 function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof hrMeasurementPostRequest>) => {
+  const worker = (action: ReturnType<typeof KPIMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
       path: `/v1/kpi/measurements`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetByIdDispose()),
-        put(hrMeasurementGetAllDispose()),
-        put(hrMeasurementPostSuccess(response.body))
+        put(KPIMeasurementGetByIdDispose()),
+        put(KPIMeasurementGetAllDispose()),
+        put(KPIMeasurementPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(hrMeasurementPostError(response.statusText))
+        put(KPIMeasurementPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -125,7 +125,7 @@ function* watchPostRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(hrMeasurementPostError(error.message)),
+        put(KPIMeasurementPostError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -143,21 +143,21 @@ function* watchPostRequest() {
 }
 
 function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof hrMeasurementPutRequest>) => {
+  const worker = (action: ReturnType<typeof KPIMeasurementPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
       path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(hrMeasurementGetByIdDispose()),
-        put(hrMeasurementGetAllDispose()),
-        put(hrMeasurementPutSuccess(response.body))
+        put(KPIMeasurementGetByIdDispose()),
+        put(KPIMeasurementGetAllDispose()),
+        put(KPIMeasurementPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(hrMeasurementPutError(response.statusText))
+        put(KPIMeasurementPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -165,7 +165,7 @@ function* watchPutRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(hrMeasurementPutError(error.message)),
+        put(KPIMeasurementPutError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -185,16 +185,16 @@ function* watchPutRequest() {
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
-      put(hrMeasurementGetAllDispose()),
-      put(hrMeasurementGetListDispose()),
-      put(hrMeasurementGetByIdDispose())
+      put(KPIMeasurementGetAllDispose()),
+      put(KPIMeasurementGetListDispose()),
+      put(KPIMeasurementGetByIdDispose())
     ]);
   }
 
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
-function* hrMeasurementSagas() {
+function* KPIMeasurementSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
@@ -205,4 +205,4 @@ function* hrMeasurementSagas() {
   ]);
 }
 
-export default hrMeasurementSagas;
+export default KPIMeasurementSagas;

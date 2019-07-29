@@ -1,10 +1,10 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IHRMeasurementPostPayload, IHRMeasurementPutPayload } from '@hr/classes/request/measurement';
-import { IHRMeasurementDetail } from '@hr/classes/response/measurement';
-import { WithHRMeasurement, withHRMeasurement } from '@hr/hoc/withHRMeasurement';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurementPostPayload, IKPIMeasurementPutPayload } from '@KPI/classes/request/measurement';
+import { IKPIMeasurementDetail } from '@KPI/classes/response/measurement';
+import { WithKPIMeasurement, withKPIMeasurement } from '@KPI/hoc/withKPIMeasurement';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
@@ -12,7 +12,7 @@ import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -28,9 +28,9 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-import { HRMeasurementFormView } from './HRMeasurementFormView';
+import { KPIMeasurementFormView } from './KPIMeasurementFormView';
 
-export interface IHRMeasurementFormValue {
+export interface IKPIMeasurementFormValue {
   uid: string;
   description: string;
   measurementType: string;
@@ -48,8 +48,8 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
 
-  initialValues: IHRMeasurementFormValue;
-  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IHRMeasurementFormValue>>>;
+  initialValues: IKPIMeasurementFormValue;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIMeasurementFormValue>>>;
 
   filterCommonSystem: ISystemListFilter;
 }
@@ -62,11 +62,11 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   // handleSetPositionFilter: (companyUid: string) => void;
   handleOnLoadDetail: () => void;
-  handleOnSubmit: (values: IHRMeasurementFormValue, action: FormikActions<IHRMeasurementFormValue>) => void;
+  handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>) => void;
 }
 
-export type HRMeasurementFormProps
-  = WithHRMeasurement
+export type KPIMeasurementFormProps
+  = WithKPIMeasurement
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -78,7 +78,7 @@ export type HRMeasurementFormProps
   & IOwnStateUpdater
   & IOwnHandler;
 
-const createProps: mapper<HRMeasurementFormProps, IOwnState> = (props: HRMeasurementFormProps): IOwnState => ({
+const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasurementFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
@@ -89,13 +89,13 @@ const createProps: mapper<HRMeasurementFormProps, IOwnState> = (props: HRMeasure
     weight: 0
   },
 
-  validationSchema: Yup.object().shape<Partial<IHRMeasurementFormValue>>({
+  validationSchema: Yup.object().shape<Partial<IKPIMeasurementFormValue>>({
     measurementType: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.measurement.field.measurementType))
+      .label(props.intl.formatMessage(KPIMessage.measurement.field.measurementType))
       .required(),
 
       weight: Yup.number()
-      .label(props.intl.formatMessage(hrMessage.measurement.field.weight))
+      .label(props.intl.formatMessage(KPIMessage.measurement.field.weight))
       .integer()
       .min(0)
       .required(),
@@ -107,7 +107,7 @@ const createProps: mapper<HRMeasurementFormProps, IOwnState> = (props: HRMeasure
   }
 });
 
-const stateUpdaters: StateUpdaters<HRMeasurementFormProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPIMeasurementFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
@@ -117,21 +117,21 @@ const stateUpdaters: StateUpdaters<HRMeasurementFormProps, IOwnState, IOwnStateU
   })
 };
 
-const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
-  handleOnLoadDetail: (props: HRMeasurementFormProps) => () => {
+const handleCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
+  handleOnLoadDetail: (props: KPIMeasurementFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const MeasurementUid = props.history.location.state.uid;
-      const { isLoading } = props.hrMeasurementState.detail;
+      const { isLoading } = props.KPIMeasurementState.detail;
 
       if (user && MeasurementUid && !isLoading) {
-        props.hrMeasurementDispatch.loadDetailRequest({
+        props.KPIMeasurementDispatch.loadDetailRequest({
           measurementUid: MeasurementUid
         });
       }
     }
   },
-  handleOnSubmit: (props: HRMeasurementFormProps) => (values: IHRMeasurementFormValue, actions: FormikActions<IHRMeasurementFormValue>) => {
+  handleOnSubmit: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
@@ -139,14 +139,14 @@ const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
       // creating 
       if (props.formMode === FormMode.New) {
         // fill payload 
-        const payload: IHRMeasurementPostPayload = {
+        const payload: IKPIMeasurementPostPayload = {
           description: values.description,
           measurementType: values.measurementType,
           weight: values.weight
         };
 
         promise = new Promise((resolve, reject) => {
-          props.hrMeasurementDispatch.createRequest({
+          props.KPIMeasurementDispatch.createRequest({
             resolve,
             reject,
             data: payload
@@ -162,18 +162,18 @@ const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
         if (measurementUid) {
 
           // fill payload 
-          const payload: IHRMeasurementPutPayload = {
+          const payload: IKPIMeasurementPutPayload = {
             description: values.description,
             measurementType: values.measurementType,
             weight: values.weight
           };
 
           promise = new Promise((resolve, reject) => {
-            props.hrMeasurementDispatch.updateRequest({              
+            props.KPIMeasurementDispatch.updateRequest({              
               measurementUid,
               resolve,
               reject,              
-              data: payload as IHRMeasurementPutPayload,
+              data: payload as IKPIMeasurementPutPayload,
             });
           });
         }
@@ -182,7 +182,7 @@ const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
 
     // handling promise 
     promise
-      .then((response: IHRMeasurementDetail) => {
+      .then((response: IKPIMeasurementDetail) => {
         // set submitting status 
         actions.setSubmitting(false);
 
@@ -191,7 +191,7 @@ const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.message.createSuccess : hrMessage.measurement.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.message.createSuccess : KPIMessage.measurement.message.updateSuccess, { uid: response.uid })
         });
 
         props.history.push(`/kpi/measurement/${response.uid}`);
@@ -212,25 +212,25 @@ const handleCreators: HandleCreators<HRMeasurementFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.measurement.message.createFailure : hrMessage.measurement.message.updateFailure)
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? KPIMessage.measurement.message.createFailure : KPIMessage.measurement.message.updateFailure)
         });
       });
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<HRMeasurementFormProps, IOwnState> = {
+const lifeCycleFunctions: ReactLifeCycleFunctions<KPIMeasurementFormProps, IOwnState> = {
   componentDidMount() {
     //
   },
-  componentDidUpdate(prevProps: HRMeasurementFormProps) {
+  componentDidUpdate(prevProps: KPIMeasurementFormProps) {
     // handle measurement detail response
-    const { response: thisResponse } = this.props.hrMeasurementState.detail;
-    const { response: prevResponse } = prevProps.hrMeasurementState.detail;
+    const { response: thisResponse } = this.props.KPIMeasurementState.detail;
+    const { response: prevResponse } = prevProps.KPIMeasurementState.detail;
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values 
-        const initialValues: IHRMeasurementFormValue = {
+        const initialValues: IKPIMeasurementFormValue = {
           uid: thisResponse.data.uid,
           description: thisResponse.data.description,
           measurementType: thisResponse.data.measurementType,
@@ -244,11 +244,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HRMeasurementFormProps, IOwnSt
   }
 };
 
-export const HRmeasurementForm = compose<HRMeasurementFormProps, IOwnOption>(
-  setDisplayName('HRmeasurementForm'),
+export const KPImeasurementForm = compose<KPIMeasurementFormProps, IOwnOption>(
+  setDisplayName('KPImeasurementForm'),
   withUser,
-  withRouter,
-  withHRMeasurement,
+  witKPIouter,
+  withKPIMeasurement,
   withCommonSystem,
   withMasterPage,
   injectIntl,
@@ -256,4 +256,4 @@ export const HRmeasurementForm = compose<HRMeasurementFormProps, IOwnOption>(
   withHandlers(handleCreators),
   lifecycle(lifeCycleFunctions),
   withStyles(styles)
-)(HRMeasurementFormView);
+)(KPIMeasurementFormView);

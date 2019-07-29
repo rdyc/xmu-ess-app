@@ -6,25 +6,25 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IHRTemplate } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { HRTemplateListProps } from './HRTemplateList';
-import { HRTemplateFilter } from './HRTemplateListFilter';
-import { HRTemplateSummary } from './HRTemplateSummary';
+import { IKPITemplate } from '@KPI/classes/response';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
+import { KPITemplateListProps } from './KPITemplateList';
+import { KPITemplateFilter } from './KPITemplateListFilter';
+import { KPITemplateSummary } from './KPITemplateSummary';
 
-export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
+export const KPITemplateListView: React.SFC<KPITemplateListProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
         uid: AppMenu.LookupEmployee,
         parentUid: AppMenu.Lookup,
-        title: props.intl.formatMessage(hrMessage.template.page.listTitle),
-        description: props.intl.formatMessage(hrMessage.template.page.listSubHeader),
+        title: props.intl.formatMessage(KPIMessage.template.page.listTitle),
+        description: props.intl.formatMessage(KPIMessage.template.page.listSubHeader),
       }}
 
       // state & fields
-      state={props.hrTemplateState.all}
+      state={props.KPITemplateState.all}
       fields={props.fields}
 
       // callback
@@ -32,10 +32,10 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IHRTemplate) => (
-        <HRTemplateSummary data={item} />
+      summaryComponent={(item: IKPITemplate) => (
+        <KPITemplateSummary data={item} />
       )}
-      actionComponent={(item: IHRTemplate) => (
+      actionComponent={(item: IKPITemplate) => (
         <React.Fragment>
            <Button 
             size="small"
@@ -59,7 +59,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
       appBarSearchComponent={
         <SearchBox
           key="kpi.template"
-          default={props.hrTemplateState.all.request && props.hrTemplateState.all.request.filter && props.hrTemplateState.all.request.filter.find}
+          default={props.KPITemplateState.all.request && props.KPITemplateState.all.request.filter && props.KPITemplateState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
@@ -82,7 +82,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.hrTemplateState.all.isLoading || props.hrTemplateState.all.isError}
+              disabled={props.KPITemplateState.all.isLoading || props.KPITemplateState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -98,7 +98,7 @@ export const HRTemplateListView: React.SFC<HRTemplateListProps> = props => (
         </Tooltip>
       }
     />
-    <HRTemplateFilter 
+    <KPITemplateFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUid: props.companyUid,

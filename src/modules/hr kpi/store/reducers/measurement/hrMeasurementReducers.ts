@@ -1,19 +1,19 @@
 import {
-  hrMeasurementGetAllReducer,
-  hrMeasurementGetByIdReducer,
-  hrMeasurementGetListReducer,
-  hrMeasurementPostReducer,
-  hrMeasurementPutReducer
-} from '@hr/store/reducers/measurement';
-import { hrMeasurementDeleteReducer } from './hrMeasurementDeleteReducer';
+  KPIMeasurementGetAllReducer,
+  KPIMeasurementGetByIdReducer,
+  KPIMeasurementGetListReducer,
+  KPIMeasurementPostReducer,
+  KPIMeasurementPutReducer
+} from '@KPI/store/reducers/measurement';
+import { KPIMeasurementDeleteReducer } from './KPIMeasurementDeleteReducer';
 
-const hrMeasurementReducers = {
-  hrMeasurementGetAll: hrMeasurementGetAllReducer,
-  hrMeasurementGetList: hrMeasurementGetListReducer,
-  hrMeasurementGetById: hrMeasurementGetByIdReducer,
-  hrMeasurementPost: hrMeasurementPostReducer,
-  hrMeasurementPut: hrMeasurementPutReducer,
-  hrMeasurementDelete: hrMeasurementDeleteReducer
+const KPIMeasurementReducers = {
+  KPIMeasurementGetAll: KPIMeasurementGetAllReducer,
+  KPIMeasurementGetList: KPIMeasurementGetListReducer,
+  KPIMeasurementGetById: KPIMeasurementGetByIdReducer,
+  KPIMeasurementPost: KPIMeasurementPostReducer,
+  KPIMeasurementPut: KPIMeasurementPutReducer,
+  KPIMeasurementDelete: KPIMeasurementDeleteReducer
 };
 
-export default hrMeasurementReducers;
+export default KPIMeasurementReducers;

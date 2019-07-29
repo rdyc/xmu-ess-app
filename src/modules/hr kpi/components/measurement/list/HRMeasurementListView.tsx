@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
@@ -8,22 +8,22 @@ import { Button, IconButton } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { HRMeasurementSumarry } from '../Detail/shared/HRMeasurementSummary';
-import { HRMeasurementListProps } from './HRMeasurementList';
+import { KPIMeasurementSumarry } from '../Detail/shared/KPIMeasurementSummary';
+import { KPIMeasurementListProps } from './KPIMeasurementList';
 
-export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props => (
+export const KPIMeasurementListView: React.SFC<KPIMeasurementListProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
         uid: AppMenu.LookupCompany,
         parentUid: AppMenu.Lookup,
-        title: props.intl.formatMessage(hrMessage.measurement.page.listTitle),
-        description: props.intl.formatMessage(hrMessage.measurement.page.listSubHeader)
+        title: props.intl.formatMessage(KPIMessage.measurement.page.listTitle),
+        description: props.intl.formatMessage(KPIMessage.measurement.page.listSubHeader)
       }}
 
       // state & fields
-      state={props.hrMeasurementState.all}
+      state={props.KPIMeasurementState.all}
       fields={props.fields}
 
       // callback
@@ -31,10 +31,10 @@ export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props =>
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IHRMeasurement) => (
-        <HRMeasurementSumarry data={item} />
+      summaryComponent={(item: IKPIMeasurement) => (
+        <KPIMeasurementSumarry data={item} />
       )}
-      actionComponent={(item: IHRMeasurement) => (
+      actionComponent={(item: IKPIMeasurement) => (
         <React.Fragment>
           <Button
             size="small"
@@ -56,8 +56,8 @@ export const HRMeasurementListView: React.SFC<HRMeasurementListProps> = props =>
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="hr.measurement"
-          default={props.hrMeasurementState.all.request && props.hrMeasurementState.all.request.filter && props.hrMeasurementState.all.request.filter.find}
+          key="KPI.measurement"
+          default={props.KPIMeasurementState.all.request && props.KPIMeasurementState.all.request.filter && props.KPIMeasurementState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />

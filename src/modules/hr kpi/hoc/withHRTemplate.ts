@@ -4,72 +4,72 @@ import {
   IQuerySingleState
 } from '@generic/interfaces';
 import {
-  IHRTemplateGetAllRequest,
-  IHRTemplateGetByIdRequest,
-  IHRTemplatePostRequest,
-  IHRTemplatePutRequest
-} from '@hr/classes/queries';
-import { IHRTemplate, IHRTemplateDetail } from '@hr/classes/response';
+  IKPITemplateGetAllRequest,
+  IKPITemplateGetByIdRequest,
+  IKPITemplatePostRequest,
+  IKPITemplatePutRequest
+} from '@KPI/classes/queries';
+import { IKPITemplate, IKPITemplateDetail } from '@KPI/classes/response';
 import {
-  hrTemplateGetAllDispose,
-  hrTemplateGetAllRequest,
-  hrTemplateGetByIdDispose,
-  hrTemplateGetByIdRequest,
-  hrTemplatePostDispose,
-  hrTemplatePostRequest,
-  hrTemplatePutDispose,
-  hrTemplatePutRequest
-} from '@hr/store/actions';
+  KPITemplateGetAllDispose,
+  KPITemplateGetAllRequest,
+  KPITemplateGetByIdDispose,
+  KPITemplateGetByIdRequest,
+  KPITemplatePostDispose,
+  KPITemplatePostRequest,
+  KPITemplatePutDispose,
+  KPITemplatePutRequest
+} from '@KPI/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  hrTemplateState: {
-    all: IQueryCollectionState<IHRTemplateGetAllRequest, IHRTemplate>;
-    detail: IQuerySingleState<IHRTemplateGetByIdRequest, IHRTemplateDetail>;
+  KPITemplateState: {
+    all: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
+    detail: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  hrTemplateDispatch: {
+  KPITemplateDispatch: {
     // command
-    createRequest: typeof hrTemplatePostRequest;
-    createDispose: typeof hrTemplatePostDispose;
-    updateRequest: typeof hrTemplatePutRequest;
-    updateDispose: typeof hrTemplatePutDispose;
+    createRequest: typeof KPITemplatePostRequest;
+    createDispose: typeof KPITemplatePostDispose;
+    updateRequest: typeof KPITemplatePutRequest;
+    updateDispose: typeof KPITemplatePutDispose;
 
     // query
-    loadAllRequest: typeof hrTemplateGetAllRequest;
-    loadAllDispose: typeof hrTemplateGetAllDispose;
-    loadDetailRequest: typeof hrTemplateGetByIdRequest;
-    loadDetailDispose: typeof hrTemplateGetByIdDispose;
+    loadAllRequest: typeof KPITemplateGetAllRequest;
+    loadAllDispose: typeof KPITemplateGetAllDispose;
+    loadDetailRequest: typeof KPITemplateGetByIdRequest;
+    loadDetailDispose: typeof KPITemplateGetByIdDispose;
   };
 }
 
-export interface WithHRTemplate extends PropsFromState, PropsFromDispatch {}
+export interface WithKPITemplate extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrTemplateGetAll, hrTemplateGetById }: IAppState) => ({
-  hrTemplateState: {
-    all: hrTemplateGetAll,
-    detail: hrTemplateGetById
+const mapStateToProps = ({ KPITemplateGetAll, KPITemplateGetById }: IAppState) => ({
+  KPITemplateState: {
+    all: KPITemplateGetAll,
+    detail: KPITemplateGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hrTemplateDispatch: {
+  KPITemplateDispatch: {
     // command
-    createRequest: (request: IHRTemplatePostRequest) => dispatch(hrTemplatePostRequest(request)),
-    createDispose: () => dispatch(hrTemplatePostDispose()),
-    updateRequest: (request: IHRTemplatePutRequest) => dispatch(hrTemplatePutRequest(request)),
-    updateDispose: () => dispatch(hrTemplatePutDispose()),
+    createRequest: (request: IKPITemplatePostRequest) => dispatch(KPITemplatePostRequest(request)),
+    createDispose: () => dispatch(KPITemplatePostDispose()),
+    updateRequest: (request: IKPITemplatePutRequest) => dispatch(KPITemplatePutRequest(request)),
+    updateDispose: () => dispatch(KPITemplatePutDispose()),
     
     // query
-    loadAllRequest: (request: IHRTemplateGetAllRequest) => dispatch(hrTemplateGetAllRequest(request)),
-    loadAllDispose: () => dispatch(hrTemplateGetAllDispose()),
-    loadDetailRequest: (request: IHRTemplateGetByIdRequest) => dispatch(hrTemplateGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(hrTemplateGetByIdDispose()),
+    loadAllRequest: (request: IKPITemplateGetAllRequest) => dispatch(KPITemplateGetAllRequest(request)),
+    loadAllDispose: () => dispatch(KPITemplateGetAllDispose()),
+    loadDetailRequest: (request: IKPITemplateGetByIdRequest) => dispatch(KPITemplateGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(KPITemplateGetByIdDispose()),
   }
 });
 
-export const withHRTemplate = (component: React.ComponentType) =>
+export const withKPITemplate = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

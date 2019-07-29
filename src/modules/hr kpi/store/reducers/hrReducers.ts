@@ -1,7 +1,7 @@
-import hrMeasurementReducers from './measurement/hrMeasurementReducers';
-import hrTemplateReducers from './template/hrTemplateReducers';
+import KPIMeasurementReducers from './measurement/KPIMeasurementReducers';
+import KPITemplateReducers from './template/KPITemplateReducers';
 
-export const hrReducers = {
-  ...hrTemplateReducers,
-  ...hrMeasurementReducers
+export const KPIReducers = {
+  ...KPITemplateReducers,
+  ...KPIMeasurementReducers
 };

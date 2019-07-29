@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IHRTemplateGetAllRequest } from '@hr/classes/queries';
-import { IHRTemplate } from '@hr/classes/response';
-import { HRTemplateAction as Action } from '@hr/store/actions';
+import { IKPITemplateGetAllRequest } from '@KPI/classes/queries';
+import { IKPITemplate } from '@KPI/classes/response';
+import { KPITemplateAction as Action } from '@KPI/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IHRTemplateGetAllRequest, IHRTemplate> = {
+const initialState: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQueryCollectionState<IHRTemplateGetAllRequest, IHRTemplate>
   errors: undefined
 };
 
-const reducer: Reducer<IQueryCollectionState<IHRTemplateGetAllRequest, IHRTemplate>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IHRTemplateGetAllRequest, IHRTempla
   }
 };
 
-export { reducer as hrTemplateGetAllReducer };
+export { reducer as KPITemplateGetAllReducer };

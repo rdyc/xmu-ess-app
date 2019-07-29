@@ -1,8 +1,8 @@
 import { AppRole } from '@constants/AppRole';
-import { IHRMeasurementDeletePayload } from '@hr/classes/request/measurement';
-import { HRMeasurementUserAction } from '@hr/classes/types/HRMeasurementUserAction';
-import { WithHRMeasurement, withHRMeasurement } from '@hr/hoc/withHRMeasurement';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPIMeasurementDeletePayload } from '@KPI/classes/request/measurement';
+import { KPIMeasurementUserAction } from '@KPI/classes/types/KPIMeasurementUserAction';
+import { WithKPIMeasurement, withKPIMeasurement } from '@KPI/hoc/withKPIMeasurement';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -10,12 +10,12 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { DeleteFormData } from '@lookup/components/currency/editor/DeleteForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, witKPIouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
-import { HRMeasurementDetailView } from './HRMeasurementDetailView';
+import { KPIMeasurementDetailView } from './KPIMeasurementDetailView';
 
 interface IOwnRouteParams {
   measurementUid: string;
@@ -35,7 +35,7 @@ interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
   shouldLoad: boolean;
-  action?: HRMeasurementUserAction;
+  action?: KPIMeasurementUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -56,7 +56,7 @@ export type MeasurementDetailProps
   = WithUser
   & WithOidc
   & WithLayout
-  & WithHRMeasurement
+  & WithKPIMeasurement
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -102,36 +102,36 @@ const stateUpdaters: StateUpdaters<MeasurementDetailProps, IOwnState, IOwnStateU
     shouldLoad: !state.shouldLoad
   }),
   setModify: (prevState: IOwnState, props: MeasurementDetailProps) => (): Partial<IOwnState> => ({
-    action: HRMeasurementUserAction.Modify,
+    action: KPIMeasurementUserAction.Modify,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.measurement.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(hrMessage.measurement.confirm.modifyDescription, { state: 'measurement'}),
+    dialogTitle: props.intl.formatMessage(KPIMessage.measurement.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(KPIMessage.measurement.confirm.modifyDescription, { state: 'measurement'}),
   }),
   setDelete: (prevState: IOwnState, props: MeasurementDetailProps) => (): Partial<IOwnState> => ({
-    action: HRMeasurementUserAction.Delete,
+    action: KPIMeasurementUserAction.Delete,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.measurement.confirm.deleteTitle),
-    dialogContent: props.intl.formatMessage(hrMessage.measurement.confirm.deleteDescription, { state: 'measurement'}),
+    dialogTitle: props.intl.formatMessage(KPIMessage.measurement.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(KPIMessage.measurement.confirm.deleteDescription, { state: 'measurement'}),
   })
 };
 
 const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: MeasurementDetailProps) => () => { 
-    if (props.userState.user && props.match.params.measurementUid && !props.hrMeasurementState.detail.isLoading) {
-      props.hrMeasurementDispatch.loadDetailRequest({
+    if (props.userState.user && props.match.params.measurementUid && !props.KPIMeasurementState.detail.isLoading) {
+      props.KPIMeasurementDispatch.loadDetailRequest({
         measurementUid: props.match.params.measurementUid,
       });
     }
   },
   handleOnSelectedMenu: (props: MeasurementDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
-      case HRMeasurementUserAction.Refresh:
+      case KPIMeasurementUserAction.Refresh:
         props.setShouldLoad();
         break;
-      case HRMeasurementUserAction.Modify:
+      case KPIMeasurementUserAction.Modify:
         props.setModify();        
         break;
-      case HRMeasurementUserAction.Delete:
+      case KPIMeasurementUserAction.Delete:
         props.setDelete();
         break;
 
@@ -145,7 +145,7 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
     });
   },
   handleOnConfirm: (props: MeasurementDetailProps) => () => {
-    const { response } = props.hrMeasurementState.detail;
+    const { response } = props.KPIMeasurementState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -162,14 +162,14 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
 
     // actions with new page
     const actions = [
-      HRMeasurementUserAction.Modify
+      KPIMeasurementUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case HRMeasurementUserAction.Modify:
+        case KPIMeasurementUserAction.Modify:
           next = '/kpi/measurement/form';
           break;
 
@@ -185,14 +185,14 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
   handleDelete: (props: MeasurementDetailProps) => () => {
     const { match, intl } = props;
     const { user } = props.userState;
-    const { deleteRequest } = props.hrMeasurementDispatch;
+    const { deleteRequest } = props.KPIMeasurementDispatch;
     // user checking
     if (!user) {
       return Promise.reject('user was not found');
     }
     // props checking
     if (!match.params.measurementUid) {
-      const message = intl.formatMessage(hrMessage.measurement.message.emptyProps);
+      const message = intl.formatMessage(KPIMessage.measurement.message.emptyProps);
       return Promise.reject(message);
     }
     const payload = {
@@ -202,7 +202,7 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
       deleteRequest({
         resolve,
         reject,
-        data: payload as IHRMeasurementDeletePayload
+        data: payload as IKPIMeasurementDeletePayload
       });
     });
   },
@@ -211,7 +211,7 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
 
     props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: props.intl.formatMessage(hrMessage.measurement.message.deleteSuccess, { uid : props.match.params.measurementUid })
+      message: props.intl.formatMessage(KPIMessage.measurement.message.deleteSuccess, { uid : props.match.params.measurementUid })
     });
   },
   handleDeleteFail: (props: MeasurementDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -223,7 +223,7 @@ const handlerCreators: HandleCreators<MeasurementDetailProps, IOwnHandler> = {
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: props.intl.formatMessage(hrMessage.measurement.message.deleteFailure),
+        message: props.intl.formatMessage(KPIMessage.measurement.message.deleteFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -244,25 +244,25 @@ const lifecycles: ReactLifeCycleFunctions<MeasurementDetailProps, IOwnState> = {
     }
 
     // handle updated response state
-    if (this.props.hrMeasurementState.detail.response !== prevProps.hrMeasurementState.detail.response) {
-      const { isLoading } = this.props.hrMeasurementState.detail;
+    if (this.props.KPIMeasurementState.detail.response !== prevProps.KPIMeasurementState.detail.response) {
+      const { isLoading } = this.props.KPIMeasurementState.detail;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
         {
-          id: HRMeasurementUserAction.Refresh,
+          id: KPIMeasurementUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true
         },
         {
-          id: HRMeasurementUserAction.Modify,
+          id: KPIMeasurementUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true
         },
         {
-          id: HRMeasurementUserAction.Delete,
+          id: KPIMeasurementUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
           visible: true
@@ -274,15 +274,15 @@ const lifecycles: ReactLifeCycleFunctions<MeasurementDetailProps, IOwnState> = {
   }
 };
 
-export const HRMeasurementDetail = compose(
-  setDisplayName('HRMeasurementDetail'),
-  withRouter,
+export const KPIMeasurementDetail = compose(
+  setDisplayName('KPIMeasurementDetail'),
+  witKPIouter,
   withOidc,
   withUser,
   withLayout,
-  withHRMeasurement,
+  withKPIMeasurement,
   injectIntl,
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<MeasurementDetailProps, IOwnHandler>(handlerCreators),
   lifecycle(lifecycles),
-)(HRMeasurementDetailView);
+)(KPIMeasurementDetailView);

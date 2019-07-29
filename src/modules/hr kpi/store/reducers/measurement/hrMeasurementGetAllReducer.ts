@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IHRMeasurementGetAllRequest } from '@hr/classes/queries/measurement';
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { HRMeasurementAction as Action } from '@hr/store/actions';
+import { IKPIMeasurementGetAllRequest } from '@KPI/classes/queries/measurement';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMeasurementAction as Action } from '@KPI/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement> = {
+const initialState: IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasur
   errors: undefined
 };
 
-const reducer: Reducer<IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMeasurement>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IHRMeasurementGetAllRequest, IHRMea
   }
 };
 
-export { reducer as hrMeasurementGetAllReducer };
+export { reducer as KPIMeasurementGetAllReducer };

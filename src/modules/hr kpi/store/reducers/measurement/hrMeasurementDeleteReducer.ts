@@ -1,9 +1,9 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IHRMeasurementDeleteRequest } from '@hr/classes/queries/measurement';
-import { HRMeasurementAction as Action } from '@hr/store/actions';
+import { IKPIMeasurementDeleteRequest } from '@KPI/classes/queries/measurement';
+import { KPIMeasurementAction as Action } from '@KPI/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IHRMeasurementDeleteRequest, boolean> = {
+const initialState: IQuerySingleState<IKPIMeasurementDeleteRequest, boolean> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IHRMeasurementDeleteRequest, boolean> = {
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IHRMeasurementDeleteRequest, boolean>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IKPIMeasurementDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IHRMeasurementDeleteRequest, boolean>> 
   }
 };
 
-export { reducer as hrMeasurementDeleteReducer };
+export { reducer as KPIMeasurementDeleteReducer };

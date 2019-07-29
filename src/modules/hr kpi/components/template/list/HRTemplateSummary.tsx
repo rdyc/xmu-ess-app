@@ -1,5 +1,5 @@
-import { IHRTemplate } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { IKPITemplate } from '@KPI/classes/response';
+import { KPIMessage } from '@KPI/locales/messages/KPIMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -9,20 +9,20 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IHRTemplate;
+  data: IKPITemplate;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const hrTemplateSummary: React.SFC<AllProps> = props => (
+const KPITemplateSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         multiline
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.template.field.uid)}
+        label={props.intl.formatMessage(KPIMessage.template.field.uid)}
         value={props.data.uid}
       />
     </Grid>
@@ -30,7 +30,7 @@ const hrTemplateSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.template.field.company)}
+        label={props.intl.formatMessage(KPIMessage.template.field.company)}
         value={props.data.company && props.data.company.name || 'N/A'}
       />
     </Grid>
@@ -38,7 +38,7 @@ const hrTemplateSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.template.field.position)}
+        label={props.intl.formatMessage(KPIMessage.template.field.position)}
         value={props.data.position && props.data.position.name || 'N/A'}
       />
     </Grid>
@@ -67,6 +67,6 @@ const hrTemplateSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const HRTemplateSummary = compose<AllProps, OwnProps>(
+export const KPITemplateSummary = compose<AllProps, OwnProps>(
   injectIntl
-)(hrTemplateSummary);
+)(KPITemplateSummary);

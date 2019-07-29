@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IHRMeasurementPostRequest } from '@hr/classes/queries/measurement';
-import { IHRMeasurement } from '@hr/classes/response/measurement';
-import { HRMeasurementAction as Action } from '@hr/store/actions';
+import { IKPIMeasurementPostRequest } from '@KPI/classes/queries/measurement';
+import { IKPIMeasurement } from '@KPI/classes/response/measurement';
+import { KPIMeasurementAction as Action } from '@KPI/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IHRMeasurementPostRequest, IHRMeasurement> = {
+const initialState: IQuerySingleState<IKPIMeasurementPostRequest, IKPIMeasurement> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IHRMeasurementPostRequest, IHRMeasurement>
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IHRMeasurementPostRequest, IHRMeasurement>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IKPIMeasurementPostRequest, IKPIMeasurement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IHRMeasurementPostRequest, IHRMeasureme
   }
 };
 
-export { reducer as hrMeasurementPostReducer };
+export { reducer as KPIMeasurementPostReducer };

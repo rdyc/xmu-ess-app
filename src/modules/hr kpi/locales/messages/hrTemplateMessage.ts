@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
-const prefix = 'hr.template';
+const prefix = 'KPI.template';
 
 // page
-export const hrTemplatePage = defineMessages({
+export const KPITemplatePage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },
   listSubHeader: { id: `${prefix}.page.list.subHeader` },
   detailTitle: { id: `${prefix}.page.detail.title` },
@@ -15,7 +15,7 @@ export const hrTemplatePage = defineMessages({
 });
 
 // message
-export const hrTemplateMessage = defineMessages({
+export const KPITemplateMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createFailure: { id: `${prefix}.message.create.failure` },
@@ -24,12 +24,12 @@ export const hrTemplateMessage = defineMessages({
 });
 
 // submission
-export const hrTemplateSubmission = defineMessages({
+export const KPITemplateSubmission = defineMessages({
   form: { id: `${prefix}.submission.form` }
 });
 
 // dialog
-export const hrTemplateDialog = defineMessages({
+export const KPITemplateDialog = defineMessages({
   modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
   createTitle: { id: `${prefix}.dialog.newTitle`},
@@ -37,7 +37,7 @@ export const hrTemplateDialog = defineMessages({
 });
 
 // section
-export const hrTemplateSection = defineMessages({
+export const KPITemplateSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   itemTitle: { id: `${prefix}.section.item.title` },
@@ -45,7 +45,7 @@ export const hrTemplateSection = defineMessages({
 });
 
 // confimation
-export const hrTemplateConfirm = defineMessages({
+export const KPITemplateConfirm = defineMessages({
   newTitle: { id: `${prefix}.confirm.new.title` },
   newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
@@ -53,7 +53,7 @@ export const hrTemplateConfirm = defineMessages({
 });
 
 // fields
-export const hrTemplateField = defineMessages({
+export const KPITemplateField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   company: { id: `${prefix}.field.company`},
   position: { id: `${prefix}.field.position`},
@@ -68,7 +68,7 @@ export const hrTemplateField = defineMessages({
 });
 
 // helper
-export const hrTemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
 
