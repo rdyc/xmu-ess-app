@@ -1,5 +1,8 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
+import { EmployeeCheck } from '@account/components/dialog';
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { ISystemList } from '@common/classes/response';
-import { DataCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
+import { SystemCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -23,6 +26,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { ResourceMappingFilterView } from './ResourceMappingFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
@@ -33,7 +37,7 @@ const yearList: ICollectionValue[] = [
   {value: getYear + 1, name: (getYear + 1).toString() },
 ];
 
-export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary' | 'professionTypes' | 'competencyTypes'>;
+export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary' | 'professionTypes' | 'competencyTypes' | 'employeeUids'>;
 
 interface IOwnOption {
   isAdmin: boolean;
@@ -52,7 +56,6 @@ interface IOwnState {
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
-  filterCompanyNonAdmin?: string;
 
   // filter year
   isFilterYearOpen: boolean;
@@ -64,10 +67,15 @@ interface IOwnState {
 
   // filter competency
   isFilterCompetencyOpen: boolean;
-  filterCompetency?: DataCheck[];
+  filterCompetency?: SystemCheck[];
 
   // filter summary
   filterSummary?: boolean;
+
+  // filter employee
+  isFilterEmployeeOpen: boolean;
+  filterEmployee?: EmployeeCheck[];
+  filterEmployeeList?: IEmployeeListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -95,6 +103,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
   // filter summary
   setFilterSummary: StateHandler<IOwnState>;
+
+  // filter Employee
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;  
 }
 
 interface IOwnHandler {
@@ -115,6 +127,12 @@ interface IOwnHandler {
   handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterYearOnClose: () => void;
 
+  // filter Employee
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (data?: EmployeeCheck[]) => void;
+  handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnClose: () => void;
+
   // filter profession
   handleFilterProfessionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterProfessionOnSelected: (data: ISystemList) => void;
@@ -123,7 +141,7 @@ interface IOwnHandler {
 
   // filter competency
   handleFilterCompetencyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompetencyOnSelected: (data: DataCheck[]) => void;
+  handleFilterCompetencyOnSelected: (data: SystemCheck[]) => void;
   handleFilterCompetencyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompetencyOnClose: () => void;
 
@@ -137,6 +155,7 @@ export type ResourceMappingFilterProps
   & IOwnHandler 
   & IOwnStateUpdater 
   & WithLookupCompany
+  & WithAccountEmployee
   & WithCommonSystem
   & WithStyles<typeof styles> 
   & WithUser 
@@ -150,6 +169,7 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     isFilterOpen: true,
     isFilterCompetencyOpen: false,
     isFilterProfessionOpen: false,
+    isFilterEmployeeOpen: false,
 
     // pass inital value
     // filterCompetency: []
@@ -169,7 +189,9 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
     filterYear: undefined,
     filterProfession: undefined,
     filterCompetency: undefined,
-    filterSummary: false
+    filterSummary: false,
+    filterEmployee: undefined,
+    filterEmployeeList: undefined
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
@@ -181,7 +203,12 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   }),
   setFilterCompany: (prevState: IOwnState) => (data?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
-    filterCompany: data
+    filterCompany: data,
+    filterEmployeeList: {
+      companyUids: data && data.uid,
+      orderBy: 'fullName',
+      direction: 'ascending'
+    }
   }),
 
   // filter year
@@ -191,6 +218,15 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   setFilterYear: () => (data?: ICollectionValue) => ({
     isFilterYearOpen: false,
     filterYear: data
+  }),
+
+  // filter Employee
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
+    isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
+  }),
+  setFilterEmployee: () => (data?: EmployeeCheck[]) => ({
+    isFilterEmployeeOpen: false,
+    filterEmployee: data
   }),
   
   // filter profession
@@ -206,7 +242,7 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
   setFilterCompetencyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompetencyOpen: !prevState.isFilterCompetencyOpen
   }),
-  setFilterCompetency: (prevState: IOwnState) => (data?: DataCheck[]) => ({
+  setFilterCompetency: (prevState: IOwnState) => (data?: SystemCheck[]) => ({
     isFilterCompetencyOpen: false,
     filterCompetency: data
   }),
@@ -232,12 +268,21 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
           }
         });
       }
+      const employee: string[] = [];
+      if (props.filterEmployee) {
+        props.filterEmployee.map(data => {
+          if (data.isCheck) {
+            employee.push(data.employee.uid);
+          }  
+        });
+      }
       
       props.onApply({
         companyUid: props.filterCompany.uid,
         year: props.filterYear.value,
         professionTypes: props.filterProfession && props.filterProfession.type,
         competencyTypes: competency.length > 0 ? competency.join() : undefined,
+        employeeUids: employee.length > 0 ? employee.join() : undefined,
         summary: props.filterSummary
       });
     }
@@ -256,6 +301,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   },
   handleFilterCompanyOnClear: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompany();
+    props.setFilterEmployee();
   },
   handleFilterCompanyOnClose: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompanyVisibility();
@@ -273,6 +319,20 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   },
   handleFilterYearOnClose: (props: ResourceMappingFilterProps) => () => {
     props.setFilterYearVisibility();
+  },
+
+  // filter Employee
+  handleFilterEmployeeVisibility: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
+  },
+  handleFilterEmployeeOnSelected: (props: ResourceMappingFilterProps) => (data?: EmployeeCheck[]) => {
+    props.setFilterEmployee(data);
+  },
+  handleFilterEmployeeOnClear: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterEmployee();
+  },
+  handleFilterEmployeeOnClose: (props: ResourceMappingFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
   },
 
   // filter Profession
@@ -293,7 +353,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   handleFilterCompetencyVisibility: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompetencyVisibility();
   },
-  handleFilterCompetencyOnSelected: (props: ResourceMappingFilterProps) => (data: DataCheck[]) => {
+  handleFilterCompetencyOnSelected: (props: ResourceMappingFilterProps) => (data: SystemCheck[]) => {
     props.setFilterCompetency(data);
   },
   handleFilterCompetencyOnClear: (props: ResourceMappingFilterProps) => () => {
@@ -312,7 +372,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
 const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
-      const { companyUid, year, competencyTypes, professionTypes } = this.props.initialProps;
+      const { companyUid, year, competencyTypes, professionTypes, employeeUids } = this.props.initialProps;
 
       // filter company
       if (companyUid) {
@@ -348,7 +408,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
         const { response } = this.props.commonCompetencyListState;
 
         if (response && response.data) {
-          const comp: DataCheck[] = [];
+          const comp: SystemCheck[] = [];
           const temp: string[] = competencyTypes.split(',');
           
           response.data.map(item => {
@@ -370,6 +430,34 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingFilterProps, IOwnState>
           this.props.setFilterCompetency(comp);
         }
       }
+
+      // filter employee
+      if (employeeUids) {
+        const { response } = this.props.accountEmployeeState.list;
+
+        if (response && response.data) {
+          const emp: EmployeeCheck[] = [];
+          const temp: string[] = employeeUids.split(',');
+
+          response.data.map(item => {
+            const isTrue = temp.find(tempx => tempx === item.uid);
+
+            if (isTrue) {
+              emp.push({
+                employee: item,
+                isCheck: true
+              });
+            } else {
+              emp.push({
+                employee: item,
+                isCheck: false
+              });
+            }
+          });
+
+          this.props.setFilterEmployee(emp);
+        }
+      }
     }
   },
 };
@@ -379,6 +467,7 @@ export const ResourceMappingFilter = compose<ResourceMappingFilterProps, IOwnOpt
   withUser,
   withCommonSystem,
   withLookupCompany,
+  withAccountEmployee,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   withStyles(styles),

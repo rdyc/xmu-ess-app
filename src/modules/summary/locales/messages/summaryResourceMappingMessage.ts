@@ -17,6 +17,7 @@ export const summaryResourceMappingField = defineMessages({
   year: { id: `${prefix}.field.year`},
   profession: { id: `${prefix}.field.profession`},
   competency: { id: `${prefix}.field.competency`},
+  employee: { id: `${prefix}.field.employee`},
   yearRequired: { id: `${prefix}.field.year.required`},
   projectId: { id: `${prefix}.field.project.id`},
   projectOwner: { id: `${prefix}.field.project.owner`},

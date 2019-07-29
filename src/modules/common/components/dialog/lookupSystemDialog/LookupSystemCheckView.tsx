@@ -47,6 +47,13 @@ export const LookupSystemCheckView: React.SFC<LookupSystemCheckProps> = props =>
 
           <Button 
             color="inherit" 
+            onClick={props.handleReset}
+          >
+            {props.intl.formatMessage(layoutMessage.action.reset)}
+          </Button>
+
+          <Button 
+            color="inherit" 
             onClick={() => props.onApply(itemCheck)}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
@@ -63,7 +70,7 @@ export const LookupSystemCheckView: React.SFC<LookupSystemCheckProps> = props =>
             itemCheck.map((item, index) => 
               <React.Fragment key={index}>
                 <ListItem button onClick={() => handleItemCheck(index)}>
-                  <Checkbox color="primary" checked={itemCheck[index].isCheck}  />
+                  <Checkbox color="secondary" checked={itemCheck[index].isCheck}  />
                   <ListItemText primary={item.item.name} />
                 </ListItem>
                 <Divider/>

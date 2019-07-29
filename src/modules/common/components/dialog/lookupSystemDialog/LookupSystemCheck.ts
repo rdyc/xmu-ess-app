@@ -32,27 +32,29 @@ interface OwnOption {
   hideBackdrop?: boolean;
   disabled?: boolean;
   title: string;
-  value?: DataCheck[];
-  onApply: (data?: DataCheck[]) => void;
+  value?: SystemCheck[];
+  onApply: (data?: SystemCheck[]) => void;
   onClose: () => void;
 }
 
-export interface DataCheck { 
+export interface SystemCheck { 
   item: ISystemList;
   isCheck: boolean;
 }
 
 interface OwnState {
-  itemCheck: DataCheck[];
+  itemCheck: SystemCheck[];
 }
 
 interface OwnHandlers {
   categoryState: () => IQueryCollectionState<ISystemListRequest, ISystemList>;
   handleItemCheck: (index: number) => void;
+  handleReset: () => void;
 }
 
 interface OwnStateHandler extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  stateReset: StateHandler<OwnState>;
 }
 
 export type LookupSystemCheckProps 
@@ -73,6 +75,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
     ...prevState,
     ...newState
   }),
+  stateReset: (prevState: OwnState) => (itemCheck: SystemCheck[]) => ({
+    itemCheck
+  })
 };
 
 const lifecycles: ReactLifeCycleFunctions<LookupSystemCheckProps, OwnOption> = {
@@ -200,17 +205,22 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemCheckProps, OwnOption> = {
     const { response } = this.props.categoryState();
     const { itemCheck } = this.props;
 
-    if (itemCheck.length === 0 && response && response.data) {
-      response.data.map(item => {
-        itemCheck.push({
-          item,
-          isCheck: false
+    if (response && response.data) {
+      if (itemCheck.length === 0) {
+        response.data.map(item => {
+          itemCheck.push({
+            item,
+            isCheck: false
+          });
         });
-      });
+        this.props.stateUpdate({
+          itemCheck,
+        });
+      }
     }
     if (prevProps.value !== this.props.value) {
       if (!this.props.value) {
-        const temp: DataCheck[] = [];
+        const temp: SystemCheck[] = [];
         if (response && response.data) {
           response.data.map(item => {
             temp.push({
@@ -239,6 +249,15 @@ const handlerCreators: HandleCreators<LookupSystemCheckProps, OwnHandlers> = {
     props.stateUpdate({
       itemCheck
     });
+  },
+  handleReset: (props: LookupSystemCheckProps) => () => {
+    const { itemCheck } = props;
+    
+    itemCheck.map(item => {
+      item.isCheck = false;
+    });
+    
+    props.stateReset(itemCheck);
   }
 };
 

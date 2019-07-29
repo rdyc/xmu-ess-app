@@ -18,16 +18,20 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { AccountEmployeeCheckView } from './AccountEmployeeCheckView';
 
-import { AccountEmployeeDialogView } from './AccountEmployeeDialogView';
+export interface EmployeeCheck {
+  employee: IEmployee;
+  isCheck: boolean;
+}
 
 interface IOwnOptions {
   title: string;
   isOpen: boolean;
-  value?: string;
+  value?: EmployeeCheck[];
   filter?: IEmployeeListFilter;
   hideBackdrop?: boolean;
-  onSelected: (employee?: IEmployee) => void;
+  onSelected: (employee?: EmployeeCheck[]) => void;
   onClose: () => void;
 }
 
@@ -35,20 +39,25 @@ interface IOwnHandlers {
   handleOnLoadApi: () => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+  handleItemCheck: (uid: string) => void;
+  handleReset: () => void;
 }
 
 interface IOwnState {
   search: string;
-  employees?: IEmployee[];
+  employees: IEmployee[];
+  itemCheck: EmployeeCheck[];
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setEmployees: StateHandler<IOwnState>;
   setSearch: StateHandler<IOwnState>;
   clearSearch: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
+  stateReset: StateHandler<IOwnState>;
 }
 
-export type AccountEmployeeDialogProps
+export type AccountEmployeeCheckProps
   = WithStyles<typeof styles>
   & WithAccountEmployee
   & InjectedIntlProps
@@ -58,11 +67,13 @@ export type AccountEmployeeDialogProps
   & IOwnStateUpdaters;
 
 const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnState => ({
-  search: ''
+  search: '',
+  employees: [],
+  itemCheck: []
 });
 
-const stateUpdaters: StateUpdaters<AccountEmployeeDialogProps, IOwnState, IOwnStateUpdaters> = {
-  setEmployees: (state: IOwnState, props: AccountEmployeeDialogProps) => () => {
+const stateUpdaters: StateUpdaters<AccountEmployeeCheckProps, IOwnState, IOwnStateUpdaters> = {
+  setEmployees: (state: IOwnState, props: AccountEmployeeCheckProps) => () => {
     const { response } = props.accountEmployeeState.list;
 
     let employees: IEmployee[] = [];
@@ -88,10 +99,17 @@ const stateUpdaters: StateUpdaters<AccountEmployeeDialogProps, IOwnState, IOwnSt
   clearSearch: (state: IOwnState) => () => ({
     search: ''
   }),
+  stateUpdate: (prevState: IOwnState) => (newState: IOwnState) => ({
+    ...prevState,
+    ...newState
+  }),
+  stateReset: (prevState: IOwnState) => (itemCheck: EmployeeCheck[]) => ({
+    itemCheck
+  })
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeDialogProps, IOwnHandlers> = {
-  handleOnLoadApi: (props: AccountEmployeeDialogProps) => () => {
+const handlerCreators: HandleCreators<AccountEmployeeCheckProps, IOwnHandlers> = {
+  handleOnLoadApi: (props: AccountEmployeeCheckProps) => () => {
     const { isLoading } = props.accountEmployeeState.list;
     const { loadListRequest } = props.accountEmployeeDispatch;
 
@@ -101,20 +119,39 @@ const handlerCreators: HandleCreators<AccountEmployeeDialogProps, IOwnHandlers> 
       });
     }
   },
-  handleOnChangeSearch: (props: AccountEmployeeDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleOnChangeSearch: (props: AccountEmployeeCheckProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     
     props.setSearch(value);
   },
-  handleOnKeyUpSearch: (props: AccountEmployeeDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+  handleOnKeyUpSearch: (props: AccountEmployeeCheckProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
     // delete pressed
     if (event.keyCode === 46) {
       props.clearSearch();
     }
   },
+  handleItemCheck: (props: AccountEmployeeCheckProps) => (uid: string) => {
+    const { itemCheck } = props;
+    const index = itemCheck.findIndex(item => item.employee.uid === uid);
+
+    itemCheck[index].isCheck = !itemCheck[index].isCheck;
+    
+    props.stateUpdate({
+      itemCheck
+    });
+  },
+  handleReset: (props: AccountEmployeeCheckProps) => () => {
+    const { itemCheck } = props;
+    
+    itemCheck.map(item => {
+      item.isCheck = false;
+    });
+    
+    props.stateReset(itemCheck);
+  }
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeCheckProps, IOwnState> = {
   componentDidMount() { 
     const { request } = this.props.accountEmployeeState.list;
 
@@ -135,30 +172,72 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState>
         }
       }
     }
+
+    if (this.props.value) {
+      const { employees } = this.props;
+      this.props.value.map(item => {
+        employees.push(item.employee);
+      });
+      this.props.stateUpdate({
+        employees,
+        itemCheck: this.props.value
+      });
+    }
   },
-  componentWillUpdate(prevProps: AccountEmployeeDialogProps) {
+  componentWillUpdate(prevProps: AccountEmployeeCheckProps) {
     if (this.props.filter && prevProps.filter) {
       if (this.props.filter.companyUids !== prevProps.filter.companyUids) {
         this.props.handleOnLoadApi();
       }
     }
   },
-  componentDidUpdate(prevProps: AccountEmployeeDialogProps) {
+  componentDidUpdate(prevProps: AccountEmployeeCheckProps) {
+    const { response } = this.props.accountEmployeeState.list;
+    const { itemCheck } = this.props;
+
     if (
       this.props.search !== prevProps.search ||
       this.props.accountEmployeeState.list.response !== prevProps.accountEmployeeState.list.response
       ) {
       this.props.setEmployees();
     }
+
+    if (itemCheck.length === 0 && response && response.data) {
+      response.data.map(item => {
+        itemCheck.push({
+          employee: item,
+          isCheck: false
+        });
+      });
+      this.props.stateUpdate({
+        itemCheck
+      });
+    }
+    if (prevProps.value !== this.props.value) {
+      if (!this.props.value) {
+        const temp: EmployeeCheck[] = [];
+        if (response && response.data) {
+          response.data.map(item => {
+            temp.push({
+              employee: item,
+              isCheck: false
+            });
+          });
+        }
+        this.props.stateUpdate({
+          itemCheck: temp
+        });
+      }
+    }
   }
 };
 
-export const AccountEmployeeDialog = compose<AccountEmployeeDialogProps, IOwnOptions>(
-  setDisplayName('AccountEmployeeDialog'),
+export const AccountEmployeeCheck = compose<AccountEmployeeCheckProps, IOwnOptions>(
+  setDisplayName('AccountEmployeeCheck'),
   withAccountEmployee,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   withStyles(styles),
   injectIntl
-)(AccountEmployeeDialogView);
+)(AccountEmployeeCheckView);

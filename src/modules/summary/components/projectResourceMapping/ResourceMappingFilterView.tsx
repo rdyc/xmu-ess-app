@@ -1,4 +1,5 @@
-import { DataCheck, LookupSystemCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
+import { AccountEmployeeCheck, EmployeeCheck } from '@account/components/dialog';
+import { LookupSystemCheck, SystemCheck } from '@common/components/dialog/lookupSystemDialog/LookupSystemCheck';
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
@@ -20,6 +21,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
@@ -36,14 +38,23 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
     return props.filterCompany !== undefined ||
       props.filterYear !== undefined;
   };
-  const showCompetency = (data: DataCheck[]) => {
+  const showCompetency = (data: SystemCheck[]) => {
+    const dataTrue: string[] = [];
+    data.map(competency => 
+      competency.isCheck &&
+      dataTrue.push(competency.item.name)
+    );
+
+    return dataTrue.join(', ');
+  };
+  const showEmp = (data: EmployeeCheck[]) => {
     const dataTrue: string[] = [];
     data.map(item => 
       item.isCheck &&
-      dataTrue.push(item.item.name)
+      dataTrue.push(item.employee.fullName)  
     );
 
-    return dataTrue.join();
+    return dataTrue.join(', ');
   };
 
   const filter = () => {
@@ -95,6 +106,34 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
         <Divider/>
 
         <List>
+
+        <ListItem button onClick={props.handleFilterYearVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(summaryMessage.mapping.field.year)}
+              secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterYear &&
+                <IconButton onClick={props.handleFilterYearOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+              {
+                !props.filterYear &&
+                <Tooltip title={props.intl.formatMessage(summaryMessage.mapping.field.yearRequired)}>
+                  <IconButton onClick={props.handleFilterYearVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
+              <IconButton onClick={props.handleFilterYearVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
           <ListItem button onClick={props.handleFilterCompanyVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(summaryMessage.mapping.field.company)}
@@ -107,6 +146,14 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
                   <ClearIcon />
                 </IconButton>
               }
+              {
+                !props.filterCompany &&
+                <Tooltip title={props.intl.formatMessage(summaryMessage.mapping.field.companyRequired)}>
+                  <IconButton onClick={props.handleFilterCompanyVisibility}>
+                    <Info/>
+                  </IconButton>
+                </Tooltip>
+              }
               <IconButton onClick={props.handleFilterCompanyVisibility}>
                 <ChevronRightIcon />
               </IconButton>
@@ -114,20 +161,20 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterYearVisibility}>
+          <ListItem button onClick={props.handleFilterEmployeeVisibility} disabled={props.filterCompany ? false : true}>
             <ListItemText 
-              primary={props.intl.formatMessage(summaryMessage.mapping.field.year)}
-              secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
+              primary={props.intl.formatMessage(summaryMessage.mapping.field.employee)}
+              secondary={props.filterEmployee && showEmp(props.filterEmployee) || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
               {
-                props.filterYear &&
-                <IconButton onClick={props.handleFilterYearOnClear}>
+                (props.filterCompany && (props.filterEmployee)) &&
+                <IconButton onClick={props.handleFilterEmployeeOnClear}>
                   <ClearIcon />
                 </IconButton>
               }
 
-              <IconButton onClick={props.handleFilterYearVisibility}>
+              <IconButton onClick={props.handleFilterEmployeeVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -161,7 +208,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
             />
             <ListItemSecondaryAction>
               {
-                props.filterCompetency &&
+                (props.filterCompetency) &&
                 <IconButton onClick={props.handleFilterCompetencyOnClear}>
                   <ClearIcon />
                 </IconButton>
@@ -228,6 +275,18 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           value={props.filterCompetency}
           onApply={props.handleFilterCompetencyOnSelected}
           onClose={props.handleFilterCompetencyOnClose}
+          // reset={props.handleFilterCompetencyOnClear}
+        />
+
+        <AccountEmployeeCheck 
+          isOpen={props.isFilterEmployeeOpen}
+          title={props.intl.formatMessage(summaryMessage.mapping.field.employee)}
+          value={props.filterEmployee}
+          hideBackdrop={true}
+          onClose={props.handleFilterEmployeeOnClose}
+          onSelected={props.handleFilterEmployeeOnSelected}
+          filter={props.filterEmployeeList}
+          // reset={props.handleFilterEmployeeOnClear}
         />
       </Dialog>
     </React.Fragment>

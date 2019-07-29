@@ -133,7 +133,8 @@ const createProps: mapper<ResourceMappingProps, IOwnState> = (
     state.companyUid = request.filter.companyUid,
     state.year = request.filter.year,
     state.competencyTypes = request.filter.competencyTypes,
-    state.professionTypes = request.filter.professionTypes;
+    state.professionTypes = request.filter.professionTypes,
+    state.employeeUids = request.filter.employeeUids;
   }
 
   return state;
@@ -289,7 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
       this.props.companyUid !== nextProps.companyUid ||
       this.props.year !== nextProps.year ||
       this.props.professionTypes !== nextProps.professionTypes ||
-      this.props.competencyTypes !== nextProps.competencyTypes
+      this.props.competencyTypes !== nextProps.competencyTypes || 
+      this.props.employeeUids !== nextProps.employeeUids
     ) {
       loadData(nextProps);
     }
@@ -309,7 +311,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingProps, IOwnState> = {
 };
 
 const loadData = (props: ResourceMappingProps): void => {
-  const { companyUid, year, competencyTypes, professionTypes } = props;
+  const { companyUid, year, competencyTypes, professionTypes, employeeUids } = props;
   const { user } = props.userState;
   const { loadMappingRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
@@ -323,6 +325,7 @@ const loadData = (props: ResourceMappingProps): void => {
         year,
         professionTypes,
         competencyTypes,
+        employeeUids,
         orderBy: 'fullName'
       }
     });

@@ -6,4 +6,5 @@ export interface ISummaryMappingFilter extends IBasePagingFilter {
   summary?: boolean;
   professionTypes?: string;
   competencyTypes?: string;
+  employeeUids?: string;
 }
