@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IKPIMeasurementDeleteRequest, IKPIMeasurementGetAllRequest, IKPIMeasurementGetDetailRequest, IKPIMeasurementGetListRequest, IKPIMeasurementPostRequest, IKPIMeasurementPutRequest } from 'modules/KPI/classes/queries/measurement';
-import { IKPIMeasurement, IKPIMeasurementDetail, IKPIMeasurementList } from 'modules/KPI/classes/response/measurement';
+import { IKPIMeasurementDeleteRequest, IKPIMeasurementGetAllRequest, IKPIMeasurementGetDetailRequest, IKPIMeasurementGetListRequest, IKPIMeasurementPostRequest, IKPIMeasurementPutRequest } from '@kpi/classes/queries/measurement';
+import { IKPIMeasurement, IKPIMeasurementDetail, IKPIMeasurementList } from '@kpi/classes/response/measurement';
 import { action } from 'typesafe-actions';
 
 export const enum KPIMeasurementAction {
@@ -8,6 +8,10 @@ export const enum KPIMeasurementAction {
   GET_ALL_SUCCESS = '@@KPI/measurement/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@KPI/measurement/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@KPI/measurement/GET_ALL_DISPOSE',
+  GET_BYCATEGORY_REQUEST = '@@KPI/measurement/GET_BYCATEGORY_REQUEST',
+  GET_BYCATEGORY_SUCCESS = '@@KPI/measurement/GET_BYCATEGORY_SUCCESS',
+  GET_BYCATEGORY_ERROR = '@@KPI/measurement/GET_BYCATEGORY_ERROR',
+  GET_BYCATEGORY_DISPOSE = '@@KPI/measurement/GET_BYCATEGORY_DISPOSE',
   GET_LIST_REQUEST = '@@KPI/measurement/GET_LIST_REQUEST',
   GET_LIST_SUCCESS = '@@KPI/measurement/GET_LIST_SUCCESS',
   GET_LIST_ERROR = '@@KPI/measurement/GET_LIST_ERROR',
@@ -35,6 +39,12 @@ export const KPIMeasurementGetAllRequest = (request: IKPIMeasurementGetAllReques
 export const KPIMeasurementGetAllSuccess = (response: IResponseCollection<IKPIMeasurement>) => action(KPIMeasurementAction.GET_ALL_SUCCESS, response);
 export const KPIMeasurementGetAllError = (error: any) => action(KPIMeasurementAction.GET_ALL_ERROR, error);
 export const KPIMeasurementGetAllDispose = () => action(KPIMeasurementAction.GET_ALL_DISPOSE);
+
+// get by category
+export const KPIMeasurementGetByCategoryRequest = (request: IKPIMeasurementGetAllRequest) => action(KPIMeasurementAction.GET_BYCATEGORY_REQUEST, request);
+export const KPIMeasurementGetByCategorySuccess = (response: IResponseCollection<IKPIMeasurement>) => action(KPIMeasurementAction.GET_BYCATEGORY_SUCCESS, response);
+export const KPIMeasurementGetByCategoryError = (error: any) => action(KPIMeasurementAction.GET_BYCATEGORY_ERROR, error);
+export const KPIMeasurementGetByCategoryDispose = () => action(KPIMeasurementAction.GET_BYCATEGORY_DISPOSE);
 
 // get list
 export const KPIMeasurementGetListRequest = (request: IKPIMeasurementGetListRequest) => action(KPIMeasurementAction.GET_LIST_REQUEST, request);

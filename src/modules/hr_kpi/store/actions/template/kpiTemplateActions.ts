@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IKPITemplateGetAllRequest, IKPITemplateGetByIdRequest, IKPITemplatePostRequest, IKPITemplatePutRequest } from '@KPI/classes/queries';
-import { IKPITemplate, IKPITemplateDetail } from '@KPI/classes/response';
+import { IKPITemplateGetAllRequest, IKPITemplateGetByIdRequest, IKPITemplatePostRequest, IKPITemplatePutRequest } from '@kpi/classes/queries/template';
+import { IKPITemplate, IKPITemplateDetail } from '@kpi/classes/response/template';
 import { action } from 'typesafe-actions';
 
 export const enum KPITemplateAction {
