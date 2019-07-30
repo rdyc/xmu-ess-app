@@ -5,7 +5,7 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
-import { HrRoutingComponents } from '@hr/components/HrRouter';
+import { KPIRoutingComponents } from '@kpi/components/KPIRouter';
 import { Callback, SigninPopupCallback, SilentRenew } from '@layout/components/base';
 import { LandingPage } from '@layout/components/landingPage/LandingPage';
 import { MasterPage } from '@layout/components/masterPage/MasterPage';
@@ -85,7 +85,7 @@ const app: React.ComponentType<AllProps> = props => (
                 <Route path="/common" component={CommonRoutingComponents} />
                 <Route path="/lookup" component={LookupRoutingComponents} />
                 <Route path="/organization" component={OrganizationRoutingComponents} />
-                <Route path="/kpi" component={HrRoutingComponents} />
+                <Route path="/kpi" component={KPIRoutingComponents} />
 
                 <Route path="/playground" component={playgroundRouter} />
               </MasterPage>

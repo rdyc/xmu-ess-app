@@ -4,22 +4,22 @@ import { IKPITemplate, IKPITemplateDetail } from '@kpi/classes/response/template
 import { action } from 'typesafe-actions';
 
 export const enum KPITemplateAction {
-  GET_ALL_REQUEST = '@@KPI/template/GET_ALL_REQUEST',
-  GET_ALL_SUCCESS = '@@KPI/template/GET_ALL_SUCCESS',
-  GET_ALL_ERROR = '@@KPI/template/GET_ALL_ERROR',
-  GET_ALL_DISPOSE = '@@KPI/template/GET_ALL_DISPOSE',
-  GET_BY_ID_REQUEST = '@@KPI/template/GET_BY_ID_REQUEST',
-  GET_BY_ID_SUCCESS = '@@KPI/template/GET_BY_ID_SUCCESS',
-  GET_BY_ID_ERROR = '@@KPI/template/GET_BY_ID_ERROR',
-  GET_BY_ID_DISPOSE = '@@KPI/template/GET_BY_ID_DISPOSE',
-  POST_REQUEST = '@@KPI/template/POST_REQUEST',
-  POST_SUCCESS = '@@KPI/template/POST_SUCCESS',
-  POST_ERROR = '@@KPI/template/POST_ERROR',
-  POST_DISPOSE = '@@KPI/template/POST_DISPOSE',
-  PUT_REQUEST = '@@KPI/template/PUT_REQUEST',
-  PUT_SUCCESS = '@@KPI/template/PUT_SUCCESS',
-  PUT_ERROR = '@@KPI/template/PUT_ERROR',
-  PUT_DISPOSE = '@@KPI/template/PUT_DISPOSE'
+  GET_ALL_REQUEST = '@@kpi/template/GET_ALL_REQUEST',
+  GET_ALL_SUCCESS = '@@kpi/template/GET_ALL_SUCCESS',
+  GET_ALL_ERROR = '@@kpi/template/GET_ALL_ERROR',
+  GET_ALL_DISPOSE = '@@kpi/template/GET_ALL_DISPOSE',
+  GET_BY_ID_REQUEST = '@@kpi/template/GET_BY_ID_REQUEST',
+  GET_BY_ID_SUCCESS = '@@kpi/template/GET_BY_ID_SUCCESS',
+  GET_BY_ID_ERROR = '@@kpi/template/GET_BY_ID_ERROR',
+  GET_BY_ID_DISPOSE = '@@kpi/template/GET_BY_ID_DISPOSE',
+  POST_REQUEST = '@@kpi/template/POST_REQUEST',
+  POST_SUCCESS = '@@kpi/template/POST_SUCCESS',
+  POST_ERROR = '@@kpi/template/POST_ERROR',
+  POST_DISPOSE = '@@kpi/template/POST_DISPOSE',
+  PUT_REQUEST = '@@kpi/template/PUT_REQUEST',
+  PUT_SUCCESS = '@@kpi/template/PUT_SUCCESS',
+  PUT_ERROR = '@@kpi/template/PUT_ERROR',
+  PUT_DISPOSE = '@@kpi/template/PUT_DISPOSE'
 }
 
 // get all

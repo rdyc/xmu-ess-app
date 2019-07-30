@@ -38,24 +38,24 @@ import {
 
 export interface IKPIState {
   // template
-  KPITemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
-  KPITemplateGetById: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail>;
-  KPITemplatePost: IQuerySingleState<IKPITemplatePostRequest, IKPITemplate>;
-  KPITemplatePut: IQuerySingleState<IKPITemplatePutRequest, IKPITemplate>;
+  kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
+  kpiTemplateGetById: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail>;
+  kpiTemplatePost: IQuerySingleState<IKPITemplatePostRequest, IKPITemplate>;
+  kpiTemplatePut: IQuerySingleState<IKPITemplatePutRequest, IKPITemplate>;
 
   // measurement
-  KPIMeasurementGetAll: IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement>;
-  KPIMeasurementGetByCategory: IQueryCollectionState<IKPIMeasurementGetByCategoryRequest, IKPIMeasurement>;
-  KPIMeasurementGetList: IQueryCollectionState<IKPIMeasurementGetListRequest, IKPIMeasurementList>;
-  KPIMeasurementGetById: IQuerySingleState<IKPIMeasurementGetDetailRequest, IKPIMeasurementDetail>;
-  KPIMeasurementPost: IQuerySingleState<IKPIMeasurementPostRequest, IKPIMeasurement>;
-  KPIMeasurementPut: IQuerySingleState<IKPIMeasurementPutRequest, IKPIMeasurement>;
-  KPIMeasurementDelete: IQuerySingleState<IKPIMeasurementDeleteRequest, Boolean>;
+  kpiMeasurementGetAll: IQueryCollectionState<IKPIMeasurementGetAllRequest, IKPIMeasurement>;
+  kpiMeasurementGetByCategory: IQueryCollectionState<IKPIMeasurementGetByCategoryRequest, IKPIMeasurement>;
+  kpiMeasurementGetList: IQueryCollectionState<IKPIMeasurementGetListRequest, IKPIMeasurementList>;
+  kpiMeasurementGetById: IQuerySingleState<IKPIMeasurementGetDetailRequest, IKPIMeasurementDetail>;
+  kpiMeasurementPost: IQuerySingleState<IKPIMeasurementPostRequest, IKPIMeasurement>;
+  kpiMeasurementPut: IQuerySingleState<IKPIMeasurementPutRequest, IKPIMeasurement>;
+  kpiMeasurementDelete: IQuerySingleState<IKPIMeasurementDeleteRequest, Boolean>;
 
   // category
-  KPICategoryGetAll: IQueryCollectionState<IKPICategoryGetAllRequest, IKPICategory>;
-  KPICategoryGetList: IQueryCollectionState<IKPICategoryGetListRequest, IKPICategoryList>;
-  KPICategoryGetById: IQuerySingleState<IKPICategoryGetDetailRequest, IKPICategoryDetail>;
-  KPICategoryPost: IQuerySingleState<IKPICategoryPostRequest, IKPICategory>;
-  KPICategoryPut: IQuerySingleState<IKPICategoryPutRequest, IKPICategory>;
+  kpiCategoryGetAll: IQueryCollectionState<IKPICategoryGetAllRequest, IKPICategory>;
+  kpiCategoryGetList: IQueryCollectionState<IKPICategoryGetListRequest, IKPICategoryList>;
+  kpiCategoryGetById: IQuerySingleState<IKPICategoryGetDetailRequest, IKPICategoryDetail>;
+  kpiCategoryPost: IQuerySingleState<IKPICategoryPostRequest, IKPICategory>;
+  kpiCategoryPut: IQuerySingleState<IKPICategoryPutRequest, IKPICategory>;
 }

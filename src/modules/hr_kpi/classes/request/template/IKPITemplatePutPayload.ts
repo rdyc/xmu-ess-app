@@ -1,7 +1,7 @@
-import { IKPITemplatePostItem } from './IKPITemplatePostItem';
+import { IKPITemplatePostItemPayload } from './IKPITemplatePostItemPayload';
 
 export interface IKPITemplatePutPayload {
   companyUid: string;
   positionUid: string;
-  items: IKPITemplatePostItem[];
+  items: IKPITemplatePostItemPayload[];
 }

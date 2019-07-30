@@ -1,5 +1,5 @@
 import { IBaseCommand } from '@generic/interfaces';
-import { IKPITemplatePutPayload } from '@KPI/classes/request';
+import { IKPITemplatePutPayload } from '@kpi/classes/request';
 
 export interface IKPITemplatePutRequest extends IBaseCommand<IKPITemplatePutPayload> {
   templateUid: string;

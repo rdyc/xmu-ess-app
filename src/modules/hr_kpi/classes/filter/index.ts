@@ -1,2 +1,2 @@
-export * from './template/IKPITemplateGetAllFilter';
-export * from './template/IKPITemplateGetByIdFilter';
+export * from './measurement';
+export * from './template';

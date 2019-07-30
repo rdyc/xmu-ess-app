@@ -1,4 +1,4 @@
-import { IKPITemplateGetAllFilter } from '@KPI/classes/filter/template';
+import { IKPITemplateGetAllFilter } from '@kpi/classes/filter/template';
 
 export interface IKPITemplateGetAllRequest {
   filter?: IKPITemplateGetAllFilter;

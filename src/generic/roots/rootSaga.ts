@@ -47,9 +47,10 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
-import hrMeasurementSagas from '@hr/store/sagas/hrMeasurementSagas';
-import hrTemplateSagas from '@hr/store/sagas/hrTemplateSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
+import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
+import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -228,8 +229,9 @@ export function* rootSaga() {
     fork(announcementSagas),
     fork(newsFeedSagas),
 
-    // hr
-    fork(hrTemplateSagas),
-    fork(hrMeasurementSagas)
+    // kpi
+    fork(kpiTemplateSagas),
+    fork(kpiCategorySagas),
+    fork(kpiMeasurementSagas)
   ]);
 }
