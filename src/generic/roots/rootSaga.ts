@@ -45,6 +45,11 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
+import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
+import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrCompetencyIndicatorSagas';
+import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
+import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
@@ -221,5 +226,12 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
+
+    // competency
+    fork(hrCompetencyCategorySagas),
+    fork(hrCompetencyClusterSagas),
+    fork(hrCompetencyIndicatorSagas),
+    fork(hrCompetencyLevelSagas),
+    fork(hrCompetencyMappedSagas)
   ]);
 }
