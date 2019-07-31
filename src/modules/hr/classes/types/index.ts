@@ -8,3 +8,5 @@ export * from './competency/indicator/IHrCompetencyIndicatorRequestField';
 export * from './competency/indicator/IHrCompetencyIndicatorUserAction';
 export * from './competency/mapped/IHrCompetencyMappedRequestField';
 export * from './competency/mapped/IHrCompetencyMappedUserAction';
+export * from './competency/IHrCompetencyPart';
+export * from './competency/IHrCompetencyField';

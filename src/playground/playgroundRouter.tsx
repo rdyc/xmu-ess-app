@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { HrCompetencyClusterForm } from '@hr/components/competency/form/cluster/HrCompetencyClusterForm';
 import { SimpleForm } from './formik/SimpleForm';
 import { DemoSinglePage } from './pages/DemoSinglePage';
 import { Enhancer } from './recompose/Enhancer';
@@ -24,5 +25,6 @@ export const playgroundRouter: React.SFC<AllProps> = props => (
     <Route path={`${props.match.path}/redux/form/upload`} component={upload} />
     <Route path={`${props.match.path}/formik/simpleform`} component={() => <SimpleForm/>} />
     <Route path={`${props.match.path}/recompose/enhancer`} component={enhancer} />
+    <Route path={`${props.match.path}/competency/cluster`} component={HrCompetencyClusterForm} />
   </Switch>
 );
