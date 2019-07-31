@@ -95,7 +95,7 @@ function* watchGetListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/measurements/list?${params}`,
+      path: `/v1/kpi/measurements/${action.payload.categoryUid}/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetListSuccess(response.body)),
       ],
@@ -118,7 +118,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
+      path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdSuccess(response.body))
       ],
@@ -138,7 +138,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/kpi/measurements`,
+      path: `/v1/kpi/measurements/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),
@@ -178,7 +178,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/kpi/measurements/${action.payload.measurementUid}`,
+      path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),

@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
+import { KPIMeasurementForm } from '@kpi/components/measurement/Form/KPIMeasurementForm';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
@@ -30,7 +31,6 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
       render={(formikBag: FormikProps<IKPICategoryFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
-
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <KPICategoryDetailPartialForm
@@ -40,8 +40,6 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
                   filterCommonSystem={props.filterCommonSystem}
                 />
               </div>
-            </div>
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm
                   title={props.intl.formatMessage(kpiMessage.category.submission.form)}
@@ -64,9 +62,13 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-
             </div>
-
+            {
+              props.formMode === FormMode.Edit &&
+              <div className={props.classes.flexColumn}>
+                  <KPIMeasurementForm categoryUid={props.initialValues.uid}/>
+              </div>
+            }
           </div>
         </Form>
       )}

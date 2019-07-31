@@ -51,7 +51,10 @@ export const KPIMeasurementField = defineMessages({
   description: { id: `${prefix}.field.description`},
   uid: { id: `${prefix}.field.uid`},
   measurementType: { id: `${prefix}.field.measurementType`},
+  measurementTypePlaceholder: { id: `${prefix}.field.measurementType`},
   weight: { id: `${prefix}.field.weight`},
+  weightPlaceholder: { id: `${prefix}.field.weight`},
+  tooltip: { id: `${prefix}.field.tooltip`},
 });
 
 // dialog

@@ -10,9 +10,6 @@ import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
 import { KPICategoryDetailView } from './KPICategoryDetailView';
 
 interface IOwnRouteParams {
@@ -24,8 +21,6 @@ interface IOwnHandler {
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
-  handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
 }
 
 interface IOwnState {
@@ -169,28 +164,6 @@ const handlerCreators: HandleCreators<CategoryDetailProps, IOwnHandler> = {
       });
     }
   },
-  handleDeleteSuccess: (props: CategoryDetailProps) => () => {
-    props.history.push('/kpi/category');
-
-    props.layoutDispatch.alertAdd({
-      time: new Date(),
-      message: props.intl.formatMessage(kpiMessage.category.message.deleteSuccess, { uid : props.match.params.categoryUid })
-    });
-  },
-  handleDeleteFail: (props: CategoryDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    if (errors) {
-      props.layoutDispatch.alertAdd({
-        time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
-      });
-    } else {
-      props.layoutDispatch.alertAdd({
-        time: new Date(),
-        message: props.intl.formatMessage(kpiMessage.category.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
-      });
-    }
-  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<CategoryDetailProps, IOwnState> = {

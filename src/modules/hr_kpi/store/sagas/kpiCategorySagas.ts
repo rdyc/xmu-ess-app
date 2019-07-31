@@ -146,7 +146,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/kpi/categorys/${action.payload.categoryUid}`,
+      path: `/v1/kpi/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdDispose()),

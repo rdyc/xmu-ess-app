@@ -1,6 +1,8 @@
 import AppMenu from '@constants/AppMenu';
 import { IKPICategory } from '@kpi/classes/response/category';
+import { KPIMeasurementDetail } from '@kpi/components/measurement/Detail/KPIMeasurementDetail';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 // import { Delete } from '@lookup/components/shared/Delete';
@@ -13,7 +15,7 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
     info={{
       uid: AppMenu.LookupCompany,
       parentUid: AppMenu.Lookup,
-      parentUrl: 'kpi/category',
+      parentUrl: '/kpi/category',
       title: props.intl.formatMessage(kpiMessage.category.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.category.page.detailSubHeader),
     }}
@@ -21,6 +23,9 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IKPICategory) => ([
       <KPICategoryInformation data={data}/>
+    ])}
+    secondary={(data: IKPICategory) => ([
+      <KPIMeasurementDetail categoryUid={data.uid}/>
     ])}
     appBarComponent={
       props.menuOptions &&
@@ -32,5 +37,15 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
       />
     }
   >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
   </PreviewPage>
 );
