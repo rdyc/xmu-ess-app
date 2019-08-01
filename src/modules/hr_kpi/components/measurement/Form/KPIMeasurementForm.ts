@@ -16,17 +16,19 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import * as Yup from 'yup';
-import { KPIMeasurementDetailView as KPIMeasurementFormView } from './KPIMeasurementFormView';
+import { KPIMeasurementFormView as KPIMeasurementFormView } from './KPIMeasurementFormView';
 
 export interface IKPIMeasurementFormValue {
   uid: string;
   description: string;
+  measurementName: string;
   measurementType: string;
   weight: number;
 }
 
 export interface IKPIMeasurementFormValueList {
   measurementFormValue: IKPIMeasurementFormValue;
+  isNew: boolean;
   isEditing: boolean;
 }
 
@@ -38,11 +40,11 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleMapItem: (measurements: IKPIMeasurementList[]) => void;
   handleSetEditMode: (index: number) => void;
-  handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>) => void;
+  handleCreateFormValueList: () => void;
+  handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
 }
 
 interface IOwnState {
-  shouldLoad: boolean;
   measurementValueList: IKPIMeasurementFormValueList[];
   initialValues: IKPIMeasurementFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIMeasurementFormValue>>>;
@@ -50,8 +52,9 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
-  setShouldLoad: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
   setInitialValues: StateHandler<IOwnState>;
+  setFormValueList: StateHandler<IOwnState>;
 }
 
 export type KPIMeasurementFormProps
@@ -72,12 +75,12 @@ export type KPIMeasurementFormProps
 const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasurementFormProps): IOwnState => {
   //
   return {
-    shouldLoad: false,
     measurementValueList: [],
 
     initialValues: {
       uid: 'Auto Generated',
       description: '',
+      measurementName: '',
       measurementType: '',
       weight: 0,
     },
@@ -111,9 +114,9 @@ const stateUpdaters: StateUpdaters<KPIMeasurementFormProps, IOwnState, IOwnState
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setShouldLoad: (state: IOwnState) => (): Partial<IOwnState> => ({
-    shouldLoad: !state.shouldLoad
-  }),
+  setFormValueList: () => (measurementValueList: IKPIMeasurementFormValueList[]) => ({
+    measurementValueList
+  })
 };
 
 const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
@@ -129,32 +132,47 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
       measurementFormValue: {
         uid: item.uid,
         description: item.description,
+        measurementName: item.measurement && item.measurement.value || '',
         measurementType: item.measurementType,
         weight: item.weight,
       },
+      isNew: false,
       isEditing: false
     }));
 
-    props.stateUpdate({
-      measurementValueList
-    });
+    props.setFormValueList(measurementValueList);
   },
   handleSetEditMode: (props: KPIMeasurementFormProps) =>  (index: number) => {
     const measurementValueList = props.measurementValueList;
 
     measurementValueList[index].isEditing = !measurementValueList[index].isEditing;
 
-    props.stateUpdate({
-      measurementValueList
-    });
+    props.setFormValueList(measurementValueList);
   },
-  handleOnSubmit: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>) => {
+  handleCreateFormValueList: (props: KPIMeasurementFormProps) => () => {
+    const measurementValueList = props.measurementValueList;
+
+    measurementValueList.push({
+      measurementFormValue: {
+        uid: 'Auto Generated',
+        description: '',
+        measurementName: '',
+        measurementType: '',
+        weight: 0,
+      },
+      isNew: true,
+      isEditing: true,
+    });
+
+    props.setFormValueList(measurementValueList);
+  },
+  handleOnSubmit: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => {
     const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
     if (user) {
       // creating 
-      if (false) {
+      if (isNew) {
         // fill payload 
         const payload: IKPIMeasurementPostPayload = {
           description: values.description,
@@ -173,7 +191,7 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
       }
 
       // editing 
-      if (true) {
+      if (!isNew) {
         // must have categoryUid
         if (values.uid) {
 
@@ -208,9 +226,22 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(false ? kpiMessage.category.message.createSuccess : kpiMessage.category.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(isNew ? kpiMessage.measurement.message.createSuccess : kpiMessage.measurement.message.updateSuccess, { uid: response.uid })
         });
 
+        const measurementValueList = props.measurementValueList;
+
+        measurementValueList[index].measurementFormValue = {
+          uid: response.uid,
+          description: response.description,
+          measurementName: response.measurement && response.measurement.value || '',
+          measurementType: response.measurementType,
+          weight: response.weight
+        };
+        measurementValueList[index].isNew = false;
+        measurementValueList[index].isEditing = false;
+
+        props.setFormValueList(measurementValueList);
         // props.history.push(`/kpi/category/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
@@ -229,7 +260,7 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(false ? kpiMessage.category.message.createFailure : kpiMessage.category.message.updateFailure)
+          message: props.intl.formatMessage(isNew ? kpiMessage.measurement.message.createFailure : kpiMessage.measurement.message.updateFailure)
         });
       });
   }
@@ -237,8 +268,6 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<KPIMeasurementFormProps, IOwnState> = {
   componentDidMount() {
-    this.props.handleOnLoadApi();
-
     if (this.props.kpiMeasurementState.list.response && this.props.kpiMeasurementState.list.response.data) {
       this.props.handleMapItem(this.props.kpiMeasurementState.list.response.data);
     }

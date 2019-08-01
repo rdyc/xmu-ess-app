@@ -36,7 +36,7 @@ export interface IKPICategoryFormValue {
 }
 
 interface IOwnRouteParams {
-  categoryUidUid: string;
+  categoryUid: string;
 }
 
 interface IOwnOption {
@@ -181,7 +181,16 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.message.createSuccess : kpiMessage.category.message.updateSuccess, { uid: response.uid })
         });
 
-        props.history.push(`/kpi/category/${response.uid}`);
+        if (props.formMode === FormMode.New) {
+          props.history.push(`/kpi/category/form`, { uid: response.uid });
+          props.stateUpdate({
+            formMode: FormMode.Edit,
+          });
+          props.setInitialValues({
+            uid: response.uid,
+            name: response.name
+          });
+        }
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

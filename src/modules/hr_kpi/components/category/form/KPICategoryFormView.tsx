@@ -23,15 +23,15 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
     state={props.kpiCategoryState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
-    <Formik
-      enableReinitialize
-      initialValues={props.initialValues}
-      validationSchema={props.validationSchema}
-      onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<IKPICategoryFormValue>) => (
-        <Form>
-          <div className={props.classes.flexRow}>
-            <div className={props.classes.flexColumn}>
+    <div className={props.classes.flexRow}>
+      <div className={props.classes.flexColumn}>
+        <Formik
+          enableReinitialize
+          initialValues={props.initialValues}
+          validationSchema={props.validationSchema}
+          onSubmit={props.handleOnSubmit}
+          render={(formikBag: FormikProps<IKPICategoryFormValue>) => (
+            <Form>
               <div className={props.classes.flexContent}>
                 <KPICategoryDetailPartialForm
                   formMode={props.formMode}
@@ -62,16 +62,16 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-            </div>
-            {
-              props.formMode === FormMode.Edit &&
-              <div className={props.classes.flexColumn}>
-                  <KPIMeasurementForm categoryUid={props.initialValues.uid}/>
-              </div>
-            }
-          </div>
-        </Form>
-      )}
-    />
+            </Form>
+          )}
+        />
+      </div>
+      {
+        props.formMode === FormMode.Edit &&
+        <div className={props.classes.flexColumn}>
+            <KPIMeasurementForm categoryUid={props.initialValues.uid}/>
+        </div>
+      }
+    </div>
   </FormPage>
 );

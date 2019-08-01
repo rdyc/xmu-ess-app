@@ -49,8 +49,8 @@ export const KPICategoryConfirm = defineMessages({
 // fields
 export const KPICategoryField = defineMessages({
   name: { id: `${prefix}.field.name`},
-  namePlaceholder: { id: `${prefix}.field.uid.placeholder`},
-  nameRequired: { id: `${prefix}.field.uid.required`},
+  namePlaceholder: { id: `${prefix}.field.name.placeholder`},
+  nameRequired: { id: `${prefix}.field.name.required`},
   uid: { id: `${prefix}.field.uid`},
 });
 

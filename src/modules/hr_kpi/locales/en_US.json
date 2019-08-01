@@ -41,6 +41,11 @@
   "kpi.template.field.category": "Category",
   "kpi.template.field.weight": "Weight",
 
+  "kpi.measurement.message.create.success": "A new Measurement {uid} has been created",
+  "kpi.measurement.message.create.failure": "Unable to process your submission",
+  "kpi.measurement.message.update.success": "Existing Measurement {uid} has been updated",
+  "kpi.measurement.message.update.failure": "Unable to process your submission",
+
   "kpi.measurement.field.uid": "Measurement ID",
   "kpi.measurement.field.description": "Description",
   "kpi.measurement.field.measurementType": "Measurement Type",
@@ -66,10 +71,15 @@
   "kpi.measurement.confirm.modify.title": "Modify KPI measurement",
   "kpi.measurement.confirm.modify.description": "You are about to modify current KPI measurement. Do you want to continue?",
 
+  "kpi.category.message.create.success": "A new Category {uid} has been created",
+  "kpi.category.message.create.failure": "Unable to process your submission",
+  "kpi.category.message.update.success": "Existing Category {uid} has been updated",
+  "kpi.category.message.update.failure": "Unable to process your submission",
+
   "kpi.category.field.uid": "Category ID",
   "kpi.category.field.name": "Name",
-  "kpi.category.field.name.Placeholder": "Type The Name",
-  "kpi.category.field.name.Required": "Name is Required",
+  "kpi.category.field.name.placeholder": "Type The Name",
+  "kpi.category.field.name.required": "Name is Required",
 
   "kpi.category.page.list.title": "All KPI Categories",
   "kpi.category.page.list.subHeader": "Lorem LOREM",

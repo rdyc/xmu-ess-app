@@ -1,6 +1,6 @@
 import { ISystemByIdRequest } from '@common/classes/queries';
 import { ISystemDetail } from '@common/classes/response';
-import { KpiAction as Action } from '@common/store/actions';
+import { MeasurementAction as Action } from '@common/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
