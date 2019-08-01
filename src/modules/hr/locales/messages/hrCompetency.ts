@@ -36,6 +36,9 @@ export const hrCompetencyField = defineMessages({
   level: { id: `${prefix}.field.level`},
   levelPlaceholder: { id: `${prefix}.field.level.placeholder`},
   levelRequired: { id: `${prefix}.field.level.required`},
+
+  company: { id: `${prefix}.field.company`},
+  position: { id: `${prefix}.field.position`},
 });
 
 // helper

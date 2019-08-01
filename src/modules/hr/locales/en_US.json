@@ -42,5 +42,8 @@
 
   "hr.competency.field.level": "Level",
   "hr.competency.field.level.placeholder": "Type any level",
-  "hr.competency.field.level.required": "Level is required"
+  "hr.competency.field.level.required": "Level is required",
+
+  "hr.competency.field.company": "Company",
+  "hr.competency.field.position": "Position"
 }
