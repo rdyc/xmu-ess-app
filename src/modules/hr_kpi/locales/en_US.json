@@ -83,11 +83,11 @@
 
   "kpi.category.page.list.title": "All KPI Categories",
   "kpi.category.page.list.subHeader": "Lorem LOREM",
-  "kpi.category.page.detail.title": "Detail KPI Category",
+  "kpi.category.page.detail.title": "Detail KPI Category & Measurement",
   "kpi.category.page.detail.subHeader": "Lorem LOREM",
   "kpi.category.page.new.title": "New KPI Category",
   "kpi.category.page.new.subHeader": "Lorem LOREM",
-  "kpi.category.page.modify.title": "Modify KPI Category",
+  "kpi.category.page.modify.title": "Modify KPI Category & Measurement",
   "kpi.category.page.modify.subHeader": "Lorem LOREM",
 
   "kpi.category.submission.form": "KPI Category Submission",

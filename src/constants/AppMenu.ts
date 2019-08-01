@@ -67,7 +67,13 @@ enum AppMenu {
   ImageGallery = 'MNU62',
   Common = 'MNU53',
   AchievementChart = 'MNU63',
-  COGSUpload = 'MNU64'
+  COGSUpload = 'MNU64',
+  KPICategory = 'MNU67',
+  KPITemplate = 'MNU68',
+  HumanResource = 'MNU72',
+  EmployeeKPI = 'MNU73',
+  ManagerKPIInput = 'MNU74',
+  HRKPIInput = 'MNU75',
 }
 
 export default AppMenu;

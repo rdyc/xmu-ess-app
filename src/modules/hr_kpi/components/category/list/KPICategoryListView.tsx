@@ -16,7 +16,7 @@ export const KPICategoryListView: React.SFC<KPICategoryListProps> = props => (
     <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.LookupCompany,
+        uid: AppMenu.KPICategory,
         parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(kpiMessage.category.page.listTitle),
         description: props.intl.formatMessage(kpiMessage.category.page.listSubHeader)

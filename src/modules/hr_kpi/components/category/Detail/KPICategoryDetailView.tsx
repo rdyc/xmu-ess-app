@@ -13,7 +13,7 @@ import { KPICategoryInformation } from './shared/KPICategoryInformation';
 export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.LookupCompany,
+      uid: AppMenu.KPICategory,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/category',
       title: props.intl.formatMessage(kpiMessage.category.page.detailTitle),

@@ -14,7 +14,7 @@ import KPICategoryDetailPartialForm from './partial/KPICategoryDetailPartialForm
 export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupEmployee,
+      uid: AppMenu.KPICategory,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/category',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.page.newTitle : kpiMessage.category.page.modifyTitle),

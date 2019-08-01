@@ -214,6 +214,26 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU67':
+      path = '/kpi/category';
+      break;
+
+    case 'MNU68':
+      path = '/kpi/template';
+      break;
+
+    case 'MNU73':
+      path = '/kpi/employee';
+      break;
+
+    case 'MNU74':
+      path = '/kpi/managerinput';
+      break;
+
+    case 'MNU75':
+      path = '/kpi/hrinput';
+      break;
+
     default:
       path = '/home/dashboard';
       break;

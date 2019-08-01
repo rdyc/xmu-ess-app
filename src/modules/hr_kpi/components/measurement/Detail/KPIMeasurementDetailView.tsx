@@ -68,9 +68,21 @@ export const KPIMeasurementDetailView: React.SFC<MeasurementDetailProps> = props
           </div>
         }
         {
+          !props.kpiMeasurementState.list.isLoading &&
           props.kpiMeasurementState.list.response &&
           props.kpiMeasurementState.list.response.data &&
           MeasurementList(props.kpiMeasurementState.list.response.data)
+        }
+        {
+          !props.kpiMeasurementState.list.isLoading &&
+          props.kpiMeasurementState.list.response &&
+          props.kpiMeasurementState.list.response.data &&
+          props.kpiMeasurementState.list.response.data.length === 0 &&
+          <Typography
+            align="center"
+          >
+            {'(No Data)'}
+          </Typography>
         }
       </CardContent>
     </Card>
