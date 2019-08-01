@@ -7,7 +7,8 @@ export const hrCompetencyField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
   uidRequired: { id: `${prefix}.field.uid.required`},
-
+  
+  type: { id: `${prefix}.field.type`},
   // clusterUid: { id: `${prefix}.field.clusterUid`},
   // clusterUidPlaceholder: { id: `${prefix}.field.clusterUid.placeholder`},
   // clusterUidRequired: { id: `${prefix}.field.clusterUid.required`},

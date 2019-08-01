@@ -28,6 +28,7 @@
   "hr.shared.section.submission": "{state} Submission",
 
   "hr.competency.field.uid": "{state} ID",
+  "hr.competency.field.type": "{state}",
   "hr.competency.field.uid.placeholder": "{state} ID",
   "hr.competency.field.uid.required": "{state} is required",
 
