@@ -7,9 +7,9 @@ import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getI
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
-import { ISystemListFilter } from '@common/classes/filters';
-import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
+import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
+import { KPICategoryOption } from '@kpi/components/category/options/KPICategoryOption';
 import { KPIMeasurementOption } from '@kpi/components/measurement/options/KPIMeasurementOption';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -20,8 +20,8 @@ type KPITemplateItemPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IKPITemplateFormValue>;
   intl: InjectedIntl;
-  filterCommonSystem: ISystemListFilter;
-  filterMeasurement: IKPIMeasurementGetListFilter;
+  filterKPICategory: IKPICategoryGetListFilter;
+  filterKPIMeasurement: IKPIMeasurementGetListFilter;
   classes: {
     flexContent: string;
     marginFarRight: string;
@@ -54,74 +54,97 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                 />
                 <CardContent>
 
-                  {
-                    props.formMode === FormMode.Edit &&
-                    <Field
-                      name={`items.${index}.uid`}
-                      render={({ field }: FieldProps<IKPITemplateFormValue>) => {
-                        return (
-                          <TextField
-                            {...field}
-                            {...GlobalStyle.TextField.ReadOnly}
-                            fullWidth
-                            disabled
-                            margin="normal"
-                            label={props.intl.formatMessage(kpiMessage.template.field.itemUid)}
-                            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
-                          />
-                        );
-                      }}
-                    />
-                  }
+                  <Field
+                    name={`items.${index}.uid`}
+                    render={({ field }: FieldProps<IKPITemplateFormValue>) => {
+                      return (
+                        <TextField
+                          {...field}
+                          {...GlobalStyle.TextField.ReadOnly}
+                          fullWidth
+                          disabled
+                          margin="normal"
+                          label={props.intl.formatMessage(kpiMessage.template.field.itemUid)}
+                          helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+                        />
+                      );
+                    }}
+                  />
 
                   <Field
-                    name="categoryType"
+                    name="categoryUid"
                     render={({ form }: FieldProps<IKPITemplateFormValue>) => {
-                      const error = getIn(form.errors, `items.${index}.categoryType`);
-                      const touch = getIn(form.touched, `items.${index}.categoryType`);
+                      const error = getIn(form.errors, `items.${index}.categoryUid`);
+                      const touch = getIn(form.touched, `items.${index}.categoryUid`);
 
                       return (
-                        <CommonSystemOption category="kPI" filter={props.filterCommonSystem}>
+                        <KPICategoryOption filter={props.filterKPICategory}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"
                             menuPosition="fixed"
                             isDisabled={props.formikBag.isSubmitting}
-                            isClearable={props.formikBag.values.items[index].categoryType !== ''}
+                            isClearable={props.formikBag.values.items[index].categoryUid !== ''}
                             escapeClearsValue={true}
-                            valueString={props.formikBag.values.items[index].categoryType}
+                            valueString={props.formikBag.values.items[index].categoryUid}
                             textFieldProps={{
-                              label: props.intl.formatMessage(kpiMessage.template.field.category),
+                              required: true,
+                              label: props.intl.formatMessage(kpiMessage.template.field.categoryUid),
                               helperText: touch && error,
                               error: touch && Boolean(error)
                             }}
-                            onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.categoryType`)}
+                            onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.categoryUid`)}
                             onChange={(selected: ISelectFieldOption) => {
-                              props.formikBag.setFieldValue(`items.${index}.categoryType`, selected && selected.value || '');
+                              props.formikBag.setFieldValue(`items.${index}.categoryUid`, selected && selected.value || '');
+                              props.formikBag.setFieldValue(`items.${index}.categoryName`, selected && selected.label || '');
                             }}
                           />
-                        </CommonSystemOption>
+                        </KPICategoryOption>
+                      );
+                    }}
+                  />
+
+                  <Field
+                    name={`items.${index}.categoryName`}
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                      const error = getIn(form.errors, `items.${index}.categoryName`);
+                      const touch = getIn(form.touched, `items.${index}.categoryName`);
+
+                      return (
+                        <TextField
+                          {...field}
+                          fullWidth
+                          required
+                          disabled={form.isSubmitting}
+                          margin="normal"
+                          autoComplete="off"
+                          label={props.intl.formatMessage(kpiMessage.template.field.categoryName)}
+                          placeholder={props.intl.formatMessage(kpiMessage.template.field.categoryName)}
+                          helperText={touch && error}
+                          error={touch && Boolean(error)}
+                        />
                       );
                     }}
                   />
 
                   <Field
                     name={`items.${index}.measurementUid`}
-                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                    render={({ form }: FieldProps<IKPITemplateFormValue>) => {
                       const error = getIn(form.errors, `items.${index}.measurementUid`);
                       const touch = getIn(form.touched, `items.${index}.measurementUid`);
 
                       return (
-                        <KPIMeasurementOption filter={props.filterMeasurement} categoryUid={''}>
+                        <KPIMeasurementOption key={index} filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"
                             menuPosition="fixed"
-                            isDisabled={props.formikBag.isSubmitting}
+                            isDisabled={props.formikBag.isSubmitting || props.formikBag.values.items[index].categoryUid === ''}
                             isClearable={props.formikBag.values.items[index].measurementUid !== ''}
                             escapeClearsValue={true}
                             valueString={props.formikBag.values.items[index].measurementUid}
                             textFieldProps={{
+                              required: true,
                               label: props.intl.formatMessage(kpiMessage.template.field.measurementUid),
                               helperText: touch && error,
                               error: touch && Boolean(error)
@@ -146,12 +169,13 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                         <TextField
                           {...field}
                           fullWidth
+                          multiline
                           required
                           disabled={form.isSubmitting}
                           margin="normal"
                           autoComplete="off"
                           label={props.intl.formatMessage(kpiMessage.template.field.target)}
-                          placeholder={props.intl.formatMessage(kpiMessage.template.field.target)}
+                          placeholder={props.intl.formatMessage(kpiMessage.template.field.targetPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />
@@ -174,7 +198,90 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                           margin="normal"
                           autoComplete="off"
                           label={props.intl.formatMessage(kpiMessage.template.field.weight)}
-                          placeholder={props.intl.formatMessage(kpiMessage.template.field.weight)}
+                          placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
+                          helperText={touch && error}
+                          error={touch && Boolean(error)}
+                          InputProps={{
+                            inputComponent: NumberFormatter,
+                          }}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            let value = 0;
+
+                            if (e.target.value === '') {
+                              // set current field to 0
+                              props.formikBag.setFieldValue(field.name, 0);
+                              value = 0;
+                            } else {
+                              value = parseFloat(e.target.value);
+                              // set current field
+                              props.formikBag.setFieldValue(field.name, value);
+                            }
+                            
+                            // set value field
+                            // props.formikBag.setFieldValue(`items.${index}.weight`, value);
+                          }}
+                        />
+                      );
+                    }}
+                  />
+
+                  <Field
+                    name={`items.${index}.threshold`}
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                      const error = getIn(form.errors, `items.${index}.threshold`);
+                      const touch = getIn(form.touched, `items.${index}.threshold`);
+
+                      return (
+                        <TextField
+                          {...field}
+                          fullWidth
+                          disabled={form.isSubmitting}
+                          margin="normal"
+                          autoComplete="off"
+                          label={props.intl.formatMessage(kpiMessage.template.field.threshold)}
+                          placeholder={props.intl.formatMessage(kpiMessage.template.field.thresholdPlaceholder)}
+                          helperText={touch && error}
+                          error={touch && Boolean(error)}
+                          InputProps={{
+                            inputComponent: NumberFormatter,
+                          }}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            let value = 0;
+
+                            if (e.target.value === '') {
+                              // set current field to 0
+                              props.formikBag.setFieldValue(field.name, 0);
+                              value = 0;
+                            } else {
+                              value = parseFloat(e.target.value);
+                              // set current field
+                              props.formikBag.setFieldValue(field.name, value);
+                            }
+                            
+                            // set value field
+                            // props.formikBag.setFieldValue(`items.${index}.weight`, value);
+                          }}
+                        />
+                      );
+                    }}
+                  />
+
+                  <Field
+                    name={`items.${index}.amount`}
+                    render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                      const error = getIn(form.errors, `items.${index}.amount`);
+                      const touch = getIn(form.touched, `items.${index}.amount`);
+
+                      return (
+                        <TextField
+                          {...field}
+                          fullWidth
+                          required
+                          disabled={form.isSubmitting}
+                          margin="normal"
+                          autoComplete="off"
+                          label={props.intl.formatMessage(kpiMessage.template.field.amount)}
+                          placeholder={props.intl.formatMessage(kpiMessage.template.field.amountPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           InputProps={{
@@ -227,10 +334,13 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                 disabled={props.formikBag.isSubmitting}
                 onClick={() => fields.push({
                   uid: '',
+                  categoryUid: '',
+                  categoryName: '',
                   measurementUid: '',
-                  categoryType: '',
                   target: '',
-                  weight: 0
+                  weight: 0,
+                  threshold: 0,
+                  amount: 0,
                 })}
               >
                 <GroupAdd className={props.classes.marginFarRight}/>

@@ -8,6 +8,10 @@ import {
   KPITemplateGetByIdError,
   KPITemplateGetByIdRequest,
   KPITemplateGetByIdSuccess,
+  KPITemplateGetListDispose,
+  KPITemplateGetListError,
+  KPITemplateGetListRequest,
+  KPITemplateGetListSuccess,
   KPITemplatePostError,
   KPITemplatePostRequest,
   KPITemplatePostSuccess,
@@ -50,11 +54,39 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
+function* watchGetListRequest() {
+  const worker = (action: ReturnType<typeof KPITemplateGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/kpi/templates/list?${params}`,
+      successEffects: (response: IApiResponse) => [
+        put(KPITemplateGetListSuccess(response.body)),
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(KPITemplateGetListError(response))
+      ],
+      errorEffects: (error: TypeError) => [
+        put(KPITemplateGetListError(error.message))
+      ],
+      finallyEffects: [
+        // nothing
+      ]
+    });
+  };
+
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+}
+
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPITemplateGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/templates/${action.payload.templateUid}`,
+      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdSuccess(response.body))
       ],
@@ -74,7 +106,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/kpi/templates`,
+      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdDispose()),
@@ -114,7 +146,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/kpi/templates/${action.payload.templateUid}`,
+      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdDispose()),
@@ -154,6 +186,7 @@ function* watchSwitchAccess() {
   function* worker() { 
     yield all([
       put(KPITemplateGetAllDispose()),
+      put(KPITemplateGetListDispose()),
       put(KPITemplateGetByIdDispose())
     ]);
   }
@@ -164,6 +197,7 @@ function* watchSwitchAccess() {
 function* kpiTemplateSagas() {
   yield all([
     fork(watchGetAllRequest),
+    fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

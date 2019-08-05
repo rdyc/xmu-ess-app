@@ -88,7 +88,7 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   validationSchema: Yup.object().shape<Partial<IKPICategoryFormValue>>({
     name: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.category.field.name))
-      .max(200)
+      .max(100)
       .required(),
   }),
 
@@ -182,7 +182,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
         });
 
         if (props.formMode === FormMode.New) {
-          props.history.push(`/kpi/category/form`, { uid: response.uid });
+          props.history.push(`/kpi/categories/form`, { uid: response.uid });
           props.stateUpdate({
             formMode: FormMode.Edit,
           });

@@ -120,6 +120,8 @@ const handlerCreators: HandleCreators<KPITemplateDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: KPITemplateDetailProps) => () => { 
     if (props.userState.user && props.match.params.templateUid && !props.kpiTemplateState.detail.isLoading) {
       props.kpiTemplateDispatch.loadDetailRequest({
+        companyUid: props.history.location.state.companyUid,
+        positionUid: props.history.location.state.positionUid,
         templateUid: props.match.params.templateUid
       });
     }
@@ -149,10 +151,14 @@ const handlerCreators: HandleCreators<KPITemplateDetailProps, IOwnHandler> = {
     }
 
     // define vars
+    let companyUid: string | undefined;
+    let positionUid: string | undefined;
     let templateUid: string | undefined;
 
     // get templateUid uid
     if (response.data) {
+      companyUid = response.data.companyUid;
+      positionUid = response.data.positionUid;
       templateUid = response.data.uid;
     }
 
@@ -176,7 +182,9 @@ const handlerCreators: HandleCreators<KPITemplateDetailProps, IOwnHandler> = {
       props.setDefault();
 
       props.history.push(next, { 
-        uid: templateUid 
+        companyUid, 
+        positionUid,
+        uid: templateUid, 
       });
     }
   },
@@ -229,5 +237,5 @@ export const KPITemplateDetail = compose(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  setDisplayName('LookupMileageExceptionDetail')
+  setDisplayName('KPITemplateDetail')
 )(KPITemplateDetailView);

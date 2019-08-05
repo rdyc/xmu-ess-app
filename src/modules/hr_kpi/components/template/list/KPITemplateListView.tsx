@@ -8,16 +8,16 @@ import * as React from 'react';
 
 import { IKPITemplate } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { KPITemplateSummary } from '../detail/shared/KPITemplateSummary';
 import { KPITemplateListProps } from './KPITemplateList';
 import { KPITemplateFilter } from './KPITemplateListFilter';
-import { KPITemplateSummary } from './KPITemplateSummary';
 
 export const KPITemplateListView: React.SFC<KPITemplateListProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.LookupEmployee,
+        uid: AppMenu.KPITemplate,
         parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(kpiMessage.template.page.listTitle),
         description: props.intl.formatMessage(kpiMessage.template.page.listSubHeader),
@@ -40,7 +40,7 @@ export const KPITemplateListView: React.SFC<KPITemplateListProps> = props => (
            <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/templates/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/kpi/templates/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -48,7 +48,7 @@ export const KPITemplateListView: React.SFC<KPITemplateListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/templates/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/templates/${item.uid}`, {companyUid: item.companyUid, positionUid: item.positionUid})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

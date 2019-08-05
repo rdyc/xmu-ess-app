@@ -39,7 +39,7 @@ export const KPICategoryListView: React.SFC<KPICategoryListProps> = props => (
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/category/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/kpi/categories/form`, { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
@@ -47,7 +47,7 @@ export const KPICategoryListView: React.SFC<KPICategoryListProps> = props => (
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/category/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/categories/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -65,7 +65,7 @@ export const KPICategoryListView: React.SFC<KPICategoryListProps> = props => (
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/kpi/category/form')}
+          onClick={() => props.history.push('/kpi/categories/form')}
         >
           <AddCircle/>
         </IconButton>

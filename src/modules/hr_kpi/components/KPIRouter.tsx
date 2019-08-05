@@ -34,7 +34,7 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
       component={template} 
     />
     <SecureMenuRoute 
-      path={`${props.match.path}/category`}
+      path={`${props.match.path}/categories`}
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployee} 
       component={category} 

@@ -25,12 +25,17 @@ const kpiTemplateSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(kpiMessage.template.field.uid)}
         value={props.data.uid}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.template.field.name)}
+        value={props.data.name || 'N/A'}
+      />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.template.field.company)}
+        label={props.intl.formatMessage(kpiMessage.template.field.companyUid)}
         value={props.data.company && props.data.company.name || 'N/A'}
       />
     </Grid>
@@ -38,7 +43,7 @@ const kpiTemplateSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.template.field.position)}
+        label={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
         value={props.data.position && props.data.position.name || 'N/A'}
       />
     </Grid>

@@ -30,12 +30,17 @@ const kpiTemplateInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.template.field.company)}
+          label={props.intl.formatMessage(kpiMessage.template.field.name)}
+          value={props.data.name || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(kpiMessage.template.field.companyUid)}
           value={props.data.company && props.data.company.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.template.field.position)}
+          label={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
           value={props.data.position && props.data.position.name || 'N/A'}
         />
         {

@@ -55,22 +55,45 @@ export const KPITemplateConfirm = defineMessages({
 // fields
 export const KPITemplateField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
-  company: { id: `${prefix}.field.company`},
-  position: { id: `${prefix}.field.position`},
+  companyUid: { id: `${prefix}.field.companyUid`},
+  positionUid: { id: `${prefix}.field.positionUid`},
+  name: { id: `${prefix}.field.name`},
+  namePlaceholder: { id: `${prefix}.field.name.placeholder`},
 
   // item
-  itemUid: { id: `${prefix}.field.itemUid`},
-  measurementUid: { id: `${prefix}.field.measurementUid`},
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
+  itemUid: { id: `${prefix}.field.itemUid`},
+  categoryUid: { id: `${prefix}.field.categoryUid`},
+  categoryName: { id: `${prefix}.field.categoryName`},
+  categoryNamePlaceholder: { id: `${prefix}.field.categoryName.placeholder`},
+  measurementUid: { id: `${prefix}.field.measurementUid`},
   target: { id: `${prefix}.field.target`},
-  category: { id: `${prefix}.field.category`},
+  targetPlaceholder: { id: `${prefix}.field.target.placeholder`},
   weight: { id: `${prefix}.field.weight`},
+  weightPlaceholder: { id: `${prefix}.field.weight.placeholder`},
+  threshold: { id: `${prefix}.field.threshold`},
+  thresholdPlaceholder: { id: `${prefix}.field.threshold.placeholder`},
+  amount: { id: `${prefix}.field.amount`},
+  amountPlaceholder: { id: `${prefix}.field.amount.placeholder`},
 });
 
 // helper
 export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
+      case 'uid': return KPITemplateField.uid;
+      case 'companyUid': return KPITemplateField.companyUid;
+      case 'positionUid': return KPITemplateField.positionUid;
+      case 'name': return KPITemplateField.name;
+
+      case 'itemUid': return KPITemplateField.itemUid;
+      case 'categoryUid': return KPITemplateField.categoryUid;
+      case 'categoryName': return KPITemplateField.categoryName;
+      case 'measurementUid': return KPITemplateField.measurementUid;
+      case 'target': return KPITemplateField.target;
+      case 'weight': return KPITemplateField.weight;
+      case 'threshold': return KPITemplateField.threshold;
+      case 'amount': return KPITemplateField.amount;
 
       default: return {id: field};
     }
@@ -78,7 +101,14 @@ export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fi
 
   if (type === 'fieldRequired') {
     switch (field) {
+      case 'name': return KPITemplateField.name;
 
+      case 'categoryName': return KPITemplateField.categoryNamePlaceholder;
+      case 'target': return KPITemplateField.targetPlaceholder;
+      case 'weight': return KPITemplateField.weightPlaceholder;
+      case 'threshold': return KPITemplateField.thresholdPlaceholder;
+      case 'amount': return KPITemplateField.amountPlaceholder;
+      
       default: return {id: field};
     }
   }

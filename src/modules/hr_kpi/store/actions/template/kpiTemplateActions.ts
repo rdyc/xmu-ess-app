@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IKPITemplateGetAllRequest, IKPITemplateGetByIdRequest, IKPITemplatePostRequest, IKPITemplatePutRequest } from '@kpi/classes/queries/template';
+import { IKPITemplateGetAllRequest, IKPITemplateGetByIdRequest, IKPITemplateGetListRequest, IKPITemplatePostRequest, IKPITemplatePutRequest } from '@kpi/classes/queries/template';
 import { IKPITemplate, IKPITemplateDetail } from '@kpi/classes/response/template';
 import { action } from 'typesafe-actions';
 
@@ -8,6 +8,10 @@ export const enum KPITemplateAction {
   GET_ALL_SUCCESS = '@@kpi/template/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@kpi/template/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@kpi/template/GET_ALL_DISPOSE',
+  GET_LIST_REQUEST = '@@kpi/template/GET_LIST_REQUEST',
+  GET_LIST_SUCCESS = '@@kpi/template/GET_LIST_SUCCESS',
+  GET_LIST_ERROR = '@@kpi/template/GET_LIST_ERROR',
+  GET_LIST_DISPOSE = '@@kpi/template/GET_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@kpi/template/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@kpi/template/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@kpi/template/GET_BY_ID_ERROR',
@@ -27,6 +31,12 @@ export const KPITemplateGetAllRequest = (request: IKPITemplateGetAllRequest) => 
 export const KPITemplateGetAllSuccess = (response: IResponseCollection<IKPITemplate>) => action(KPITemplateAction.GET_ALL_SUCCESS, response);
 export const KPITemplateGetAllError = (error: any) => action(KPITemplateAction.GET_ALL_ERROR, error);
 export const KPITemplateGetAllDispose = () => action(KPITemplateAction.GET_ALL_DISPOSE);
+
+// get list
+export const KPITemplateGetListRequest = (request: IKPITemplateGetListRequest) => action(KPITemplateAction.GET_LIST_REQUEST, request);
+export const KPITemplateGetListSuccess = (response: IResponseCollection<IKPITemplate>) => action(KPITemplateAction.GET_LIST_SUCCESS, response);
+export const KPITemplateGetListError = (error: any) => action(KPITemplateAction.GET_LIST_ERROR, error);
+export const KPITemplateGetListDispose = () => action(KPITemplateAction.GET_LIST_DISPOSE);
 
 // get by id
 export const KPITemplateGetByIdRequest = (request: IKPITemplateGetByIdRequest) => action(KPITemplateAction.GET_BY_ID_REQUEST, request);

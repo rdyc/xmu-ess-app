@@ -2,8 +2,9 @@ import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
   IKPITemplateGetAllRequest, 
   IKPITemplateGetByIdRequest, 
+  IKPITemplateGetListRequest, 
   IKPITemplatePostRequest, 
-  IKPITemplatePutRequest 
+  IKPITemplatePutRequest
 } from '../queries';
 import { 
   IKPICategoryGetAllRequest, 
@@ -39,6 +40,7 @@ import {
 export interface IKPIState {
   // template
   kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
+  kpiTemplateGetList: IQueryCollectionState<IKPITemplateGetListRequest, IKPITemplate>;
   kpiTemplateGetById: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail>;
   kpiTemplatePost: IQuerySingleState<IKPITemplatePostRequest, IKPITemplate>;
   kpiTemplatePut: IQuerySingleState<IKPITemplatePutRequest, IKPITemplate>;

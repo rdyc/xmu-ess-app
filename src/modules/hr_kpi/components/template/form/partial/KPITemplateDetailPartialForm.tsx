@@ -51,7 +51,7 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(kpiMessage.template.field.company),
+                label: props.intl.formatMessage(kpiMessage.template.field.companyUid),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -80,7 +80,7 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
                 escapeClearsValue={true}
                 valueString={field.value}
                 textFieldProps={{
-                  label: props.intl.formatMessage(kpiMessage.template.field.position),
+                  label: props.intl.formatMessage(kpiMessage.template.field.positionUid),
                   required: true,
                   helperText: form.touched.positionUid && form.errors.positionUid,
                   error: form.touched.positionUid && Boolean(form.errors.positionUid)
@@ -90,6 +90,26 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
                 }}
               />
             </LookupPositionOption>
+          );
+        }}
+      />
+
+      <Field
+        name={`name`}
+        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+          return (
+            <TextField
+              {...field}
+              fullWidth
+              required
+              disabled={form.isSubmitting}
+              margin="normal"
+              autoComplete="off"
+              label={props.intl.formatMessage(kpiMessage.template.field.name)}
+              placeholder={props.intl.formatMessage(kpiMessage.template.field.namePlaceholder)}
+              helperText={form.touched.name && form.errors.name}
+              error={form.touched.name && Boolean(form.errors.name)}
+            />
           );
         }}
       />

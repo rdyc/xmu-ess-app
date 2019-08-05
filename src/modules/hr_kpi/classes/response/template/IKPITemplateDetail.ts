@@ -8,6 +8,7 @@ export interface IKPITemplateDetail {
   company?: ICompany | null;
   positionUid: string;
   position?: IPosition | null;
+  name: string;
   items?: IKPITemplateItem[] | null;
   changes: IBaseChanges | null;
 }

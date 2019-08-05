@@ -152,7 +152,7 @@ const handlerCreators: HandleCreators<CategoryDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case KPICategoryUserAction.Modify:
-          next = '/kpi/category/form';
+          next = '/kpi/categories/form';
           break;
 
         default:

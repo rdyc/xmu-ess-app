@@ -7,13 +7,13 @@ import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
 import { KPITemplateDetailProps } from './KPITemplateDetail';
-import { KPITemplateInformation } from './KPITemplateInformation';
+import { KPITemplateInformation } from './shared/KPITemplateInformation';
 import { KPITemplateItem } from './shared/KPITemplateItem';
 
 export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.LookupEmployee,
+      uid: AppMenu.KPITemplate,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/templates',
       title: props.intl.formatMessage(kpiMessage.template.page.detailTitle),

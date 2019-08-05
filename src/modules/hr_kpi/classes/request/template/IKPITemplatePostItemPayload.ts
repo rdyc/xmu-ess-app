@@ -1,7 +1,10 @@
 export interface IKPITemplatePostItemPayload {
   uid?: string;
+  categoryUid: string;
+  categoryName: string;
   measurementUid: string;
-  categoryType: string;
   target: string;
   weight: number;
+  threshold?: number;
+  amount: number;
 }

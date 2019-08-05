@@ -6,8 +6,9 @@ import {
 import {
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
+  IKPITemplateGetListRequest,
   IKPITemplatePostRequest,
-  IKPITemplatePutRequest
+  IKPITemplatePutRequest,
 } from '@kpi/classes/queries';
 import { IKPITemplate, IKPITemplateDetail } from '@kpi/classes/response';
 import {
@@ -15,10 +16,12 @@ import {
   KPITemplateGetAllRequest,
   KPITemplateGetByIdDispose,
   KPITemplateGetByIdRequest,
+  KPITemplateGetListDispose,
+  KPITemplateGetListRequest,
   KPITemplatePostDispose,
   KPITemplatePostRequest,
   KPITemplatePutDispose,
-  KPITemplatePutRequest
+  KPITemplatePutRequest,
 } from '@kpi/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -41,6 +44,8 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof KPITemplateGetAllRequest;
     loadAllDispose: typeof KPITemplateGetAllDispose;
+    loadListRequest: typeof KPITemplateGetListRequest;
+    loadListDispose: typeof KPITemplateGetListDispose;
     loadDetailRequest: typeof KPITemplateGetByIdRequest;
     loadDetailDispose: typeof KPITemplateGetByIdDispose;
   };
@@ -48,9 +53,10 @@ interface PropsFromDispatch {
 
 export interface WithKPITemplate extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ kpiTemplateGetAll, kpiTemplateGetById }: IAppState) => ({
+const mapStateToProps = ({ kpiTemplateGetAll, kpiTemplateGetList, kpiTemplateGetById }: IAppState) => ({
   kpiTemplateState: {
     all: kpiTemplateGetAll,
+    list: kpiTemplateGetList,
     detail: kpiTemplateGetById
   }
 });
@@ -66,6 +72,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IKPITemplateGetAllRequest) => dispatch(KPITemplateGetAllRequest(request)),
     loadAllDispose: () => dispatch(KPITemplateGetAllDispose()),
+    loadListRequest: (request: IKPITemplateGetListRequest) => dispatch(KPITemplateGetListRequest(request)),
+    loadListDispose: () => dispatch(KPITemplateGetListDispose()),
     loadDetailRequest: (request: IKPITemplateGetByIdRequest) => dispatch(KPITemplateGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(KPITemplateGetByIdDispose()),
   }

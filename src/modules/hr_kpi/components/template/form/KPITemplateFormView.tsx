@@ -15,7 +15,7 @@ import KPITemplateItemPartialForm from './partial/KPITemplateItemPartialForm';
 export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupEmployee,
+      uid: AppMenu.KPITemplate,
       parentUid: AppMenu.Lookup,
       parentUrl: '/kpi/templates',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.page.newTitle : kpiMessage.template.page.modifyTitle),
@@ -52,8 +52,8 @@ export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
                   flexContent: props.classes.flexContent,
                   marginFarRight: props.classes.marginFarRight
                 }}
-                filterCommonSystem={props.filterCommonSystem}
-                filterMeasurement={props.filterMeasurement}
+                filterKPICategory={props.filterKPICategory}
+                filterKPIMeasurement={props.filterKPIMeasurement}
               />
             </div>
 

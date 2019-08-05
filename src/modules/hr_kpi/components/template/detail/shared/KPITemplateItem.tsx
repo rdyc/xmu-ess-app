@@ -74,7 +74,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
                 onClick={() => handleToggle(item.uid)}
               >
                 <ListItemText 
-                  primary={item.category && item.category.value} 
+                  primary={item.measurement && item.measurement.description} 
                   // secondary={item.target}
                 />
                 <ListItemSecondaryAction>
@@ -98,8 +98,29 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
                   multiline
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.category)}
-                  value={item.category ? item.category.value : 'N/A'}
+                  label={intl.formatMessage(kpiMessage.template.field.categoryUid)}
+                  value={item.category ? item.category.name : 'N/A'}
+                />
+                <TextField
+                  multiline
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  label={intl.formatMessage(kpiMessage.template.field.categoryName)}
+                  value={item.categoryName || 'N/A'}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  multiline
+                  label={intl.formatMessage(kpiMessage.template.field.measurementUid)}
+                  value={item.measurement && item.measurement.description || 'N/A'}
+                />
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  margin="dense"
+                  multiline
+                  label={intl.formatMessage(kpiMessage.measurement.field.measurementType)}
+                  value={item.measurement && item.measurement.measurement && `${item.measurement.measurementType} - ${item.measurement.measurement.value}` || 'N/A'}
                 />
                 <TextField
                   multiline
@@ -114,32 +135,17 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
                   label={intl.formatMessage(kpiMessage.template.field.weight)}
                   value={item.weight}
                 />
-                <Divider />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  label={intl.formatMessage(kpiMessage.measurement.field.uid)}
-                  value={item.measurementUid}
+                  label={intl.formatMessage(kpiMessage.template.field.threshold)}
+                  value={item.threshold}
                 />
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
-                  multiline
-                  label={intl.formatMessage(kpiMessage.measurement.field.measurementType)}
-                  value={item.measurement && item.measurement.measurement && `${item.measurement.measurementType} - ${item.measurement.measurement.value}` || 'N/A'}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  multiline
-                  label={intl.formatMessage(kpiMessage.measurement.field.description)}
-                  value={item.measurement && item.measurement.description || 'N/A'}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.measurement.field.weight)}
-                  value={item.weight}
+                  label={intl.formatMessage(kpiMessage.template.field.amount)}
+                  value={item.amount}
                 />
               </Collapse>
             </React.Fragment>

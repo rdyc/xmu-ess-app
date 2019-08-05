@@ -34,7 +34,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (categoryUid: string) => void;
 }
 
 export type KPIMeasurementOptionProps
@@ -70,13 +70,13 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
 };
 
 const handlerCreators: HandleCreators<KPIMeasurementOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: KPIMeasurementOptionProps) => () => {
+  handleOnLoadApi: (props: KPIMeasurementOptionProps) => (categoryUid: string) => {
     const { isExpired, isLoading } = props.kpiMeasurementState.list;
     const { loadListRequest } = props.kpiMeasurementDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
-        categoryUid: props.categoryUid,
+        categoryUid,
         filter: props.filter 
       });
     }
@@ -86,22 +86,69 @@ const handlerCreators: HandleCreators<KPIMeasurementOptionProps, IOwnHandler> = 
 const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> = {
   componentDidMount() {
     const { request, response } = this.props.kpiMeasurementState.list;
-
+    
     // 1st load only when request are empty
     if (!request) {
-      this.props.handleOnLoadApi();
+      if (this.props.categoryUid) {
+        this.props.handleOnLoadApi(this.props.categoryUid);
+      }
     } else {
       // 2nd load only when request filter are present
-      if (request.filter) {
-        // comparing some props
-        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+      if (request && request.filter) {
+        if (request.categoryUid && this.props.categoryUid) {
+          // comparing some props
+          const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+          const shouldUpdateCategory = !shallowEqual(request.categoryUid, this.props.categoryUid);
+    
+          // then should update the list?
+          if (shouldUpdate || shouldUpdateCategory) {
+            this.props.handleOnLoadApi(this.props.categoryUid);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
+          }
+        }
+      }
+    }
+  },
+  componentWillUpdate(nextProps: KPIMeasurementOptionProps) {
+    const { request, response } = this.props.kpiMeasurementState.list;
+
+    // if no category before, and next one is exist *this happen for field that need other field data
+    if (!this.props.categoryUid && nextProps.categoryUid) {
+      // when no data then load
+      if (!request) {
+        this.props.handleOnLoadApi(nextProps.categoryUid);
+      } else if (request) {
+        if (request.categoryUid && nextProps.categoryUid) {
+          // if request(data) is exist then compare
+          const shouldUpdate = !shallowEqual(request.categoryUid, nextProps.categoryUid);
   
-        // then should update the list?
-        if (shouldUpdate) {
-          this.props.handleOnLoadApi();
-        } else {
-          if (response && response.data) {
-            this.props.setOptions(response.data);
+          // should update the list?
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.categoryUid);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
+          }
+        }
+      }
+    }
+
+    // this used for update list when changing the filter(company) *not the 1st time load
+    if (this.props.categoryUid && nextProps.categoryUid) {
+      if (this.props.categoryUid !== nextProps.categoryUid) {
+        if (request && request.categoryUid) {
+          const shouldUpdate = !shallowEqual(request.categoryUid, nextProps.categoryUid);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.categoryUid);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
           }
         }
       }

@@ -1,6 +1,6 @@
-import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
+import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
 import { IKPITemplatePostPayload, IKPITemplatePutPayload } from '@kpi/classes/request';
 import { IKPITemplate } from '@kpi/classes/response';
@@ -34,16 +34,20 @@ import { KPITemplateFormView } from './KPITemplateFormView';
 
 interface IKPITemplateItemFormValue {
   uid?: string;
+  categoryUid: string;
+  categoryName: string;
   measurementUid: string;
-  categoryType: string;
   target: string;
   weight: number;
+  threshold?: number;
+  amount: number;
 }
 
 export interface IKPITemplateFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
+  name: string;
   items: IKPITemplateItemFormValue[];
 }
 
@@ -61,9 +65,9 @@ interface IOwnState {
   initialValues: IKPITemplateFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPITemplateFormValue>>>;
 
-  filterLookupCompany?: ILookupCompanyGetListFilter;
-  filterMeasurement: IKPIMeasurementGetListFilter;
-  filterCommonSystem: ISystemListFilter;
+  filterLookupCompany: ILookupCompanyGetListFilter;
+  filterKPICategory: IKPICategoryGetListFilter;
+  filterKPIMeasurement: IKPIMeasurementGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -98,33 +102,47 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
     uid: 'Auto Generated',
     companyUid: '',
     positionUid: '',
+    name: '',
     items: [{
       uid: '',
+      categoryUid: '',
+      categoryName: '',
       measurementUid: '',
-      categoryType: '',
       target: '',
-      weight: 0
+      weight: 0,
+      threshold: 0,
+      amount: 0,
     }]
   },
 
   validationSchema: Yup.object().shape<Partial<IKPITemplateFormValue>>({
     companyUid: Yup.string()
-      .label(props.intl.formatMessage(kpiMessage.template.field.company))
+      .label(props.intl.formatMessage(kpiMessage.template.field.companyUid))
       .required(),
 
     positionUid: Yup.string()
-      .label(props.intl.formatMessage(kpiMessage.template.field.position))
+      .label(props.intl.formatMessage(kpiMessage.template.field.positionUid))
+      .required(),
+
+    name: Yup.string()
+      .max(100)
+      .label(props.intl.formatMessage(kpiMessage.template.field.name))
       .required(),
 
     items: Yup.array()
       .of(
         Yup.object().shape({
+          categoryUid: Yup.string()
+            .label(props.intl.formatMessage(kpiMessage.template.field.categoryUid))
+            .required(),
+            
+          categoryName: Yup.string()
+          .max(100)
+          .label(props.intl.formatMessage(kpiMessage.template.field.categoryName))
+          .required(),
+
           measurementUid: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.template.field.measurementUid))
-            .required(),
-
-          categoryType: Yup.string()
-            .label(props.intl.formatMessage(kpiMessage.template.field.category))
             .required(),
 
           target: Yup.string()
@@ -136,17 +154,31 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
             .integer()
             .min(0)
             .required(),
+
+          threshold: Yup.number()
+            .label(props.intl.formatMessage(kpiMessage.template.field.threshold))
+            .integer(),
+
+          amount: Yup.number()
+            .label(props.intl.formatMessage(kpiMessage.template.field.amount))
+            .integer()
+            .min(0)
+            .required(),
         })
       )
       .min(1, props.intl.formatMessage(kpiMessage.template.field.itemsMinimum))
   }),
 
-  filterCommonSystem: {
-    orderBy: 'value',
+  filterLookupCompany: {
+    orderBy: 'name',
     direction: 'ascending'
   },
-  filterMeasurement: {
-    orderBy: 'measurementType',
+  filterKPICategory: {
+    orderBy: 'name',
+    direction: 'ascending'
+  },
+  filterKPIMeasurement: {
+    orderBy: 'description',
     direction: 'ascending'
   }
 });
@@ -165,11 +197,15 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: KPITemplateFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
+      const companyUid = props.history.location.state.companyUid;
+      const positionUid = props.history.location.state.positionUid;
       const templateUid = props.history.location.state.uid;
       const { isLoading } = props.kpiTemplateState.detail;
 
       if (user && templateUid && !isLoading) {
         props.kpiTemplateDispatch.loadDetailRequest({
+          companyUid,
+          positionUid,
           templateUid
         });
       }
@@ -186,21 +222,27 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
         const payload: IKPITemplatePostPayload = {
           companyUid: values.companyUid,
           positionUid: values.positionUid,
+          name: values.name,
           items: []
         };
 
         // fill payload items
         values.items.forEach(item => payload.items.push({
+          categoryUid: item.categoryUid,
+          categoryName: item.categoryName,
           measurementUid: item.measurementUid,
-          categoryType: item.categoryType,
           target: item.target,
-          weight: item.weight
+          weight: item.weight,
+          threshold: item.threshold,
+          amount: item.amount,
         }));
 
         promise = new Promise((resolve, reject) => {
           props.kpiTemplateDispatch.createRequest({
             resolve,
             reject,
+            companyUid: payload.companyUid,
+            positionUid: payload.positionUid,
             data: payload
           });
         });
@@ -217,16 +259,19 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
           const payload: IKPITemplatePutPayload = {
             companyUid: values.companyUid,
             positionUid: values.positionUid,
+            name: values.name,
             items: []
           };
 
           // fill payload items
           values.items.forEach(item => payload.items.push({
-            uid: item.uid,
+            categoryUid: item.categoryUid,
+            categoryName: item.categoryName,
             measurementUid: item.measurementUid,
-            categoryType: item.categoryType,
             target: item.target,
-            weight: item.weight
+            weight: item.weight,
+            threshold: item.threshold,
+            amount: item.amount,
           }));
 
           promise = new Promise((resolve, reject) => {
@@ -234,6 +279,8 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
               templateUid,
               resolve,
               reject,
+              companyUid: payload.companyUid,
+              positionUid: payload.positionUid,
               data: payload as IKPITemplatePutPayload,
             });
           });
@@ -255,7 +302,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.message.createSuccess : kpiMessage.template.message.updateSuccess, { uid: response.uid })
         });
 
-        props.history.push(`/kpi/templates/${response.uid}`);
+        props.history.push(`/kpi/templates/${response.uid}`, {companyUid: response.companyUid, positionUid: response.positionUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -295,6 +342,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
           uid: thisResponse.data.uid,
           companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
+          name: thisResponse.data.name,
           items: []
         };
 
@@ -303,10 +351,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
           thisResponse.data.items.forEach(item =>
             initialValues.items.push({
               uid: item.uid,
+              categoryUid: item.categoryUid,
+              categoryName: item.categoryName,
               measurementUid: item.measurementUid,
-              categoryType: item.categoryType,
               target: item.target,
-              weight: item.weight
+              weight: item.weight,
+              threshold: item.threshold || 0,
+              amount: item.amount,
             })
           );
         }

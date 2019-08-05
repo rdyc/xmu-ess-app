@@ -68,7 +68,7 @@ export const KPITemplateListFilterView: React.SFC<KPITemplateListFilterProps> = 
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(kpiMessage.template.field.company)}
+            primary={props.intl.formatMessage(kpiMessage.template.field.companyUid)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -88,7 +88,7 @@ export const KPITemplateListFilterView: React.SFC<KPITemplateListFilterProps> = 
 
         <ListItem button onClick={props.handleFilterPositionVisibility} disabled={props.filterPositionValue && props.filterCompany ? false : true}>
           <ListItemText 
-            primary={props.intl.formatMessage(kpiMessage.template.field.position)}
+            primary={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
             secondary={props.filterCompany && props.filterPosition && props.filterPosition.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -109,7 +109,7 @@ export const KPITemplateListFilterView: React.SFC<KPITemplateListFilterProps> = 
       </List>
 
       <FilterCompany 
-        title={props.intl.formatMessage(kpiMessage.template.field.company)}
+        title={props.intl.formatMessage(kpiMessage.template.field.companyUid)}
         hideBackdrop={true}
         isOpen={props.isFilterCompanyOpen}
         value={props.filterCompany && props.filterCompany.uid}
@@ -118,7 +118,7 @@ export const KPITemplateListFilterView: React.SFC<KPITemplateListFilterProps> = 
       />
 
       <FilterPosition
-        title={props.intl.formatMessage(kpiMessage.template.field.position)}
+        title={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
         hideBackdrop={true}
         isOpen={props.isFilterPositionOpen}
         value={props.filterPosition && props.filterPosition.uid}
