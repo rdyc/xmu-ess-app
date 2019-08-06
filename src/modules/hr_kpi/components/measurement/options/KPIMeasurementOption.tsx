@@ -18,6 +18,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+export interface IKPIMeasurementOptions {
+  [key: string]: ISelectFieldOption[];
+}
+
 interface IOwnOption {
   categoryUid: string;
   filter?: IKPIMeasurementGetListFilter;
@@ -25,7 +29,9 @@ interface IOwnOption {
 
 interface IOwnState {
   isLoading: boolean;
+  optionsList: IKPIMeasurementOptions;
   options: ISelectFieldOption[];
+  optionBlank: ISelectFieldOption[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -46,14 +52,16 @@ export type KPIMeasurementOptionProps
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   isLoading: false,
-  options: [{ label: '', value: ''}]
+  options: [{ label: '', value: ''}],
+  optionBlank: [{ label: '', value: ''}],
+  optionsList: {},
 });
 
 const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnStateUpdater> = {
   setLoading: () => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: () => (values: IKPIMeasurementList[]): Partial<IOwnState> => {
+  setOptions: (prevState: IOwnState, props: KPIMeasurementOptionProps) => (values: IKPIMeasurementList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
@@ -63,8 +71,12 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
       label: item.description 
     }));
 
+    const optionsList = prevState.optionsList;
+    optionsList[props.categoryUid] = options;
+
     return {
-      options
+      options,
+      optionsList
     };
   }
 };
@@ -85,7 +97,7 @@ const handlerCreators: HandleCreators<KPIMeasurementOptionProps, IOwnHandler> = 
 
 const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.kpiMeasurementState.list;
+    const { request, response, isLoading } = this.props.kpiMeasurementState.list;
     
     // 1st load only when request are empty
     if (!request) {
@@ -101,10 +113,10 @@ const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> =
           const shouldUpdateCategory = !shallowEqual(request.categoryUid, this.props.categoryUid);
     
           // then should update the list?
-          if (shouldUpdate || shouldUpdateCategory) {
+          if ((shouldUpdate || shouldUpdateCategory) && !isLoading) {
             this.props.handleOnLoadApi(this.props.categoryUid);
           } else {
-            if (response && response.data) {
+            if (response && response.data && !isLoading && !shouldUpdateCategory) {
               this.props.setOptions(response.data);
             }
           }
@@ -113,7 +125,7 @@ const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> =
     }
   },
   componentWillUpdate(nextProps: KPIMeasurementOptionProps) {
-    const { request, response } = this.props.kpiMeasurementState.list;
+    const { request, response, isLoading } = this.props.kpiMeasurementState.list;
 
     // if no category before, and next one is exist *this happen for field that need other field data
     if (!this.props.categoryUid && nextProps.categoryUid) {
@@ -129,7 +141,7 @@ const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> =
           if (shouldUpdate) {
             this.props.handleOnLoadApi(nextProps.categoryUid);
           } else {
-            if (response && response.data) {
+            if (response && response.data && !isLoading && !shouldUpdate) {
               this.props.setOptions(response.data);
             }
           }
@@ -143,27 +155,34 @@ const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> =
         if (request && request.categoryUid) {
           const shouldUpdate = !shallowEqual(request.categoryUid, nextProps.categoryUid);
   
-          if (shouldUpdate) {
+          if (shouldUpdate && response && response.data) {
             this.props.handleOnLoadApi(nextProps.categoryUid);
           } else {
-            if (response && response.data) {
+            if (response && response.data && !isLoading && !shouldUpdate) {
               this.props.setOptions(response.data);
             }
           }
         }
       }
     }
+
+    if (response && response.data && !isLoading) {
+      if (request && request.categoryUid !== nextProps.categoryUid && !this.props.optionsList[nextProps.categoryUid]) {
+        this.props.handleOnLoadApi(nextProps.categoryUid);
+      }
+    }
   },
   componentDidUpdate(prevProps: KPIMeasurementOptionProps) {
     const { isLoading: thisIsLoading, response: thisResponse } = this.props.kpiMeasurementState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.kpiMeasurementState.list;
+    const { request: prevRequest, isLoading: prevIsLoading, response: prevResponse } = prevProps.kpiMeasurementState.list;
+    const shouldUpdate = !shallowEqual(prevRequest && prevRequest.categoryUid || '', this.props.categoryUid);
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
     }
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data) {
+      if (thisResponse && thisResponse.data && !shouldUpdate) {
         this.props.setOptions(thisResponse.data);
       }
     }
@@ -179,8 +198,8 @@ const component: React.SFC<KPIMeasurementOptionProps> = props => {
         {
           React.cloneElement(children, { 
             isLoading: props.isLoading,
-            options: props.options,
-            value: props.options.find(option => option.value === children.props.valueString)
+            options: props.optionsList[props.categoryUid] && props.optionsList[props.categoryUid] || props.optionBlank,
+            value: props.optionsList[props.categoryUid] && props.optionsList[props.categoryUid].find(option => option.value === children.props.valueString) || props.optionBlank
           })
         }
       </React.Fragment>

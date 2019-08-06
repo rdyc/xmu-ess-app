@@ -97,6 +97,7 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                             onChange={(selected: ISelectFieldOption) => {
                               props.formikBag.setFieldValue(`items.${index}.categoryUid`, selected && selected.value || '');
                               props.formikBag.setFieldValue(`items.${index}.categoryName`, selected && selected.label || '');
+                              props.formikBag.setFieldValue(`items.${index}.measurementUid`, '');
                             }}
                           />
                         </KPICategoryOption>
@@ -134,7 +135,7 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                       const touch = getIn(form.touched, `items.${index}.measurementUid`);
 
                       return (
-                        <KPIMeasurementOption key={index} filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid}>
+                        <KPIMeasurementOption filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid}>
                           <SelectField
                             isSearchable
                             menuPlacement="auto"
