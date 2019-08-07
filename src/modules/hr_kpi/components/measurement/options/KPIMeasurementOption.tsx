@@ -30,7 +30,6 @@ interface IOwnOption {
 interface IOwnState {
   isLoading: boolean;
   optionsList: IKPIMeasurementOptions;
-  options: ISelectFieldOption[];
   optionBlank: ISelectFieldOption[];
 }
 
@@ -52,7 +51,6 @@ export type KPIMeasurementOptionProps
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   isLoading: false,
-  options: [{ label: '', value: ''}],
   optionBlank: [{ label: '', value: ''}],
   optionsList: {},
 });
@@ -75,7 +73,6 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
     optionsList[props.categoryUid] = options;
 
     return {
-      options,
       optionsList
     };
   }

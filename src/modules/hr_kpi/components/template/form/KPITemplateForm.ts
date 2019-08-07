@@ -48,6 +48,7 @@ export interface IKPITemplateFormValue {
   companyUid: string;
   positionUid: string;
   name: string;
+  totalWeight: number;
   items: IKPITemplateItemFormValue[];
 }
 
@@ -103,6 +104,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
     companyUid: '',
     positionUid: '',
     name: '',
+    totalWeight: 0,
     items: [{
       uid: '',
       categoryUid: '',
@@ -128,6 +130,11 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
       .max(100)
       .label(props.intl.formatMessage(kpiMessage.template.field.name))
       .required(),
+
+    totalWeight: Yup.number()
+      .min(100)
+      .max(100)
+      .label(props.intl.formatMessage(kpiMessage.template.field.totalWeight)),
 
     items: Yup.array()
       .of(
@@ -228,6 +235,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
 
         // fill payload items
         values.items.forEach(item => payload.items.push({
+          uid: item.uid,
           categoryUid: item.categoryUid,
           categoryName: item.categoryName,
           measurementUid: item.measurementUid,
@@ -265,6 +273,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
 
           // fill payload items
           values.items.forEach(item => payload.items.push({
+            uid: item.uid,
             categoryUid: item.categoryUid,
             categoryName: item.categoryName,
             measurementUid: item.measurementUid,
@@ -343,6 +352,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
           companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
           name: thisResponse.data.name,
+          totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           items: []
         };
 

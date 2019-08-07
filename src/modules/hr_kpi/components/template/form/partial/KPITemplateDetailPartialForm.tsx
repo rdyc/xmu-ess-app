@@ -2,6 +2,7 @@ import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
@@ -95,7 +96,7 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
       />
 
       <Field
-        name={`name`}
+        name="name"
         render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
           return (
             <TextField
@@ -112,6 +113,20 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
             />
           );
         }}
+      />
+
+      <Field
+        name="totalWeight"
+        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => (
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            {...field}
+            label={props.intl.formatMessage(kpiMessage.template.field.totalWeight)}
+            value={props.intl.formatNumber(field.value)}
+            helperText={form.touched.totalWeight && form.errors.totalWeight}
+            error={form.touched.totalWeight && Boolean(form.errors.totalWeight)}
+          />
+        )}
       />
     </CardContent>
   </Card>

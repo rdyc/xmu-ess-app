@@ -46,6 +46,17 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                       onClick={() => {
                         // remove current
                         fields.remove(index);
+
+                        // calculate total requested
+                        let totalRequest = 0;
+                        props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                          if (index !== indexItem) {
+                            totalRequest = totalRequest + requestItem.weight;
+                          } 
+                        });
+
+                        // set request
+                        props.formikBag.setFieldValue('totalWeight', totalRequest);
                       }}
                     >
                       <DeleteForever />
@@ -206,6 +217,7 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                             inputComponent: NumberFormatter,
                           }}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            let totalValue = 0;
                             let value = 0;
 
                             if (e.target.value === '') {
@@ -218,8 +230,19 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                               props.formikBag.setFieldValue(field.name, value);
                             }
                             
-                            // set value field
-                            // props.formikBag.setFieldValue(`items.${index}.weight`, value);
+                            // set actual field
+                            props.formikBag.setFieldValue(`items.${index}.weight`, value);
+
+                            // calculate total requested
+                            totalValue = value;
+                            props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                              if (index !== indexItem) {
+                                totalValue = totalValue + requestItem.weight;
+                              }                              
+                            });
+
+                            // set weight
+                            props.formikBag.setFieldValue('totalWeight', totalValue);
                           }}
                         />
                       );
