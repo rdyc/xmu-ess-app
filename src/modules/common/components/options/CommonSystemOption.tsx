@@ -50,6 +50,8 @@ const fnGetContext = (props: CommonSystemOptionProps) => {
     case 'family': return props.commonFamilyListState;
     case 'level': return props.commonLevelListState;
     case 'profession': return props.commonProfessionListState;
+    case 'kPI': return props.commonKpiListState;
+    case 'measurement': return props.commonMeasurementListState;
 
     default: return props.commonActivityListState;
   }
@@ -93,9 +95,9 @@ const stateUpdaters: StateUpdaters<CommonSystemOptionProps, IOwnState, IOwnState
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
-        
-    values.forEach(item => options.push({ 
-      value: item.type, 
+
+    values.forEach(item => options.push({
+      value: item.type,
       label: item.name
     }));
 
@@ -130,11 +132,11 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'project':
           commonDispatch.projectListRequest(request);
           break;
-          
+
         case 'site':
           commonDispatch.siteListRequest(request);
           break;
-          
+
         case 'expense':
           commonDispatch.expenseListRequest(request);
           break;
@@ -150,11 +152,11 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'destination':
           commonDispatch.destinationListRequest(request);
           break;
-        
+
         case 'purpose':
           commonDispatch.purposeListRequest(request);
           break;
-        
+
         case 'transportation':
           commonDispatch.transportationListRequest(request);
           break;
@@ -162,7 +164,7 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'limiter':
           commonDispatch.limiterListRequest(request);
           break;
-          
+
         case 'unit':
           commonDispatch.unitListRequest(request);
           break;
@@ -174,7 +176,7 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'relation':
           commonDispatch.relationListRequest(request);
           break;
-          
+
         case 'religion':
           commonDispatch.religionListRequest(request);
           break;
@@ -182,7 +184,7 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
         case 'gender':
           commonDispatch.genderListRequest(request);
           break;
-          
+
         case 'blood':
           commonDispatch.bloodListRequest(request);
           break;
@@ -223,6 +225,14 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
           commonDispatch.professionListRequest(request);
           break; 
           
+        case 'kPI':
+          commonDispatch.kpiListRequest(request);
+          break;
+
+        case 'measurement':
+          commonDispatch.measurementListRequest(request);
+          break;
+
         default:
           break;
       }
@@ -233,7 +243,7 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
 const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
   componentDidMount() {
     const { request, response } = fnGetContext(this.props);
-    
+
     // 1st load only when request are empty and have filter
     if (!request) {
       if (this.props.filter) {
@@ -269,7 +279,7 @@ const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
     const { request, response } = fnGetContext(this.props);
 
     // if no filter before, and next one is exist *this happen for field that need other field data
-    if ( !this.props.filter && nextProps.filter) {
+    if (!this.props.filter && nextProps.filter) {
 
       const filter: ISystemListRequest = {
         category: nextProps.category,
@@ -304,7 +314,7 @@ const lifeCycle: ReactLifeCycleFunctions<CommonSystemOptionProps, IOwnState> = {
 
         if (request && request.filter) {
           const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
-  
+
           if (shouldUpdate) {
             this.props.handleOnLoadApi(filter);
           } else {
@@ -339,7 +349,7 @@ const component: React.SFC<CommonSystemOptionProps> = props => {
     return (
       <React.Fragment>
         {
-          React.cloneElement(children, { 
+          React.cloneElement(children, {
             isLoading: props.isLoading,
             options: props.options,
             value: props.options.find(option => option.value === children.props.valueString)

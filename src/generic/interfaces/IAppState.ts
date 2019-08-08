@@ -3,6 +3,8 @@ import { ICommonState } from '@common/classes/states';
 import { IExpenseState } from '@expense/classes/states';
 import { IFinanceState } from '@finance/classes/states';
 import { IHomeState } from '@home/classes/states';
+import { IHrState } from '@hr/classes/states';
+import { IKPIState } from '@kpi/classes/states';
 import { IPageState } from '@layout/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
 import { IUserState } from '@layout/interfaces/IUserState';
@@ -16,6 +18,7 @@ import { ISummaryState } from '@summary/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
 import { ITravelState } from '@travel/classes/states';
 import { IInforState } from 'modules/infor/classes/states';
+import { IMarkdownState } from 'playground/markdown/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -35,6 +38,10 @@ export interface IAppState extends
   IOrganizationState,
   IHomeState,
   ISummaryState,
+  IInforState,
+  IMarkdownState,
+  IHrState,
+  IKPIState,
   IInforState {
   oidc: UserState;
   user: IUserState;

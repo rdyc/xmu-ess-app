@@ -12,4 +12,5 @@ export type CommonCategoryType =
   'relation' | 'religion' | 
   'status' | 'site' | 
   'tax' | 'training' | 'transportation' |
-  'profession' | 'competency';
+  'profession' | 'competency' |
+  'tax' | 'training' | 'transportation' | 'kPI' | 'measurement';

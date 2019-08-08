@@ -25,9 +25,11 @@ import commonFamilySagas from '@common/store/sagas/familySagas';
 import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
+import commonKpiSagas from '@common/store/sagas/kpiSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
+import commonMeasurementSagas from '@common/store/sagas/measurementSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
 import commonProfessionSagas from '@common/store/sagas/professionSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
@@ -47,7 +49,15 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
+import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
+import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrCompetencyIndicatorSagas';
+import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
+import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
+import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
+import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -94,6 +104,8 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
+import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -133,6 +145,8 @@ export function* rootSaga() {
     fork(commonLevelSagas),
     fork(commonCompetencySagas),
     fork(commonProfessionSagas),
+    fork(commonKpiSagas),
+    fork(commonMeasurementSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),
@@ -225,5 +239,20 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
+
+    // markdown
+    fork(markdownSagas),
+    fork(markdownCategorySagas),
+    
+    // competency
+    fork(hrCompetencyCategorySagas),
+    fork(hrCompetencyClusterSagas),
+    fork(hrCompetencyIndicatorSagas),
+    fork(hrCompetencyLevelSagas),
+    fork(hrCompetencyMappedSagas),
+    // kpi
+    fork(kpiTemplateSagas),
+    fork(kpiCategorySagas),
+    fork(kpiMeasurementSagas)
   ]);
 }

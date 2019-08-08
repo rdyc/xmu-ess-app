@@ -133,4 +133,11 @@ export interface ICommonState {
   commonCompetencyAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonCompetencyList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonCompetencyDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonKpiAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonKpiList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonKpiDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonMeasurementAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonMeasurementList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonMeasurementDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
