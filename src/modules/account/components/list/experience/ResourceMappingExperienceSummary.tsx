@@ -22,7 +22,7 @@ const listCompetencies = (data: IEmployeeExperienceCompetency[]) => {
     }}
   );
 
-  return competencies.join();
+  return competencies.join(', ');
 };
 
 const resourceMappingExperienceSummary: React.SFC<AllProps> = props => (

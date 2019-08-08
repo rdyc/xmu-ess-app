@@ -1,5 +1,5 @@
 import { IEmployeeExperienceAllFilter } from '@account/classes/filters/employeeExperience';
-import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
+import { IEmployeeExperience, IEmployeeExperienceCompetency } from '@account/classes/response/employeeExperience';
 import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeField';
 import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { IBasePagingFilter } from '@generic/interfaces';
@@ -44,6 +44,7 @@ interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
   handleMappingOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
+  listCompetencies: (data: IEmployeeExperienceCompetency[]) => string;
 }
 
 export type AccountEmployeeExperienceListProps 
@@ -108,6 +109,16 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
       }
     }
   },
+  listCompetencies: (props: AccountEmployeeExperienceListProps) => (data: IEmployeeExperienceCompetency[]) => {
+    const competencies: string[] = [];
+    data.map(item => {
+      if (item.competency) {
+        competencies.push(item.competency.value);
+      }}
+    );
+
+    return competencies.join(', ');
+  },
   handleOnBind: () => (item: IEmployeeExperience, index: number) => ({
     key: index,
     primary: item.uid,
@@ -117,15 +128,28 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
     quinary: `${item.start.toString()} - ${item.end.toString()}`,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleMappingOnBind: () => (item: IEmployeeExperience, index: number) => ({
-    key: index,
-    primary: item.company,
-    secondary: item.position,
-    tertiary: item.profession && item.profession.value || 'N/A',
-    quaternary: item.competencies && item.competencies.join() || 'N/A',
-    quinary: item.start.toString(),
-    senary: item.end.toString()
-  })
+  handleMappingOnBind: (props: AccountEmployeeExperienceListProps) => (item: IEmployeeExperience, index: number) => {
+    const competencies: string[] = [];
+    if (item.competencies) {
+      item.competencies.map(comp => {
+        if (comp.competency) {
+          competencies.push(comp.competency.value);
+        }}
+      );
+    }
+
+    const bind: IDataBindResult = {
+      key: index,
+      primary: item.company,
+      secondary: item.position,
+      tertiary: item.profession && item.profession.value || 'N/A',
+      quaternary: item.competencies && competencies.join(', ') || 'N/A',
+      quinary: item.start.toString(),
+      senary: item.end.toString()
+    };
+
+    return bind;
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceListProps, IOwnState> = {
