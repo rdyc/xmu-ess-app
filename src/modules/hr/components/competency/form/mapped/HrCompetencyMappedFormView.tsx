@@ -13,9 +13,9 @@ import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompany,
+      uid: AppMenu.LookupCompetencyCluster,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/company',
+      parentUrl: '/lookup/competency',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Mapped'})
     }}

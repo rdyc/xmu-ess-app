@@ -4,16 +4,16 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
-import { HrCompetencyClusterInformation } from '../cluster/HrCompetencyClusterInformation';
+// import { HrCompetencyClusterInformation } from '../cluster/HrCompetencyClusterInformation';
 import { HrCompetencyCategoryDetailProps } from './HrCompetencyCategoryDetail';
 import { HrCompetencyCategoryInformation } from './HrCompetencyCategoryInformation';
 
 export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.MileageRequest,
-      parentUid: AppMenu.Mileage,
-      parentUrl: '/hr/competency',
+      uid: AppMenu.LookupCompetencyCluster,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/competency',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Category'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
@@ -22,9 +22,9 @@ export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetai
     primary={(data: IHrCompetencyCategoryDetail) => ([
       <HrCompetencyCategoryInformation data={data} />
     ])}
-    secondary={(data: IHrCompetencyCategoryDetail) => ([
-      <HrCompetencyClusterInformation data={data.cluster} />
-    ])}
+    // secondary={(data: IHrCompetencyCategoryDetail) => ([
+    //   <HrCompetencyClusterInformation data={data.cluster} />
+    // ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu

@@ -7,15 +7,16 @@ import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import HrCategoryItem from './HrCategoryItem';
 import { HrCompetencyClusterFormProps, IClusterFormValue } from './HrCompetencyClusterForm';
 import HrCompetencyClusterPartial from './HrCompetencyClusterPartial';
 
 export const HrCompetencyClusterFormView: React.SFC<HrCompetencyClusterFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompany,
+      uid: AppMenu.LookupCompetencyCluster,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/company',
+      parentUrl: '/lookup/competencycluster',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Cluster'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Cluster'})
     }}
@@ -38,6 +39,18 @@ export const HrCompetencyClusterFormView: React.SFC<HrCompetencyClusterFormProps
                   formikBag={formikBag}
                 />
               </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <HrCategoryItem 
+                formMode={props.formMode}
+                intl={props.intl}
+                formikBag={formikBag}
+                classes={{
+                  flexContent: props.classes.flexContent,
+                  marginFarRight: props.classes.marginFarRight
+                }}
+              />
             </div>
 
             <div className={props.classes.flexColumn}>

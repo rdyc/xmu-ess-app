@@ -1,5 +1,6 @@
 import { IBaseChanges } from '@generic/interfaces';
 import { IHrCompetencyClusterList } from '../cluster/IHrCompetencyClusterList';
+import { IHrLevelItem } from './IHrLevelItem';
 
 export interface IHrCompetencyCategoryDetail {
   uid: string;
@@ -8,4 +9,5 @@ export interface IHrCompetencyCategoryDetail {
   name: string;
   description: string;
   changes?: IBaseChanges;  
+  levels: IHrLevelItem[];
 }

@@ -23,7 +23,7 @@ export const enum HrCompetencyMappedAction {
   PUT_REQUEST = '@@hr/competency/mapped/PUT_REQUEST',
   PUT_SUCCESS = '@@hr/competency/mapped/PUT_SUCCESS',
   PUT_ERROR = '@@hr/competency/mapped/PUT_ERROR',
-  PUT_DISPOSE = '@@hr/competency/mapped/DELETE_DISPOSE',
+  PUT_DISPOSE = '@@hr/competency/mapped/PUT_DISPOSE',
 }
 
 // get all

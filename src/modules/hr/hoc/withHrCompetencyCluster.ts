@@ -3,8 +3,9 @@ import {
   IHrCompetencyClusterGetAllRequest, 
   IHrCompetencyClusterGetDetailRequest, 
   IHrCompetencyClusterGetListRequest, 
+  IHrCompetencyClusterPatchRequest, 
   IHrCompetencyClusterPostRequest, 
-  IHrCompetencyClusterPutRequest 
+  IHrCompetencyClusterPutRequest
 } from '@hr/classes/queries/';
 import { IHrCompetencyCluster, IHrCompetencyClusterDetail, IHrCompetencyClusterList } from '@hr/classes/response/';
 import { 
@@ -14,10 +15,12 @@ import {
   hrCompetencyClusterGetByIdRequest, 
   hrCompetencyClusterGetListDispose, 
   hrCompetencyClusterGetListRequest, 
+  hrCompetencyClusterPatchDispose, 
+  hrCompetencyClusterPatchRequest, 
   hrCompetencyClusterPostDispose, 
   hrCompetencyClusterPostRequest, 
-  hrCompetencyClusterPutDispose, 
-  hrCompetencyClusterPutRequest 
+  hrCompetencyClusterPutDispose,
+  hrCompetencyClusterPutRequest
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof hrCompetencyClusterPostDispose;
     updateRequest: typeof hrCompetencyClusterPutRequest;
     updateDispose: typeof hrCompetencyClusterPutDispose;
+    patchRequest: typeof hrCompetencyClusterPatchRequest;
+    patchDispose: typeof hrCompetencyClusterPatchDispose;
 
     // query
     loadAllRequest: typeof hrCompetencyClusterGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(hrCompetencyClusterPostDispose()),
     updateRequest: (request: IHrCompetencyClusterPutRequest) => dispatch(hrCompetencyClusterPutRequest(request)),
     updateDispose: () => dispatch(hrCompetencyClusterPutDispose()),
+    patchRequest: (request: IHrCompetencyClusterPatchRequest) => dispatch(hrCompetencyClusterPatchRequest(request)),
+    patchDispose: () => dispatch(hrCompetencyClusterPatchDispose()),
 
     // query
     loadAllRequest: (request: IHrCompetencyClusterGetAllRequest) => dispatch(hrCompetencyClusterGetAllRequest(request)),

@@ -3,13 +3,13 @@
   "hr.shared.option.modify": "Modify",
 
   "hr.shared.page.list.title": "{state}",
-  "hr.shared.page.list.subHeader": "",
+  "hr.shared.page.list.subHeader": " ",
   "hr.shared.page.detail.title": "{state} Detail",
-  "hr.shared.page.detail.subHeader": "",
+  "hr.shared.page.detail.subHeader": " ",
   "hr.shared.page.new.title": "Add New {state}",
-  "hr.shared.page.new.subHeader": "",
+  "hr.shared.page.new.subHeader": " ",
   "hr.shared.page.modify.title": "Modify {state}",
-  "hr.shared.page.modify.subHeader": "",
+  "hr.shared.page.modify.subHeader": " ",
 
   "hr.shared.message.emptyProps": "Some props are empty",
   "hr.shared.message.create.success": "New {state} Data has been created",
@@ -44,6 +44,18 @@
   "hr.competency.field.level.placeholder": "Type any level",
   "hr.competency.field.level.required": "Level is required",
 
+  "hr.competency.field.indicator": "Indicator",
+  "hr.competency.field.indicatorNum": "Indicator - {num}",
+  "hr.competency.field.indicator.placeholder": "Type any indicator",
+  "hr.competency.field.indicator.required": "Indicator is required",
+
   "hr.competency.field.company": "Company",
-  "hr.competency.field.position": "Position"
+  "hr.competency.field.position": "Position",
+  "hr.competency.field.minCategories": "Must have at least one category",
+  "hr.competency.field.minLevels": "Must have at least one level",
+  "hr.competency.field.minIndicators": "Must have at least one indicator",
+
+  "hr.competency.field.totalCategories": "Total Categories",
+  "hr.competency.field.oneCategories": "There is {total} category",
+  "hr.competency.field.manyCategories": "There are {total} categories"
 }

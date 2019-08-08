@@ -1,6 +1,6 @@
 import { IClusterCategoryItemPayload } from './IClusterCategoryItemPayload';
 
-export interface IHrCompetencyClusterPutPayload {
+export interface IHrCompetencyClusterPatchPayload {
   name: string;
   description: string;
   categories: IClusterCategoryItemPayload[];

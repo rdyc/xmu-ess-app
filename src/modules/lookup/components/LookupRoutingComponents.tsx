@@ -1,4 +1,8 @@
 import AppMenu from '@constants/AppMenu';
+import { HrCompetencyClusterDetail } from '@hr/components/competency/detail/cluster/HrCompetencyClusterDetail';
+import { HrCompetencyCategoryForm } from '@hr/components/competency/form/category/HrCompetencyCategoryForm';
+import { HrCompetencyClusterForm } from '@hr/components/competency/form/cluster/HrCompetencyClusterForm';
+import { HrCompetencyClusterList } from '@hr/components/competency/list/cluster/HrCompetencyClusterList';
 import { COGSUploadForm } from '@infor/components/form/COGSUploadForm';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
@@ -34,7 +38,6 @@ import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import { LookupRoleForm } from './role/form/LookupRoleForm';
-// import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
@@ -151,6 +154,21 @@ const employeeLeave = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const cluster = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={HrCompetencyClusterForm} />
+    <Route path={`${props.match.path}/:clusterUid`} component={HrCompetencyClusterDetail} />
+    <Route path={`${props.match.path}`} component={HrCompetencyClusterList} />
+  </Switch>
+);
+
+const category = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={HrCompetencyCategoryForm} />
+    {/* <Route path={`${props.match.path}`} component={HrCompetencyList} /> */}
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
@@ -242,6 +260,18 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployeeLeave} 
       component={employeeLeave} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/competencycluster`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCompetencyCluster} 
+      component={cluster} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/competencycategory`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCompetencyCategory} 
+      component={category} 
     />
   </Switch>
 );

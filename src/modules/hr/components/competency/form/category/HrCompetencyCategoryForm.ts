@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyCategoryPostPayload, IHrCompetencyCategoryPutPayload } from '@hr/classes/request';
 import { IHrCompetencyCategory } from '@hr/classes/response';
 import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
@@ -29,12 +29,22 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { HrCompetencyCategoryFormView } from './HrCompetencyCategoryFormView';
+export interface ICategoryLevelFormValue {
+  levelUid?: string;
+  level: number;
+  description: string;
+  indicators: ICategoryIndicatorFormValue[];
+}
+
+export interface ICategoryIndicatorFormValue {
+  indicatorUid?: string;
+  indicatorDescription: string;
+}
 
 export interface ICategoryFormValue {
-  uid: string;
-  name: string;
-  description: string;
   clusterUid: string;
+  categoryUid: string;
+  levels: ICategoryLevelFormValue[];
 }
 
 interface IOwnRouteParams {
@@ -53,6 +63,7 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICategoryFormValue>>>;
 
   filterCluster?: IHrCompetencyClusterGetListFilter;
+  filterCategories?: IHrCompetencyCategoryGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -82,27 +93,49 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
   
   // form values
   initialValues: {
-    uid: 'Auto Generated',
-    name: '',
-    description: '',
-    clusterUid: ''
+    clusterUid: '',
+    categoryUid: '',
+    levels: []
   },
 
   // validation props
   validationSchema: Yup.object().shape<Partial<ICategoryFormValue>>({
-    name: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.name))
-      .required(),
-    description: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.description))
-      .required(),
     clusterUid: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
       .required(),
+    categoryUid: Yup.string()
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
+      .required(),
+    levels: Yup.array()
+      .of(
+        Yup.object().shape({
+          level: Yup.number()
+            .label(props.intl.formatMessage(hrMessage.competency.field.level))
+            .required(),
+          description: Yup.string()
+            .label(props.intl.formatMessage(hrMessage.competency.field.description))
+            .required(),
+          indicators: Yup.array()
+            .of(
+              Yup.object().shape({
+                indicatorDescription: Yup.string()
+                  .label(props.intl.formatMessage(hrMessage.competency.field.description))
+                  .required(),
+              })
+            )
+            .min(1, props.intl.formatMessage(hrMessage.competency.field.minIndicators))
+        })
+      )
+      .min(1, props.intl.formatMessage(hrMessage.competency.field.minLevels))
   }),
 
   // filter
   filterCluster: {
+    orderBy: 'name',
+    direction: 'ascending'
+  },
+
+  filterCategories: {
     orderBy: 'name',
     direction: 'ascending'
   }
@@ -139,9 +172,15 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: IHrCompetencyCategoryPostPayload = {
-          name: values.name,
-          description: values.description,
+          levels: []
         };
+
+        // fill levels
+        values.levels.forEach(item => payload.levels.push({
+          level: item.level,
+          description: item.description,
+          indicators: item.indicators
+        }));
 
         // set the promise
         promise = new Promise((resolve, reject) => {
@@ -162,9 +201,16 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         // must have categoryUid
         if (categoryUid && clusterUid) {
           const payload: IHrCompetencyCategoryPutPayload = {
-            name: values.name,
-            description: values.description
+            levels: []
           };
+
+          // fill levels
+          values.levels.forEach(item => payload.levels.push({
+            levelUid: item.levelUid,
+            level: item.level,
+            description: item.description,
+            indicators: item.indicators
+          }));
 
           // set the promise
           promise = new Promise((resolve, reject) => {
@@ -196,7 +242,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         });
 
         // redirect to detail
-        props.history.push(`/hr/competency/category/${response.uid}`);
+        props.history.push(`/lookup/competencycategory`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -234,12 +280,20 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyCategoryFormProps,
       if (thisResponse && thisResponse.data) {
         // define initial values
         const initialValues: ICategoryFormValue = {
-          uid: thisResponse.data.uid,
-          name: thisResponse.data.name,
-          description: thisResponse.data.description,
-          clusterUid: thisResponse.data.clusterUid
+          categoryUid: thisResponse.data.uid,
+          clusterUid: thisResponse.data.clusterUid,
+          levels: []
         };
 
+        // fill levels
+        thisResponse.data.levels.forEach(item =>
+          initialValues.levels.push({
+            levelUid: item.levelUid,
+            level: item.level,
+            description: item.description,
+            indicators: item.indicators
+          })  
+        );
         this.props.setInitialValues(initialValues);
       }
     }

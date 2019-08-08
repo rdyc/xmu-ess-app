@@ -1,6 +1,7 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyClusterUserAction } from '@hr/classes/types';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -30,6 +31,8 @@ interface IOwnRouteParams {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 interface IOwnState {
@@ -37,11 +40,19 @@ interface IOwnState {
   shouldLoad: boolean;
   isAdmin: boolean;
   action?: IHrCompetencyClusterUserAction;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
   setShouldLoad: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type HrCompetencyClusterDetailProps
@@ -73,7 +84,9 @@ const createProps: mapper<HrCompetencyClusterDetailProps, IOwnState> = (props: H
     
     return { 
       isAdmin,
-      shouldLoad: false
+      shouldLoad: false,
+      dialogFullScreen: false,
+      dialogOpen: false
   };
 };
 
@@ -83,6 +96,24 @@ const stateUpdaters: StateUpdaters<HrCompetencyClusterDetailProps, IOwnState, IO
   }),
   setOptions: (prevState: IOwnState, props: HrCompetencyClusterDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
+  }),
+  setModify: (prevState: IOwnState, props: HrCompetencyClusterDetailProps) => (): Partial<IOwnState> => ({
+    action: IHrCompetencyClusterUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Cluster'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'Cluster'}),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
+  }),
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+    action: undefined,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogTitle: undefined,
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
@@ -104,10 +135,57 @@ const handlerCreators: HandleCreators<HrCompetencyClusterDetailProps, IOwnHandle
         props.setShouldLoad();
         break;
 
+      case IHrCompetencyClusterUserAction.Modify:
+        props.setModify();
+        break;
+
       default:
         break;
     }
-  }
+  },
+  handleOnCloseDialog: (props: HrCompetencyClusterDetailProps) => () => {
+    props.setDefault();
+  },
+  handleOnConfirm: (props: HrCompetencyClusterDetailProps) => () => {
+    const { response } = props.hrCompetencyClusterState.detail;
+
+    // skipp untracked action or empty response
+    if (!props.action || !response) {
+      return;
+    }
+
+    // define vars
+    let clusterUid: string | undefined;
+
+    // get project uid
+    if (response.data) {
+      clusterUid = response.data.uid;
+    }
+
+    // actions with new page
+    const actions = [
+      IHrCompetencyClusterUserAction.Modify
+    ];
+
+    if (actions.indexOf(props.action) !== -1) {
+      let next: string = '404';
+
+      switch (props.action) {
+        case IHrCompetencyClusterUserAction.Modify:
+          next = '/lookup/competencycluster/form';
+          break;
+
+        default:
+          break;
+      }
+
+      props.setDefault();
+
+      props.history.push(next, { 
+        uid: clusterUid 
+      });
+    }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyClusterDetailProps, IOwnState> = {
@@ -132,6 +210,12 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyClusterDetailProps, IOwnSt
           id: IHrCompetencyClusterUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
+          visible: true,
+        },
+        {
+          id: IHrCompetencyClusterUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
           visible: true,
         }
       ];

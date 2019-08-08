@@ -4,16 +4,16 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
-import { HrCompetencyCategoryInformation } from '../category/HrCompetencyCategoryInformation';
+// import { HrCompetencyCategoryInformation } from '../category/HrCompetencyCategoryInformation';
 import { HrCompetencyMappedDetailProps } from './HrCompetencyMappedDetail';
 import { HrCompetencyMappedInformation } from './HrCompetencyMappedInformation';
 
 export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.MileageRequest,
-      parentUid: AppMenu.Mileage,
-      parentUrl: '/hr/competency',
+      uid: AppMenu.LookupCompetencyCluster,
+      parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/competency',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
@@ -23,7 +23,7 @@ export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailPro
       <HrCompetencyMappedInformation data={data} />
     ])}
     secondary={(data: IHrCompetencyMappedDetail) => ([
-      <HrCompetencyCategoryInformation data={data.category} />
+      // <HrCompetencyCategoryInformation data={data.category} />
     ])}
     appBarComponent={
       props.menuOptions &&

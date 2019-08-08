@@ -214,6 +214,14 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU69':
+      path = '/lookup/competencycluster';
+      break;
+
+    case 'MNU78':
+      path = '/lookup/competencycategory';
+      break;
+
     default:
       path = '/home/dashboard';
       break;

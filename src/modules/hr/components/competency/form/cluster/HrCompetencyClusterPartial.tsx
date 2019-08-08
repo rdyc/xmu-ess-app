@@ -58,6 +58,7 @@ const HrCompetencyClusterPartial: React.ComponentType<HrCompetencyClusterPartial
             {...field}
             fullWidth
             required
+            multiline
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"

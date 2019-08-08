@@ -23,7 +23,7 @@ export const enum HrCompetencyCategoryAction {
   PUT_REQUEST = '@@hr/competency/category/PUT_REQUEST',
   PUT_SUCCESS = '@@hr/competency/category/PUT_SUCCESS',
   PUT_ERROR = '@@hr/competency/category/PUT_ERROR',
-  PUT_DISPOSE = '@@hr/competency/category/DELETE_DISPOSE',
+  PUT_DISPOSE = '@@hr/competency/category/PUT_DISPOSE',
 }
 
 // get all

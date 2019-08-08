@@ -8,6 +8,7 @@ import {
   IHrCompetencyClusterGetAllRequest,
   IHrCompetencyClusterGetDetailRequest,
   IHrCompetencyClusterGetListRequest,
+  IHrCompetencyClusterPatchRequest,
   IHrCompetencyClusterPostRequest,
   IHrCompetencyClusterPutRequest,
   IHrCompetencyIndicatorGetAllRequest,
@@ -24,7 +25,7 @@ import {
   IHrCompetencyMappedGetDetailRequest,
   IHrCompetencyMappedGetListRequest,
   IHrCompetencyMappedPostRequest,
-  IHrCompetencyMappedPutRequest
+  IHrCompetencyMappedPutRequest,
 } from '../queries';
 import {
   IHrCompetencyCategory,
@@ -58,6 +59,7 @@ export interface IHrState {
   hrCompetencyClusterGetById: IQuerySingleState<IHrCompetencyClusterGetDetailRequest, IHrCompetencyClusterDetail>;
   hrCompetencyClusterPost: IQuerySingleState<IHrCompetencyClusterPostRequest, IHrCompetencyCluster>;
   hrCompetencyClusterPut: IQuerySingleState<IHrCompetencyClusterPutRequest, IHrCompetencyCluster>;
+  hrCompetencyClusterPatch: IQuerySingleState<IHrCompetencyClusterPatchRequest, IHrCompetencyCluster>;
   
   // level
   hrCompetencyLevelGetAll: IQueryCollectionState<IHrCompetencyLevelGetAllRequest, IHrCompetencyLevel>;

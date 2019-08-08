@@ -12,6 +12,9 @@ import {
   hrCompetencyClusterGetListError,
   hrCompetencyClusterGetListRequest,
   hrCompetencyClusterGetListSuccess,
+  hrCompetencyClusterPatchError,
+  hrCompetencyClusterPatchRequest,
+  hrCompetencyClusterPatchSuccess,
   hrCompetencyClusterPostError,
   hrCompetencyClusterPostRequest,
   hrCompetencyClusterPostSuccess,
@@ -176,6 +179,46 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchPatchRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyClusterPatchRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'patch',
+      path: `/v1/competency/clusters/${action.payload.clusterUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(hrCompetencyClusterGetByIdDispose()),
+        put(hrCompetencyClusterGetAllDispose()),
+        put(hrCompetencyClusterPatchSuccess(response.body)),
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(hrCompetencyClusterPatchError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(hrCompetencyClusterPatchError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PATCH_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() {
     yield all([
@@ -195,6 +238,7 @@ function* hrCompetencyClusterSagas() {
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchPatchRequest),
     fork(watchSwitchAccess)
   ]);
 }

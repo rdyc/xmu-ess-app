@@ -1,5 +1,12 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IHrCompetencyClusterGetAllRequest, IHrCompetencyClusterGetDetailRequest, IHrCompetencyClusterGetListRequest, IHrCompetencyClusterPostRequest, IHrCompetencyClusterPutRequest } from 'modules/hr/classes/queries';
+import { 
+  IHrCompetencyClusterGetAllRequest, 
+  IHrCompetencyClusterGetDetailRequest, 
+  IHrCompetencyClusterGetListRequest,
+  IHrCompetencyClusterPatchRequest, 
+  IHrCompetencyClusterPostRequest, 
+  IHrCompetencyClusterPutRequest
+} from 'modules/hr/classes/queries';
 import { IHrCompetencyCluster, IHrCompetencyClusterDetail, IHrCompetencyClusterList } from 'modules/hr/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -23,7 +30,11 @@ export const enum HrCompetencyClusterAction {
   PUT_REQUEST = '@@hr/competency/cluster/PUT_REQUEST',
   PUT_SUCCESS = '@@hr/competency/cluster/PUT_SUCCESS',
   PUT_ERROR = '@@hr/competency/cluster/PUT_ERROR',
-  PUT_DISPOSE = '@@hr/competency/cluster/DELETE_DISPOSE',
+  PUT_DISPOSE = '@@hr/competency/cluster/PUT_DISPOSE',
+  PATCH_REQUEST = '@@hr/competency/cluster/PATCH_REQUEST',
+  PATCH_SUCCESS = '@@hr/competency/cluster/PATCH_SUCCESS',
+  PATCH_ERROR = '@@hr/competency/cluster/PATCH_ERROR',
+  PATCH_DISPOSE = '@@hr/competency/cluster/PATCH_DISPOSE',
 }
 
 // get all
@@ -55,3 +66,9 @@ export const hrCompetencyClusterPutRequest = (request: IHrCompetencyClusterPutRe
 export const hrCompetencyClusterPutSuccess = (response: IResponseSingle<IHrCompetencyCluster>) => action(HrCompetencyClusterAction.PUT_SUCCESS, response);
 export const hrCompetencyClusterPutError = (error: any) => action(HrCompetencyClusterAction.PUT_ERROR, error);
 export const hrCompetencyClusterPutDispose = () => action(HrCompetencyClusterAction.PUT_DISPOSE);
+
+// patch
+export const hrCompetencyClusterPatchRequest = (request: IHrCompetencyClusterPatchRequest) => action(HrCompetencyClusterAction.PATCH_REQUEST, request);
+export const hrCompetencyClusterPatchSuccess = (response: IResponseSingle<IHrCompetencyCluster>) => action(HrCompetencyClusterAction.PATCH_SUCCESS, response);
+export const hrCompetencyClusterPatchError = (error: any) => action(HrCompetencyClusterAction.PATCH_ERROR, error);
+export const hrCompetencyClusterPatchDispose = () => action(HrCompetencyClusterAction.PATCH_DISPOSE);

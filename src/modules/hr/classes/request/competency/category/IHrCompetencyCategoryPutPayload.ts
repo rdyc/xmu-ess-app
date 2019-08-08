@@ -1,4 +1,5 @@
+import { ICategoryLevelItemPayload } from './ICategoryLevelItemPayload';
+
 export interface IHrCompetencyCategoryPutPayload {
-  name: string;
-  description: string;
+  levels: ICategoryLevelItemPayload[];
 }

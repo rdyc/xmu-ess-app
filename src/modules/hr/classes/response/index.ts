@@ -2,11 +2,14 @@
 export * from './competency/cluster/IHrCompetencyCluster';
 export * from './competency/cluster/IHrCompetencyClusterList';
 export * from './competency/cluster/IHrCompetencyClusterDetail';
+export * from './competency/cluster/IHrCategoryItem';
 
 // category
 export * from './competency/category/IHrCompetencyCategory';
 export * from './competency/category/IHrCompetencyCategoryList';
 export * from './competency/category/IHrCompetencyCategoryDetail';
+export * from './competency/category/IHrIndicatorItem';
+export * from './competency/category/IHrLevelItem';
 
 // level
 export * from './competency/level/IHrCompetencyLevel';

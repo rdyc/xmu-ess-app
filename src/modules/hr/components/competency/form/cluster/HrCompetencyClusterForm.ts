@@ -26,13 +26,21 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
+// import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
 
 import { HrCompetencyClusterFormView } from './HrCompetencyClusterFormView';
+
+export interface IClusterCategoryFormValue {
+  uid?: string;
+  name: string;
+  description: string;
+}
 
 export interface IClusterFormValue {
   uid: string;
   name: string;
   description: string;
+  categories: IClusterCategoryFormValue[];
 }
 
 interface IOwnRouteParams {
@@ -61,6 +69,7 @@ interface IOwnHandler {
 
 export type HrCompetencyClusterFormProps
   = WithHrCompetencyCluster
+  // & WithHrCompetencyCategory
   & WithMasterPage
   & WithUser
   & WithStyles<typeof styles>
@@ -79,7 +88,8 @@ const createProps: mapper<HrCompetencyClusterFormProps, IOwnState> = (props: HrC
   initialValues: {
     uid: 'Auto Generated',
     name: '',
-    description: ''
+    description: '',
+    categories: []
   },
 
   // validation props
@@ -90,6 +100,19 @@ const createProps: mapper<HrCompetencyClusterFormProps, IOwnState> = (props: HrC
     description: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.name))
       .required(),
+
+    categories: Yup.array()
+      .of(
+        Yup.object().shape({
+          name: Yup.string()
+            .label(props.intl.formatMessage(hrMessage.competency.field.name))
+            .required(),
+          description: Yup.string()
+            .label(props.intl.formatMessage(hrMessage.competency.field.description))
+            .required()
+        })
+      )
+      .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories))
   })
 });
 
@@ -124,7 +147,14 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
         const payload: IHrCompetencyClusterPostPayload = {
           name: values.name,
           description: values.description,
+          categories: []
         };
+
+        // fill categories
+        values.categories.forEach(item => payload.categories.push({
+          name: item.name,
+          description: item.description
+        }));
 
         // set the promise
         promise = new Promise((resolve, reject) => {
@@ -144,12 +174,20 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
         if (clusterUid) {
           const payload: IHrCompetencyClusterPutPayload = {
             name: values.name,
-            description: values.description
+            description: values.description,
+            categories: []
           };
+
+          // fill categories
+          values.categories.forEach(item => payload.categories.push({
+            categoryUid: item.uid,
+            name: item.name,
+            description: item.description
+          }));
 
           // set the promise
           promise = new Promise((resolve, reject) => {
-            props.hrCompetencyClusterDispatch.updateRequest({
+            props.hrCompetencyClusterDispatch.patchRequest({
               clusterUid,
               resolve,
               reject,
@@ -176,7 +214,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
         });
 
         // redirect to detail
-        props.history.push(`/hr/competency/cluster/${response.uid}`);
+        props.history.push(`/lookup/competencycluster/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -216,8 +254,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyClusterFormProps, 
         const initialValues: IClusterFormValue = {
           uid: thisResponse.data.uid,
           name: thisResponse.data.name,
-          description: thisResponse.data.description
+          description: thisResponse.data.description,
+          categories: []
         };
+
+        // fill categories
+        thisResponse.data.categories.forEach(item => initialValues.categories.push({
+          uid: item.uid,
+          name: item.name,
+          description: item.description
+        }));
 
         this.props.setInitialValues(initialValues);
       }
@@ -230,6 +276,7 @@ export const HrCompetencyClusterForm = compose<HrCompetencyClusterFormProps, IOw
   withMasterPage,
   withRouter,
   withHrCompetencyCluster,
+  // withHrCompetencyCategory,
   withUser,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

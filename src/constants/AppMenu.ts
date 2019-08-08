@@ -67,7 +67,9 @@ enum AppMenu {
   ImageGallery = 'MNU62',
   Common = 'MNU53',
   AchievementChart = 'MNU63',
-  COGSUpload = 'MNU64'
+  COGSUpload = 'MNU64',
+  LookupCompetencyCluster = 'MNU69',
+  LookupCompetencyCategory = 'MNU78'
 }
 
 export default AppMenu;
