@@ -164,6 +164,17 @@ const KPITemplateItemPartialForm: React.ComponentType<KPITemplateItemPartialForm
                             onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.measurementUid`)}
                             onChange={(selected: ISelectFieldOption) => {
                               props.formikBag.setFieldValue(`items.${index}.measurementUid`, selected && selected.value || '');
+                              props.formikBag.setFieldValue(`items.${index}.weight`, selected && selected.data && selected.data.weight || 0);
+
+                              let totalValue = selected && selected.data && selected.data.weight || 0;
+                              props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                                if (index !== indexItem) {
+                                  totalValue = totalValue + requestItem.weight;
+                                }                              
+                              });
+  
+                              // set weight
+                              props.formikBag.setFieldValue('totalWeight', totalValue);
                             }}
                           />
                         </KPIMeasurementOption>

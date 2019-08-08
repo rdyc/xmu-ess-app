@@ -15,7 +15,7 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
     info={{
       uid: AppMenu.KPICategory,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/kpi/category',
+      parentUrl: '/kpi/categories',
       title: props.intl.formatMessage(kpiMessage.category.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.category.page.detailSubHeader),
     }}

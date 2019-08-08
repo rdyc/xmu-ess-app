@@ -16,7 +16,7 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
     info={{
       uid: AppMenu.KPICategory,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/kpi/category',
+      parentUrl: '/kpi/categories',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.page.newTitle : kpiMessage.category.page.modifyTitle),
       description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.page.newSubHeader : kpiMessage.category.page.modifySubHeader)
     }}

@@ -66,7 +66,8 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
         
     values.forEach(item => options.push({ 
       value: item.uid, 
-      label: item.description 
+      label: item.description,
+      data: item
     }));
 
     const optionsList = prevState.optionsList;
@@ -179,7 +180,7 @@ const lifeCycle: ReactLifeCycleFunctions<KPIMeasurementOptionProps, IOwnState> =
     }
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data && !shouldUpdate) {
+      if (thisResponse && thisResponse.data && !shouldUpdate && !this.props.optionsList[this.props.categoryUid]) {
         this.props.setOptions(thisResponse.data);
       }
     }
