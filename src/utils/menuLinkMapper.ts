@@ -221,6 +221,26 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU78':
       path = '/lookup/competencycategory';
       break;
+      
+    case 'MNU67':
+      path = '/kpi/categories';
+      break;
+
+    case 'MNU68':
+      path = '/kpi/templates';
+      break;
+
+    case 'MNU73':
+      path = '/kpi/employee';
+      break;
+
+    case 'MNU74':
+      path = '/kpi/managerinput';
+      break;
+
+    case 'MNU75':
+      path = '/kpi/hrinput';
+      break;
 
     default:
       path = '/home/dashboard';

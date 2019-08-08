@@ -24,9 +24,11 @@ import commonFamilySagas from '@common/store/sagas/familySagas';
 import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
+import commonKpiSagas from '@common/store/sagas/kpiSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
+import commonMeasurementSagas from '@common/store/sagas/measurementSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
@@ -51,6 +53,9 @@ import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrC
 import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
 import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
+import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
+import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -134,6 +139,8 @@ export function* rootSaga() {
     fork(commonDepartmentSagas),
     fork(commonFamilySagas),
     fork(commonLevelSagas),
+    fork(commonKpiSagas),
+    fork(commonMeasurementSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),
@@ -232,6 +239,10 @@ export function* rootSaga() {
     fork(hrCompetencyClusterSagas),
     fork(hrCompetencyIndicatorSagas),
     fork(hrCompetencyLevelSagas),
-    fork(hrCompetencyMappedSagas)
+    fork(hrCompetencyMappedSagas),
+    // kpi
+    fork(kpiTemplateSagas),
+    fork(kpiCategorySagas),
+    fork(kpiMeasurementSagas)
   ]);
 }
