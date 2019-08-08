@@ -125,4 +125,12 @@ export interface ICommonState {
   commonLevelAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonLevelList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLevelDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonKpiAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonKpiList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonKpiDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonMeasurementAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonMeasurementList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonMeasurementDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
