@@ -121,6 +121,7 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             {...field}
+            disabled={props.formikBag.isSubmitting}
             label={props.intl.formatMessage(kpiMessage.template.field.totalWeight)}
             value={props.intl.formatNumber(field.value)}
             helperText={form.touched.totalWeight && form.errors.totalWeight}
