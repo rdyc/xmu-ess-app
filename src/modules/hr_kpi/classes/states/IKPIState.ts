@@ -1,10 +1,14 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IKPITemplateGetAllRequest, 
-  IKPITemplateGetByIdRequest, 
-  IKPITemplateGetListRequest, 
-  IKPITemplatePostRequest, 
-  IKPITemplatePutRequest
+  IEmployeeKPIGetAllRequest, 
+  IEmployeeKPIGetByIdRequest, 
+  IEmployeeKPIPostRequest, 
+  IEmployeeKPIPutRequest, 
+  IKPITemplateGetAllRequest,
+  IKPITemplateGetByIdRequest,
+  IKPITemplateGetListRequest,
+  IKPITemplatePostRequest,
+  IKPITemplatePutRequest,
 } from '../queries';
 import { 
   IKPICategoryGetAllRequest, 
@@ -23,8 +27,10 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IKPITemplate, 
-  IKPITemplateDetail 
+  IEmployeeKPI, 
+  IEmployeeKPIDetail,
+  IKPITemplate,
+  IKPITemplateDetail,
 } from '../response';
 import { 
   IKPICategory, 
@@ -38,6 +44,12 @@ import {
 } from '../response/measurement';
 
 export interface IKPIState {
+  // employee
+  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
+  employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
+  employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
+  employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
+
   // template
   kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
   kpiTemplateGetList: IQueryCollectionState<IKPITemplateGetListRequest, IKPITemplate>;
