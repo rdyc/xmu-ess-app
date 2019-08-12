@@ -1,13 +1,12 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
-import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
-import { IHrCompetencyMapped } from '@hr/classes/response';
+import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { Menus } from '@lookup/classes/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -35,8 +34,10 @@ export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  clusterUid: string;
-  categoryUid: string;
+
+  // clusterUid: string;
+  // categoryUid: string;
+  categories: Menus[];
 }
 
 interface IOwnRouteParams {
@@ -55,7 +56,7 @@ interface IOwnState {
   
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  filterCategory?: IHrCompetencyCategoryGetListFilter;
+  // filterCategory?: IHrCompetencyCategoryGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -69,6 +70,7 @@ interface IOwnHandler {
 
 export type HrCompetencyMappedFormProps
   = WithHrCompetencyMapped
+  & WithHrCompetencyCluster
   & WithMasterPage
   & WithUser
   & WithStyles<typeof styles>
@@ -86,10 +88,11 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   // form values
   initialValues: {
     uid: 'Auto Generated',
-    categoryUid: '',
-    clusterUid: '',
+    // categoryUid: '',
+    // clusterUid: '',
     companyUid: '',
-    positionUid: ''
+    positionUid: '',
+    categories: []
   },
 
   // validation props
@@ -99,13 +102,7 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
       .required(),
     positionUid: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
-      .required(),
-    clusterUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
-      .required(),
-    categoryUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}))
-      .required(),
+      .required()
   }),
 
   // filter
@@ -118,16 +115,11 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   filterCluster: {
     orderBy: 'name',
     direction: 'ascending'
-  },
-
-  filterCategory: {
-    orderBy: 'name',
-    direction: 'ascending'
   }
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedFormProps, IOwnState, IOwnStateUpdater> = {
-  setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
+  setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   })
 };
@@ -146,115 +138,221 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
       }
     }
   },
-  handleOnSubmit: (props: HrCompetencyMappedFormProps) => (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => {
-    const { user } = props.userState;
-    let promise = new Promise((resolve, reject) => undefined);
+  handleOnSubmit: () => () => {
+    console.log('Submit');
+    // const { user } = props.userState;
+    // let promise = new Promise((resolve, reject) => undefined);
 
-    if (user) {
-      // New
-      if (props.formMode === FormMode.New) {
-        // fill payload
-        const payload: IHrCompetencyMappedPostPayload = {
-          positionUid: values.positionUid,
-          categoryUid: values.categoryUid
-        };
+    // if (user) {
+    //   // New
+    //   if (props.formMode === FormMode.New) {
+    //     // fill payload
+    //     const payload: IHrCompetencyMappedPostPayload = {
+    //       positionUid: values.positionUid,
+    //       categoryUid: values.categoryUid
+    //     };
 
-        // set the promise
-        promise = new Promise((resolve, reject) => {
-          props.hrCompetencyMappedDispatch.createRequest({
-            resolve,
-            reject,
-            data: payload
-          });
-        });
-      }
+    //     // set the promise
+    //     promise = new Promise((resolve, reject) => {
+    //       props.hrCompetencyMappedDispatch.createRequest({
+    //         resolve,
+    //         reject,
+    //         data: payload
+    //       });
+    //     });
+    //   }
 
-      // Edit
-      if (props.formMode === FormMode.Edit) {
-        const mappedUid = props.history.location.state.uid;
+    //   // Edit
+    //   if (props.formMode === FormMode.Edit) {
+    //     const mappedUid = props.history.location.state.uid;
 
-        // must have mappedUid
-        if (mappedUid) {
-          const payload: IHrCompetencyMappedPutPayload = {
-            positionUid: values.positionUid,
-            categoryUid: values.categoryUid
-          };
+    //     // must have mappedUid
+    //     if (mappedUid) {
+    //       const payload: IHrCompetencyMappedPutPayload = {
+    //         positionUid: values.positionUid,
+    //         categoryUid: values.categoryUid
+    //       };
 
-          // set the promise
-          promise = new Promise((resolve, reject) => {
-            props.hrCompetencyMappedDispatch.updateRequest({
-              mappedUid,
-              resolve,
-              reject,
-              data: payload
-            });
-          });
-        }
-      }
-    }
+    //       // set the promise
+    //       promise = new Promise((resolve, reject) => {
+    //         props.hrCompetencyMappedDispatch.updateRequest({
+    //           mappedUid,
+    //           resolve,
+    //           reject,
+    //           data: payload
+    //         });
+    //       });
+    //     }
+    //   }
+    // }
 
     // handling promise
-    promise
-      .then((response: IHrCompetencyMapped) => {
+    // promise
+    //   .then((response: IHrCompetencyMapped) => {
         
-        // set submitting status
-        actions.setSubmitting(false);
+    //     // set submitting status
+    //     actions.setSubmitting(false);
 
-        // clear form status
-        actions.setStatus();
+    //     // clear form status
+    //     actions.setStatus();
 
-        // show flash message
-        props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', uid: response.uid })
-        });
+    //     // show flash message
+    //     props.masterPage.flashMessage({
+    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', uid: response.uid })
+    //     });
 
-        // redirect to detail
-        props.history.push(`/hr/competency/mapped/${response.uid}`);
-      })
-      .catch((error: IValidationErrorResponse) => {
-        // set submitting status
-        actions.setSubmitting(false);
+    //     // redirect to detail
+    //     props.history.push(`/lookup/competencymapped/${response.uid}`);
+    //   })
+    //   .catch((error: IValidationErrorResponse) => {
+    //     // set submitting status
+    //     actions.setSubmitting(false);
         
-        // set form status
-        actions.setStatus(error);
+    //     // set form status
+    //     actions.setStatus(error);
         
-        // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
-            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
-          );
-        }
+    //     // error on form fields
+    //     if (error.errors) {
+    //       error.errors.forEach(item => 
+    //         actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+    //       );
+    //     }
 
-        // console.log(error.errors);
+    //     // console.log(error.errors);
 
-        // show flash message
-        props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
-        });
-      });
+    //     // show flash message
+    //     props.masterPage.flashMessage({
+    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+    //     });
+    //   });
   }
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, IOwnState> = {
   componentDidMount() {
-    //
+    const { loadListRequest } = this.props.hrCompetencyClusterDispatch;
+    const { response } = this.props.hrCompetencyClusterState.list;
+
+    if (!response) {
+      loadListRequest({
+        filter: {
+          orderBy: 'name',
+          direction: 'ascending'
+        }
+      });
+    } else if (response && response.data) {
+      const categoriesList: Menus[] = [];
+      response.data.map(item => {
+        categoriesList.push({
+          uid: item.uid,
+          parentUid: '',
+          name: item.name || '',
+          isAccess: false
+        });
+
+        if (item.categories.length >= 1) {
+          item.categories.map(category => {
+            categoriesList.push({
+              uid: category.uid,
+              parentUid: item.uid,
+              name: category.name,
+              isAccess: false
+            });
+          });
+        }
+      });
+
+      const initialValues: IMappedFormValue = {
+        uid: 'Auto generated',
+        companyUid: '',
+        positionUid: '',
+        categories: categoriesList
+      };
+
+      this.props.setInitialValues(initialValues);
+    }
+  },
+  componentWillUpdate(nextProps: HrCompetencyMappedFormProps) {
+    const { response: thisResponse } = this.props.hrCompetencyClusterState.list;
+    const { response: nextResponse } = nextProps.hrCompetencyClusterState.list;
+
+    if (this.props.formMode === FormMode.New) {
+      if (thisResponse !== nextResponse) {
+        if (nextResponse && nextResponse.data) {
+          const categoriesList: Menus[] = [];
+          nextResponse.data.map(item => {
+            categoriesList.push({
+              uid: item.uid,
+              parentUid: '',
+              name: item.name || '',
+              isAccess: false
+            });
+    
+            if (item.categories.length >= 1) {
+              item.categories.map(category => {
+                categoriesList.push({
+                  uid: category.uid,
+                  parentUid: item.uid,
+                  name: category.name,
+                  isAccess: false
+                });
+              });
+            }
+          });
+    
+          const initialValues: IMappedFormValue = {
+            uid: 'Auto generated',
+            companyUid: '',
+            positionUid: '',
+            categories: categoriesList
+          };
+    
+          this.props.setInitialValues(initialValues);
+        }
+      }
+    }
   },
   componentDidUpdate(prevProps: HrCompetencyMappedFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyMappedState.detail;
     const { response: prevResponse } = prevProps.hrCompetencyMappedState.detail;
+    const { response: clusterList } = this.props.hrCompetencyClusterState.list;
+    const { formMode } = this.props;
     
-    if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data) {
-        // define initial values
-        const initialValues: IMappedFormValue = {
-          uid: thisResponse.data.uid,
-          companyUid: thisResponse.data.position.companyUid,
-          positionUid: thisResponse.data.positionUid,
-          clusterUid: thisResponse.data.category.clusterUid,
-          categoryUid: thisResponse.data.categoryUid,
-        };
-
-        this.props.setInitialValues(initialValues);
+    if (formMode === FormMode.Edit) {
+      if (thisResponse !== prevResponse) {
+        if (thisResponse && thisResponse.data) {
+          const categoriesList: Menus[] = [];
+          if (clusterList && clusterList.data) {
+            clusterList.data.map(item => {
+              categoriesList.push({
+                uid: item.uid,
+                parentUid: '',
+                name: item.name,
+                isAccess: false
+              });
+  
+              if (item.categories.length >= 1) {
+                item.categories.map(category => {
+                  categoriesList.push({
+                    uid: category.uid,
+                    parentUid: item.uid,
+                    name: category.name,
+                    isAccess: false
+                  });
+                });
+              }
+            });
+          }
+          // define initial values
+          const initialValues: IMappedFormValue = {
+            uid: thisResponse.data.uid,
+            companyUid: thisResponse.data.position.companyUid,
+            positionUid: thisResponse.data.positionUid,
+            categories: categoriesList
+          };
+  
+          this.props.setInitialValues(initialValues);
+        }
       }
     }
   }
@@ -265,6 +363,7 @@ export const HrCompetencyMappedForm = compose<HrCompetencyMappedFormProps, IOwnO
   withMasterPage,
   withRouter,
   withHrCompetencyMapped,
+  withHrCompetencyCluster,
   withUser,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

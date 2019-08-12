@@ -1,19 +1,19 @@
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyMappedDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
-// import { HrCompetencyCategoryInformation } from '../category/HrCompetencyCategoryInformation';
 import { HrCompetencyMappedDetailProps } from './HrCompetencyMappedDetail';
 import { HrCompetencyMappedInformation } from './HrCompetencyMappedInformation';
 
 export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.LookupCompetencyCluster,
+      uid: AppMenu.LookupCompetencyMapped,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competency',
+      parentUrl: '/lookup/competencymapped',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
@@ -21,9 +21,6 @@ export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailPro
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IHrCompetencyMappedDetail) => ([
       <HrCompetencyMappedInformation data={data} />
-    ])}
-    secondary={(data: IHrCompetencyMappedDetail) => ([
-      // <HrCompetencyCategoryInformation data={data.category} />
     ])}
     appBarComponent={
       props.menuOptions &&
@@ -34,5 +31,16 @@ export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailPro
         onSelected={props.handleOnSelectedMenu}
       />
     }
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </PreviewPage>
 );

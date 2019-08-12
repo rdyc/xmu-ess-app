@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
@@ -10,8 +10,6 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { HrCompetencyCategoryOption } from '../../options/HrCompetencyCategoryOption';
-import { HrCompetencyClusterOption } from '../../options/HrCompetencyClusterOption';
 import { IMappedFormValue } from './HrCompetencyMappedForm';
 
 type HrCompetencyMappedPartialProps = {
@@ -19,7 +17,6 @@ type HrCompetencyMappedPartialProps = {
   formikBag: FormikProps<IMappedFormValue>;
   intl: InjectedIntl;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  filterCategory?: IHrCompetencyCategoryGetListFilter;
   filterCompany?: ILookupCompanyGetListFilter;
 };
 
@@ -98,7 +95,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
         )}
       />
 
-      <Field
+      {/* <Field
         name="clusterUid"
         render={({ field, form }: FieldProps<IMappedFormValue>) => (
           <HrCompetencyClusterOption filter={props.filterCluster}>
@@ -151,7 +148,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
             />
           </HrCompetencyCategoryOption>
         )}
-      />
+      /> */}
     </CardContent>
   </Card>
 );

@@ -1,8 +1,8 @@
 import { IBasePagingFilter } from '@generic/interfaces';
-import { IHrCompetencyClusterGetAllFilter } from '@hr/classes/filters';
-import { IHrCompetencyCluster } from '@hr/classes/response';
+import { IHrCompetencyMappedGetAllFilter } from '@hr/classes/filters';
+import { IHrCompetencyMapped } from '@hr/classes/response';
 import { IHrCompetencyField } from '@hr/classes/types';
-import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
+import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -23,7 +23,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { HrCompetencyClusterListView } from './HrCompetencyClusterListView';
+import { HrCompetencyMappedListView } from './HrCompetencyMappedListView';
 
 interface IOwnOption {
   
@@ -40,10 +40,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IHrCompetencyCluster, index: number) => IDataBindResult;
+  handleOnBind: (item: IHrCompetencyMapped, index: number) => IDataBindResult;
 }
 
-export type HrCompetencyClusterListProps
+export type HrCompetencyMappedListProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -52,7 +52,7 @@ export type HrCompetencyClusterListProps
   & RouteComponentProps
   & WithStyles<typeof styles>
   & WithUser
-  & WithHrCompetencyCluster;
+  & WithHrCompetencyMapped;
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
   const state: IOwnState = {
@@ -65,16 +65,16 @@ const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
   return state;
 };
 
-const stateUpdaters: StateUpdaters<HrCompetencyClusterListProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<HrCompetencyMappedListProps, IOwnState, IOwnStateUpdater> = {
 };
 
-const handlerCreators: HandleCreators<HrCompetencyClusterListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HrCompetencyClusterListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { loadAllRequest } = props.hrCompetencyClusterDispatch;
-    const { isExpired, isLoading, request } = props.hrCompetencyClusterState.all;
+const handlerCreators: HandleCreators<HrCompetencyMappedListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: HrCompetencyMappedListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+    const { loadAllRequest } = props.hrCompetencyMappedDispatch;
+    const { isExpired, isLoading, request } = props.hrCompetencyMappedState.all;
 
     if (props.userState.user && !isLoading) {
-      const filter: IHrCompetencyClusterGetAllFilter = {
+      const filter: IHrCompetencyMappedGetAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -94,9 +94,9 @@ const handlerCreators: HandleCreators<HrCompetencyClusterListProps, IOwnHandler>
       }
     }
   },
-  handleOnLoadApiSearch: (props: HrCompetencyClusterListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.hrCompetencyClusterState.all;
-    const { loadAllRequest } = props.hrCompetencyClusterDispatch;
+  handleOnLoadApiSearch: (props: HrCompetencyMappedListProps) => (find?: string, findBy?: string) => {
+    const { isLoading, request } = props.hrCompetencyMappedState.all;
+    const { loadAllRequest } = props.hrCompetencyMappedDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -119,24 +119,24 @@ const handlerCreators: HandleCreators<HrCompetencyClusterListProps, IOwnHandler>
       }
     }
   },
-  handleOnBind: () => (item: IHrCompetencyCluster, index: number) => ({
+  handleOnBind: () => (item: IHrCompetencyMapped, index: number) => ({
     key: index,
-    primary: item.name,
-    secondary: item.description,
-    tertiary: `${item.categories.length} categories`,
-    quaternary: '',
+    primary: item.uid,
+    secondary: item.position.company.name,
+    tertiary: item.position.name,
+    quaternary: item.category.name,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 };
 
-export const HrCompetencyClusterList = compose<HrCompetencyClusterListProps, IOwnOption>(
-  setDisplayName('HrCompetencyClusterList'),
+export const HrCompetencyMappedList = compose<HrCompetencyMappedListProps, IOwnOption>(
+  setDisplayName('HrCompetencyMappedList'),
   withUser,
   withRouter,
-  withHrCompetencyCluster,
+  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   withStyles(styles)
-)(HrCompetencyClusterListView);
+)(HrCompetencyMappedListView);

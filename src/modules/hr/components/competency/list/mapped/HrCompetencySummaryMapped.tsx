@@ -1,4 +1,4 @@
-import { IHrCompetencyCluster } from '@hr/classes/response';
+import { IHrCompetencyMapped } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -9,35 +9,28 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IHrCompetencyCluster;
+  data: IHrCompetencyMapped;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const hrCompetencySummaryCluster: React.SFC<AllProps> = props => (
+const hrCompetencySummaryMapped: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
-      {/* <TextField
+    <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Cluster'})}
-        value={props.data.uid}
-      /> */}
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.name)}
-        value={props.data.name}
+        label={props.intl.formatMessage(hrMessage.competency.field.company)}
+        value={props.data.position.company.name}
       />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.totalCategories)}
-        value={props.data.categories.length < 2 ?
-          props.intl.formatMessage(hrMessage.competency.field.oneCategories, {total: props.data.categories.length})  : 
-          props.intl.formatMessage(hrMessage.competency.field.manyCategories, {total: props.data.categories.length}) }
+        label={props.intl.formatMessage(hrMessage.competency.field.position)}
+        value={props.data.position.name}
       />
     </Grid>
 
@@ -45,8 +38,8 @@ const hrCompetencySummaryCluster: React.SFC<AllProps> = props => (
       <TextField
         multiline
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.description)}
-        value={props.data.description}
+        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'})}
+        value={props.data.category.name}
       />
     </Grid>
 
@@ -74,6 +67,6 @@ const hrCompetencySummaryCluster: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const HrCompetencySummaryCluster = compose<AllProps, OwnProps>(
+export const HrCompetencySummaryMapped = compose<AllProps, OwnProps>(
   injectIntl
-)(hrCompetencySummaryCluster);
+)(hrCompetencySummaryMapped);

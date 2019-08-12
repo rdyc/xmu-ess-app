@@ -7,15 +7,16 @@ import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { HrCompetencyMappedCategoriesForm } from './HrCompetencyMappedCategoriesForm';
 import { HrCompetencyMappedFormProps, IMappedFormValue } from './HrCompetencyMappedForm';
 import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
 
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompetencyCluster,
+      uid: AppMenu.LookupCompetencyMapped,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competency',
+      parentUrl: '/lookup/competencymapped',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Mapped'})
     }}
@@ -37,8 +38,16 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   intl={props.intl}
                   formikBag={formikBag}
                   filterCluster={props.filterCluster}
-                  filterCategory={props.filterCategory}
                   filterCompany={props.filterCompany}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrCompetencyMappedCategoriesForm 
+                  intl={props.intl}
+                  formikBag={formikBag}
                 />
               </div>
             </div>

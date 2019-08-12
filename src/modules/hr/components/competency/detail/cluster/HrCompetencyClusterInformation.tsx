@@ -29,12 +29,12 @@ const hrCompetencyClusterInformation: React.SFC<AllProps> = props => {
         // subheader={intl.formatMessage(hrMessage.request.field.subHeader)}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Cluster'})}
           value={data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
