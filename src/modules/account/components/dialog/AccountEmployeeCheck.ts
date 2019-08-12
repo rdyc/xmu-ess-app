@@ -190,6 +190,19 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeCheckProps, IOwnState> 
         this.props.handleOnLoadApi();
       }
     }
+    const { response } = this.props.accountEmployeeState.list;
+    const { itemCheck } = this.props;
+    if (itemCheck.length === 0 && response && response.data) {
+      response.data.map(item => {
+        itemCheck.push({
+          employee: item,
+          isCheck: false
+        });
+      });
+      this.props.stateUpdate({
+        itemCheck
+      });
+    }
   },
   componentDidUpdate(prevProps: AccountEmployeeCheckProps) {
     const { response } = this.props.accountEmployeeState.list;
