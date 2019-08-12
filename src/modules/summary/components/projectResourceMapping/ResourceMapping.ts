@@ -49,7 +49,7 @@ interface IOwnState extends IResourceMappingFilterResult {
   isEmployeeOpen: boolean;
 
   // filter
-  isStartup: boolean;
+  isFilterOpen: boolean;
   isSummary: boolean;
 
   // data chart
@@ -74,12 +74,16 @@ interface IOwnHandlers {
   handleChartData: (data: any) => void;
   handleChartSummaryData: (data: any) => void;
   handleEmployeeData: (data: any) => void;
+
+  // filter
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
-  setFilterApplied: StateHandler<IOwnState>;
   setSummary: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
 }
 
 export type ResourceMappingProps = WithSummary &
@@ -122,14 +126,15 @@ const createProps: mapper<ResourceMappingProps, IOwnState> = (
     isDetailSumOpen: false,
     
     isSummary: false,
-    isStartup: true,
     companyUid: '',
     year: undefined,
     
     chartData: undefined,
+    isFilterOpen: true,
   };
 
   if (request && request.filter) {
+    state.isFilterOpen = false,
     state.companyUid = request.filter.companyUid,
     state.year = request.filter.year,
     state.competencyTypes = request.filter.competencyTypes,
@@ -147,26 +152,24 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
   }),
   setFilterApplied: () => (filter: IResourceMappingFilterResult) => ({
     ...filter,
-    page: 1
+    isFilterOpen: false
   }),
   setSummary: () => (checked: boolean) => ({
     isSummary: checked
   }),
-  // setSummaryData: () => (summaryData: IResourceMappingSummary[]) => ({
-  //   summaryData
-  // })
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
+  }),
 };
 
 const handlerCreators: HandleCreators<ResourceMappingProps, IOwnHandlers> = {
+  handleFilterVisibility: (props: ResourceMappingProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
   handleChangeFilter: (props: ResourceMappingProps) => (
     filter: IResourceMappingFilterResult
   ) => {
     props.setFilterApplied(filter);
-    if (props.isStartup) {
-      props.stateUpdate({
-        isStartup: false
-      });
-    }
     filter.summary ? props.setSummary(true) : props.setSummary(false);
   },
   handleReloadData: (props: ResourceMappingProps) => () => {

@@ -19,7 +19,6 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
     handleChartData,
     handleEmployeeData,
     handleOpenEmployee,
-    isStartup,
     year,
     employeeData
   } = props;
@@ -27,7 +26,6 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
   const render = (
     <React.Fragment>
       <ResourceMappingFilter
-        isAdmin={props.isAdmin}
         initialProps={{
           companyUid: props.companyUid,
           year: props.year,
@@ -39,10 +37,8 @@ export const ResourceMappingView: React.SFC<ResourceMappingProps> = props => {
         isLoading={isLoading}
         onClickSync={handleReloadData}
         onApply={handleChangeFilter}
-        isStartup={isStartup}
-        // isSummary={props.isSummary}
-        // handleSummary={props.handleSummary}
-        // setSummary={props.setSummary}
+        isOpen={props.isFilterOpen}
+        onClose={props.handleFilterVisibility}
       />
       <Paper square elevation={1}>
       {
