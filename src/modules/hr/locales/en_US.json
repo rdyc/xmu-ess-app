@@ -57,5 +57,6 @@
 
   "hr.competency.field.totalCategories": "Total Categories",
   "hr.competency.field.oneCategories": "There is {total} category",
-  "hr.competency.field.manyCategories": "There are {total} categories"
+  "hr.competency.field.manyCategories": "There are {total} categories",
+  "hr.competency.field.cluster.required": "Cluster is required"
 }

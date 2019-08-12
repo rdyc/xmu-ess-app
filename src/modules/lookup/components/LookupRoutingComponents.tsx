@@ -1,9 +1,11 @@
 import AppMenu from '@constants/AppMenu';
+import { HrCompetencyCategoryDetail } from '@hr/components/competency/detail/category/HrCompetencyCategoryDetail';
 import { HrCompetencyClusterDetail } from '@hr/components/competency/detail/cluster/HrCompetencyClusterDetail';
 import { HrCompetencyMappedDetail } from '@hr/components/competency/detail/mapped/HrCompetencyMappedDetail';
 import { HrCompetencyCategoryForm } from '@hr/components/competency/form/category/HrCompetencyCategoryForm';
 import { HrCompetencyClusterForm } from '@hr/components/competency/form/cluster/HrCompetencyClusterForm';
 import { HrCompetencyMappedForm } from '@hr/components/competency/form/mapped/HrCompetencyMappedForm';
+import { HrCompetencyCategoryList } from '@hr/components/competency/list/category/HrCompetencyCategoryList';
 import { HrCompetencyClusterList } from '@hr/components/competency/list/cluster/HrCompetencyClusterList';
 import { HrCompetencyMappedList } from '@hr/components/competency/list/mapped/HrCompetencyMappedList';
 import { COGSUploadForm } from '@infor/components/form/COGSUploadForm';
@@ -168,8 +170,9 @@ const cluster = (props: RouteComponentProps) => (
 
 const category = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={HrCompetencyCategoryForm} />
-    {/* <Route path={`${props.match.path}`} component={HrCompetencyList} /> */}
+    <Route path={`${props.match.path}/form`} component={HrCompetencyCategoryForm} />
+    <Route path={`${props.match.path}/:clusterUid/categories/:categoryUid`} component={HrCompetencyCategoryDetail} />
+    <Route path={`${props.match.path}`} component={HrCompetencyCategoryList} />
   </Switch>
 );
 

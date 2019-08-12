@@ -184,14 +184,15 @@ const handlerCreators: HandleCreators<HrCompetencyListProps, IOwnHandler> = {
     const { isExpired, isLoading, request } = props.hrCompetencyCategoryState.all;
     const { clusterUid } = props;
 
-    if (props.userState.user && !isLoading) {
+    if (props.userState.user && !isLoading && clusterUid) {
       const filter: IHrCompetencyCategoryGetAllFilter = {
+        clusterUid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
-        size: params && params.size || request && request.filter && request.filter.size
+        size: params && params.size || request && request.filter && request.filter.size,
       };
 
       // when request is defined, then compare the filter props

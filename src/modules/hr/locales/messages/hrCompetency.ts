@@ -50,6 +50,8 @@ export const hrCompetencyField = defineMessages({
   totalCategories: { id: `${prefix}.field.totalCategories`},
   oneCategories: { id: `${prefix}.field.oneCategories`},
   manyCategories: { id: `${prefix}.field.manyCategories`},
+  
+  clusterRequired: { id: `${prefix}.field.cluster.required`},
 });
 
 // helper

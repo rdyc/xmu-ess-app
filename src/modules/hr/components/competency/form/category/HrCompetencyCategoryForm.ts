@@ -188,6 +188,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
             resolve,
             reject,
             clusterUid: values.clusterUid,
+            categoryUid: values.categoryUid,
             data: payload
           });
         });
@@ -206,7 +207,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
           // fill levels
           values.levels.forEach(item => payload.levels.push({
-            levelUid: item.levelUid,
+            levelUid: item.levelUid || '',
             level: item.level,
             description: item.description,
             indicators: item.indicators
@@ -214,7 +215,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
           // set the promise
           promise = new Promise((resolve, reject) => {
-            props.hrCompetencyCategoryDispatch.updateRequest({
+            props.hrCompetencyCategoryDispatch.patchRequest({
               clusterUid,
               categoryUid,
               resolve,

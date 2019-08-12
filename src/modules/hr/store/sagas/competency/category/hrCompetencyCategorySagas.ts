@@ -12,6 +12,9 @@ import {
   hrCompetencyCategoryGetListError,
   hrCompetencyCategoryGetListRequest,
   hrCompetencyCategoryGetListSuccess,
+  hrCompetencyCategoryPatchError,
+  hrCompetencyCategoryPatchRequest,
+  hrCompetencyCategoryPatchSuccess,
   hrCompetencyCategoryPostError,
   hrCompetencyCategoryPostRequest,
   hrCompetencyCategoryPostSuccess,
@@ -100,7 +103,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/competency/clusters/${action.payload.clusterUid}/categories`,
+      path: `/v1/competency/clusters/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyCategoryGetByIdDispose()),
@@ -176,6 +179,46 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchPatchRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyCategoryPatchRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'patch',
+      path: `/v1/competency/clusters/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(hrCompetencyCategoryGetByIdDispose()),
+        put(hrCompetencyCategoryGetAllDispose()),
+        put(hrCompetencyCategoryPatchSuccess(response.body)),
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(hrCompetencyCategoryPatchError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(hrCompetencyCategoryPatchError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() {
     yield all([
@@ -195,6 +238,7 @@ function* hrCompetencyCategorySagas() {
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchPatchRequest),
     fork(watchSwitchAccess)
   ]);
 }
