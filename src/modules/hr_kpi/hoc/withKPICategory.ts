@@ -7,6 +7,7 @@ import {
   IKPICategoryGetAllRequest, 
   IKPICategoryGetDetailRequest,
   IKPICategoryGetListRequest,   
+  IKPICategoryMeasurementPostRequest,
   IKPICategoryPostRequest,
   IKPICategoryPutRequest
 } from '@kpi/classes/queries/category';
@@ -18,6 +19,8 @@ import {
   KPICategoryGetByIdRequest, 
   KPICategoryGetListDispose,
   KPICategoryGetListRequest, 
+  KPICategoryMeasurementPostDispose,
+  KPICategoryMeasurementPostRequest,
   KPICategoryPostDispose,
   KPICategoryPostRequest,
   KPICategoryPutDispose,
@@ -39,6 +42,8 @@ interface PropsFromDispatch {
     // command
     createRequest: typeof KPICategoryPostRequest;
     createDispose: typeof KPICategoryPostDispose;
+    measurementCreateRequest: typeof KPICategoryMeasurementPostRequest;
+    measurementCreateDispose: typeof KPICategoryMeasurementPostDispose;
     updateRequest: typeof KPICategoryPutRequest;
     updateDispose: typeof KPICategoryPutDispose;
 
@@ -67,6 +72,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // command
     createRequest: (request: IKPICategoryPostRequest) => dispatch(KPICategoryPostRequest(request)),
     createDispose: () => dispatch(KPICategoryPostDispose()),
+    measurementCreateRequest: (request: IKPICategoryMeasurementPostRequest) => dispatch(KPICategoryMeasurementPostRequest(request)),
+    measurementCreateDispose: () => dispatch(KPICategoryMeasurementPostDispose()),
     updateRequest: (request: IKPICategoryPutRequest) => dispatch(KPICategoryPutRequest(request)),
     updateDispose: () => dispatch(KPICategoryPutDispose()),
     

@@ -14,8 +14,9 @@ import {
   IKPICategoryGetAllRequest, 
   IKPICategoryGetDetailRequest, 
   IKPICategoryGetListRequest, 
+  IKPICategoryMeasurementPostRequest, 
   IKPICategoryPostRequest, 
-  IKPICategoryPutRequest 
+  IKPICategoryPutRequest,
 } from '../queries/category';
 import { 
   IKPIMeasurementDeleteRequest, 
@@ -40,7 +41,7 @@ import {
 import { 
   IKPIMeasurement, 
   IKPIMeasurementDetail, 
-  IKPIMeasurementList 
+  IKPIMeasurementList,
 } from '../response/measurement';
 
 export interface IKPIState {
@@ -71,5 +72,6 @@ export interface IKPIState {
   kpiCategoryGetList: IQueryCollectionState<IKPICategoryGetListRequest, IKPICategoryList>;
   kpiCategoryGetById: IQuerySingleState<IKPICategoryGetDetailRequest, IKPICategoryDetail>;
   kpiCategoryPost: IQuerySingleState<IKPICategoryPostRequest, IKPICategory>;
+  kpiCategoryMeasurementPost: IQuerySingleState<IKPICategoryMeasurementPostRequest, IKPICategory>;
   kpiCategoryPut: IQuerySingleState<IKPICategoryPutRequest, IKPICategory>;
 }
