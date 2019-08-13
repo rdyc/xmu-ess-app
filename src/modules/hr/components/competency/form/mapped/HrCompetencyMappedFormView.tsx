@@ -10,6 +10,7 @@ import * as React from 'react';
 import { HrCompetencyMappedCategoriesForm } from './HrCompetencyMappedCategoriesForm';
 import { HrCompetencyMappedFormProps, IMappedFormValue } from './HrCompetencyMappedForm';
 import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
+import { HrCompetencyMappedSummary } from './HrCompetencyMappedSummary';
 
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
@@ -41,18 +42,6 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   filterCompany={props.filterCompany}
                 />
               </div>
-            </div>
-
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <HrCompetencyMappedCategoriesForm 
-                  intl={props.intl}
-                  formikBag={formikBag}
-                />
-              </div>
-            </div>
-
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Mapped'})}
@@ -69,6 +58,24 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrCompetencyMappedCategoriesForm 
+                  intl={props.intl}
+                  formikBag={formikBag}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrCompetencyMappedSummary 
+                  intl={props.intl}
+                  formikBag={formikBag}
                 />
               </div>
               <div className={props.classes.flexContent}>
