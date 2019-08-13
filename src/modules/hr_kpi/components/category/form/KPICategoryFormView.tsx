@@ -23,8 +23,6 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
     state={props.kpiCategoryState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
-    <div className={props.classes.flexRow}>
-      <div className={props.classes.flexColumn}>
         <Formik
           enableReinitialize
           initialValues={props.initialValues}
@@ -32,46 +30,55 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
           onSubmit={props.handleOnSubmit}
           render={(formikBag: FormikProps<IKPICategoryFormValue>) => (
             <Form>
-              <div className={props.classes.flexContent}>
-                <KPICategoryDetailPartialForm
-                  formMode={props.formMode}
-                  formikBag={formikBag}
-                  intl={props.intl}
-                  filterCommonSystem={props.filterCommonSystem}
-                />
+              <div className={props.classes.flexRow}>
+                <div className={props.classes.flexColumn}>
+                  <div className={props.classes.flexContent}>
+                    <KPICategoryDetailPartialForm
+                      formMode={props.formMode}
+                      formikBag={formikBag}
+                      intl={props.intl}
+                      filterCommonSystem={props.filterCommonSystem}
+                    />
+                  </div>
+                </div>
+                <div className={props.classes.flexColumn}>
+                  <div className={props.classes.flexContent}>
+                    <SubmissionForm
+                      title={props.intl.formatMessage(kpiMessage.category.submission.form)}
+                      className={props.classes.flexContent}
+                      formikProps={formikBag}
+                      buttonLabelProps={{
+                        reset: props.intl.formatMessage(layoutMessage.action.reset),
+                        submit: props.intl.formatMessage(layoutMessage.action.submit),
+                        processing: props.intl.formatMessage(layoutMessage.text.processing)
+                      }}
+                      confirmationDialogProps={{
+                        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.dialog.createTitle : kpiMessage.category.dialog.modifyTitle),
+                        message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.dialog.createDescription : kpiMessage.category.dialog.modifyDescription),
+                        labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                        labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+                      }}
+                      disableButtons={props.isItemEditing || props.initialValues.items.length === 0}
+                    />
+                  </div>
+                  <div className={props.classes.flexContent}>
+                    <FormikJsonValues formikBag={formikBag} />
+                  </div>
+                </div>
               </div>
-              <div className={props.classes.flexContent}>
-                <SubmissionForm
-                  title={props.intl.formatMessage(kpiMessage.category.submission.form)}
-                  className={props.classes.flexContent}
-                  formikProps={formikBag}
-                  buttonLabelProps={{
-                    reset: props.intl.formatMessage(layoutMessage.action.reset),
-                    submit: props.intl.formatMessage(layoutMessage.action.submit),
-                    processing: props.intl.formatMessage(layoutMessage.text.processing)
-                  }}
-                  confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.dialog.createTitle : kpiMessage.category.dialog.modifyTitle),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.dialog.createDescription : kpiMessage.category.dialog.modifyDescription),
-                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
-                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                  }}
+              <div className={props.classes.flexRow}>
+                <KPIMeasurementForm 
+                  categoryUid={props.initialValues.uid}
+                  isItemEditing={props.isItemEditing}
+                  handleSetIsItemEditing={props.handleSetIsItemEditing}
+                  parentFormMode={props.formMode}
+                  handleAddItem={props.handleAddItem}
+                  handleRemoveItem={props.handleRemoveItem}
+                  handleSaveItem={props.handleSaveItem}
                 />
-              </div>
-
-              <div className={props.classes.flexContent}>
-                <FormikJsonValues formikBag={formikBag} />
               </div>
             </Form>
           )}
         />
-      </div>
-      {
-        props.formMode === FormMode.Edit &&
-        <div className={props.classes.flexColumn}>
-            <KPIMeasurementForm categoryUid={props.initialValues.uid}/>
-        </div>
-      }
-    </div>
   </FormPage>
 );

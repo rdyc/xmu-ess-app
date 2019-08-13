@@ -1,9 +1,9 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IEmployeeKPIGetAllRequest, 
-  IEmployeeKPIGetByIdRequest, 
-  IEmployeeKPIPostRequest, 
-  IEmployeeKPIPutRequest, 
+  // IEmployeeKPIGetAllRequest, 
+  // IEmployeeKPIGetByIdRequest, 
+  // IEmployeeKPIPostRequest, 
+  // IEmployeeKPIPutRequest, 
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -28,8 +28,8 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IEmployeeKPI, 
-  IEmployeeKPIDetail,
+  // IEmployeeKPI, 
+  // IEmployeeKPIDetail,
   IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
@@ -46,10 +46,10 @@ import {
 
 export interface IKPIState {
   // employee
-  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
-  employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
-  employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
-  employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
+  // employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
+  // employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
+  // employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
+  // employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
 
   // template
   kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;

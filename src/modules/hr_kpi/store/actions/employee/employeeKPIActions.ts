@@ -1,9 +1,9 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IEmployeeKPIGetAllRequest, IEmployeeKPIGetByIdRequest, IEmployeeKPIGetListRequest, IEmployeeKPIPostRequest, IEmployeeKPIPutRequest } from '@kpi/classes/queries/employee';
+import { IEmployeeKPIGetAllRequest, IEmployeeKPIGetByIdRequest, IEmployeeKPIPostRequest, IEmployeeKPIPutRequest } from '@kpi/classes/queries/employee';
 import { IEmployeeKPI, IEmployeeKPIDetail } from '@kpi/classes/response/employee';
 import { action } from 'typesafe-actions';
 
-export const enum employeeKPIAction {
+export const enum EmployeeKPIAction {
   GET_ALL_REQUEST = '@@kpi/employee/GET_ALL_REQUEST',
   GET_ALL_SUCCESS = '@@kpi/employee/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@kpi/employee/GET_ALL_ERROR',

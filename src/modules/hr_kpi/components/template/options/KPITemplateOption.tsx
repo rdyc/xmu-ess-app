@@ -1,5 +1,5 @@
-import { IKPITemplateGetListFilter } from '@kpi/classes/filter/category';
-import { IKPITemplateList } from '@kpi/classes/response/category';
+import { IKPITemplateGetListFilter } from '@kpi/classes/filter/template';
+import { IKPITemplate } from '@kpi/classes/response/template';
 import { WithKPITemplate, withKPITemplate } from '@kpi/hoc/withKPITemplate';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
@@ -52,7 +52,7 @@ const stateUpdaters: StateUpdaters<KPITemplateOptionProps, IOwnState, IOwnStateU
   setLoading: () => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: () => (values: IKPITemplateList[]): Partial<IOwnState> => {
+  setOptions: () => (values: IKPITemplate[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
@@ -70,8 +70,8 @@ const stateUpdaters: StateUpdaters<KPITemplateOptionProps, IOwnState, IOwnStateU
 
 const handlerCreators: HandleCreators<KPITemplateOptionProps, IOwnHandler> = {
   handleOnLoadApi: (props: KPITemplateOptionProps) => () => {
-    const { isExpired, isLoading } = props.kpiCategoryState.list;
-    const { loadListRequest } = props.kpiCategoryDispatch;
+    const { isExpired, isLoading } = props.kpiTemplateState.list;
+    const { loadListRequest } = props.kpiTemplateDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
@@ -83,7 +83,7 @@ const handlerCreators: HandleCreators<KPITemplateOptionProps, IOwnHandler> = {
 
 const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response } = this.props.kpiCategoryState.list;
+    const { request, response } = this.props.kpiTemplateState.list;
 
     // 1st load only when request are empty
     if (!request) {
@@ -106,8 +106,8 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
     }
   },
   componentDidUpdate(prevProps: KPITemplateOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.kpiCategoryState.list;
-    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.kpiCategoryState.list;
+    const { isLoading: thisIsLoading, response: thisResponse } = this.props.kpiTemplateState.list;
+    const { isLoading: prevIsLoading, response: prevResponse } = prevProps.kpiTemplateState.list;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);

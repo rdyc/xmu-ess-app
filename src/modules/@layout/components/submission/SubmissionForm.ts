@@ -38,6 +38,7 @@ interface IOwnProps {
   formikProps: FormikProps<any>;
   buttonLabelProps: ISubmissionButtonLabelProps;
   confirmationDialogProps: ISubmissionDialogProps;
+  disableButtons?: boolean;
 }
 
 interface IOwnHandler {

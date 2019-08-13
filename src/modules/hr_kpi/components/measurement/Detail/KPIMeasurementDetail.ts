@@ -11,6 +11,7 @@ import { KPIMeasurementDetailView } from './KPIMeasurementDetailView';
 
 interface OwnProps {
   categoryUid: string;
+  shouldLoad: boolean;
 }
 
 interface IOwnHandler {
@@ -18,11 +19,10 @@ interface IOwnHandler {
 }
 
 interface IOwnState {
-  shouldLoad: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
-  setShouldLoad: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type MeasurementDetailProps
@@ -40,7 +40,7 @@ export type MeasurementDetailProps
 const createProps: mapper<MeasurementDetailProps, IOwnState> = (): IOwnState => {
   //
   return {
-    shouldLoad: false,
+    // 
   };
 };
 
@@ -48,9 +48,6 @@ const stateUpdaters: StateUpdaters<MeasurementDetailProps, IOwnState, IOwnStateU
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  }),
-  setShouldLoad: (state: IOwnState) => (): Partial<IOwnState> => ({
-    shouldLoad: !state.shouldLoad
   }),
 };
 
@@ -70,8 +67,7 @@ const lifecycles: ReactLifeCycleFunctions<MeasurementDetailProps, IOwnState> = {
   },
   componentDidUpdate(prevProps: MeasurementDetailProps) {
     // handle updated reload state
-    if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
-      this.props.setShouldLoad();
+    if (this.props.shouldLoad !== prevProps.shouldLoad) {
       this.props.handleOnLoadApi();
     }
 

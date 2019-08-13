@@ -24,9 +24,6 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
     primary={(data: IKPICategory) => ([
       <KPICategoryInformation data={data}/>
     ])}
-    secondary={(data: IKPICategory) => ([
-      <KPIMeasurementDetail categoryUid={data.uid}/>
-    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 
@@ -37,6 +34,12 @@ export const KPICategoryDetailView: React.SFC<CategoryDetailProps> = props => (
       />
     }
   >
+    <KPIMeasurementDetail 
+      categoryUid={
+        props.kpiCategoryState.detail.response &&
+        props.kpiCategoryState.detail.response.data.uid || ''}
+      shouldLoad={props.shouldLoad}
+    />
     <DialogConfirmation 
       isOpen={props.dialogOpen}
       fullScreen={props.dialogFullScreen}

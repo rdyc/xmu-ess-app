@@ -29,6 +29,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   kpiTemplateState: {
     all: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;
+    list: IQueryCollectionState<IKPITemplateGetListRequest, IKPITemplate>;
     detail: IQuerySingleState<IKPITemplateGetByIdRequest, IKPITemplateDetail>;
   };
 }
