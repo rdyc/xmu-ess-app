@@ -20,7 +20,7 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
         render={(formikBag: FormikProps<IKPIMeasurementFormValue>) => (
           <Form>
             <div
-            className={classNames(props.classes.reportContentScrollable)}
+              className={classNames(props.classes.reportContentScrollable)}
             >
               <Table
                 className={classNames(props.classes.reportTable)}

@@ -24,9 +24,6 @@ export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props =>
     primary={(data: IKPITemplateDetail) => ([
       <KPITemplateInformation data={data} />
     ])}
-    secondary={(data: IKPITemplateDetail) => ([
-      <KPITemplateItem items={data.items}/>
-    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 
@@ -37,6 +34,12 @@ export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props =>
       />
     }
   >
+    <KPITemplateItem 
+      items={
+        props.kpiTemplateState.detail.response &&
+        props.kpiTemplateState.detail.response.data.items &&
+        props.kpiTemplateState.detail.response.data.items 
+      }/>
     <DialogConfirmation 
       isOpen={props.dialogOpen}
       fullScreen={props.dialogFullScreen}

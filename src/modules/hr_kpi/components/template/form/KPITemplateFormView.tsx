@@ -32,7 +32,6 @@ export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
       render={(formikBag: FormikProps<IKPITemplateFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
-
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <KPITemplateDetailPartialForm
@@ -42,19 +41,6 @@ export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
                   filterLookupCompany={props.filterLookupCompany}
                 />
               </div>
-            </div>
-            <div className={props.classes.flexColumn}>
-              <KPITemplateItemPartialForm
-                formikBag={formikBag}
-                formMode={props.formMode}
-                intl={props.intl}
-                classes={{
-                  flexContent: props.classes.flexContent,
-                  marginFarRight: props.classes.marginFarRight
-                }}
-                filterKPICategory={props.filterKPICategory}
-                filterKPIMeasurement={props.filterKPIMeasurement}
-              />
             </div>
 
             <div className={props.classes.flexColumn}>
@@ -80,9 +66,18 @@ export const KPITemplateFormView: React.SFC<KPITemplateFormProps> = props => (
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
-
             </div>
+          </div>
 
+          <div className={props.classes.flexRow}>
+            <KPITemplateItemPartialForm
+              formikBag={formikBag}
+              formMode={props.formMode}
+              intl={props.intl}
+              classes={props.classes}
+              filterKPICategory={props.filterKPICategory}
+              filterKPIMeasurement={props.filterKPIMeasurement}
+            />
           </div>
         </Form>
       )}

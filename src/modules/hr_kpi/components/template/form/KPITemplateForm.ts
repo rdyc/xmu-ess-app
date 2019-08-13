@@ -37,6 +37,7 @@ interface IKPITemplateItemFormValue {
   categoryUid: string;
   categoryName: string;
   measurementUid: string;
+  measurementType: string;
   target: string;
   weight: number;
   threshold?: number;
@@ -110,6 +111,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
       categoryUid: '',
       categoryName: '',
       measurementUid: '',
+      measurementType: '',
       target: '',
       weight: 0,
       threshold: 0,
@@ -151,6 +153,8 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
           measurementUid: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.template.field.measurementUid))
             .required(),
+
+          measurementType: Yup.string(),
 
           target: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.template.field.target))
@@ -364,6 +368,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
               categoryUid: item.categoryUid,
               categoryName: item.categoryName,
               measurementUid: item.measurementUid,
+              measurementType: item.measurement && item.measurement.measurementType || '',
               target: item.target,
               weight: item.weight,
               threshold: item.threshold || 0,

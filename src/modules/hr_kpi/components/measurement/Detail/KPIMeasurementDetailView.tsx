@@ -8,15 +8,15 @@ import { MeasurementDetailProps } from './KPIMeasurementDetail';
 export const KPIMeasurementDetailView: React.SFC<MeasurementDetailProps> = props => {
   const MeasurementList = (measurements: IKPIMeasurementList[]) => {
     return(
-      measurements.map((item) => 
-      <TableRow>
+      measurements.map((item, index) => 
+      <TableRow key={index}>
         <TableCell>
           {item.description}
         </TableCell>
         <TableCell>
           {item.measurement && item.measurement.description}
         </TableCell>
-        <TableCell>
+        <TableCell numeric>
           {`${props.intl.formatNumber(item.weight)} %`}
         </TableCell>
       </TableRow>     
@@ -69,7 +69,7 @@ export const KPIMeasurementDetailView: React.SFC<MeasurementDetailProps> = props
                   <TableCell>
                     {props.intl.formatMessage(kpiMessage.measurement.field.measurementType)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell numeric>
                     {props.intl.formatMessage(kpiMessage.measurement.field.weight)}
                   </TableCell>
                 </TableRow>

@@ -1,158 +1,138 @@
+import { MeasurementType } from '@common/classes/types';
 import { IKPITemplateItem } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
+  CardContent,
   CardHeader,
-  Collapse,
-  Divider,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  TextField,
-  WithStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
   withStyles,
+  WithStyles,
 } from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
+import { compose } from 'recompose';
 
 interface OwnProps {
   items: IKPITemplateItem[] | null | undefined;
 }
 
-interface OwnState {
-  active: string | undefined;
-  isExpanded: boolean;
-}
-
-interface OwnStateHandler extends StateHandlerMap<OwnState> {
-  handleToggle: (uid: string) => OwnState;
-}
-
 type AllProps
   = OwnProps
-  & OwnState
-  & OwnStateHandler
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const createProps: mapper<AllProps, OwnState> = (): OwnState => ({
-  active: undefined,
-  isExpanded: false
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
-  handleToggle: (state: OwnState) => (uid: string) => ({
-    active: uid,
-    isExpanded: state.active === uid ? !state.isExpanded : true
-  })
-};
-
 const kpiTemplateItem: React.SFC<AllProps> = props => {
-  const { items, intl, active, isExpanded, handleToggle } = props;
-  const len = items && items.length - 1;
+  const TemplateList = (templates: IKPITemplateItem[]) => {
+    return(
+      templates.map((item, index) => 
+      <TableRow key={index}>
+        <TableCell>
+          {item.category && item.category.name}
+        </TableCell>
+        <TableCell>
+          {item.categoryName}
+        </TableCell>
+        <TableCell>
+          {item.measurement && item.measurement.description}
+        </TableCell>
+        <TableCell>
+          {item.target}
+        </TableCell>
+        <TableCell numeric>
+          {`${props.intl.formatNumber(item.weight)} %`}
+        </TableCell>
+        <TableCell numeric>
+          {
+            item.measurement && 
+            item.measurement.measurementType === MeasurementType.Scoring  &&
+            props.intl.formatNumber(item.threshold || 0) ||
+            '-'
+          }
+        </TableCell>
+        <TableCell numeric>
+          {
+            item.measurement && 
+            (item.measurement.measurementType === MeasurementType.Scoring ||
+            item.measurement.measurementType === MeasurementType.Attendance) &&
+            props.intl.formatNumber(item.amount) ||
+            '-'
+          }
+        </TableCell>
+      </TableRow>     
+      )
+    );
+  };
 
   const render = (
-    <Card square>
-      <CardHeader 
-        title={props.intl.formatMessage(kpiMessage.template.section.itemTitle)}
-      />
-      <List>
+    <React.Fragment>
+      <Card square>
+        <CardHeader 
+          title={props.intl.formatMessage(kpiMessage.measurement.section.infoTitle)}
+          // subheader={}
+        />
+        <CardContent>
         {
-          items &&
-          items.map((item, index) =>
-            <React.Fragment key={item.uid}>
-              <Divider />
-              <ListItem
-                button
-                selected={item.uid === active && isExpanded}
-                onClick={() => handleToggle(item.uid)}
-              >
-                <ListItemText 
-                  primary={item.measurement && item.measurement.description} 
-                  // secondary={item.target}
-                />
-                <ListItemSecondaryAction>
-                  {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
-                </ListItemSecondaryAction>
-              </ListItem>
-              {len !== index && <Divider />}                
-              <Collapse
-                in={active === item.uid && isExpanded}
-                className={props.classes.paddingFar}
-                timeout="auto"
-                unmountOnExit
-              >
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.itemUid)}
-                  value={item.uid}
-                />
-                <TextField
-                  multiline
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.categoryUid)}
-                  value={item.category ? item.category.name : 'N/A'}
-                />
-                <TextField
-                  multiline
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.categoryName)}
-                  value={item.categoryName || 'N/A'}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  multiline
-                  label={intl.formatMessage(kpiMessage.template.field.measurementUid)}
-                  value={item.measurement && item.measurement.description || 'N/A'}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  multiline
-                  label={intl.formatMessage(kpiMessage.measurement.field.measurementType)}
-                  value={item.measurement && item.measurement.measurement && `${item.measurement.measurementType} - ${item.measurement.measurement.value}` || 'N/A'}
-                />
-                <TextField
-                  multiline
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.target)}
-                  value={item.target}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.weight)}
-                  value={item.weight}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.threshold)}
-                  value={item.threshold}
-                />
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(kpiMessage.template.field.amount)}
-                  value={item.amount}
-                />
-              </Collapse>
-            </React.Fragment>
-          )
+          props.items &&
+          <div
+            className={classNames(props.classes.reportContentScrollable)}
+          >
+            <Table
+              className={classNames(props.classes.reportTable)}
+              padding="dense"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    {props.intl.formatMessage(kpiMessage.template.field.categoryUid)}
+                  </TableCell>
+                  <TableCell>
+                    {props.intl.formatMessage(kpiMessage.template.field.categoryName)}
+                  </TableCell>
+                  <TableCell>
+                    {props.intl.formatMessage(kpiMessage.template.field.measurementUid)}
+                  </TableCell>
+                  <TableCell>
+                    {props.intl.formatMessage(kpiMessage.template.field.target)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.template.field.weight)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.template.field.threshold)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.template.field.amount)}
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {
+                TemplateList(props.items)
+              }
+              </TableBody>
+            </Table>
+          </div>
         }
-      </List>
-    </Card>
+        {
+          props.items &&
+          props.items.length === 0 &&
+          <Typography
+            align="center"
+          >
+            {'(No Data)'}
+          </Typography>
+        }
+        </CardContent>
+      </Card>
+    </React.Fragment>
   );
 
   return render;
@@ -161,5 +141,4 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
 export const KPITemplateItem = compose<AllProps, OwnProps>(
   injectIntl,
   withStyles(styles),
-  withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
 )(kpiTemplateItem);
