@@ -1,10 +1,12 @@
 import { IBaseChanges } from '@generic/interfaces';
 import { IKPICategory } from '../category';
 import { IKPIMeasurement } from '../measurement';
+import { IEmployeeKPI } from './IEmployeeKPI';
 
 export interface IEmployeeKPIItem {
   uid: string;
   kpiUid: string;
+  kpi?: IEmployeeKPI | null;
   categoryUid: string;
   category?: IKPICategory | null;
   categoryName: string;

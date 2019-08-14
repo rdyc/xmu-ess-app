@@ -48,6 +48,7 @@ import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import employeeKPISagas from '@kpi/store/sagas/employeeKPISagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
 import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
 import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
@@ -232,6 +233,7 @@ export function* rootSaga() {
     // kpi
     fork(kpiTemplateSagas),
     fork(kpiCategorySagas),
-    fork(kpiMeasurementSagas)
+    fork(kpiMeasurementSagas),
+    fork(employeeKPISagas),
   ]);
 }

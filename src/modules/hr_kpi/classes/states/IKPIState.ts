@@ -1,9 +1,13 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  // IEmployeeKPIGetAllRequest, 
-  // IEmployeeKPIGetByIdRequest, 
-  // IEmployeeKPIPostRequest, 
-  // IEmployeeKPIPutRequest, 
+  IEmployeeKPIGetAllRequest, 
+  IEmployeeKPIGetByIdRequest, 
+  IEmployeeKPIGetItemListRequest, 
+  IEmployeeKPIPostBulkRequest, 
+  IEmployeeKPIPostRequest,
+  IEmployeeKPIPutFinalRequest,
+  IEmployeeKPIPutItemBulkRequest,
+  IEmployeeKPIPutRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -28,8 +32,9 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  // IEmployeeKPI, 
-  // IEmployeeKPIDetail,
+  IEmployeeKPI, 
+  IEmployeeKPIDetail,
+  IEmployeeKPIItem,
   IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
@@ -46,10 +51,14 @@ import {
 
 export interface IKPIState {
   // employee
-  // employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
-  // employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
-  // employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
-  // employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
+  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
+  employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
+  employeeKPIGetItemList: IQueryCollectionState<IEmployeeKPIGetItemListRequest, IEmployeeKPIItem>;
+  employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
+  employeeKPIPostBulk: IQueryCollectionState<IEmployeeKPIPostBulkRequest, IEmployeeKPI>;
+  employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
+  employeeKPIPutItemBulk: IQueryCollectionState<IEmployeeKPIPutItemBulkRequest, IEmployeeKPIItem>;
+  employeeKPIPutFinal: IQuerySingleState<IEmployeeKPIPutFinalRequest, IEmployeeKPI>;
 
   // template
   kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;

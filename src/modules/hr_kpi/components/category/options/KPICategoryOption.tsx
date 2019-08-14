@@ -1,8 +1,10 @@
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPICategoryList } from '@kpi/classes/response/category';
 import { WithKPICategory, withKPICategory } from '@kpi/hoc/withKPICategory';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -40,6 +42,7 @@ export type KPICategoryOptionProps
   = WithKPICategory
   & IOwnOption
   & IOwnState
+  & InjectedIntlProps
   & IOwnStateUpdater
   & IOwnHandler;
 
@@ -52,9 +55,9 @@ const stateUpdaters: StateUpdaters<KPICategoryOptionProps, IOwnState, IOwnStateU
   setLoading: () => (values: any): Partial<IOwnState> => ({
     isLoading: values
   }),
-  setOptions: () => (values: IKPICategoryList[]): Partial<IOwnState> => {
+  setOptions: (props: KPICategoryOptionProps) => (values: IKPICategoryList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: '', value: ''}
+      { label: props.intl.formatMessage(kpiMessage.template.field.categoryUidPlaceholder), value: ''}
     ];
         
     values.forEach(item => options.push({ 
@@ -144,6 +147,7 @@ const component: React.SFC<KPICategoryOptionProps> = props => {
 export const KPICategoryOption = compose<KPICategoryOptionProps, IOwnOption>(
   setDisplayName('KPICategoryOption'),
   withKPICategory,
+  injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

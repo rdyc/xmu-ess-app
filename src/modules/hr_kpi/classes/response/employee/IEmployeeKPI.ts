@@ -10,6 +10,8 @@ export interface IEmployeeKPI {
   template?: IKPITemplate | null;
   year: number;
   totalScore: number;
+  isFinal: boolean;
+  revision?: string;
   items?: IEmployeeKPIItem[] | null;
   sentBy?: string | null;
   sent?: IEmployee | null;
