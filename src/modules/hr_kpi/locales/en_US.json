@@ -95,7 +95,8 @@
 
   "kpi.employee.field.uid": "KPI ID",
   "kpi.employee.field.employeeUid": "Employee",
-  "kpi.employee.field.TemplateUid": "Template",
+  "kpi.employee.field.templateUid": "Template",
+  "kpi.employee.field.templateUid.placeholder": "Select The Template",
   "kpi.employee.field.totalScore": "Total Score",
   "kpi.employee.field.year": "Year",
   "kpi.employee.field.year.placeholder": "Type The Year",
@@ -170,6 +171,7 @@
   "kpi.category.field.uid": "Category ID",
   "kpi.category.field.name": "Name",
   "kpi.category.field.name.placeholder": "Type The Name",
+  "kpi.category.field.measurementCount": "Measurement Count",
   "kpi.category.field.name.required": "Name is Required",
 
   "kpi.category.page.list.title": "All KPI Categories",

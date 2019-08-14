@@ -1,28 +1,28 @@
 import AppMenu from '@constants/AppMenu';
-import { IKPITemplateDetail } from '@kpi/classes/response';
+import { IEmployeeKPIDetail } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
-import { KPITemplateDetailProps } from './KPITemplateDetail';
-import { KPITemplateInformation } from './shared/KPITemplateInformation';
-import { KPITemplateItem } from './shared/KPITemplateItem';
+import { EmployeeKPIDetailProps } from './EmployeeKPIDetail';
+import { EmployeeKPIInformation } from './shared/EmployeeKPIInformation';
+import { EmployeeKPIItem } from './shared/EmployeeKPIItem';
 
-export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props => (
+export const EmployeeKPIDetailView: React.SFC<EmployeeKPIDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.KPITemplate,
-      parentUid: AppMenu.Lookup,
-      parentUrl: '/kpi/templates',
+      uid: AppMenu.EmployeeKPI,
+      parentUid: AppMenu.HumanResource,
+      parentUrl: `/kpi/employees/${props.match.params.employeeUid}`,
       title: props.intl.formatMessage(kpiMessage.template.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.template.page.detailSubHeader),
     }}
-    state={props.kpiTemplateState.detail}
+    state={props.employeeKPIState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IKPITemplateDetail) => ([
-      <KPITemplateInformation data={data} />
+    primary={(data: IEmployeeKPIDetail) => ([
+      <EmployeeKPIInformation data={data} />
     ])}
     appBarComponent={
       props.menuOptions &&
@@ -35,12 +35,12 @@ export const KPITemplateDetailView: React.SFC<KPITemplateDetailProps> = props =>
     }
   >
     {
-      !props.kpiTemplateState.detail.isLoading &&
-      <KPITemplateItem 
+      !props.employeeKPIState.detail.isLoading &&
+      <EmployeeKPIItem 
         items={
-          props.kpiTemplateState.detail.response &&
-          props.kpiTemplateState.detail.response.data.items &&
-          props.kpiTemplateState.detail.response.data.items }
+          props.employeeKPIState.detail.response &&
+          props.employeeKPIState.detail.response.data.items &&
+          props.employeeKPIState.detail.response.data.items }
       />
     }
     <DialogConfirmation 

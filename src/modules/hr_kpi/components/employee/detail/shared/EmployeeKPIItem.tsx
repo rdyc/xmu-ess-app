@@ -1,5 +1,5 @@
 import { MeasurementType } from '@common/classes/types';
-import { IKPITemplateItem } from '@kpi/classes/response';
+import { IEmployeeKPIItem } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -21,7 +21,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  items: IKPITemplateItem[] | null | undefined;
+  items: IEmployeeKPIItem[] | null | undefined;
 }
 
 type AllProps
@@ -29,8 +29,8 @@ type AllProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const kpiTemplateItem: React.SFC<AllProps> = props => {
-  const TemplateList = (templates: IKPITemplateItem[]) => {
+const employeeKPIItem: React.SFC<AllProps> = props => {
+  const TemplateList = (templates: IEmployeeKPIItem[]) => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
@@ -42,6 +42,9 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
         </TableCell>
         <TableCell>
           {item.measurement && item.measurement.description}
+        </TableCell>
+        <TableCell>
+          {item.measurementDescription}
         </TableCell>
         <TableCell>
           {item.target}
@@ -66,6 +69,15 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
+        <TableCell numeric>
+          {props.intl.formatNumber(item.achieved)}
+        </TableCell>
+        <TableCell numeric>
+          {`${props.intl.formatNumber(item.progress)} %`}
+        </TableCell>
+        <TableCell numeric>
+          {`${props.intl.formatNumber(item.score)} %`}
+        </TableCell>
       </TableRow>     
       )
     );
@@ -75,7 +87,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
     <React.Fragment>
       <Card square>
         <CardHeader 
-          title={props.intl.formatMessage(kpiMessage.template.section.itemTitle)}
+          title={props.intl.formatMessage(kpiMessage.employee.section.itemTitle)}
           // subheader={}
         />
         <CardContent>
@@ -91,25 +103,37 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    {props.intl.formatMessage(kpiMessage.template.field.categoryUid)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
                   </TableCell>
                   <TableCell>
-                    {props.intl.formatMessage(kpiMessage.template.field.categoryName)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
                   <TableCell>
-                    {props.intl.formatMessage(kpiMessage.template.field.measurementUid)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
                   </TableCell>
                   <TableCell>
-                    {props.intl.formatMessage(kpiMessage.template.field.target)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
+                  </TableCell>
+                  <TableCell>
+                    {props.intl.formatMessage(kpiMessage.employee.field.target)}
                   </TableCell>
                   <TableCell numeric>
-                    {props.intl.formatMessage(kpiMessage.template.field.weight)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.weight)}
                   </TableCell>
                   <TableCell numeric>
-                    {props.intl.formatMessage(kpiMessage.template.field.threshold)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.threshold)}
                   </TableCell>
                   <TableCell numeric>
-                    {props.intl.formatMessage(kpiMessage.template.field.amount)}
+                    {props.intl.formatMessage(kpiMessage.employee.field.amount)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.employee.field.achieved)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.employee.field.progress)}
+                  </TableCell>
+                  <TableCell numeric>
+                    {props.intl.formatMessage(kpiMessage.employee.field.score)}
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -138,7 +162,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const KPITemplateItem = compose<AllProps, OwnProps>(
+export const EmployeeKPIItem = compose<AllProps, OwnProps>(
   injectIntl,
   withStyles(styles),
-)(kpiTemplateItem);
+)(employeeKPIItem);

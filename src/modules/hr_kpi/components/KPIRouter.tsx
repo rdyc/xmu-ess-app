@@ -5,9 +5,21 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { KPICategoryDetail } from './category/Detail/KPICategoryDetail';
 import { KPICategoryForm } from './category/form/KPICategoryForm';
 import { KPICategoryList } from './category/list/KPICategoryList';
+import { EmployeeKPIDetail } from './employee/detail/EmployeeKPIDetail';
+import { EmployeeList } from './employee/list/employee/EmployeeList';
+import { EmployeeKPIList } from './employee/list/kpi/EmployeeKPIList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
+
+const employee = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={EmployeeKPIDetail} />
+    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPITemplateForm} /> */}
+    <Route path={`${props.match.path}/:employeeUid`} component={EmployeeKPIList} />
+    <Route path={`${props.match.path}`} component={EmployeeList} />
+  </Switch>
+);
 
 const template = (props: RouteComponentProps) => (
   <Switch>
@@ -30,14 +42,20 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
     <SecureMenuRoute 
       path={`${props.match.path}/templates`}
       menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupEmployee} 
+      subMenu={AppMenu.KPITemplate} 
       component={template} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/categories`}
       menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupEmployee} 
+      subMenu={AppMenu.KPITemplate} 
       component={category} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/employees`}
+      menu={AppMenu.HumanResource} 
+      subMenu={AppMenu.EmployeeKPI} 
+      component={employee} 
     />
   </Switch>
 );

@@ -1,7 +1,6 @@
 import { IKPITemplateGetListFilter } from '@kpi/classes/filter/template';
 import { IKPITemplate } from '@kpi/classes/response/template';
 import { WithKPITemplate, withKPITemplate } from '@kpi/hoc/withKPITemplate';
-import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -40,8 +39,8 @@ interface IOwnHandler {
 
 export type KPITemplateOptionProps
   = WithKPITemplate
-  & IOwnOption
   & InjectedIntlProps
+  & IOwnOption
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler;
@@ -57,7 +56,7 @@ const stateUpdaters: StateUpdaters<KPITemplateOptionProps, IOwnState, IOwnStateU
   }),
   setOptions: (props: KPITemplateOptionProps) => (values: IKPITemplate[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: props.intl.formatMessage(kpiMessage.template.field.uidPlaceholder), value: ''}
+      { label: '', value: ''}
     ];
         
     values.forEach(item => options.push({ 
@@ -146,8 +145,8 @@ const component: React.SFC<KPITemplateOptionProps> = props => {
 
 export const KPITemplateOption = compose<KPITemplateOptionProps, IOwnOption>(
   setDisplayName('KPITemplateOption'),
-  withKPITemplate,
   injectIntl,
+  withKPITemplate,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

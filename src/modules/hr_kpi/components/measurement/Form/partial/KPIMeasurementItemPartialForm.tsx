@@ -32,7 +32,7 @@ type AllProps
 
 const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
   <TableRow>
-    <TableCell className={classNames(props.classes.cellWidthMd)}>
+    <TableCell className={classNames(props.classes.cellWidthXXXL)}>
       <Field
         name="description"
         render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
@@ -53,7 +53,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
         )}
       />
     </TableCell>
-    <TableCell className={classNames(props.classes.cellWidthMd)}>
+    <TableCell className={classNames(props.classes.cellWidthLg)}>
       {
         props.isEditing &&
         <Field
@@ -93,7 +93,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
         />
       }
     </TableCell>
-    <TableCell className={classNames(props.classes.cellWidthXS)}>
+    <TableCell className={classNames(props.classes.cellWidthMd)}>
       <Field
         name="weight"
         render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
@@ -122,7 +122,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
         )}
       />
     </TableCell>
-    <TableCell className={classNames(props.classes.cellWidthSm)}>
+    <TableCell className={classNames(props.classes.cellWidthMd)}>
     {
         !props.isEditing && 
         !props.isItemEditing &&

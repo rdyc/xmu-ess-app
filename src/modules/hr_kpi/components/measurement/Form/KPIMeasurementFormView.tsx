@@ -84,16 +84,16 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
             >
               <TableHead>
                 <TableRow>
-                  <TableCell className={classNames(props.classes.cellWidthMd)}>
+                  <TableCell className={classNames(props.classes.cellWidthXXXL)}>
                     {props.intl.formatMessage(kpiMessage.measurement.field.description)}
                   </TableCell>
-                  <TableCell className={classNames(props.classes.cellWidthMd)}>
+                  <TableCell className={classNames(props.classes.cellWidthLg)}>
                     {props.intl.formatMessage(kpiMessage.measurement.field.measurementType)}
                   </TableCell>
-                  <TableCell className={classNames(props.classes.cellWidthXS)}>
+                  <TableCell className={classNames(props.classes.cellWidthMd)}>
                     {props.intl.formatMessage(kpiMessage.measurement.field.weight)}
                   </TableCell>
-                  <TableCell className={classNames(props.classes.cellWidthSm)}>
+                  <TableCell className={classNames(props.classes.cellWidthMd)}>
                     {props.intl.formatMessage(layoutMessage.action.modify)}
                   </TableCell>
                 </TableRow>

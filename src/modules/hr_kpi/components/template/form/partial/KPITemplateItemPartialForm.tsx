@@ -65,13 +65,13 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
               <TableCell className={classNames(props.classes.cellWidthMd)}>
                 {props.intl.formatMessage(kpiMessage.template.field.target)}
               </TableCell>
-              <TableCell numeric className={classNames(props.classes.cellWidthXS)}>
+              <TableCell className={classNames(props.classes.cellWidthXS)}>
                 {props.intl.formatMessage(kpiMessage.template.field.weight)}
               </TableCell>
-              <TableCell numeric className={classNames(props.classes.cellWidthXS)}>
+              <TableCell className={classNames(props.classes.cellWidthXS)}>
                 {props.intl.formatMessage(kpiMessage.template.field.threshold)}
               </TableCell>
-              <TableCell numeric className={classNames(props.classes.cellWidthXS)}>
+              <TableCell className={classNames(props.classes.cellWidthXS)}>
                 {props.intl.formatMessage(kpiMessage.template.field.amount)}
               </TableCell>
               <TableCell className={classNames(props.classes.cellWidthXSS)}>
@@ -87,7 +87,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                   {
                     props.formikBag.values.items.length > 0 &&
                     props.formikBag.values.items.map((item, index) =>
-                    <TableRow>
+                    <TableRow key={index}>
                       <TableCell>
                         <Field
                           name="categoryUid"
@@ -96,7 +96,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                             const touch = getIn(form.touched, `items.${index}.categoryUid`);
 
                             return (
-                              <KPICategoryOption filter={props.filterKPICategory}>
+                              <KPICategoryOption filter={props.filterKPICategory} defaultLabel={props.intl.formatMessage(kpiMessage.template.field.categoryUidPlaceholder)}>
                                 <SelectField
                                   isSearchable
                                   menuPlacement="auto"
@@ -155,7 +155,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                             const touch = getIn(form.touched, `items.${index}.measurementUid`);
 
                             return (
-                              <KPIMeasurementOption filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid}>
+                              <KPIMeasurementOption filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid} defaultLabel={props.intl.formatMessage(kpiMessage.template.field.measurementUidPlaceholder)}>
                                 <SelectField
                                   isSearchable
                                   menuPlacement="auto"
@@ -221,7 +221,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                         />
                       </TableCell>
 
-                      <TableCell numeric>
+                      <TableCell>
                         <Field
                           name={`items.${index}.weight`}
                           render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
@@ -276,7 +276,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                         />
                       </TableCell>
 
-                      <TableCell numeric>
+                      <TableCell>
                         {
                           props.formikBag.values.items[index].measurementType === MeasurementType.Scoring &&
                           <Field
@@ -321,7 +321,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                         }
                       </TableCell>
 
-                      <TableCell numeric>
+                      <TableCell>
                         {
                           (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring || 
                           props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
@@ -391,25 +391,29 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                       </TableCell>
                     </TableRow>
                   )}
-                  <Button
-                    fullWidth
-                    color="primary" 
-                    disabled={props.formikBag.isSubmitting}
-                    onClick={() => fields.push({
-                      uid: '',
-                      categoryUid: '',
-                      categoryName: '',
-                      measurementUid: '',
-                      target: '',
-                      weight: 0,
-                      threshold: 0,
-                      amount: 0,
-                    })}
-                  >
-                    <GroupAdd className={props.classes.marginFarRight}/>
+                  <TableRow>
+                    <TableCell colSpan={8}>
+                      <Button
+                        fullWidth
+                        color="primary" 
+                        disabled={props.formikBag.isSubmitting}
+                        onClick={() => fields.push({
+                          uid: '',
+                          categoryUid: '',
+                          categoryName: '',
+                          measurementUid: '',
+                          target: '',
+                          weight: 0,
+                          threshold: 0,
+                          amount: 0,
+                        })}
+                      >
+                        <GroupAdd className={props.classes.marginFarRight}/>
 
-                    {props.intl.formatMessage(layoutMessage.action.add)}
-                  </Button>
+                        {props.intl.formatMessage(layoutMessage.action.add)}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 </React.Fragment>
               )}
             />

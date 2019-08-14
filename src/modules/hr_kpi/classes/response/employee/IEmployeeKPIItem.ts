@@ -12,7 +12,7 @@ export interface IEmployeeKPIItem {
   categoryName: string;
   measurementUid: string;
   measurement?: IKPIMeasurement | null;
-  measurementName: string;
+  measurementDescription: string;
   target: string;
   weight: number;
   threshold?: number;

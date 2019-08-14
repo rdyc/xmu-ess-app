@@ -649,6 +649,12 @@ const styles = (theme: Theme) =>
     cellWidthXL: {
       width: '25vw'
     },
+    cellWidthXXL: {
+      width: '30vw'
+    },
+    cellWidthXXXL: {
+      width: '40vw'
+    },
 
     /* -------- generic classes end ----------*/
 

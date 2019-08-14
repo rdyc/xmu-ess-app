@@ -36,6 +36,15 @@ const kpiCategorySummary: React.SFC<AllProps> = props => (
       />
     </Grid>
 
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.category.field.measurementCount)}
+        value={props.data.measurementCount}
+        multiline
+      />
+    </Grid>
+
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>

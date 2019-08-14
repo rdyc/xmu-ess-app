@@ -63,10 +63,13 @@ export const EmployeeKPIField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
   employeeUid: { id: `${prefix}.field.employeeUid`},
+  templateUid: { id: `${prefix}.field.templateUid`},
+  templateUidPlaceholder: { id: `${prefix}.field.templateUid.placeholder`},
   year: { id: `${prefix}.field.year`},
   yearPlaceholder: { id: `${prefix}.field.year.placeholder`},
   period: { id: `${prefix}.field.period`},
   periodPlaceholder: { id: `${prefix}.field.period.placeholder`},
+  totalScore: { id: `${prefix}.field.totalScore`},
   isFinal: { id: `${prefix}.field.isFinal`},
   isFinalTrue: { id: `${prefix}.field.isFinal.final`},
   isFinalFalse: { id: `${prefix}.field.isFinal.pending`},
@@ -109,6 +112,7 @@ export const EmployeeKPIFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'employeeUid': return EmployeeKPIField.employeeUid;
       case 'year': return EmployeeKPIField.year;
       case 'period': return EmployeeKPIField.period;
+      case 'totalScore': return EmployeeKPIField.totalScore;
       case 'isFinal': return EmployeeKPIField.isFinal;
       case 'revision': return EmployeeKPIField.revision;
       case 'totalWeight': return EmployeeKPIField.totalWeight;

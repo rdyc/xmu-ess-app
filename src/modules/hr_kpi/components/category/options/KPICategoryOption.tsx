@@ -1,7 +1,6 @@
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPICategoryList } from '@kpi/classes/response/category';
 import { WithKPICategory, withKPICategory } from '@kpi/hoc/withKPICategory';
-import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,6 +20,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
+  defaultLabel: string;
   filter?: IKPICategoryGetListFilter;
 }
 
@@ -40,15 +40,15 @@ interface IOwnHandler {
 
 export type KPICategoryOptionProps
   = WithKPICategory
+  & InjectedIntlProps
   & IOwnOption
   & IOwnState
-  & InjectedIntlProps
   & IOwnStateUpdater
   & IOwnHandler;
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   isLoading: false,
-  options: [{ label: '', value: ''}]
+  options: [{ label: 'Select The Category', value: ''}]
 });
 
 const stateUpdaters: StateUpdaters<KPICategoryOptionProps, IOwnState, IOwnStateUpdater> = {
@@ -57,7 +57,7 @@ const stateUpdaters: StateUpdaters<KPICategoryOptionProps, IOwnState, IOwnStateU
   }),
   setOptions: (props: KPICategoryOptionProps) => (values: IKPICategoryList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: props.intl.formatMessage(kpiMessage.template.field.categoryUidPlaceholder), value: ''}
+      { label: props.defaultLabel, value: ''}
     ];
         
     values.forEach(item => options.push({ 
@@ -146,8 +146,8 @@ const component: React.SFC<KPICategoryOptionProps> = props => {
 
 export const KPICategoryOption = compose<KPICategoryOptionProps, IOwnOption>(
   setDisplayName('KPICategoryOption'),
-  withKPICategory,
   injectIntl,
+  withKPICategory,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycle)

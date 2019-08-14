@@ -1,4 +1,14 @@
 import { 
+  EmployeeKPIConfirm, 
+  EmployeeKPIDialog, 
+  EmployeeKPIField, 
+  EmployeeKPIFieldHelperFor, 
+  EmployeeKPIMessage, 
+  EmployeeKPIPage, 
+  EmployeeKPISection, 
+  EmployeeKPISubmission 
+} from './employeeKPIMessage';
+import { 
   KPICategoryConfirm, 
   KPICategoryDialog, 
   KPICategoryField, 
@@ -58,5 +68,15 @@ export const kpiMessage = {
     section: KPIMeasurementSection,
     submission: KPIMeasurementSubmission,
     dialog: KPIMeasurementDialog
-  }
+  },
+  employee: {
+    field: EmployeeKPIField,
+    fieldFor: EmployeeKPIFieldHelperFor,
+    message: EmployeeKPIMessage,
+    page: EmployeeKPIPage,
+    confirm: EmployeeKPIConfirm,
+    section: EmployeeKPISection,
+    submission: EmployeeKPISubmission,
+    dialog: EmployeeKPIDialog
+  },
 };
