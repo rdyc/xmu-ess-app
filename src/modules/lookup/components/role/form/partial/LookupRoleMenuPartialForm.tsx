@@ -1,3 +1,4 @@
+import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Card, CardContent, CardHeader, Checkbox, CircularProgress, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Typography, withStyles, WithStyles } from '@material-ui/core';
@@ -6,12 +7,13 @@ import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { IRoleFormValue } from '../LookupRoleForm';
 
 interface IOwnProps {
   formikBag: FormikProps<IRoleFormValue>;
   intl: InjectedIntl;
+  formMode: FormMode;
 }
 
 interface ChildList {
@@ -23,6 +25,7 @@ interface IOwnState {
   active?: string;
   isExpanded: boolean;
   childList: ChildList[];
+  firstHitEdit: boolean;
 }
 
 interface IOwnHandler {
@@ -45,6 +48,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   active: undefined,
   isExpanded: false,
   childList: [],
+  firstHitEdit: false
 });
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
@@ -230,8 +234,33 @@ const MenuPartialForm: React.ComponentType<AllProps> = props => {
   return render;
 };
 
+const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidUpdate(prevProps: AllProps) {
+    const { formikBag: thisFormik, formMode, childList, stateUpdate, firstHitEdit } = this.props;
+    const { formikBag: prevFormik } = prevProps;
+
+    if (thisFormik.values.menus !== prevFormik.values.menus && !firstHitEdit) {
+      if (formMode === FormMode.Edit) {
+        thisFormik.values.menus.map(item => 
+          item.isAccess &&
+          item.parentUid &&
+          childList.push({
+            uid: item.uid,
+            parentUid: item.parentUid
+          })  
+        );
+        stateUpdate({
+          childList,
+          firstHitEdit: true
+        });
+      }
+    }
+  }
+};
+
 export const LookupRoleMenuPartialForm = compose<AllProps, IOwnProps>(
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifeCycleFunctions),
 )(MenuPartialForm);
