@@ -26,7 +26,26 @@ const hrCompetencySummaryCategory: React.SFC<AllProps> = props => (
       />
     </Grid>
 
-    <Grid item xs={12} sm={8} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
+      {
+        props.data.levels.length === 0 ?
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(hrMessage.competency.field.totalItem, {state: 'Level'})}
+          value={props.intl.formatMessage(hrMessage.competency.field.zeroItem, {item: 'level'})}
+        />
+        :
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(hrMessage.competency.field.totalItem, {state: 'Level'})}
+          value={props.data.levels.length < 2 ?
+            props.intl.formatMessage(hrMessage.competency.field.oneItem, {total: props.data.levels.length, state: 'Level'})  : 
+            props.intl.formatMessage(hrMessage.competency.field.manyItem, {total: props.data.levels.length, state: 'Levels'}) }
+        />
+      }
+    </Grid>
+
+    <Grid item xs={12} sm={8} md={3}>
       <TextField
         multiline
         {...GlobalStyle.TextField.ReadOnly}

@@ -1,6 +1,7 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyCategoryUserAction } from '@hr/classes/types';
 import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -31,6 +32,8 @@ interface IOwnRouteParams {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 interface IOwnState {
@@ -38,11 +41,19 @@ interface IOwnState {
   shouldLoad: boolean;
   isAdmin: boolean;
   action?: IHrCompetencyCategoryUserAction;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
   setShouldLoad: StateHandler<IOwnState>;
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type HrCompetencyCategoryDetailProps
@@ -74,7 +85,9 @@ const createProps: mapper<HrCompetencyCategoryDetailProps, IOwnState> = (props: 
     
     return { 
       isAdmin,
-      shouldLoad: false
+      shouldLoad: false,
+      dialogFullScreen: false,
+      dialogOpen: false
   };
 };
 
@@ -84,13 +97,31 @@ const stateUpdaters: StateUpdaters<HrCompetencyCategoryDetailProps, IOwnState, I
   }),
   setOptions: (prevState: IOwnState, props: HrCompetencyCategoryDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
+  }),
+  setModify: (prevState: IOwnState, props: HrCompetencyCategoryDetailProps) => (): Partial<IOwnState> => ({
+    action: IHrCompetencyCategoryUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Category'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'category'}),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
+  }),
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+    action: undefined,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogTitle: undefined,
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
 const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyCategoryDetailProps) => () => { 
     const { user } = props.userState;
-    const clusterUid = props.match.params.clusterUid;
+    const clusterUid = props.history.location.state.clusterUid;
     const categoryUid = props.match.params.categoryUid;
     const { isLoading } = props.hrCompetencyCategoryState.detail;
 
@@ -107,10 +138,60 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandl
         props.setShouldLoad();
         break;
 
+      case IHrCompetencyCategoryUserAction.Modify:
+        props.setModify();
+        break;
+
       default:
         break;
     }
-  }
+  },
+  handleOnCloseDialog: (props: HrCompetencyCategoryDetailProps) => () => {
+    props.setDefault();
+  },
+  handleOnConfirm: (props: HrCompetencyCategoryDetailProps) => () => {
+    const { response } = props.hrCompetencyCategoryState.detail;
+
+    // skipp untracked action or empty response
+    if (!props.action || !response) {
+      return;
+    }
+
+    // define vars
+    let categoryUid: string | undefined;
+    let clusterUid: string | undefined;
+
+    // get project uid
+    if (response.data) {
+      categoryUid = response.data.uid;
+      clusterUid = response.data.clusterUid;
+    }
+
+    // actions with new page
+    const actions = [
+      IHrCompetencyCategoryUserAction.Modify
+    ];
+
+    if (actions.indexOf(props.action) !== -1) {
+      let next: string = '404';
+
+      switch (props.action) {
+        case IHrCompetencyCategoryUserAction.Modify:
+          next = '/lookup/competencycategory/form';
+          break;
+
+        default:
+          break;
+      }
+
+      props.setDefault();
+
+      props.history.push(next, { 
+        clusterUid,
+        uid: categoryUid
+      });
+    }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyCategoryDetailProps, IOwnState> = {
@@ -135,6 +216,12 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyCategoryDetailProps, IOwnS
           id: IHrCompetencyCategoryUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
+          visible: true,
+        },
+        {
+          id: IHrCompetencyCategoryUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: true,
           visible: true,
         }
       ];

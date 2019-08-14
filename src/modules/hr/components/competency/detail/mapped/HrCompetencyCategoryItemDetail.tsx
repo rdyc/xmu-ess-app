@@ -1,16 +1,26 @@
+import { IHrCompetencyMappedDetail } from '@hr/classes/response';
+import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
+import {
+  Card,
+  CardHeader,
+  Collapse,
+  Divider,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
-import { FormikProps } from 'formik';
 import * as React from 'react';
-import { InjectedIntl } from 'react-intl';
-import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
-import { IMappedFormValue } from './HrCompetencyMappedForm';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose, lifecycle, mapper, ReactLifeCycleFunctions, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
 interface IOwnOption {
-  formikBag: FormikProps<IMappedFormValue>;
-  intl: InjectedIntl;
+  data: IHrCompetencyMappedDetail;
 }
 
 interface IOwnState {
@@ -26,6 +36,8 @@ type AllProps
   = IOwnState
   & IOwnOption
   & IOwnStateHandler
+  & InjectedIntlProps
+  & WithHrCompetencyCluster
   & WithStyles<typeof styles>;
 
 const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
@@ -39,19 +51,21 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
     isExpanded: state.active === uid ? !state.isExpanded : true
   })
 };
-
-const hrCompetencyMappedSummary: React.ComponentType<AllProps> = props => {
-  const { active, isExpanded, handleToggle, intl, formikBag } = props;
+const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
+  const { data, intl, active, isExpanded, handleToggle } = props;
+  const { response } = props.hrCompetencyClusterState.list;
 
   const render = (
     <Card square>
-      <CardHeader 
-        title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Category Summary'})}
+      <CardHeader
+        title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Categories'})}
+        // subheader={intl.formatMessage(hrMessage.request.field.subHeader)}
       />
       <List>
         {
-          formikBag.values.categories.map((item) => 
-            item.parentUid === '' &&
+          response &&
+          response.data &&
+          response.data.map((item) => 
             <React.Fragment key={item.uid}>
               <Divider />
               <ListItem
@@ -72,16 +86,15 @@ const hrCompetencyMappedSummary: React.ComponentType<AllProps> = props => {
                 unmountOnExit
               >
                 {
-                  formikBag.values.categories.map((child) =>
-                    child.parentUid === item.uid &&
-                    child.isAccess &&
+                  item.categories.map(category => 
+                    data.categories.find(find => find.category.uid === category.uid) &&
                       <ListItem
-                        key={child.uid}
+                        key={category.uid}
                         color="inherit"
                         className={props.classes.marginFarLeft}
                       >
                         <ListItemText
-                            primary={child.name}
+                            primary={category.name}
                             primaryTypographyProps={{
                               noWrap: true,
                               color: 'inherit'
@@ -101,7 +114,26 @@ const hrCompetencyMappedSummary: React.ComponentType<AllProps> = props => {
   return render;
 };
 
-export const HrCompetencyMappedSummary = compose<AllProps, IOwnOption>(
+const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidMount() {
+    const { response } = this.props.hrCompetencyClusterState.list;
+    const { loadListRequest } = this.props.hrCompetencyClusterDispatch;
+
+    if (!response) {
+      loadListRequest({
+        filter: {
+          orderBy: 'name',
+          direction: 'ascending'
+        }
+      });
+    }
+  }
+};
+
+export const HrCompetencyCategoryItemDetail = compose<AllProps,  IOwnOption>(
+  injectIntl,
+  withHrCompetencyCluster,
   withStyles(styles),
-  withStateHandlers(createProps, stateUpdaters)
-)(hrCompetencyMappedSummary);
+  withStateHandlers(createProps, stateUpdaters),
+  lifecycle(lifecycles),
+)(hrCompetencyCategoryItemDetail);

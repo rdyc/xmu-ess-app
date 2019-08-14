@@ -171,7 +171,7 @@ const cluster = (props: RouteComponentProps) => (
 const category = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={HrCompetencyCategoryForm} />
-    <Route path={`${props.match.path}/:clusterUid/categories/:categoryUid`} component={HrCompetencyCategoryDetail} />
+    <Route path={`${props.match.path}/:categoryUid`} component={HrCompetencyCategoryDetail} />
     <Route path={`${props.match.path}`} component={HrCompetencyCategoryList} />
   </Switch>
 );

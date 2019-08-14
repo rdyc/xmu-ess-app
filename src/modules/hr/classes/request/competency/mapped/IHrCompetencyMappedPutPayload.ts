@@ -1,4 +1,6 @@
+import { IMappedItemPayload } from './IMappedItemPayload';
+
 export interface IHrCompetencyMappedPutPayload {
   positionUid: string;
-  categoryUid: string;
+  categories: IMappedItemPayload[];
 }

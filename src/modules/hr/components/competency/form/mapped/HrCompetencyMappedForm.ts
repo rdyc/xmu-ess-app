@@ -1,12 +1,14 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
+import { IHrCompetencyMapped, MappedItem } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { Menus } from '@lookup/classes/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -30,6 +32,14 @@ import * as Yup from 'yup';
 
 import { HrCompetencyMappedFormView } from './HrCompetencyMappedFormView';
 
+export interface CategoryMenus {
+  uid: string;
+  parentUid?: string;
+  name: string;
+  isAccess: boolean;
+  itemUid?: string;
+}
+
 export interface IMappedFormValue {
   uid: string;
   companyUid: string;
@@ -37,7 +47,7 @@ export interface IMappedFormValue {
 
   // clusterUid: string;
   // categoryUid: string;
-  categories: Menus[];
+  categories: CategoryMenus[];
 }
 
 interface IOwnRouteParams {
@@ -138,93 +148,110 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
       }
     }
   },
-  handleOnSubmit: () => () => {
-    console.log('Submit');
-    // const { user } = props.userState;
-    // let promise = new Promise((resolve, reject) => undefined);
+  handleOnSubmit: (props: HrCompetencyMappedFormProps) => (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise(() => undefined);
 
-    // if (user) {
-    //   // New
-    //   if (props.formMode === FormMode.New) {
-    //     // fill payload
-    //     const payload: IHrCompetencyMappedPostPayload = {
-    //       positionUid: values.positionUid,
-    //       categoryUid: values.categoryUid
-    //     };
+    if (user) {
+      // New
+      if (props.formMode === FormMode.New) {
+        // fill payload
+        const payload: IHrCompetencyMappedPostPayload = {
+          positionUid: values.positionUid,
+          categories: []
+        };
 
-    //     // set the promise
-    //     promise = new Promise((resolve, reject) => {
-    //       props.hrCompetencyMappedDispatch.createRequest({
-    //         resolve,
-    //         reject,
-    //         data: payload
-    //       });
-    //     });
-    //   }
+        // fill categories
+        values.categories.forEach(item => 
+          item.parentUid &&
+          item.isAccess &&
+          payload.categories.push({
+            categoryUid: item.uid
+          })
+        );
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.hrCompetencyMappedDispatch.createRequest({
+            resolve,
+            reject,
+            data: payload
+          });
+        });
+      }
 
-    //   // Edit
-    //   if (props.formMode === FormMode.Edit) {
-    //     const mappedUid = props.history.location.state.uid;
+      // Edit
+      if (props.formMode === FormMode.Edit) {
+        const mappedUid = props.history.location.state.uid;
 
-    //     // must have mappedUid
-    //     if (mappedUid) {
-    //       const payload: IHrCompetencyMappedPutPayload = {
-    //         positionUid: values.positionUid,
-    //         categoryUid: values.categoryUid
-    //       };
+        // must have mappedUid
+        if (mappedUid) {
+          const payload: IHrCompetencyMappedPutPayload = {
+            positionUid: values.positionUid,
+            categories: []
+          };
 
-    //       // set the promise
-    //       promise = new Promise((resolve, reject) => {
-    //         props.hrCompetencyMappedDispatch.updateRequest({
-    //           mappedUid,
-    //           resolve,
-    //           reject,
-    //           data: payload
-    //         });
-    //       });
-    //     }
-    //   }
-    // }
+          // fill categories
+          values.categories.forEach(item => 
+            item.parentUid &&
+            item.isAccess &&
+            payload.categories.push({
+              uid: item.itemUid,
+              categoryUid: item.uid
+            })
+          );
+
+          // set the promise
+          promise = new Promise((resolve, reject) => {
+            props.hrCompetencyMappedDispatch.updateRequest({
+              mappedUid,
+              resolve,
+              reject,
+              data: payload
+            });
+          });
+        }
+      }
+    }
 
     // handling promise
-    // promise
-    //   .then((response: IHrCompetencyMapped) => {
+    promise
+      .then((response: IHrCompetencyMapped) => {
         
-    //     // set submitting status
-    //     actions.setSubmitting(false);
+        // set submitting status
+        actions.setSubmitting(false);
 
-    //     // clear form status
-    //     actions.setStatus();
+        // clear form status
+        actions.setStatus();
 
-    //     // show flash message
-    //     props.masterPage.flashMessage({
-    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', uid: response.uid })
-    //     });
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', uid: response.uid })
+        });
 
-    //     // redirect to detail
-    //     props.history.push(`/lookup/competencymapped/${response.uid}`);
-    //   })
-    //   .catch((error: IValidationErrorResponse) => {
-    //     // set submitting status
-    //     actions.setSubmitting(false);
+        // redirect to detail
+        props.history.push(`/lookup/competencymapped/${response.uid}`);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
         
-    //     // set form status
-    //     actions.setStatus(error);
+        // set form status
+        actions.setStatus(error);
         
-    //     // error on form fields
-    //     if (error.errors) {
-    //       error.errors.forEach(item => 
-    //         actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
-    //       );
-    //     }
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
 
-    //     // console.log(error.errors);
+        // console.log(error.errors);
 
-    //     // show flash message
-    //     props.masterPage.flashMessage({
-    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
-    //     });
-    //   });
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+        });
+      });
   }
 };
 
@@ -241,13 +268,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
         }
       });
     } else if (response && response.data) {
-      const categoriesList: Menus[] = [];
+      const categoriesList: CategoryMenus[] = [];
       response.data.map(item => {
         categoriesList.push({
           uid: item.uid,
           parentUid: '',
           name: item.name || '',
-          isAccess: false
+          isAccess: false,
+          itemUid: ''
         });
 
         if (item.categories.length >= 1) {
@@ -256,7 +284,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
               uid: category.uid,
               parentUid: item.uid,
               name: category.name,
-              isAccess: false
+              isAccess: false,
+              itemUid: ''
             });
           });
         }
@@ -279,22 +308,30 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     if (this.props.formMode === FormMode.New) {
       if (thisResponse !== nextResponse) {
         if (nextResponse && nextResponse.data) {
-          const categoriesList: Menus[] = [];
+          const categoriesList: CategoryMenus[] = [];
           nextResponse.data.map(item => {
             categoriesList.push({
               uid: item.uid,
               parentUid: '',
               name: item.name || '',
-              isAccess: false
+              isAccess: false,
+              itemUid: ''
             });
     
             if (item.categories.length >= 1) {
               item.categories.map(category => {
+                // const categoryId: MappedItem | undefined = nextResponse.data.categories.find(data => data.category.uid === category.uid);
+
+                // if (categoryId) {
+                //   const parent = categoriesList.findIndex(find => find.uid === item.uid && !find.isAccess);
+                //   categoriesList[parent].isAccess = Boolean(categoryId);
+                // }
                 categoriesList.push({
                   uid: category.uid,
                   parentUid: item.uid,
                   name: category.name,
-                  isAccess: false
+                  isAccess: false,
+                  itemUid: ''
                 });
               });
             }
@@ -321,23 +358,37 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     if (formMode === FormMode.Edit) {
       if (thisResponse !== prevResponse) {
         if (thisResponse && thisResponse.data) {
-          const categoriesList: Menus[] = [];
+          const categoriesList: CategoryMenus[] = [];
           if (clusterList && clusterList.data) {
-            clusterList.data.map(item => {
+            // parent
+            clusterList.data.map((item, index) => {
               categoriesList.push({
                 uid: item.uid,
                 parentUid: '',
                 name: item.name,
-                isAccess: false
+                isAccess: false,
+                itemUid: ''
               });
   
-              if (item.categories.length >= 1) {
+              if (item.categories.length >= 1 && categoriesList.length >= 1) {
+                
+                // for the child
                 item.categories.map(category => {
+                  const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
+
+                  if (categoryId) {
+                    const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
+                    if (parent) {
+                      parent.isAccess = true;
+                    }
+                  }
+                  
                   categoriesList.push({
                     uid: category.uid,
                     parentUid: item.uid,
                     name: category.name,
-                    isAccess: false
+                    isAccess: Boolean(categoryId) || false,
+                    itemUid: categoryId && categoryId.uid || ''
                   });
                 });
               }

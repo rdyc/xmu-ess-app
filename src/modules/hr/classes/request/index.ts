@@ -22,3 +22,4 @@ export * from './competency/indicator/IHrCompetencyIndicatorPutPayload';
 // mapped
 export * from './competency/mapped/IHrCompetencyMappedPostPayload';
 export * from './competency/mapped/IHrCompetencyMappedPutPayload';
+export * from './competency/mapped/IMappedItemPayload';

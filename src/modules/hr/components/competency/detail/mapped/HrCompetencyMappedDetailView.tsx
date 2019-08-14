@@ -5,6 +5,7 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
+import { HrCompetencyCategoryItemDetail } from './HrCompetencyCategoryItemDetail';
 import { HrCompetencyMappedDetailProps } from './HrCompetencyMappedDetail';
 import { HrCompetencyMappedInformation } from './HrCompetencyMappedInformation';
 
@@ -21,6 +22,9 @@ export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailPro
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IHrCompetencyMappedDetail) => ([
       <HrCompetencyMappedInformation data={data} />
+    ])}
+    secondary={(data: IHrCompetencyMappedDetail) => ([
+      <HrCompetencyCategoryItemDetail data={data} />
     ])}
     appBarComponent={
       props.menuOptions &&

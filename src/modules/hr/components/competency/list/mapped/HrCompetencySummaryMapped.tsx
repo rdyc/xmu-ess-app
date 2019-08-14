@@ -35,11 +35,12 @@ const hrCompetencySummaryMapped: React.SFC<AllProps> = props => (
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
-      <TextField
-        multiline
+    <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'})}
-        value={props.data.category.name}
+        label={props.intl.formatMessage(hrMessage.competency.field.totalItem, {state: 'Category'})}
+        value={props.data.categories.length < 2 ?
+          props.intl.formatMessage(hrMessage.competency.field.oneItem, {total: props.data.categories.length, state: 'Category'})  : 
+          props.intl.formatMessage(hrMessage.competency.field.manyItem, {total: props.data.categories.length, state: 'Categories'}) }
       />
     </Grid>
 

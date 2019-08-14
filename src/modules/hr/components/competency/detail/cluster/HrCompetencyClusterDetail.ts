@@ -102,7 +102,7 @@ const stateUpdaters: StateUpdaters<HrCompetencyClusterDetailProps, IOwnState, IO
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Cluster'}),
-    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'Cluster'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'cluster'}),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),

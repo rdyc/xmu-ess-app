@@ -114,6 +114,7 @@ const MenuPartialForm: React.ComponentType<AllProps> = props => {
                         <ListItem
                           button
                           disableGutters
+                          onClick={() => props.handleToggle(parent.uid)}
                           selected={parent.uid === active && isExpanded}
                         >
                           <Field 
@@ -151,7 +152,7 @@ const MenuPartialForm: React.ComponentType<AllProps> = props => {
                               />
                             )}
                           />
-                          <div onClick={() => props.handleToggle(parent.uid)}>
+                          <div>
                             <ListItemText primary={parent.name}/>
                             <ListItemSecondaryAction>
                               {active === parent.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}

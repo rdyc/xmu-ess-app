@@ -1,12 +1,14 @@
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyCategoryDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 // import { HrCompetencyClusterInformation } from '../cluster/HrCompetencyClusterInformation';
 import { HrCompetencyCategoryDetailProps } from './HrCompetencyCategoryDetail';
 import { HrCompetencyCategoryInformation } from './HrCompetencyCategoryInformation';
+import { HrCompetencyCategoryLevel } from './HrCompetencyCategoryLevel';
 
 export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetailProps> = props => (
   <PreviewPage 
@@ -22,9 +24,9 @@ export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetai
     primary={(data: IHrCompetencyCategoryDetail) => ([
       <HrCompetencyCategoryInformation data={data} />
     ])}
-    // secondary={(data: IHrCompetencyCategoryDetail) => ([
-    //   <HrCompetencyClusterInformation data={data.cluster} />
-    // ])}
+    secondary={(data: IHrCompetencyCategoryDetail) => ([
+      <HrCompetencyCategoryLevel data={data} />
+    ])}
     appBarComponent={
       props.menuOptions &&
       <PopupMenu
@@ -34,5 +36,16 @@ export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetai
         onSelected={props.handleOnSelectedMenu}
       />
     }
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />  
+  </PreviewPage>
 );

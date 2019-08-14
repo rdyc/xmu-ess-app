@@ -1,9 +1,8 @@
-import { IHrCompetencyCategoryList } from '../category/IHrCompetencyCategoryList';
+import { IHrCompetencyIndicatorList } from '../indicator/IHrCompetencyIndicatorList';
 
 export interface IHrCompetencyLevelList {
   uid: string;
-  categoryUid: string;
-  category: IHrCompetencyCategoryList;
   level: number;
   description: string;
+  indicators: IHrCompetencyIndicatorList[];
 }

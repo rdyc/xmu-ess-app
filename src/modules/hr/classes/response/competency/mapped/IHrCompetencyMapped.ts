@@ -1,12 +1,11 @@
 import { IBaseChanges } from '@generic/interfaces';
 import { ILookupPosition } from '@lookup/classes';
-import { IHrCompetencyCategoryList } from '../category/IHrCompetencyCategoryList';
+import { MappedItem } from './MappedItem';
 
 export interface IHrCompetencyMapped {
   uid: string;
   positionUid: string;
   position: ILookupPosition;
-  categoryUid: string;
-  category: IHrCompetencyCategoryList;
+  categories: MappedItem[];
   changes?: IBaseChanges;
 }

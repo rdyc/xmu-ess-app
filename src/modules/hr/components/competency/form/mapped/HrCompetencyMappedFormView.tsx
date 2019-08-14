@@ -67,6 +67,7 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                 <HrCompetencyMappedCategoriesForm 
                   intl={props.intl}
                   formikBag={formikBag}
+                  formMode={props.formMode}
                 />
               </div>
             </div>

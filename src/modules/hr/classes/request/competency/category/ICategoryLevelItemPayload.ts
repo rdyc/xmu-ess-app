@@ -1,8 +1,9 @@
-import { ICategoryIndicatorItemPayload } from './ICategoryIndicatorItemPayload';
+
+import { IHrCompetencyIndicatorList } from '@hr/classes/response/competency/indicator/IHrCompetencyIndicatorList';
 
 export interface ICategoryLevelItemPayload {
-  levelUid?: string;
+  uid?: string;
   level: number;
   description: string;
-  indicators: ICategoryIndicatorItemPayload[];
+  indicators: IHrCompetencyIndicatorList[];
 }

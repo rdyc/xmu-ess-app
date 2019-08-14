@@ -5,7 +5,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 import { HrCompetencyCategoryFilter } from './HrCompetencyCategoryFilter';
 import { HrCompetencyCategoryListProps } from './HrCompetencyCategoryList';
@@ -39,7 +39,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
             <Button 
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/lookup/competencycategory/form`, { uid: item.uid })}
+              onClick={() => props.history.push(`/lookup/competencycategory/form`, { uid: item.uid, clusterUid: item.clusterUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -48,7 +48,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
               size="small"
               // disabled
               color="secondary"
-              onClick={() => props.history.push(`/lookup/competencycategory/${item.clusterUid}/categories/${item.uid}`)}
+              onClick={() => props.history.push(`/lookup/competencycategory/${item.uid}`, {clusterUid: item.clusterUid})}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}
             </Button>
@@ -87,14 +87,14 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
             </div>
           </Tooltip>
         }
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push('/lookup/competencycategory/form')}
-          >
-            <AddCircle/>
-          </IconButton>
-        }
+        // appBarCustomComponent={
+        //   <IconButton
+        //     color="inherit"
+        //     onClick={() => props.history.push('/lookup/competencycategory/form')}
+        //   >
+        //     <AddCircle/>
+        //   </IconButton>
+        // }
       />
 
     <HrCompetencyCategoryFilter 

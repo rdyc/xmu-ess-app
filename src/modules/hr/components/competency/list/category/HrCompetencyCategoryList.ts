@@ -163,7 +163,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
     key: index,
     primary: item.name,
     secondary: '',
-    tertiary: '',
+    tertiary: `${item.levels.length === 0 ? 'No level recorded' : `${item.levels.length} ${item.levels.length < 2 ? 'level' : 'levels'}`}`,
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

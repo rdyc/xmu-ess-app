@@ -25,3 +25,4 @@ export * from './competency/indicator/IHrCompetencyIndicatorDetail';
 export * from './competency/mapped/IHrCompetencyMapped';
 export * from './competency/mapped/IHrCompetencyMappedList';
 export * from './competency/mapped/IHrCompetencyMappedDetail';
+export * from './competency/mapped/MappedItem';

@@ -109,10 +109,10 @@ const HrLevelItem: React.ComponentType<HrLevelItemProps> = props => (
                           props.formikBag.values.levels[index].indicators.map((indicator, idx) =>
                             <Field 
                               key={idx}
-                              name={`levels.${index}.indicators.${idx}.indicatorDescription`}
+                              name={`levels.${index}.indicators.${idx}.description`}
                               render={({field, form}: FieldProps<ICategoryFormValue>) => {
-                                const error = getIn(form.errors, `levels.${index}.indicators.${idx}.indicatorDescription`);
-                                const touch = getIn(form.touched, `levels.${index}.indicators.${idx}.indicatorDescription`);
+                                const error = getIn(form.errors, `levels.${index}.indicators.${idx}.description`);
+                                const touch = getIn(form.touched, `levels.${index}.indicators.${idx}.description`);
       
                                 return (
                                     <ListItem disableGutters>
@@ -150,7 +150,7 @@ const HrLevelItem: React.ComponentType<HrLevelItemProps> = props => (
                           fullWidth
                           color="primary" 
                           disabled={props.formikBag.isSubmitting}
-                          onClick={() => fieldsIndicator.push({ indicatorDescription: '' })}
+                          onClick={() => fieldsIndicator.push({ description: '' })}
                         >
                           <PlaylistAdd className={props.classes.marginFarRight} />
                           {props.intl.formatMessage(hrMessage.competency.field.indicator)}

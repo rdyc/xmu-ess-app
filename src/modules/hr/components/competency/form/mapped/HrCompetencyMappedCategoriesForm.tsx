@@ -1,17 +1,18 @@
+import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardContent, CardHeader, Checkbox, CircularProgress, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Typography, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { IMappedFormValue } from './HrCompetencyMappedForm';
 
 interface IOwnProps {
   formikBag: FormikProps<IMappedFormValue>;
   intl: InjectedIntl;
+  formMode: FormMode;
 }
 
 interface ChildList {
@@ -23,6 +24,7 @@ interface IOwnState {
   active?: string;
   isExpanded: boolean;
   childList: ChildList[];
+  firstHitEdit: boolean;
 }
 
 interface IOwnHandler {
@@ -45,6 +47,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   active: undefined,
   isExpanded: false,
   childList: [],
+  firstHitEdit: false
 });
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
@@ -83,24 +86,6 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
       <CardHeader 
         title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Categories'})}
       />
-      <CardContent>
-        {
-          formikBag.values.categories.length === 0 &&
-          <div className={props.classes.preloader}>
-            <div className={props.classes.preloaderContent}>
-              <CircularProgress 
-                style={{margin: 'auto'}} 
-                color="secondary"
-              />
-
-              <Typography
-                className={props.classes.marginFarTop}
-              >
-                {props.intl.formatMessage(layoutMessage.text.waiting)}
-              </Typography>
-            </div>    
-          </div>
-        }
         {
           formikBag.values.categories.length > 0 && (
             <List>
@@ -111,13 +96,16 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                     !parent.parentUid &&
                     (
                       <React.Fragment key ={idxParent}>
+                        <Divider />
                         <ListItem
                           button
                           disableGutters
+                          onClick={() => props.handleToggle(parent.uid)}
                           selected={parent.uid === active && isExpanded}
                         >
                           <Field 
                             name={`categories.${idxParent}.isAccess`}
+                            className={props.classes.marginFarLeft}
                             render={({ field }: FieldProps<IMappedFormValue>) => (
                               <Checkbox 
                                 {...field}
@@ -146,19 +134,16 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                   height: 10,
                                   width: 10,
                                   marginRight: 5,
-                                  marginLeft: 5,
+                                  marginLeft: 30,
                                 }}
                               />
                             )}
                           />
-                          <div onClick={() => props.handleToggle(parent.uid)}>
-                            <ListItemText primary={parent.name}/>
-                            <ListItemSecondaryAction>
-                              {active === parent.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
-                            </ListItemSecondaryAction>
-                          </div>
-                        </ListItem>
-                        <Divider />            
+                          <ListItemText primary={parent.name}/>
+                          <ListItemSecondaryAction>
+                            {active === parent.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                          </ListItemSecondaryAction>
+                        </ListItem>        
                         <Collapse
                           in={active === parent.uid && isExpanded}
                           timeout="auto"
@@ -167,15 +152,10 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           {
                             formikBag.values.categories.map((child, idxChild) => 
                               child.parentUid === parent.uid &&
-                              <div key={idxChild}>
                                 <ListItem
+                                  key={idxChild}
                                   color="inherit"
-                                  className={props.classes.marginFarLeft}
                                   button
-                                  style={{
-                                    marginLeft: 0,
-                                    marginRight: 10
-                                  }}
                                 >
                                   <Field 
                                     name={`categories.${idxChild}.isAccess`}
@@ -201,7 +181,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                         style={{
                                           height: 10,
                                           width: 10,
-                                          marginLeft: 5,
+                                          marginLeft: 25,
                                           marginRight: 5
                                         }}
                                       />
@@ -209,7 +189,6 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                   />
                                   <ListItemText primary={child.name}/>
                                 </ListItem>
-                              </div>
                             )
                           }
                         </Collapse>
@@ -222,15 +201,39 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
             </List>
           )
         }        
-      </CardContent>
     </Card>
   );
 
   return render;
 };
 
+const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidUpdate(prevProps: AllProps) {
+    const { formikBag: thisFormik, formMode, childList, stateUpdate, firstHitEdit } = this.props;
+    const { formikBag: prevFormik } = prevProps;
+
+    if (thisFormik.values.categories !== prevFormik.values.categories && !firstHitEdit) {
+      if (formMode === FormMode.Edit) {
+        thisFormik.values.categories.map(item => 
+          item.isAccess &&
+          item.parentUid &&
+          childList.push({
+            uid: item.uid,
+            parentUid: item.parentUid
+          })  
+        );
+        stateUpdate({
+          childList,
+          firstHitEdit: true
+        });
+      }
+    }
+  }
+};
+
 export const HrCompetencyMappedCategoriesForm = compose<AllProps, IOwnProps>(
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifeCycleFunctions),
 )(hrCompetencyMappedCategoriesForm);

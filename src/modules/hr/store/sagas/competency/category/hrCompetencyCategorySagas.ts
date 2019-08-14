@@ -216,7 +216,7 @@ function* watchPatchRequest() {
     });
   };
 
-  yield takeEvery(Action.PUT_REQUEST, worker);
+  yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
 function* watchSwitchAccess() {

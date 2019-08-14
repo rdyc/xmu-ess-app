@@ -83,16 +83,10 @@ const hrCompetencyClusterCategory: React.SFC<AllProps> = props => {
               {len !== index && <Divider />}                
               <Collapse
                 in={active === item.uid && isExpanded}
-                className={props.classes.paddingFar}
+                className={props.classes.marginFar}
                 timeout="auto"
                 unmountOnExit
               >
-                {/* <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  margin="dense"
-                  label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Categories'})}
-                  value={item.uid}
-                /> */}
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   margin="dense"
