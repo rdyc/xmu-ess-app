@@ -1,4 +1,4 @@
-import { IHrCompetencyCategoryDetail } from '@hr/classes/response';
+import { IHrCompetencyCategoryDetail, IHrCompetencyIndicatorList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
@@ -57,10 +57,19 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 const hrCompetencyCategoryLevel: React.SFC<AllProps> = props => {
   const { data, intl, active, isExpanded, handleToggle } = props;
 
+  const handleIndicators = (indicators: IHrCompetencyIndicatorList[]) => {
+    const temp: string[] = [];
+    indicators.map(item => {
+      temp.push(`${item.description} \n`);
+    });
+
+    return temp.join('\n');
+  };
+
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Category'})}
+        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Level'})}
       />
       {
         data.levels.length === 0 ?
@@ -80,7 +89,7 @@ const hrCompetencyCategoryLevel: React.SFC<AllProps> = props => {
                   selected={level.uid === active && isExpanded}
                   onClick={() => handleToggle(level.uid)}
                 >
-                  <ListItemText primary={level.level}/>
+                  <ListItemText primary={`${level.level} - ${level.description}`}/>
                   <ListItemSecondaryAction>
                     {active === level.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
                   </ListItemSecondaryAction>
@@ -104,18 +113,20 @@ const hrCompetencyCategoryLevel: React.SFC<AllProps> = props => {
                     label={props.intl.formatMessage(hrMessage.competency.field.description)}
                     value={level.description}
                   />
-                  {
-                    level.indicators.map((indicator, indicatorIndex) => 
-                      <TextField
-                        {...GlobalStyle.TextField.ReadOnly}
-                        key={indicator.uid || indicatorIndex}
-                        multiline
-                        margin="dense"
-                        label={`${props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Indicator'})} - ${indicatorIndex + 1}`}
-                        value={indicator.description}
-                      />  
+                  <TextField
+                    {...GlobalStyle.TextField.ReadOnly}
+                    multiline
+                    margin="dense"
+                    label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Indicators'})}
+                    value={handleIndicators(level.indicators)}
+                  />
+                  {/* {
+                    level.indicators.map((indicator, indicatorIndex) =>
+                      <ListItemText key={indicator.uid || indicatorIndex} className={props.classes.marginThinBottom}>
+                        &#10004; {indicator.description}
+                      </ListItemText>
                     ) 
-                  }
+                  } */}
                 </Collapse>
               </React.Fragment>  
             )
