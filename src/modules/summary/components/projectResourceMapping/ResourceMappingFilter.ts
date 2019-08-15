@@ -40,17 +40,15 @@ const yearList: ICollectionValue[] = [
 export type IResourceMappingFilterResult = Pick<ISummaryMappingFilter, 'companyUid' | 'year' | 'summary' | 'professionTypes' | 'competencyTypes' | 'employeeUids'>;
 
 interface IOwnOption {
-  isAdmin: boolean;
-  isStartup: boolean;
   initialProps?: IResourceMappingFilterResult;  
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IResourceMappingFilterResult) => void;
+  onClose: (event: React.MouseEvent<HTMLElement>) => void;
+  isOpen: boolean;
 }
 
 interface IOwnState {
-  isFilterOpen: boolean;
-
   yearList: ICollectionValue[];
 
   // filter company
@@ -83,7 +81,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
   // main filter
   setFilterReset: StateHandler<IOwnState>;
-  setFilterVisibility: StateHandler<IOwnState>;
 
   // filter Company
   setFilterCompanyVisibility: StateHandler<IOwnState>;
@@ -111,9 +108,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   // mainfilter
-  handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 
   // filter Company
   handleFilterCompanyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -166,14 +161,9 @@ const createProps: mapper<ResourceMappingFilterProps, IOwnState> = (props: Resou
     yearList,
     isFilterCompanyOpen: false,
     isFilterYearOpen: false,
-    isFilterOpen: true,
     isFilterCompetencyOpen: false,
     isFilterProfessionOpen: false,
     isFilterEmployeeOpen: false,
-
-    // pass inital value
-    // filterCompetency: []
-    // filterSummary: props.isSummary
   };
 };
 
@@ -192,9 +182,6 @@ const stateUpdaters: StateUpdaters<ResourceMappingFilterProps, IOwnState, IOwnSt
     filterSummary: false,
     filterEmployee: undefined,
     filterEmployeeList: undefined
-  }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
   }),
 
   // filter Company
@@ -286,12 +273,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
         summary: props.filterSummary
       });
     }
-    props.setFilterVisibility();
   },
-  handleFilterVisibility: (props: ResourceMappingFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterVisibility();
-  },
-
   // filter Company
   handleFilterCompanyVisibility: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompanyVisibility();

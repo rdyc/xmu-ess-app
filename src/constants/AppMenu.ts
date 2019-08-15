@@ -71,6 +71,7 @@ enum AppMenu {
   COGSUpload = 'MNU64',
   LookupCompetencyCluster = 'MNU69',
   LookupCompetencyCategory = 'MNU78',
+  LookupCompetencyMapped = 'MNU79',
   KPICategory = 'MNU67',
   KPITemplate = 'MNU68',
   HumanResource = 'MNU72',

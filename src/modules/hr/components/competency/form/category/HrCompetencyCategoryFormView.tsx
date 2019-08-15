@@ -14,9 +14,9 @@ import HrLevelItem from './HrLevelItem';
 export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompetencyCluster,
+      uid: AppMenu.LookupCompetencyCategory,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencycluster',
+      parentUrl: '/lookup/competencycategory',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Category'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Category'})
     }}

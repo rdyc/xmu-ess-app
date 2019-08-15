@@ -1,5 +1,12 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IHrCompetencyCategoryGetAllRequest, IHrCompetencyCategoryGetDetailRequest, IHrCompetencyCategoryGetListRequest, IHrCompetencyCategoryPostRequest, IHrCompetencyCategoryPutRequest } from 'modules/hr/classes/queries';
+import { 
+  IHrCompetencyCategoryGetAllRequest, 
+  IHrCompetencyCategoryGetDetailRequest, 
+  IHrCompetencyCategoryGetListRequest, 
+  IHrCompetencyCategoryPatchRequest, 
+  IHrCompetencyCategoryPostRequest, 
+  IHrCompetencyCategoryPutRequest, 
+} from 'modules/hr/classes/queries';
 import { IHrCompetencyCategory, IHrCompetencyCategoryDetail, IHrCompetencyCategoryList } from 'modules/hr/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -24,6 +31,10 @@ export const enum HrCompetencyCategoryAction {
   PUT_SUCCESS = '@@hr/competency/category/PUT_SUCCESS',
   PUT_ERROR = '@@hr/competency/category/PUT_ERROR',
   PUT_DISPOSE = '@@hr/competency/category/PUT_DISPOSE',
+  PATCH_REQUEST = '@@hr/competency/category/PATCH_REQUEST',
+  PATCH_SUCCESS = '@@hr/competency/category/PATCH_SUCCESS',
+  PATCH_ERROR = '@@hr/competency/category/PATCH_ERROR',
+  PATCH_DISPOSE = '@@hr/competency/category/PATCH_DISPOSE',
 }
 
 // get all
@@ -55,3 +66,9 @@ export const hrCompetencyCategoryPutRequest = (request: IHrCompetencyCategoryPut
 export const hrCompetencyCategoryPutSuccess = (response: IResponseSingle<IHrCompetencyCategory>) => action(HrCompetencyCategoryAction.PUT_SUCCESS, response);
 export const hrCompetencyCategoryPutError = (error: any) => action(HrCompetencyCategoryAction.PUT_ERROR, error);
 export const hrCompetencyCategoryPutDispose = () => action(HrCompetencyCategoryAction.PUT_DISPOSE);
+
+// patch
+export const hrCompetencyCategoryPatchRequest = (request: IHrCompetencyCategoryPatchRequest) => action(HrCompetencyCategoryAction.PATCH_REQUEST, request);
+export const hrCompetencyCategoryPatchSuccess = (response: IResponseSingle<IHrCompetencyCategory>) => action(HrCompetencyCategoryAction.PATCH_SUCCESS, response);
+export const hrCompetencyCategoryPatchError = (error: any) => action(HrCompetencyCategoryAction.PATCH_ERROR, error);
+export const hrCompetencyCategoryPatchDispose = () => action(HrCompetencyCategoryAction.PATCH_DISPOSE);

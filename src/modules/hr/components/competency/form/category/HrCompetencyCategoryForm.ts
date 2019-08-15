@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyCategoryPostPayload, IHrCompetencyCategoryPutPayload } from '@hr/classes/request';
-import { IHrCompetencyCategory } from '@hr/classes/response';
+import { IHrCompetencyCategory, IHrCompetencyIndicatorList } from '@hr/classes/response';
 import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -29,11 +29,12 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { HrCompetencyCategoryFormView } from './HrCompetencyCategoryFormView';
+
 export interface ICategoryLevelFormValue {
-  levelUid?: string;
+  uid?: string;
   level: number;
   description: string;
-  indicators: ICategoryIndicatorFormValue[];
+  indicators: IHrCompetencyIndicatorList[];
 }
 
 export interface ICategoryIndicatorFormValue {
@@ -104,7 +105,7 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
       .required(),
     categoryUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}))
       .required(),
     levels: Yup.array()
       .of(
@@ -118,7 +119,7 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
           indicators: Yup.array()
             .of(
               Yup.object().shape({
-                indicatorDescription: Yup.string()
+                description: Yup.string()
                   .label(props.intl.formatMessage(hrMessage.competency.field.description))
                   .required(),
               })
@@ -188,6 +189,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
             resolve,
             reject,
             clusterUid: values.clusterUid,
+            categoryUid: values.categoryUid,
             data: payload
           });
         });
@@ -206,7 +208,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
           // fill levels
           values.levels.forEach(item => payload.levels.push({
-            levelUid: item.levelUid,
+            uid: item.uid || '',
             level: item.level,
             description: item.description,
             indicators: item.indicators
@@ -214,7 +216,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
           // set the promise
           promise = new Promise((resolve, reject) => {
-            props.hrCompetencyCategoryDispatch.updateRequest({
+            props.hrCompetencyCategoryDispatch.patchRequest({
               clusterUid,
               categoryUid,
               resolve,
@@ -240,9 +242,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Category', uid: response.uid })
         });
+        const clusterUid = props.history.location.state.clusterUid;
 
         // redirect to detail
-        props.history.push(`/lookup/competencycategory`);
+        props.history.push(`/lookup/competencycategory/${response.uid}`, {clusterUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -288,7 +291,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyCategoryFormProps,
         // fill levels
         thisResponse.data.levels.forEach(item =>
           initialValues.levels.push({
-            levelUid: item.levelUid,
+            uid: item.uid,
             level: item.level,
             description: item.description,
             indicators: item.indicators

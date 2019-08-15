@@ -44,7 +44,7 @@ const hrCompetencyMappedInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(hrMessage.competency.field.company)}
+          label={intl.formatMessage(hrMessage.competency.field.position)}
           value={data.position.name}
         />
         {

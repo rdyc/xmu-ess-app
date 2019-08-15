@@ -184,14 +184,15 @@ const handlerCreators: HandleCreators<HrCompetencyListProps, IOwnHandler> = {
     const { isExpired, isLoading, request } = props.hrCompetencyCategoryState.all;
     const { clusterUid } = props;
 
-    if (props.userState.user && !isLoading) {
+    if (props.userState.user && !isLoading && clusterUid) {
       const filter: IHrCompetencyCategoryGetAllFilter = {
+        clusterUid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
-        size: params && params.size || request && request.filter && request.filter.size
+        size: params && params.size || request && request.filter && request.filter.size,
       };
 
       // when request is defined, then compare the filter props
@@ -329,7 +330,7 @@ const handlerCreators: HandleCreators<HrCompetencyListProps, IOwnHandler> = {
     primary: item.uid,
     secondary: item.position && item.position.company.name || 'N/A',
     tertiary: item.position && item.position.name || 'N/A',
-    quaternary: item.category.name,
+    quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   })

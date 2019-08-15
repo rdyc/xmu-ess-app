@@ -47,9 +47,12 @@ export const hrCompetencyField = defineMessages({
   minCategories: { id: `${prefix}.field.minCategories`},
   minLevels: { id: `${prefix}.field.minLevels`},
   minIndicators: { id: `${prefix}.field.minIndicators`},
-  totalCategories: { id: `${prefix}.field.totalCategories`},
-  oneCategories: { id: `${prefix}.field.oneCategories`},
-  manyCategories: { id: `${prefix}.field.manyCategories`},
+  totalItem: { id: `${prefix}.field.totalItem`},
+  zeroItem: { id: `${prefix}.field.zeroItem`},
+  oneItem: { id: `${prefix}.field.oneItem`},
+  manyItem: { id: `${prefix}.field.manyItem`},
+  
+  clusterRequired: { id: `${prefix}.field.cluster.required`},
 });
 
 // helper

@@ -32,7 +32,7 @@ const HrCategoryItem: React.ComponentType<HrCategoryItemProps> = props => (
                   title={`#${index + 1} - Category`}
                   titleTypographyProps={{variant: 'body2'}}
                   action={
-                    <IconButton onClick={() => fields.remove(index)}>
+                    <IconButton disabled={Boolean(item.uid)} onClick={() => fields.remove(index)}>
                       <DeleteForever />
                     </IconButton>
                   }

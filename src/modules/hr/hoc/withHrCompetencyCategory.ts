@@ -3,8 +3,9 @@ import {
   IHrCompetencyCategoryGetAllRequest, 
   IHrCompetencyCategoryGetDetailRequest, 
   IHrCompetencyCategoryGetListRequest, 
+  IHrCompetencyCategoryPatchRequest, 
   IHrCompetencyCategoryPostRequest, 
-  IHrCompetencyCategoryPutRequest 
+  IHrCompetencyCategoryPutRequest
 } from '@hr/classes/queries/';
 import { IHrCompetencyCategory, IHrCompetencyCategoryDetail, IHrCompetencyCategoryList } from '@hr/classes/response/';
 import { 
@@ -14,10 +15,12 @@ import {
   hrCompetencyCategoryGetByIdRequest, 
   hrCompetencyCategoryGetListDispose, 
   hrCompetencyCategoryGetListRequest, 
+  hrCompetencyCategoryPatchDispose, 
+  hrCompetencyCategoryPatchRequest, 
   hrCompetencyCategoryPostDispose, 
   hrCompetencyCategoryPostRequest, 
-  hrCompetencyCategoryPutDispose, 
-  hrCompetencyCategoryPutRequest 
+  hrCompetencyCategoryPutDispose,
+  hrCompetencyCategoryPutRequest
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof hrCompetencyCategoryPostDispose;
     updateRequest: typeof hrCompetencyCategoryPutRequest;
     updateDispose: typeof hrCompetencyCategoryPutDispose;
+    patchRequest: typeof hrCompetencyCategoryPatchRequest;
+    patchDispose: typeof hrCompetencyCategoryPatchDispose;
 
     // query
     loadAllRequest: typeof hrCompetencyCategoryGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(hrCompetencyCategoryPostDispose()),
     updateRequest: (request: IHrCompetencyCategoryPutRequest) => dispatch(hrCompetencyCategoryPutRequest(request)),
     updateDispose: () => dispatch(hrCompetencyCategoryPutDispose()),
+    patchRequest: (request: IHrCompetencyCategoryPatchRequest) => dispatch(hrCompetencyCategoryPatchRequest(request)),
+    patchDispose: () => dispatch(hrCompetencyCategoryPatchDispose()),
 
     // query
     loadAllRequest: (request: IHrCompetencyCategoryGetAllRequest) => dispatch(hrCompetencyCategoryGetAllRequest(request)),

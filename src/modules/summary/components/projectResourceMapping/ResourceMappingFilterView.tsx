@@ -63,9 +63,9 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
       <Dialog
         fullScreen
         disableBackdropClick
-        open={props.isFilterOpen}
+        open={props.isOpen}
         className={props.classes.shift}
-        onClose={props.handleFilterVisibility}
+        onClose={props.onClose}
       >
         <AppBar 
           elevation={0}
@@ -74,16 +74,12 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
           className={props.classes.appBarDialog}
         >
           <Toolbar>
-            <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
+            <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
 
             <Typography variant="h6" color="inherit" className={props.classes.flex}>
-              {
-                !props.isStartup &&
-                props.intl.formatMessage(layoutMessage.tooltip.filter) ||
-                props.intl.formatMessage(summaryMessage.mapping.page.title)
-              }
+              {props.intl.formatMessage(layoutMessage.tooltip.filter)}
             </Typography>
 
             {
@@ -322,7 +318,7 @@ export const ResourceMappingFilterView: React.SFC<ResourceMappingFilterProps> = 
       >
         <IconButton
           disabled={props.isLoading}
-          onClick={props.handleFilterVisibility} 
+          onClick={props.onClose} 
         >
           <Badge
             invisible={!showBadgeWhen()}

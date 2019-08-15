@@ -12,6 +12,7 @@ export * from './competency/category/IHrCompetencyCategoryGetDetailRequest';
 export * from './competency/category/IHrCompetencyCategoryGetListRequest';
 export * from './competency/category/IHrCompetencyCategoryPostRequest';
 export * from './competency/category/IHrCompetencyCategoryPutRequest';
+export * from './competency/category/IHrCompetencyCategoryPatchRequest';
 
 // level
 export * from './competency/level/IHrCompetencyLevelGetAllRequest';

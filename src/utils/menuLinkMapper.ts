@@ -225,6 +225,10 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU78':
       path = '/lookup/competencycategory';
       break;
+
+    case 'MNU79':
+      path = '/lookup/competencymapped';
+      break;
       
     case 'MNU67':
       path = '/kpi/categories';
