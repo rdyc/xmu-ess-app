@@ -131,9 +131,9 @@ const handlerCreators: HandleCreators<EmployeeKPIListProps, IOwnHandler> = {
   },
   handleOnBind: (props: EmployeeKPIListProps) => (item: IEmployeeKPI, index: number) => ({
     key: index,
-    primary: props.intl.formatNumber(item.year),
+    primary: item.year.toString(),
     secondary: `Semester ${props.intl.formatNumber(item.period)}`,
-    tertiary: `${props.intl.formatNumber(item.period)} %`,
+    tertiary: `${props.intl.formatNumber(item.totalScore)} %`,
     quaternary: item.isFinal && props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) || props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    

@@ -88,8 +88,10 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUids: props.companyUids,
+        positionUids: props.positionUids,
         roleUids: props.roleUids,
-        isActive: props.isActive
+        useAccess: props.useAccess,
+        isActive: props.isActive,
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

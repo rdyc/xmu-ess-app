@@ -73,8 +73,10 @@
   "account.employee.tab.rate": "Rate",
 
   "account.employee.filter.company": "Company Name",
+  "account.employee.filter.position": "Position Name",
   "account.employee.filter.role": "Role Name",
   "account.employee.filter.isActive": "InActive Only",
+  "account.employee.filter.hasAccess": "Filter By Multi Access Company",
   "account.employee.filter.employee": "Employee",
   "account.employee.filter.placeholder.employeeSearch": "Type any employee name",
 

@@ -36,7 +36,7 @@ const employeeKPIInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.intl.formatNumber(props.data.year)}
+          value={props.data.year.toString()}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -20,6 +20,7 @@ import * as React from 'react';
 
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FilterCompany } from '@lookup/components/company/select';
+import { FilterPosition } from '@lookup/components/position/select';
 import { FilterRole } from '@lookup/components/role/select';
 import { AccountEmployeeFilterFilterProps } from './EmployeeFilter';
 
@@ -60,7 +61,6 @@ export const EmployeeFilterView: React.SFC<AccountEmployeeFilterFilterProps> = p
       </AppBar>
 
       <List>
-
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(accountMessage.employee.filter.company)}
@@ -77,6 +77,41 @@ export const EmployeeFilterView: React.SFC<AccountEmployeeFilterFilterProps> = p
             <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+        
+        <ListItem button onClick={props.handleFilterPositionVisibility} disabled={!props.filterCompany}>
+          <ListItemText 
+            primary={props.intl.formatMessage(accountMessage.employee.filter.position)}
+            secondary={props.filterPosition && props.filterPosition.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterPosition &&
+              <IconButton onClick={props.handleFilterPositionOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterPositionVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(accountMessage.employee.filter.hasAccess)}
+            secondary={props.intl.formatMessage(props.filterAccess ? layoutMessage.action.yes : layoutMessage.action.no) }
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="secondary"
+              checked={props.filterAccess || false}
+              onChange={props.handleFilterAccessOnChange}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -125,6 +160,16 @@ export const EmployeeFilterView: React.SFC<AccountEmployeeFilterFilterProps> = p
         value={props.filterCompany && props.filterCompany.uid}
         onSelected={props.handleFilterCompanyOnSelected}
         onClose={props.handleFilterCompanyOnClose}        
+      />
+
+      <FilterPosition 
+        title={props.intl.formatMessage(accountMessage.employee.filter.position)}
+        filter={props.filterPositionValue}
+        hideBackdrop={true}
+        isOpen={props.isFilterPositionOpen}
+        value={props.filterPosition && props.filterPosition.uid}
+        onSelected={props.handleFilterPositionOnSelected}
+        onClose={props.handleFilterPositionOnClose}        
       />
 
       <FilterRole
