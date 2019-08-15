@@ -55,6 +55,7 @@ export const KPITemplateConfirm = defineMessages({
 // fields
 export const KPITemplateField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
+  uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
   companyUid: { id: `${prefix}.field.companyUid`},
   positionUid: { id: `${prefix}.field.positionUid`},
   name: { id: `${prefix}.field.name`},
@@ -65,9 +66,11 @@ export const KPITemplateField = defineMessages({
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
   itemUid: { id: `${prefix}.field.itemUid`},
   categoryUid: { id: `${prefix}.field.categoryUid`},
+  categoryUidPlaceholder: { id: `${prefix}.field.categoryUid.placeholder`},
   categoryName: { id: `${prefix}.field.categoryName`},
   categoryNamePlaceholder: { id: `${prefix}.field.categoryName.placeholder`},
   measurementUid: { id: `${prefix}.field.measurementUid`},
+  measurementUidPlaceholder: { id: `${prefix}.field.measurementUid.placeholder`},
   target: { id: `${prefix}.field.target`},
   targetPlaceholder: { id: `${prefix}.field.target.placeholder`},
   weight: { id: `${prefix}.field.weight`},
@@ -103,8 +106,11 @@ export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fi
 
   if (type === 'fieldRequired') {
     switch (field) {
+      case 'uid': return KPITemplateField.uidPlaceholder;
       case 'name': return KPITemplateField.name;
 
+      case 'categoryUid': return KPITemplateField.categoryUidPlaceholder;
+      case 'measurementUid': return KPITemplateField.measurementUidPlaceholder;
       case 'categoryName': return KPITemplateField.categoryNamePlaceholder;
       case 'target': return KPITemplateField.targetPlaceholder;
       case 'weight': return KPITemplateField.weightPlaceholder;

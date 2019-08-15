@@ -12,6 +12,9 @@ import {
   KPICategoryGetListError,
   KPICategoryGetListRequest,
   KPICategoryGetListSuccess,
+  KPICategoryMeasurementPostError,
+  KPICategoryMeasurementPostRequest,
+  KPICategoryMeasurementPostSuccess,
   KPICategoryPostError,
   KPICategoryPostRequest,
   KPICategoryPostSuccess,
@@ -142,6 +145,46 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchMeasurementPostRequest() {
+  const worker = (action: ReturnType<typeof KPICategoryMeasurementPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/kpi/categories/measurement`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(KPICategoryGetByIdDispose()),
+        put(KPICategoryGetAllDispose()),
+        put(KPICategoryMeasurementPostSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(KPICategoryMeasurementPostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(KPICategoryMeasurementPostError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.MEASUREMENT_POST_REQUEST, worker);
+}
+
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPutRequest>) => {
     return saiyanSaga.fetch({
@@ -200,6 +243,7 @@ function* kpiCategorySagas() {
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
+    fork(watchMeasurementPostRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess)
   ]);

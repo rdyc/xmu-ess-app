@@ -2,8 +2,9 @@ import {
   kpiCategoryGetAllReducer,
   kpiCategoryGetByIdReducer,
   kpiCategoryGetListReducer,
+  kpiCategoryMeasurementPostReducer,
   kpiCategoryPostReducer,
-  kpiCategoryPutReducer
+  kpiCategoryPutReducer,
 } from '@kpi/store/reducers/category';
 
 const kpiCategoryReducers = {
@@ -11,6 +12,7 @@ const kpiCategoryReducers = {
   kpiCategoryGetList: kpiCategoryGetListReducer,
   kpiCategoryGetById: kpiCategoryGetByIdReducer,
   kpiCategoryPost: kpiCategoryPostReducer,
+  kpiCategoryMeasurementPost: kpiCategoryMeasurementPostReducer,
   kpiCategoryPut: kpiCategoryPutReducer,
 };
 
