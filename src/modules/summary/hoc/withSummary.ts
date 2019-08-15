@@ -2,12 +2,14 @@ import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/in
 import {
   ISummaryGetBillableRequest,
   ISummaryGetEffectivenessRequest,
+  ISummaryGetMappingRequest,
   ISummaryGetProfitabilityRequest,
   ISummaryGetProgressRequest,
   ISummaryGetWinningRequest,
 } from '@summary/classes/queries';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
+import { ISummaryMapping } from '@summary/classes/response/mapping';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ISummaryWinning } from '@summary/classes/response/winning';
@@ -16,6 +18,8 @@ import {
   summaryGetBillableRequest,
   summaryGetEffectivenessDispose,
   summaryGetEffectivenessRequest,
+  summaryGetMappingDispose,
+  summaryGetMappingRequest,
   summaryGetProfitabilityDispose,
   summaryGetProfitabilityRequest,
   summaryGetProgressDispose,
@@ -33,6 +37,7 @@ interface PropsFromState {
     profitability: IQuerySingleState<ISummaryGetProfitabilityRequest, ISummaryProfitability>;
     progress: IQuerySingleState<ISummaryGetProgressRequest, ISummaryProgress>;
     winning: IQueryCollectionState<ISummaryGetWinningRequest, ISummaryWinning>;
+    mapping: IQueryCollectionState<ISummaryGetMappingRequest, ISummaryMapping>;
   };
 }
 
@@ -49,18 +54,21 @@ interface PropsFromDispatch {
     loadProgressDispose: typeof summaryGetProgressDispose;
     loadWinningRequest: typeof summaryGetWinningRequest;
     loadWinningDispose: typeof summaryGetWinningDispose;
+    loadMappingRequest: typeof summaryGetMappingRequest;
+    loadMappingDispose: typeof summaryGetMappingDispose;
   };
 }
 
 export interface WithSummary extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ summaryGetBillable, summaryGetEffectiveness, summaryGetProfitability, summaryGetProgress, summaryGetWinning }: IAppState) => ({
+const mapStateToProps = ({ summaryGetBillable, summaryGetEffectiveness, summaryGetProfitability, summaryGetProgress, summaryGetWinning, summaryGetMapping }: IAppState) => ({
   summaryState: {
     billable: summaryGetBillable,
     effectiveness: summaryGetEffectiveness,
     profitability: summaryGetProfitability,
     progress: summaryGetProgress,
-    winning: summaryGetWinning
+    winning: summaryGetWinning,
+    mapping: summaryGetMapping
   }
 });
 
@@ -77,6 +85,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadProgressDispose: () => dispatch(summaryGetProgressDispose()),
     loadWinningRequest: (request: ISummaryGetWinningRequest) => dispatch(summaryGetWinningRequest(request)),
     loadWinningDispose: () => dispatch(summaryGetWinningDispose()),
+    loadMappingRequest: (request: ISummaryGetMappingRequest) => dispatch(summaryGetMappingRequest(request)),
+    loadMappingDispose: () => dispatch(summaryGetMappingDispose()),
   }
 });
 

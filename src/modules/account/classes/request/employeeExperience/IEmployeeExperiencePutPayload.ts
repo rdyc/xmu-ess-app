@@ -1,7 +1,11 @@
+import { IExperienceCompetencyUpdateCommand } from './IExperienceCompetencyUpdateCommand';
+
 export interface IEmployeeExperiencePutPayload {
-  uid: string;
+  experienceUid: string;
   company: string;
   position: string;
+  professionType: string;
   start: number;
   end: number;
+  competencies: IExperienceCompetencyUpdateCommand[];
 }

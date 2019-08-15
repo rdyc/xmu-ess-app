@@ -1,6 +1,7 @@
 import {
   summaryGetBillableReducer,
   summaryGetEffectivenessReducer,
+  summaryGetMappingReducer,
   summaryGetProfitabilityReducer,
   summaryGetProgressReducer,
   summaryGetWinningReducer
@@ -12,6 +13,7 @@ const summaryReducers = {
   summaryGetProfitability: summaryGetProfitabilityReducer,
   summaryGetProgress: summaryGetProgressReducer,
   summaryGetWinning: summaryGetWinningReducer,
+  summaryGetMapping: summaryGetMappingReducer
 };
 
 export default summaryReducers;

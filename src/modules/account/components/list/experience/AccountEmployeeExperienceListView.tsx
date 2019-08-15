@@ -10,63 +10,82 @@ import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 import { AccountEmployeeExperienceSummary } from './AcccountEmployeeExperienceSummary';
 import { AccountEmployeeExperienceListProps } from './AccountEmployeeExperienceList';
+import { ResourceMappingExperienceSummary } from './ResourceMappingExperienceSummary';
 
 export const AccountEmployeeExperienceListView: React.SFC<AccountEmployeeExperienceListProps> = props => (
   <React.Fragment>
-    <DetailPage
-        tab={AccountEmployeeTabs.experience}        
-    >
+    {
+      props.employeeId ?
       <CollectionPage
-        // page info
-        info={{
-          uid: AppMenu.LookupEmployee,
-          parentUid: AppMenu.Lookup,
-          parentUrl: '/account/employee',
-          title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
-          description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
-        }}
-
         // state & fields
         state={props.accountEmployeeExperienceState.all}
         fields={props.fields}
 
         // callback
         onLoadApi={props.handleOnLoadApi}
-        onBind={props.handleOnBind}
+        onBind={props.handleMappingOnBind}
         
         // row components
         summaryComponent={(item: IEmployeeExperience) => ( 
-          <AccountEmployeeExperienceSummary data={item} employeeUid={props.match.params.employeeUid} />
+          <ResourceMappingExperienceSummary data={item} />
         )}
-        actionComponent={(item: IEmployeeExperience) => (
-          <React.Fragment>
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`, { educationUid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/${item.uid}`)}
-            >
-              {props.intl.formatMessage(layoutMessage.action.details)}
-            </Button>
-          </React.Fragment>
-        )}
-
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`)}
-          >
-            <AddCircle/>
-          </IconButton>
-        }
       />
-    </DetailPage>
+      :
+      <DetailPage
+          tab={AccountEmployeeTabs.experience}        
+      >
+        <CollectionPage
+          // page info
+          info={{
+            uid: AppMenu.LookupEmployee,
+            parentUid: AppMenu.Lookup,
+            parentUrl: '/account/employee',
+            title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+            description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
+          }}
+
+          // state & fields
+          state={props.accountEmployeeExperienceState.all}
+          fields={props.fields}
+
+          // callback
+          onLoadApi={props.handleOnLoadApi}
+          onBind={props.handleOnBind}
+          
+          // row components
+          summaryComponent={(item: IEmployeeExperience) => ( 
+            <AccountEmployeeExperienceSummary data={item} employeeUid={props.match.params.employeeUid} />
+          )}
+          actionComponent={(item: IEmployeeExperience) => (
+            <React.Fragment>
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`, { experienceUid: item.uid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.modify)}
+              </Button>
+
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/${item.uid}`)}
+              >
+                {props.intl.formatMessage(layoutMessage.action.details)}
+              </Button>
+            </React.Fragment>
+          )}
+
+          appBarCustomComponent={
+            <IconButton
+              color="inherit"
+              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/experience/form`)}
+            >
+              <AddCircle/>
+            </IconButton>
+          }
+        />
+      </DetailPage>
+    }
   </React.Fragment>
 );

@@ -214,6 +214,22 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU66':
+      path = '/reports/resourcemapping';
+      break;
+      
+    case 'MNU69':
+      path = '/lookup/competencycluster';
+      break;
+
+    case 'MNU78':
+      path = '/lookup/competencycategory';
+      break;
+
+    case 'MNU79':
+      path = '/lookup/competencymapped';
+      break;
+      
     case 'MNU67':
       path = '/kpi/categories';
       break;
@@ -232,6 +248,10 @@ export const menuLinkMapper = (menuUid: string) => {
 
     case 'MNU75':
       path = '/kpi/hrinput';
+      break;
+    
+    case 'MNU70':
+      path = '/lookup/hrcorner';
       break;
 
     default:

@@ -7,6 +7,8 @@ import {
   bloodGetListRequest,
   certificationGetListDispose,
   certificationGetListRequest,
+  competencyGetListDispose,
+  competencyGetListRequest,
   currencyGetListDispose,
   currencyGetListRequest,
   degreeGetListDispose,
@@ -41,6 +43,8 @@ import {
   measurementGetListRequest,
   paymentGetListDispose,
   paymentGetListRequest,
+  professionGetListDispose,
+  professionGetListRequest,
   projectGetListDispose,
   projectGetListRequest,
   purposeGetListDispose,
@@ -118,6 +122,9 @@ interface PropsFromState {
   commonDegreeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonProfessionListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCompetencyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  
   commonKpiListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonMeasurementListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
@@ -160,6 +167,8 @@ interface PropsFromDispatch {
     degreeListRequest: typeof degreeGetListRequest;
     levelListRequest: typeof levelGetListRequest;
     familyListRequest: typeof familyGetListRequest;
+    professionListRequest: typeof professionGetListRequest;
+    competencyListRequest: typeof competencyGetListRequest;
     kpiListRequest: typeof kpiGetListRequest;
     measurementListRequest: typeof measurementGetListRequest;
 
@@ -192,6 +201,9 @@ interface PropsFromDispatch {
     degreeListDispose: typeof degreeGetListDispose;
     levelListDispose: typeof levelGetListDispose;
     familyListDispose: typeof familyGetListDispose;
+    professionListDispose: typeof professionGetListDispose;
+    competencyListDispose: typeof competencyGetListDispose;
+
     kpiListDispose: typeof kpiGetListDispose;
     measurementListDispose: typeof measurementGetListDispose;
     
@@ -247,6 +259,8 @@ const mapStateToProps = ({
   commonFamilyList,
   commonCertificationList,
   commonLevelList,
+  commonCompetencyList,
+  commonProfessionList,
   commonKpiList,
   commonMeasurementList
 
@@ -291,6 +305,8 @@ const mapStateToProps = ({
   commonFamilyListState: commonFamilyList,
   commonDepartmentListState: commonDepartmentList,
   commonLevelListState: commonLevelList,
+  commonCompetencyListState: commonCompetencyList,
+  commonProfessionListState: commonProfessionList,
   commonKpiListState: commonKpiList,
   commonMeasurementListState: commonMeasurementList,
 
@@ -334,6 +350,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
     certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
     levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
+    competencyListRequest: (request: ISystemListRequest) => dispatch(competencyGetListRequest(request)),
+    professionListRequest: (request: ISystemListRequest) => dispatch(professionGetListRequest(request)),
     kpiListRequest: (request: ISystemListRequest) => dispatch(kpiGetListRequest(request)),
     measurementListRequest: (request: ISystemListRequest) => dispatch(measurementGetListRequest(request)),
 
@@ -366,6 +384,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListDispose: () => dispatch(familyGetListDispose()),
     certificationListDispose: () => dispatch(certificationGetListDispose()),
     levelListDispose: () => dispatch(levelGetListDispose()),
+    competencyListDispose: () => dispatch(competencyGetListDispose()),
+    professionListDispose: () => dispatch(professionGetListDispose()),
     kpiListDispose: () => dispatch(kpiGetListDispose()),
     measurementListDispose: () => dispatch(measurementGetListDispose()),
 

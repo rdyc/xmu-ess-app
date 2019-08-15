@@ -32,6 +32,7 @@ enum AppMenu {
   ReportProgress = 'MNU52',
   ReportWinningRatio = 'MNU60',
   ReportEffectiveness = 'MNU51',
+  ReportResourceMapping = 'MNU66',
   Purchase = 'MNU17',
   PurchaseRequest = 'MNU23',
   PurchaseApproval = 'MNU24',
@@ -68,12 +69,16 @@ enum AppMenu {
   Common = 'MNU53',
   AchievementChart = 'MNU63',
   COGSUpload = 'MNU64',
+  LookupCompetencyCluster = 'MNU69',
+  LookupCompetencyCategory = 'MNU78',
+  LookupCompetencyMapped = 'MNU79',
   KPICategory = 'MNU67',
   KPITemplate = 'MNU68',
   HumanResource = 'MNU72',
   EmployeeKPI = 'MNU73',
   ManagerKPIInput = 'MNU74',
   HRKPIInput = 'MNU75',
+  HRCorner = 'MNU70'
 }
 
 export default AppMenu;

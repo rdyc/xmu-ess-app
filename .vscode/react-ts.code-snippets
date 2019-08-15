@@ -116,5 +116,11 @@
 			"\tlifecycle(lifeCycles)",
 			")(${TM_FILENAME_BASE}View);${1}"
 		]
-	}
+  },
+  "console log": {
+    "prefix": "clog",
+    "description": "For creating console log",
+    "scope": "typescript",
+    "body": "console.log($0);"
+  }
 }

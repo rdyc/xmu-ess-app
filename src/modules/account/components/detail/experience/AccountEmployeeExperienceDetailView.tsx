@@ -1,4 +1,4 @@
-import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
+import { IEmployeeExperienceDetail } from '@account/classes/response/employeeExperience';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
@@ -7,6 +7,7 @@ import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
 import { AccountEmployeeExperienceDetailProps } from './AccountEmployeeExperienceDetail';
 import { AccountEmployeeExperienceInformation } from './AccountEmployeeExperienceInformation';
+import { ExperienceCompetency } from './ExperienceCompetency';
 
 export const AccountEmployeeExperienceDetailView: React.SFC<AccountEmployeeExperienceDetailProps> = props => {
 
@@ -21,8 +22,14 @@ export const AccountEmployeeExperienceDetailView: React.SFC<AccountEmployeeExper
       }}
       state={props.accountEmployeeExperienceState.detail}
       onLoadApi={props.handleOnLoadApi}
-      primary={(data: IEmployeeExperience) => ([
+      primary={(data: IEmployeeExperienceDetail) => ([
         <AccountEmployeeExperienceInformation data={data} employeeUid={props.match.params.employeeUid}/>
+      ])}
+      secondary={(data: IEmployeeExperienceDetail) => ([
+        <ExperienceCompetency 
+          data={data.competencies}
+          title={props.intl.formatMessage(accountMessage.shared.field.titleInformation, {state: 'Competency'})}
+        />
       ])}
       appBarComponent={
         props.menuOptions &&
