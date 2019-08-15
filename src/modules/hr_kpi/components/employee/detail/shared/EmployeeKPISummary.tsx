@@ -24,16 +24,10 @@ const employeeKPISummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
         value={props.data.uid}
-      /> */}
-      <TextField
+      /> */}<TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.intl.formatNumber(props.data.year)}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.intl.formatNumber(props.data.year)}
+          value={props.data.year.toString()}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

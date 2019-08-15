@@ -20,9 +20,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IPositionGetListFilter } from '@lookup/classes/filters';
+import { IPositionList } from '@lookup/classes/response';
 import { EmployeeFilterView } from './EmployeeFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids' | 'isActive'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'roleUids' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -37,6 +39,11 @@ interface OwnState {
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
 
+  // filter position
+  filterPositionValue?: IPositionGetListFilter;
+  isFilterPositionOpen: boolean;
+  filterPosition?: IPositionList;
+
   // filter role
   filterRoleValue?: ILookupRoleGetListFilter;
   isFilterRoleOpen: boolean;
@@ -44,6 +51,9 @@ interface OwnState {
 
   // filter status
   filterStatus?: boolean; 
+
+  // filter access
+  filterAccess?: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -54,12 +64,19 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setFilterCompanyVisibility: StateHandler<OwnState>;
   setFilterCompany: StateHandler<OwnState>;
 
+  // filter position
+  setFilterPositionVisibility: StateHandler<OwnState>;
+  setFilterPosition: StateHandler<OwnState>;
+
   // filter role
   setFilterRoleVisibility: StateHandler<OwnState>;
   setFilterRole: StateHandler<OwnState>;
 
   // filter status
   setFilterStatus: StateHandler<OwnState>;
+
+  // filter access
+  setFilterAccess: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -72,6 +89,12 @@ interface OwnHandler {
   handleFilterCompanyOnSelected: (data: ILookupCompany) => void;
   handleFilterCompanyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompanyOnClose: () => void;
+
+  // filter position
+  handleFilterPositionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterPositionOnSelected: (data: IPositionList) => void;
+  handleFilterPositionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterPositionOnClose: () => void;
   
   // filter role
   handleFilterRoleVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -81,6 +104,9 @@ interface OwnHandler {
 
   // filter status
   handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+
+  // filter access
+  handleFilterAccessOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type AccountEmployeeFilterFilterProps
@@ -94,17 +120,21 @@ export type AccountEmployeeFilterFilterProps
 
 const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (props: AccountEmployeeFilterFilterProps): OwnState => ({
   isFilterCompanyOpen: false,
+  isFilterPositionOpen: false,
   isFilterRoleOpen: false,
 
-  filterStatus: props.initialProps && props.initialProps.isActive
+  filterStatus: props.initialProps && props.initialProps.isActive,
+  filterAccess: props.initialProps && props.initialProps.useAccess,
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
+    filterPosition: undefined,
     filterRole: undefined,
-    filterStatus: false
+    filterStatus: false,
+    filterAccess: false,
   }),
 
   // filter company
@@ -116,7 +146,19 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
     filterCompany: data,
     filterRoleValue: {
       companyUid: data && data.uid
-    }
+    },
+    filterPositionValue: {
+      companyUid: data && data.uid
+    },
+  }),
+
+  // filter position
+  setFilterPositionVisibility: (prevState: OwnState) => () => ({
+    isFilterPositionOpen: !prevState.isFilterPositionOpen
+  }),
+  setFilterPosition: () => (data?: IPositionList) => ({
+    isFilterPositionOpen: false,
+    filterPosition: data,
   }),
 
   // filter role
@@ -132,6 +174,11 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
   setFilterStatus: () => (checked: boolean) => ({
     filterStatus: checked
   }),
+
+  // filter access
+  setFilterAccess: () => (checked: boolean) => ({
+    filterAccess: checked
+  }),
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandler> = {
@@ -142,8 +189,10 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   handleFilterOnApply: (props: AccountEmployeeFilterFilterProps) => () => {
     props.onApply({
       companyUids: props.filterCompany && props.filterCompany.uid,
+      positionUids: props.filterPosition && props.filterPosition.uid,
       roleUids: props.filterRole && props.filterRole.uid,
-      isActive: props.filterStatus
+      useAccess: props.filterAccess,
+      isActive: props.filterStatus,
     });
   },
 
@@ -160,6 +209,20 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   },
   handleFilterCompanyOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
     props.setFilterCompanyVisibility();
+  },
+
+  // filter position
+  handleFilterPositionVisibility: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterPositionVisibility();
+  },
+  handleFilterPositionOnSelected: (props: AccountEmployeeFilterFilterProps) => (data: IPositionList) => {
+    props.setFilterPosition(data);
+  },
+  handleFilterPositionOnClear: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterPosition();
+  },
+  handleFilterPositionOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterPositionVisibility();
   },
 
   // filter role
@@ -179,6 +242,11 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   // filter status
   handleFilterStatusOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterStatus(checked);
+  },
+
+  // filter access
+  handleFilterAccessOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterAccess(checked);
   },
 };
 
