@@ -59,6 +59,6 @@ export const periodPutDispose = () => action(PeriodAction.PUT_DISPOSE);
 
 // delete
 export const periodDeleteRequest = (request: IPeriodDeleteRequest) => action(PeriodAction.DELETE_REQUEST, request);
-export const periodDeleteSuccess = (response: IResponseSingle<IPeriod>) => action(PeriodAction.DELETE_SUCCESS, response);
+export const periodDeleteSuccess = (response: IResponseSingle<undefined>) => action(PeriodAction.DELETE_SUCCESS, response);
 export const periodDeleteError = (error: any) => action(PeriodAction.DELETE_ERROR, error);
 export const periodDeleteDispose = () => action(PeriodAction.DELETE_DISPOSE);

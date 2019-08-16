@@ -1,10 +1,27 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { IPeriodDeleteRequest } from '../queries/period/IPeriodDeleteRequest';
-import { IPeriodGetAllRequest } from '../queries/period/IPeriodGetAllRequest';
-import { IPeriodGetByIdRequest } from '../queries/period/IPeriodGetByIdRequest';
-import { IPeriodPostRequest } from '../queries/period/IPeriodPostRequest';
-import { IPeriodPutRequest } from '../queries/period/IPeriodPutRequest';
-import { IPeriod } from '../response';
+import { 
+  IPeriodDeleteRequest, 
+  IPeriodGetAllRequest, 
+  IPeriodGetByIdRequest, 
+  IPeriodPostRequest, 
+  IPeriodPutRequest 
+} from '../queries/period';
+import { 
+  ISettingDeleteRequest, 
+  ISettingGetAllRequest, 
+  ISettingGetByIdRequest, 
+  ISettingPostRequest, 
+  ISettingPutRequest 
+} from '../queries/setting';
+import { 
+  ITemplateDeleteRequest, 
+  ITemplateGetAllRequest, 
+  ITemplateGetByIdRequest, 
+  ITemplateGetListRequest, 
+  ITemplatePostRequest, 
+  ITemplatePutRequest 
+} from '../queries/template';
+import { IPeriod, ISetting, ISettingDetail, ITemplate, ITemplateDetail } from '../response';
 
 export interface IHRNotifState {
   // period
@@ -12,5 +29,20 @@ export interface IHRNotifState {
   periodGetById: IQuerySingleState<IPeriodGetByIdRequest, IPeriod>;
   periodPost: IQuerySingleState<IPeriodPostRequest, IPeriod>;
   periodPut: IQuerySingleState<IPeriodPutRequest, IPeriod>;
-  periodDelete: IQuerySingleState<IPeriodDeleteRequest, boolean>;
+  periodDelete: IQuerySingleState<IPeriodDeleteRequest, undefined>;
+
+  // setting
+  settingGetAll: IQueryCollectionState<ISettingGetAllRequest, ISetting>;
+  settingGetById: IQuerySingleState<ISettingGetByIdRequest, ISettingDetail>;
+  settingPost: IQuerySingleState<ISettingPostRequest, ISetting>;
+  settingPut: IQuerySingleState<ISettingPutRequest, ISetting>;
+  settingDelete: IQuerySingleState<ISettingDeleteRequest, undefined>;
+
+  // template
+  templateGetAll: IQueryCollectionState<ITemplateGetAllRequest, ITemplate>;
+  templateGetList: IQueryCollectionState<ITemplateGetListRequest, ITemplate>;
+  templateGetById: IQuerySingleState<ITemplateGetByIdRequest, ITemplateDetail>;
+  templatePost: IQuerySingleState<ITemplatePostRequest, ITemplate>;
+  templatePut: IQuerySingleState<ITemplatePutRequest, ITemplate>;
+  templateDelete: IQuerySingleState<ITemplateDeleteRequest, undefined>;
 }

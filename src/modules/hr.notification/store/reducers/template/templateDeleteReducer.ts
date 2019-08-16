@@ -1,9 +1,9 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IPeriodDeleteRequest } from '@hr.notification/classes/queries/period';
-import { PeriodAction as Action } from '@hr.notification/store/actions';
+import { ITemplateDeleteRequest } from '@hr.notification/classes/queries/template';
+import { TemplateAction as Action } from '@hr.notification/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IPeriodDeleteRequest, undefined> = {
+const initialState: IQuerySingleState<ITemplateDeleteRequest, undefined> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IPeriodDeleteRequest, undefined> = {
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IPeriodDeleteRequest, undefined>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ITemplateDeleteRequest, undefined>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IPeriodDeleteRequest, undefined>> = (st
   }
 };
 
-export { reducer as periodDeleteReducer };
+export { reducer as templateDeleteReducer };
