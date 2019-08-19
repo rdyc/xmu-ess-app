@@ -23,14 +23,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  projectRegisterState: {
+  notifPeriodState: {
     all: IQueryCollectionState<IPeriodGetAllRequest, IPeriod>;
     detail: IQuerySingleState<IPeriodGetByIdRequest, IPeriod>;
   };
 }
 
 interface PropsFromDispatch {
-  projectRegisterDispatch: {
+  notifPeriodDispatch: {
     // command
     createRequest: typeof periodPostRequest;
     createDispose: typeof periodPostDispose;
@@ -50,14 +50,14 @@ interface PropsFromDispatch {
 export interface WithPeriod extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ periodGetAll, periodGetById }: IAppState) => ({
-  projectRegisterState: {
+  notifPeriodState: {
     all: periodGetAll,
     detail: periodGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  projectRegisterDispatch: {
+  notifPeriodDispatch: {
     // command
     createRequest: (request: IPeriodPostRequest) => dispatch(periodPostRequest(request)),
     createDispose: () => dispatch(periodPostDispose()),

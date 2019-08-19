@@ -1,0 +1,45 @@
+{
+  "hr.notification.period.page.list.title": "Notification Periods",
+  "hr.notification.period.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.period.page.detail.title": "Period Details",
+  "hr.notification.period.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.period.page.new.title": "New Period",
+  "hr.notification.period.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.period.page.modify.title": "Modify Period",
+  "hr.notification.period.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "hr.notification.period.section.info.title": "Period Information",
+  "hr.notification.period.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "hr.notification.period.field.uid": "Period ID",
+  "hr.notification.period.field.uid.placeholder": "Period ID",
+  "hr.notification.period.field.name": "Name",
+  "hr.notification.period.field.name.required": "Period name is required",
+  "hr.notification.period.field.name.placeholder": "Type a period name",
+  "hr.notification.period.field.type": "Type",
+  "hr.notification.period.field.type.required": "Type is required",
+  "hr.notification.period.field.type.placeholder": "Select a period type",
+  "hr.notification.period.field.from": "From",
+  "hr.notification.period.field.from.required": "Period from is required",
+  "hr.notification.period.field.from.placeholder": "Type a period from",
+  "hr.notification.period.field.to": "To",
+  "hr.notification.period.field.to.required": "Period to is required",
+  "hr.notification.period.field.to.placeholder": "Type a period to",
+  
+  "hr.notification.period.confirm.new.title": "New Period",
+  "hr.notification.period.confirm.new.description": "You are about creating a new notification period. Do you want to continue?",
+  "hr.notification.period.confirm.modify.title": "Modify Period",
+  "hr.notification.period.confirm.modify.description": "You are about to modify current notification period. Do you want to continue?",
+  "hr.notification.period.confirm.delete.title": "Delete Confirmation",
+  "hr.notification.period.confirm.delete.description": "You are about to delete current notification period. Do you want to continue?",
+  
+  "hr.notification.period.submission.form": "Period Submission",
+
+  "hr.notification.period.message.emptyProps": "Some props are empty",
+  "hr.notification.period.message.create.success": "A new period has been created",
+  "hr.notification.period.message.create.failure": "Unable to process your submission",
+  "hr.notification.period.message.update.success": "Existing period has been updated",
+  "hr.notification.period.message.update.failure": "Unable to process your submission",
+  "hr.notification.period.message.delete.success": "Existing period has been deleted",
+  "hr.notification.period.message.delete.failure": "Unable to process your submission"
+}

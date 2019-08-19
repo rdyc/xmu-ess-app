@@ -67,7 +67,10 @@ enum AppMenu {
   ImageGallery = 'MNU62',
   Common = 'MNU53',
   AchievementChart = 'MNU63',
-  COGSUpload = 'MNU64'
+  COGSUpload = 'MNU64',
+  HRNotifPeriod = 'MNU71',
+  HRNotifSetting = 'MNU80',
+  HRNotifTemplate = 'MNU81'
 }
 
 export default AppMenu;

@@ -23,14 +23,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  projectRegisterState: {
+  notifSettingState: {
     all: IQueryCollectionState<ISettingGetAllRequest, ISetting>;
     detail: IQuerySingleState<ISettingGetByIdRequest, ISetting>;
   };
 }
 
 interface PropsFromDispatch {
-  projectRegisterDispatch: {
+  notifSettingDispatch: {
     // command
     createRequest: typeof settingPostRequest;
     createDispose: typeof settingPostDispose;
@@ -50,14 +50,14 @@ interface PropsFromDispatch {
 export interface WithSetting extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ settingGetAll, settingGetById }: IAppState) => ({
-  projectRegisterState: {
+  notifSettingState: {
     all: settingGetAll,
     detail: settingGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  projectRegisterDispatch: {
+  notifSettingDispatch: {
     // command
     createRequest: (request: ISettingPostRequest) => dispatch(settingPostRequest(request)),
     createDispose: () => dispatch(settingPostDispose()),

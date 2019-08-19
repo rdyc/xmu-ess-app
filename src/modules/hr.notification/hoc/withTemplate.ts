@@ -26,14 +26,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  projectRegisterState: {
+  notifTemplateState: {
     all: IQueryCollectionState<ITemplateGetAllRequest, ITemplate>;
     detail: IQuerySingleState<ITemplateGetByIdRequest, ITemplate>;
   };
 }
 
 interface PropsFromDispatch {
-  projectRegisterDispatch: {
+  notifTemplateDispatch: {
     // command
     createRequest: typeof templatePostRequest;
     createDispose: typeof templatePostDispose;
@@ -55,7 +55,7 @@ interface PropsFromDispatch {
 export interface WithTemplate extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ templateGetAll, templateGetList, templateGetById }: IAppState) => ({
-  projectRegisterState: {
+  notifTemplateState: {
     all: templateGetAll,
     list: templateGetList,
     detail: templateGetById
@@ -63,7 +63,7 @@ const mapStateToProps = ({ templateGetAll, templateGetList, templateGetById }: I
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  projectRegisterDispatch: {
+  notifTemplateDispatch: {
     // command
     createRequest: (request: ITemplatePostRequest) => dispatch(templatePostRequest(request)),
     createDispose: () => dispatch(templatePostDispose()),
