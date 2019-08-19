@@ -9,7 +9,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { HrCompetencyCategoryFormProps, ICategoryFormValue } from './HrCompetencyCategoryForm';
 import HrCompetencyCategoryPartial from './HrCompetencyCategoryPartial';
-import HrLevelItem from './HrLevelItem';
+import { HrLevelItem } from './HrLevelItem';
 
 export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormProps> = props => (
   <FormPage
@@ -48,11 +48,6 @@ export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormPro
                 formMode={props.formMode}
                 intl={props.intl}
                 formikBag={formikBag}
-                classes={{
-                  flexContent: props.classes.flexContent,
-                  marginFarRight: props.classes.marginFarRight,
-                  marginWideTop: props.classes.marginWideTop
-                }}
               />
             </div>
 

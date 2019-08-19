@@ -1,3 +1,5 @@
+import { ISystemListFilter } from '@common/classes/filters';
+import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -18,6 +20,7 @@ type HrCompetencyMappedPartialProps = {
   intl: InjectedIntl;
   filterCluster?: IHrCompetencyClusterGetListFilter;
   filterCompany?: ILookupCompanyGetListFilter;
+  filterCommonSystem?: ISystemListFilter;
 };
 
 const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialProps> = props => (
@@ -95,10 +98,10 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
         )}
       />
 
-      {/* <Field
-        name="clusterUid"
+      <Field
+        name="levelType"
         render={({ field, form }: FieldProps<IMappedFormValue>) => (
-          <HrCompetencyClusterOption filter={props.filterCluster}>
+          <CommonSystemOption category="level" filter={props.filterCommonSystem}>
             <SelectField
               isSearchable
               menuPlacement="auto"
@@ -108,47 +111,19 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'}),
                 required: true,
-                helperText: form.touched.clusterUid && form.errors.clusterUid,
-                error: form.touched.clusterUid && Boolean(form.errors.clusterUid)
+                helperText: form.touched.levelType && form.errors.levelType,
+                error: form.touched.levelType && Boolean(form.errors.levelType)
               }}
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                props.formikBag.setFieldValue('categoryUid', '');                
               }}
             />
-          </HrCompetencyClusterOption>
+          </CommonSystemOption>
         )}
       />
-
-      <Field
-        name="categoryUid"
-        render={({ field, form }: FieldProps<IMappedFormValue>) => (
-          <HrCompetencyCategoryOption filter={props.filterCategory} clusterUid={props.formikBag.values.clusterUid}>
-            <SelectField
-              isSearchable
-              menuPlacement="auto"
-              menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting || props.formikBag.values.clusterUid === ''}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}),
-                required: true,
-                helperText: form.touched.categoryUid && form.errors.categoryUid,
-                error: form.touched.categoryUid && Boolean(form.errors.categoryUid)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-              }}
-            />
-          </HrCompetencyCategoryOption>
-        )}
-      /> */}
     </CardContent>
   </Card>
 );

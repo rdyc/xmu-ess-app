@@ -1,3 +1,5 @@
+import { ISystemListFilter } from '@common/classes/filters';
+import { WithCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
@@ -44,9 +46,7 @@ export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-
-  // clusterUid: string;
-  // categoryUid: string;
+  levelType: string;
   categories: CategoryMenus[];
 }
 
@@ -66,7 +66,7 @@ interface IOwnState {
   
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  // filterCategory?: IHrCompetencyCategoryGetListFilter;
+  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -81,6 +81,7 @@ interface IOwnHandler {
 export type HrCompetencyMappedFormProps
   = WithHrCompetencyMapped
   & WithHrCompetencyCluster
+  & WithCommonSystem
   & WithMasterPage
   & WithUser
   & WithStyles<typeof styles>
@@ -102,6 +103,7 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     // clusterUid: '',
     companyUid: '',
     positionUid: '',
+    levelType: '',
     categories: []
   },
 
@@ -112,6 +114,9 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
       .required(),
     positionUid: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
+      .required(),
+    levelType: Yup.string()
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'}))
       .required()
   }),
 
@@ -124,6 +129,12 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   // filter
   filterCluster: {
     orderBy: 'name',
+    direction: 'ascending'
+  },
+
+  // filter props
+  filterCommonSystem: {
+    orderBy: 'value',
     direction: 'ascending'
   }
 });
@@ -158,6 +169,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         // fill payload
         const payload: IHrCompetencyMappedPostPayload = {
           positionUid: values.positionUid,
+          levelType: values.levelType,
           categories: []
         };
 
@@ -187,6 +199,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         if (mappedUid) {
           const payload: IHrCompetencyMappedPutPayload = {
             positionUid: values.positionUid,
+            levelType: values.levelType,
             categories: []
           };
 
@@ -295,6 +308,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
         uid: 'Auto generated',
         companyUid: '',
         positionUid: '',
+        levelType: '',
         categories: categoriesList
       };
 
@@ -341,6 +355,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: 'Auto generated',
             companyUid: '',
             positionUid: '',
+            levelType: '',
             categories: categoriesList
           };
     
@@ -399,6 +414,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: thisResponse.data.uid,
             companyUid: thisResponse.data.position.companyUid,
             positionUid: thisResponse.data.positionUid,
+            levelType: '',
             categories: categoriesList
           };
   

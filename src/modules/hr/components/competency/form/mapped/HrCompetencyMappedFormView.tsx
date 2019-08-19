@@ -10,7 +10,7 @@ import * as React from 'react';
 import { HrCompetencyMappedCategoriesForm } from './HrCompetencyMappedCategoriesForm';
 import { HrCompetencyMappedFormProps, IMappedFormValue } from './HrCompetencyMappedForm';
 import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
-import { HrCompetencyMappedSummary } from './HrCompetencyMappedSummary';
+// import { HrCompetencyMappedSummary } from './HrCompetencyMappedSummary';
 
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
@@ -40,6 +40,7 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   formikBag={formikBag}
                   filterCluster={props.filterCluster}
                   filterCompany={props.filterCompany}
+                  filterCommonSystem={props.filterCommonSystem}
                 />
               </div>
               <div className={props.classes.flexContent}>
@@ -73,12 +74,12 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
             </div>
 
             <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
+              {/* <div className={props.classes.flexContent}>
                 <HrCompetencyMappedSummary 
                   intl={props.intl}
                   formikBag={formikBag}
                 />
-              </div>
+              </div> */}
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
