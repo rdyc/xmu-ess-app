@@ -48,6 +48,7 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => (
                 <LookupRoleMenuPartialForm 
                   intl={props.intl}
                   formikBag={formikBag}
+                  formMode={props.formMode}
                 />
               </div>
             </div>
