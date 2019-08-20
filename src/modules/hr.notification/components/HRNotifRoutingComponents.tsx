@@ -5,12 +5,21 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { NotifPeriodDetail } from './period/detail/NotifPeriodDetail';
 import { NotifPeriodForm } from './period/form/NotifPeriodForm';
 import { NotifPeriodList } from './period/list/NotifPeriodList';
+import { NotifSettingList } from './setting/list/NotifSettingList';
 
 const period = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={NotifPeriodForm} />
     <Route path={`${props.match.path}/:periodUid`} component={NotifPeriodDetail} /> 
     <Route path={`${props.match.path}`} component={NotifPeriodList} />
+  </Switch>
+);
+
+const setting = (props: RouteComponentProps) => (
+  <Switch>
+    {/* <Route path={`${props.match.path}/form`} component={NotifSettingForm} />
+    <Route path={`${props.match.path}/:periodUid`} component={NotifSettingDetail} />  */}
+    <Route path={`${props.match.path}`} component={NotifSettingList} />
   </Switch>
 );
 
@@ -21,6 +30,12 @@ export const HRNotifRoutingComponents: React.SFC<RouteComponentProps> = props =>
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupCompany} 
       component={period} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/notification/settings`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupCompany} 
+      component={setting} 
     />
   </Switch>
 );

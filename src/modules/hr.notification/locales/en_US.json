@@ -41,5 +41,52 @@
   "hr.notification.period.message.update.success": "Existing period has been updated",
   "hr.notification.period.message.update.failure": "Unable to process your submission",
   "hr.notification.period.message.delete.success": "Existing period has been deleted",
-  "hr.notification.period.message.delete.failure": "Unable to process your submission"
+  "hr.notification.period.message.delete.failure": "Unable to process your submission",
+
+  "hr.notification.setting.page.list.title": "Notification Settings",
+  "hr.notification.setting.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.setting.page.detail.title": "Setting Details",
+  "hr.notification.setting.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.setting.page.new.title": "New Setting",
+  "hr.notification.setting.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.setting.page.modify.title": "Modify Setting",
+  "hr.notification.setting.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "hr.notification.setting.section.info.title": "Setting Information",
+  "hr.notification.setting.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "hr.notification.setting.field.uid": "Setting ID",
+  "hr.notification.setting.field.uid.placeholder": "Setting ID",
+  "hr.notification.setting.field.companyUid": "Company",
+  "hr.notification.setting.field.companyUid.required": "Setting company is required",
+  "hr.notification.setting.field.companyUid.placeholder": "Select a company name",
+  "hr.notification.setting.field.class": "Class",
+  "hr.notification.setting.field.class.required": "Class is required",
+  "hr.notification.setting.field.class.placeholder": "Type a setting class",
+  "hr.notification.setting.field.subject": "Subject",
+  "hr.notification.setting.field.subject.required": "Subject is required",
+  "hr.notification.setting.field.subject.placeholder": "Type a setting subject",
+  "hr.notification.setting.field.to": "To",
+  "hr.notification.setting.field.to.required": "Setting mail to is required",
+  "hr.notification.setting.field.to.placeholder": "Type a setting to",
+  "hr.notification.setting.field.cc": "Cc",
+  "hr.notification.setting.field.cc.required": "Setting mail cc is required",
+  "hr.notification.setting.field.cc.placeholder": "Type a setting cc",
+  
+  "hr.notification.setting.confirm.new.title": "New Setting",
+  "hr.notification.setting.confirm.new.description": "You are about creating a new notification setting. Do you want to continue?",
+  "hr.notification.setting.confirm.modify.title": "Modify Setting",
+  "hr.notification.setting.confirm.modify.description": "You are about to modify current notification setting. Do you want to continue?",
+  "hr.notification.setting.confirm.delete.title": "Delete Confirmation",
+  "hr.notification.setting.confirm.delete.description": "You are about to delete current notification setting. Do you want to continue?",
+  
+  "hr.notification.setting.submission.form": "Setting Submission",
+
+  "hr.notification.setting.message.emptyProps": "Some props are empty",
+  "hr.notification.setting.message.create.success": "A new setting has been created",
+  "hr.notification.setting.message.create.failure": "Unable to process your submission",
+  "hr.notification.setting.message.update.success": "Existing setting has been updated",
+  "hr.notification.setting.message.update.failure": "Unable to process your submission",
+  "hr.notification.setting.message.delete.success": "Existing setting has been deleted",
+  "hr.notification.setting.message.delete.failure": "Unable to process your submission"
 }
