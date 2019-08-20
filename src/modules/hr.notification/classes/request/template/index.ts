@@ -1,3 +1,3 @@
-export * from './ITemplateDeletePayload';
-export * from './ITemplatePostPayload';
-export * from './ITemplatePutPayload';
+export * from './INotifTemplateDeletePayload';
+export * from './INotifTemplatePostPayload';
+export * from './INotifTemplatePutPayload';

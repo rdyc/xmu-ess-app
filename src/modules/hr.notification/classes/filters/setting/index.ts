@@ -1,1 +1,1 @@
-export * from './ISettingGetAllFilter';
+export * from './INotifSettingGetAllFilter';

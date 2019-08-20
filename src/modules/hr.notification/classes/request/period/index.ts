@@ -1,3 +1,3 @@
-export * from './IPeriodDeletePayload';
-export * from './IPeriodPostPayload';
-export * from './IPeriodPutPayload';
+export * from './INotifPeriodDeletePayload';
+export * from './INotifPeriodPostPayload';
+export * from './INotifPeriodPutPayload';

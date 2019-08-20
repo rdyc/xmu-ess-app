@@ -6,8 +6,8 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IPeriod } from '@hr.notification/classes/response';
-import { NotifPeriodSumarry } from '@hr.notification/components/period/detail/shared/NotifPeriodSummary';
+import { INotifPeriod } from '@hr.notification/classes/response';
+import { NotifPeriodSumarry } from '@hr.notification/components/period/shared/NotifPeriodSummary';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { NotifPeriodListProps } from './NotifPeriodList';
 import { NotifPeriodListFilter } from './NotifPeriodListFilter';
@@ -32,10 +32,10 @@ export const NotifPeriodListView: React.SFC<NotifPeriodListProps> = props => (
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IPeriod) => ( 
+      summaryComponent={(item: INotifPeriod) => ( 
         <NotifPeriodSumarry data={item} />
       )}
-      actionComponent={(item: IPeriod) => (
+      actionComponent={(item: INotifPeriod) => (
         <React.Fragment>
           {
             <Button 

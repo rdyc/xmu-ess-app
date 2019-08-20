@@ -45,9 +45,9 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
-import periodSagas from '@hr.notification/store/sagas/periodSagas';
-import settingSagas from '@hr.notification/store/sagas/settingSagas';
-import templateSagas from '@hr.notification/store/sagas/templateSagas';
+import notifPeriodSagas from '@hr.notification/store/sagas/notifPeriodSagas';
+import notifSettingSagas from '@hr.notification/store/sagas/notifSettingSagas';
+import notifTemplateSagas from '@hr.notification/store/sagas/notifTemplateSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
@@ -226,9 +226,9 @@ export function* rootSaga() {
     fork(newsFeedSagas),
 
     // hr notificationSagas
-    fork(periodSagas),
-    fork(settingSagas),
-    fork(templateSagas),
+    fork(notifPeriodSagas),
+    fork(notifSettingSagas),
+    fork(notifTemplateSagas),
 
   ]);
 }

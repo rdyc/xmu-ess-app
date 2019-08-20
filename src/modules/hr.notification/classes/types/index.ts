@@ -1,2 +1,2 @@
 export * from './NotifUserAction';
-export * from './PeriodField';
+export * from './NotifPeriodField';

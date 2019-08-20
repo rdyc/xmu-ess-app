@@ -1,9 +1,9 @@
-import periodReducers from './period/periodReducers';
-import settingReducers from './setting/settingReducers';
-import templateReducers from './template/templateReducers';
+import notifPeriodReducers from './period/notifPeriodReducers';
+import notifSettingReducers from './setting/notifSettingReducers';
+import notifTemplateReducers from './template/notifTemplateReducers';
 
 export const hrNotificationReducers = {
-  ...periodReducers,
-  ...settingReducers,
-  ...templateReducers
+  ...notifPeriodReducers,
+  ...notifSettingReducers,
+  ...notifTemplateReducers
 };

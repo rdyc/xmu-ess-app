@@ -1,48 +1,48 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IPeriodDeleteRequest, 
-  IPeriodGetAllRequest, 
-  IPeriodGetByIdRequest, 
-  IPeriodPostRequest, 
-  IPeriodPutRequest 
+  INotifPeriodDeleteRequest, 
+  INotifPeriodGetAllRequest, 
+  INotifPeriodGetByIdRequest, 
+  INotifPeriodPostRequest, 
+  INotifPeriodPutRequest 
 } from '../queries/period';
 import { 
-  ISettingDeleteRequest, 
-  ISettingGetAllRequest, 
-  ISettingGetByIdRequest, 
-  ISettingPostRequest, 
-  ISettingPutRequest 
+  INotifSettingDeleteRequest, 
+  INotifSettingGetAllRequest, 
+  INotifSettingGetByIdRequest, 
+  INotifSettingPostRequest, 
+  INotifSettingPutRequest 
 } from '../queries/setting';
 import { 
-  ITemplateDeleteRequest, 
-  ITemplateGetAllRequest, 
-  ITemplateGetByIdRequest, 
-  ITemplateGetListRequest, 
-  ITemplatePostRequest, 
-  ITemplatePutRequest 
+  INotifTemplateDeleteRequest, 
+  INotifTemplateGetAllRequest, 
+  INotifTemplateGetByIdRequest, 
+  INotifTemplateGetListRequest, 
+  INotifTemplatePostRequest, 
+  INotifTemplatePutRequest 
 } from '../queries/template';
-import { IPeriod, ISetting, ISettingDetail, ITemplate, ITemplateDetail } from '../response';
+import { INotifPeriod, INotifSetting, INotifSettingDetail, INotifTemplate, INotifTemplateDetail } from '../response';
 
 export interface IHRNotifState {
   // period
-  periodGetAll: IQueryCollectionState<IPeriodGetAllRequest, IPeriod>;
-  periodGetById: IQuerySingleState<IPeriodGetByIdRequest, IPeriod>;
-  periodPost: IQuerySingleState<IPeriodPostRequest, IPeriod>;
-  periodPut: IQuerySingleState<IPeriodPutRequest, IPeriod>;
-  periodDelete: IQuerySingleState<IPeriodDeleteRequest, undefined>;
+  periodGetAll: IQueryCollectionState<INotifPeriodGetAllRequest, INotifPeriod>;
+  periodGetById: IQuerySingleState<INotifPeriodGetByIdRequest, INotifPeriod>;
+  periodPost: IQuerySingleState<INotifPeriodPostRequest, INotifPeriod>;
+  periodPut: IQuerySingleState<INotifPeriodPutRequest, INotifPeriod>;
+  periodDelete: IQuerySingleState<INotifPeriodDeleteRequest, undefined>;
 
   // setting
-  settingGetAll: IQueryCollectionState<ISettingGetAllRequest, ISetting>;
-  settingGetById: IQuerySingleState<ISettingGetByIdRequest, ISettingDetail>;
-  settingPost: IQuerySingleState<ISettingPostRequest, ISetting>;
-  settingPut: IQuerySingleState<ISettingPutRequest, ISetting>;
-  settingDelete: IQuerySingleState<ISettingDeleteRequest, undefined>;
+  settingGetAll: IQueryCollectionState<INotifSettingGetAllRequest, INotifSetting>;
+  settingGetById: IQuerySingleState<INotifSettingGetByIdRequest, INotifSettingDetail>;
+  settingPost: IQuerySingleState<INotifSettingPostRequest, INotifSetting>;
+  settingPut: IQuerySingleState<INotifSettingPutRequest, INotifSetting>;
+  settingDelete: IQuerySingleState<INotifSettingDeleteRequest, undefined>;
 
   // template
-  templateGetAll: IQueryCollectionState<ITemplateGetAllRequest, ITemplate>;
-  templateGetList: IQueryCollectionState<ITemplateGetListRequest, ITemplate>;
-  templateGetById: IQuerySingleState<ITemplateGetByIdRequest, ITemplateDetail>;
-  templatePost: IQuerySingleState<ITemplatePostRequest, ITemplate>;
-  templatePut: IQuerySingleState<ITemplatePutRequest, ITemplate>;
-  templateDelete: IQuerySingleState<ITemplateDeleteRequest, undefined>;
+  templateGetAll: IQueryCollectionState<INotifTemplateGetAllRequest, INotifTemplate>;
+  templateGetList: IQueryCollectionState<INotifTemplateGetListRequest, INotifTemplate>;
+  templateGetById: IQuerySingleState<INotifTemplateGetByIdRequest, INotifTemplateDetail>;
+  templatePost: IQuerySingleState<INotifTemplatePostRequest, INotifTemplate>;
+  templatePut: IQuerySingleState<INotifTemplatePutRequest, INotifTemplate>;
+  templateDelete: IQuerySingleState<INotifTemplateDeleteRequest, undefined>;
 }

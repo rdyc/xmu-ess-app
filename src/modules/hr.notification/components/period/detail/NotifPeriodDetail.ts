@@ -1,6 +1,6 @@
-import { IPeriodDeletePayload } from '@hr.notification/classes/request/period';
+import { INotifPeriodDeletePayload } from '@hr.notification/classes/request/period';
 import { NotifUserAction } from '@hr.notification/classes/types';
-import { WithPeriod, withPeriod } from '@hr.notification/hoc/withPeriod';
+import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -54,7 +54,7 @@ export type NotifPeriodDetailProps
   = WithUser
   & WithOidc
   & WithLayout
-  & WithPeriod
+  & WithNotifPeriod
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -185,7 +185,7 @@ const handlerCreators: HandleCreators<NotifPeriodDetailProps, IOwnHandler> = {
       deleteRequest({
         resolve,
         reject,
-        data: payload as IPeriodDeletePayload
+        data: payload as INotifPeriodDeletePayload
       });
     });
   },
@@ -263,7 +263,7 @@ export const NotifPeriodDetail = compose(
   withOidc,
   withUser,
   withLayout,
-  withPeriod,
+  withNotifPeriod,
   injectIntl,
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<NotifPeriodDetailProps, IOwnHandler>(handlerCreators),

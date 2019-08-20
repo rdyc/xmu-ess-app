@@ -16,8 +16,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IPeriodGetAllFilter } from '@hr.notification/classes/filters/period';
-import { WithPeriod, withPeriod } from '@hr.notification/hoc/withPeriod';
+import { INotifPeriodGetAllFilter } from '@hr.notification/classes/filters/period';
+import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { ICollectionValue } from '@layout/classes/core';
 import { NotifPeriodListFilterView } from './NotifPeriodListFilterView';
 
@@ -26,7 +26,7 @@ const periodTypes: ICollectionValue[] = [
   { value: 'contract', name: 'Contract' }
 ];
 
-export type INotifPeriodListFilterResult = Pick<IPeriodGetAllFilter, 'type'>;
+export type INotifPeriodListFilterResult = Pick<INotifPeriodGetAllFilter, 'type'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -71,7 +71,7 @@ export type NotifPeriodListFilterProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithUser
-  & WithPeriod
+  & WithNotifPeriod
   & InjectedIntlProps;
 
 const createProps: mapper<NotifPeriodListFilterProps, IOwnState> = (): IOwnState => ({
@@ -144,7 +144,7 @@ const lifecycles: ReactLifeCycleFunctions<NotifPeriodListFilterProps, IOwnState>
 export const NotifPeriodListFilter = compose<NotifPeriodListFilterProps, IOwnOption>(
   setDisplayName('NotifPeriodListFilter'),
   withUser,
-  withPeriod,
+  withNotifPeriod,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),

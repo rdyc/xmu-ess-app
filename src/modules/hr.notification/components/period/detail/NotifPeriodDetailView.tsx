@@ -1,12 +1,12 @@
 import AppMenu from '@constants/AppMenu';
-import { IPeriod } from '@hr.notification/classes/response';
+import { INotifPeriod } from '@hr.notification/classes/response';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
+import { NotifPeriodInformation } from '../shared/NotifPeriodInformation';
 import { NotifPeriodDetailProps } from './NotifPeriodDetail';
-import { NotifPeriodInformation } from './shared/NotifPeriodInformation';
 
 export const NotifPeriodDetailView: React.SFC<NotifPeriodDetailProps> = props => (
   <PreviewPage
@@ -19,7 +19,7 @@ export const NotifPeriodDetailView: React.SFC<NotifPeriodDetailProps> = props =>
     }}
     state={props.notifPeriodState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IPeriod) => ([
+    primary={(data: INotifPeriod) => ([
       <NotifPeriodInformation data={data}/>
     ])}
     appBarComponent={

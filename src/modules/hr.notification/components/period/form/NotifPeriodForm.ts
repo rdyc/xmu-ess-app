@@ -25,8 +25,8 @@ import {
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
-import { IPeriodPostPayload, IPeriodPutPayload } from '@hr.notification/classes/request/period';
-import { WithPeriod, withPeriod } from '@hr.notification/hoc/withPeriod';
+import { INotifPeriodPostPayload, INotifPeriodPutPayload } from '@hr.notification/classes/request/period';
+import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { ISelectFieldOption } from '@layout/components/fields/SelectField';
 import { NotifPeriodFormView } from './NotifPeriodFormView';
@@ -61,7 +61,7 @@ interface IOwnHandler {
 }
 
 export type NotifPeriodFormProps
-  = WithPeriod
+  = WithNotifPeriod
   & WithOidc
   & WithUser
   & WithMasterPage
@@ -142,7 +142,7 @@ const handlerCreators: HandleCreators<NotifPeriodFormProps, IOwnHandler> = {
       // creating
       if (props.formMode === FormMode.New) {
         // fill payload
-        const payload: IPeriodPostPayload = {
+        const payload: INotifPeriodPostPayload = {
           type: values.type,
           name: values.name,
           from: values.from,
@@ -167,7 +167,7 @@ const handlerCreators: HandleCreators<NotifPeriodFormProps, IOwnHandler> = {
         if (periodUid) {
 
           // fill payload
-          const payload: IPeriodPutPayload = {
+          const payload: INotifPeriodPutPayload = {
             type: values.type,
             name: values.name,
             from: values.from,
@@ -254,7 +254,7 @@ export const NotifPeriodForm = compose<NotifPeriodFormProps, IOwnOption>(
   withOidc,
   withUser,
   withRouter,
-  withPeriod,
+  withNotifPeriod,
   withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

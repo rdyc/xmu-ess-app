@@ -1,2 +1,2 @@
-export * from './ITemplateGetAllFilter';
-export * from './ITemplateGetListFilter';
+export * from './INotifTemplateGetAllFilter';
+export * from './INotifTemplateGetListFilter';

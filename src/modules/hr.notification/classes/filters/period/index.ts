@@ -1,1 +1,1 @@
-export * from './IPeriodGetAllFilter';
+export * from './INotifPeriodGetAllFilter';

@@ -1,7 +1,7 @@
 import { IBasePagingFilter } from '@generic/interfaces';
-import { IPeriodGetAllFilter } from '@hr.notification/classes/filters/period';
-import { PeriodField } from '@hr.notification/classes/types';
-import { WithPeriod, withPeriod } from '@hr.notification/hoc/withPeriod';
+import { INotifPeriodGetAllFilter } from '@hr.notification/classes/filters/period';
+import { NotifPeriodField } from '@hr.notification/classes/types';
+import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -23,7 +23,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IPeriod } from '@hr.notification/classes/response';
+import { INotifPeriod } from '@hr.notification/classes/response';
 import { INotifPeriodListFilterResult } from './NotifPeriodListFilter';
 import { NotifPeriodListView } from './NotifPeriodListView';
 
@@ -44,7 +44,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IPeriod, index: number) => IDataBindResult;
+  handleOnBind: (item: INotifPeriod, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: INotifPeriodListFilterResult) => void;
   handleFilterBadge: () => boolean;
@@ -56,7 +56,7 @@ export type NotifPeriodListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithPeriod
+  & WithNotifPeriod
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -65,9 +65,9 @@ const createProps: mapper<NotifPeriodListProps, IOwnState> = (): IOwnState => {
   // default state
   const state: IOwnState = {
     isFilterOpen: false,
-    fields: Object.keys(PeriodField).map(key => ({ 
+    fields: Object.keys(NotifPeriodField).map(key => ({ 
       value: key, 
-      name: PeriodField[key] 
+      name: NotifPeriodField[key] 
     }))
   };
 
@@ -107,7 +107,7 @@ const handlerCreators: HandleCreators<NotifPeriodListProps, IOwnHandler> = {
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IPeriodGetAllFilter = {
+      const filter: INotifPeriodGetAllFilter = {
         type: props.type,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -152,7 +152,7 @@ const handlerCreators: HandleCreators<NotifPeriodListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: (props: NotifPeriodListProps) => (item: IPeriod, index: number) => ({
+  handleOnBind: (props: NotifPeriodListProps) => (item: INotifPeriod, index: number) => ({
     key: index,
     primary: item.name,
     secondary: '',
@@ -193,7 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<NotifPeriodListProps, IOwnState> = {
 export const NotifPeriodList = compose(
   setDisplayName('NotifPeriodList'),
   withUser,
-  withPeriod,
+  withNotifPeriod,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

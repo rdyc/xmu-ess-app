@@ -1,3 +1,3 @@
-export * from './ISettingDeletePayload';
-export * from './ISettingPostPayload';
-export * from './ISettingPutPayload';
+export * from './INotifSettingDeletePayload';
+export * from './INotifSettingPostPayload';
+export * from './INotifSettingPutPayload';
