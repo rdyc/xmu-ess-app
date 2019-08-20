@@ -6,7 +6,7 @@ import {
   INotifSettingPostRequest,
   INotifSettingPutRequest,
 } from '@hr.notification/classes/queries/setting';
-import { INotifSetting } from '@hr.notification/classes/response';
+import { INotifSetting, INotifSettingDetail } from '@hr.notification/classes/response';
 import {
   notifSettingDeleteDispose,
   notifSettingDeleteRequest,
@@ -25,7 +25,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   notifSettingState: {
     all: IQueryCollectionState<INotifSettingGetAllRequest, INotifSetting>;
-    detail: IQuerySingleState<INotifSettingGetByIdRequest, INotifSetting>;
+    detail: IQuerySingleState<INotifSettingGetByIdRequest, INotifSettingDetail>;
   };
 }
 

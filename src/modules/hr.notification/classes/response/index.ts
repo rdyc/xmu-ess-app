@@ -3,3 +3,4 @@ export * from './INotifSetting';
 export * from './INotifSettingDetail';
 export * from './INotifTemplate';
 export * from './INotifTemplateDetail';
+export * from './INotifTemplateList';

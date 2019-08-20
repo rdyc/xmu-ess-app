@@ -7,7 +7,7 @@ import {
   INotifTemplatePostRequest, 
   INotifTemplatePutRequest
 } from '@hr.notification/classes/queries/template';
-import { INotifTemplate, INotifTemplateDetail } from '@hr.notification/classes/response';
+import { INotifTemplate, INotifTemplateDetail, INotifTemplateList } from '@hr.notification/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum NotifTemplateAction {
@@ -45,7 +45,7 @@ export const notifTemplateGetAllDispose = () => action(NotifTemplateAction.GET_A
 
 // get list
 export const notifTemplateGetListRequest = (request: INotifTemplateGetListRequest) => action(NotifTemplateAction.GET_LIST_REQUEST, request);
-export const notifTemplateGetListSuccess = (response: IResponseCollection<INotifTemplate>) => action(NotifTemplateAction.GET_LIST_SUCCESS, response);
+export const notifTemplateGetListSuccess = (response: IResponseCollection<INotifTemplateList>) => action(NotifTemplateAction.GET_LIST_SUCCESS, response);
 export const notifTemplateGetListError = (error: any) => action(NotifTemplateAction.GET_LIST_ERROR, error);
 export const notifTemplateGetListDispose = () => action(NotifTemplateAction.GET_LIST_DISPOSE);
 

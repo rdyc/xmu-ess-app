@@ -12,7 +12,9 @@ import {
   notifTemplateGetByIdRequest,
   notifTemplateGetByIdSuccess,
   notifTemplateGetListDispose,
+  notifTemplateGetListError,
   notifTemplateGetListRequest,
+  notifTemplateGetListSuccess,
   notifTemplatePostError,
   notifTemplatePostRequest,
   notifTemplatePostSuccess,
@@ -66,13 +68,13 @@ function* watchGetListRequest() {
       method: 'get',
       path: `/v1/hr/notification/templates/list?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(notifTemplateGetAllSuccess(response.body)),
+        put(notifTemplateGetListSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(notifTemplateGetAllError(response))
+        put(notifTemplateGetListError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(notifTemplateGetAllError(error.message))
+        put(notifTemplateGetListError(error.message))
       ],
       finallyEffects: [
         // nothing

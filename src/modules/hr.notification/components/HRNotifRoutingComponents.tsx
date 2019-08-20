@@ -5,6 +5,8 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { NotifPeriodDetail } from './period/detail/NotifPeriodDetail';
 import { NotifPeriodForm } from './period/form/NotifPeriodForm';
 import { NotifPeriodList } from './period/list/NotifPeriodList';
+import { NotifSettingDetail } from './setting/detail/NotifSettingDetail';
+import { NotifSettingForm } from './setting/form/NotifSettingForm';
 import { NotifSettingList } from './setting/list/NotifSettingList';
 
 const period = (props: RouteComponentProps) => (
@@ -17,8 +19,8 @@ const period = (props: RouteComponentProps) => (
 
 const setting = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={NotifSettingForm} />
-    <Route path={`${props.match.path}/:periodUid`} component={NotifSettingDetail} />  */}
+    <Route path={`${props.match.path}/form`} component={NotifSettingForm} /> 
+    <Route path={`${props.match.path}/:settingUid`} component={NotifSettingDetail} />
     <Route path={`${props.match.path}`} component={NotifSettingList} />
   </Switch>
 );

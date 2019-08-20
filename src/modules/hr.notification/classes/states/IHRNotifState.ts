@@ -21,7 +21,7 @@ import {
   INotifTemplatePostRequest, 
   INotifTemplatePutRequest 
 } from '../queries/template';
-import { INotifPeriod, INotifSetting, INotifSettingDetail, INotifTemplate, INotifTemplateDetail } from '../response';
+import { INotifPeriod, INotifSetting, INotifSettingDetail, INotifTemplate, INotifTemplateDetail, INotifTemplateList } from '../response';
 
 export interface IHRNotifState {
   // period
@@ -40,7 +40,7 @@ export interface IHRNotifState {
 
   // template
   templateGetAll: IQueryCollectionState<INotifTemplateGetAllRequest, INotifTemplate>;
-  templateGetList: IQueryCollectionState<INotifTemplateGetListRequest, INotifTemplate>;
+  templateGetList: IQueryCollectionState<INotifTemplateGetListRequest, INotifTemplateList>;
   templateGetById: IQuerySingleState<INotifTemplateGetByIdRequest, INotifTemplateDetail>;
   templatePost: IQuerySingleState<INotifTemplatePostRequest, INotifTemplate>;
   templatePut: IQuerySingleState<INotifTemplatePutRequest, INotifTemplate>;

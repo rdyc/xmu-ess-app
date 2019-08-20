@@ -80,8 +80,8 @@ export const LookupCompanyDialogView: React.SFC<LookupCompanyDialogProps> = prop
         <Divider/>
 
         {
-          props.companys &&
-          props.companys.map((item, index) => 
+          props.company &&
+          props.company.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
                 <Radio color="secondary" checked={props.value && props.value === item.uid || false} />

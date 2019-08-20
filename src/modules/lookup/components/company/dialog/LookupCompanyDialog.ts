@@ -38,7 +38,7 @@ interface IOwnHandlers {
 
 interface IOwnState {
   search: string;
-  companys?: ICompanyList[];
+  company?: ICompanyList[];
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -64,20 +64,20 @@ const stateUpdaters: StateUpdaters<LookupCompanyDialogProps, IOwnState, IOwnStat
   setCompany: (state: IOwnState, props: LookupCompanyDialogProps) => () => {
     const { response } = props.lookupCompanyState.list;
 
-    let companys: ICompanyList[] = [];
+    let company: ICompanyList[] = [];
 
     if (response && response.data) {
       if (state.search.length > 0) {
-        companys = response.data.filter(item => 
+        company = response.data.filter(item => 
           item.name.toLowerCase().indexOf(state.search) !== -1
         );
       } else {
-        companys = response.data;
+        company = response.data;
       }
     }
     
     return {
-      companys
+      company
     };
   },
   setSearch: (state: IOwnState) => (value: string) => ({
@@ -129,7 +129,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCompanyDialogProps, IOwnState> =
         if (shouldUpdate) {
           this.props.handleOnLoadApi();
         } else {
-          this.props.setCompanys();
+          this.props.setCompany();
         }
       }
     }

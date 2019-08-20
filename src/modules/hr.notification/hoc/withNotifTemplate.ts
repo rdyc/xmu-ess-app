@@ -7,7 +7,7 @@ import {
   INotifTemplatePostRequest,
   INotifTemplatePutRequest,
 } from '@hr.notification/classes/queries/template';
-import { INotifTemplate } from '@hr.notification/classes/response';
+import { INotifTemplate, INotifTemplateDetail, INotifTemplateList } from '@hr.notification/classes/response';
 import {
   notifTemplateDeleteDispose,
   notifTemplateDeleteRequest,
@@ -28,7 +28,8 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   notifTemplateState: {
     all: IQueryCollectionState<INotifTemplateGetAllRequest, INotifTemplate>;
-    detail: IQuerySingleState<INotifTemplateGetByIdRequest, INotifTemplate>;
+    list: IQuerySingleState<INotifTemplateGetListRequest, INotifTemplateList>;
+    detail: IQuerySingleState<INotifTemplateGetByIdRequest, INotifTemplateDetail>;
   };
 }
 

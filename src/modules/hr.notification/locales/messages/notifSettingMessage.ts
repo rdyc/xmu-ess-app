@@ -58,6 +58,10 @@ export const notifSettingField = defineMessages({
   companyUid: { id: `${prefix}.field.companyUid` },
   companyUidRequired: { id: `${prefix}.field.companyUid.required` },
   companyUidPlaceholder: { id: `${prefix}.field.companyUid.placeholder` },
+
+  templateUid: { id: `${prefix}.field.templateUid` },
+  templateUidRequired: { id: `${prefix}.field.templateUid.required` },
+  templateUidPlaceholder: { id: `${prefix}.field.templateUid.placeholder` },
   
   class: { id: `${prefix}.field.class` },
   classRequired: { id: `${prefix}.field.class.required` },
@@ -81,6 +85,7 @@ export const notifSettingFieldHelperFor = (field: string, type: 'fieldName' | 'f
     switch (field) {
       case 'uid': return notifSettingField.uid;
       case 'companyUid': return notifSettingField.companyUid;
+      case 'templateUid': return notifSettingField.templateUid;
       case 'class': return notifSettingField.class;
       case 'subject': return notifSettingField.subject;
       case 'to': return notifSettingField.to;
@@ -92,7 +97,8 @@ export const notifSettingFieldHelperFor = (field: string, type: 'fieldName' | 'f
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'companyUid': return notifSettingField.companyUidRequired;
+      case 'companyUid': return notifSettingField.companyUid;
+      case 'templateUid': return notifSettingField.templateUid;
       case 'class': return notifSettingField.classRequired;
       case 'subject': return notifSettingField.subjectRequired;
       case 'to': return notifSettingField.toRequired;
@@ -106,10 +112,11 @@ export const notifSettingFieldHelperFor = (field: string, type: 'fieldName' | 'f
     switch (field) {
       case 'uid': return notifSettingField.uidPlaceholder;
       case 'companyUid': return notifSettingField.companyUidPlaceholder;
+      case 'templateUid': return notifSettingField.templateUidPlaceholder;
       case 'class': return notifSettingField.classPlaceholder;
       case 'subject': return notifSettingField.subjectPlaceholder;
       case 'to': return notifSettingField.toPlaceholder;
-      case 'to': return notifSettingField.toPlaceholder;
+      case 'cc': return notifSettingField.ccPlaceholder;
     
       default: return {id: field};
     }
