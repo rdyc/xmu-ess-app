@@ -7,8 +7,8 @@ import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
+import { KPIEmployeeSummary } from '@kpi/components/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { KPIEmployeeSummary } from '../../detail/shared/KPIEmployeeSummary';
 import { KPIEmployeeListProps } from './KPIEmployeeList';
 
 export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (

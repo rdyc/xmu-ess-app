@@ -1,14 +1,4 @@
 import { 
-  KPIEmployeeConfirm, 
-  KPIEmployeeDialog, 
-  KPIEmployeeField, 
-  KPIEmployeeFieldHelperFor, 
-  KPIEmployeeMessage, 
-  KPIEmployeePage, 
-  KPIEmployeeSection, 
-  KPIEmployeeSubmission 
-} from './kpiEmployeeMessage';
-import { 
   KPICategoryConfirm, 
   KPICategoryDialog, 
   KPICategoryField, 
@@ -18,6 +8,16 @@ import {
   KPICategorySection, 
   KPICategorySubmission
 } from './kpiCategoryMessage';
+import { 
+  KPIEmployeeConfirm, 
+  KPIEmployeeDialog, 
+  KPIEmployeeField, 
+  KPIEmployeeFieldHelperFor, 
+  KPIEmployeeMessage, 
+  KPIEmployeePage, 
+  KPIEmployeeSection, 
+  KPIEmployeeSubmission 
+} from './kpiEmployeeMessage';
 import { 
   KPIMeasurementConfirm, 
   KPIMeasurementDialog, 

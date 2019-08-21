@@ -8,7 +8,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
-import { KPIEmployeeFormProps, IKPIEmployeeFormValue } from './KPIEmployeeForm';
+import { IKPIEmployeeFormValue, KPIEmployeeFormProps } from './KPIEmployeeForm';
 import KPIEmployeeDetailPartialForm from './partial/KPIEmployeeDetailPartialForm';
 import KPIEmployeeItemPartialForm from './partial/KPIEmployeeItemPartialForm';
 
