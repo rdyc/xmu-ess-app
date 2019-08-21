@@ -1,13 +1,13 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IEmployeeKPIGetAllRequest, 
-  IEmployeeKPIGetByIdRequest, 
-  IEmployeeKPIGetItemListRequest, 
-  IEmployeeKPIPostBulkRequest, 
-  IEmployeeKPIPostRequest,
-  IEmployeeKPIPutFinalRequest,
-  IEmployeeKPIPutItemBulkRequest,
-  IEmployeeKPIPutRequest,
+  IKPIEmployeeGetAllRequest, 
+  IKPIEmployeeGetByIdRequest, 
+  IKPIEmployeeGetItemListRequest, 
+  IKPIEmployeePostBulkRequest, 
+  IKPIEmployeePostRequest,
+  IKPIEmployeePutFinalRequest,
+  IKPIEmployeePutItemBulkRequest,
+  IKPIEmployeePutRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -32,9 +32,9 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IEmployeeKPI, 
-  IEmployeeKPIDetail,
-  IEmployeeKPIItem,
+  IKPIEmployee, 
+  IKPIEmployeeDetail,
+  IKPIEmployeeItem,
   IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
@@ -51,14 +51,14 @@ import {
 
 export interface IKPIState {
   // employee
-  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
-  employeeKPIGetById: IQuerySingleState<IEmployeeKPIGetByIdRequest, IEmployeeKPIDetail>;
-  employeeKPIGetItemList: IQueryCollectionState<IEmployeeKPIGetItemListRequest, IEmployeeKPIItem>;
-  employeeKPIPost: IQuerySingleState<IEmployeeKPIPostRequest, IEmployeeKPI>;
-  employeeKPIPostBulk: IQueryCollectionState<IEmployeeKPIPostBulkRequest, IEmployeeKPI>;
-  employeeKPIPut: IQuerySingleState<IEmployeeKPIPutRequest, IEmployeeKPI>;
-  employeeKPIPutItemBulk: IQueryCollectionState<IEmployeeKPIPutItemBulkRequest, IEmployeeKPIItem>;
-  employeeKPIPutFinal: IQuerySingleState<IEmployeeKPIPutFinalRequest, IEmployeeKPI>;
+  kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
+  kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
+  kpiEmployeeGetItemList: IQueryCollectionState<IKPIEmployeeGetItemListRequest, IKPIEmployeeItem>;
+  kpiEmployeePost: IQuerySingleState<IKPIEmployeePostRequest, IKPIEmployee>;
+  kpiEmployeePostBulk: IQueryCollectionState<IKPIEmployeePostBulkRequest, IKPIEmployee>;
+  kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
+  kpiEmployeePutItemBulk: IQueryCollectionState<IKPIEmployeePutItemBulkRequest, IKPIEmployeeItem>;
+  kpiEmployeePutFinal: IQuerySingleState<IKPIEmployeePutFinalRequest, IKPIEmployee>;
 
   // template
   kpiTemplateGetAll: IQueryCollectionState<IKPITemplateGetAllRequest, IKPITemplate>;

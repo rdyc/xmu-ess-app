@@ -5,18 +5,19 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { KPICategoryDetail } from './category/Detail/KPICategoryDetail';
 import { KPICategoryForm } from './category/form/KPICategoryForm';
 import { KPICategoryList } from './category/list/KPICategoryList';
-import { EmployeeKPIDetail } from './employee/detail/EmployeeKPIDetail';
+import { KPIEmployeeDetail } from './employee/detail/KPIEmployeeDetail';
+import { KPIEmployeeForm } from './employee/form/single/KPIEmployeeForm';
 import { EmployeeList } from './employee/list/employee/EmployeeList';
-import { EmployeeKPIList } from './employee/list/kpi/EmployeeKPIList';
+import { KPIEmployeeList } from './employee/list/kpi/KPIEmployeeList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
 
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={EmployeeKPIDetail} />
-    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPITemplateForm} /> */}
-    <Route path={`${props.match.path}/:employeeUid`} component={EmployeeKPIList} />
+    <Route path={`${props.match.path}/:employeeUid/form`} component={KPIEmployeeForm} />
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIEmployeeDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIEmployeeList} />
     <Route path={`${props.match.path}`} component={EmployeeList} />
   </Switch>
 );

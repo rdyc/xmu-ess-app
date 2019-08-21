@@ -1,13 +1,13 @@
 import { 
-  EmployeeKPIConfirm, 
-  EmployeeKPIDialog, 
-  EmployeeKPIField, 
-  EmployeeKPIFieldHelperFor, 
-  EmployeeKPIMessage, 
-  EmployeeKPIPage, 
-  EmployeeKPISection, 
-  EmployeeKPISubmission 
-} from './employeeKPIMessage';
+  KPIEmployeeConfirm, 
+  KPIEmployeeDialog, 
+  KPIEmployeeField, 
+  KPIEmployeeFieldHelperFor, 
+  KPIEmployeeMessage, 
+  KPIEmployeePage, 
+  KPIEmployeeSection, 
+  KPIEmployeeSubmission 
+} from './kpiEmployeeMessage';
 import { 
   KPICategoryConfirm, 
   KPICategoryDialog, 
@@ -70,13 +70,13 @@ export const kpiMessage = {
     dialog: KPIMeasurementDialog
   },
   employee: {
-    field: EmployeeKPIField,
-    fieldFor: EmployeeKPIFieldHelperFor,
-    message: EmployeeKPIMessage,
-    page: EmployeeKPIPage,
-    confirm: EmployeeKPIConfirm,
-    section: EmployeeKPISection,
-    submission: EmployeeKPISubmission,
-    dialog: EmployeeKPIDialog
+    field: KPIEmployeeField,
+    fieldFor: KPIEmployeeFieldHelperFor,
+    message: KPIEmployeeMessage,
+    page: KPIEmployeePage,
+    confirm: KPIEmployeeConfirm,
+    section: KPIEmployeeSection,
+    submission: KPIEmployeeSubmission,
+    dialog: KPIEmployeeDialog
   },
 };

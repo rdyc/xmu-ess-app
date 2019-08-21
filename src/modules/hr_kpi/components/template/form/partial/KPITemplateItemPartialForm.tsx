@@ -106,6 +106,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                   escapeClearsValue={true}
                                   valueString={props.formikBag.values.items[index].categoryUid}
                                   textFieldProps={{
+                                    margin: 'dense',
                                     required: true,
                                     helperText: touch && error,
                                     error: touch && Boolean(error)
@@ -136,7 +137,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 fullWidth
                                 required
                                 disabled={form.isSubmitting}
-                                margin="normal"
+                                margin="dense"
                                 autoComplete="off"
                                 placeholder={props.intl.formatMessage(kpiMessage.template.field.categoryName)}
                                 helperText={touch && error}
@@ -165,6 +166,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                   escapeClearsValue={true}
                                   valueString={props.formikBag.values.items[index].measurementUid}
                                   textFieldProps={{
+                                    margin: 'dense',
                                     required: true,
                                     helperText: touch && error,
                                     error: touch && Boolean(error)
@@ -210,7 +212,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 multiline
                                 required
                                 disabled={form.isSubmitting}
-                                margin="normal"
+                                margin="dense"
                                 autoComplete="off"
                                 placeholder={props.intl.formatMessage(kpiMessage.template.field.targetPlaceholder)}
                                 helperText={touch && error}
@@ -234,7 +236,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 fullWidth
                                 required
                                 disabled={form.isSubmitting}
-                                margin="normal"
+                                margin="dense"
                                 autoComplete="off"
                                 placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
                                 helperText={touch && error}
@@ -290,7 +292,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                   {...field}
                                   fullWidth
                                   disabled={form.isSubmitting}
-                                  margin="normal"
+                                  margin="dense"
                                   autoComplete="off"
                                   placeholder={props.intl.formatMessage(kpiMessage.template.field.thresholdPlaceholder)}
                                   helperText={touch && error}
@@ -337,7 +339,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                   fullWidth
                                   required
                                   disabled={form.isSubmitting}
-                                  margin="normal"
+                                  margin="dense"
                                   autoComplete="off"
                                   placeholder={props.intl.formatMessage(kpiMessage.template.field.amountPlaceholder)}
                                   helperText={touch && error}

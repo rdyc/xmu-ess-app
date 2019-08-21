@@ -1,3 +1,3 @@
-export * from './IEmployeeKPIGetAllFilter';
-export * from './IEmployeeKPIGetItemListFilter';
-export * from './IEmployeeKPIGetByIdFilter';
+export * from './IKPIEmployeeGetAllFilter';
+export * from './IKPIEmployeeGetItemListFilter';
+export * from './IKPIEmployeeGetByIdFilter';

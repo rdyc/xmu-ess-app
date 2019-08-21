@@ -56,6 +56,7 @@
   "kpi.template.field.amount.placeholder": "Type The Amount",
 
   "kpi.employee.page.list.title": "All Employee KPIs",
+  "kpi.employee.page.list.employeeTitle": "All {employeeName} KPIs",
   "kpi.employee.page.list.subHeader": "Lorem Something something",
   "kpi.employee.page.detail.title": "Detail Employee KPI",
   "kpi.employee.page.detail.subHeader": "Lorem Something something",
