@@ -16,6 +16,15 @@ import {
   notifSettingSection, 
   notifSettingSubmission 
 } from './notifSettingMessage';
+import { 
+  notifTemplateConfirm, 
+  notifTemplateField, 
+  notifTemplateFieldHelperFor, 
+  notifTemplateMessage, 
+  notifTemplatePage, 
+  notifTemplateSection, 
+  notifTemplateSubmission 
+} from './notifTemplateMessage';
 
 export const notifMessage = {
   period: {
@@ -37,5 +46,15 @@ export const notifMessage = {
     field: notifSettingField,
     fieldFor: notifSettingFieldHelperFor,
     message: notifSettingMessage
-  }
+  },
+  template: {
+    page: notifTemplatePage,
+    // option: notifTemplateOption,
+    submission: notifTemplateSubmission,
+    confirm: notifTemplateConfirm,
+    section: notifTemplateSection,
+    field: notifTemplateField,
+    fieldFor: notifTemplateFieldHelperFor,
+    message: notifTemplateMessage
+  },
 };

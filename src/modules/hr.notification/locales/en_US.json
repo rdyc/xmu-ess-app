@@ -91,5 +91,45 @@
   "hr.notification.setting.message.update.success": "Existing setting has been updated",
   "hr.notification.setting.message.update.failure": "Unable to process your submission",
   "hr.notification.setting.message.delete.success": "Existing setting has been deleted",
-  "hr.notification.setting.message.delete.failure": "Unable to process your submission"
+  "hr.notification.setting.message.delete.failure": "Unable to process your submission",
+
+  "hr.notification.template.page.list.title": "Notification Templates",
+  "hr.notification.template.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.template.page.detail.title": "Template Details",
+  "hr.notification.template.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.template.page.new.title": "New Template",
+  "hr.notification.template.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.template.page.modify.title": "Modify Template",
+  "hr.notification.template.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "hr.notification.template.section.info.title": "Information",
+  "hr.notification.template.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "hr.notification.template.section.content.title": "Content",
+  "hr.notification.template.section.content.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "hr.notification.template.field.uid": "Template ID",
+  "hr.notification.template.field.uid.placeholder": "Template ID",
+  "hr.notification.template.field.name": "Name",
+  "hr.notification.template.field.name.required": "Template name is required",
+  "hr.notification.template.field.name.placeholder": "Type a template name",
+  "hr.notification.template.field.content": "Template",
+  "hr.notification.template.field.content.required": "Template is required",
+  "hr.notification.template.field.content.placeholder": "Type template content",
+  
+  "hr.notification.template.confirm.new.title": "New Period",
+  "hr.notification.template.confirm.new.description": "You are about creating a new notification template. Do you want to continue?",
+  "hr.notification.template.confirm.modify.title": "Modify Period",
+  "hr.notification.template.confirm.modify.description": "You are about to modify current notification template. Do you want to continue?",
+  "hr.notification.template.confirm.delete.title": "Delete Confirmation",
+  "hr.notification.template.confirm.delete.description": "You are about to delete current notification template. Do you want to continue?",
+  
+  "hr.notification.template.submission.form": "Period Submission",
+
+  "hr.notification.template.message.emptyProps": "Some props are empty",
+  "hr.notification.template.message.create.success": "A new template has been created",
+  "hr.notification.template.message.create.failure": "Unable to process your submission",
+  "hr.notification.template.message.update.success": "Existing template has been updated",
+  "hr.notification.template.message.update.failure": "Unable to process your submission",
+  "hr.notification.template.message.delete.success": "Existing template has been deleted",
+  "hr.notification.template.message.delete.failure": "Unable to process your submission"
 }
