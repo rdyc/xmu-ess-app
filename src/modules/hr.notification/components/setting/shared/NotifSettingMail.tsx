@@ -12,25 +12,23 @@ interface IOwnProps {
 type AllProps
   = IOwnProps;
 
-const notifSettingMail: React.SFC<AllProps> = props => {
-  const render = (
-    <Card square>
-      <CardHeader
-        title={props.title}
+const notifSettingMail: React.SFC<AllProps> = props => (
+  <Card square>
+    <CardHeader
+      title={props.title}
+    />
+    <CardContent>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        multiline
+        rowsMax={5}
+        label={props.label}
+        value={props.values.join(', ') || 'N/A'}
       />
-      <CardContent>
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          rowsMax={5}
-          label={props.label}
-          value={props.values.join(', ') || 'N/A'}
-        />
-      </CardContent>
-    </Card>
-  );
+    </CardContent>
+  </Card>
+);
 
-  return render;
-};
+export const NotifSettingMail = compose<AllProps, IOwnProps>(
 
-export const NotifSettingMail = compose<AllProps, IOwnProps>()(notifSettingMail);
+)(notifSettingMail);

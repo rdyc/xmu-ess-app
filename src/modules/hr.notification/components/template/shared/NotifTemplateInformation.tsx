@@ -8,58 +8,56 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: INotifTemplateDetail;
 }
 
 type AllProps
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
-const notifTemplateInformation: React.SFC<AllProps> = props => {
-  const render = (
-    <Card square>
-      <CardHeader
-        title={props.intl.formatMessage(notifMessage.template.section.infoTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
+const notifTemplateInformation: React.SFC<AllProps> = props => (
+  <Card square>
+    <CardHeader
+      title={props.intl.formatMessage(notifMessage.template.section.infoTitle)}
+      // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
+    />
+    <CardContent>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(notifMessage.template.field.uid)}
+        value={props.data.uid}
       />
-      <CardContent>
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(notifMessage.template.field.uid)}
-          value={props.data.uid}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(notifMessage.template.field.name)}
-          value={props.data.name}
-        />
-        {
-          props.data.changes &&
-          <React.Fragment>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(notifMessage.template.field.name)}
+        value={props.data.name}
+      />
+      {
+        props.data.changes &&
+        <React.Fragment>
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+
+          {
+            (props.data.changes.updated && props.data.changes.updatedAt) &&
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
-              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-              value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
-              helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+              value={props.data.changes.updated.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
             />
+          }
+        </React.Fragment>
+      }
+    </CardContent>
+  </Card>
+);
 
-            {
-              (props.data.changes.updated && props.data.changes.updatedAt) &&
-              <TextField
-                {...GlobalStyle.TextField.ReadOnly}
-                label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
-                value={props.data.changes.updated.fullName || 'N/A'}
-                helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
-              />
-            }
-          </React.Fragment>
-        }
-      </CardContent>
-    </Card>
-  );
-
-  return render;
-};
-
-export const NotifTemplateInformation = compose<AllProps, OwnProps>(injectIntl)(notifTemplateInformation);
+export const NotifTemplateInformation = compose<AllProps, IOwnProps>(
+  injectIntl
+)(notifTemplateInformation);

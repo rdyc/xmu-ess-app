@@ -8,12 +8,12 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: INotifPeriod;
 }
 
 type AllProps
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const summaryView: React.SFC<AllProps> = props => (
@@ -68,6 +68,6 @@ const summaryView: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const NotifPeriodSumarry = compose<AllProps, OwnProps>(
+export const NotifPeriodSumarry = compose<AllProps, IOwnProps>(
   injectIntl
 )(summaryView);

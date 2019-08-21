@@ -13,26 +13,24 @@ type AllProps
   = IOwnProps
   & InjectedIntlProps;
 
-const notifTemplateContent: React.SFC<AllProps> = props => {
-  const render = (
-    <Card square>
-      <CardHeader
-        title={props.intl.formatMessage(notifMessage.template.section.contentTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.company.section.contentSubHeader)}
+const notifTemplateContent: React.SFC<AllProps> = props => (
+  <Card square>
+    <CardHeader
+      title={props.intl.formatMessage(notifMessage.template.section.contentTitle)}
+      // subheader={props.intl.formatMessage(lookupMessage.company.section.contentSubHeader)}
+    />
+    <CardContent>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        multiline
+        rowsMax={20}
+        label={props.intl.formatMessage(notifMessage.template.field.content)}
+        value={props.content}
       />
-      <CardContent>
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          rowsMax={20}
-          label={props.intl.formatMessage(notifMessage.template.field.content)}
-          value={props.content}
-        />
-      </CardContent>
-    </Card>
-  );
+    </CardContent>
+  </Card>
+);
 
-  return render;
-};
-
-export const NotifTemplateContent = compose<AllProps, IOwnProps>(injectIntl)(notifTemplateContent);
+export const NotifTemplateContent = compose<AllProps, IOwnProps>(
+  injectIntl
+)(notifTemplateContent);
