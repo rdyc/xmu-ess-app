@@ -40,20 +40,20 @@ export const HRNotifRoutingComponents: React.SFC<RouteComponentProps> = props =>
   <Switch>
     <SecureMenuRoute 
       path={`${props.match.path}/notification/periods`}
-      menu={AppMenu.Lookup} 
+      menu={AppMenu.HRNotif} 
       subMenu={AppMenu.HRNotifPeriod} 
       component={period} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/notification/settings`}
-      menu={AppMenu.Lookup} 
-      subMenu={AppMenu.HRNotifPeriod} 
+      menu={AppMenu.HRNotif} 
+      subMenu={AppMenu.HRNotifSetting} 
       component={setting} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/notification/templates`}
-      menu={AppMenu.Lookup} 
-      subMenu={AppMenu.HRNotifPeriod} 
+      menu={AppMenu.HRNotif} 
+      subMenu={AppMenu.HRNotifTemplate} 
       component={template} 
     />
   </Switch>

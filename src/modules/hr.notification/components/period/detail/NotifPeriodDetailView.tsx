@@ -12,7 +12,7 @@ export const NotifPeriodDetailView: React.SFC<NotifPeriodDetailProps> = props =>
   <PreviewPage
     info={{
       uid: AppMenu.HRNotifPeriod,
-      parentUid: AppMenu.Lookup,
+      parentUid: AppMenu.HRNotif,
       parentUrl: '/hr/notification/periods',
       title: props.intl.formatMessage(notifMessage.period.page.detailTitle),
       description: props.intl.formatMessage(notifMessage.period.page.detailSubHeader),

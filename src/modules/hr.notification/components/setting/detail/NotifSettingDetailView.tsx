@@ -13,7 +13,7 @@ export const NotifSettingDetailView: React.SFC<NotifSettingDetailProps> = props 
   <PreviewPage
     info={{
       uid: AppMenu.HRNotifSetting,
-      parentUid: AppMenu.Lookup,
+      parentUid: AppMenu.HRNotif,
       parentUrl: '/hr/notification/settings',
       title: props.intl.formatMessage(notifMessage.setting.page.detailTitle),
       description: props.intl.formatMessage(notifMessage.setting.page.detailSubHeader),

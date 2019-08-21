@@ -15,7 +15,7 @@ export const NotifPeriodFormView: React.SFC<NotifPeriodFormProps> = props => (
   <FormPage
     info={{
       uid: AppMenu.HRNotifPeriod,
-      parentUid: AppMenu.Lookup,
+      parentUid: AppMenu.HRNotif,
       parentUrl: '/hr/notification/periods',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.period.page.newTitle : notifMessage.period.page.modifyTitle),
       description: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.period.page.newSubHeader : notifMessage.period.page.modifySubHeader)

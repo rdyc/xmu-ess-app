@@ -18,7 +18,7 @@ export const NotifPeriodListView: React.SFC<NotifPeriodListProps> = props => (
       // page info
       info={{
         uid: AppMenu.HRNotifPeriod,
-        parentUid: AppMenu.Lookup,
+        parentUid: AppMenu.HRNotif,
         title: props.intl.formatMessage(notifMessage.period.page.listTitle),
         description: props.intl.formatMessage(notifMessage.period.page.listSubHeader)
       }}
