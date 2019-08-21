@@ -44,12 +44,12 @@ const summaryView: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(notifMessage.setting.field.to)}
-        value={props.data.to.join(', ')}
+        value={props.data.to.join(', ') || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(notifMessage.setting.field.cc)}
-        value={props.data.cc.join(', ')}
+        value={props.data.cc.join(', ') || 'N/A'}
       />
     </Grid>
     

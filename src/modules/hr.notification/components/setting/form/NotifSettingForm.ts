@@ -91,27 +91,27 @@ const createProps: mapper<NotifSettingFormProps, IOwnState> = (props: NotifSetti
   validationSchema: Yup.object().shape<Partial<INotifSettingFormValue>>({
     class: Yup.string()
       .label(props.intl.formatMessage(notifMessage.setting.field.class))
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.setting.field.classRequired)),
 
     companyUid: Yup.string()
       .label(props.intl.formatMessage(notifMessage.setting.field.companyUid))      
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.setting.field.companyUidRequired)),
 
     templateUid: Yup.string()
       .label(props.intl.formatMessage(notifMessage.setting.field.templateUid))      
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.setting.field.templateUidRequired)),
 
     subject: Yup.string()
       .label(props.intl.formatMessage(notifMessage.setting.field.subject))      
       .max(150)
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.setting.field.subjectRequired)),
       
     to: Yup.array()
       .of(
         Yup.string()
           .label(props.intl.formatMessage(notifMessage.setting.field.to))
           .email()
-          .required()
+          .required(props.intl.formatMessage(notifMessage.setting.field.toRequired))
       ),
     
     cc: Yup.array()
@@ -119,7 +119,7 @@ const createProps: mapper<NotifSettingFormProps, IOwnState> = (props: NotifSetti
         Yup.string()
           .label(props.intl.formatMessage(notifMessage.setting.field.cc))
           .email()
-          .required()
+          .required(props.intl.formatMessage(notifMessage.setting.field.ccRequired))
       )
   })
 

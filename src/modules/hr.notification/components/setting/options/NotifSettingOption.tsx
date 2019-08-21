@@ -52,8 +52,9 @@ const stateUpdaters: StateUpdaters<SettingOptionProps, IOwnState, IOwnStateUpdat
 const lifeCycle: ReactLifeCycleFunctions<SettingOptionProps, IOwnState> = {
   componentDidMount() {    
     const data: string[] = [
-      'Xmu.Ess.Module.HR.Notif.Job.Definitions.ExpiringContractNotificationJobDefinition', 
-      'Xmu.Ess.Module.HR.Notif.Job.Definitions.BirthdayNotificationJobDefinition'
+      'Xmu.Ess.Module.HR.Notif.Job.Definitions.BirthdayNotificationJobDefinition',
+      'Xmu.Ess.Module.HR.Notif.Job.Definitions.ExpiringContractNotificationJobDefinition',
+      'Xmu.Ess.Module.HR.Notif.Job.Definitions.IncomingBirthdayNotificationJobDefinition'
     ];
 
     this.props.setOptions(data);

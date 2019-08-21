@@ -28,7 +28,6 @@ import * as Yup from 'yup';
 import { INotifPeriodPostPayload, INotifPeriodPutPayload } from '@hr.notification/classes/request/period';
 import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
-import { ISelectFieldOption } from '@layout/components/fields/SelectField';
 import { NotifPeriodFormView } from './NotifPeriodFormView';
 
 export interface INotifPeriodFormValue {
@@ -45,8 +44,6 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  periodOptions: ISelectFieldOption[];
-
   initialValues: INotifPeriodFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<INotifPeriodFormValue>>>;
 }
@@ -76,10 +73,6 @@ export type NotifPeriodFormProps
 const createProps: mapper<NotifPeriodFormProps, IOwnState> = (props: NotifPeriodFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  periodOptions: [
-    { label: 'Birthday', value: 'birthday'},
-    { label: 'Contract', value: 'contract'},
-  ],
 
   // form values
   initialValues: {
@@ -94,22 +87,22 @@ const createProps: mapper<NotifPeriodFormProps, IOwnState> = (props: NotifPeriod
   validationSchema: Yup.object().shape<Partial<INotifPeriodFormValue>>({
     type: Yup.string()
       .label(props.intl.formatMessage(notifMessage.period.field.type))
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.period.field.typeRequired)),
 
     name: Yup.string()
       .label(props.intl.formatMessage(notifMessage.period.field.name))      
       .max(150)
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.period.field.nameRequired)),
       
     from: Yup.number()
       .label(props.intl.formatMessage(notifMessage.period.field.from))
       .min(0)
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.period.field.fromRequired)),
 
     to: Yup.number()
       .label(props.intl.formatMessage(notifMessage.period.field.to))      
       .min(0)
-      .required()
+      .required(props.intl.formatMessage(notifMessage.period.field.toRequired))
   })
 
 });

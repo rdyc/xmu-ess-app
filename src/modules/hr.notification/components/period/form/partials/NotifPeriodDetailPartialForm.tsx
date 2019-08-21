@@ -14,7 +14,6 @@ type NotifPeriodPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<INotifPeriodFormValue>;
   intl: InjectedIntl;
-  periodOptions: ISelectFieldOption[];
 };
 
 const NotifPeriodDetailPartialForm: React.ComponentType<NotifPeriodPartialFormProps> = props => (

@@ -118,38 +118,6 @@ const NotifSettingDetailPartialForm: React.ComponentType<NotifSettingPartialForm
           />
         )}
       />
-      
-      <Field
-        name="to"
-        render={({ field, form }: FieldProps<INotifSettingFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth
-            margin="normal"
-            disabled={form.isSubmitting}
-            label={props.intl.formatMessage(notifMessage.setting.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(notifMessage.setting.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.to && form.errors.to}
-            error={form.touched.to && Boolean(form.errors.to)}
-          />
-        )}
-      />
-
-      <Field
-        name="cc"
-        render={({ field, form }: FieldProps<INotifSettingFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth
-            margin="normal"
-            disabled={form.isSubmitting}
-            label={props.intl.formatMessage(notifMessage.setting.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(notifMessage.setting.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.cc && form.errors.cc}
-            error={form.touched.cc && Boolean(form.errors.cc)}
-          />
-        )}
-      />
     </CardContent>
   </Card>
 );

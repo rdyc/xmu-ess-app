@@ -6,6 +6,7 @@ import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 import { NotifSettingInformation } from '../shared/NotifSettingInformation';
+import { NotifSettingMail } from '../shared/NotifSettingMail';
 import { NotifSettingDetailProps } from './NotifSettingDetail';
 
 export const NotifSettingDetailView: React.SFC<NotifSettingDetailProps> = props => (
@@ -21,6 +22,20 @@ export const NotifSettingDetailView: React.SFC<NotifSettingDetailProps> = props 
     onLoadApi={props.handleOnLoadApi}
     primary={(data: INotifSettingDetail) => ([
       <NotifSettingInformation data={data}/>
+    ])}
+    secondary={(data: INotifSettingDetail) => ([
+      <NotifSettingMail 
+        title={props.intl.formatMessage(notifMessage.setting.section.mailToTitle)}
+        label={props.intl.formatMessage(notifMessage.setting.field.to)}
+        values={data.to}
+      />
+    ])}
+    tertiary={(data: INotifSettingDetail) => ([
+      <NotifSettingMail 
+        title={props.intl.formatMessage(notifMessage.setting.section.mailCcTitle)}
+        label={props.intl.formatMessage(notifMessage.setting.field.cc)}
+        values={data.cc}
+      />
     ])}
     appBarComponent={
       props.menuOptions &&

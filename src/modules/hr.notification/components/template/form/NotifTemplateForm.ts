@@ -84,11 +84,11 @@ const createProps: mapper<NotifTemplateFormProps, IOwnState> = (props: NotifTemp
     name: Yup.string()
       .label(props.intl.formatMessage(notifMessage.template.field.name))      
       .max(150)
-      .required(),
+      .required(props.intl.formatMessage(notifMessage.template.field.nameRequired)),
     
       content: Yup.string()
       .label(props.intl.formatMessage(notifMessage.template.field.content))
-      .required()
+      .required(props.intl.formatMessage(notifMessage.template.field.contentRequired))
   })
 
 });

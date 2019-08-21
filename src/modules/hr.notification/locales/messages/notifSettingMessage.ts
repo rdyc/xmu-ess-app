@@ -47,7 +47,11 @@ export const notifSettingConfirm = defineMessages({
 // section
 export const notifSettingSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
-  infoSubHeader: { id: `${prefix}.section.info.subHeader` }
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  mailToTitle: { id: `${prefix}.section.mailTo.title` },
+  mailToSubHeader: { id: `${prefix}.section.mailTo.subHeader` },
+  mailCcTitle: { id: `${prefix}.section.mailCc.title` },
+  mailCcSubHeader: { id: `${prefix}.section.mailCc.subHeader` }
 });
 
 // fields

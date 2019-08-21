@@ -50,20 +50,6 @@ const notifSettingInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(notifMessage.setting.field.subject)}
           value={props.data.subject}
         />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          rows={4}
-          label={props.intl.formatMessage(notifMessage.setting.field.to)}
-          value={props.data.to.join(', ') || 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          rows={4}
-          label={props.intl.formatMessage(notifMessage.setting.field.cc)}
-          value={props.data.cc.join(', ') || 'N/A'}
-        />
         {
           props.data.changes &&
           <React.Fragment>

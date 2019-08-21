@@ -38,7 +38,6 @@ export const NotifPeriodFormView: React.SFC<NotifPeriodFormProps> = props => (
                   formikBag={formikBag}
                   formMode={props.formMode}
                   intl={props.intl}
-                  periodOptions={props.periodOptions}
                 />
               </div>
             </div>

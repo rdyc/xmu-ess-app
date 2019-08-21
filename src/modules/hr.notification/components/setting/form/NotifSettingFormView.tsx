@@ -10,6 +10,7 @@ import * as React from 'react';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { INotifSettingFormValue, NotifSettingFormProps } from './NotifSettingForm';
 import NotifSettingDetailPartialForm from './partials/NotifSettingDetailPartialForm';
+import NotifSettingMailPartialForm from './partials/NotifSettingMailPartialForm';
 
 export const NotifSettingFormView: React.SFC<NotifSettingFormProps> = props => (
   <FormPage
@@ -43,6 +44,30 @@ export const NotifSettingFormView: React.SFC<NotifSettingFormProps> = props => (
             </div>
 
             <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <NotifSettingMailPartialForm 
+                  title={props.intl.formatMessage(notifMessage.setting.section.mailToTitle)}
+                  formMode={props.formMode}
+                  fieldName="to"
+                  fieldLabel={props.intl.formatMessage(notifMessage.setting.field.to)}
+                  fieldPlaceholder={props.intl.formatMessage(notifMessage.setting.field.toPlaceholder)}
+                  values={formikBag.values.to}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <NotifSettingMailPartialForm 
+                  title={props.intl.formatMessage(notifMessage.setting.section.mailCcTitle)}
+                  formMode={props.formMode}
+                  fieldName="cc"
+                  fieldLabel={props.intl.formatMessage(notifMessage.setting.field.cc)}
+                  fieldPlaceholder={props.intl.formatMessage(notifMessage.setting.field.ccPlaceholder)}
+                  values={formikBag.values.cc}
+                />
+              </div>
+
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(notifMessage.setting.submission.form)}
