@@ -8,7 +8,7 @@ import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -207,6 +207,45 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
           />
         )}
       />
+
+      <Field
+        name="isFinal"
+        render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+          <FormControlLabel
+            label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+            disabled={form.isSubmitting}
+            control={
+              <Checkbox 
+                {...field} 
+                value={field.value}
+                checked={props.formikBag.values.isFinal}
+              />
+            }
+            style={{width: '100%'}}
+          />
+        )}
+      />  
+
+      {
+        !props.formikBag.values.isFinal &&
+        <Field
+          name="revision"
+          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+            <TextField
+              {...field}
+              fullWidth
+              required={true}
+              margin="normal"
+              autoComplete="off"
+              disabled={form.isSubmitting}
+              label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+              placeholder={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+              helperText={(form.touched.revision) && (form.errors.revision)}
+              error={(form.touched.revision) && Boolean(form.errors.revision)}
+            />
+          )}
+        />
+      }
 
       <Field
         name="totalWeight"

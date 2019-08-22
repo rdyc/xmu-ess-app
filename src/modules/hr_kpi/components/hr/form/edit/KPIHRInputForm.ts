@@ -129,6 +129,8 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
     uid: 'Auto Generated',
     employeeUid: props.match.params.employeeUid,
     employeeName: props.history.location.state && props.history.location.state.employeeName && props.history.location.state.employeeName || '',
+    companyUid: '',
+    positionUid: '',
     templateUid: '',
     year: moment().year(),
     period: 1,
@@ -214,7 +216,7 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
           measurementValue: Yup.string(),
             
           measurementDescription: Yup.string()
-            .max(100)
+            .max(300)
             .label(props.intl.formatMessage(kpiMessage.employee.field.categoryName))
             .required(),
 
@@ -465,7 +467,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputFormProps, IOwnState
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           totalScore: thisResponse.data.totalScore,
           isFinal: thisResponse.data.isFinal,
-          revision: thisResponse.data.revision || '',
+          revision: '',
           items: []
         };
 

@@ -79,7 +79,7 @@ function* watchGetListRequest() {
     });
   };
 
-  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
 function* watchGetByIdRequest() {

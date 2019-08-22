@@ -21,7 +21,7 @@ export const KPIHRInputFormView: React.SFC<KPIHRInputFormProps> = props => {
       info={{
         uid: AppMenu.HRKPIInput,
         parentUid: AppMenu.HumanResource,
-        parentUrl: `/kpi/hrinputs/${props.history.location.state.employeeUid}`,
+        parentUrl: `/kpi/hrinputs/${props.match.params.employeeUid}`,
         title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.modifyTitle),
         description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.modifySubHeader)
       }}
