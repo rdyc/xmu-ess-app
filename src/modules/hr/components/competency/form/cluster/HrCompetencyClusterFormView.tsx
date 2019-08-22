@@ -42,15 +42,17 @@ export const HrCompetencyClusterFormView: React.SFC<HrCompetencyClusterFormProps
             </div>
 
             <div className={props.classes.flexColumn}>
-              <HrCategoryItem 
-                formMode={props.formMode}
-                intl={props.intl}
-                formikBag={formikBag}
-                classes={{
-                  flexContent: props.classes.flexContent,
-                  marginFarRight: props.classes.marginFarRight
-                }}
-              />
+              <div className={props.classes.flexContent}>
+                <HrCategoryItem 
+                  formMode={props.formMode}
+                  intl={props.intl}
+                  formikBag={formikBag}
+                  classes={{
+                    flexContent: props.classes.flexContent,
+                    marginFarRight: props.classes.marginFarRight
+                  }}
+                />
+              </div>
             </div>
 
             <div className={props.classes.flexColumn}>

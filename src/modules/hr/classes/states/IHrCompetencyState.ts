@@ -46,7 +46,7 @@ import {
   IHrCompetencyMappedList,
 } from '../response';
 
-export interface IHrState {
+export interface IHrCompetencyState {
   // category
   hrCompetencyCategoryGetAll: IQueryCollectionState<IHrCompetencyCategoryGetAllRequest, IHrCompetencyCategory>;
   hrCompetencyCategoryGetList: IQueryCollectionState<IHrCompetencyCategoryGetListRequest, IHrCompetencyCategoryList>;

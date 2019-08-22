@@ -1,1 +1,1 @@
-export * from './IHrState';
+export * from './IHrCompetencyState';

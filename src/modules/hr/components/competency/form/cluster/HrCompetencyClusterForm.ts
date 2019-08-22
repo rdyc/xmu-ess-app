@@ -69,7 +69,6 @@ interface IOwnHandler {
 
 export type HrCompetencyClusterFormProps
   = WithHrCompetencyCluster
-  // & WithHrCompetencyCategory
   & WithMasterPage
   & WithUser
   & WithStyles<typeof styles>

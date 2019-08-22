@@ -3,7 +3,7 @@ import { ICommonState } from '@common/classes/states';
 import { IExpenseState } from '@expense/classes/states';
 import { IFinanceState } from '@finance/classes/states';
 import { IHomeState } from '@home/classes/states';
-import { IHrState } from '@hr/classes/states';
+import { IHrCompetencyState } from '@hr/classes/states';
 import { IKPIState } from '@kpi/classes/states';
 import { IPageState } from '@layout/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
@@ -40,7 +40,7 @@ export interface IAppState extends
   ISummaryState,
   IInforState,
   IMarkdownState,
-  IHrState,
+  IHrCompetencyState,
   IKPIState,
   IInforState {
   oidc: UserState;
