@@ -18,11 +18,20 @@ type AllProps
 
 const kpiCategorySummary: React.SFC<AllProps> = props => (
   <Grid container>
-    <Grid item xs={12} sm={6} md={3}>
+    {/* <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.category.field.uid)}
         value={props.data.uid}
+        multiline
+      />
+    </Grid> */}
+
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.category.field.name)}
+        value={props.data.name}
         multiline
       />
     </Grid>
@@ -30,8 +39,8 @@ const kpiCategorySummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.category.field.name)}
-        value={props.data.name}
+        label={props.intl.formatMessage(kpiMessage.category.field.measurementCount)}
+        value={props.data.measurementCount}
         multiline
       />
     </Grid>

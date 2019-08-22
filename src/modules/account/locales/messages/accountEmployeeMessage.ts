@@ -30,7 +30,9 @@ export const accountEmployeeTab = defineMessages({
 // filter
 export const accountEmployeeFilter = defineMessages({
   company: { id: `${prefix}.filter.company`},
+  position: { id: `${prefix}.filter.position`},
   role: { id: `${prefix}.filter.role`},
+  hasAccess: { id: `${prefix}.filter.hasAccess`},
   isActive: { id: `${prefix}.filter.isActive`},
 });
 

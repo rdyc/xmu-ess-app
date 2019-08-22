@@ -3,6 +3,7 @@ import { IKPIMeasurementList } from '@kpi/classes/response/measurement';
 import { WithKPIMeasurement, withKPIMeasurement } from '@kpi/hoc/withKPIMeasurement';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -24,6 +25,7 @@ export interface IKPIMeasurementOptions {
 
 interface IOwnOption {
   categoryUid: string;
+  defaultLabel: string;
   filter?: IKPIMeasurementGetListFilter;
 }
 
@@ -44,6 +46,7 @@ interface IOwnHandler {
 
 export type KPIMeasurementOptionProps
   = WithKPIMeasurement
+  & InjectedIntlProps
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -51,7 +54,7 @@ export type KPIMeasurementOptionProps
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   isLoading: false,
-  optionBlank: [{ label: '', value: ''}],
+  optionBlank: [{ label: 'Select The Measurement', value: ''}],
   optionsList: {},
 });
 
@@ -61,7 +64,7 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
   }),
   setOptions: (prevState: IOwnState, props: KPIMeasurementOptionProps) => (values: IKPIMeasurementList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: '', value: ''}
+      { label: props.defaultLabel, value: ''}
     ];
         
     values.forEach(item => options.push({ 
@@ -209,6 +212,7 @@ const component: React.SFC<KPIMeasurementOptionProps> = props => {
 
 export const KPIMeasurementOption = compose<KPIMeasurementOptionProps, IOwnOption>(
   setDisplayName('KPIMeasurementOption'),
+  injectIntl,
   withKPIMeasurement,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

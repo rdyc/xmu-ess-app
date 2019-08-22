@@ -51,6 +51,7 @@ export const KPICategoryField = defineMessages({
   name: { id: `${prefix}.field.name`},
   namePlaceholder: { id: `${prefix}.field.name.placeholder`},
   nameRequired: { id: `${prefix}.field.name.required`},
+  measurementCount: { id: `${prefix}.field.measurementCount`},
   uid: { id: `${prefix}.field.uid`},
 });
 

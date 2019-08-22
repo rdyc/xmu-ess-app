@@ -55,6 +55,7 @@ import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrC
 import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
 import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import employeeKPISagas from '@kpi/store/sagas/employeeKPISagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
 import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
 import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
@@ -253,6 +254,7 @@ export function* rootSaga() {
     // kpi
     fork(kpiTemplateSagas),
     fork(kpiCategorySagas),
-    fork(kpiMeasurementSagas)
+    fork(kpiMeasurementSagas),
+    fork(employeeKPISagas),
   ]);
 }

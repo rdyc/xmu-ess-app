@@ -147,10 +147,10 @@ const handlerCreators: HandleCreators<KPITemplateListProps, IOwnHandler> = {
   },
   handleOnBind: (props: KPITemplateListProps) => (item: IKPITemplate, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.name || 'N/A',
-    tertiary: item.company && item.company.name || 'N/A',
-    quaternary: item.position && item.position.name || 'N/A',
+    primary: item.company && item.company.name || 'N/A',
+    secondary: item.position && item.position.name || 'N/A',
+    tertiary: item.name || 'N/A',
+    quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
   }),

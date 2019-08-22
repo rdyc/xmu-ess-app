@@ -1,8 +1,10 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IKPICategoryPostPayload, IKPICategoryPutPayload } from '@kpi/classes/request/category';
+import { IKPIMeasurementPostPayload } from '@kpi/classes/request';
+import { IKPICategoryMeasurementPostPayload, IKPICategoryPutPayload } from '@kpi/classes/request/category';
 import { IKPICategoryDetail } from '@kpi/classes/response/category';
+import { IKPIMeasurementFormValue } from '@kpi/components/measurement/Form/KPIMeasurementForm';
 import { WithKPICategory, withKPICategory } from '@kpi/hoc/withKPICategory';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -33,6 +35,7 @@ import { KPICategoryFormView } from './KPICategoryFormView';
 export interface IKPICategoryFormValue {
   uid: string;
   name: string;
+  items: IKPIMeasurementFormValue[];
 }
 
 interface IOwnRouteParams {
@@ -50,6 +53,8 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPICategoryFormValue>>>;
 
   filterCommonSystem: ISystemListFilter;
+
+  isItemEditing: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -58,7 +63,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  // handleSetPositionFilter: (companyUid: string) => void;
+  handleSetIsItemEditing: () => void;
+  handleAddItem: () => void;
+  handleRemoveItem: () => void;
+  handleSaveItem: (values: IKPIMeasurementFormValue, index: number) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPICategoryFormValue, action: FormikActions<IKPICategoryFormValue>) => void;
 }
@@ -83,6 +91,7 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   initialValues: {
     uid: 'Auto Generated',
     name: '',
+    items: []
   },
 
   validationSchema: Yup.object().shape<Partial<IKPICategoryFormValue>>({
@@ -95,7 +104,9 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   filterCommonSystem: {
     orderBy: 'value',
     direction: 'ascending'
-  }
+  },
+
+  isItemEditing: false,
 });
 
 const stateUpdaters: StateUpdaters<KPICategoryFormProps, IOwnState, IOwnStateUpdater> = {
@@ -109,6 +120,52 @@ const stateUpdaters: StateUpdaters<KPICategoryFormProps, IOwnState, IOwnStateUpd
 };
 
 const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
+  handleSetIsItemEditing: (props: KPICategoryFormProps) =>  () => {
+    props.stateUpdate({
+      isItemEditing: !props.isItemEditing
+    });
+  },
+  handleAddItem: (props: KPICategoryFormProps) => () => {
+    const formValues = props.initialValues;
+
+    formValues.items.push({
+      uid: '',
+      measurementName: '',
+      description: '',
+      measurementType: '',
+      weight: 0
+    });
+
+    props.stateUpdate({
+      initialValues: formValues
+    });
+  },
+  handleRemoveItem: (props: KPICategoryFormProps) => () => {
+    const formValues = props.initialValues;
+
+    formValues.items.pop();
+
+    props.stateUpdate({
+      initialValues: formValues,
+      isItemEditing: !props.isItemEditing
+    });
+  },
+  handleSaveItem: (props: KPICategoryFormProps) => (values: IKPIMeasurementFormValue, index: number) => {
+    const formValues = props.initialValues;
+
+    formValues.items[index] = ({
+      uid: '',
+      measurementName: values.measurementName,
+      description: values.description,
+      measurementType: values.measurementType,
+      weight: values.weight
+    });
+
+    props.stateUpdate({
+      initialValues: formValues,
+      isItemEditing: !props.isItemEditing
+    });
+  },
   handleOnLoadDetail: (props: KPICategoryFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
@@ -130,12 +187,20 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
       // creating 
       if (props.formMode === FormMode.New) {
         // fill payload 
-        const payload: IKPICategoryPostPayload = {
+        const itemPayload: IKPIMeasurementPostPayload[] = values.items.map((item) => ({
+          uid: '',
+          description: item.description,
+          measurementType: item.measurementType,
+          weight: item.weight,
+        }));
+
+        const payload: IKPICategoryMeasurementPostPayload = {
           name: values.name,
+          items: itemPayload,
         };
 
         promise = new Promise((resolve, reject) => {
-          props.kpiCategoryDispatch.createRequest({
+          props.kpiCategoryDispatch.measurementCreateRequest({
             resolve,
             reject,
             data: payload
@@ -181,16 +246,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.message.createSuccess : kpiMessage.category.message.updateSuccess, { uid: response.uid })
         });
 
-        if (props.formMode === FormMode.New) {
-          props.history.push(`/kpi/categories/form`, { uid: response.uid });
-          props.stateUpdate({
-            formMode: FormMode.Edit,
-          });
-          props.setInitialValues({
-            uid: response.uid,
-            name: response.name
-          });
-        }
+        props.history.push(`/kpi/categories/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -229,6 +285,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPICategoryFormProps, IOwnStat
         const initialValues: IKPICategoryFormValue = {
           uid: thisResponse.data.uid,
           name: thisResponse.data.name,
+          items: []
         };
 
         // set initial values

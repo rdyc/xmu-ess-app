@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IKPICategoryGetAllRequest, IKPICategoryGetDetailRequest, IKPICategoryGetListRequest, IKPICategoryPostRequest, IKPICategoryPutRequest } from '@kpi/classes/queries/category';
+import { IKPICategoryGetAllRequest, IKPICategoryGetDetailRequest, IKPICategoryGetListRequest, IKPICategoryMeasurementPostRequest, IKPICategoryPostRequest, IKPICategoryPutRequest } from '@kpi/classes/queries/category';
 import { IKPICategory, IKPICategoryDetail, IKPICategoryList } from '@kpi/classes/response/category';
 import { action } from 'typesafe-actions';
 
@@ -20,6 +20,10 @@ export const enum KPICategoryAction {
   POST_SUCCESS = '@@kpi/category/POST_SUCCESS',
   POST_ERROR = '@@kpi/category/POST_ERROR',
   POST_DISPOSE = '@@kpi/category/POST_DISPOSE',
+  MEASUREMENT_POST_REQUEST = '@@kpi/category/MEASUREMENT_POST_REQUEST',
+  MEASUREMENT_POST_SUCCESS = '@@kpi/category/MEASUREMENT_POST_SUCCESS',
+  MEASUREMENT_POST_ERROR = '@@kpi/category/MEASUREMENT_POST_ERROR',
+  MEASUREMENT_POST_DISPOSE = '@@kpi/category/MEASUREMENT_POST_DISPOSE',
   PUT_REQUEST = '@@kpi/category/PUT_REQUEST',
   PUT_SUCCESS = '@@kpi/category/PUT_SUCCESS',
   PUT_ERROR = '@@kpi/category/PUT_ERROR',
@@ -49,6 +53,12 @@ export const KPICategoryPostRequest = (request: IKPICategoryPostRequest) => acti
 export const KPICategoryPostSuccess = (response: IResponseSingle<IKPICategory>) => action(KPICategoryAction.POST_SUCCESS, response);
 export const KPICategoryPostError = (error: any) => action(KPICategoryAction.POST_ERROR, error);
 export const KPICategoryPostDispose = () => action(KPICategoryAction.POST_DISPOSE);
+
+// post measurement
+export const KPICategoryMeasurementPostRequest = (request: IKPICategoryMeasurementPostRequest) => action(KPICategoryAction.MEASUREMENT_POST_REQUEST, request);
+export const KPICategoryMeasurementPostSuccess = (response: IResponseSingle<IKPICategory>) => action(KPICategoryAction.MEASUREMENT_POST_SUCCESS, response);
+export const KPICategoryMeasurementPostError = (error: any) => action(KPICategoryAction.MEASUREMENT_POST_ERROR, error);
+export const KPICategoryMeasurementPostDispose = () => action(KPICategoryAction.MEASUREMENT_POST_DISPOSE);
 
 // put
 export const KPICategoryPutRequest = (request: IKPICategoryPutRequest) => action(KPICategoryAction.PUT_REQUEST, request);

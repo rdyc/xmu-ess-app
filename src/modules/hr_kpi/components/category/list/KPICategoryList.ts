@@ -101,11 +101,11 @@ const handlerCreators: HandleCreators<KPICategoryListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: () => (item: IKPICategory, index: number) => ({
+  handleOnBind: (props: KPICategoryListProps) => (item: IKPICategory, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: '',
-    tertiary: item.name,
+    primary: item.name,
+    secondary: `${props.intl.formatNumber(item.measurementCount)} Measurements`,
+    tertiary: '',
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

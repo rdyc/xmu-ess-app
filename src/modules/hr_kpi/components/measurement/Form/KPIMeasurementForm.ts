@@ -1,5 +1,6 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { FormMode } from '@generic/types';
 import { IKPIMeasurementPostPayload, IKPIMeasurementPutPayload } from '@kpi/classes/request';
 import { IKPIMeasurement, IKPIMeasurementList } from '@kpi/classes/response';
 import { WithKPIMeasurement, withKPIMeasurement } from '@kpi/hoc/withKPIMeasurement';
@@ -34,6 +35,12 @@ export interface IKPIMeasurementFormValueList {
 
 interface OwnProps {
   categoryUid: string;
+  isItemEditing: boolean;
+  parentFormMode: FormMode;
+  handleSetIsItemEditing: () => void;
+  handleAddItem: () => void;
+  handleRemoveItem: () => void;
+  handleSaveItem: (values: IKPIMeasurementFormValue, index: number) => void;
 }
 
 interface IOwnHandler {
@@ -41,6 +48,7 @@ interface IOwnHandler {
   handleMapItem: (measurements: IKPIMeasurementList[]) => void;
   handleSetEditMode: (index: number) => void;
   handleCreateFormValueList: () => void;
+  handleRemoveFormValueList: () => void;
   handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
 }
 
@@ -102,7 +110,7 @@ const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasu
     filterCommonSystem: {
       orderBy: 'value',
       direction: 'ascending'
-    }
+    },
   };
 };
 
@@ -165,52 +173,80 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
     });
 
     props.setFormValueList(measurementValueList);
+    props.handleSetIsItemEditing();
+    props.handleAddItem();
+  },
+  handleRemoveFormValueList: (props: KPIMeasurementFormProps) => () => {
+    const measurementValueList = props.measurementValueList;
+
+    measurementValueList.pop();
+
+    props.setFormValueList(measurementValueList);
+    props.handleRemoveItem();
   },
   handleOnSubmit: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => {
     const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
     if (user) {
-      // creating 
-      if (isNew) {
-        // fill payload 
-        const payload: IKPIMeasurementPostPayload = {
+      if (props.parentFormMode === FormMode.New) {
+        props.handleSaveItem(values, index);
+        
+        const measurementValueList = props.measurementValueList;
+
+        measurementValueList[index].measurementFormValue = {
+          uid: values.uid,
           description: values.description,
+          measurementName: values.measurementName,
           measurementType: values.measurementType,
-          weight: values.weight,
+          weight: values.weight
         };
+        measurementValueList[index].isNew = false;
+        measurementValueList[index].isEditing = false;
 
-        promise = new Promise((resolve, reject) => {
-          props.kpiMeasurementDispatch.createRequest({
-            resolve,
-            reject,
-            categoryUid: props.categoryUid,
-            data: payload
-          });
-        });
-      }
-
-      // editing 
-      if (!isNew) {
-        // must have categoryUid
-        if (values.uid) {
-
+        props.setFormValueList(measurementValueList);
+      } else {
+        // creating 
+        if (isNew) {
           // fill payload 
-          const payload: IKPIMeasurementPutPayload = {
+          const payload: IKPIMeasurementPostPayload = {
             description: values.description,
             measurementType: values.measurementType,
             weight: values.weight,
           };
 
           promise = new Promise((resolve, reject) => {
-            props.kpiMeasurementDispatch.updateRequest({ 
+            props.kpiMeasurementDispatch.createRequest({
               resolve,
-              reject, 
-              categoryUid: props.categoryUid,              
-              measurementUid: values.uid,            
-              data: payload as IKPIMeasurementPutPayload,
+              reject,
+              categoryUid: props.categoryUid,
+              data: payload
             });
           });
+        }
+
+        // editing 
+        if (!isNew) {
+          // must have categoryUid
+          if (values.uid) {
+
+            // fill payload 
+            const payload: IKPIMeasurementPutPayload = {
+              description: values.description,
+              measurementType: values.measurementType,
+              weight: values.weight,
+            };
+
+            promise = new Promise((resolve, reject) => {
+              props.kpiMeasurementDispatch.updateRequest({ 
+                resolve,
+                reject, 
+                categoryUid: props.categoryUid,              
+                measurementUid: values.uid,            
+                data: payload as IKPIMeasurementPutPayload,
+              });
+            });
+          }
         }
       }
     }
@@ -242,7 +278,7 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         measurementValueList[index].isEditing = false;
 
         props.setFormValueList(measurementValueList);
-        // props.history.push(`/kpi/category/${response.uid}`);
+        props.handleSetIsItemEditing();
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -270,6 +306,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIMeasurementFormProps, IOwnState> = 
   componentDidMount() {
     if (this.props.kpiMeasurementState.list.response && this.props.kpiMeasurementState.list.response.data) {
       this.props.handleMapItem(this.props.kpiMeasurementState.list.response.data);
+      this.props.setFormValueList([]);
     }
   },
   componentDidUpdate(prevProps: KPIMeasurementFormProps) {
