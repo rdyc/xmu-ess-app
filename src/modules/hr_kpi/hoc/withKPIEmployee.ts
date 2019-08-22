@@ -9,6 +9,7 @@ import {
   IKPIEmployeeGetItemListRequest,
   IKPIEmployeePostBulkRequest,
   IKPIEmployeePostRequest,
+  IKPIEmployeePutAchievedRequest,
   IKPIEmployeePutFinalRequest,
   IKPIEmployeePutItemBulkRequest,
   IKPIEmployeePutRequest,
@@ -25,6 +26,8 @@ import {
   KPIEmployeePostBulkRequest,
   KPIEmployeePostDispose,
   KPIEmployeePostRequest,
+  KPIEmployeePutAchievedDispose,
+  KPIEmployeePutAchievedRequest,
   KPIEmployeePutDispose,
   KPIEmployeePutFinalDispose,
   KPIEmployeePutFinalRequest,
@@ -52,6 +55,8 @@ interface PropsFromDispatch {
     createBulkDispose: typeof KPIEmployeePostBulkDispose;
     updateRequest: typeof KPIEmployeePutRequest;
     updateDispose: typeof KPIEmployeePutDispose;
+    updateAchievedRequest: typeof KPIEmployeePutAchievedRequest;
+    updateAchievedDispose: typeof KPIEmployeePutAchievedDispose;
     updateItemBulkRequest: typeof KPIEmployeePutItemBulkRequest;
     updateItemBulkDispose: typeof KPIEmployeePutItemBulkDispose;
     updateFinalRequest: typeof KPIEmployeePutFinalRequest;
@@ -86,6 +91,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createBulkDispose: () => dispatch(KPIEmployeePostBulkDispose()),
     updateRequest: (request: IKPIEmployeePutRequest) => dispatch(KPIEmployeePutRequest(request)),
     updateDispose: () => dispatch(KPIEmployeePutDispose()),
+    updateAchievedRequest: (request: IKPIEmployeePutAchievedRequest) => dispatch(KPIEmployeePutAchievedRequest(request)),
+    updateAchievedDispose: () => dispatch(KPIEmployeePutAchievedDispose()),
     updateItemBulkRequest: (request: IKPIEmployeePutItemBulkRequest) => dispatch(KPIEmployeePutItemBulkRequest(request)),
     updateItemBulkDispose: () => dispatch(KPIEmployeePutItemBulkDispose()),
     updateFinalRequest: (request: IKPIEmployeePutFinalRequest) => dispatch(KPIEmployeePutFinalRequest(request)),

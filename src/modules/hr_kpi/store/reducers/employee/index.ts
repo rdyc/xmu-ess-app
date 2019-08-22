@@ -4,6 +4,7 @@ export * from './kpiEmployeeGetByIdReducer';
 export * from './kpiEmployeePostReducer';
 export * from './kpiEmployeePostBulkReducer';
 export * from './kpiEmployeePutReducer';
+export * from './kpiEmployeePutAchievedReducer';
 export * from './kpiEmployeePutItemBulkReducer';
 export * from './kpiEmployeePutFinalReducer';
 export * from './kpiEmployeeReducers';

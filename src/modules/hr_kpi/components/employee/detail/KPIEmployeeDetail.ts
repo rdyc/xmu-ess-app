@@ -211,12 +211,6 @@ const lifecycles: ReactLifeCycleFunctions<KPIEmployeeDetailProps, IOwnState> = {
           enabled: !isLoading,
           visible: true
         },
-        {
-          id: KPIEmployeeUserAction.Modify,
-          name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: true,
-          visible: true
-        }
       ];
 
       this.props.setOptions(options);

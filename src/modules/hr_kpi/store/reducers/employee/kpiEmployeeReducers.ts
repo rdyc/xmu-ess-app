@@ -4,6 +4,7 @@ import {
   kpiEmployeeGetItemListReducer,
   kpiEmployeePostBulkReducer,
   kpiEmployeePostReducer,
+  kpiEmployeePutAchievedReducer,
   kpiEmployeePutFinalReducer,
   kpiEmployeePutItemBulkReducer,
   kpiEmployeePutReducer,
@@ -16,6 +17,7 @@ const kpiEmployeeReducers = {
   kpiEmployeePost: kpiEmployeePostReducer,
   kpiEmployeePostBulk: kpiEmployeePostBulkReducer,
   kpiEmployeePut: kpiEmployeePutReducer,
+  kpiEmployeePutAchieved: kpiEmployeePutAchievedReducer,
   kpiEmployeePutItemBulk: kpiEmployeePutItemBulkReducer,
   kpiEmployeePutFinal: kpiEmployeePutFinalReducer,
 };

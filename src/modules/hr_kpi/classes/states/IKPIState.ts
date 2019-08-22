@@ -5,6 +5,7 @@ import {
   IKPIEmployeeGetItemListRequest, 
   IKPIEmployeePostBulkRequest, 
   IKPIEmployeePostRequest,
+  IKPIEmployeePutAchievedRequest,
   IKPIEmployeePutFinalRequest,
   IKPIEmployeePutItemBulkRequest,
   IKPIEmployeePutRequest,
@@ -57,6 +58,7 @@ export interface IKPIState {
   kpiEmployeePost: IQuerySingleState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePostBulk: IQueryCollectionState<IKPIEmployeePostBulkRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
+  kpiEmployeePutAchieved: IQuerySingleState<IKPIEmployeePutAchievedRequest, IKPIEmployee>;
   kpiEmployeePutItemBulk: IQueryCollectionState<IKPIEmployeePutItemBulkRequest, IKPIEmployeeItem>;
   kpiEmployeePutFinal: IQuerySingleState<IKPIEmployeePutFinalRequest, IKPIEmployee>;
 

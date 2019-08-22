@@ -18,6 +18,9 @@ import {
   KPIEmployeePostError,
   KPIEmployeePostRequest,
   KPIEmployeePostSuccess,
+  KPIEmployeePutAchievedError,
+  KPIEmployeePutAchievedRequest,
+  KPIEmployeePutAchievedSuccess,
   KPIEmployeePutError,
   KPIEmployeePutFinalError,
   KPIEmployeePutFinalRequest,
@@ -233,6 +236,46 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchPutAchievedRequest() {
+  const worker = (action: ReturnType<typeof KPIEmployeePutAchievedRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/kpi/employees/${action.payload.employeeUid}/${action.payload.kpiUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(KPIEmployeeGetByIdDispose()),
+        put(KPIEmployeeGetAllDispose()),
+        put(KPIEmployeePutAchievedSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(KPIEmployeePutAchievedError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(KPIEmployeePutAchievedError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_ACHIEVED_REQUEST, worker);
+}
+
 function* watchPutItemBulkRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePutItemBulkRequest>) => {
     return saiyanSaga.fetch({
@@ -335,6 +378,7 @@ function* kpiEmployeeSagas() {
     fork(watchPostRequest),
     fork(watchPostBulkRequest),
     fork(watchPutRequest),
+    fork(watchPutAchievedRequest),
     fork(watchPutItemBulkRequest),
     fork(watchPutFinalRequest),
     fork(watchSwitchAccess),

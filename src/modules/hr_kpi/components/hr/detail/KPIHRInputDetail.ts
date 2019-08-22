@@ -170,7 +170,7 @@ const handlerCreators: HandleCreators<KPIHRInputDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case KPIEmployeeUserAction.Modify:
-          next = `/kpi/employees/${employeeUid}/form`;
+          next = `/kpi/hrinputs/${employeeUid}/form`;
           break;
 
         default:

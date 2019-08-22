@@ -12,9 +12,9 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IKPIEmployeeFormValue } from '../KPIEmployeeForm';
+import { IKPIEmployeeFormValue } from '../KPIHRInputForm';
 
-type KPIEmployeeDetailPartialFormProps = {
+type KPIHRInputDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IKPIEmployeeFormValue>;
   intl: InjectedIntl;
@@ -24,7 +24,7 @@ type KPIEmployeeDetailPartialFormProps = {
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
 };
 
-const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartialFormProps> = props => (
+const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFormProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(kpiMessage.employee.section.infoTitle)}
@@ -222,8 +222,23 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
           />
         )}
       />
+
+      <Field
+        name="totalScore"
+        render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            {...field}
+            disabled={props.formikBag.isSubmitting}
+            label={props.intl.formatMessage(kpiMessage.employee.field.totalScore)}
+            value={props.intl.formatNumber(field.value)}
+            helperText={form.touched.totalScore && form.errors.totalScore}
+            error={form.touched.totalScore && Boolean(form.errors.totalScore)}
+          />
+        )}
+      />
     </CardContent>
   </Card>
 );
 
-export default KPIEmployeeDetailPartialForm;
+export default KPIHRInputDetailPartialForm;

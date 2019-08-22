@@ -68,7 +68,7 @@ export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push(`/kpi/employees/${props.match.params.employeeUid}/form`, {employeeName: props.history.location.state && props.history.location.state.employeeName && 
+          onClick={() => props.history.push(`/kpi/hrinputs/${props.match.params.employeeUid}/form`, {employeeName: props.history.location.state && props.history.location.state.employeeName && 
             props.history.location.state.employeeName || 'Employee'})}
         >
           <AddCircle/>

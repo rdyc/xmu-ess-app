@@ -5,9 +5,10 @@ import {
   IKPIEmployeeGetItemListRequest, 
   IKPIEmployeePostBulkRequest, 
   IKPIEmployeePostRequest, 
+  IKPIEmployeePutAchievedRequest, 
   IKPIEmployeePutFinalRequest, 
   IKPIEmployeePutItemBulkRequest, 
-  IKPIEmployeePutRequest 
+  IKPIEmployeePutRequest,
 } from '@kpi/classes/queries/employee';
 import { IKPIEmployee, IKPIEmployeeDetail, IKPIEmployeeItem } from '@kpi/classes/response/employee';
 import { action } from 'typesafe-actions';
@@ -37,6 +38,10 @@ export const enum KPIEmployeeAction {
   PUT_SUCCESS = '@@kpi/employee/PUT_SUCCESS',
   PUT_ERROR = '@@kpi/employee/PUT_ERROR',
   PUT_DISPOSE = '@@kpi/employee/PUT_DISPOSE',
+  PUT_ACHIEVED_REQUEST = '@@kpi/employee/PUT_ACHIEVED_REQUEST',
+  PUT_ACHIEVED_SUCCESS = '@@kpi/employee/PUT_ACHIEVED_SUCCESS',
+  PUT_ACHIEVED_ERROR = '@@kpi/employee/PUT_ACHIEVED_ERROR',
+  PUT_ACHIEVED_DISPOSE = '@@kpi/employee/PUT_ACHIEVED_DISPOSE',
   PUT_ITEM_BULK_REQUEST = '@@kpi/employee/PUT_ITEM_BULK_REQUEST',
   PUT_ITEM_BULK_SUCCESS = '@@kpi/employee/PUT_ITEM_BULK_SUCCESS',
   PUT_ITEM_BULK_ERROR = '@@kpi/employee/PUT_ITEM_BULK_ERROR',
@@ -82,6 +87,12 @@ export const KPIEmployeePutRequest = (request: IKPIEmployeePutRequest) => action
 export const KPIEmployeePutSuccess = (response: IResponseSingle<IKPIEmployee>) => action(KPIEmployeeAction.PUT_SUCCESS, response);
 export const KPIEmployeePutError = (error: any) => action(KPIEmployeeAction.PUT_ERROR, error);
 export const KPIEmployeePutDispose = () => action(KPIEmployeeAction.PUT_DISPOSE);
+
+// put achieved
+export const KPIEmployeePutAchievedRequest = (request: IKPIEmployeePutAchievedRequest) => action(KPIEmployeeAction.PUT_ACHIEVED_REQUEST, request);
+export const KPIEmployeePutAchievedSuccess = (response: IResponseSingle<IKPIEmployee>) => action(KPIEmployeeAction.PUT_ACHIEVED_SUCCESS, response);
+export const KPIEmployeePutAchievedError = (error: any) => action(KPIEmployeeAction.PUT_ACHIEVED_ERROR, error);
+export const KPIEmployeePutAchievedDispose = () => action(KPIEmployeeAction.PUT_ACHIEVED_DISPOSE);
 
 // put item bulk
 export const KPIEmployeePutItemBulkRequest = (request: IKPIEmployeePutItemBulkRequest) => action(KPIEmployeeAction.PUT_ITEM_BULK_REQUEST, request);
