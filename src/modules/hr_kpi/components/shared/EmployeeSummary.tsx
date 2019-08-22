@@ -16,7 +16,7 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const accountEmployeeSummary: React.SFC<AllProps> = props => (
+const employeeSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField 
@@ -94,5 +94,5 @@ const accountEmployeeSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const AccountEmployeeSummary = 
-  compose<AllProps, OwnProps>(injectIntl)(accountEmployeeSummary);
+export const EmployeeSummary = 
+  compose<AllProps, OwnProps>(injectIntl)(employeeSummary);

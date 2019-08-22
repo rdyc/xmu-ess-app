@@ -22,9 +22,9 @@ import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FilterCompany } from '@lookup/components/company/select';
 import { FilterPosition } from '@lookup/components/position/select';
 import { FilterRole } from '@lookup/components/role/select';
-import { AccountEmployeeFilterFilterProps } from './EmployeeFilter';
+import { EmployeeManagerInputFilterProps } from './EmployeeManagerInputFilter';
 
-export const EmployeeFilterView: React.SFC<AccountEmployeeFilterFilterProps> = props => (
+export const EmployeeManagerInputFilterView: React.SFC<EmployeeManagerInputFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen

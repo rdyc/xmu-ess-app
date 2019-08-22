@@ -7,12 +7,12 @@ import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IEmployee } from '@account/classes/response';
+import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { EmployeeFilter } from './EmployeeFilter';
-import { AccountEmployeeListProps } from './EmployeeList';
-import { AccountEmployeeSummary } from './EmployeeSummary';
+import { EmployeeManagerInputFilter } from './EmployeeManagerInputFilter';
+import { EmployeeManagerInputListProps } from './EmployeeManagerInputList';
 
-export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
+export const EmployeeManagerInputListView: React.SFC<EmployeeManagerInputListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
@@ -34,14 +34,14 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       
       // row components
       summaryComponent={(item: IEmployee) => ( 
-        <AccountEmployeeSummary data={item} />
+        <EmployeeSummary data={item} />
       )}
       actionComponent={(item: IEmployee) => (
         <React.Fragment>
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/kpi/managerinput/${item.uid}`, {employeeName: item.fullName})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -51,7 +51,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee"
+          key="kpi.employee.managerinput"
           default={props.accountEmployeeState.all.request && props.accountEmployeeState.all.request.filter && props.accountEmployeeState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -84,7 +84,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       }
     />
 
-    <EmployeeFilter
+    <EmployeeManagerInputFilter
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUids: props.companyUids,

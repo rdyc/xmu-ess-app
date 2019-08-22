@@ -25,8 +25,8 @@ import { IEmployeeAllFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { AccountEmployeeField } from '@account/classes/types';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { IAccountEmployeeFilterResult } from './EmployeeFilter';
-import { EmployeeListView } from './EmployeeListView';
+import { IAccountEmployeeFilterResult } from './EmployeeHRInputFilter';
+import { EmployeeHRInputListView } from './EmployeeHRInputListView';
 
 interface IOwnOption {
   
@@ -51,7 +51,7 @@ interface IOwnHandler {
   handleFilterBadge: () => boolean;
 }
 
-export type AccountEmployeeListProps 
+export type EmployeeHRInputListProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -61,7 +61,7 @@ export type AccountEmployeeListProps
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: AccountEmployeeListProps): IOwnState => {
+const createProps: mapper<EmployeeHRInputListProps, IOwnState> = (props: EmployeeHRInputListProps): IOwnState => {
   const { request } = props.accountEmployeeState.all;
   
   // default state
@@ -85,7 +85,7 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
   return state;
 };
 
-const stateUpdaters: StateUpdaters<AccountEmployeeListProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<EmployeeHRInputListProps, IOwnState, IOwnStateUpdater> = {
   setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
@@ -95,8 +95,8 @@ const stateUpdaters: StateUpdaters<AccountEmployeeListProps, IOwnState, IOwnStat
   })
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AccountEmployeeListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+const handlerCreators: HandleCreators<EmployeeHRInputListProps, IOwnHandler> = {
+  handleOnLoadApi: (props: EmployeeHRInputListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { isExpired, isLoading, request } = props.accountEmployeeState.all;
     const { loadAllRequest } = props.accountEmployeeDispatch;
 
@@ -127,7 +127,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnLoadApiSearch: (props: AccountEmployeeListProps) => (find?: string, findBy?: string) => {
+  handleOnLoadApiSearch: (props: EmployeeHRInputListProps) => (find?: string, findBy?: string) => {
     const { isLoading, request } = props.accountEmployeeState.all;
     const { loadAllRequest } = props.accountEmployeeDispatch;
 
@@ -151,7 +151,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: (props: AccountEmployeeListProps) => (item: IEmployee, index: number) => ({
+  handleOnBind: (props: EmployeeHRInputListProps) => (item: IEmployee, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.company ? item.company.name : 'N/A',
@@ -160,13 +160,13 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: AccountEmployeeListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: EmployeeHRInputListProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AccountEmployeeListProps) => (filter: IAccountEmployeeFilterResult) => {
+  handleFilterApplied: (props: EmployeeHRInputListProps) => (filter: IAccountEmployeeFilterResult) => {
     props.setFilterApplied(filter);
   },
-  handleFilterBadge: (props: AccountEmployeeListProps) => () => {
+  handleFilterBadge: (props: EmployeeHRInputListProps) => () => {
     return props.companyUids !== undefined || 
       props.positionUids !== undefined || 
       props.roleUids !== undefined ||
@@ -175,8 +175,8 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeListProps, IOwnState> = {
-  componentDidUpdate(prevProps: AccountEmployeeListProps) {
+const lifecycles: ReactLifeCycleFunctions<EmployeeHRInputListProps, IOwnState> = {
+  componentDidUpdate(prevProps: EmployeeHRInputListProps) {
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
@@ -201,8 +201,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeListProps, IOwnState> =
   }
 };
 
-export const EmployeeList = compose(
-  setDisplayName('EmployeeKPIHRList'),
+export const EmployeeHRInputList = compose(
+  setDisplayName('EmployeeHRInputList'),
   withUser,
   withAccountEmployee,
   withRouter,
@@ -210,4 +210,4 @@ export const EmployeeList = compose(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
-)(EmployeeListView);
+)(EmployeeHRInputListView);

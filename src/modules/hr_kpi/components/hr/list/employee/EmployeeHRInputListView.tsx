@@ -7,17 +7,17 @@ import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IEmployee } from '@account/classes/response';
+import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { EmployeeFilter } from './EmployeeFilter';
-import { AccountEmployeeListProps } from './EmployeeList';
-import { AccountEmployeeSummary } from './EmployeeSummary';
+import { EmployeeHRInputFilter } from './EmployeeHRInputFilter';
+import { EmployeeHRInputListProps } from './EmployeeHRInputList';
 
-export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
+export const EmployeeHRInputListView: React.SFC<EmployeeHRInputListProps> = props => (
   <React.Fragment>
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.ManagerKPIInput,
+        uid: AppMenu.HRKPIInput,
         parentUid: AppMenu.HumanResource,
         title: props.intl.formatMessage(kpiMessage.employee.page.listTitle),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
@@ -34,7 +34,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       
       // row components
       summaryComponent={(item: IEmployee) => ( 
-        <AccountEmployeeSummary data={item} />
+        <EmployeeSummary data={item} />
       )}
       actionComponent={(item: IEmployee) => (
         <React.Fragment>
@@ -51,7 +51,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee"
+          key="kpi.employee.hrinput"
           default={props.accountEmployeeState.all.request && props.accountEmployeeState.all.request.filter && props.accountEmployeeState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -84,7 +84,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       }
     />
 
-    <EmployeeFilter
+    <EmployeeHRInputFilter
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUids: props.companyUids,

@@ -22,7 +22,7 @@ import {
 
 import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { IPositionList } from '@lookup/classes/response';
-import { EmployeeFilterView } from './EmployeeFilterView';
+import { EmployeeHRInputFilterView } from './EmployeeHRInputFilterView';
 
 export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'roleUids' | 'isActive'>;
 
@@ -109,7 +109,7 @@ interface OwnHandler {
   handleFilterAccessOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export type AccountEmployeeFilterFilterProps
+export type EmployeeHRInputFilterProps
   = OwnOption
   & OwnState
   & OwnHandler
@@ -118,7 +118,7 @@ export type AccountEmployeeFilterFilterProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (props: AccountEmployeeFilterFilterProps): OwnState => ({
+const createProps: mapper<EmployeeHRInputFilterProps, OwnState> = (props: EmployeeHRInputFilterProps): OwnState => ({
   isFilterCompanyOpen: false,
   isFilterPositionOpen: false,
   isFilterRoleOpen: false,
@@ -127,7 +127,7 @@ const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (props: 
   filterAccess: props.initialProps && props.initialProps.useAccess,
 });
 
-const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, OwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<EmployeeHRInputFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
@@ -181,12 +181,12 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
   }),
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<EmployeeHRInputFilterProps, OwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterOnReset: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterOnApply: (props: EmployeeHRInputFilterProps) => () => {
     props.onApply({
       companyUids: props.filterCompany && props.filterCompany.uid,
       positionUids: props.filterPosition && props.filterPosition.uid,
@@ -197,60 +197,60 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   },
 
   // filter company
-  handleFilterCompanyVisibility: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterCompanyVisibility: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
-  handleFilterCompanyOnSelected: (props: AccountEmployeeFilterFilterProps) => (data: ILookupCompany) => {
+  handleFilterCompanyOnSelected: (props: EmployeeHRInputFilterProps) => (data: ILookupCompany) => {
     props.setFilterCompany(data);
   },
-  handleFilterCompanyOnClear: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterCompanyOnClear: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterCompany();
     props.setFilterRole();
   },
-  handleFilterCompanyOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterCompanyOnClose: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
 
   // filter position
-  handleFilterPositionVisibility: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterPositionVisibility: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterPositionVisibility();
   },
-  handleFilterPositionOnSelected: (props: AccountEmployeeFilterFilterProps) => (data: IPositionList) => {
+  handleFilterPositionOnSelected: (props: EmployeeHRInputFilterProps) => (data: IPositionList) => {
     props.setFilterPosition(data);
   },
-  handleFilterPositionOnClear: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterPositionOnClear: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterPosition();
   },
-  handleFilterPositionOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterPositionOnClose: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterPositionVisibility();
   },
 
   // filter role
-  handleFilterRoleVisibility: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterRoleVisibility: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterRoleVisibility();
   },
-  handleFilterRoleOnSelected: (props: AccountEmployeeFilterFilterProps) => (data: ILookupRole) => {
+  handleFilterRoleOnSelected: (props: EmployeeHRInputFilterProps) => (data: ILookupRole) => {
     props.setFilterRole(data);
   },
-  handleFilterRoleOnClear: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterRoleOnClear: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterRole();
   },
-  handleFilterRoleOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
+  handleFilterRoleOnClose: (props: EmployeeHRInputFilterProps) => () => {
     props.setFilterRoleVisibility();
   },
 
   // filter status
-  handleFilterStatusOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  handleFilterStatusOnChange: (props: EmployeeHRInputFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterStatus(checked);
   },
 
   // filter access
-  handleFilterAccessOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  handleFilterAccessOnChange: (props: EmployeeHRInputFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterAccess(checked);
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFilterFilterProps, OwnState> = { 
+const lifecycles: ReactLifeCycleFunctions<EmployeeHRInputFilterProps, OwnState> = { 
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
@@ -270,8 +270,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFilterFilterProps, OwnS
   }
 };
 
-export const EmployeeFilter = compose<AccountEmployeeFilterFilterProps, OwnOption>(
-  setDisplayName('EmployeeFilter'),
+export const EmployeeHRInputFilter = compose<EmployeeHRInputFilterProps, OwnOption>(
+  setDisplayName('EmployeeHRInputFilter'),
   withLayout,
   withLookupCompany,
   withStyles(styles),
@@ -279,4 +279,4 @@ export const EmployeeFilter = compose<AccountEmployeeFilterFilterProps, OwnOptio
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
-)(EmployeeFilterView);
+)(EmployeeHRInputFilterView);
