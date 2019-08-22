@@ -1,7 +1,6 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
-import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
@@ -18,7 +17,6 @@ type HrCompetencyMappedPartialProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IMappedFormValue>;
   intl: InjectedIntl;
-  filterCluster?: IHrCompetencyClusterGetListFilter;
   filterCompany?: ILookupCompanyGetListFilter;
   filterCommonSystem?: ISystemListFilter;
 };
