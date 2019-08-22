@@ -24,7 +24,7 @@ import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { IPositionList } from '@lookup/classes/response';
 import { EmployeeFilterView } from './EmployeeFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'roleUids' | 'isActive'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -190,7 +190,6 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
     props.onApply({
       companyUids: props.filterCompany && props.filterCompany.uid,
       positionUids: props.filterPosition && props.filterPosition.uid,
-      roleUids: props.filterRole && props.filterRole.uid,
       useAccess: props.filterAccess,
       isActive: props.filterStatus,
     });

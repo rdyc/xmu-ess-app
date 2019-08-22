@@ -1,4 +1,5 @@
 import { IEmployee } from '@account/classes/response';
+import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { IKPITemplate } from '..';
 import { IKPIEmployeeItem } from './IKPIEmployeeItem';
@@ -14,6 +15,8 @@ export interface IKPIEmployeeDetail {
   totalScore: number;
   isFinal: boolean;
   revision?: string;
+  statusType?: string;
+  status?: ICommonSystem;
   items?: IKPIEmployeeItem[] | null;
   sentBy?: string | null;
   sent?: IEmployee | null;

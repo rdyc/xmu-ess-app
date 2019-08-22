@@ -2,14 +2,12 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { CheckCircle, Tune } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
 import { IEmployee } from '@account/classes/response';
 import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { EmployeeManagerInputFilter } from './EmployeeManagerInputFilter';
 import { EmployeeManagerInputListProps } from './EmployeeManagerInputList';
 
 export const EmployeeManagerInputListView: React.SFC<EmployeeManagerInputListProps> = props => (
@@ -41,7 +39,7 @@ export const EmployeeManagerInputListView: React.SFC<EmployeeManagerInputListPro
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/managerinput/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/kpi/managerinputs/${item.uid}`, {employeeName: item.fullName})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -57,44 +55,6 @@ export const EmployeeManagerInputListView: React.SFC<EmployeeManagerInputListPro
           onApply={props.handleOnLoadApiSearch}
         />
       }
-
-      // data toolbar component
-      toolbarDataComponent={
-        <Tooltip
-          placement="bottom"
-          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-        >
-          <div>
-            <IconButton
-              id="option-filter"
-              disabled={props.accountEmployeeState.all.isLoading || props.accountEmployeeState.all.isError}
-              onClick={props.handleFilterVisibility} 
-            >
-              <Badge
-                invisible={!props.handleFilterBadge()}
-                badgeContent={
-                  <CheckCircle color="secondary" fontSize="small" />
-                }
-              >
-                <Tune/>
-              </Badge>
-            </IconButton>
-          </div>
-        </Tooltip>
-      }
-    />
-
-    <EmployeeManagerInputFilter
-      isOpen={props.isFilterOpen}
-      initialProps={{
-        companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        roleUids: props.roleUids,
-        useAccess: props.useAccess,
-        isActive: props.isActive,
-      }}
-      onClose={props.handleFilterVisibility}
-      onApply={props.handleFilterApplied}
     />
 </React.Fragment>
 );

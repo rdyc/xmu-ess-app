@@ -15,7 +15,7 @@ export const KPIHRInputDetailView: React.SFC<KPIHRInputDetailProps> = props => (
     info={{
       uid: AppMenu.HRKPIInput,
       parentUid: AppMenu.HumanResource,
-      parentUrl: `/kpi/employees/${props.match.params.employeeUid}`,
+      parentUrl: `/kpi/hrinputs/${props.match.params.employeeUid}`,
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
@@ -42,6 +42,7 @@ export const KPIHRInputDetailView: React.SFC<KPIHRInputDetailProps> = props => (
           props.kpiEmployeeState.detail.response.data &&
           props.kpiEmployeeState.detail.response.data.items &&
           props.kpiEmployeeState.detail.response.data.items }
+        useSelect
       />
     }
     <DialogConfirmation 

@@ -22,6 +22,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   items: IKPIEmployeeItem[] | null | undefined;
+  useSelect?: boolean;
 }
 
 type AllProps
@@ -34,15 +35,21 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        <TableCell>
-          {item.category && item.category.name}
-        </TableCell>
+        {
+          props.useSelect &&
+          <TableCell>
+            {item.category && item.category.name}
+          </TableCell>
+        }
         <TableCell>
           {item.categoryName}
         </TableCell>
-        <TableCell>
-          {item.measurement && item.measurement.description}
-        </TableCell>
+        {
+          props.useSelect &&
+          <TableCell>
+            {item.measurement && item.measurement.description}
+          </TableCell>
+        }
         <TableCell>
           {item.measurementDescription}
         </TableCell>
@@ -102,15 +109,21 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
-                  </TableCell>
+                  {
+                    props.useSelect &&
+                    <TableCell>
+                      {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
+                    </TableCell>
+                  }
                   <TableCell>
                     {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
-                  <TableCell>
-                    {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
-                  </TableCell>
+                  {
+                    props.useSelect &&
+                    <TableCell>
+                      {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
+                    </TableCell>
+                  }
                   <TableCell>
                     {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                   </TableCell>

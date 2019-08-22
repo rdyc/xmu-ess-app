@@ -14,7 +14,6 @@ import {
   ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
-  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -25,30 +24,23 @@ import { IEmployeeAllFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { AccountEmployeeField } from '@account/classes/types';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { IAccountEmployeeFilterResult } from './EmployeeManagerInputFilter';
 import { EmployeeManagerInputListView } from './EmployeeManagerInputListView';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IAccountEmployeeFilterResult {
+interface IOwnState extends IEmployeeAllFilter {
   fields: ICollectionValue[];
-  isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setFilterVisibility: StateHandler<IOwnState>;
-  setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IEmployee, index: number) => IDataBindResult;
-  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
-  handleFilterBadge: () => boolean;
 }
 
 export type EmployeeManagerInputListProps 
@@ -62,37 +54,26 @@ export type EmployeeManagerInputListProps
   & RouteComponentProps;
 
 const createProps: mapper<EmployeeManagerInputListProps, IOwnState> = (props: EmployeeManagerInputListProps): IOwnState => {
-  const { request } = props.accountEmployeeState.all;
-  
   // default state
   const state: IOwnState = {
-    isFilterOpen: false,
     fields: Object.keys(AccountEmployeeField).map(key => ({ 
       value: key, 
       name: AccountEmployeeField[key] 
     }))
   };
 
-  // fill from previous request if any
-  if (request && request.filter) {
-    state.companyUids = request.filter.companyUids,
-    state.positionUids = request.filter.positionUids,
-    state.roleUids = request.filter.roleUids,
-    state.useAccess = request.filter.useAccess,
-    state.isActive = request.filter.isActive;
+  if (props.userState.user) {
+    state.companyUids = props.userState.user.company.uid;
+    state.positionUids = props.userState.user.position.uid;
+    state.useSuperOrdinate = true;
+    state.useAccess = true;
+    state.isActive = true;
   }
-
+    
   return state;
 };
 
 const stateUpdaters: StateUpdaters<EmployeeManagerInputListProps, IOwnState, IOwnStateUpdater> = {
-  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
-    isFilterOpen: !state.isFilterOpen
-  }),
-  setFilterApplied: (state: IOwnState) => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
-    ...filter,
-    isFilterOpen: false
-  })
 };
 
 const handlerCreators: HandleCreators<EmployeeManagerInputListProps, IOwnHandler> = {
@@ -106,6 +87,7 @@ const handlerCreators: HandleCreators<EmployeeManagerInputListProps, IOwnHandler
         companyUids: props.companyUids,
         positionUids: props.positionUids,
         useAccess: props.useAccess,
+        useSuperOrdinate: props.useSuperOrdinate,
         isActive: props.isActive,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
@@ -160,19 +142,6 @@ const handlerCreators: HandleCreators<EmployeeManagerInputListProps, IOwnHandler
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: EmployeeManagerInputListProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterVisibility();
-  },
-  handleFilterApplied: (props: EmployeeManagerInputListProps) => (filter: IAccountEmployeeFilterResult) => {
-    props.setFilterApplied(filter);
-  },
-  handleFilterBadge: (props: EmployeeManagerInputListProps) => () => {
-    return props.companyUids !== undefined || 
-      props.positionUids !== undefined || 
-      props.roleUids !== undefined ||
-      props.useAccess === true || 
-      props.isActive === true;
-  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<EmployeeManagerInputListProps, IOwnState> = {

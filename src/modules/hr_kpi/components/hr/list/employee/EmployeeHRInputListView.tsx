@@ -41,7 +41,7 @@ export const EmployeeHRInputListView: React.SFC<EmployeeHRInputListProps> = prop
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/kpi/hrinputs/${item.uid}`, {employeeName: item.fullName})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -89,7 +89,6 @@ export const EmployeeHRInputListView: React.SFC<EmployeeHRInputListProps> = prop
       initialProps={{
         companyUids: props.companyUids,
         positionUids: props.positionUids,
-        roleUids: props.roleUids,
         useAccess: props.useAccess,
         isActive: props.isActive,
       }}

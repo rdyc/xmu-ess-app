@@ -77,9 +77,13 @@ const createProps: mapper<EmployeeHRInputListProps, IOwnState> = (props: Employe
   if (request && request.filter) {
     state.companyUids = request.filter.companyUids,
     state.positionUids = request.filter.positionUids,
-    state.roleUids = request.filter.roleUids,
     state.useAccess = request.filter.useAccess,
+    state.useSuperOrdinate = false,
     state.isActive = request.filter.isActive;
+  } else {
+    state.useAccess = true,
+    state.useSuperOrdinate = false,
+    state.isActive = true;
   }
 
   return state;
@@ -107,7 +111,6 @@ const handlerCreators: HandleCreators<EmployeeHRInputListProps, IOwnHandler> = {
         positionUids: props.positionUids,
         useAccess: props.useAccess,
         isActive: props.isActive,
-        roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -169,7 +172,6 @@ const handlerCreators: HandleCreators<EmployeeHRInputListProps, IOwnHandler> = {
   handleFilterBadge: (props: EmployeeHRInputListProps) => () => {
     return props.companyUids !== undefined || 
       props.positionUids !== undefined || 
-      props.roleUids !== undefined ||
       props.useAccess === true || 
       props.isActive === true;
   },
@@ -182,14 +184,12 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeHRInputListProps, IOwnState> =
       {
         companyUids: this.props.companyUids,
         positionUids: this.props.positionUids,
-        roleUids: this.props.roleUids,
         isActive: this.props.isActive,
         useAccess: this.props.useAccess,
       },
       {
         companyUids: prevProps.companyUids,
         positionUids: prevProps.positionUids,
-        roleUids: prevProps.roleUids,
         isActive: prevProps.isActive,
         useAccess: prevProps.useAccess,
       }

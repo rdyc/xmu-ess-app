@@ -15,7 +15,7 @@ export const KPIManagerInputDetailView: React.SFC<KPIManagerInputDetailProps> = 
     info={{
       uid: AppMenu.ManagerKPIInput,
       parentUid: AppMenu.HumanResource,
-      parentUrl: `/kpi/employees/${props.match.params.employeeUid}`,
+      parentUrl: `/kpi/managerinputs/${props.match.params.employeeUid}`,
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}

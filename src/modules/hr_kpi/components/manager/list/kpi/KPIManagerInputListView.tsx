@@ -18,7 +18,7 @@ export const KPIManagerInputListView: React.SFC<KPIManagerInputListProps> = prop
       info={{
         uid: AppMenu.ManagerKPIInput,
         parentUid: AppMenu.HumanResource,
-        parentUrl: '/kpi/employees',
+        parentUrl: '/kpi/managerinputs',
         title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: props.history.location.state && props.history.location.state.employeeName && 
           props.history.location.state.employeeName || 'Employee'}),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
@@ -41,7 +41,7 @@ export const KPIManagerInputListView: React.SFC<KPIManagerInputListProps> = prop
            <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.employeeUid}/form`, { uid: item.uid, employeeName: item.employee && item.employee.fullName || '' })}
+            onClick={() => props.history.push(`/kpi/managerinputs/${item.employeeUid}/form`, { uid: item.uid, employeeName: item.employee && item.employee.fullName || '' })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -49,7 +49,7 @@ export const KPIManagerInputListView: React.SFC<KPIManagerInputListProps> = prop
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.employeeUid}/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/managerinputs/${item.employeeUid}/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

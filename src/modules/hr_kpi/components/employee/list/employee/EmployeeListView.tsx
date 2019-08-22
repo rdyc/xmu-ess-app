@@ -89,7 +89,6 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       initialProps={{
         companyUids: props.companyUids,
         positionUids: props.positionUids,
-        roleUids: props.roleUids,
         useAccess: props.useAccess,
         isActive: props.isActive,
       }}

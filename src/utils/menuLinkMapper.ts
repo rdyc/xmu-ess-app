@@ -243,11 +243,11 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU74':
-      path = '/kpi/managerinput';
+      path = '/kpi/managerinputs';
       break;
 
     case 'MNU75':
-      path = '/kpi/hrinput';
+      path = '/kpi/hrinputs';
       break;
     
     case 'MNU70':
