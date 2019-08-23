@@ -78,7 +78,9 @@ enum AppMenu {
   EmployeeKPI = 'MNU73',
   ManagerKPIInput = 'MNU74',
   HRKPIInput = 'MNU75',
-  HRCorner = 'MNU70'
+  HRCorner = 'MNU70',
+  CompetencyAssessment = 'MNU77',
+  CompetencyEmployee = 'MNU76'
 }
 
 export default AppMenu;

@@ -16,7 +16,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
       info={{
         uid: AppMenu.LookupCompetencyMapped,
         parentUid: AppMenu.Lookup,
-        title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'Competency Mapped'}),
+        title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Mapping'}),
         description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
       }}
 

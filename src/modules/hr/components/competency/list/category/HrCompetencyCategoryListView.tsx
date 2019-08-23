@@ -18,7 +18,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
         info={{
           uid: AppMenu.LookupCompetencyCategory,
           parentUid: AppMenu.Lookup,
-          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'Competency Category'}),
+          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Category'}),
           description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
         }}
   

@@ -16,7 +16,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
       info={{
         uid: AppMenu.LookupCompetencyCluster,
         parentUid: AppMenu.Lookup,
-        title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'Competency Cluster'}),
+        title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Cluster'}),
         description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
       }}
 

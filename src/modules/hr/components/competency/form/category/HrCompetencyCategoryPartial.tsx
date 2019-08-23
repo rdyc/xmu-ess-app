@@ -33,7 +33,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -60,7 +60,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting || props.formikBag.values.clusterUid === ''}
+              isDisabled
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}

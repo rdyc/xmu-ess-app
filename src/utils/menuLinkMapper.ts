@@ -254,6 +254,14 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/hrcorner';
       break;
 
+    case 'MNU76':
+        path = '/hr/competencyemployee';
+        break;
+
+    case 'MNU77':
+      path = '/hr/competencyassessment';
+      break;
+
     default:
       path = '/home/dashboard';
       break;

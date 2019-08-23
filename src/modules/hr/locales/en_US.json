@@ -57,7 +57,7 @@
 
   "hr.competency.field.totalItem": "Total {state}",
   "hr.competency.field.zeroItem": "No {item} recorded",
-  "hr.competency.field.oneItem": "There is {total} {state}",
-  "hr.competency.field.manyItem": "There are {total} {state}",
+  "hr.competency.field.oneItem": "{total} {state}",
+  "hr.competency.field.manyItem": "{total} {state}",
   "hr.competency.field.cluster.required": "Cluster is required"
 }

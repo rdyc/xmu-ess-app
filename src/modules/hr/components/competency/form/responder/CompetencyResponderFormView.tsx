@@ -7,20 +7,21 @@ import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { HrCompetencyCategoryFormProps, ICategoryFormValue } from './HrCompetencyCategoryForm';
-import HrCompetencyCategoryPartial from './HrCompetencyCategoryPartial';
-import { HrLevelItem } from './HrLevelItem';
+import { CompetencyResponderFormProps, ICompetencyResponderFormValue } from './CompetencyResponderForm';
+import CompetencyResponderPartial from './CompetencyResponderPartial';
+// import { Waini } from './Waini';
+import { WainiV2 } from './WainiV2';
 
-export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormProps> = props => (
+export const CompetencyResponderFormView: React.SFC<CompetencyResponderFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompetencyCategory,
-      parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencycategory',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Category'}),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Category'})
+      uid: AppMenu.CompetencyEmployee,
+      parentUid: AppMenu.HumanResource,
+      parentUrl: '/hr/competencyemployee',
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Responder'}),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Responder'})
     }}
-    state={props.hrCompetencyCategoryState.detail}
+    state={props.hrCompetencyClusterState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -28,33 +29,23 @@ export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormPro
       initialValues={props.initialValues}
       validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
-      render={(formikBag: FormikProps<ICategoryFormValue>) => (
+      render={(formikBag: FormikProps<ICompetencyResponderFormValue>) => (
         <Form>
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <HrCompetencyCategoryPartial 
+                <CompetencyResponderPartial 
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  filterCluster={props.filterCluster}
-                  filterCategories={props.filterCategories}
                 />
               </div>
             </div>
 
             <div className={props.classes.flexColumn}>
-              <HrLevelItem 
-                formMode={props.formMode}
-                intl={props.intl}
-                formikBag={formikBag}
-              />
-            </div>
-
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Category'})}
+                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -63,18 +54,38 @@ export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormPro
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Category'}),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'Category'}),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Assessment'}),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'Assessment'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
                 />
               </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
             </div>
-
+          </div>
+          <div className={props.classes.flexRow}>
+            {/* <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <Waini 
+                  formMode={props.formMode}
+                  intl={props.intl}
+                  formikBag={formikBag}
+                />
+              </div>
+            </div> */}
+            <div className={props.classes.flexContent}>
+              <WainiV2 
+                formMode={props.formMode}
+                intl={props.intl}
+                formikBag={formikBag}
+              />
+            </div>
           </div>
         </Form>
       )}

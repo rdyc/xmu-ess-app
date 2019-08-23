@@ -55,7 +55,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 const hrCompetencyClusterCategory: React.SFC<AllProps> = props => {
   const { items, intl, active, isExpanded, handleToggle } = props;
-  const len = items && items.length - 1;
 
   const render = (
     <Card square>
@@ -80,7 +79,6 @@ const hrCompetencyClusterCategory: React.SFC<AllProps> = props => {
                   {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
                 </ListItemSecondaryAction>
               </ListItem>
-              {len !== index && <Divider />}                
               <Collapse
                 in={active === item.uid && isExpanded}
                 className={props.classes.marginFar}
