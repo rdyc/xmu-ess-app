@@ -1,4 +1,4 @@
-import { IEmployeeBank, IEmployeeContact } from '@account/classes/response';
+import { IEmployeeBank, IEmployeeContact, IEmployeeContract } from '@account/classes/response';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCompany } from '@lookup/classes';
@@ -6,11 +6,12 @@ import { ILookupCompany } from '@lookup/classes';
 export interface IEmployee {
     uid: string;
     joinDate: Date;
-    companyUid?: string;
-    company: ILookupCompany;
+    companyUid: string;
+    company?: ILookupCompany;
     employmentNumber: string;
     employmentType: string;
     employment?: ICommonSystem;
+    contract?: IEmployeeContract;
     fullName: string;
     dateOfBirth?: Date;
     birthPlace?: string;

@@ -6,4 +6,5 @@ export interface IEmployeeAllFilter extends IBasePagingFilter {
   isActive?: boolean | true;
   roleUids?: string;
   positionUids?: string;
+  employmentTypes?: string;
 }
