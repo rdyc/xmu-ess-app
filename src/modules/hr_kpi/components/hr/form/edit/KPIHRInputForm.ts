@@ -100,7 +100,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  // handleSetPositionFilter: (companyUid: string) => void;
   handleSetTemplateFilter: (companyUid: string, positionUid: string) => void;
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
   handleOnLoadDetail: () => void;
