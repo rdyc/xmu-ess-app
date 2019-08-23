@@ -391,7 +391,11 @@ const KPIHRInputSingleItemPartialForm: React.ComponentType<AllProps> = props => 
                     progress = (value / amount) * 100;
                   }
 
-                  score = (progress / 100) * (weight / 100);
+                  if (value > amount) {
+                    progress = 100;
+                  }
+
+                  score = (progress / 100) * (weight / 100) * 100;
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.progress`, progress);
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.score`, score);
                   
@@ -399,7 +403,7 @@ const KPIHRInputSingleItemPartialForm: React.ComponentType<AllProps> = props => 
                   totalScore = score;
                   props.formikBag.values.items.forEach((requestItem, indexItem) => {
                     if (props.itemDialogIndex !== indexItem) {
-                      totalScore = totalScore + score;
+                      totalScore = totalScore + requestItem.score;
                     }                              
                   });
 

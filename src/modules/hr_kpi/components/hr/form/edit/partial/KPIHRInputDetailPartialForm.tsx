@@ -35,8 +35,8 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
         render={({ field}: FieldProps<IKPIEmployeeFormValue>) => (
           <TextField 
             {...field}
-            fullWidth
-            disabled
+            {...GlobalStyle.TextField.ReadOnly}
+            disabled={props.formikBag.isSubmitting}
             margin="normal"
             label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
@@ -49,8 +49,8 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
         render={({ field}: FieldProps<IKPIEmployeeFormValue>) => (
           <TextField 
             {...field}
-            fullWidth
-            disabled
+            {...GlobalStyle.TextField.ReadOnly}
+            disabled={props.formikBag.isSubmitting}
             margin="normal"
             label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
@@ -217,7 +217,6 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
             control={
               <Checkbox 
                 {...field} 
-                value={field.value}
                 checked={props.formikBag.values.isFinal}
               />
             }
@@ -227,7 +226,8 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
       />  
 
       {
-        !props.formikBag.values.isFinal &&
+        (!props.formikBag.values.isFinal ||
+          !props.formikBag.values.isFirst) &&
         <Field
           name="revision"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (

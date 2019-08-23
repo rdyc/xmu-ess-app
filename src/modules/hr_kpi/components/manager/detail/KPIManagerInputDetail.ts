@@ -201,7 +201,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIManagerInputDetailProps, IOwnState>
 
     // handle updated response state
     if (this.props.kpiEmployeeState.detail.response !== prevProps.kpiEmployeeState.detail.response) {
-      const { isLoading } = this.props.kpiEmployeeState.detail;
+      const { isLoading, response } = this.props.kpiEmployeeState.detail;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
@@ -211,13 +211,16 @@ const lifecycles: ReactLifeCycleFunctions<KPIManagerInputDetailProps, IOwnState>
           enabled: !isLoading,
           visible: true
         },
-        {
+      ];
+
+      if (response && response.data && response.data.isFinal) {
+        options.push({
           id: KPIEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true
-        }
-      ];
+        });
+      }
 
       this.props.setOptions(options);
     }

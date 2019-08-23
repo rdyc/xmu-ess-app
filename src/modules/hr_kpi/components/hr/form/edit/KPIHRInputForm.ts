@@ -64,6 +64,7 @@ export interface IKPIEmployeeFormValue {
   positionUid?: string;
   templateUid: string;
   isFinal: boolean;
+  isFirst: boolean;
   revision: string;
   year: number;
   period: number;
@@ -137,6 +138,7 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
     totalWeight: 0,
     totalScore: 0,
     isFinal: false,
+    isFirst: true,
     revision: '',
     items: [{
       uid: '',
@@ -186,9 +188,15 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
     isFinal: Yup.boolean()
       .label(props.intl.formatMessage(kpiMessage.employee.field.isFinal)),
 
+    isFirst: Yup.boolean(),
+
     revision: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
       .when('isFinal', ({
+        is: false,
+        then: Yup.string().required(),
+      }))
+      .when('isFirst', ({
         is: false,
         then: Yup.string().required(),
       })),
@@ -467,6 +475,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputFormProps, IOwnState
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           totalScore: thisResponse.data.totalScore,
           isFinal: thisResponse.data.isFinal,
+          isFirst: thisResponse.data.changes && !thisResponse.data.changes.updated || false,
           revision: '',
           items: []
         };
@@ -514,6 +523,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputFormProps, IOwnState
             totalWeight: thisTemplate.data.items && thisTemplate.data.items.reduce((a, b) => a + b.weight, 0) || 0,
             totalScore: 0,
             isFinal: true,
+            isFirst: this.props.initialValues.isFirst,
             revision: '',
             items: []
           };

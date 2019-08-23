@@ -240,7 +240,7 @@ function* watchPutAchievedRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePutAchievedRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/kpi/employees/${action.payload.employeeUid}/${action.payload.kpiUid}`,
+      path: `/v1/kpi/employees/${action.payload.employeeUid}/${action.payload.kpiUid}/achieved`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),

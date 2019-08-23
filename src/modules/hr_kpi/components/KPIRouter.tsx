@@ -13,6 +13,7 @@ import { KPIHRInputForm } from './hr/form/edit/KPIHRInputForm';
 import { EmployeeHRInputList } from './hr/list/employee/EmployeeHRInputList';
 import { KPIHRInputList } from './hr/list/kpi/KPIHRInputList';
 import { KPIManagerInputDetail } from './manager/detail/KPIManagerInputDetail';
+import { KPIManagerInputForm } from './manager/form/KPIManagerInputForm';
 import { EmployeeManagerInputList } from './manager/list/employee/EmployeeManagerInputList';
 import { KPIManagerInputList } from './manager/list/kpi/KPIManagerInputList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
@@ -38,6 +39,7 @@ const hrInput = (props: RouteComponentProps) => (
 
 const managerInput = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} />
     <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIManagerInputDetail} />
     <Route path={`${props.match.path}/:employeeUid`} component={KPIManagerInputList} />
     <Route path={`${props.match.path}`} component={EmployeeManagerInputList} />
