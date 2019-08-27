@@ -9,6 +9,7 @@ import { KPIEmployeeDetail } from './employee/detail/KPIEmployeeDetail';
 import { EmployeeList } from './employee/list/employee/EmployeeList';
 import { KPIEmployeeList } from './employee/list/kpi/KPIEmployeeList';
 import { KPIHRInputDetail } from './hr/detail/KPIHRInputDetail';
+import { KPIHRInputBulkForm } from './hr/form/createbulk/KPIHRInputBulkForm';
 import { KPIHRInputForm } from './hr/form/edit/KPIHRInputForm';
 import { EmployeeHRInputList } from './hr/list/employee/EmployeeHRInputList';
 import { KPIHRInputList } from './hr/list/kpi/KPIHRInputList';
@@ -32,6 +33,7 @@ const hrInput = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:employeeUid/form`} component={KPIHRInputForm} />
     <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIHRInputDetail} />
+    <Route path={`${props.match.path}/form`} component={KPIHRInputBulkForm} />
     <Route path={`${props.match.path}/:employeeUid`} component={KPIHRInputList} />
     <Route path={`${props.match.path}`} component={EmployeeHRInputList} />
   </Switch>

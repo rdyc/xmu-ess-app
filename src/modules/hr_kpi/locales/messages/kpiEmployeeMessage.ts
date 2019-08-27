@@ -49,6 +49,8 @@ export const KPIEmployeeSection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   itemTitle: { id: `${prefix}.section.item.title` },
   itemSubHeader: { id: `${prefix}.section.item.subHeader` },
+  employeeTitle: { id: `${prefix}.section.employee.title` },
+  employeeSubHeader: { id: `${prefix}.section.employee.subHeader` },
 });
 
 // confimation

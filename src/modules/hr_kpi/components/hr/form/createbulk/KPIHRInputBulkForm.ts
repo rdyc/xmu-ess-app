@@ -1,3 +1,4 @@
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { IKPITemplateGetListFilter } from '@kpi/classes/filter';
@@ -32,25 +33,22 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIHRInputBulkFormView } from './KPIHRInputBulkFormView';
 
-interface IEmployeeList {
-  uid: string;
+interface IEmployeeListFormValue {
+  employeeUid: string;
   isChecked: boolean;
   fullName: string;
 }
 
 export interface IKPIEmployeeBulkFormValue {
-  uid: string;
   companyUid: string;
   positionUid: string;
   templateUid: string;
   year: number;
   period: number;
-  employeeUids: string[];
-  employeeItems: IEmployeeList[];
+  employees: IEmployeeListFormValue[];
 }
 
 interface IOwnRouteParams {
-  employeeUid: string;
 }
 
 interface IOwnOption {
@@ -59,6 +57,7 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
+  loadItem: boolean;
 
   initialValues: IKPIEmployeeBulkFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeBulkFormValue>>>;
@@ -69,18 +68,22 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setEmployeesValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleSetTemplateFilter: (companyUid: string, positionUid: string) => void;
+  handleSetFilter: (companyUid: string, positionUid: string) => void;
+  handleSetLoadItem: () => void;
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
+  handleLoadEmployee: (companyUid: string, positionUid: string) => void;
   handleOnSubmit: (values: IKPIEmployeeBulkFormValue, action: FormikActions<IKPIEmployeeBulkFormValue>) => void;
 }
 
 export type KPIHRInputBulkFormProps
   = WithKPIEmployee
   & WithKPITemplate
+  & WithAccountEmployee
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -95,16 +98,15 @@ export type KPIHRInputBulkFormProps
 const createProps: mapper<KPIHRInputBulkFormProps, IOwnState> = (props: KPIHRInputBulkFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  loadItem: false,
 
   initialValues: {
-    uid: 'Auto Generated',
     companyUid: '',
     positionUid: '',
     templateUid: '',
     year: 0,
     period: 0,
-    employeeUids: [],
-    employeeItems: [],
+    employees: [],
   },
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeBulkFormValue>>({
@@ -129,13 +131,11 @@ const createProps: mapper<KPIHRInputBulkFormProps, IOwnState> = (props: KPIHRInp
       .label(props.intl.formatMessage(kpiMessage.employee.field.period))
       .required(),
 
-    employeeUids: Yup.array().of(Yup.string())
-      .label(props.intl.formatMessage(kpiMessage.employee.field.employeeUid)),
-
-    employeeItems: Yup.array()
+    employees: Yup.array()
       .of(
         Yup.object().shape({
-          uid: Yup.string(),
+          employeeUid: Yup.string()
+            .label(props.intl.formatMessage(kpiMessage.employee.field.employeeUid)),
 
           isChecked: Yup.boolean(),
 
@@ -159,6 +159,17 @@ const stateUpdaters: StateUpdaters<KPIHRInputBulkFormProps, IOwnState, IOwnState
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setEmployeesValues: (state: IOwnState) => (values: any): Partial<IOwnState> => {
+    const initialValues = state.initialValues;
+
+    if (initialValues) {
+      initialValues.employees = values;
+    }
+    
+    return {
+      initialValues
+    };
+  },
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
@@ -166,14 +177,22 @@ const stateUpdaters: StateUpdaters<KPIHRInputBulkFormProps, IOwnState, IOwnState
 };
 
 const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
-  handleSetTemplateFilter: (props: KPIHRInputBulkFormProps) => (companyUid: string, positionUid: string) => {
+  handleSetFilter: (props: KPIHRInputBulkFormProps) => (companyUid: string, positionUid: string) => {
+    if (companyUid !== '' && positionUid !== '') {
+      props.stateUpdate({
+        filterKPITemplate: {
+          companyUid,
+          positionUid,
+          orderBy: 'name',
+          direction: 'ascending',
+        }
+      });
+    }
+    
+  },
+  handleSetLoadItem: (props: KPIHRInputBulkFormProps) => () => {
     props.stateUpdate({
-      filterKPITemplate: {
-        companyUid,
-        positionUid,
-        orderBy: 'name',
-        direction: 'ascending',
-      }
+      loadItem: !props.loadItem,
     });
   },
   handleLoadTemplate: (props: KPIHRInputBulkFormProps) => (companyUid: string, positionUid: string, templateUid: string) => {
@@ -182,6 +201,19 @@ const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
       positionUid,
       templateUid
     });
+  },
+  handleLoadEmployee: (props: KPIHRInputBulkFormProps) => (companyUid: string, positionUid: string) => {
+    if (companyUid !== '' && positionUid !== '') {
+      props.accountEmployeeDispatch.loadListRequest({
+        filter: ({
+          companyUids: companyUid,
+          positionUids: positionUid,
+          useAccess: true,
+          orderBy: 'fullName',
+          direction: 'ascending'
+        })
+      });
+    }
   },
   handleOnSubmit: (props: KPIHRInputBulkFormProps) => (values: IKPIEmployeeBulkFormValue, actions: FormikActions<IKPIEmployeeBulkFormValue>) => {
     const { user } = props.userState;
@@ -195,8 +227,14 @@ const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
           templateUid: values.templateUid,
           year: values.year,
           period: values.period,
-          employeeUids: values.employeeUids
+          employees: []
         };
+
+        values.employees.forEach(item => payload.employees.push({
+          employeeUid: item.employeeUid,
+          isChecked: item.isChecked,
+        }));
+
         promise = new Promise((resolve, reject) => {
           props.kpiEmployeeDispatch.createBulkRequest({
             resolve,
@@ -261,7 +299,7 @@ const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess, { uid: response.uid })
         });
 
-        props.history.push(`/kpi/templates/${response.uid}`, {companyUid: response.companyUid, positionUid: response.positionUid});
+        props.history.push(`/kpi/hrinputs`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -289,8 +327,25 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputBulkFormProps, IOwnS
   componentDidMount() {
     //
   },
-  componentDidUpdate() {
-    // 
+  componentDidUpdate(prevProps: KPIHRInputBulkFormProps) {
+    // handle list & detail response
+    const { response: thisEmployeeResponse } = this.props.accountEmployeeState.list;
+    const { response: prevEmployeeResponse } = prevProps.accountEmployeeState.list;
+
+    if (thisEmployeeResponse !== prevEmployeeResponse) {
+      if (thisEmployeeResponse && thisEmployeeResponse.data) {
+        const employees: IEmployeeListFormValue[] = [];
+        
+        thisEmployeeResponse.data.forEach(item => employees.push({
+          employeeUid: item.uid,
+          isChecked: false,
+          fullName: item.fullName,
+        }));
+
+        this.props.setEmployeesValues(employees);
+        this.props.handleSetLoadItem();
+      }
+    }
   }
 };
 
@@ -300,6 +355,7 @@ export const KPIHRInputBulkForm = compose<KPIHRInputBulkFormProps, IOwnOption>(
   withRouter,
   withKPIEmployee,
   withKPITemplate,
+  withAccountEmployee,
   withCommonSystem,
   withMasterPage,
   injectIntl,

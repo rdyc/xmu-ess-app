@@ -88,6 +88,8 @@
   "kpi.employee.section.info.subHeader": "LOREM LOREM",
   "kpi.employee.section.item.title": "Employee KPI Item",
   "kpi.employee.section.item.subHeader": "LOREM LOREM",
+  "kpi.employee.section.employee.title": "Employee List",
+  "kpi.employee.section.employee.subHeader": "LOREM SOMETHING SOMETHING",
 
   "kpi.employee.confirm.new.title": "New Employee KPI",
   "kpi.employee.confirm.new.description": "You are about creating a new Employee KPI. Do you want to continue?",

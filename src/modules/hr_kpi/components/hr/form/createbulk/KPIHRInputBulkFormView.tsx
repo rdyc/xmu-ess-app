@@ -8,8 +8,10 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
+import { KPITemplateItem } from '@kpi/components/template/detail/shared/KPITemplateItem';
 import { IKPIEmployeeBulkFormValue, KPIHRInputBulkFormProps } from './KPIHRInputBulkForm';
 import KPIHRInputBulkDetailPartialForm from './partial/KPIHRInputBulkDetailPartialForm';
+import KPIHRInputBulkEmployeePartialForm from './partial/KPIHRInputBulkEmployeePartialForm';
 
 export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props => {
   return (
@@ -17,12 +19,14 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
       info={{
         uid: AppMenu.KPITemplate,
         parentUid: AppMenu.Lookup,
-        parentUrl: '/kpi/templates',
-        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.page.newTitle : kpiMessage.template.page.modifyTitle),
-        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.page.newSubHeader : kpiMessage.template.page.modifySubHeader)
+        parentUrl: '/kpi/employees',
+        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.modifyTitle),
+        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.modifySubHeader)
       }}
       state={props.kpiEmployeeState.detail}
-      onLoadApi={props.handleOnLoadDetail}
+      onLoadApi={() => {
+        //
+      }}
     >
       <Formik
         enableReinitialize
@@ -40,16 +44,42 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
                     intl={props.intl}
                     filterLookupCompany={props.filterLookupCompany}
                     filterKPITemplate={props.filterKPITemplate}
+                    handleSetFilter={props.handleSetFilter}
                     handleLoadTemplate={props.handleLoadTemplate}
-                    handleSetTemplateFilter={props.handleSetTemplateFilter}
+                    handleLoadEmployee={props.handleLoadEmployee}
                   />
                 </div>
               </div>
 
               <div className={props.classes.flexColumn}>
                 <div className={props.classes.flexContent}>
+                  <KPIHRInputBulkEmployeePartialForm
+                    formMode={props.formMode}
+                    loadItem={props.loadItem}
+                    handleSetLoadItem={props.handleSetLoadItem}
+                    formikBag={formikBag}
+                    intl={props.intl}
+                  />
+                  {/* {
+                    formikBag.values.companyUid !== '' &&
+                    formikBag.values.positionUid !== '' &&
+                    props.loadItem &&
+                    formikBag.setValues({
+                      companyUid: formikBag.values.companyUid,
+                      positionUid: formikBag.values.positionUid,
+                      templateUid: formikBag.values.templateUid,
+                      year: formikBag.values.year,
+                      period: formikBag.values.period,
+                      employees: props.initialValues.employees,
+                    })
+                  } */}
+                </div>
+              </div>
+
+              <div className={props.classes.flexColumn}>
+                <div className={props.classes.flexContent}>
                   <SubmissionForm
-                    title={props.intl.formatMessage(kpiMessage.template.submission.form)}
+                    title={props.intl.formatMessage(kpiMessage.employee.submission.form)}
                     className={props.classes.flexContent}
                     formikProps={formikBag}
                     buttonLabelProps={{
@@ -58,8 +88,8 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
                       processing: props.intl.formatMessage(layoutMessage.text.processing)
                     }}
                     confirmationDialogProps={{
-                      title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.dialog.createTitle : kpiMessage.template.dialog.modifyTitle),
-                      message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.dialog.createDescription : kpiMessage.template.dialog.modifyDescription),
+                      title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.dialog.createTitle : kpiMessage.employee.dialog.modifyTitle),
+                      message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.dialog.createDescription : kpiMessage.employee.dialog.modifyDescription),
                       labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                       labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                     }}
@@ -72,17 +102,14 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
               </div>
             </div>
 
-            <div className={props.classes.flexRow}>
-              {/* <KPITemplateItemPartialForm
-                formikBag={formikBag}
-                formMode={props.formMode}
-                intl={props.intl}
-                classes={props.classes}
-                filterKPICategory={props.filterKPICategory}
-                filterKPIMeasurement={props.filterKPIMeasurement}
-                isDialogFullScreen={isMobile}
-              /> */}
-            </div>
+            {
+              props.kpiTemplateState.detail.response &&
+              props.kpiTemplateState.detail.response.data &&
+              props.kpiTemplateState.detail.response.data.items &&
+              <KPITemplateItem 
+                items={props.kpiTemplateState.detail.response.data.items}
+              />
+            }
           </Form>
         )}
       />

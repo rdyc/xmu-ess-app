@@ -1,0 +1,77 @@
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Field, FieldArray, FieldProps, FormikProps } from 'formik';
+import * as React from 'react';
+import { InjectedIntl } from 'react-intl';
+
+import { FormMode } from '@generic/types';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { IKPIEmployeeBulkFormValue } from '../KPIHRInputBulkForm';
+
+type KPIHRInputBulkEmployeePartialFormProps = {
+  formMode: FormMode;
+  formikBag: FormikProps<IKPIEmployeeBulkFormValue>;
+  loadItem: boolean;
+  handleSetLoadItem: () => void;
+  intl: InjectedIntl;
+};
+
+const KPIHRInputBulkEmployeePartialForm: React.ComponentType<KPIHRInputBulkEmployeePartialFormProps> = props => {
+  const setItemValue = () => {
+    props.formikBag.setValues({
+      companyUid: props.formikBag.values.companyUid,
+      positionUid: props.formikBag.values.positionUid,
+      templateUid: props.formikBag.values.templateUid,
+      year: props.formikBag.values.year,
+      period: props.formikBag.values.period,
+      employees: props.formikBag.initialValues.employees,
+    });
+
+    props.handleSetLoadItem();
+  };
+
+  return (
+    <React.Fragment>
+      <Card square>
+        <CardHeader title={props.intl.formatMessage(kpiMessage.employee.section.employeeTitle)} />
+        <CardContent>
+          <FieldArray
+            name="employees"
+            render={() => (
+              <React.Fragment>
+                {
+                  props.formikBag.values.employees &&
+                  props.formikBag.values.employees.map((item, index) =>
+                    <Field
+                      key={index}
+                      name={`employees.${index}.isChecked`}
+                      render={({ field }: FieldProps<IKPIEmployeeBulkFormValue>) => (
+                        <FormControlLabel
+                          label={item.fullName}
+                          control={
+                            <Checkbox 
+                              {...field} 
+                              value={item.employeeUid}
+                              checked={item.isChecked}
+                              disabled={props.formikBag.isSubmitting} 
+                            />
+                          }
+                          style={{width: '100%'}}
+                        />
+                      )}
+                    />
+                  )
+                }
+              </React.Fragment>
+            )}
+          />
+        </CardContent>
+        {
+          props.loadItem &&
+          setItemValue()
+        }
+      </Card>
+    </React.Fragment>
+  );
+};
+
+export default KPIHRInputBulkEmployeePartialForm;

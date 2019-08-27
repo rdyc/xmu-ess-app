@@ -3,7 +3,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { CheckCircle, Tune } from '@material-ui/icons';
+import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IEmployee } from '@account/classes/response';
@@ -56,6 +56,14 @@ export const EmployeeHRInputListView: React.SFC<EmployeeHRInputListProps> = prop
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
+      }
+      appBarCustomComponent={
+        <IconButton
+          color="inherit"
+          onClick={() => props.history.push('/kpi/hrinputs/form')}
+        >
+          <AddCircle/>
+        </IconButton>
       }
 
       // data toolbar component

@@ -139,24 +139,7 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
     isFinal: false,
     isFirst: true,
     revision: '',
-    items: [{
-      uid: '',
-      isOpen: false,
-      categoryUid: '',
-      categoryValue: '',
-      categoryName: '',
-      measurementUid: '',
-      measurementValue: '',
-      measurementType: '',
-      measurementDescription: '',
-      target: '',
-      weight: 0,
-      threshold: 0,
-      amount: 0,
-      achieved: 0,
-      progress: 0,
-      score: 0,
-    }]
+    items: []
   },
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({

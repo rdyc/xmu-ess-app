@@ -193,7 +193,7 @@ function* watchPostBulkRequest() {
     });
   };
 
-  yield takeEvery(Action.POST_REQUEST, worker);
+  yield takeEvery(Action.POST_BULK_REQUEST, worker);
 }
 
 function* watchPutRequest() {

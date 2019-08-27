@@ -18,8 +18,9 @@ type KPIHRInputBulkDetailPartialFormProps = {
   intl: InjectedIntl;
   filterLookupCompany?: ILookupCompanyGetListFilter;
   filterKPITemplate?: IKPITemplateGetListFilter;
-  handleSetTemplateFilter: (companyUid: string, positionUid: string) => void;
+  handleSetFilter: (companyUid: string, positionUid: string) => void;
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
+  handleLoadEmployee: (companyUid: string, positionUid: string) => void;
 };
 
 const KPIHRInputBulkDetailPartialForm: React.ComponentType<KPIHRInputBulkDetailPartialFormProps> = props => (
@@ -50,6 +51,8 @@ const KPIHRInputBulkDetailPartialForm: React.ComponentType<KPIHRInputBulkDetailP
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                 props.formikBag.setFieldValue('positionUid', '');
+                props.handleSetFilter(selected && selected.value || '', props.formikBag.values.positionUid || '');
+                props.handleLoadEmployee(selected && selected.value || '', props.formikBag.values.positionUid || '');
               }}
             />
           </LookupCompanyOption>
@@ -77,6 +80,8 @@ const KPIHRInputBulkDetailPartialForm: React.ComponentType<KPIHRInputBulkDetailP
                 }}
                 onChange={(selected: ISelectFieldOption) => {
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.handleSetFilter(props.formikBag.values.companyUid || '', selected && selected.value || '');
+                  props.handleLoadEmployee(props.formikBag.values.companyUid || '', selected && selected.value || '');
                 }}
               />
             </LookupPositionOption>
