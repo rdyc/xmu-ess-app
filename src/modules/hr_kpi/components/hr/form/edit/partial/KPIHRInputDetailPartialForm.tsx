@@ -3,6 +3,8 @@ import { IKPITemplateGetListFilter } from '@kpi/classes/filter';
 import { KPITemplateOption } from '@kpi/components/template/options/KPITemplateOption';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { InputSemesterOption } from '@layout/components/input/semester';
+import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
@@ -156,58 +158,54 @@ const KPIHRInputDetailPartialForm: React.ComponentType<KPIHRInputDetailPartialFo
         <Field
           name="year"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <TextField
-              {...field}
-              fullWidth
-              required
-              margin="normal"
-              autoComplete="off"
-              disabled={form.isSubmitting}
-              label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-              placeholder={props.intl.formatMessage(kpiMessage.employee.field.year)}
-              helperText={form.touched.year && form.errors.year}
-              error={form.touched.year && Boolean(form.errors.year)}
-              // InputProps={{
-              //   inputComponent: NumberFormatter,
-              // }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                // set current field
-                if (e.target.value === '') {
-                  props.formikBag.setFieldValue(field.name, parseFloat('0'));
-                } else {
-                  props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
-                }
-              }}
-            />
+            <InputYearOption withFuture>
+              <SelectField
+                isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(kpiMessage.employee.field.year),
+                  required: true,
+                  helperText: form.touched.year && form.errors.year,
+                  error: form.touched.year && Boolean(form.errors.year)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                }}
+              />
+            </InputYearOption>
           )}
         />
         
         <Field
           name="period"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <TextField
-              {...field}
-              fullWidth
-              required
-              margin="normal"
-              autoComplete="off"
-              disabled={form.isSubmitting}
-              label={props.intl.formatMessage(kpiMessage.employee.field.period)}
-              placeholder={props.intl.formatMessage(kpiMessage.employee.field.period)}
-              helperText={form.touched.period && form.errors.period}
-              error={form.touched.period && Boolean(form.errors.period)}
-              // InputProps={{
-              //   inputComponent: NumberFormatter,
-              // }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                // set current field
-                if (e.target.value === '') {
-                  props.formikBag.setFieldValue(field.name, parseFloat('0'));
-                } else {
-                  props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
-                }
-              }}
-            />
+            <InputSemesterOption>
+              <SelectField
+                isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(kpiMessage.employee.field.period),
+                  required: true,
+                  helperText: form.touched.period && form.errors.period,
+                  error: form.touched.period && Boolean(form.errors.period)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                }}
+              />
+            </InputSemesterOption>
           )}
         />
 

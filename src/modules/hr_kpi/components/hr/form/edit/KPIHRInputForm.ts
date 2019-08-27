@@ -66,8 +66,8 @@ export interface IKPIEmployeeFormValue {
   isFinal: boolean;
   isFirst: boolean;
   revision: string;
-  year: number;
-  period: number;
+  year: string;
+  period: string;
   totalWeight: number;
   totalScore: number;
   items: IKPIEmployeeItemFormValue[];
@@ -138,8 +138,8 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
     companyUid: '',
     positionUid: '',
     templateUid: '',
-    year: moment().year(),
-    period: 1,
+    year: moment().year().toString(),
+    period: '1',
     totalWeight: 0,
     totalScore: 0,
     isFinal: false,
@@ -156,13 +156,15 @@ const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFo
       .label(props.intl.formatMessage(kpiMessage.employee.field.templateUid))
       .required(),
 
-    year: Yup.number()
-      .min(1900)
+    year: Yup.string()
+      .min(4)
+      .max(4)
       .label(props.intl.formatMessage(kpiMessage.employee.field.year))
       .required(),
 
-    period: Yup.number()
+    period: Yup.string()
       .min(1)
+      .max(1)
       .label(props.intl.formatMessage(kpiMessage.employee.field.period))
       .required(),
 
@@ -372,8 +374,8 @@ const handleCreators: HandleCreators<KPIHRInputFormProps, IOwnHandler> = {
           // fill payload 
           const payload: IKPIEmployeePutPayload = {
             templateUid: values.templateUid,
-            year: values.year,
-            period: values.period,
+            year: parseInt(values.year, 10),
+            period: parseInt(values.period, 10),
             isFinal: values.isFinal,
             revision: values.revision,
             items: []
@@ -466,8 +468,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputFormProps, IOwnState
           companyUid: thisResponse.data.template && thisResponse.data.template.companyUid || '',
           positionUid: thisResponse.data.template && thisResponse.data.template.positionUid || '',
           templateUid: thisResponse.data.templateUid,
-          year: thisResponse.data.year,
-          period: thisResponse.data.period,
+          year: thisResponse.data.year.toString(),
+          period: thisResponse.data.period.toString(),
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           totalScore: thisResponse.data.totalScore,
           isFinal: thisResponse.data.isFinal,

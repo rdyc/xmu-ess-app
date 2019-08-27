@@ -43,8 +43,8 @@ export interface IKPIEmployeeBulkFormValue {
   companyUid: string;
   positionUid: string;
   templateUid: string;
-  year: number;
-  period: number;
+  year: string;
+  period: string;
   employees: IEmployeeListFormValue[];
 }
 
@@ -106,8 +106,8 @@ const createProps: mapper<KPIHRInputBulkFormProps, IOwnState> = (props: KPIHRInp
     companyUid: '',
     positionUid: '',
     templateUid: '',
-    year: 0,
-    period: 0,
+    year: '0',
+    period: '0',
     employees: [],
   },
 
@@ -124,12 +124,14 @@ const createProps: mapper<KPIHRInputBulkFormProps, IOwnState> = (props: KPIHRInp
       .label(props.intl.formatMessage(kpiMessage.employee.field.templateUid))
       .required(),
 
-    year: Yup.number()
-      .min(1000)
+    year: Yup.string()
+      .min(4)
+      .max(4)
       .label(props.intl.formatMessage(kpiMessage.employee.field.year)),
 
-    period: Yup.number()
+    period: Yup.string()
       .min(1)
+      .max(1)
       .label(props.intl.formatMessage(kpiMessage.employee.field.period))
       .required(),
 
@@ -219,8 +221,8 @@ const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
         // fill payload 
         const payload: IKPIEmployeePostBulkPayload = {
           templateUid: values.templateUid,
-          year: values.year,
-          period: values.period,
+          year: parseInt(values.year, 10),
+          period: parseInt(values.period, 10),
           employees: []
         };
 
