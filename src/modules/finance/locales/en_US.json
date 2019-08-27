@@ -17,6 +17,7 @@
   "finance.approval.field.total": "Total Amount",
   "finance.approval.field.status": "Payment Status",
   "finance.approval.field.notes": "Notes",
+  "finance.approval.field.approvalNotes": "Approval Notes",
   "finance.approval.field.notes.expense": "Expense Type",
   "finance.approval.field.notes.mileage": "Mileage Period",
   "finance.approval.field.notes.placeholder": "Type a Notes",

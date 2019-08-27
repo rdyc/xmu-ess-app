@@ -83,6 +83,15 @@ export const financeInformation: React.SFC<AllProps> = props => {
             value={data.document.documentNotes}
           />
         }
+        {
+          (data.document && data.document.approvalNotes) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={intl.formatMessage(financeMessage.approval.field.approvalNotes)}
+            value={data.document.approvalNotes}
+          />
+        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.requestor)}
