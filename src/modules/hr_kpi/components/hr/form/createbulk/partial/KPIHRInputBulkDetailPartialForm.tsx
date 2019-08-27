@@ -51,6 +51,7 @@ const KPIHRInputBulkDetailPartialForm: React.ComponentType<KPIHRInputBulkDetailP
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                 props.formikBag.setFieldValue('positionUid', '');
+                props.formikBag.setFieldValue('templateUid', '');
                 props.handleSetFilter(selected && selected.value || '', props.formikBag.values.positionUid || '');
                 props.handleLoadEmployee(selected && selected.value || '', props.formikBag.values.positionUid || '');
               }}
@@ -80,6 +81,7 @@ const KPIHRInputBulkDetailPartialForm: React.ComponentType<KPIHRInputBulkDetailP
                 }}
                 onChange={(selected: ISelectFieldOption) => {
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.formikBag.setFieldValue('templateUid', '');
                   props.handleSetFilter(props.formikBag.values.companyUid || '', selected && selected.value || '');
                   props.handleLoadEmployee(props.formikBag.values.companyUid || '', selected && selected.value || '');
                 }}

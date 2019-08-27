@@ -239,6 +239,8 @@ const handleCreators: HandleCreators<KPIHRInputBulkFormProps, IOwnHandler> = {
           props.kpiEmployeeDispatch.createBulkRequest({
             resolve,
             reject,
+            companyUid: values.companyUid,
+            positionUid: values.positionUid,
             data: payload
           });
         });

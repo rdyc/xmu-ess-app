@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
-import { Field, FieldArray, FieldProps, FormikProps } from 'formik';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, Typography } from '@material-ui/core';
+import { Field, FieldArray, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
@@ -44,20 +44,33 @@ const KPIHRInputBulkEmployeePartialForm: React.ComponentType<KPIHRInputBulkEmplo
                     <Field
                       key={index}
                       name={`employees.${index}.isChecked`}
-                      render={({ field }: FieldProps<IKPIEmployeeBulkFormValue>) => (
-                        <FormControlLabel
-                          label={item.fullName}
-                          control={
-                            <Checkbox 
-                              {...field} 
-                              value={item.employeeUid}
-                              checked={item.isChecked}
-                              disabled={props.formikBag.isSubmitting} 
+                      render={({ field, form }: FieldProps<IKPIEmployeeBulkFormValue>) => {
+                        const error = getIn(form.errors, `employees.${index}.employeeUid`);
+                        const touch = getIn(form.touched, `employees.${index}.employeeUid`);
+
+                        return (
+                          <div>
+                            <FormControlLabel
+                              label={item.fullName}
+                              control={
+                                <Checkbox 
+                                  {...field} 
+                                  value={item.employeeUid}
+                                  checked={item.isChecked}
+                                  disabled={props.formikBag.isSubmitting} 
+                                />
+                              }
+                              style={{width: '100%'}}
                             />
-                          }
-                          style={{width: '100%'}}
-                        />
-                      )}
+                            {
+                              touch && Boolean(error) &&
+                              <Typography variant={'caption'} color={'error'}>
+                                {touch && error}
+                              </Typography>
+                            }
+                          </div>
+                        ); 
+                      }}
                     />
                   )
                 }

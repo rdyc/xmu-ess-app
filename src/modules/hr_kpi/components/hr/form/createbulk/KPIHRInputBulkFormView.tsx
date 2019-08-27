@@ -19,7 +19,7 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
       info={{
         uid: AppMenu.KPITemplate,
         parentUid: AppMenu.Lookup,
-        parentUrl: '/kpi/employees',
+        parentUrl: '/kpi/hrinputs',
         title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.modifyTitle),
         description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.modifySubHeader)
       }}
@@ -60,19 +60,6 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
                     formikBag={formikBag}
                     intl={props.intl}
                   />
-                  {/* {
-                    formikBag.values.companyUid !== '' &&
-                    formikBag.values.positionUid !== '' &&
-                    props.loadItem &&
-                    formikBag.setValues({
-                      companyUid: formikBag.values.companyUid,
-                      positionUid: formikBag.values.positionUid,
-                      templateUid: formikBag.values.templateUid,
-                      year: formikBag.values.year,
-                      period: formikBag.values.period,
-                      employees: props.initialValues.employees,
-                    })
-                  } */}
                 </div>
               </div>
 
@@ -103,6 +90,7 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
             </div>
 
             {
+              formikBag.values.templateUid !== '' &&
               props.kpiTemplateState.detail.response &&
               props.kpiTemplateState.detail.response.data &&
               props.kpiTemplateState.detail.response.data.items &&

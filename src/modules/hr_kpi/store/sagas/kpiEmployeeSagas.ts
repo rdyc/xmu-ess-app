@@ -159,7 +159,7 @@ function* watchPostBulkRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePostBulkRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/kpi/employees`,
+      path: `/v1/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),
