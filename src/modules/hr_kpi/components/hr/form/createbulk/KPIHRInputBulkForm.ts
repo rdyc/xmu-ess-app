@@ -33,7 +33,7 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIHRInputBulkFormView } from './KPIHRInputBulkFormView';
 
-interface IEmployeeListFormValue {
+export interface IEmployeeListFormValue {
   employeeUid: string;
   isChecked: boolean;
   fullName: string;
@@ -58,6 +58,7 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   loadItem: boolean;
+  listItem: IEmployeeListFormValue[];
 
   initialValues: IKPIEmployeeBulkFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeBulkFormValue>>>;
@@ -99,6 +100,7 @@ const createProps: mapper<KPIHRInputBulkFormProps, IOwnState> = (props: KPIHRInp
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   loadItem: false,
+  listItem: [],
 
   initialValues: {
     companyUid: '',
@@ -159,17 +161,9 @@ const stateUpdaters: StateUpdaters<KPIHRInputBulkFormProps, IOwnState, IOwnState
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setEmployeesValues: (state: IOwnState) => (values: any): Partial<IOwnState> => {
-    const initialValues = state.initialValues;
-
-    if (initialValues) {
-      initialValues.employees = values;
-    }
-    
-    return {
-      initialValues
-    };
-  },
+  setEmployeesValues: (state: IOwnState) => (items: IEmployeeListFormValue[]): Partial<IOwnState> => ({
+    listItem: items,
+  }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState

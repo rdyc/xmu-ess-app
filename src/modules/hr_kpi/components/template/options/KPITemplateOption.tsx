@@ -119,9 +119,9 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
       // when no data then load
       if (!request) {
         this.props.handleOnLoadApi(nextProps.filter);
-      } else if (request) {
+      } else if (request.filter) {
         // if request(data) is exist then compare
-        const shouldUpdate = !shallowEqual(request, nextProps.filter);
+        const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
 
         // should update the list?
         if (shouldUpdate) {
@@ -137,8 +137,8 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
     // this used for update list when changing the filter *not the 1st time load
     if (this.props.filter && nextProps.filter) {
       if (this.props.filter !== nextProps.filter) {
-        if (request) {
-          const shouldUpdate = !shallowEqual(request, nextProps.filter);
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
   
           if (shouldUpdate) {
             this.props.handleOnLoadApi(nextProps.filter);
@@ -147,6 +147,14 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
               this.props.setOptions(response.data);
             }
           }
+        }
+      } else {
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.filter);
+          } 
         }
       }
     }

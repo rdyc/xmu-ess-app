@@ -79,6 +79,9 @@ export const KPIHRInputFormView: React.SFC<KPIHRInputFormProps> = props => {
             <div className={props.classes.flexRow}>
               <KPIHRInputItemPartialForm
                 formikBag={formikBag}
+                loadItem={props.loadItem}
+                listItem={props.listItem}
+                handleSetLoadItem={props.handleSetLoadItem}
                 formMode={props.formMode}
                 intl={props.intl}
                 classes={props.classes}

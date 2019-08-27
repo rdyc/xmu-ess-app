@@ -56,6 +56,7 @@ export const KPIHRInputBulkFormView: React.SFC<KPIHRInputBulkFormProps> = props 
                   <KPIHRInputBulkEmployeePartialForm
                     formMode={props.formMode}
                     loadItem={props.loadItem}
+                    listItem={props.listItem}
                     handleSetLoadItem={props.handleSetLoadItem}
                     formikBag={formikBag}
                     intl={props.intl}

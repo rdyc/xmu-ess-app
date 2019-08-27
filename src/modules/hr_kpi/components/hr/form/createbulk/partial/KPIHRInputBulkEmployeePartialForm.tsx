@@ -5,12 +5,13 @@ import { InjectedIntl } from 'react-intl';
 
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { IKPIEmployeeBulkFormValue } from '../KPIHRInputBulkForm';
+import { IEmployeeListFormValue, IKPIEmployeeBulkFormValue } from '../KPIHRInputBulkForm';
 
 type KPIHRInputBulkEmployeePartialFormProps = {
   formMode: FormMode;
   formikBag: FormikProps<IKPIEmployeeBulkFormValue>;
   loadItem: boolean;
+  listItem: IEmployeeListFormValue[];
   handleSetLoadItem: () => void;
   intl: InjectedIntl;
 };
@@ -23,7 +24,7 @@ const KPIHRInputBulkEmployeePartialForm: React.ComponentType<KPIHRInputBulkEmplo
       templateUid: props.formikBag.values.templateUid,
       year: props.formikBag.values.year,
       period: props.formikBag.values.period,
-      employees: props.formikBag.initialValues.employees,
+      employees: props.listItem,
     });
 
     props.handleSetLoadItem();

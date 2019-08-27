@@ -37,7 +37,7 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIHRInputFormView } from './KPIHRInputFormView';
 
-interface IKPIEmployeeItemFormValue {
+export interface IKPIEmployeeItemFormValue {
   uid?: string;
   isOpen: boolean;
   categoryUid: string;
@@ -83,6 +83,8 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
+  loadItem: boolean;
+  listItem: IKPIEmployeeItemFormValue[];
 
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
@@ -96,11 +98,13 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setItemValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleSetTemplateFilter: (companyUid: string, positionUid: string) => void;
+  handleSetLoadItem: () => void;
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPIEmployeeFormValue, action: FormikActions<IKPIEmployeeFormValue>) => void;
@@ -124,6 +128,8 @@ export type KPIHRInputFormProps
 const createProps: mapper<KPIHRInputFormProps, IOwnState> = (props: KPIHRInputFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  loadItem: false,
+  listItem: [],
 
   initialValues: {
     uid: 'Auto Generated',
@@ -270,6 +276,9 @@ const stateUpdaters: StateUpdaters<KPIHRInputFormProps, IOwnState, IOwnStateUpda
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setItemValues: (state: IOwnState) => (items: IKPIEmployeeItemFormValue[]): Partial<IOwnState> => ({
+    listItem: items
+  }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
@@ -291,6 +300,11 @@ const handleCreators: HandleCreators<KPIHRInputFormProps, IOwnHandler> = {
         });
       }
     }
+  },
+  handleSetLoadItem: (props: KPIHRInputFormProps) => () => {
+    props.stateUpdate({
+      loadItem: !props.loadItem,
+    });
   },
   handleSetTemplateFilter: (props: KPIHRInputFormProps) => (companyUid: string, positionUid: string) => {
     props.stateUpdate({
@@ -488,55 +502,43 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIHRInputFormProps, IOwnState
 
         // set initial values
         this.props.setInitialValues(initialValues);
-      }
 
-      if (thisTemplate !== prevTemplate) {
-        if (thisTemplate && thisTemplate.data) {
-          // define initial values 
-          const initialValues: IKPIEmployeeFormValue = {
-            uid: this.props.initialValues.uid,
-            employeeUid: this.props.initialValues.employeeUid,
-            employeeName: this.props.initialValues.employeeName,
-            companyUid: this.props.initialValues.companyUid,
-            positionUid: this.props.initialValues.positionUid,
-            templateUid: this.props.initialValues.uid,
-            year: this.props.initialValues.year,
-            period: this.props.initialValues.period,
-            totalWeight: thisTemplate.data.items && thisTemplate.data.items.reduce((a, b) => a + b.weight, 0) || 0,
-            totalScore: 0,
-            isFinal: true,
-            isFirst: this.props.initialValues.isFirst,
-            revision: '',
-            items: []
-          };
-  
-          if (thisTemplate.data.items) {
-            // fill template items
-            thisTemplate.data.items.forEach(item =>
-              initialValues.items.push({
-                uid: '',
-                isOpen: false,
-                categoryUid: item.categoryUid,
-                categoryValue: item.category && item.category.name || '',
-                categoryName: item.categoryName,
-                measurementUid: item.measurementUid,
-                measurementValue: item.measurement && item.measurement.description || '',
-                measurementType: item.measurement && item.measurement.measurementType || '',
-                measurementDescription: item.measurement && item.measurement.description || '',
-                target: item.target,
-                weight: item.weight,
-                threshold: item.threshold || 0,
-                amount: item.amount,
-                achieved: 0,
-                progress: 0,
-                score: 0,
-              })
-            );
-          }
-  
-          // set initial values
-          this.props.setInitialValues(initialValues);
+        // set filter template
+        this.props.handleSetTemplateFilter(thisResponse.data.template && thisResponse.data.template.companyUid || '', thisResponse.data.template && thisResponse.data.template.positionUid || '');
+      }
+    }
+
+    if (thisTemplate !== prevTemplate) {
+      if (thisTemplate && thisTemplate.data) {
+        const items: IKPIEmployeeItemFormValue[] = [];
+
+        if (thisTemplate.data.items) {
+          // fill template items
+          thisTemplate.data.items.forEach(item =>
+            items.push({
+              uid: '',
+              isOpen: false,
+              categoryUid: item.categoryUid,
+              categoryValue: item.category && item.category.name || '',
+              categoryName: item.categoryName,
+              measurementUid: item.measurementUid,
+              measurementValue: item.measurement && item.measurement.description || '',
+              measurementType: item.measurement && item.measurement.measurementType || '',
+              measurementDescription: item.measurement && item.measurement.description || '',
+              target: item.target,
+              weight: item.weight,
+              threshold: item.threshold || 0,
+              amount: item.amount,
+              achieved: 0,
+              progress: 0,
+              score: 0,
+            })
+          );
         }
+
+        // set initial values
+        this.props.setItemValues(items);
+        this.props.handleSetLoadItem();
       }
     }
   }
