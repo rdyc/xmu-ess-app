@@ -2,7 +2,7 @@ import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { FormMode } from '@generic/types';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { DraftType } from '@layout/components/submission/DraftType';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
@@ -26,8 +26,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
-import * as Yup from 'yup';
-
 import { CompetencyAssessmentFormView } from './CompetencyAssessmentFormView';
 
 export interface IResponderEmployee {
@@ -57,23 +55,27 @@ interface IOwnState {
   formMode: FormMode;
 
   initialValues?: ICompetencyAssessmentFormValue;
-  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
+  // validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
 
   filterCompany?: ILookupCompanyGetListFilter;
   filterPosition?: IPositionGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
   // filterResponden?: IEmployeeListFilter;
+
+  saveType: DraftType;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  handleType: (saveType: DraftType) => IOwnState;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
   // handleFilterEmployee: (companyUid: string, positionUid: string) => void;
   handleOnSubmit: (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => void;
+  handleSaveType: (saveType: DraftType) => void;
 }
 
 export type CompetencyAssessmentFormProps
@@ -99,33 +101,33 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     companyUid: '',
     positionUid: '',
     employeeUid: '',
-    responder: []
+    responder: [],
   },
 
   // validation props
-  validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({
-    year: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))
-      .required(),
-    companyUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))
-      .required(),
-    positionUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
-      .required(),
-    employeeUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
-      .required(),
-    responder: Yup.array()
-      .of(
-        Yup.object().shape({
-          employeeUid: Yup.string()
-            .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
-            .required()
-        })
-      )
-      .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories)),
-  }),
+  // validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({
+  //   year: Yup.string()
+  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))
+  //     .required(),
+  //   companyUid: Yup.string()
+  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))
+  //     .required(),
+  //   positionUid: Yup.string()
+  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
+  //     .required(),
+  //   employeeUid: Yup.string()
+  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
+  //     .required(),
+  //   responder: Yup.array()
+  //     .of(
+  //       Yup.object().shape({
+  //         employeeUid: Yup.string()
+  //           .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
+  //           .required()
+  //       })
+  //     )
+  //     .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories)),
+  // }),
   filterAccountEmployee: {
     useAccess: true,
     orderBy: 'fullName',
@@ -138,7 +140,9 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
   filterPosition: {
     orderBy: 'name',
     direction: 'ascending'
-  }
+  },
+
+  saveType: DraftType.draft
 });
 
 const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOwnStateUpdater> = {
@@ -148,10 +152,20 @@ const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOw
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
+  }),
+  handleType: (staet: IOwnState) => (saveType: DraftType) => ({
+    saveType
   })
 };
 
 const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler> = {
+  handleSaveType: (props: CompetencyAssessmentFormProps) => (saveType: DraftType) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      saveType
+    });
+  },
   handleOnLoadDetail: () => () => {
     // if (!isNullOrUndefined(props.history.location.state)) {
     //   const user = props.userState.user;
@@ -183,8 +197,9 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
   //     });
   //   }
   // },
-  handleOnSubmit: () => () => {
+  handleOnSubmit: (props: CompetencyAssessmentFormProps) => () => {
     console.log('Submit assessment');
+    console.log(props.saveType);
     // const { user } = props.userState;
     // let promise = new Promise((resolve, reject) => undefined);
 

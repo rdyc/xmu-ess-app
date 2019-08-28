@@ -26,3 +26,13 @@ export * from './competency/mapped/IHrCompetencyMapped';
 export * from './competency/mapped/IHrCompetencyMappedList';
 export * from './competency/mapped/IHrCompetencyMappedDetail';
 export * from './competency/mapped/MappedItem';
+
+// assessment
+export * from './competency/assessment/IAssessmentItem';
+export * from './competency/assessment/IHrCompetencyAssessment';
+export * from './competency/assessment/IHrCompetencyAssessmentDetail';
+
+// employee
+export * from './competency/employee/ICompetencyEmployeeItem';
+export * from './competency/employee/IHrCompetencyEmployee';
+export * from './competency/employee/IHrCompetencyEmployeeDetail';

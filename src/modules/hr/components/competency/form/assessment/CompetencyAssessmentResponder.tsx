@@ -1,5 +1,5 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
-import { AccountEmployeeOption } from '@account/components/options/AccountEmployeeOption';
+import { AccountEmployeeMultipleOption } from '@account/components/options/AccountEmployeeMultipleOption';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -58,7 +58,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                           <React.Fragment>
                             <ListItem disableGutters>
                               <ListItemText>
-                                <AccountEmployeeOption filter={props.filterAccountEmployee} default={item.employee}>
+                                <AccountEmployeeMultipleOption >
                                   <SelectField
                                     autoFocus
                                     isSearchable
@@ -91,7 +91,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                                       }
                                     }}
                                   />
-                                </AccountEmployeeOption>
+                                </AccountEmployeeMultipleOption>
                               </ListItemText>
 
                               <ListItemSecondaryAction className={props.classes.marginWideTop}>

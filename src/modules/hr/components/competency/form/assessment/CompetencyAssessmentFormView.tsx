@@ -3,13 +3,14 @@ import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
-import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
+// import { DraftType } from '@layout/components/submission/DraftType';
+import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
+// import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { CompetencyAssessmentFormProps, ICompetencyAssessmentFormValue } from './CompetencyAssessmentForm';
 import CompetencyAssessmentPartial from './CompetencyAssessmentPartial';
-// import CompetencyAssessmentResponden from './CompetencyAssessmentResponden';
 import CompetencyAssessmentResponder from './CompetencyAssessmentResponder';
 
 export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormProps> = props => (
@@ -27,7 +28,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
-      validationSchema={props.validationSchema}
+      // validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyAssessmentFormValue>) => (
         <Form>
@@ -40,8 +41,6 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                   formikBag={formikBag}
                   filterCompany={props.filterCompany}
                   filterPosition={props.filterPosition}
-                  // filterAccountEmployee={props.filterResponden}
-                  // handleFilterEmployee={props.handleFilterEmployee}
                 />
               </div>
             </div>
@@ -63,7 +62,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <SubmissionForm 
+                <SubmissionDraft 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
@@ -72,32 +71,25 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                     submit: props.intl.formatMessage(layoutMessage.action.submit),
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
-                  confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Assessment'}),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'Assessment'}),
+                  confirmationDialogDraftProps={{
+                    title: props.intl.formatMessage(hrMessage.shared.confirm.saveAsTitle, {state: 'draft'}),
+                    message: props.intl.formatMessage(hrMessage.shared.confirm.saveAsDescription, {state: 'draft'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                  }} 
+                  }}
+                  confirmationDialogFinalProps={{
+                    title: props.intl.formatMessage(hrMessage.shared.confirm.saveAsTitle, {state: 'final'}),
+                    message: props.intl.formatMessage(hrMessage.shared.confirm.saveAsDescription, {state: 'final'}),
+                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+                  }}  
+                  saveAs={props.handleSaveType}
                 />
               </div>
               <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
               </div>
             </div>
-            {/* <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <CompetencyAssessmentResponden
-                  formMode={props.formMode}
-                  intl={props.intl}
-                  formikBag={formikBag}
-                  classes={{
-                    marginFarRight: props.classes.marginFarRight,
-                    marginWideTop: props.classes.marginWideTop
-                  }}
-                  filterAccountEmployee={props.filterAccountEmployee}
-                />
-              </div>
-            </div> */}
           </div>
         </Form>
       )}

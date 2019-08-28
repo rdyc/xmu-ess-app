@@ -35,6 +35,8 @@ export const hrSharedConfirm = defineMessages({
   createDescription: { id: `${prefix}.confirm.create.subHeader` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
+  saveAsTitle: { id: `${prefix}.confirm.saveAs.title` },
+  saveAsDescription: { id: `${prefix}.confirm.saveAs.subHeader` },
 });
 
 // section

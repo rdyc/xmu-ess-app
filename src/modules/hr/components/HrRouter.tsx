@@ -3,35 +3,37 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { CompetencyAssessmentForm } from './competency/form/assessment/CompetencyAssessmentForm';
-import { CompetencyResponderForm } from './competency/form/responder/CompetencyResponderForm';
+import { CompetencyEmployeeForm } from './competency/form/employee/CompetencyEmployeeForm';
+import { HrCompetencyAssessmentList } from './competency/list/assessment/HrCompetencyAssessmentList';
+import { HrCompetencyEmployeeList } from './competency/list/employee/HrCompetencyEmployeeList';
 
 const assessment = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={CompetencyAssessmentForm} />
-    {/* <Route path={`${props.match.path}`} component={} /> */}
+    <Route path={`${props.match.path}/form`} component={CompetencyAssessmentForm} />
+    <Route path={`${props.match.path}`} component={HrCompetencyAssessmentList} />
   </Switch>
 );
 
-const responder = (props: RouteComponentProps) => (
+const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={CompetencyResponderForm} />
-    {/* <Route path={`${props.match.path}`} component={} /> */}
+    <Route path={`${props.match.path}/form`} component={CompetencyEmployeeForm} />
+    <Route path={`${props.match.path}`} component={HrCompetencyEmployeeList} />
   </Switch>
 );
 
 export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
-      path={`${props.match.path}/competencyassessment`}
+      path={`${props.match.path}/assessment`}
       menu={AppMenu.HumanResource} 
       subMenu={AppMenu.CompetencyAssessment} 
       component={assessment} 
     />
     <SecureMenuRoute 
-      path={`${props.match.path}/competencyemployee`}
+      path={`${props.match.path}/assessmentinput`}
       menu={AppMenu.HumanResource} 
-      subMenu={AppMenu.CompetencyEmployee} 
-      component={responder} 
+      subMenu={AppMenu.CompetencyAssessmentInput} 
+      component={employee} 
     />
   </Switch>
 );

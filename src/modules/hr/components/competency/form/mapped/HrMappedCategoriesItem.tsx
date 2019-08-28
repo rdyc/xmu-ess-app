@@ -1,7 +1,6 @@
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Badge, Card, CardHeader, Checkbox, Collapse, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -117,16 +116,25 @@ const hrMappedCategoriesItem: React.ComponentType<AllProps> = props => {
                                 color="inherit"
                                 className={props.classes.marginWideLeft}
                               >
-                                <Badge color="primary" badgeContent={4}>
+                                <ListItemText 
+                                  style={{paddingLeft: '30px', paddingRight: '8px'}}
+                                  primary={child.name} 
+                                />
+                                {/* <Badge color="primary" badgeContent={4}>
                                   <ListItemText 
                                     style={{paddingLeft: '30px', paddingRight: '8px'}}
                                     primary={child.name} 
                                   />
-                                </Badge>
+                                </Badge> */}
                                 <ListItemSecondaryAction>
-                                  <IconButton aria-label="Delete">
+                                  {/* <IconButton aria-label="Delete">
                                     <MoreVertIcon />
-                                  </IconButton>
+                                  </IconButton> */}
+                                  {/* <TextField
+                                    label="Level"
+                                    margin="normal"
+                                    variant="outlined"
+                                  /> */}
                                 </ListItemSecondaryAction>
                               </ListItem>
                           )

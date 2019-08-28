@@ -3,5 +3,7 @@ export enum IHrCompetencyPart {
   Cluster = 'cluster',
   Level = 'level',
   Indicator = 'indicator',
-  Mapped = 'mapped'
+  Mapped = 'mapped',
+  Assessment = 'assessment',
+  Employee = 'employee'
 }

@@ -302,8 +302,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
           direction: 'ascending'
         }
       });
-    } 
-    // else if (response && response.data) {
+    } else if (response && response.data) {
       // const categoriesList: CategoryMenus[] = [];
       // response.data.map(item => {
       //   categoriesList.push({
@@ -326,24 +325,26 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
       //     });
       //   }
       // });
-    //   const categoriesList: CategoriesItem[] = [];
-    //   response.data.map(item => {
-    //     categoriesList.push({
-    //       uid: item.uid,
-    //       checked: false
-    //     });
-    //   });
+    const categoriesList: CategoriesItem[] = [];
+    response.data.map(item => {
+      categoriesList.push({
+        uid: item.uid,
+        name: item.name,
+        checked: false,
+        child: item.categories
+      });
+    });
 
-    //   const initialValues: IMappedFormValue = {
-    //     uid: 'Auto generated',
-    //     companyUid: '',
-    //     positionUid: '',
-    //     levelType: '',
-    //     categories: categoriesList
-    //   };
+    const initialValues: IMappedFormValue = {
+      uid: 'Auto generated',
+      companyUid: '',
+      positionUid: '',
+      levelType: '',
+      categories: categoriesList
+    };
 
-    //   this.props.setInitialValues(initialValues);
-    // }
+    this.props.setInitialValues(initialValues);
+    }
   },
   componentWillUpdate(nextProps: HrCompetencyMappedFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyClusterState.list;

@@ -1,4 +1,5 @@
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -11,18 +12,15 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Toolbar,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
-import { Info } from '@material-ui/icons';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
-import { FilterCluster } from '../../select/FilterCluster';
-import { HrCompetencyCategoryFilterProps } from './HrCompetencyCategoryFilter';
+import { HrCompetencyAssessmentFilterProps } from './HrCompetencyAssessmentFilter';
 
-export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilterProps> = props => {
+export const HrCompetencyAssessmentFilterView: React.SFC<HrCompetencyAssessmentFilterProps> = props => {
   return (
   <React.Fragment>
     <Dialog
@@ -48,9 +46,8 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
               props.intl.formatMessage(layoutMessage.tooltip.filter)
             }
           </Typography>
-
           {
-            (props.filterCluster) &&
+            (props.filterCompletion && props.filterCompletion.value !== 'pending') &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -59,7 +56,6 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
           <Button 
             color="inherit" 
             onClick={props.handleFilterOnApply}
-            disabled={!props.filterCluster}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
@@ -69,44 +65,38 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
       <Divider/>
 
       <List>
-        <ListItem button onClick={props.handleFilterClusterVisibility}>
+        <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
-            secondary={props.filterCluster ? props.filterCluster.name : props.intl.formatMessage(layoutMessage.text.none)}
+            primary={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Completion'})}
+            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
           />
           <ListItemSecondaryAction>
-            {
-              props.filterCluster &&
-              <IconButton onClick={props.handleFilterClusterOnClear}>
+          { 
+              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
+              <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
-              </IconButton>
+              </IconButton> 
             }
-            {
-              !props.filterCluster &&
-              <Tooltip title={props.intl.formatMessage(hrMessage.competency.field.clusterRequired)}>
-                <IconButton onClick={props.handleFilterClusterVisibility}>
-                  <Info/>
-                </IconButton>
-              </Tooltip>
-            }
-            <IconButton onClick={props.handleFilterClusterVisibility}>
+
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
-            </IconButton>
+            </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-
       </List>
-
-      <FilterCluster 
-        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
-        hideBackdrop={true}
-        isOpen={props.isFilterClusterOpen}
-        value={props.filterCluster && props.filterCluster.uid}
-        onSelected={props.handleFilterClusterOnSelected}
-        onClose={props.handleFilterClusterOnClose}        
-      />
     </Dialog>
+
+    <DialogValue
+      title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Completion'})}
+      isOpen={props.isFilterCompletionOpen}
+      hideBackdrop={true}
+      items={props.completionStatus}
+      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
+      onSelected={props.handleFilterCompletionOnSelected}
+      onClose={props.handleFilterCompletionOnClose}
+      isCompletion={true}
+    />
   </React.Fragment>
   );
 };

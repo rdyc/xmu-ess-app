@@ -1,5 +1,5 @@
 import { ISystemListFilter } from '@common/classes/filters';
-import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
+// import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -96,7 +96,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
         )}
       />
 
-      <Field
+      {/* <Field
         name="levelType"
         render={({ field, form }: FieldProps<IMappedFormValue>) => (
           <CommonSystemOption category="level" filter={props.filterCommonSystem}>
@@ -121,7 +121,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
             />
           </CommonSystemOption>
         )}
-      />
+      /> */}
     </CardContent>
   </Card>
 );

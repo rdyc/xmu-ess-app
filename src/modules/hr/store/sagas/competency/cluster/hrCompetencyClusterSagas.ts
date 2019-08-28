@@ -38,7 +38,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/clusters?${params}`, 
+      path: `/v1/competency?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetAllSuccess(response.body)),
       ]), 
@@ -63,7 +63,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/clusters/list?${params}`,
+      path: `/v1/competency/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetListSuccess(response.body)),
       ]), 
@@ -83,7 +83,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/clusters/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.clusterUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetByIdSuccess(response.body)),
       ]), 
@@ -103,7 +103,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/competency/clusters`,
+      path: `/v1/competency`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -143,7 +143,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/competency/clusters/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.clusterUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -183,7 +183,7 @@ function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/competency/clusters/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.clusterUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
