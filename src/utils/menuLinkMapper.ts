@@ -255,11 +255,15 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU76':
-        path = '/hr/competencyemployee';
+        path = '/hr/assessmentresult';
         break;
 
     case 'MNU77':
-      path = '/hr/competencyassessment';
+      path = '/hr/assessment';
+      break;
+
+    case 'MNU83':
+      path = '/hr/assessmentinput';
       break;
 
     default:

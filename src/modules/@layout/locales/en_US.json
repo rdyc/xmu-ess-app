@@ -231,6 +231,9 @@
   "layout.action.previous": "Last",
   "layout.action.previousCount": "Last ({count})",
   "layout.action.calculation": "Calculation",
+  "layout.action.saveAs": "Save As",
+  "layout.action.draft": "Draft",
+  "layout.action.final": "Final",
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
