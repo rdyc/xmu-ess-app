@@ -23,8 +23,8 @@ export interface IEmployeesOption {
 }
 
 interface IOwnOption {
-  companyUid: string;
-  positoinUid: string;
+  companyUid?: string;
+  positoinUid?: string;
 }
 
 interface IOwnState {
@@ -39,7 +39,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (companyUid: string, positionUid: string) => void;
+  handleOnLoadApi: (companyUid?: string, positionUid?: string) => void;
 }
 
 export type AccountEmployeeMultipleOptionProps
@@ -71,7 +71,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeMultipleOptionProps, IOwnState
     }));
 
     const optionsList = prevState.optionsList;
-    optionsList[props.positoinUid] = options;
+    optionsList[props.positoinUid || 'isAll'] = options;
 
     return {
       optionsList
@@ -80,7 +80,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeMultipleOptionProps, IOwnState
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeMultipleOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AccountEmployeeMultipleOptionProps) => (companyUid: string, positionUid: string) => {
+  handleOnLoadApi: (props: AccountEmployeeMultipleOptionProps) => (companyUid?: string, positionUid?: string) => {
     const { isExpired, isLoading } = props.accountEmployeeState.list;
     const { loadListRequest } = props.accountEmployeeDispatch;
 
@@ -88,6 +88,8 @@ const handlerCreators: HandleCreators<AccountEmployeeMultipleOptionProps, IOwnHa
       filter: {
         companyUids: companyUid,
         positionUids: positionUid,
+        useAccess: true,
+        isActive: true,
         direction: 'ascending',
         orderBy: 'fullName'
       }
@@ -107,6 +109,8 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
     if (!request) {
       if (this.props.positoinUid) {
         this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
+      } else {
+        this.props.handleOnLoadApi();
       }
     } else {
       // 2nd load only when request filter are present
@@ -123,6 +127,12 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
             if (response && response.data && !isLoading && !shouldUpdatePosition) {
               this.props.setOptions(response.data);
             }
+          }
+        } else {
+          if (request && request.filter && !request.filter.positionUids && !this.props.position) {
+            this.props.setOptions(response && response.data);
+          } else {
+            this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
           }
         }
       }
@@ -149,6 +159,8 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
               this.props.setOptions(response.data);
             }
           }
+        } else if (!request.filter.positionUids && nextProps.positoinUid) {
+          this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
         }
       }
     }
@@ -156,14 +168,22 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
     // this used for update list when changing the filter(position) *not the 1st time load
     if (this.props.positoinUid && nextProps.positoinUid) {
       if (this.props.positoinUid !== nextProps.positoinUid) {
-        if (request && request.filter && request.filter.positionUids) {
-          const shouldUpdate = !shallowEqual(request.filter.positionUids, nextProps.positoinUid);
-  
-          if (shouldUpdate && !this.props.optionsList[nextProps.positoinUid]) {
-            this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
+        if (request && request.filter) {
+          if (request.filter.positionUids) {
+            const shouldUpdate = !shallowEqual(request.filter.positionUids, nextProps.positoinUid);
+    
+            if (!this.props.optionsList[nextProps.positoinUid]) {
+              if (shouldUpdate) {
+                this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
+              } else {
+                if (response && response.data) {
+                  this.props.setOptions(response.data);
+                }
+              }
+            }
           } else {
-            if (response && response.data) {
-              this.props.setOptions(response.data);
+            if (!this.props.optionsList[nextProps.positoinUid]) {
+              this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
             }
           }
         }
@@ -179,11 +199,11 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
     }
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data && !this.props.optionsList[this.props.positoinUid]) {
+      if (thisResponse && thisResponse.data && !this.props.optionsList[this.props.positoinUid || 'isAll']) {
         this.props.setOptions(thisResponse.data);
       }
     }
-    console.log(this.props.optionsList);
+    // console.log(this.props.optionsList);
   }
 };
 
@@ -196,8 +216,8 @@ const component: React.SFC<AccountEmployeeMultipleOptionProps> = props => {
         {
           React.cloneElement(children, { 
             isLoading: props.isLoading,
-            options: props.optionsList[props.positoinUid] && props.optionsList[props.positoinUid] || props.optionBlank,
-            value: props.optionsList[props.positoinUid] && props.optionsList[props.positoinUid].find(option => option.value === children.props.valueString) || props.optionBlank
+            options: props.optionsList[props.positoinUid || 'isAll'] && props.optionsList[props.positoinUid || 'isAll'] || props.optionBlank,
+            value: props.optionsList[props.positoinUid || 'isAll'] && props.optionsList[props.positoinUid || 'isAll'].find(option => option.value === children.props.valueString) || props.optionBlank
           })
         }
       </React.Fragment>
