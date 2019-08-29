@@ -2,6 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { HrCompetencyAssessmentDetail } from './competency/detail/assessment/HrCompetencyAssessmentDetail';
 import { CompetencyAssessmentForm } from './competency/form/assessment/CompetencyAssessmentForm';
 import { CompetencyEmployeeForm } from './competency/form/employee/CompetencyEmployeeForm';
 import { HrCompetencyAssessmentList } from './competency/list/assessment/HrCompetencyAssessmentList';
@@ -10,6 +11,7 @@ import { HrCompetencyEmployeeList } from './competency/list/employee/HrCompetenc
 const assessment = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={CompetencyAssessmentForm} />
+    <Route path={`${props.match.path}/:assessmentUid`} component={HrCompetencyAssessmentDetail} />
     <Route path={`${props.match.path}`} component={HrCompetencyAssessmentList} />
   </Switch>
 );

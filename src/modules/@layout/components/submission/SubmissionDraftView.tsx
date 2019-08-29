@@ -1,7 +1,10 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Button, Card, CardActions, CardContent, CardHeader, Menu, MenuItem, TextField } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, ListItemIcon, ListItemText, Menu, MenuItem, TextField } from '@material-ui/core';
+// import AssignmentIcon from '@material-ui/icons/AssignmentTurnedIn';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import DraftsIcon from '@material-ui/icons/Drafts';
 import * as React from 'react';
 import { DraftType } from './DraftType';
 
@@ -54,7 +57,6 @@ export const SubmissionDraftView: React.ComponentType<SubmissionDraftProps> = pr
           aria-owns="save-as"
           aria-haspopup="true"
           disabled={props.formikProps.isSubmitting || props.disableButtons}
-          // onClick={() => props.setOpen()}
           onClick={props.handleSaveOption}
         >
           {props.intl.formatMessage(layoutMessage.action.saveAs)}
@@ -64,13 +66,19 @@ export const SubmissionDraftView: React.ComponentType<SubmissionDraftProps> = pr
             props.handleSaveType(DraftType.draft);
             props.setOpen();
           }}>
-            {props.intl.formatMessage(layoutMessage.action.draft)}
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText inset primary={props.intl.formatMessage(layoutMessage.action.draft)} />
           </MenuItem>
           <MenuItem color="primary" onClick={() => {
             props.handleSaveType(DraftType.final);
             props.setOpen();          
           }}>
-            {props.intl.formatMessage(layoutMessage.action.final)}
+          <ListItemIcon>
+            <ArchiveIcon />
+          </ListItemIcon>
+          <ListItemText inset primary={props.intl.formatMessage(layoutMessage.action.final)} />
           </MenuItem>
         </Menu>
       </CardActions>
