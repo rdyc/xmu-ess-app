@@ -238,6 +238,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/kpi/templates';
       break;
 
+    case 'MNU84':
+      path = '/kpi/assigns';
+      break;
+
     case 'MNU73':
       path = '/kpi/employees';
       break;

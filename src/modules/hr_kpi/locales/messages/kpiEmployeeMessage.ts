@@ -13,10 +13,18 @@ export const KPIEmployeePage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader` },
   modifyTitle: { id: `${prefix}.page.modify.title` },
   modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
-  newWizardTitle: { id: `${prefix}.page.newWizard.title` },
-  newWizardSubHeader: { id: `${prefix}.page.newWizard.subHeader` },
-  inputTitle: { id: `${prefix}.page.input.title` },
-  inputSubHeader: { id: `${prefix}.page.input.subHeader` },
+
+  assignListTitle: { id: `${prefix}.page.assign.list.title` },
+  assignListSubHeader: { id: `${prefix}.page.assign.list.subHeader` },
+  assignDetailTitle: { id: `${prefix}.page.assign.detail.title` },
+  assignDetailSubHeader: { id: `${prefix}.page.assign.detail.subHeader` },
+  assignNewTitle: { id: `${prefix}.page.assign.new.title` },
+  assignNewSubHeader: { id: `${prefix}.page.assign.new.subHeader` },
+  assignModifyTitle: { id: `${prefix}.page.assign.modify.title` },
+  assignModifySubHeader: { id: `${prefix}.page.assign.modify.subHeader` },
+  
+  approvalListTitle: { id: `${prefix}.page.approval.list.title` },
+  approvalListSubHeader: { id: `${prefix}.page.approval.list.subHeader` },
 });
 
 // message
@@ -41,6 +49,11 @@ export const KPIEmployeeDialog = defineMessages({
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
   createTitle: { id: `${prefix}.dialog.newTitle`},
   createDescription: { id: `${prefix}.dialog.newDescription`},
+  
+  assignModifyTitle: { id: `${prefix}.dialog.assign.modifyTitle`},
+  assignModifyDescription: { id: `${prefix}.dialog.assign.modifyDescription`},
+  assignCreateTitle: { id: `${prefix}.dialog.assign.newTitle`},
+  assignCreateDescription: { id: `${prefix}.dialog.assign.newDescription`},
 });
 
 // section

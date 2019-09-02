@@ -64,15 +64,30 @@
   "kpi.employee.page.new.subHeader": "Lorem Something something",
   "kpi.employee.page.modify.title": "Modify Employee KPI",
   "kpi.employee.page.modify.subHeader": "Lorem Something something",
-  "kpi.employee.page.input.title": "Input Employee KPI Progress",
-  "kpi.employee.page.input.subHeader": "Lorem Something something",
-  "kpi.employee.page.newWizard.title": "Employee KPI Creation Wizard",
-  "kpi.employee.page.newWizard.subHeader": "Lorem Something something",
+  
+  "kpi.employee.page.approval.list.title": "All Employee KPI Approval",
+  "kpi.employee.page.approval.list.subHeader": "Lorem Something something",
+  "kpi.employee.page.approval.approve.title": "Employee KPI Approval",
+  "kpi.employee.page.approval.approve.subHeader": "Lorem Something something",
+
+  "kpi.employee.page.assign.list.title": "All Assigned Employee KPI",
+  "kpi.employee.page.assign.list.subHeader": "Lorem Something something",
+  "kpi.employee.page.assign.detail.title": "Employee KPI Assign Detail",
+  "kpi.employee.page.assign.detail.subHeader": "Lorem Something something",
+  "kpi.employee.page.assign.new.title": "Assign Employee KPI",
+  "kpi.employee.page.assign.new.subHeader": "Lorem Something something",
+  "kpi.employee.page.assign.modify.title": "Edit Employee KPI Assign",
+  "kpi.employee.page.assign.modify.subHeader": "Lorem Something something",
 
   "kpi.employee.dialog.newTitle": "Create new Employee KPI",
   "kpi.employee.dialog.newDescription": "Do you want to create a new Employee KPI?",
   "kpi.employee.dialog.modifyTitle": "Modify Employee KPI",
   "kpi.employee.dialog.modifyDescription": "You are about to modify current Employee KPI. Do you want to continue ?",
+  
+  "kpi.employee.dialog.assign.newTitle": "Create new Employee KPI Assign",
+  "kpi.employee.dialog.assign.newDescription": "Do you want to create a new Employee KPI Assign?",
+  "kpi.employee.dialog.assign.modifyTitle": "Modify Employee KPI Assign",
+  "kpi.employee.dialog.assign.modifyDescription": "You are about to modify current Employee KPI Assign. Do you want to continue ?",
 
   "kpi.employee.submission.form": "Employee KPI Submission",
 
