@@ -60,6 +60,7 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
           props.data.revision && 
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
           value={props.data.revision}
         />

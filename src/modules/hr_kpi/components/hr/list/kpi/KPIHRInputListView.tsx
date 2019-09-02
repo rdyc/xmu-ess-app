@@ -2,8 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
@@ -65,16 +64,6 @@ export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
           onApply={props.handleOnLoadApiSearch}
         />
       }
-      appBarCustomComponent={
-        <IconButton
-          color="inherit"
-          onClick={() => props.history.push(`/kpi/hrinputs/${props.match.params.employeeUid}/form`, {employeeName: props.history.location.state && props.history.location.state.employeeName && 
-            props.history.location.state.employeeName || 'Employee'})}
-        >
-          <AddCircle/>
-        </IconButton>
-      }
-
     />
   </React.Fragment>
 );

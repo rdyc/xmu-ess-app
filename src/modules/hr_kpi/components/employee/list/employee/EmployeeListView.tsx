@@ -2,7 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, IconButton, Tooltip } from '@material-ui/core';
+import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
@@ -35,6 +35,17 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       // row components
       summaryComponent={(item: IEmployee) => ( 
         <EmployeeSummary data={item} />
+      )}
+      actionComponent={(item: IEmployee) => (
+        <React.Fragment>
+          <Button 
+            size="small"
+            color="secondary"
+            onClick={() => props.history.push(`/kpi/employees/${item.uid}`, {employeeName: item.fullName})}
+          >
+            {props.intl.formatMessage(layoutMessage.action.details)}
+          </Button>
+        </React.Fragment>
       )}
 
       // app bar component
