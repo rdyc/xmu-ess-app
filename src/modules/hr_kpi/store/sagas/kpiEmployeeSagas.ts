@@ -8,26 +8,13 @@ import {
   KPIEmployeeGetByIdError,
   KPIEmployeeGetByIdRequest,
   KPIEmployeeGetByIdSuccess,
-  KPIEmployeeGetItemListDispose,
-  KPIEmployeeGetItemListError,
-  KPIEmployeeGetItemListRequest,
-  KPIEmployeeGetItemListSuccess,
   KPIEmployeePostBulkError,
   KPIEmployeePostBulkRequest,
   KPIEmployeePostBulkSuccess,
-  KPIEmployeePostError,
-  KPIEmployeePostRequest,
-  KPIEmployeePostSuccess,
   KPIEmployeePutAchievedError,
   KPIEmployeePutAchievedRequest,
   KPIEmployeePutAchievedSuccess,
   KPIEmployeePutError,
-  KPIEmployeePutFinalError,
-  KPIEmployeePutFinalRequest,
-  KPIEmployeePutFinalSuccess,
-  KPIEmployeePutItemBulkError,
-  KPIEmployeePutItemBulkRequest,
-  KPIEmployeePutItemBulkSuccess,
   KPIEmployeePutRequest,
   KPIEmployeePutSuccess,
 } from '@kpi/store/actions';
@@ -66,34 +53,6 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchGetItemListRequest() {
-  const worker = (action: ReturnType<typeof KPIEmployeeGetItemListRequest>) => {
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true
-    });
-
-    return saiyanSaga.fetch({
-      method: 'get',
-      path: `/v1/kpi/employees?${params}`,
-      successEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetItemListSuccess(response.body)),
-      ],
-      failureEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetItemListError(response))
-      ],
-      errorEffects: (error: TypeError) => [
-        put(KPIEmployeeGetItemListError(error.message))
-      ],
-      finallyEffects: [
-        // nothing
-      ]
-    });
-  };
-
-  yield takeEvery(Action.GET_ITEM_LIST_REQUEST, worker);
-}
-
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
@@ -114,47 +73,6 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof KPIEmployeePostRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'post',
-      path: `/v1/kpi/employees/${action.payload.employeeUid}`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetByIdDispose()),
-        put(KPIEmployeeGetAllDispose()),
-        put(KPIEmployeeGetItemListDispose()),
-        put(KPIEmployeePostSuccess(response.body))
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(KPIEmployeePostError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(KPIEmployeePostError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.POST_REQUEST, worker);
-}
-
 function* watchPostBulkRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePostBulkRequest>) => {
     return saiyanSaga.fetch({
@@ -164,7 +82,6 @@ function* watchPostBulkRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),
         put(KPIEmployeeGetAllDispose()),
-        put(KPIEmployeeGetItemListDispose()),
         put(KPIEmployeePostBulkSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -276,94 +193,11 @@ function* watchPutAchievedRequest() {
   yield takeEvery(Action.PUT_ACHIEVED_REQUEST, worker);
 }
 
-function* watchPutItemBulkRequest() {
-  const worker = (action: ReturnType<typeof KPIEmployeePutItemBulkRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'put',
-      path: `/v1/kpi/employees`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetByIdDispose()),
-        put(KPIEmployeeGetAllDispose()),
-        put(KPIEmployeeGetItemListDispose()),
-        put(KPIEmployeePutItemBulkSuccess(response.body))
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(KPIEmployeePutItemBulkError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(KPIEmployeePutItemBulkError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.PUT_ITEM_BULK_REQUEST, worker);
-}
-
-function* watchPutFinalRequest() {
-  const worker = (action: ReturnType<typeof KPIEmployeePutFinalRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'put',
-      path: `/v1/kpi/employees/${action.payload.employeeUid}/${action.payload.kpiUid}/final`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetByIdDispose()),
-        put(KPIEmployeeGetAllDispose()),
-        put(KPIEmployeeGetItemListDispose()),
-        put(KPIEmployeePutFinalSuccess(response.body))
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(KPIEmployeePutFinalError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(KPIEmployeePutFinalError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.PUT_FINAL_REQUEST, worker);
-}
-
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
       put(KPIEmployeeGetAllDispose()),
       put(KPIEmployeeGetByIdDispose()),
-      put(KPIEmployeeGetItemListDispose()),
     ]);
   }
 
@@ -373,14 +207,10 @@ function* watchSwitchAccess() {
 function* kpiEmployeeSagas() {
   yield all([
     fork(watchGetAllRequest),
-    fork(watchGetItemListRequest),
     fork(watchGetByIdRequest),
-    fork(watchPostRequest),
     fork(watchPostBulkRequest),
     fork(watchPutRequest),
     fork(watchPutAchievedRequest),
-    fork(watchPutItemBulkRequest),
-    fork(watchPutFinalRequest),
     fork(watchSwitchAccess),
   ]);
 }
