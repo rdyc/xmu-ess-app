@@ -17,8 +17,8 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.EmployeeKPI,
-        parentUid: AppMenu.HumanResource,
+        uid: AppMenu.HRKPIAssign,
+        parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(kpiMessage.employee.page.listTitle),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
 
@@ -41,7 +41,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/kpi/assigns/${item.uid}`, {employeeName: item.fullName})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

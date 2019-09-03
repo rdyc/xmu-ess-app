@@ -19,8 +19,8 @@ export const KPIManagerInputFormView: React.SFC<KPIManagerInputFormProps> = prop
         uid: AppMenu.ManagerKPIInput,
         parentUid: AppMenu.HumanResource,
         parentUrl: `/kpi/managerinputs/${props.match.params.employeeUid}`,
-        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.inputTitle),
-        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.inputSubHeader)
+        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.newTitle),
+        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.newSubHeader)
       }}
       state={props.kpiEmployeeState.detail}
       onLoadApi={props.handleOnLoadDetail}

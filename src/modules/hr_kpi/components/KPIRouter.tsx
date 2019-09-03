@@ -2,6 +2,9 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { KPIAssignDetail } from './assign/detail/KPIAssignDetail';
+import { EmployeeAssignList } from './assign/list/employee/EmployeeAssignList';
+import { KPIAssignList } from './assign/list/kpi/KPIAssignList';
 import { KPICategoryDetail } from './category/Detail/KPICategoryDetail';
 import { KPICategoryForm } from './category/form/KPICategoryForm';
 import { KPICategoryList } from './category/list/KPICategoryList';
@@ -20,7 +23,7 @@ const final = (props: RouteComponentProps) => (
   </Switch>
 );
 
-const approval = () => (
+const approval = (props: RouteComponentProps) => (
   <Switch>
     {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIHRInputForm} />
     <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIHRInputDetail} />
@@ -30,7 +33,7 @@ const approval = () => (
   </Switch>
 );
 
-const employee = () => (
+const employee = (props: RouteComponentProps) => (
   <Switch>
     {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} />
     <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIManagerInputDetail} />
@@ -39,12 +42,12 @@ const employee = () => (
   </Switch>
 );
 
-const assign = () => (
+const assign = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} />
-    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIManagerInputDetail} />
-    <Route path={`${props.match.path}/:employeeUid`} component={KPIManagerInputList} />
-    <Route path={`${props.match.path}`} component={EmployeeManagerInputList} /> */}
+    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} /> */}
+    <Route path={`${props.match.path}/:employeeUid/:kpiAssignUid`} component={KPIAssignDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIAssignList} />
+    <Route path={`${props.match.path}`} component={EmployeeAssignList} />
   </Switch>
 );
 
