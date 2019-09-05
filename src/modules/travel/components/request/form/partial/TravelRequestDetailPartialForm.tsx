@@ -232,12 +232,12 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 props.SetProjectSiteFilter(selected && selected.value);
                 props.formikBag.setFieldValue('siteUid', '');
 
-                let projectType = 'SPT01';
-                if (selected && selected.data && selected.data.projectType === 'SPT01') {
-                  projectType = 'SPT01';
-                } else {
-                  projectType = 'SPT04';
-                }
+                const projectType = selected && selected.data && selected.data.projectType;
+                // if (selected && selected.data && selected.data.projectType === 'SPT01') {
+                //   projectType = 'SPT01';
+                // } else {
+                //   projectType = 'SPT04';
+                // }
 
                 // set projectType 
                 props.formikBag.setFieldValue('projectType', projectType);
