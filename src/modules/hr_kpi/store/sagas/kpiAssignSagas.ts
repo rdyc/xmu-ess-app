@@ -58,7 +58,7 @@ function* watchGetByYearRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByYearRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.year}`,
+      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByYearSuccess(response.body))
       ],

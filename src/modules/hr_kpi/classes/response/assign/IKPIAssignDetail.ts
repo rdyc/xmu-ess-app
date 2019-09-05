@@ -5,6 +5,7 @@ import { IKPIAssignItem } from './IKPIAssignItem';
 
 export interface IKPIAssignDetail {
   uid: string;
+  isAssignInUse: boolean;
   employeeUid: string;
   employee?: IEmployee | null;
   templateUid: string;

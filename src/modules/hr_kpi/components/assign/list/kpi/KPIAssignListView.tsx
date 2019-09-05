@@ -2,12 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button } from '@material-ui/core';
+import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import * as React from 'react';
 
 import { IKPIAssign } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import { KPIAssignSummary } from '../../detail/shared/KPIAssignSummary';
+import { KPIAssignFilter } from './KPIAssignFilter';
 import { KPIAssignListProps } from './KPIAssignList';
 
 export const KPIAssignListView: React.SFC<KPIAssignListProps> = props => (
@@ -64,6 +66,40 @@ export const KPIAssignListView: React.SFC<KPIAssignListProps> = props => (
           onApply={props.handleOnLoadApiSearch}
         />
       }
+
+      // data toolbar component
+      toolbarDataComponent={
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
+        >
+          <div>
+            <IconButton
+              id="option-filter"
+              disabled={props.kpiAssignState.all.isLoading || props.kpiAssignState.all.isError}
+              onClick={props.handleFilterVisibility} 
+            >
+              <Badge
+                invisible={!props.handleFilterBadge()}
+                badgeContent={
+                  <CheckCircle color="secondary" fontSize="small" />
+                }
+              >
+                <Tune/>
+              </Badge>
+            </IconButton>
+          </div>
+        </Tooltip>
+      }
+    />
+
+    <KPIAssignFilter
+      isOpen={props.isFilterOpen}
+      initialProps={{
+        isFinal: props.isFinal,
+      }}
+      onClose={props.handleFilterVisibility}
+      onApply={props.handleFilterApplied}
     />
   </React.Fragment>
 );

@@ -3,6 +3,8 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { KPIAssignDetail } from './assign/detail/KPIAssignDetail';
+import { KPIAssignBulkForm } from './assign/form/createbulk/KPIAssignBulkForm';
+import { KPIAssignForm } from './assign/form/edit/KPIAssignForm';
 import { EmployeeAssignList } from './assign/list/employee/EmployeeAssignList';
 import { KPIAssignList } from './assign/list/kpi/KPIAssignList';
 import { KPICategoryDetail } from './category/Detail/KPICategoryDetail';
@@ -44,8 +46,9 @@ const employee = (props: RouteComponentProps) => (
 
 const assign = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} /> */}
+    <Route path={`${props.match.path}/:employeeUid/form`} component={KPIAssignForm} />
     <Route path={`${props.match.path}/:employeeUid/:kpiAssignUid`} component={KPIAssignDetail} />
+    <Route path={`${props.match.path}/form`} component={KPIAssignBulkForm} />
     <Route path={`${props.match.path}/:employeeUid`} component={KPIAssignList} />
     <Route path={`${props.match.path}`} component={EmployeeAssignList} />
   </Switch>

@@ -12,6 +12,7 @@ import {
   ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -24,6 +25,7 @@ import { KPIAssignField } from '@kpi/classes/types/assign/KPIAssignField';
 import { WithKPIAssign, withKPIAssign } from '@kpi/hoc/withKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
+import { IKPIAssignFilterResult } from './KPIAssignFilter';
 import { KPIAssignListView } from './KPIAssignListView';
 
 interface IOwnRouteParams {
@@ -33,17 +35,23 @@ interface IOwnRouteParams {
 interface IOwnOption {
 }
 
-interface IOwnState {
+interface IOwnState extends IKPIAssignFilterResult {
   fields: ICollectionValue[];
+  isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IKPIAssign, index: number) => IDataBindResult;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: IKPIAssignFilterResult) => void;
+  handleFilterBadge: () => boolean;
 }
 
 export type KPIAssignListProps 
@@ -57,19 +65,33 @@ export type KPIAssignListProps
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<KPIAssignListProps, IOwnState> = (): IOwnState => {
+const createProps: mapper<KPIAssignListProps, IOwnState> = (props: KPIAssignListProps): IOwnState => {
+  const { request } = props.kpiAssignState.all;
+
+  // default state
   const state: IOwnState = {
+    isFilterOpen: false,
     fields: Object.keys(KPIAssignField).map(key => ({
       value: key,
       name: KPIAssignField[key]
     }))
   };
 
+  if (request && request.filter) {
+    state.isFinal = request.filter.isFinal;
+  }
+
   return state;
 };
 
 const stateUpdaters: StateUpdaters<KPIAssignListProps, IOwnState, IOwnStateUpdater> = {
-  
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
+  }),
+  setFilterApplied: (state: IOwnState) => (filter: IKPIAssignFilterResult): Partial<IOwnState> => ({
+    ...filter,
+    isFilterOpen: false
+  })
 };
 
 const handlerCreators: HandleCreators<KPIAssignListProps, IOwnHandler> = {
@@ -81,7 +103,7 @@ const handlerCreators: HandleCreators<KPIAssignListProps, IOwnHandler> = {
     if (user && !isLoading && props.match.params.employeeUid) {
       // predefined filter
       const filter: IKPIAssignGetAllFilter = {
-        isFinal: request && request.filter && request.filter.isFinal,
+        isFinal: props.isFinal || undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -133,16 +155,37 @@ const handlerCreators: HandleCreators<KPIAssignListProps, IOwnHandler> = {
     key: index,
     primary: item.employee && item.employee.fullName || '',
     secondary: item.year.toString(),
-    tertiary: ``,
+    tertiary: item.template && item.template.name || '',
     quaternary: item.isFinal && props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) || props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
   }),
+  handleFilterVisibility: (props: KPIAssignListProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: KPIAssignListProps) => (filter: IKPIAssignFilterResult) => {
+    props.setFilterApplied(filter);
+  },
+  handleFilterBadge: (props: KPIAssignListProps) => () => {
+    return props.isFinal !== undefined;
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<KPIAssignListProps, IOwnState> = {
-  componentDidUpdate() {
-    // 
+  componentDidUpdate(prevProps: KPIAssignListProps) {
+    // track any changes in filter props
+    const isFilterChanged = !shallowEqual(
+      {
+        isFinal: this.props.isFinal
+      },
+      {
+        isFinal: prevProps.isFinal,
+      }
+    );
+
+    if (isFilterChanged) {
+      this.props.handleOnLoadApi(undefined, true);
+    }
   }
 };
 
