@@ -4,8 +4,8 @@ const prefix = 'account.employee.contract';
 
 // field
 export const accountContractField = defineMessages({
-  uid: { id: `${prefix}.field.id`},
-  uidPlaceholder: { id: `${prefix}.field.id.placeholder`},
+  uid: { id: `${prefix}.field.uid`},
+  uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
 
   contractNumber: { id: `${prefix}.field.contractNumber`},
   contractNumberPlaceholder: { id: `${prefix}.field.contractNumber.placeholder`},

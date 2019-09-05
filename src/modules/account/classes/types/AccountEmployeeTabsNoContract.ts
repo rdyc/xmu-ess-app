@@ -1,6 +1,5 @@
-export enum AccountEmployeeTabs {
+export enum AccountEmployeeTabsNoContract {
   detail = 'detail',
-  contract = 'contract',
   education = 'education',
   family = 'family',
   experience = 'experiance',

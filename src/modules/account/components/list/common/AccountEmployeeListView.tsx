@@ -49,7 +49,7 @@ export const AccountEmployeeListView: React.SFC<AccountEmployeeListProps> = prop
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/account/employee/${item.uid}`, {employeeName: item.fullName})}
+            onClick={() => props.history.push(`/account/employee/${item.uid}`, {employeeName: item.fullName, employmentType: item.employmentType})}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

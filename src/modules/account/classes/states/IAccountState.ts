@@ -69,8 +69,9 @@ import {
 } from '@account/classes/queries/employeeTraining';
 import { 
   IEmployee, 
-  IEmployeeDetail,
-  IEmployeeLeave 
+  IEmployeeContract,
+  IEmployeeDetail, 
+  IEmployeeLeave
 } from '@account/classes/response';
 import { 
   IEmployeeAccessHistory, 
@@ -103,7 +104,16 @@ import {
 } from '@account/classes/response/employeeTraining';
 import { IEmployeeMy } from '@account/classes/response/IEmployeeMy';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
+import { 
+  IEmployeeContractAllRequest, 
+  IEmployeeContractByIdRequest, 
+  IEmployeeContractDeleteRequest, 
+  IEmployeeContractListRequest, 
+  IEmployeeContractPostRequest, 
+  IEmployeeContractPutRequest 
+} from '../queries/employeeContract';
 import { IEmployeeAccess, IEmployeeAccessList } from '../response/employeeAccess';
+import { IEmployeeContractDetail, IEmployeeContractList } from '../response/employeeContract';
 
 export interface IAccountState {
   // account employee
@@ -177,4 +187,12 @@ export interface IAccountState {
   accountEmployeeAccessPost: IQuerySingleState<IEmployeeAccessPostRequest, IEmployeeAccess>;
   accountEmployeeAccessPut: IQuerySingleState<IEmployeeAccessPutRequest, IEmployeeAccess>;
   accountEmployeeAccessDelete: IQuerySingleState<IEmployeeAccessDeleteRequest, boolean>;
+
+  // account employee contract
+  accountEmployeeContractGetAll: IQueryCollectionState<IEmployeeContractAllRequest, IEmployeeContract>;
+  accountEmployeeContractGetList: IQueryCollectionState<IEmployeeContractListRequest, IEmployeeContractList>;
+  accountEmployeeContractGetById: IQuerySingleState<IEmployeeContractByIdRequest, IEmployeeContractDetail>;
+  accountEmployeeContractPost: IQuerySingleState<IEmployeeContractPostRequest, IEmployeeContract>;
+  accountEmployeeContractPut: IQuerySingleState<IEmployeeContractPutRequest, IEmployeeContract>;
+  accountEmployeeContractDelete: IQuerySingleState<IEmployeeContractDeleteRequest, boolean>;
 }

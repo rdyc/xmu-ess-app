@@ -1,4 +1,3 @@
-// import { IEmployeeDeletePayload } from '@account/classes/request';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppRole } from '@constants/AppRole';

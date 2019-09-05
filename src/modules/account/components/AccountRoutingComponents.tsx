@@ -7,6 +7,7 @@ import { AccountAccess } from './access';
 import { AccountEmployeeAccessDetail } from './detail/access/AccountEmployeeAccessDetail';
 import { AccountEmployeeAccessHistoryDetail } from './detail/accessHistory/AccountEmployeeAccessHistoryDetail';
 import { AccountEmployeeDetail } from './detail/common/AccountEmployeeDetail';
+import { AccountEmployeeContractDetail } from './detail/contract/AccountEmployeeContractDetail';
 import { AccountEmployeeEducationDetail } from './detail/education/AccountEmployeeEducationDetail';
 import { AccountEmployeeExperienceDetail } from './detail/experience/AccountEmployeeExperienceDetail';
 import { AccountEmployeeFamilyDetail } from './detail/family/AccountEmployeeFamilyDetail';
@@ -23,6 +24,7 @@ import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployee
 import { AccessForm } from './form/access/AccessForm';
 // import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
+import { ContractForm } from './form/contract/ContractForm';
 import { EducationForm } from './form/education/EducationForm';
 import { ExperienceForm } from './form/experience/ExperienceForm';
 import { FamilyForm } from './form/family/FamilyForm';
@@ -32,6 +34,7 @@ import { TrainingForm } from './form/training/TrainingForm';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
 import { AccountEmployeeList } from './list/common/AccountEmployeeList';
+import { AccountEmployeeContractList } from './list/contract/AccountEmployeeContractList';
 import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEducationList';
 import { AccountEmployeeExperienceList } from './list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeFamilyList } from './list/family/AccountEmployeeFamilyList';
@@ -63,6 +66,7 @@ const employee = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:employeeUid/access`} component={employeeMultiAccess} />
     <Route path={`${props.match.path}/:employeeUid/rate`} component={employeeRate} />
     <Route path={`${props.match.path}/:employeeUid/note`} component={employeeNote} />
+    <Route path={`${props.match.path}/:employeeUid/contract`} component={employeeContract} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>
@@ -128,6 +132,14 @@ const employeeNote = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={NoteForm} />
     <Route path={`${props.match.path}/:noteId`} component={AccountEmployeeNoteDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeNoteList} />
+  </Switch>
+);
+
+const employeeContract = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={ContractForm} />    
+    <Route path={`${props.match.path}/:contractUid`} component={AccountEmployeeContractDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeContractList} />
   </Switch>
 );
 
