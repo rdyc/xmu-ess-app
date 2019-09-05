@@ -103,7 +103,7 @@ const handlerCreators: HandleCreators<KPIAssignListProps, IOwnHandler> = {
     if (user && !isLoading && props.match.params.employeeUid) {
       // predefined filter
       const filter: IKPIAssignGetAllFilter = {
-        isFinal: props.isFinal || undefined,
+        isFinal: props.isFinal,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,

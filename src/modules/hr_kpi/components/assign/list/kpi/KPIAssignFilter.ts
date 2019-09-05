@@ -102,7 +102,7 @@ const handlerCreators: HandleCreators<KPIAssignFilterProps, IOwnHandler> = {
   },
   handleFilterOnApply: (props: KPIAssignFilterProps) => () => {
     props.onApply({
-      isFinal: props.filterFinal && (props.filterFinal.value === 'true' ? true : false) || undefined,
+      isFinal: props.filterFinal && props.filterFinal.value && props.filterFinal.value === 'true' ? true : (props.filterFinal && props.filterFinal.value === 'false' ? false : undefined ),
     });
   },
 
