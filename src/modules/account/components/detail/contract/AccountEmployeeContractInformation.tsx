@@ -27,18 +27,6 @@ const accountEmployeeContractInformation: React.SFC<AllProps> = props => {
         <TextField 
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(accountMessage.education.field.employeeUid)}
-          value={props.employeeUid}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={intl.formatMessage(accountMessage.contract.field.uid)}
-          value={data.uid}
-        />
-        <TextField 
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
           label={intl.formatMessage(accountMessage.contract.field.contractNumber)}
           value={data.contractNumber}
         />
