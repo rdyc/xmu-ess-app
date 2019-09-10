@@ -1,8 +1,6 @@
-import { IBaseChanges } from '@generic/interfaces';
-
 export interface IHrCategoryItem {
-  uid?: string;
+  uid: string;
+  competencyUid: string;
   name: string;
   description: string;
-  changes?: IBaseChanges;
 }

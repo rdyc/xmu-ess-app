@@ -1,6 +1,11 @@
+import { IHrCompetencyItem } from './IHrCompetencyItem';
+import { IHrLevelItem } from './IHrLevelItem';
+
 export interface IHrCompetencyCategoryList {
   uid: string;
-  clusterUid: string;
+  competencyUid: string;
+  competency: IHrCompetencyItem;
   name: string;
   description: string;
+  levels: IHrLevelItem[];
 }

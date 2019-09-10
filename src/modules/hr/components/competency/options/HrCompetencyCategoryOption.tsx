@@ -1,4 +1,4 @@
-import { IHrCompetencyCategoryGetListFilter } from '@hr/classes/filters/';
+// import { IHrCompetencyCategoryGetListFilter } from '@hr/classes/filters/';
 import { IHrCompetencyCategoryList } from '@hr/classes/response';
 import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
 import { ISelectFieldOption, SelectFieldProps } from '@layout/components/fields/SelectField';
@@ -19,8 +19,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  filter?: IHrCompetencyCategoryGetListFilter;
-  clusterUid?: string;
+  competencyUid?: string;
 }
 
 interface IOwnState {
@@ -34,7 +33,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (clusterUid: string) => void;
+  handleOnLoadApi: (competencyUid: string) => void;
 }
 
 export type HrCompetencyCategoryOptionProps
@@ -70,15 +69,18 @@ const stateUpdaters: StateUpdaters<HrCompetencyCategoryOptionProps, IOwnState, I
 };
 
 const handlerCreators: HandleCreators<HrCompetencyCategoryOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HrCompetencyCategoryOptionProps) => (clusterUid: string) => {
+  handleOnLoadApi: (props: HrCompetencyCategoryOptionProps) => (competencyUid: string) => {
     const { isExpired, isLoading } = props.hrCompetencyCategoryState.list;
     const { loadListRequest } = props.hrCompetencyCategoryDispatch;
-    const { filter } = props;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
-        filter,
-        clusterUid
+        competencyUid,
+        filter: {
+          competencyUid,
+          direction: 'ascending',
+          orderBy: 'name'
+        },
       });
     }
   }
@@ -90,19 +92,19 @@ const lifeCycle: ReactLifeCycleFunctions<HrCompetencyCategoryOptionProps, IOwnSt
 
     // 1st load only when request are empty
     if (!request) {
-      if (this.props.clusterUid) {
-        this.props.handleOnLoadApi(this.props.clusterUid);
+      if (this.props.competencyUid) {
+        this.props.handleOnLoadApi(this.props.competencyUid);
       }
     } else {
       // 2nd load only when request filter are present
       if (request) {
-        if (request.clusterUid && this.props.clusterUid) {
+        if (request.competencyUid && this.props.competencyUid) {
           // comparing some props
-          const shouldUpdate = !shallowEqual(request.clusterUid, this.props.clusterUid);
+          const shouldUpdate = !shallowEqual(request.competencyUid, this.props.competencyUid);
     
           // then should update the list?
           if (shouldUpdate) {
-            this.props.handleOnLoadApi(this.props.clusterUid);
+            this.props.handleOnLoadApi(this.props.competencyUid);
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);
@@ -115,19 +117,19 @@ const lifeCycle: ReactLifeCycleFunctions<HrCompetencyCategoryOptionProps, IOwnSt
   componentWillUpdate(nextProps: HrCompetencyCategoryOptionProps) {
     const { request, response } = this.props.hrCompetencyCategoryState.list;
 
-    // if no clusterUid before, and next one is exist *this happen for field that need other field data
-    if ( !this.props.clusterUid && nextProps.clusterUid) {
+    // if no competencyUid before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.competencyUid && nextProps.competencyUid) {
       // when no data then load
       if (!request) {
-        this.props.handleOnLoadApi(nextProps.clusterUid);
+        this.props.handleOnLoadApi(nextProps.competencyUid);
       } else if (request) {
-        if (request.clusterUid && nextProps.clusterUid) {
+        if (request.competencyUid && nextProps.competencyUid) {
           // if request(data) is exist then compare
-          const shouldUpdate = !shallowEqual(request.clusterUid, nextProps.clusterUid);
+          const shouldUpdate = !shallowEqual(request.competencyUid, nextProps.competencyUid);
   
           // should update the list?
           if (shouldUpdate) {
-            this.props.handleOnLoadApi(nextProps.clusterUid);
+            this.props.handleOnLoadApi(nextProps.competencyUid);
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);
@@ -137,14 +139,14 @@ const lifeCycle: ReactLifeCycleFunctions<HrCompetencyCategoryOptionProps, IOwnSt
       }
     }
 
-    // this used for update list when changing the clusterUid *not the 1st time load
-    if (this.props.clusterUid && nextProps.clusterUid) {
-      if (this.props.clusterUid !== nextProps.clusterUid) {
+    // this used for update list when changing the competencyUid *not the 1st time load
+    if (this.props.competencyUid && nextProps.competencyUid) {
+      if (this.props.competencyUid !== nextProps.competencyUid) {
         if (request) {
-          const shouldUpdate = !shallowEqual(request.clusterUid, nextProps.clusterUid);
+          const shouldUpdate = !shallowEqual(request.competencyUid, nextProps.competencyUid);
   
           if (shouldUpdate) {
-            this.props.handleOnLoadApi(nextProps.clusterUid);
+            this.props.handleOnLoadApi(nextProps.competencyUid);
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);

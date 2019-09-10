@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyCategoryPostPayload, IHrCompetencyCategoryPutPayload } from '@hr/classes/request';
 import { IHrCompetencyCategory, IHrCompetencyIndicatorList } from '@hr/classes/response';
 import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
@@ -38,8 +38,8 @@ export interface ICategoryLevelFormValue {
 }
 
 export interface ICategoryIndicatorFormValue {
-  indicatorUid?: string;
-  indicatorDescription: string;
+  uid?: string;
+  description: string;
 }
 
 export interface ICategoryFormValue {
@@ -64,7 +64,7 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICategoryFormValue>>>;
 
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  filterCategories?: IHrCompetencyCategoryGetListFilter;
+  // filterCategories?: IHrCompetencyCategoryGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -136,10 +136,10 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
     direction: 'ascending'
   },
 
-  filterCategories: {
-    orderBy: 'name',
-    direction: 'ascending'
-  }
+  // filterCategories: {
+  //   orderBy: 'name',
+  //   direction: 'ascending'
+  // }
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyCategoryFormProps, IOwnState, IOwnStateUpdater> = {
@@ -152,14 +152,14 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
   handleOnLoadDetail: (props: HrCompetencyCategoryFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const clusterUid = props.history.location.state.clusterUid;
+      const competencyUid = props.history.location.state.clusterUid;
       const categoryUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyCategoryState.detail;
 
-      if (user && clusterUid && categoryUid && !isLoading) {
+      if (user && competencyUid && categoryUid && !isLoading) {
         props.hrCompetencyCategoryDispatch.loadDetailRequest({
           categoryUid,
-          clusterUid
+          competencyUid
         });
       }
     }
@@ -188,7 +188,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
           props.hrCompetencyCategoryDispatch.createRequest({
             resolve,
             reject,
-            clusterUid: values.clusterUid,
+            competencyUid: values.clusterUid,
             categoryUid: values.categoryUid,
             data: payload
           });
@@ -198,10 +198,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
       // Edit
       if (props.formMode === FormMode.Edit) {
         const categoryUid = props.history.location.state.uid;
-        const clusterUid = props.history.location.state.clusterUid;
+        const competencyUid = props.history.location.state.clusterUid;
 
         // must have categoryUid
-        if (categoryUid && clusterUid) {
+        if (categoryUid && competencyUid) {
           const payload: IHrCompetencyCategoryPutPayload = {
             levels: []
           };
@@ -217,7 +217,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
           // set the promise
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyCategoryDispatch.patchRequest({
-              clusterUid,
+              competencyUid,
               categoryUid,
               resolve,
               reject,
@@ -284,7 +284,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyCategoryFormProps,
         // define initial values
         const initialValues: ICategoryFormValue = {
           categoryUid: thisResponse.data.uid,
-          clusterUid: thisResponse.data.clusterUid,
+          clusterUid: thisResponse.data.competencyUid,
           levels: []
         };
 

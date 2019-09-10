@@ -1,4 +1,4 @@
 export interface IHrIndicatorItem {
-  indicatorUid?: string;
-  indicatorDescription: string;
+  uid: string;
+  description: string;
 }
