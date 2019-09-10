@@ -1,8 +1,8 @@
-import { IHrCompetencyCategoryList } from '../category/IHrCompetencyCategoryList';
+import { IHrCategoryItem } from './IHrCategoryItem';
 
 export interface IHrCompetencyClusterList {
   uid: string;
   name: string;
   description: string;
-  categories: IHrCompetencyCategoryList[];
+  categories: IHrCategoryItem[];
 }

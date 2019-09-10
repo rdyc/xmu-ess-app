@@ -26,7 +26,6 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-// import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
 
 import { HrCompetencyClusterFormView } from './HrCompetencyClusterFormView';
 
@@ -125,12 +124,12 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
   handleOnLoadDetail: (props: HrCompetencyClusterFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const clusterUid = props.history.location.state.uid;
+      const competencyUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyClusterState.detail;
 
-      if (user && clusterUid && !isLoading) {
+      if (user && competencyUid && !isLoading) {
         props.hrCompetencyClusterDispatch.loadDetailRequest({
-          clusterUid
+          competencyUid
         });
       }
     }
@@ -187,9 +186,9 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
           // set the promise
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyClusterDispatch.patchRequest({
-              clusterUid,
               resolve,
               reject,
+              competencyUid: clusterUid,
               data: payload
             });
           });
@@ -275,7 +274,6 @@ export const HrCompetencyClusterForm = compose<HrCompetencyClusterFormProps, IOw
   withMasterPage,
   withRouter,
   withHrCompetencyCluster,
-  // withHrCompetencyCategory,
   withUser,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

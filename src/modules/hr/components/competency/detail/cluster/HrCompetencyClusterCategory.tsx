@@ -1,4 +1,4 @@
-import { IHrCompetencyCategoryList } from '@hr/classes/response';
+import { IHrCategoryItem } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
@@ -22,7 +22,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
 interface OwnProps {
-  items: IHrCompetencyCategoryList[];
+  items: IHrCategoryItem[];
 }
 
 interface OwnState {
