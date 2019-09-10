@@ -83,7 +83,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.competencyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetByIdSuccess(response.body)),
       ]), 
@@ -143,7 +143,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/competency/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.competencyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -183,7 +183,7 @@ function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/competency/${action.payload.clusterUid}`,
+      path: `/v1/competency/${action.payload.competencyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -231,6 +231,7 @@ function* watchSwitchAccess() {
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 
 }
+
 function* hrCompetencyClusterSagas() {
   yield all([
     fork(watchFetchAllRequest),
