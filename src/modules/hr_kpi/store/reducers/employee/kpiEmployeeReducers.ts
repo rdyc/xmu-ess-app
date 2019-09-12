@@ -1,17 +1,15 @@
 import {
   kpiEmployeeGetAllReducer,
   kpiEmployeeGetByIdReducer,
-  kpiEmployeePostBulkReducer,
-  kpiEmployeePutAchievedReducer,
+  kpiEmployeePostReducer,
   kpiEmployeePutReducer,
 } from '@kpi/store/reducers/employee';
 
 const kpiEmployeeReducers = {
   kpiEmployeeGetAll: kpiEmployeeGetAllReducer,
   kpiEmployeeGetById: kpiEmployeeGetByIdReducer,
-  kpiEmployeePostBulk: kpiEmployeePostBulkReducer,
+  kpiEmployeePost: kpiEmployeePostReducer,
   kpiEmployeePut: kpiEmployeePutReducer,
-  kpiEmployeePutAchieved: kpiEmployeePutAchievedReducer,
 };
 
 export default kpiEmployeeReducers;

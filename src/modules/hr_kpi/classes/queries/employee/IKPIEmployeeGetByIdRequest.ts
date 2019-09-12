@@ -1,4 +1,5 @@
 export interface IKPIEmployeeGetByIdRequest {
-  readonly employeeUid: string;
+  readonly companyUid: string;
+  readonly positionUid: string;
   readonly kpiUid: string;
 }

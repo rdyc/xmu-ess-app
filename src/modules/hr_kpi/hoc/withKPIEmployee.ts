@@ -6,8 +6,7 @@ import {
 import {
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
-  IKPIEmployeePostBulkRequest,
-  IKPIEmployeePutAchievedRequest,
+  IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
 } from '@kpi/classes/queries';
 import { IKPIEmployee, IKPIEmployeeDetail } from '@kpi/classes/response';
@@ -16,10 +15,8 @@ import {
   KPIEmployeeGetAllRequest,
   KPIEmployeeGetByIdDispose,
   KPIEmployeeGetByIdRequest,
-  KPIEmployeePostBulkDispose,
-  KPIEmployeePostBulkRequest,
-  KPIEmployeePutAchievedDispose,
-  KPIEmployeePutAchievedRequest,
+  KPIEmployeePostDispose,
+  KPIEmployeePostRequest,
   KPIEmployeePutDispose,
   KPIEmployeePutRequest,
 } from '@kpi/store/actions';
@@ -36,12 +33,10 @@ interface PropsFromState {
 interface PropsFromDispatch {
   kpiEmployeeDispatch: {
     // command
-    createBulkRequest: typeof KPIEmployeePostBulkRequest;
-    createBulkDispose: typeof KPIEmployeePostBulkDispose;
+    createRequest: typeof KPIEmployeePostRequest;
+    createDispose: typeof KPIEmployeePostDispose;
     updateRequest: typeof KPIEmployeePutRequest;
     updateDispose: typeof KPIEmployeePutDispose;
-    updateAchievedRequest: typeof KPIEmployeePutAchievedRequest;
-    updateAchievedDispose: typeof KPIEmployeePutAchievedDispose;
 
     // query
     loadAllRequest: typeof KPIEmployeeGetAllRequest;
@@ -63,12 +58,10 @@ const mapStateToProps = ({ kpiEmployeeGetAll, kpiEmployeeGetById }: IAppState) =
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   kpiEmployeeDispatch: {
     // command
-    createBulkRequest: (request: IKPIEmployeePostBulkRequest) => dispatch(KPIEmployeePostBulkRequest(request)),
-    createBulkDispose: () => dispatch(KPIEmployeePostBulkDispose()),
+    createRequest: (request: IKPIEmployeePostRequest) => dispatch(KPIEmployeePostRequest(request)),
+    createDispose: () => dispatch(KPIEmployeePostDispose()),
     updateRequest: (request: IKPIEmployeePutRequest) => dispatch(KPIEmployeePutRequest(request)),
     updateDispose: () => dispatch(KPIEmployeePutDispose()),
-    updateAchievedRequest: (request: IKPIEmployeePutAchievedRequest) => dispatch(KPIEmployeePutAchievedRequest(request)),
-    updateAchievedDispose: () => dispatch(KPIEmployeePutAchievedDispose()),
     
     // query
     loadAllRequest: (request: IKPIEmployeeGetAllRequest) => dispatch(KPIEmployeeGetAllRequest(request)),

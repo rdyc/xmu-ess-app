@@ -1,16 +1,12 @@
-import { IEmployee } from '@account/classes/response';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { IKPITemplate } from '..';
+import { IKPIAssign } from '..';
 import { IKPIEmployeeItem } from './IKPIEmployeeItem';
 
 export interface IKPIEmployeeDetail {
   uid: string;
-  employeeUid: string;
-  employee?: IEmployee | null;
-  templateUid: string;
-  template?: IKPITemplate | null;
-  year: number;
+  kpiAssignUid: string;
+  kpiAssign?: IKPIAssign | null;
   period: number;
   totalScore: number;
   isFinal: boolean;
@@ -18,8 +14,8 @@ export interface IKPIEmployeeDetail {
   statusType?: string;
   status?: ICommonSystem;
   items?: IKPIEmployeeItem[] | null;
-  sentBy?: string | null;
-  sent?: IEmployee | null;
-  sentAt?: string | null;
+  // sentBy?: string | null;
+  // sent?: IEmployee | null;
+  // sentAt?: string | null;
   changes: IBaseChanges | null;
 }

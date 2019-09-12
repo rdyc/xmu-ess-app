@@ -1,5 +1,5 @@
 export enum KPIEmployeeField {
   uid= 'ID',
-  templateUid= 'Template',
-  year= 'Year'
+  kPIAssignUid= 'Assign ID',
+  period= 'Period'
 }

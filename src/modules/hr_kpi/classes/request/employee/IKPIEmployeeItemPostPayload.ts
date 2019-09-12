@@ -1,4 +1,4 @@
-export interface IKPIEmployeePostItemPayload {
+export interface IKPIEmployeeItemPostPayload {
   uid?: string;
   categoryUid: string;
   categoryName: string;
