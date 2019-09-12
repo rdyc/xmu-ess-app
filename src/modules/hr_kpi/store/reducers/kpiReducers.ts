@@ -1,3 +1,4 @@
+import kpiApprovalReducers from './approval/kpiApprovalReducers';
 import kpiAssignReducers from './assign/kpiAssignReducers';
 import kpiCategoryReducers from './category/kpiCategoryReducers';
 import kpiEmployeeReducers from './employee/kpiEmployeeReducers';
@@ -10,4 +11,5 @@ export const kpiReducers = {
   ...kpiMeasurementReducers,
   ...kpiEmployeeReducers,
   ...kpiAssignReducers,
+  ...kpiApprovalReducers,
 };

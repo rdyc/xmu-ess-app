@@ -1,9 +1,12 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  IKPIApprovalGetAllRequest, 
+  IKPIApprovalGetByIdRequest, 
+  IKPIApprovalPostRequest, 
   IKPIAssignGetAllRequest, 
-  IKPIAssignGetByIdRequest, 
-  IKPIAssignGetByYearRequest, 
-  IKPIAssignPostBulkRequest, 
+  IKPIAssignGetByIdRequest,
+  IKPIAssignGetByYearRequest,
+  IKPIAssignPostBulkRequest,
   IKPIAssignPutRequest,
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
@@ -53,6 +56,11 @@ export interface IKPIState {
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
   kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
+  
+  // approval
+  kpiApprovalGetAll: IQueryCollectionState<IKPIApprovalGetAllRequest, IKPIEmployee>;
+  kpiApprovalGetById: IQuerySingleState<IKPIApprovalGetByIdRequest, IKPIEmployeeDetail>;
+  kpiApprovalPost: IQueryCollectionState<IKPIApprovalPostRequest, IKPIEmployee>;
   
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
