@@ -14,7 +14,7 @@ export const KPIMeasurementDetailView: React.SFC<MeasurementDetailProps> = props
           {item.description}
         </TableCell>
         <TableCell>
-          {item.measurement && item.measurement.description}
+          {item.measurement && item.measurement.value}
         </TableCell>
         <TableCell numeric>
           {`${props.intl.formatNumber(item.weight)} %`}

@@ -20,7 +20,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
-  defaultLabel: string;
+  defaultLabel?: string;
   filter?: IKPICategoryGetListFilter;
 }
 
@@ -57,7 +57,7 @@ const stateUpdaters: StateUpdaters<KPICategoryOptionProps, IOwnState, IOwnStateU
   }),
   setOptions: (props: KPICategoryOptionProps) => (values: IKPICategoryList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: props.defaultLabel, value: ''}
+      { label: props.defaultLabel || '', value: ''}
     ];
         
     values.forEach(item => options.push({ 

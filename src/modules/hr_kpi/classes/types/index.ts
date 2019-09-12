@@ -4,5 +4,5 @@ export * from './measurement/KPIMeasurementField';
 export * from './measurement/KPIMeasurementUserAction';
 export * from './category/KPICategoryField';
 export * from './category/KPICategoryUserAction';
-export * from './employee/EmployeeKPIField';
-export * from './employee/EmployeeKPIUserAction';
+export * from './employee/KPIEmployeeField';
+export * from './employee/KPIEmployeeUserAction';

@@ -13,6 +13,9 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+interface IOwnOption {
+  withFuture?: boolean;
+}
 interface IOwnState {
   options: ISelectFieldOption[];
 }
@@ -23,6 +26,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 export type InputYearOptionProps
   = IOwnState
+  & IOwnOption
   & IOwnStateUpdater;
 
 const createProps: mapper<InputYearOptionProps, IOwnState> = (): IOwnState => ({
@@ -52,6 +56,10 @@ const lifeCycle: ReactLifeCycleFunctions<InputYearOptionProps, IOwnState> = {
   
     const year: number[] = [getYear - 1, getYear];
 
+    if (this.props.withFuture) {
+      year.push(getYear + 1);
+    }
+
     this.props.setOptions(year);
   }
 };
@@ -75,7 +83,7 @@ const component: React.SFC<InputYearOptionProps> = props => {
   return <div></div>;
 };
 
-export const InputYearOption = compose<InputYearOptionProps, {}>(
+export const InputYearOption = compose<InputYearOptionProps, IOwnOption>(
   setDisplayName('InputYearOption'),
   withStateHandlers(createProps, stateUpdaters),
   lifecycle(lifeCycle)

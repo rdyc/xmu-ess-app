@@ -1,3 +1,3 @@
-export * from './IEmployeeKPI';
-export * from './IEmployeeKPIDetail';
-export * from './IEmployeeKPIItem';
+export * from './IKPIEmployee';
+export * from './IKPIEmployeeDetail';
+export * from './IKPIEmployeeItem';

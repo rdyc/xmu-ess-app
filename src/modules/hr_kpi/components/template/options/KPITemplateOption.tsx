@@ -34,7 +34,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: () => void;
+  handleOnLoadApi: (filter: IKPITemplateGetListFilter) => void;
 }
 
 export type KPITemplateOptionProps
@@ -71,13 +71,13 @@ const stateUpdaters: StateUpdaters<KPITemplateOptionProps, IOwnState, IOwnStateU
 };
 
 const handlerCreators: HandleCreators<KPITemplateOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: KPITemplateOptionProps) => () => {
+  handleOnLoadApi: (props: KPITemplateOptionProps) => (filter: IKPITemplateGetListFilter) => {
     const { isExpired, isLoading } = props.kpiTemplateState.list;
     const { loadListRequest } = props.kpiTemplateDispatch;
 
     if (isExpired || !isLoading) {
       loadListRequest({ 
-        filter: props.filter 
+        filter
       });
     }
   }
@@ -89,7 +89,9 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
 
     // 1st load only when request are empty
     if (!request) {
-      this.props.handleOnLoadApi();
+      if (this.props.filter) {
+        this.props.handleOnLoadApi(this.props.filter);
+      }
     } else {
       // 2nd load only when request filter are present
       if (request.filter) {
@@ -98,11 +100,61 @@ const lifeCycle: ReactLifeCycleFunctions<KPITemplateOptionProps, IOwnState> = {
   
         // then should update the list?
         if (shouldUpdate) {
-          this.props.handleOnLoadApi();
+          if (this.props.filter) {
+            this.props.handleOnLoadApi(this.props.filter);
+          }
         } else {
           if (response && response.data) {
             this.props.setOptions(response.data);
           }
+        }
+      }
+    }
+  },
+  componentWillUpdate(nextProps: KPITemplateOptionProps) {
+    const { request, response } = this.props.kpiTemplateState.list;
+
+    // if no filter before, and next one is exist *this happen for field that need other field data
+    if ( !this.props.filter && nextProps.filter ) {
+      // when no data then load
+      if (!request) {
+        this.props.handleOnLoadApi(nextProps.filter);
+      } else if (request.filter) {
+        // if request(data) is exist then compare
+        const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+
+        // should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi(nextProps.filter);
+        } else {
+          if (response && response.data) {
+            this.props.setOptions(response.data);
+          }
+        }
+      }
+    }
+
+    // this used for update list when changing the filter *not the 1st time load
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter !== nextProps.filter) {
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.filter);
+          } else {
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
+          }
+        }
+      } else {
+        if (request && request.filter) {
+          const shouldUpdate = !shallowEqual(request.filter, nextProps.filter);
+  
+          if (shouldUpdate) {
+            this.props.handleOnLoadApi(nextProps.filter);
+          } 
         }
       }
     }

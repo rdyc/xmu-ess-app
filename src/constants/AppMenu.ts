@@ -80,7 +80,8 @@ enum AppMenu {
   HRKPIInput = 'MNU75',
   HRCorner = 'MNU70',
   CompetencyAssessment = 'MNU77',
-  CompetencyEmployee = 'MNU76'
+  CompetencyEmployee = 'MNU76',
+  HRKPIAssign = 'MNU84'
 }
 
 export default AppMenu;

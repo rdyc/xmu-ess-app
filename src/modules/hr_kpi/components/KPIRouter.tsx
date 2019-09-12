@@ -2,22 +2,55 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { KPIAssignDetail } from './assign/detail/KPIAssignDetail';
+import { KPIAssignBulkForm } from './assign/form/createbulk/KPIAssignBulkForm';
+import { KPIAssignForm } from './assign/form/edit/KPIAssignForm';
+import { EmployeeAssignList } from './assign/list/employee/EmployeeAssignList';
+import { KPIAssignList } from './assign/list/kpi/KPIAssignList';
 import { KPICategoryDetail } from './category/Detail/KPICategoryDetail';
 import { KPICategoryForm } from './category/form/KPICategoryForm';
 import { KPICategoryList } from './category/list/KPICategoryList';
-import { EmployeeKPIDetail } from './employee/detail/EmployeeKPIDetail';
+import { KPIEmployeeDetail } from './employee/detail/KPIEmployeeDetail';
 import { EmployeeList } from './employee/list/employee/EmployeeList';
-import { EmployeeKPIList } from './employee/list/kpi/EmployeeKPIList';
+import { KPIEmployeeList } from './employee/list/kpi/KPIEmployeeList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
 
+const final = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIEmployeeDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIEmployeeList} />
+    <Route path={`${props.match.path}`} component={EmployeeList} />
+  </Switch>
+);
+
+const approval = (props: RouteComponentProps) => (
+  <Switch>
+    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIHRInputForm} />
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIHRInputDetail} />
+    <Route path={`${props.match.path}/form`} component={KPIHRInputBulkForm} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIHRInputList} />
+    <Route path={`${props.match.path}`} component={EmployeeHRInputList} /> */}
+  </Switch>
+);
+
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={EmployeeKPIDetail} />
-    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPITemplateForm} /> */}
-    <Route path={`${props.match.path}/:employeeUid`} component={EmployeeKPIList} />
-    <Route path={`${props.match.path}`} component={EmployeeList} />
+    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIManagerInputForm} />
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIManagerInputDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIManagerInputList} />
+    <Route path={`${props.match.path}`} component={EmployeeManagerInputList} /> */}
+  </Switch>
+);
+
+const assign = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:employeeUid/form`} component={KPIAssignForm} />
+    <Route path={`${props.match.path}/:employeeUid/:kpiAssignUid`} component={KPIAssignDetail} />
+    <Route path={`${props.match.path}/form`} component={KPIAssignBulkForm} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIAssignList} />
+    <Route path={`${props.match.path}`} component={EmployeeAssignList} />
   </Switch>
 );
 
@@ -52,10 +85,28 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
       component={category} 
     />
     <SecureMenuRoute 
-      path={`${props.match.path}/employees`}
+      path={`${props.match.path}/assigns`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.HRKPIAssign} 
+      component={assign} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/finals`}
       menu={AppMenu.HumanResource} 
       subMenu={AppMenu.EmployeeKPI} 
+      component={final} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/employees`}
+      menu={AppMenu.HumanResource} 
+      subMenu={AppMenu.ManagerKPIInput} 
       component={employee} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.HumanResource} 
+      subMenu={AppMenu.HRKPIInput} 
+      component={approval} 
     />
   </Switch>
 );

@@ -10,7 +10,8 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -34,9 +35,12 @@ import { KPITemplateFormView } from './KPITemplateFormView';
 
 interface IKPITemplateItemFormValue {
   uid?: string;
+  isOpen: boolean;
   categoryUid: string;
+  categoryValue: string;
   categoryName: string;
   measurementUid: string;
+  measurementValue: string;
   measurementType: string;
   target: string;
   weight: number;
@@ -91,6 +95,7 @@ export type KPITemplateFormProps
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
+  & WithWidth
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -106,17 +111,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
     positionUid: '',
     name: '',
     totalWeight: 0,
-    items: [{
-      uid: '',
-      categoryUid: '',
-      categoryName: '',
-      measurementUid: '',
-      measurementType: '',
-      target: '',
-      weight: 0,
-      threshold: 0,
-      amount: 0,
-    }]
+    items: []
   },
 
   validationSchema: Yup.object().shape<Partial<IKPITemplateFormValue>>({
@@ -144,6 +139,10 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
           categoryUid: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.template.field.categoryUid))
             .required(),
+
+          isOpen: Yup.boolean(),
+
+          categoryValue: Yup.string(),
             
           categoryName: Yup.string()
           .max(100)
@@ -153,6 +152,8 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
           measurementUid: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.template.field.measurementUid))
             .required(),
+
+          measurementValue: Yup.string(),
 
           measurementType: Yup.string(),
 
@@ -191,7 +192,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
   filterKPIMeasurement: {
     orderBy: 'description',
     direction: 'ascending'
-  }
+  },
 });
 
 const stateUpdaters: StateUpdaters<KPITemplateFormProps, IOwnState, IOwnStateUpdater> = {
@@ -365,9 +366,12 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
           thisResponse.data.items.forEach(item =>
             initialValues.items.push({
               uid: item.uid,
+              isOpen: false,
               categoryUid: item.categoryUid,
+              categoryValue: item.category && item.category.name || '',
               categoryName: item.categoryName,
               measurementUid: item.measurementUid,
+              measurementValue: item.measurement && item.measurement.description || '',
               measurementType: item.measurement && item.measurement.measurementType || '',
               target: item.target,
               weight: item.weight,
@@ -392,6 +396,7 @@ export const KPITemplateForm = compose<KPITemplateFormProps, IOwnOption>(
   withCommonSystem,
   withMasterPage,
   injectIntl,
+  withWidth(),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handleCreators),
   lifecycle(lifeCycleFunctions),
