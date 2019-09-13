@@ -1,7 +1,9 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IKPIEmployeePutAchievedPayload } from '@kpi/classes/request';
+import { IKPIEmployeePostPayload, IKPIEmployeePutPayload } from '@kpi/classes/request';
 import { IKPIEmployee } from '@kpi/classes/response';
+import { withKPIAssign, WithKPIAssign } from '@kpi/hoc/withKPIAssign';
 import { WithKPIEmployee, withKPIEmployee } from '@kpi/hoc/withKPIEmployee';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -28,15 +30,12 @@ import {
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
-import { KPIManagerInputFormView } from './KPIManagerInputFormView';
+import { KPIEmployeeFormView } from './KPIEmployeeFormView';
 
 interface IKPIEmployeeItemFormValue {
   uid?: string;
-  categoryUid: string;
-  categoryValue: string;
+  kpiAssignItemUid: string;
   categoryName: string;
-  measurementUid: string;
-  measurementValue: string;
   measurementType: string;
   measurementDescription: string;
   target: string;
@@ -52,13 +51,10 @@ export interface IKPIEmployeeFormValue {
   uid: string;
   employeeUid: string;
   employeeName?: string;
-  templateUid: string;
+  kpiAssignUid: string;
   templateName: string;
-  isFinal: boolean;
-  revision: string;
-  year: number;
-  period: number;
-  totalWeight: number;
+  year: string;
+  period: string;
   totalScore: number;
   items: IKPIEmployeeItemFormValue[];
 }
@@ -73,23 +69,31 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
+  loadAssign: boolean;
+  assignData: IKPIEmployeeFormValue;
 
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
+
+  filterAccountEmployee: IEmployeeListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setAssignValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
+  handleSetLoadAssign: () => void;
+  handleLoadAssign: (employeeUid: string, year: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPIEmployeeFormValue, action: FormikActions<IKPIEmployeeFormValue>) => void;
 }
 
-export type KPIManagerInputFormProps
+export type KPIEmployeeFormProps
   = WithKPIEmployee
+  & WithKPIAssign
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -101,29 +105,24 @@ export type KPIManagerInputFormProps
   & IOwnStateUpdater
   & IOwnHandler;
 
-const createProps: mapper<KPIManagerInputFormProps, IOwnState> = (props: KPIManagerInputFormProps): IOwnState => ({
+const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployeeFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  loadAssign: false,
 
   initialValues: {
     uid: 'Auto Generated',
     employeeUid: props.match.params.employeeUid,
     employeeName: props.history.location.state && props.history.location.state.employeeName && props.history.location.state.employeeName || '',
-    templateUid: '',
+    kpiAssignUid: '',
     templateName: '',
-    year: moment().year(),
-    period: 1,
-    totalWeight: 0,
+    year: moment().year().toString(),
+    period: '1',
     totalScore: 0,
-    isFinal: false,
-    revision: '',
     items: [{
       uid: '',
-      categoryUid: '',
-      categoryValue: '',
+      kpiAssignItemUid: '',
       categoryName: '',
-      measurementUid: '',
-      measurementValue: '',
       measurementType: '',
       measurementDescription: '',
       target: '',
@@ -135,40 +134,37 @@ const createProps: mapper<KPIManagerInputFormProps, IOwnState> = (props: KPIMana
       score: 0,
     }]
   },
+  
+  assignData: props.initialValues,
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({
     employeeUid: Yup.string(),
 
-    templateUid: Yup.string(),
+    kpiAssignUid: Yup.string()
+      .required(),
 
     templateName: Yup.string(),
 
-    year: Yup.number(),
+    year: Yup.string()
+      .min(4)
+      .max(4),
 
-    period: Yup.number(),
-
-    totalWeight: Yup.number(),
+    period: Yup.string()
+      .max(2),
 
     totalScore: Yup.number(),
-
-    isFinal: Yup.boolean(),
-
-    revision: Yup.string(),
 
     items: Yup.array()
       .of(
         Yup.object().shape({
           categoryUid: Yup.string(),
 
-          categoryValue: Yup.string(),
+          kpiAssignItemUid: Yup.string()
+            .required(),
             
           categoryName: Yup.string(),
 
-          measurementUid: Yup.string(),
-
           measurementType: Yup.string(),
-
-          measurementValue: Yup.string(),
             
           measurementDescription: Yup.string(),
 
@@ -193,11 +189,21 @@ const createProps: mapper<KPIManagerInputFormProps, IOwnState> = (props: KPIMana
       )
       .min(1, props.intl.formatMessage(kpiMessage.employee.field.itemsMinimum))
   }),
+
+  filterAccountEmployee: ({
+    companyUids: props.userState.user && props.userState.user.company.uid,
+    positionUids: props.userState.user && props.userState.user.position.uid,
+    useAccess: true,
+    useSuperOrdinate: true,
+  }),
 });
 
-const stateUpdaters: StateUpdaters<KPIManagerInputFormProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<KPIEmployeeFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
+  }),
+  setAssignValues: () => (data: IKPIEmployeeFormValue): Partial<IOwnState> => ({
+    assignData: data
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
@@ -205,27 +211,64 @@ const stateUpdaters: StateUpdaters<KPIManagerInputFormProps, IOwnState, IOwnStat
   })
 };
 
-const handleCreators: HandleCreators<KPIManagerInputFormProps, IOwnHandler> = {
-  handleOnLoadDetail: (props: KPIManagerInputFormProps) => () => {
+const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
+  handleOnLoadDetail: (props: KPIEmployeeFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const employeeUid = props.match.params.employeeUid;
       const kpiUid = props.history.location.state.uid;
       const { isLoading } = props.kpiEmployeeState.detail;
 
       if (user && kpiUid && !isLoading) {
         props.kpiEmployeeDispatch.loadDetailRequest({
-          employeeUid,
-          kpiUid
+          kpiUid,
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
         });
       }
     }
   },
-  handleOnSubmit: (props: KPIManagerInputFormProps) => (values: IKPIEmployeeFormValue, actions: FormikActions<IKPIEmployeeFormValue>) => {
+  handleSetLoadAssign: (props: KPIEmployeeFormProps) => () => {
+    props.stateUpdate({
+      loadItem: !props.loadAssign,
+    });
+  },
+  handleLoadAssign: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
+    props.kpiAssignDispatch.loadByYearRequest({
+      employeeUid,
+      year: parseInt(year, 10),
+    });
+  },
+  handleOnSubmit: (props: KPIEmployeeFormProps) => (values: IKPIEmployeeFormValue, actions: FormikActions<IKPIEmployeeFormValue>) => {
     const { user } = props.userState;
     let promise = new Promise(() => undefined);
 
     if (user) {
+      // create 
+      if (props.formMode === FormMode.New) {
+        // fill payload 
+        const payload: IKPIEmployeePostPayload = {
+          kpiAssignUid: values.kpiAssignUid,
+          period: parseInt(values.period, 10),
+          items: []
+        };
+
+        // fill payload items
+        values.items.forEach(item => payload.items.push({
+          kpiAssignItemUid: item.kpiAssignItemUid,
+          achieved: item.achieved,
+        }));
+
+        promise = new Promise((resolve, reject) => {
+          props.kpiEmployeeDispatch.createRequest({
+            resolve,
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload,
+          });
+        });
+      }
+
       // editing 
       if (props.formMode === FormMode.Edit) {
         const kpiUid = props.history.location.state.uid;
@@ -234,23 +277,26 @@ const handleCreators: HandleCreators<KPIManagerInputFormProps, IOwnHandler> = {
         if (kpiUid) {
 
           // fill payload 
-          const payload: IKPIEmployeePutAchievedPayload = {
+          const payload: IKPIEmployeePutPayload = {
+            kpiAssignUid: values.kpiAssignUid,
+            period: parseInt(values.period, 10),
             items: []
           };
 
           // fill payload items
           values.items.forEach(item => payload.items.push({
-            uid: item.uid,
+            uid: item.uid || '',
             achieved: item.achieved,
           }));
 
           promise = new Promise((resolve, reject) => {
-            props.kpiEmployeeDispatch.updateAchievedRequest({
+            props.kpiEmployeeDispatch.updateRequest({
               kpiUid,
               resolve,
               reject,
-              employeeUid: props.match.params.employeeUid,
-              data: payload as IKPIEmployeePutAchievedPayload,
+              companyUid: user.company.uid,
+              positionUid: user.position.uid,
+              data: payload,
             });
           });
         }
@@ -295,30 +341,30 @@ const handleCreators: HandleCreators<KPIManagerInputFormProps, IOwnHandler> = {
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<KPIManagerInputFormProps, IOwnState> = {
+const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnState> = {
   componentDidMount() {
     //
   },
-  componentDidUpdate(prevProps: KPIManagerInputFormProps) {
+  componentDidUpdate(prevProps: KPIEmployeeFormProps) {
     // handle template detail response
     const { response: thisResponse } = this.props.kpiEmployeeState.detail;
     const { response: prevResponse } = prevProps.kpiEmployeeState.detail;
+    
+    const { response: thisAssignResponse } = this.props.kpiAssignState.byYear;
+    const { response: prevAssignResponse } = prevProps.kpiAssignState.byYear;
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values 
         const initialValues: IKPIEmployeeFormValue = {
           uid: thisResponse.data.uid,
-          employeeUid: thisResponse.data.employeeUid,
-          employeeName: thisResponse.data.employee && thisResponse.data.employee.fullName || '',
-          templateUid: thisResponse.data.templateUid,
-          templateName: thisResponse.data.template && thisResponse.data.template.name || '',
-          year: thisResponse.data.year,
-          period: thisResponse.data.period,
-          totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
+          employeeUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employeeUid || '',
+          employeeName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employee && thisResponse.data.kpiAssign.employee.fullName || '',
+          kpiAssignUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.uid || '',
+          templateName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.template && thisResponse.data.kpiAssign.template.name || '',
+          year: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.year.toString() || '0',
+          period: thisResponse.data.period.toString() || '0',
           totalScore: thisResponse.data.totalScore,
-          isFinal: thisResponse.data.isFinal,
-          revision: '',
           items: []
         };
 
@@ -327,17 +373,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIManagerInputFormProps, IOwn
           thisResponse.data.items.forEach(item =>
             initialValues.items.push({
               uid: item.uid,
-              categoryUid: item.categoryUid,
-              categoryValue: item.category && item.category.name || '',
-              categoryName: item.categoryName,
-              measurementUid: item.measurementUid,
-              measurementValue: item.measurement && item.measurement.description || '',
-              measurementType: item.measurement && item.measurement.measurementType || '',
-              measurementDescription: item.measurement && item.measurement.description || '',
-              target: item.target,
-              weight: item.weight,
-              threshold: item.threshold || 0,
-              amount: item.amount,
+              kpiAssignItemUid: item.kpiAssignItemUid || '',
+              categoryName: item.kpiAssignItem && item.kpiAssignItem.categoryName || '',
+              measurementType: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.measurementType || '',
+              measurementDescription: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.description || '',
+              target: item.kpiAssignItem && item.kpiAssignItem.target || '',
+              weight: item.kpiAssignItem && item.kpiAssignItem.weight || 0,
+              threshold: item.kpiAssignItem && item.kpiAssignItem.threshold || 0,
+              amount: item.kpiAssignItem && item.kpiAssignItem.amount || 0,
               achieved: item.achieved,
               progress: item.progress,
               score: item.score,
@@ -349,14 +392,56 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIManagerInputFormProps, IOwn
         this.props.setInitialValues(initialValues);
       }
     }
+
+    if (thisAssignResponse !== prevAssignResponse) {
+      if (thisAssignResponse && thisAssignResponse.data) {
+        // define initial values 
+        const initialValues: IKPIEmployeeFormValue = {
+          uid: this.props.initialValues.uid,
+          employeeUid: thisAssignResponse.data.employeeUid || '',
+          employeeName: thisAssignResponse.data.employee && thisAssignResponse.data.employee.fullName || '',
+          kpiAssignUid: thisAssignResponse.data.uid || '',
+          templateName: thisAssignResponse.data.template && thisAssignResponse.data.template.name || '',
+          year: thisAssignResponse.data.year.toString() || '0',
+          period: this.props.initialValues.period,
+          totalScore: this.props.initialValues.totalScore,
+          items: []
+        };
+
+        if (thisAssignResponse.data.items) {
+          // fill template items
+          thisAssignResponse.data.items.forEach((item, index) =>
+            initialValues.items.push({
+              uid: '',
+              kpiAssignItemUid: item.uid,
+              categoryName: item.categoryName,
+              measurementType: item.measurement && item.measurement.measurementType || '',
+              measurementDescription: item.measurement && item.measurement.description || '',
+              target: item.target,
+              weight: item.weight,
+              threshold: item.threshold || 0,
+              amount: item.amount,
+              achieved: this.props.initialValues.items[index].achieved,
+              progress: this.props.initialValues.items[index].progress,
+              score: this.props.initialValues.items[index].score,
+            })
+          );
+        }
+
+        // set initial values
+        this.props.setAssignValues(initialValues);
+        this.props.handleSetLoadAssign();
+      }
+    }
   }
 };
 
-export const KPIManagerInputForm = compose<KPIManagerInputFormProps, IOwnOption>(
-  setDisplayName('KPIManagerInputForm'),
+export const KPIEmployeeForm = compose<KPIEmployeeFormProps, IOwnOption>(
+  setDisplayName('KPIEmployeeForm'),
   withUser,
   withRouter,
   withKPIEmployee,
+  withKPIAssign,
   withCommonSystem,
   withMasterPage,
   injectIntl,
@@ -364,4 +449,4 @@ export const KPIManagerInputForm = compose<KPIManagerInputFormProps, IOwnOption>
   withHandlers(handleCreators),
   lifecycle(lifeCycleFunctions),
   withStyles(styles)
-)(KPIManagerInputFormView);
+)(KPIEmployeeFormView);

@@ -22,7 +22,6 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   items: IKPIEmployeeItem[] | null | undefined;
-  useSelect?: boolean;
 }
 
 type AllProps
@@ -35,44 +34,34 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        {
-          props.useSelect &&
-          <TableCell>
-            {item.category && item.category.name}
-          </TableCell>
-        }
         <TableCell>
-          {item.categoryName}
-        </TableCell>
-        {
-          props.useSelect &&
-          <TableCell>
-            {item.measurement && item.measurement.description}
-          </TableCell>
-        }
-        <TableCell>
-          {item.measurementDescription}
+          {item.kpiAssignItem && item.kpiAssignItem.categoryName}
         </TableCell>
         <TableCell>
-          {item.target}
+          {item.kpiAssignItem && item.kpiAssignItem.measurementDescription}
+        </TableCell>
+        <TableCell>
+          {item.kpiAssignItem && item.kpiAssignItem.target}
         </TableCell>
         <TableCell numeric>
-          {`${props.intl.formatNumber(item.weight)} %`}
+          {`${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %`}
         </TableCell>
         <TableCell numeric>
           {
-            item.measurement && 
-            item.measurement.measurementType === MeasurementType.Scoring  &&
-            props.intl.formatNumber(item.threshold || 0) ||
+            item.kpiAssignItem &&
+            item.kpiAssignItem.measurement && 
+            item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring  &&
+            props.intl.formatNumber(item.kpiAssignItem.threshold || 0) ||
             '-'
           }
         </TableCell>
         <TableCell numeric>
           {
-            item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance) &&
-            props.intl.formatNumber(item.amount) ||
+            item.kpiAssignItem &&
+            item.kpiAssignItem.measurement && 
+            (item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring ||
+            item.kpiAssignItem.measurement.measurementType === MeasurementType.Attendance) &&
+            props.intl.formatNumber(item.kpiAssignItem.amount) ||
             '-'
           }
         </TableCell>
@@ -109,21 +98,9 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             >
               <TableHead>
                 <TableRow>
-                  {
-                    props.useSelect &&
-                    <TableCell>
-                      {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
-                    </TableCell>
-                  }
                   <TableCell>
                     {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
-                  {
-                    props.useSelect &&
-                    <TableCell>
-                      {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
-                    </TableCell>
-                  }
                   <TableCell>
                     {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                   </TableCell>

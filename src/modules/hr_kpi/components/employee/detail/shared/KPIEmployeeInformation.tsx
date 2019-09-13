@@ -31,12 +31,12 @@ const kpiEmployeeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
-          value={props.data.employee && props.data.employee.fullName || 'N/A'}
+          value={props.data.kpiAssign && props.data.kpiAssign.employee && props.data.kpiAssign.employee.fullName || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.data.year.toString()}
+          value={props.data.kpiAssign && props.data.kpiAssign.year.toString() || ''}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -46,7 +46,7 @@ const kpiEmployeeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.template && props.data.template.name || 'N/A'}
+          value={props.data.kpiAssign && props.data.kpiAssign.template && props.data.kpiAssign.template.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -69,7 +69,7 @@ const kpiEmployeeInformation: React.SFC<AllProps> = props => {
           value={props.data.revision}
         />
         }
-        {
+        {/* {
           props.data.sent &&
           props.data.sentAt &&
           <React.Fragment>
@@ -80,7 +80,7 @@ const kpiEmployeeInformation: React.SFC<AllProps> = props => {
               helperText={props.intl.formatDate(props.data.sentAt, GlobalFormat.DateTime) || 'N/A'}
             />
           </React.Fragment>
-        }
+        } */}
         {
           props.data.changes &&
           <React.Fragment>

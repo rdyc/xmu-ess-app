@@ -8,22 +8,19 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
-import { isWidthDown } from '@material-ui/core/withWidth';
-import { IKPIEmployeeFormValue, KPIHRInputFormProps } from './KPIHRInputForm';
-import KPIHRInputDetailPartialForm from './partial/KPIHRInputDetailPartialForm';
-import KPIHRInputItemPartialForm from './partial/KPIHRInputItemPartialForm';
+import { IKPIEmployeeFormValue, KPIEmployeeFormProps } from './KPIEmployeeForm';
+import KPIEmployeeDetailPartialForm from './partial/KPIEmployeeDetailPartialForm';
+import KPIEmployeeItemPartialForm from './partial/KPIEmployeeItemPartialForm';
 
-export const KPIHRInputFormView: React.SFC<KPIHRInputFormProps> = props => {
-  const isMobile = isWidthDown('sm', props.width);
-  
+export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
   return (
     <FormPage
       info={{
-        uid: AppMenu.HRKPIInput,
+        uid: AppMenu.ManagerKPIInput,
         parentUid: AppMenu.HumanResource,
-        parentUrl: `/kpi/hrinputs/${props.match.params.employeeUid}`,
-        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.modifyTitle),
-        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.modifySubHeader)
+        parentUrl: `/kpi/employees`,
+        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.newTitle),
+        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.newSubHeader)
       }}
       state={props.kpiEmployeeState.detail}
       onLoadApi={props.handleOnLoadDetail}
@@ -38,14 +35,15 @@ export const KPIHRInputFormView: React.SFC<KPIHRInputFormProps> = props => {
             <div className={props.classes.flexRow}>
               <div className={props.classes.flexColumn}>
                 <div className={props.classes.flexContent}>
-                  <KPIHRInputDetailPartialForm
+                  <KPIEmployeeDetailPartialForm
                     formMode={props.formMode}
                     formikBag={formikBag}
                     intl={props.intl}
-                    filterLookupCompany={props.filterLookupCompany}
-                    filterKPITemplate={props.filterKPITemplate}
-                    handleSetTemplateFilter={props.handleSetTemplateFilter}
-                    handleLoadTemplate={props.handleLoadTemplate}
+                    handleLoadAssign={props.handleLoadAssign}
+                    handleSetLoadAssign={props.handleSetLoadAssign}
+                    filterAccountEmployee={props.filterAccountEmployee}
+                    loadAssign={props.loadAssign}
+                    assignData={props.assignData}
                   />
                 </div>
               </div>
@@ -77,17 +75,11 @@ export const KPIHRInputFormView: React.SFC<KPIHRInputFormProps> = props => {
             </div>
 
             <div className={props.classes.flexRow}>
-              <KPIHRInputItemPartialForm
+              <KPIEmployeeItemPartialForm
                 formikBag={formikBag}
-                loadItem={props.loadItem}
-                listItem={props.listItem}
-                handleSetLoadItem={props.handleSetLoadItem}
                 formMode={props.formMode}
                 intl={props.intl}
                 classes={props.classes}
-                filterKPICategory={props.filterKPICategory}
-                filterKPIMeasurement={props.filterKPIMeasurement}
-                isDialogFullScreen={isMobile}
               />
             </div>
           </Form>

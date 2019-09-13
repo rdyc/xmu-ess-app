@@ -8,19 +8,19 @@ import { MeasurementType } from '@common/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import * as classNames from 'classnames';
-import { IKPIEmployeeFormValue } from '../KPIManagerInputForm';
+import { IKPIEmployeeFormValue } from '../KPIEmployeeForm';
 
-interface KPIManagerInputItemPartialFormProps {
+interface KPIEmployeeItemPartialFormProps {
   formMode: FormMode; 
   formikBag: FormikProps<IKPIEmployeeFormValue>;
   intl: InjectedIntl;
 }
 
 type AllProps
- = KPIManagerInputItemPartialFormProps
+ = KPIEmployeeItemPartialFormProps
  & WithStyles;
 
-const KPIManagerInputItemPartialForm: React.ComponentType<AllProps> = props => (
+const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(kpiMessage.employee.section.itemTitle)}
@@ -258,4 +258,4 @@ const KPIManagerInputItemPartialForm: React.ComponentType<AllProps> = props => (
   </Card>
 );
 
-export default KPIManagerInputItemPartialForm;
+export default KPIEmployeeItemPartialForm;

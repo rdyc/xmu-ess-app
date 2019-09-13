@@ -27,7 +27,7 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
       /> */}<TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.data.year.toString()}
+          value={props.data.kpiAssign && props.data.kpiAssign.year.toString() || ''}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -39,7 +39,7 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
     <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.template && props.data.template.name || 'N/A'}
+          value={props.data.kpiAssign && props.data.kpiAssign.template && props.data.kpiAssign.template.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -70,7 +70,7 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
-        {
+        {/* {
           (props.data.sent && props.data.sentAt) &&
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
@@ -78,7 +78,7 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
               value={props.data.sent && props.data.sent.fullName || 'N/A'}
               helperText={props.intl.formatDate(props.data.sentAt, GlobalFormat.DateTime) || 'N/A'}
             />
-        }
+        } */}
 
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

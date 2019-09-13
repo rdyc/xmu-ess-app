@@ -27,7 +27,6 @@ import { ICollectionValue } from '@layout/classes/core';
 import { KPIEmployeeListView } from './KPIEmployeeListView';
 
 interface IOwnRouteParams {
-  employeeUid: string;
 }
 
 interface IOwnOption {
@@ -78,7 +77,7 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
     const { loadAllRequest } = props.kpiEmployeeDispatch;
     const { user } = props.userState;
 
-    if (user && !isLoading && props.match.params.employeeUid) {
+    if (user && !isLoading) {
       // predefined filter
       const filter: IKPIEmployeeGetAllFilter = {
         find: request && request.filter && request.filter.find,
@@ -91,13 +90,13 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
-      const isEmployeeChanged = !shallowEqual(props.match.params.employeeUid, request && request.employeeUid || '');
       
       // only load when request parameter are differents
-      if (isExpired || shouldLoad || isRetry || isEmployeeChanged) {
+      if (isExpired || shouldLoad || isRetry) {
         loadAllRequest({
           filter,
-          employeeUid: props.match.params.employeeUid
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
         });
       }
     }
@@ -123,14 +122,15 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
       if (shouldLoad) {
         loadAllRequest({
           filter,
-          employeeUid : props.match.params.employeeUid
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
         });
       }
     }
   },
   handleOnBind: (props: KPIEmployeeListProps) => (item: IKPIEmployee, index: number) => ({
     key: index,
-    primary: item.year.toString(),
+    primary: item.kpiAssign && item.kpiAssign.year.toString() || '',
     secondary: `Semester ${props.intl.formatNumber(item.period)}`,
     tertiary: `${props.intl.formatNumber(item.totalScore)} %`,
     quaternary: item.isFinal && props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) || props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse),

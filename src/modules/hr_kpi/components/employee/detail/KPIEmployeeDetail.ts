@@ -121,7 +121,8 @@ const handlerCreators: HandleCreators<KPIEmployeeDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: KPIEmployeeDetailProps) => () => { 
     if (props.userState.user && props.match.params.kpiUid && props.match.params.kpiUid && !props.kpiEmployeeState.detail.isLoading) {
       props.kpiEmployeeDispatch.loadDetailRequest({
-        employeeUid: props.match.params.employeeUid,
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
         kpiUid: props.match.params.kpiUid
       });
     }
@@ -151,12 +152,10 @@ const handlerCreators: HandleCreators<KPIEmployeeDetailProps, IOwnHandler> = {
     }
 
     // define vars
-    let employeeUid: string | undefined;
     let templateUid: string | undefined;
 
     // get templateUid uid
     if (response.data) {
-      employeeUid = response.data.employeeUid;
       templateUid = response.data.uid;
     }
 
@@ -170,7 +169,7 @@ const handlerCreators: HandleCreators<KPIEmployeeDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case KPIEmployeeUserAction.Modify:
-          next = `/kpi/employees/${employeeUid}/form`;
+          next = `/kpi/employees/form`;
           break;
 
         default:
@@ -210,6 +209,12 @@ const lifecycles: ReactLifeCycleFunctions<KPIEmployeeDetailProps, IOwnState> = {
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true
+        },
+        {
+          id: KPIEmployeeUserAction.Modify,
+          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          enabled: !isLoading,
+          visible: this.props.kpiEmployeeState.detail.response && this.props.kpiEmployeeState.detail.response.data.isFinal === false || true,
         },
       ];
 

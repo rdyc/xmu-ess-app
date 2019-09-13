@@ -2,24 +2,24 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
+import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
-import { KPIEmployeeSummary } from '@kpi/components/shared/KPIEmployeeSummary';
+import { KPIEmployeeSummary } from '@kpi/components/employee/detail/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { KPIHRInputListProps } from './KPIHRInputList';
+import { KPIEmployeeListProps } from './KPIEmployeeList';
 
-export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
+export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.HRKPIInput,
+        uid: AppMenu.EmployeeKPI,
         parentUid: AppMenu.HumanResource,
-        parentUrl: '/kpi/hrinputs',
-        title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: props.history.location.state && props.history.location.state.employeeName && 
-          props.history.location.state.employeeName || 'Employee'}),
+        parentUrl: '/kpi/employees',
+        title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: 'Employee'}),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
       }}
 
@@ -37,10 +37,10 @@ export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
       )}
       actionComponent={(item: IKPIEmployee) => (
         <React.Fragment>
-           <Button 
+          <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/hrinputs/${item.employeeUid}/form`, { uid: item.uid, employeeName: item.employee && item.employee.fullName || '' })}
+            onClick={() => props.history.push(`/kpi/employees/form`, {uid : item.uid})}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -48,7 +48,7 @@ export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/hrinputs/${item.employeeUid}/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/employees/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -64,6 +64,15 @@ export const KPIHRInputListView: React.SFC<KPIHRInputListProps> = props => (
           onApply={props.handleOnLoadApiSearch}
         />
       }
+      appBarCustomComponent={
+        <IconButton
+          color="inherit"
+          onClick={() => props.history.push(`/kpi/employees/form`)}
+        >
+          <AddCircle/>
+        </IconButton>
+      }
+
     />
   </React.Fragment>
 );
