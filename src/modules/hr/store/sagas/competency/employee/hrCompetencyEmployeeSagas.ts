@@ -8,6 +8,13 @@ import {
   hrCompetencyEmployeeGetByIdError,
   hrCompetencyEmployeeGetByIdRequest,
   hrCompetencyEmployeeGetByIdSuccess,
+  hrCompetencyEmployeeGetDetailListDispose,
+  hrCompetencyEmployeeGetDetailListError,
+  hrCompetencyEmployeeGetDetailListRequest,
+  hrCompetencyEmployeeGetDetailListSuccess,
+  hrCompetencyEmployeeGetListError,
+  hrCompetencyEmployeeGetListRequest,
+  hrCompetencyEmployeeGetListSuccess,
   hrCompetencyEmployeePatchError,
   hrCompetencyEmployeePatchRequest,
   hrCompetencyEmployeePatchSuccess,
@@ -47,11 +54,61 @@ function* watchFetchAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
+function* watchFetchListRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyEmployeeGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/employees/list?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetListSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetListError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyEmployeeGetListError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
+}
+
+function* watchFetchDetailListRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyEmployeeGetDetailListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetDetailListSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetDetailListError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyEmployeeGetDetailListError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_DETAIL_LIST_REQUEST, worker);
+}
+
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/employees/${action.payload.employeeUid}/${action.payload.positionUid}/${action.payload.competencyEmployeeUid}`,
+      path: `/v1/employees/${action.payload.competencyEmployeeUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyEmployeeGetByIdSuccess(response.body)),
       ]), 
@@ -71,11 +128,12 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyEmployeePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/employees/${action.payload.employeeUid}/${action.payload.positionUid}`,
+      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyEmployeeGetByIdDispose()),
         put(hrCompetencyEmployeeGetAllDispose()),
+        put(hrCompetencyEmployeeGetDetailListDispose()),
         put(hrCompetencyEmployeePostSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
@@ -116,6 +174,7 @@ function* watchPatchRequest() {
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyEmployeeGetByIdDispose()),
         put(hrCompetencyEmployeeGetAllDispose()),
+        put(hrCompetencyEmployeeGetDetailListDispose()),
         put(hrCompetencyEmployeePatchSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
@@ -161,6 +220,8 @@ function* watchSwitchAccess() {
 function* hrCompetencyEmployeeSagas() {
   yield all([
     fork(watchFetchAllRequest),
+    fork(watchFetchListRequest),
+    fork(watchFetchDetailListRequest),
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPatchRequest),

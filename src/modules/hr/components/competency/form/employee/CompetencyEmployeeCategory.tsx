@@ -1,8 +1,8 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyCategory } from '@hr/classes/response';
+import { IHrCompetencyMappedList } from '@hr/classes/response';
 import { Card, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { Field, FieldProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -12,7 +12,7 @@ interface IOwnProps {
   formMode: FormMode; 
   formikBag: FormikProps<ICompetencyEmployeeFormValue>;
   intl: InjectedIntl;
-  data?: IHrCompetencyCategory[] | null;
+  data: IHrCompetencyMappedList;
 }
 
 interface IOwnState {
@@ -53,49 +53,57 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
     <TableBody>
     {
       props.data &&
-      props.data.map((category, index) => 
-      <React.Fragment key={category.uid}>
+      props.data.categories.map((item, index) => 
+      <React.Fragment key={item.uid}>
         <TableRow>
           <TableCell colSpan={2} className={props.classes.toolbar}>
             <Typography variant="body1" color="inherit">
-              {category.name}
+              {item.category.name}
             </Typography>
           </TableCell>
         </TableRow>
-        {category.levels.map((level) =>           
-          <TableRow>
-            <TableCell colSpan={1}>
-              <Field 
-                name="levelRespond"
-                render={({field}: FieldProps<ICompetencyEmployeeFormValue>) => (
-                  <FormControlLabel
-                    control={<Radio 
-                      checked={props.formikBag.values.levelRespond[category.uid] === level.uid}
-                      onChange={() => {
-                        props.formikBag.setFieldValue(`levelRespond[${category.uid}]`, level.uid);
-                      }}
-                    />}
-                    value={level.uid}
-                    label={`Level ${level.level} - ${level.description}`}
+        <FieldArray 
+          name="levelRespond"
+          render={(fields: FieldArrayRenderProps) =>
+            item.category.levels.map((level) =>           
+              <TableRow>
+                <TableCell colSpan={1}>
+                  <Field 
+                    name={`levelRespond.${index}`}
+                    render={({field}: FieldProps<ICompetencyEmployeeFormValue>) => (
+                      <FormControlLabel
+                        control={<Radio 
+                          checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
+                          onChange={() => {
+                            console.log('level.uid', index);
+                            props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
+                            props.formikBag.setFieldValue(`levelRespond.${index}.categoryUid`, item.category.uid);
+                          }}
+                        />}
+                        value={level.uid}
+                        label={`Level ${level.level} - ${level.description}`}
+                      />
+                    )}
                   />
-                )}
-              />
-            </TableCell>
-            <TableCell colSpan={1}>
-              <Typography>
-                <ul>
-                {
-                  level.indicators.map(indicator =>
-                    <li>
-                      {indicator.description}
-                    </li>
-                  )
-                }    
-                </ul>
-              </Typography>
-            </TableCell>
-          </TableRow>
-        )}    
+                </TableCell>
+                <TableCell colSpan={1}>
+                  <Typography>
+                    <ul>
+                    {
+                      level.indicators.map(indicator =>
+                        <li>
+                          {indicator.description}
+                        </li>
+                      )
+                    }    
+                    </ul>
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) 
+          }
+        />
+      
       </React.Fragment>
       )
     }

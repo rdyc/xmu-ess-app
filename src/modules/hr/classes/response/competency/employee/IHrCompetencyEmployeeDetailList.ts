@@ -4,7 +4,7 @@ import { IBaseChanges } from '@generic/interfaces';
 import { IPosition } from '@lookup/classes/response';
 import { ICompetencyEmployeeItem } from './ICompetencyEmployeeItem';
 
-export interface IHrCompetencyEmployee {
+export interface IHrCompetencyEmployeeDetailList {
   uid: string;
   employeeUid: string;
   employee?: IAccountEmployee;

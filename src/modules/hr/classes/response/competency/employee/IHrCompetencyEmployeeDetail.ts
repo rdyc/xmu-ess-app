@@ -15,6 +15,8 @@ export interface IHrCompetencyEmployeeDetail {
   score?: number;
   statusType: string;
   status?: ICommonSystem;
-  items?: ICompetencyEmployeeItem[];
+  dueDate?: string;
+  isDraft?: boolean;
+  items: ICompetencyEmployeeItem[];
   changes?: IBaseChanges;
 }

@@ -98,9 +98,11 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeListProps, IOwnHandler
   handleOnLoadApi: (props: HrCompetencyEmployeeListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { loadAllRequest } = props.hrCompetencyEmployeeDispatch;
     const { isExpired, isLoading, request } = props.hrCompetencyEmployeeState.all;
+    const { user } = props.userState;
 
-    if (props.userState.user && !isLoading) {
+    if (user && !isLoading) {
       const filter: IHrCompetencyEmployeeGetAllFilter = {
+        employeeUid: user.uid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -161,7 +163,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeListProps, IOwnHandler
     primary: item.responden && item.responden.fullName || 'N/A',
     secondary: item.position && item.position.company && item.position.company.name || 'N/A',
     tertiary: item.position && item.position.name || 'N/A',
-    quaternary: 'YEAR',
+    quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -170,18 +172,18 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeListProps, IOwnHandler
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeListProps, IOwnState> = {
   componentDidUpdate(prevProps: HrCompetencyEmployeeListProps) {
     // track any changes in filter props
-    const isFilterChanged = !shallowEqual(
-      {
-        status: this.props.status,
-      },
-      {
-        status: prevProps.status
-      }
-    );
+    // const isFilterChanged = !shallowEqual(
+    //   {
+    //     status: this.props.status,
+    //   },
+    //   {
+    //     status: prevProps.status
+    //   }
+    // );
 
-    if (isFilterChanged) {
-      this.props.handleOnLoadApi(undefined, true);
-    }
+    // if (isFilterChanged) {
+    //   this.props.handleOnLoadApi(undefined, true);
+    // }
   }
 };
 

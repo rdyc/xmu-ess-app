@@ -46,3 +46,5 @@ export * from './competency/employee/IHrCompetencyEmployeeGetAllRequest';
 export * from './competency/employee/IHrCompetencyEmployeeGetDetailRequest';
 export * from './competency/employee/IHrCompetencyEmployeePatchRequest';
 export * from './competency/employee/IHrCompetencyEmployeePostRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetListRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetDetailListRequest';

@@ -1,8 +1,14 @@
 import { FormMode } from '@generic/types';
-import { WithHrCompetencyCategory, withHrCompetencyCategory } from '@hr/hoc/withHrCompetencyCategory';
+import { IHrCompetencyEmployeePatchPayload } from '@hr/classes/request';
+import { IHrCompetencyEmployee } from '@hr/classes/response';
+import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { DraftType } from '@layout/components/submission/DraftType';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -22,17 +28,22 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
-import * as Yup from 'yup';
 
 import { CompetencyEmployeeFormView } from './CompetencyEmployeeFormView';
 
 export interface ILevelOption {
-  [key: string]: string;
+  // [key: string]: string;
+  uid?: string;
+  categoryUid: string;
+  levelUid: string;
+  note?: string;
 }
 
 export interface ICompetencyEmployeeFormValue {
-  responder: string;
-  levelRespond: ILevelOption;
+  respondenUid: string;
+  companyUid: string;
+  positionUid: string;
+  levelRespond: ILevelOption[];
 }
 
 interface IOwnRouteParams {
@@ -47,7 +58,12 @@ interface IOwnState {
   formMode: FormMode;
 
   initialValues?: ICompetencyEmployeeFormValue;
-  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyEmployeeFormValue>>>;
+  // validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyEmployeeFormValue>>>;
+
+  filterCompany?: ILookupCompanyGetListFilter;
+
+  saveType: DraftType;
+  isUpdatedValue: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -58,11 +74,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ICompetencyEmployeeFormValue, actions: FormikActions<ICompetencyEmployeeFormValue>) => void;
+  handleSaveType: (saveType: DraftType) => void;
+  handleIsUpdatedValue: () => void;
 }
 
 export type CompetencyEmployeeFormProps
   = WithMasterPage
-  & WithHrCompetencyCategory
+  & WithHrCompetencyEmployee
+  & WithHrCompetencyMapped
   & WithUser
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
@@ -78,16 +97,19 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
   
   // form values
   initialValues: {
-    responder: '',
-    levelRespond: {}
+    respondenUid: '',
+    companyUid: '',
+    positionUid: '',
+    levelRespond: []
   },
+  saveType: DraftType.draft,
+  isUpdatedValue: false,
 
-  // validation props
-  validationSchema: Yup.object().shape<Partial<ICompetencyEmployeeFormValue>>({
-    responder: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
-      .required(),
-  }),
+  // filter
+  filterCompany: {
+    orderBy: 'name',
+    direction: 'ascending'
+  },
 });
 
 const stateUpdaters: StateUpdaters<CompetencyEmployeeFormProps, IOwnState, IOwnStateUpdater> = {
@@ -101,57 +123,183 @@ const stateUpdaters: StateUpdaters<CompetencyEmployeeFormProps, IOwnState, IOwnS
 };
 
 const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> = {
-  handleOnLoadDetail: () => () => {
-    //
+  handleSaveType: (props: CompetencyEmployeeFormProps) => (saveType: DraftType) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      saveType
+    });
   },
-  handleOnSubmit: () => () => {
-    console.log('Submit Employee');
+  handleIsUpdatedValue: (props: CompetencyEmployeeFormProps) => () => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      isUpdatedValue: true
+    });
+  },
+  handleOnLoadDetail: (props: CompetencyEmployeeFormProps) => () => {
+    if (!isNullOrUndefined(props.history.location.state)) {
+      const user = props.userState.user;
+      const competencyEmployeeUid = props.history.location.state.uid;
+      const { isLoading } = props.hrCompetencyEmployeeState.detail;
+
+      if (user && competencyEmployeeUid && !isLoading) {
+        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
+          competencyEmployeeUid
+        });
+      }
+    }
+  },
+  handleOnSubmit: (props: CompetencyEmployeeFormProps) => (values: ICompetencyEmployeeFormValue, actions: FormikActions<ICompetencyEmployeeFormValue>) => {
+    console.log('save type', props.saveType);
+    const { user } = props.userState;
+    let promise = new Promise((resolve, reject) => undefined);
+
+    if (user) {
+      // Edit
+      if (props.formMode === FormMode.Edit) {
+        const competencyEmployeeUid = props.history.location.state.uid;
+        
+        // must have competencyEmployeeUid
+        if (competencyEmployeeUid) {
+          const respondenUid = values.respondenUid;
+          const positionUid = values.positionUid;
+
+          const payload: IHrCompetencyEmployeePatchPayload = {
+            items: [],
+            isDraft: props.saveType === DraftType.draft ? true : false
+          };
+
+          // fill responder
+          values.levelRespond.forEach(item =>
+            item.levelUid &&
+            payload.items.push({
+              uid: item.uid,
+              categoryUid: item.categoryUid,
+              levelUid: item.levelUid
+            })
+          );
+
+          // set the promise
+          promise = new Promise((resolve, reject) => {
+            props.hrCompetencyEmployeeDispatch.patchRequest({
+              competencyEmployeeUid,
+              respondenUid,
+              positionUid,
+              resolve,
+              reject,
+              data: payload
+            });
+          });
+        }
+      }
+    }
+
+    // handling promise
+    promise
+      .then((response: IHrCompetencyEmployee) => {
+        
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment Input', uid: response.uid })
+        });
+
+        // redirect to detail
+        props.history.push(`/hr/assessmentinput/${response.uid}`);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
+
+        // console.log(error.errors);
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+        });
+      });
   }
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, IOwnState> = {
   componentDidMount() {
-    const { hrCompetencyCategoryDispatch, hrCompetencyCategoryState} = this.props;
-
-    if (!hrCompetencyCategoryState.all.response) {
-      hrCompetencyCategoryDispatch.loadAllRequest({
-        clusterUid: 'CLS002',
-        filter: {
-          clusterUid: 'CLS002',
-          orderBy: 'name',
-          direction: 'ascending'
-        }
-      });
-    }
+    //
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
-    const { response: nextResponse } = nextProps.hrCompetencyCategoryState.all;
-    const { response: thisResponse } = this.props.hrCompetencyCategoryState.all;
-    const { setInitialValues } = this.props;
+    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
+    const { response: nextResponse } = nextProps.hrCompetencyEmployeeState.detail;
+    const { response } = this.props.hrCompetencyMappedState.list;
 
-    if (thisResponse !== nextResponse) {
-      if (nextResponse && nextResponse.data) {
-        const initialValues: ICompetencyEmployeeFormValue = {
-          responder: '',
-          levelRespond: {}
-        };
-  
-        nextResponse.data.map(item =>
-          initialValues.levelRespond[item.uid] = ''  
-        );
-        
-        setInitialValues(initialValues);
+    if (!response) {
+      if (thisResponse !== nextResponse) {
+        if (nextResponse && nextResponse.data) {
+          this.props.hrCompetencyMappedDispatch.loadListRequest({
+            filter: {
+              positionUid: nextResponse.data.positionUid
+            }
+          });
+        }
       }
     }
   },
-  componentDidUpdate() {
-    console.log(this.props.initialValues);
+  componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
+    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
+    // const { response: prevResponse } = prevProps.hrCompetencyEmployeeState.detail;
+    const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
+    // const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
+
+    // if (thisResponse !== prevResponse) {
+    if (thisResponse && thisResponse.data && 
+        thisMapped && thisMapped.data 
+        && !this.props.isUpdatedValue) {
+
+        console.log('thisMapped', thisMapped);
+        
+        // define initial values
+        const initialValues: ICompetencyEmployeeFormValue = {
+          respondenUid: thisResponse.data.respondenUid,
+          companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
+          positionUid: thisResponse.data.positionUid,
+          levelRespond: []
+        };
+
+        // fill 
+        thisMapped.data[0].categories.forEach(item => {
+          const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+
+          initialValues.levelRespond.push({
+            uid: find && find.uid || '',
+            categoryUid: item.category.uid,
+            levelUid: find && find.levelUid || ''
+          });  
+        });
+        this.props.setInitialValues(initialValues);
+        this.props.handleIsUpdatedValue();
+    }
+    // }
   }
 };
 
 export const CompetencyEmployeeForm = compose<CompetencyEmployeeFormProps, IOwnOption>(
   setDisplayName('CompetencyEmployeeForm'),
-  withHrCompetencyCategory,
+  withHrCompetencyEmployee,
+  withHrCompetencyMapped,
   withMasterPage,
   withRouter,
   withUser,

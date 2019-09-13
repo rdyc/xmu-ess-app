@@ -9,5 +9,6 @@ export interface ICompetencyEmployeeItem {
   category?: IHrCompetencyCategoryList;
   levelUid: string;
   level?: IHrCompetencyLevelList;
+  note?: string;
   changes?: IBaseChanges;
 }

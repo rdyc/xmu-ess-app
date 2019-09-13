@@ -1,10 +1,9 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
-import { IBaseChanges } from '@generic/interfaces';
 import { IPosition } from '@lookup/classes/response';
 import { ICompetencyEmployeeItem } from './ICompetencyEmployeeItem';
 
-export interface IHrCompetencyEmployee {
+export interface IHrCompetencyEmployeeList {
   uid: string;
   employeeUid: string;
   employee?: IAccountEmployee;
@@ -18,5 +17,4 @@ export interface IHrCompetencyEmployee {
   dueDate?: string;
   isDraft?: boolean;
   items: ICompetencyEmployeeItem[];
-  changes?: IBaseChanges;
 }

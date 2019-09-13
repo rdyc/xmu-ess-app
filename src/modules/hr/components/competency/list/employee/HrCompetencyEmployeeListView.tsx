@@ -18,7 +18,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         info={{
           uid: AppMenu.CompetencyAssessmentInput,
           parentUid: AppMenu.HumanResource,
-          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: '360 Employee'}),
+          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: '360 Assessment Input'}),
           description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
         }}
   
@@ -56,7 +56,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         // app bar component
         appBarSearchComponent={
           <SearchBox
-            key="lookup.competency.Employee"
+            key="lookup.competency.employee"
             default={props.hrCompetencyEmployeeState.all.request && props.hrCompetencyEmployeeState.all.request.filter && props.hrCompetencyEmployeeState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}

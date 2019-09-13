@@ -1,11 +1,13 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
   IHrCompetencyEmployeeGetAllRequest, 
+  IHrCompetencyEmployeeGetDetailListRequest, 
   IHrCompetencyEmployeeGetDetailRequest, 
-  IHrCompetencyEmployeePatchRequest, 
+  IHrCompetencyEmployeeGetListRequest,
+  IHrCompetencyEmployeePatchRequest,
   IHrCompetencyEmployeePostRequest
 } from '@hr/classes/queries';
-import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail } from '@hr/classes/response';
+import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyEmployeeList } from '@hr/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum HrCompetencyEmployeeAction {
@@ -13,6 +15,14 @@ export const enum HrCompetencyEmployeeAction {
   GET_ALL_SUCCESS = '@@hr/competency/employee/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@hr/competency/employee/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@hr/competency/employee/GET_ALL_DISPOSE',
+  GET_LIST_REQUEST = '@@hr/competency/employee/GET_LIST_REQUEST',
+  GET_LIST_SUCCESS = '@@hr/competency/employee/GET_LIST_SUCCESS',
+  GET_LIST_ERROR = '@@hr/competency/employee/GET_LIST_ERROR',
+  GET_LIST_DISPOSE = '@@hr/competency/employee/GET_LIST_DISPOSE',
+  GET_DETAIL_LIST_REQUEST = '@@hr/competency/employee/GET_DETAIL_LIST_REQUEST',
+  GET_DETAIL_LIST_SUCCESS = '@@hr/competency/employee/GET_DETAIL_LIST_SUCCESS',
+  GET_DETAIL_LIST_ERROR = '@@hr/competency/employee/GET_DETAIL_LIST_ERROR',
+  GET_DETAIL_LIST_DISPOSE = '@@hr/competency/employee/GET_DETAIL_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@hr/competency/employee/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@hr/competency/employee/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@hr/competency/employee/GET_BY_ID_ERROR',
@@ -32,6 +42,18 @@ export const hrCompetencyEmployeeGetAllRequest = (request: IHrCompetencyEmployee
 export const hrCompetencyEmployeeGetAllSuccess = (response: IResponseCollection<IHrCompetencyEmployee>) => action(HrCompetencyEmployeeAction.GET_ALL_SUCCESS, response);
 export const hrCompetencyEmployeeGetAllError = (error: any) => action(HrCompetencyEmployeeAction.GET_ALL_ERROR, error);
 export const hrCompetencyEmployeeGetAllDispose = () => action(HrCompetencyEmployeeAction.GET_ALL_DISPOSE);
+
+// get list
+export const hrCompetencyEmployeeGetListRequest = (request: IHrCompetencyEmployeeGetListRequest) => action(HrCompetencyEmployeeAction.GET_LIST_REQUEST, request);
+export const hrCompetencyEmployeeGetListSuccess = (response: IResponseCollection<IHrCompetencyEmployeeList>) => action(HrCompetencyEmployeeAction.GET_LIST_SUCCESS, response);
+export const hrCompetencyEmployeeGetListError = (error: any) => action(HrCompetencyEmployeeAction.GET_LIST_ERROR, error);
+export const hrCompetencyEmployeeGetListDispose = () => action(HrCompetencyEmployeeAction.GET_LIST_DISPOSE);
+
+// get detail list
+export const hrCompetencyEmployeeGetDetailListRequest = (request: IHrCompetencyEmployeeGetDetailListRequest) => action(HrCompetencyEmployeeAction.GET_DETAIL_LIST_REQUEST, request);
+export const hrCompetencyEmployeeGetDetailListSuccess = (response: IResponseCollection<IHrCompetencyEmployeeDetailList>) => action(HrCompetencyEmployeeAction.GET_DETAIL_LIST_SUCCESS, response);
+export const hrCompetencyEmployeeGetDetailListError = (error: any) => action(HrCompetencyEmployeeAction.GET_DETAIL_LIST_ERROR, error);
+export const hrCompetencyEmployeeGetDetailListDispose = () => action(HrCompetencyEmployeeAction.GET_DETAIL_LIST_DISPOSE);
 
 // get by id
 export const hrCompetencyEmployeeGetByIdRequest = (request: IHrCompetencyEmployeeGetDetailRequest) => action(HrCompetencyEmployeeAction.GET_BY_ID_REQUEST, request);
