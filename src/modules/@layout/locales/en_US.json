@@ -170,6 +170,7 @@
   "layout.text.loading": "Loading...",
   "layout.text.processing": "Processing...",
   "layout.text.waiting": "Please Wait...",
+  "layout.text.semester": "Semester",
   "layout.text.retry": "Retry",
   "layout.text.none": "None",
   "layout.text.dataInfo": "{total} Record(s)",

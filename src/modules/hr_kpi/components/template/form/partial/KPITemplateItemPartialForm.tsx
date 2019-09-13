@@ -1,21 +1,18 @@
 import { FormMode } from '@generic/types';
-import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardContent, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField, WithStyles } from '@material-ui/core';
+import { Button, Card, CardContent, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
 import { DeleteForever, GroupAdd } from '@material-ui/icons';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
+import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
 import { MeasurementType } from '@common/classes/types';
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
-import { KPICategoryOption } from '@kpi/components/category/options/KPICategoryOption';
-import { KPIMeasurementOption } from '@kpi/components/measurement/options/KPIMeasurementOption';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import * as classNames from 'classnames';
 import { IKPITemplateFormValue } from '../KPITemplateForm';
+import KPITemplateSingleItemPartialForm from './KPITemplateSingleItemPartialForm';
 
 interface KPITemplateItemPartialFormProps {
   formMode: FormMode; 
@@ -23,6 +20,7 @@ interface KPITemplateItemPartialFormProps {
   intl: InjectedIntl;
   filterKPICategory: IKPICategoryGetListFilter;
   filterKPIMeasurement: IKPIMeasurementGetListFilter;
+  isDialogFullScreen: boolean;
 }
 
 type AllProps
@@ -87,309 +85,71 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                   {
                     props.formikBag.values.items.length > 0 &&
                     props.formikBag.values.items.map((item, index) =>
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Field
-                          name="categoryUid"
-                          render={({ form }: FieldProps<IKPITemplateFormValue>) => {
-                            const error = getIn(form.errors, `items.${index}.categoryUid`);
-                            const touch = getIn(form.touched, `items.${index}.categoryUid`);
+                    <Tooltip key={index} title={props.intl.formatMessage(kpiMessage.measurement.field.tooltip)}>
+                      <TableRow key={index}>
+                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {props.formikBag.values.items[index].categoryValue}
+                        </TableCell>
+                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {props.formikBag.values.items[index].categoryName}
+                        </TableCell>
+                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {props.formikBag.values.items[index].measurementValue}
+                        </TableCell>
+                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {props.formikBag.values.items[index].target}
+                        </TableCell>
+                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
+                        </TableCell>
+                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {
+                            props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
+                            props.intl.formatNumber(item.threshold || 0) ||
+                            '-'
+                          }
+                        </TableCell>
+                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                          {
+                            (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
+                              props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
+                            props.intl.formatNumber(item.amount) ||
+                            '-'
+                          }
+                        </TableCell>
+                        <TableCell>
+                          <IconButton 
+                            onClick={() => {
+                              // remove current
+                              fields.remove(index);
 
-                            return (
-                              <KPICategoryOption filter={props.filterKPICategory} defaultLabel={props.intl.formatMessage(kpiMessage.template.field.categoryUidPlaceholder)}>
-                                <SelectField
-                                  isSearchable
-                                  menuPlacement="auto"
-                                  menuPosition="fixed"
-                                  isDisabled={props.formikBag.isSubmitting}
-                                  isClearable={props.formikBag.values.items[index].categoryUid !== ''}
-                                  escapeClearsValue={true}
-                                  valueString={props.formikBag.values.items[index].categoryUid}
-                                  textFieldProps={{
-                                    required: true,
-                                    helperText: touch && error,
-                                    error: touch && Boolean(error)
-                                  }}
-                                  onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.categoryUid`)}
-                                  onChange={(selected: ISelectFieldOption) => {
-                                    props.formikBag.setFieldValue(`items.${index}.categoryUid`, selected && selected.value || '');
-                                    props.formikBag.setFieldValue(`items.${index}.categoryName`, selected && selected.label || '');
-                                    props.formikBag.setFieldValue(`items.${index}.measurementUid`, '');
-                                  }}
-                                />
-                              </KPICategoryOption>
-                            );
-                          }}
-                        />
-                      </TableCell>
-                      
-                      <TableCell>
-                        <Field
-                          name={`items.${index}.categoryName`}
-                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-                            const error = getIn(form.errors, `items.${index}.categoryName`);
-                            const touch = getIn(form.touched, `items.${index}.categoryName`);
+                              // calculate total requested
+                              let totalRequest = 0;
+                              props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                                if (index !== indexItem) {
+                                  totalRequest = totalRequest + requestItem.weight;
+                                } 
+                              });
 
-                            return (
-                              <TextField
-                                {...field}
-                                fullWidth
-                                required
-                                disabled={form.isSubmitting}
-                                margin="normal"
-                                autoComplete="off"
-                                placeholder={props.intl.formatMessage(kpiMessage.template.field.categoryName)}
-                                helperText={touch && error}
-                                error={touch && Boolean(error)}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        <Field
-                          name={`items.${index}.measurementUid`}
-                          render={({ form }: FieldProps<IKPITemplateFormValue>) => {
-                            const error = getIn(form.errors, `items.${index}.measurementUid`);
-                            const touch = getIn(form.touched, `items.${index}.measurementUid`);
-
-                            return (
-                              <KPIMeasurementOption filter={props.filterKPIMeasurement} categoryUid={props.formikBag.values.items[index].categoryUid} defaultLabel={props.intl.formatMessage(kpiMessage.template.field.measurementUidPlaceholder)}>
-                                <SelectField
-                                  isSearchable
-                                  menuPlacement="auto"
-                                  menuPosition="fixed"
-                                  isDisabled={props.formikBag.isSubmitting || props.formikBag.values.items[index].categoryUid === ''}
-                                  isClearable={props.formikBag.values.items[index].measurementUid !== ''}
-                                  escapeClearsValue={true}
-                                  valueString={props.formikBag.values.items[index].measurementUid}
-                                  textFieldProps={{
-                                    required: true,
-                                    helperText: touch && error,
-                                    error: touch && Boolean(error)
-                                  }}
-                                  onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.measurementUid`)}
-                                  onChange={(selected: ISelectFieldOption) => {
-                                    props.formikBag.setFieldValue(`items.${index}.measurementUid`, selected && selected.value || '');
-                                    props.formikBag.setFieldValue(`items.${index}.weight`, selected && selected.data && selected.data.weight || 0);
-                                    props.formikBag.setFieldValue(`items.${index}.measurementType`, selected && selected.data && selected.data.measurementType || '');
-
-                                    if (selected && selected.data && selected.data.measurementType === MeasurementType.Completion) {
-                                      props.formikBag.setFieldValue(`items.${index}.amount`, 1);
-                                    }
-
-                                    let totalValue = selected && selected.data && selected.data.weight || 0;
-                                    props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                                      if (index !== indexItem) {
-                                        totalValue = totalValue + requestItem.weight;
-                                      }                              
-                                    });
-        
-                                    // set weight
-                                    props.formikBag.setFieldValue('totalWeight', totalValue);
-                                  }}
-                                />
-                              </KPIMeasurementOption>
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        <Field
-                          name={`items.${index}.target`}
-                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-                            const error = getIn(form.errors, `items.${index}.target`);
-                            const touch = getIn(form.touched, `items.${index}.target`);
-
-                            return (
-                              <TextField
-                                {...field}
-                                fullWidth
-                                multiline
-                                required
-                                disabled={form.isSubmitting}
-                                margin="normal"
-                                autoComplete="off"
-                                placeholder={props.intl.formatMessage(kpiMessage.template.field.targetPlaceholder)}
-                                helperText={touch && error}
-                                error={touch && Boolean(error)}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        <Field
-                          name={`items.${index}.weight`}
-                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-                            const error = getIn(form.errors, `items.${index}.weight`);
-                            const touch = getIn(form.touched, `items.${index}.weight`);
-
-                            return (
-                              <TextField
-                                {...field}
-                                fullWidth
-                                required
-                                disabled={form.isSubmitting}
-                                margin="normal"
-                                autoComplete="off"
-                                placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
-                                helperText={touch && error}
-                                error={touch && Boolean(error)}
-                                InputProps={{
-                                  inputComponent: NumberFormatter,
-                                }}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                  let totalValue = 0;
-                                  let value = 0;
-
-                                  if (e.target.value === '') {
-                                    // set current field to 0
-                                    props.formikBag.setFieldValue(field.name, 0);
-                                    value = 0;
-                                  } else {
-                                    value = parseFloat(e.target.value);
-                                    // set current field
-                                    props.formikBag.setFieldValue(field.name, value);
-                                  }
-                                  
-                                  // set actual field
-                                  props.formikBag.setFieldValue(`items.${index}.weight`, value);
-
-                                  // calculate total requested
-                                  totalValue = value;
-                                  props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                                    if (index !== indexItem) {
-                                      totalValue = totalValue + requestItem.weight;
-                                    }                              
-                                  });
-
-                                  // set weight
-                                  props.formikBag.setFieldValue('totalWeight', totalValue);
-                                }}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        {
-                          props.formikBag.values.items[index].measurementType === MeasurementType.Scoring &&
-                          <Field
-                            name={`items.${index}.threshold`}
-                            render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-                              const error = getIn(form.errors, `items.${index}.threshold`);
-                              const touch = getIn(form.touched, `items.${index}.threshold`);
-
-                              return (
-                                <TextField
-                                  {...field}
-                                  fullWidth
-                                  disabled={form.isSubmitting}
-                                  margin="normal"
-                                  autoComplete="off"
-                                  placeholder={props.intl.formatMessage(kpiMessage.template.field.thresholdPlaceholder)}
-                                  helperText={touch && error}
-                                  error={touch && Boolean(error)}
-                                  InputProps={{
-                                    inputComponent: NumberFormatter,
-                                  }}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    let value = 0;
-
-                                    if (e.target.value === '') {
-                                      // set current field to 0
-                                      props.formikBag.setFieldValue(field.name, 0);
-                                      value = 0;
-                                    } else {
-                                      value = parseFloat(e.target.value);
-                                      // set current field
-                                      props.formikBag.setFieldValue(field.name, value);
-                                    }
-                                    
-                                    // set value field
-                                    // props.formikBag.setFieldValue(`items.${index}.weight`, value);
-                                  }}
-                                />
-                              );
+                              // set request
+                              props.formikBag.setFieldValue('totalWeight', totalRequest);
                             }}
-                          /> || '-'
-                        }
-                      </TableCell>
-
-                      <TableCell>
-                        {
-                          (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring || 
-                          props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
-                          <Field
-                            name={`items.${index}.amount`}
-                            render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-                              const error = getIn(form.errors, `items.${index}.amount`);
-                              const touch = getIn(form.touched, `items.${index}.amount`);
-
-                              return (
-                                <TextField
-                                  {...field}
-                                  fullWidth
-                                  required
-                                  disabled={form.isSubmitting}
-                                  margin="normal"
-                                  autoComplete="off"
-                                  placeholder={props.intl.formatMessage(kpiMessage.template.field.amountPlaceholder)}
-                                  helperText={touch && error}
-                                  error={touch && Boolean(error)}
-                                  InputProps={{
-                                    inputComponent: NumberFormatter,
-                                  }}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    let value = 0;
-
-                                    if (e.target.value === '') {
-                                      // set current field to 0
-                                      props.formikBag.setFieldValue(field.name, 0);
-                                      value = 0;
-                                    } else {
-                                      value = parseFloat(e.target.value);
-                                      // set current field
-                                      props.formikBag.setFieldValue(field.name, value);
-                                    }
-                                    
-                                    // set value field
-                                    // props.formikBag.setFieldValue(`items.${index}.weight`, value);
-                                  }}
-                                />
-                              );
-                            }}
-                          /> || '-'
-                        }
-                      </TableCell>
-
-                      <TableCell>
-                        <IconButton 
-                          onClick={() => {
-                            // remove current
-                            fields.remove(index);
-
-                            // calculate total requested
-                            let totalRequest = 0;
-                            props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                              if (index !== indexItem) {
-                                totalRequest = totalRequest + requestItem.weight;
-                              } 
-                            });
-
-                            // set request
-                            props.formikBag.setFieldValue('totalWeight', totalRequest);
-                          }}
-                        >
-                          <DeleteForever />
+                          >
+                            <DeleteForever />
                         </IconButton>
                       </TableCell>
-                    </TableRow>
+                        <KPITemplateSingleItemPartialForm
+                          formikBag={props.formikBag}
+                          formMode={props.formMode}
+                          intl={props.intl}
+                          classes={props.classes}
+                          filterKPICategory={props.filterKPICategory}
+                          filterKPIMeasurement={props.filterKPIMeasurement}
+                          itemDialogIndex={index}
+                          isDialogFullScreen={props.isDialogFullScreen}
+                        />
+                      </TableRow>
+                    </Tooltip>
                   )}
                   <TableRow>
                     <TableCell colSpan={8}>
@@ -406,6 +166,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           weight: 0,
                           threshold: 0,
                           amount: 0,
+                          isOpen: true,
                         })}
                       >
                         <GroupAdd className={props.classes.marginFarRight}/>

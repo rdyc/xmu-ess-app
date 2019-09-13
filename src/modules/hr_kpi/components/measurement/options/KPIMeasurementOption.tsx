@@ -25,7 +25,7 @@ export interface IKPIMeasurementOptions {
 
 interface IOwnOption {
   categoryUid: string;
-  defaultLabel: string;
+  defaultLabel?: string;
   filter?: IKPIMeasurementGetListFilter;
 }
 
@@ -64,7 +64,7 @@ const stateUpdaters: StateUpdaters<KPIMeasurementOptionProps, IOwnState, IOwnSta
   }),
   setOptions: (prevState: IOwnState, props: KPIMeasurementOptionProps) => (values: IKPIMeasurementList[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: props.defaultLabel, value: ''}
+      { label: props.defaultLabel || '', value: ''}
     ];
         
     values.forEach(item => options.push({ 

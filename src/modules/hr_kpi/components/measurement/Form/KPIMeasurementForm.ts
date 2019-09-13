@@ -96,7 +96,7 @@ const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasu
     validationSchema: Yup.object().shape<Partial<IKPIMeasurementFormValue>>({
       description: Yup.string()
         .label(props.intl.formatMessage(kpiMessage.measurement.field.description))
-        .max(200)
+        .max(300)
         .required(),
       measurementType: Yup.string()
         .label(props.intl.formatMessage(kpiMessage.measurement.field.measurementType))

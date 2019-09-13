@@ -7,10 +7,10 @@ import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IEmployee } from '@account/classes/response';
+import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeFilter } from './EmployeeFilter';
 import { AccountEmployeeListProps } from './EmployeeList';
-import { AccountEmployeeSummary } from './EmployeeSummary';
 
 export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
   <React.Fragment>
@@ -34,7 +34,7 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       
       // row components
       summaryComponent={(item: IEmployee) => ( 
-        <AccountEmployeeSummary data={item} />
+        <EmployeeSummary data={item} />
       )}
       actionComponent={(item: IEmployee) => (
         <React.Fragment>
@@ -89,7 +89,6 @@ export const EmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
       initialProps={{
         companyUids: props.companyUids,
         positionUids: props.positionUids,
-        roleUids: props.roleUids,
         useAccess: props.useAccess,
         isActive: props.isActive,
       }}
