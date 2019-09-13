@@ -130,7 +130,9 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
           }
         } else {
           if (request && request.filter && !request.filter.positionUids && !this.props.position) {
-            this.props.setOptions(response && response.data);
+            if (response && response.data) {
+              this.props.setOptions(response.data);
+            }
           } else {
             this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
           }

@@ -5,3 +5,4 @@ export * from './competency/level/hrCompetencyLevelActions';
 export * from './competency/mapped/hrCompetencyMappedActions';
 export * from './competency/assessment/hrCompetencyAssessmentActions';
 export * from './competency/employee/hrCompetencyEmployeeActions';
+export * from './competency/result/hrCompetencyResultActions';
