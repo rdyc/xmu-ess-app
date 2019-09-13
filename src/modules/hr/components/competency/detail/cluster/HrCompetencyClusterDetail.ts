@@ -189,6 +189,9 @@ const handlerCreators: HandleCreators<HrCompetencyClusterDetailProps, IOwnHandle
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyClusterDetailProps, IOwnState> = {
+  componentDidMount() {
+    // console.log('WOI');
+  },
   componentDidUpdate(prevProps: HrCompetencyClusterDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
