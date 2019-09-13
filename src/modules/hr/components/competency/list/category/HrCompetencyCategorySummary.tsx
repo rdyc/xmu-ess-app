@@ -22,7 +22,7 @@ const hrCompetencySummaryCategory: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
-        value={props.data.cluster.name}
+        value={props.data.competency.name}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>

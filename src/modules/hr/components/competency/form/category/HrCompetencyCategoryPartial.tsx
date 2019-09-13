@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyCategoryGetListFilter, IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
@@ -15,7 +15,6 @@ type HrCompetencyCategoryPartialProps = {
   formikBag: FormikProps<ICategoryFormValue>;
   intl: InjectedIntl;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  filterCategories?: IHrCompetencyCategoryGetListFilter;
 };
 
 const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryPartialProps> = props => (
@@ -55,7 +54,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
       <Field
         name="categoryUid"
         render={({ field, form }: FieldProps<ICategoryFormValue>) => (
-          <HrCompetencyCategoryOption filter={props.filterCategories} clusterUid={props.formikBag.values.clusterUid}>
+          <HrCompetencyCategoryOption competencyUid={props.formikBag.values.clusterUid}>
             <SelectField
               isSearchable
               menuPlacement="auto"

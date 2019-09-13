@@ -6,4 +6,5 @@ export interface IEmployeeListFilter extends IBaseFilter {
   positionUids?: string;
   size?: number;
   useAccess?: boolean;
+  isActive?: boolean;
 }

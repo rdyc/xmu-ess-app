@@ -122,5 +122,11 @@
     "description": "For creating console log",
     "scope": "typescript",
     "body": "console.log($0);"
+  },
+  "create interface": {
+    "prefix": "citf",
+    "description": "Creating interface by it's name",
+    "scope": "typescript",
+    "body": "export interface ${TM_FILENAME_BASE} {$0}"
   }
 }

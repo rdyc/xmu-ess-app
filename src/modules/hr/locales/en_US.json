@@ -19,9 +19,10 @@
 
   "hr.shared.confirm.create.title": "Create New {state}",
   "hr.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
- 
   "hr.shared.confirm.modify.title": "Modify {state}",
   "hr.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
+  "hr.shared.confirm.saveAs.title": "Save as {state}",
+  "hr.shared.confirm.saveAs.subHeader": "You are about to save this as {state} data. Do you want to continue?",
 
   "hr.shared.section.info.title": "Competency {state}",
   "hr.shared.section.info.subHeader": " ",

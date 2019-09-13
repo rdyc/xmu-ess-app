@@ -1,4 +1,4 @@
 export interface IHrCompetencyCategoryGetDetailRequest {
   categoryUid: string;
-  clusterUid: string;
+  competencyUid: string;
 }

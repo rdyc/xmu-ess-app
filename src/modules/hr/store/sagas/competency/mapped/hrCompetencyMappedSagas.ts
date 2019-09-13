@@ -35,7 +35,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/mappeds?${params}`, 
+      path: `/v1/mappeds?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetAllSuccess(response.body)),
       ]), 
@@ -60,7 +60,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/mappeds/list?${params}`,
+      path: `/v1/mappeds/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetListSuccess(response.body)),
       ]), 
@@ -80,7 +80,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/mappeds/${action.payload.mappedUid}`,
+      path: `/v1/mappeds/${action.payload.mappedUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetByIdSuccess(response.body)),
       ]), 
@@ -100,7 +100,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/competency/mappeds`,
+      path: `/v1/mappeds`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyMappedGetByIdDispose()),
@@ -140,7 +140,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/competency/mappeds/${action.payload.mappedUid}`,
+      path: `/v1/mappeds/${action.payload.mappedUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyMappedGetByIdDispose()),
@@ -186,8 +186,8 @@ function* watchSwitchAccess() {
   }
 
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
-
 }
+
 function* hrCompetencyMappedSagas() {
   yield all([
     fork(watchFetchAllRequest),

@@ -45,9 +45,7 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
 
           <Typography variant="h6" color="inherit" className={props.classes.flex}>
             {
-              !props.isStartup &&
-              props.intl.formatMessage(layoutMessage.tooltip.filter) ||
-              props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: 'Cluster'})
+              props.intl.formatMessage(layoutMessage.tooltip.filter)
             }
           </Typography>
 

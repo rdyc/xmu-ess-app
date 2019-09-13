@@ -34,3 +34,17 @@ export * from './competency/mapped/IHrCompetencyMappedGetDetailRequest';
 export * from './competency/mapped/IHrCompetencyMappedGetListRequest';
 export * from './competency/mapped/IHrCompetencyMappedPostRequest';
 export * from './competency/mapped/IHrCompetencyMappedPutRequest';
+
+// assessment
+export * from './competency/assessment/IHrCompetencyAssessmentGetAllRequest';
+export * from './competency/assessment/IHrCompetencyAssessmentGetDetailRequest';
+export * from './competency/assessment/IHrCompetencyAssessmentPostRequest';
+export * from './competency/assessment/IHrCompetencyAssessmentPutRequest';
+
+// employee
+export * from './competency/employee/IHrCompetencyEmployeeGetAllRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetDetailRequest';
+export * from './competency/employee/IHrCompetencyEmployeePatchRequest';
+export * from './competency/employee/IHrCompetencyEmployeePostRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetListRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetDetailListRequest';

@@ -74,6 +74,7 @@ const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
                 onClick={() => handleToggle(item.uid)}
               >
                 <ListItemText
+                  className={data.categories.find(find => find.category.competencyUid === item.uid) ? '' : props.classes.textStrikethrough}
                   primary={item.name}
                 />
                 <ListItemSecondaryAction>
@@ -87,13 +88,28 @@ const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
               >
                 {
                   item.categories.map(category => 
-                    data.categories.find(find => find.category.uid === category.uid) &&
+                    data.categories.find(find => find.category.uid === category.uid) ?
                       <ListItem
                         key={category.uid}
                         color="inherit"
                         className={props.classes.marginFarLeft}
                       >
                         <ListItemText
+                            primary={category.name}
+                            primaryTypographyProps={{
+                              noWrap: true,
+                              color: 'inherit'
+                            }}
+                        />
+                      </ListItem>
+                      :
+                      <ListItem
+                        key={category.uid}
+                        color="inherit"
+                        className={props.classes.marginFarLeft}
+                      >
+                        <ListItemText
+                            className={props.classes.textStrikethrough}
                             primary={category.name}
                             primaryTypographyProps={{
                               noWrap: true,
