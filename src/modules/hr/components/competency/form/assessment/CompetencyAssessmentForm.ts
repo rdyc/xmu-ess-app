@@ -1,10 +1,14 @@
 import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { FormMode } from '@generic/types';
-import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
+import { IHrCompetencyAssessmentPostPayload, IHrCompetencyAssessmentPutPayload } from '@hr/classes/request';
+import { IHrCompetencyAssessment } from '@hr/classes/response';
+import { withHrCompetencyAssessment, WithHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { DraftType } from '@layout/components/submission/DraftType';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -41,6 +45,7 @@ export interface ICompetencyAssessmentFormValue {
   positionUid: string;
   employeeUid: string;
   responder: IResponderEmployee[];
+  save: DraftType;
 }
 
 interface IOwnRouteParams {
@@ -80,7 +85,7 @@ interface IOwnHandler {
 
 export type CompetencyAssessmentFormProps
   = WithMasterPage
-  & WithHrCompetencyCluster
+  & WithHrCompetencyAssessment
   & WithUser
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
@@ -102,6 +107,7 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     positionUid: '',
     employeeUid: '',
     responder: [],
+    save: DraftType.draft
   },
 
   // validation props
@@ -166,140 +172,123 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
       saveType
     });
   },
-  handleOnLoadDetail: () => () => {
-    // if (!isNullOrUndefined(props.history.location.state)) {
-    //   const user = props.userState.user;
-    //   const clusterUid = props.history.location.state.uid;
-    //   const { isLoading } = props.hrCompetencyClusterState.detail;
+  handleOnLoadDetail: (props: CompetencyAssessmentFormProps) => () => {
+    if (!isNullOrUndefined(props.history.location.state)) {
+      const user = props.userState.user;
+      const assessmentUid = props.history.location.state.uid;
+      const { isLoading } = props.hrCompetencyAssessmentState.detail;
 
-    //   if (user && clusterUid && !isLoading) {
-    //     props.hrCompetencyClusterDispatch.loadDetailRequest({
-    //       clusterUid
-    //     });
-    //   }
-    // }
+      if (user && assessmentUid && !isLoading) {
+        props.hrCompetencyAssessmentDispatch.loadDetailRequest({
+          assessmentUid
+        });
+      }
+    }
   },
-  // handleFilterEmployee: (props: CompetencyAssessmentFormProps) => (companyUid: string, positionUid: string) => {
-  //   console.log(props.filterResponden);
-  //   if (companyUid && positionUid) {
-  //     const filterResponden: IEmployeeListFilter = {
-  //       companyUids: companyUid,
-  //       positionUids: positionUid,
-  //       orderBy: 'fullName',
-  //       direction: 'ascending'
-  //     };
-  //     props.stateUpdate({
-  //       filterResponden
-  //     });
-  //   } else {
-  //     props.stateUpdate({
-  //       filterResponden: undefined
-  //     });
-  //   }
-  // },
-  handleOnSubmit: (props: CompetencyAssessmentFormProps) => () => {
-    console.log('Submit assessment');
-    console.log(props.saveType);
-    // const { user } = props.userState;
-    // let promise = new Promise((resolve, reject) => undefined);
+  handleOnSubmit: (props: CompetencyAssessmentFormProps) => (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => {
+    console.log('save type', props.saveType);
+    const { user } = props.userState;
+    let promise = new Promise((resolve, reject) => undefined);
 
-    // if (user) {
-    //   // New
-    //   if (props.formMode === FormMode.New) {
-    //     // fill payload
-    //     const payload: IHrCompetencyClusterPostPayload = {
-    //       name: values.name,
-    //       description: values.description,
-    //       categories: []
-    //     };
+    if (user) {
+      // New
+      if (props.formMode === FormMode.New) {
+        // fill payload
+        const payload: IHrCompetencyAssessmentPostPayload = {
+          positionUid: values.positionUid,
+          employeeUid: values.employeeUid,
+          assessmentYear: Number(values.year),
+          isDraft: props.saveType === DraftType.draft ? true : false,
+          responders: []
+        };
 
-    //     // fill categories
-    //     values.categories.forEach(item => payload.categories.push({
-    //       name: item.name,
-    //       description: item.description
-    //     }));
+        // fill responder
+        values.responder.forEach(item => payload.responders.push({
+          employeeUid: item.employeeUid
+        }));
 
-    //     // set the promise
-    //     promise = new Promise((resolve, reject) => {
-    //       props.hrCompetencyClusterDispatch.createRequest({
-    //         resolve,
-    //         reject,
-    //         data: payload
-    //       });
-    //     });
-    //   }
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.hrCompetencyAssessmentDispatch.createRequest({
+            resolve,
+            reject,
+            data: payload
+          });
+        });
+      }
 
-    //   // Edit
-    //   if (props.formMode === FormMode.Edit) {
-    //     const clusterUid = props.history.location.state.uid;
+      // Edit
+      if (props.formMode === FormMode.Edit) {
+        const assessmentUid = props.history.location.state.uid;
 
-    //     // must have clusterUid
-    //     if (clusterUid) {
-    //       const payload: IHrCompetencyClusterPutPayload = {
-    //         name: values.name,
-    //         description: values.description,
-    //         categories: []
-    //       };
+        // must have assessmentUid
+        if (assessmentUid) {
+          const payload: IHrCompetencyAssessmentPutPayload = {
+            positionUid: values.positionUid,
+            employeeUid: values.employeeUid,
+            assessmentYear: Number(values.year),
+            isDraft: props.saveType === DraftType.draft ? true : false,
+            responders: []
+          };
 
-    //       // fill categories
-    //       values.categories.forEach(item => payload.categories.push({
-    //         categoryUid: item.uid,
-    //         name: item.name,
-    //         description: item.description
-    //       }));
+          // fill responder
+          values.responder.forEach(item => payload.responders.push({
+            uid: item.uid,
+            employeeUid: item.employeeUid
+          }));
 
-    //       // set the promise
-    //       promise = new Promise((resolve, reject) => {
-    //         props.hrCompetencyClusterDispatch.patchRequest({
-    //           clusterUid,
-    //           resolve,
-    //           reject,
-    //           data: payload
-    //         });
-    //       });
-    //     }
-    //   }
-    // }
+          // set the promise
+          promise = new Promise((resolve, reject) => {
+            props.hrCompetencyAssessmentDispatch.updateRequest({
+              assessmentUid,
+              resolve,
+              reject,
+              data: payload
+            });
+          });
+        }
+      }
+    }
 
-    // // handling promise
-    // promise
-    //   .then((response: IHrCompetencyCluster) => {
+    // handling promise
+    promise
+      .then((response: IHrCompetencyAssessment) => {
         
-    //     // set submitting status
-    //     actions.setSubmitting(false);
+        // set submitting status
+        actions.setSubmitting(false);
 
-    //     // clear form status
-    //     actions.setStatus();
+        // clear form status
+        actions.setStatus();
 
-    //     // show flash message
-    //     props.masterPage.flashMessage({
-    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Cluster', uid: response.uid })
-    //     });
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment', uid: response.uid })
+        });
 
-    //     // redirect to detail
-    //     props.history.push(`/lookup/competencycluster/${response.uid}`);
-    //   })
-    //   .catch((error: IValidationErrorResponse) => {
-    //     // set submitting status
-    //     actions.setSubmitting(false);
+        // redirect to detail
+        props.history.push(`/hr/assessment/${response.uid}`);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
         
-    //     // set form status
-    //     actions.setStatus(error);
+        // set form status
+        actions.setStatus(error);
         
-    //     // error on form fields
-    //     if (error.errors) {
-    //       error.errors.forEach(item => 
-    //         actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
-    //       );
-    //     }
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
 
-    //     // console.log(error.errors);
+        // console.log(error.errors);
 
-    //     // show flash message
-    //     props.masterPage.flashMessage({
-    //       message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
-    //     });
-    //   });
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+        });
+      });
   }
 };
 
@@ -307,36 +296,39 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
   componentDidMount() {
     //
   },
-  componentDidUpdate() {
-    // const { response: thisResponse } = this.props.hrCompetencyClusterState.detail;
-    // const { response: prevResponse } = prevProps.hrCompetencyClusterState.detail;
+  componentDidUpdate(prevProps: CompetencyAssessmentFormProps) {
+    const { response: thisResponse } = this.props.hrCompetencyAssessmentState.detail;
+    const { response: prevResponse } = prevProps.hrCompetencyAssessmentState.detail;
     
-    // if (thisResponse !== prevResponse) {
-    //   if (thisResponse && thisResponse.data) {
-    //     // define initial values
-    //     const initialValues: ICompetencyAssessmentFormValue = {
-    //       uid: thisResponse.data.uid,
-    //       name: thisResponse.data.name,
-    //       description: thisResponse.data.description,
-    //       categories: []
-    //     };
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
+        // define initial values
+        const initialValues: ICompetencyAssessmentFormValue = {
+            uid: thisResponse.data.uid,
+            companyUid: thisResponse.data.position.companyUid,
+            positionUid: thisResponse.data.positionUid,
+            employeeUid: thisResponse.data.employeeUid,
+            year: thisResponse.data.assessmentYear.toString(),
+            responder: [],
+            save: thisResponse.data.isDraft ? DraftType.draft : DraftType.final
+        };
 
-    //     // fill categories
-    //     thisResponse.data.categories.forEach(item => initialValues.categories.push({
-    //       uid: item.uid,
-    //       name: item.name,
-    //       description: item.description
-    //     }));
+        // fill categories
+        thisResponse.data.responders.forEach(item => initialValues.responder.push({
+          uid: item.uid,
+          employeeUid: item.employeeUid,
+          employee: item.employee
+        }));
 
-    //     this.props.setInitialValues(initialValues);
-    //   }
-    // }
+        this.props.setInitialValues(initialValues);
+      }
+    }
   }
 };
 
 export const CompetencyAssessmentForm = compose<CompetencyAssessmentFormProps, IOwnOption>(
   setDisplayName('CompetencyAssessmentForm'),
-  withHrCompetencyCluster,
+  withHrCompetencyAssessment,
   withMasterPage,
   withRouter,
   withUser,

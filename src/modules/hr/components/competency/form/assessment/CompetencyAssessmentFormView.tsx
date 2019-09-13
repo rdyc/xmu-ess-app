@@ -3,9 +3,8 @@ import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
-// import { DraftType } from '@layout/components/submission/DraftType';
-import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
-// import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
+import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
+// import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
@@ -18,11 +17,11 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
     info={{
       uid: AppMenu.CompetencyAssessment,
       parentUid: AppMenu.HumanResource,
-      parentUrl: '/hr/competencyassessment',
+      parentUrl: '/hr/assessment',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Assessment'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Assessment'})
     }}
-    state={props.hrCompetencyClusterState.detail}
+    state={props.hrCompetencyAssessmentState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -56,13 +55,14 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                     marginWideTop: props.classes.marginWideTop
                   }}
                   filterAccountEmployee={props.filterAccountEmployee}
+                  data={props.hrCompetencyAssessmentState.detail.response && props.hrCompetencyAssessmentState.detail.response.data}
                 />
               </div>
             </div>
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <SubmissionDraft 
+                {/* <SubmissionDraft 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
@@ -84,6 +84,22 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}  
                   saveAs={props.handleSaveType}
+                /> */}
+                <SubmissionForm 
+                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
+                  className={props.classes.flexContent}
+                  formikProps={formikBag}
+                  buttonLabelProps={{
+                    reset: props.intl.formatMessage(layoutMessage.action.reset),
+                    submit: props.intl.formatMessage(layoutMessage.action.submit),
+                    processing: props.intl.formatMessage(layoutMessage.text.processing)
+                  }}
+                  confirmationDialogProps={{
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Assessment'}),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'Assessment'}),
+                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+                  }} 
                 />
               </div>
               <div className={props.classes.flexContent}>

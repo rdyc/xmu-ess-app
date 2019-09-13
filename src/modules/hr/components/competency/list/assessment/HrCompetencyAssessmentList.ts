@@ -19,27 +19,28 @@ import {
   ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
-  StateHandler,
+  // StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { IHrCompetencyAssessmentFilterResult } from './HrCompetencyAssessmentFilter';
+// import { IHrCompetencyAssessmentFilterResult } from './HrCompetencyAssessmentFilter';
 import { HrCompetencyAssessmentListView } from './HrCompetencyAssessmentListView';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IHrCompetencyAssessmentFilterResult {
+// interface IOwnState extends IHrCompetencyAssessmentFilterResult {
+interface IOwnState {
   fields: ICollectionValue[];
-  isFilterOpen: boolean;
+  // isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setFilterVisibility: StateHandler<IOwnState>;
-  setFilterApplied: StateHandler<IOwnState>;
+  // setFilterVisibility: StateHandler<IOwnState>;
+  // setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -48,9 +49,9 @@ interface IOwnHandler {
   handleOnBind: (item: IHrCompetencyAssessment, index: number) => IDataBindResult;
 
   // filter
-  handleFilterApplied: (filter: IHrCompetencyAssessmentFilterResult) => void;
-  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterBadge: () => boolean;
+  // handleFilterApplied: (filter: IHrCompetencyAssessmentFilterResult) => void;
+  // handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  // handleFilterBadge: () => boolean;
 }
 
 export type HrCompetencyAssessmentListProps
@@ -65,33 +66,33 @@ export type HrCompetencyAssessmentListProps
   & WithHrCompetencyAssessment;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyAssessmentListProps): IOwnState => {
-  const { request } = props.hrCompetencyAssessmentState.all;
+  // const { request } = props.hrCompetencyAssessmentState.all;
 
   const state: IOwnState = {
     fields: Object.keys(IHrCompetencyField).map(key => ({
       value: key,
       name: IHrCompetencyField[key]
     })),
-    isFilterOpen: false,
-    status: 'pending'
+    // isFilterOpen: false,
+    // status: 'pending'
   };
 
   // fill from previous request if any
-  if (request && request.filter) {
-    state.status = request.filter.status;
-  }
+  // if (request && request.filter) {
+  //   state.status = request.filter.status;
+  // }
 
   return state;
 };
 
 const stateUpdaters: StateUpdaters<HrCompetencyAssessmentListProps, IOwnState, IOwnStateUpdater> = {
-  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
-    isFilterOpen: !state.isFilterOpen
-  }),
-  setFilterApplied: (state: IOwnState) => (filter: IHrCompetencyAssessmentFilterResult): Partial<IOwnState> => ({
-    ...filter,
-    isFilterOpen: false
-  }),
+  // setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+  //   isFilterOpen: !state.isFilterOpen
+  // }),
+  // setFilterApplied: (state: IOwnState) => (filter: IHrCompetencyAssessmentFilterResult): Partial<IOwnState> => ({
+  //   ...filter,
+  //   isFilterOpen: false
+  // }),
 };
 
 const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandler> = {
@@ -132,7 +133,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
         find,
         findBy,
         page: undefined,
-        status: props.status
+        // status: props.status
       };
       
       // compare request
@@ -146,15 +147,15 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
       }
     }
   },
-  handleFilterVisibility: (props: HrCompetencyAssessmentListProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterVisibility();
-  },
-  handleFilterApplied: (props: HrCompetencyAssessmentListProps) => (filter: IHrCompetencyAssessmentFilterResult) => {
-    props.setFilterApplied(filter);
-  },
-  handleFilterBadge: (props: HrCompetencyAssessmentListProps) => () => {
-    return props.status !== 'pending';
-  },
+  // handleFilterVisibility: (props: HrCompetencyAssessmentListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  //   props.setFilterVisibility();
+  // },
+  // handleFilterApplied: (props: HrCompetencyAssessmentListProps) => (filter: IHrCompetencyAssessmentFilterResult) => {
+  //   props.setFilterApplied(filter);
+  // },
+  // handleFilterBadge: (props: HrCompetencyAssessmentListProps) => () => {
+  //   return props.status !== 'pending';
+  // },
   handleOnBind: () => (item: IHrCompetencyAssessment, index: number) => ({
     key: index,
     primary: item.employee.fullName,
@@ -169,18 +170,18 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentListProps, IOwnState> = {
   componentDidUpdate(prevProps: HrCompetencyAssessmentListProps) {
     // track any changes in filter props
-    const isFilterChanged = !shallowEqual(
-      {
-        status: this.props.status,
-      },
-      {
-        status: prevProps.status
-      }
-    );
+    // const isFilterChanged = !shallowEqual(
+    //   {
+    //     status: this.props.status,
+    //   },
+    //   {
+    //     status: prevProps.status
+    //   }
+    // );
 
-    if (isFilterChanged) {
-      this.props.handleOnLoadApi(undefined, true);
-    }
+    // if (isFilterChanged) {
+    //   this.props.handleOnLoadApi(undefined, true);
+    // }
   }
 };
 

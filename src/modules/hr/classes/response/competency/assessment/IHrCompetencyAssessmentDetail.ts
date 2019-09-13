@@ -10,6 +10,7 @@ export interface IHrCompetencyAssessmentDetail {
   employeeUid: string;
   employee: IAccountEmployee;
   assessmentYear: number;
-  responders?: IAssessmentItem[];
+  responders: IAssessmentItem[];
+  isDraft: boolean;
   changes?: IBaseChanges;
 }

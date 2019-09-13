@@ -11,5 +11,6 @@ export interface IHrCompetencyAssessment {
   employee: IAccountEmployee;
   assessmentYear: number;
   responders?: IAssessmentItem[];
+  isDraft: boolean;
   changes?: IBaseChanges;
 }

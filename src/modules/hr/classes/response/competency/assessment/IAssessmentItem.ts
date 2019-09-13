@@ -6,5 +6,8 @@ export interface IAssessmentItem {
   assessmentUid: string;
   employeeUid: string;
   employee: IAccountEmployee;
+  dueDate: string;
+  isExpired: boolean;
+  isRespond: boolean;
   changes?: IBaseChanges;
 }

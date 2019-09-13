@@ -4,5 +4,6 @@ export interface IHrCompetencyAssessmentPostPayload {
   employeeUid: string;
   positionUid: string;
   assessmentYear: number;
-  responders?: IAssessmentItemCreate[];
+  responders: IAssessmentItemCreate[];
+  isDraft?: boolean;
 }

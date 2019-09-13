@@ -35,4 +35,6 @@ export * from './competency/assessment/IHrCompetencyAssessmentDetail';
 // employee
 export * from './competency/employee/ICompetencyEmployeeItem';
 export * from './competency/employee/IHrCompetencyEmployee';
+export * from './competency/employee/IHrCompetencyEmployeeList';
 export * from './competency/employee/IHrCompetencyEmployeeDetail';
+export * from './competency/employee/IHrCompetencyEmployeeDetailList';

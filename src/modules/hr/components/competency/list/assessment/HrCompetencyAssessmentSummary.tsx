@@ -53,7 +53,7 @@ const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => (
         :
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(hrMessage.competency.field.totalItem, {state: 'Level'})}
+          label={props.intl.formatMessage(hrMessage.competency.field.totalItem, {state: 'Responder'})}
           value={props.data.responders && props.data.responders.length < 2 ?
             props.intl.formatMessage(hrMessage.competency.field.oneItem, {total: props.data.responders && props.data.responders.length, state: 'Responder'})  : 
             props.intl.formatMessage(hrMessage.competency.field.manyItem, {total: props.data.responders && props.data.responders.length, state: 'Responders'}) }
