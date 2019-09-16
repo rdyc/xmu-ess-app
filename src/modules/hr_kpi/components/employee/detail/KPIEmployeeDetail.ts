@@ -214,7 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIEmployeeDetailProps, IOwnState> = {
           id: KPIEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: this.props.kpiEmployeeState.detail.response && this.props.kpiEmployeeState.detail.response.data.isFinal === false || true,
+          visible: this.props.kpiEmployeeState.detail.response && !this.props.kpiEmployeeState.detail.response.data.isFinal || true,
         },
       ];
 

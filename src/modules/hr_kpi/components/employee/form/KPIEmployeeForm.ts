@@ -119,20 +119,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     year: moment().year().toString(),
     period: '1',
     totalScore: 0,
-    items: [{
-      uid: '',
-      kpiAssignItemUid: '',
-      categoryName: '',
-      measurementType: '',
-      measurementDescription: '',
-      target: '',
-      weight: 0,
-      threshold: 0,
-      amount: 0,
-      achieved: 0,
-      progress: 0,
-      score: 0,
-    }]
+    items: []
   },
   
   assignData: props.initialValues,
@@ -229,7 +216,7 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
   },
   handleSetLoadAssign: (props: KPIEmployeeFormProps) => () => {
     props.stateUpdate({
-      loadItem: !props.loadAssign,
+      loadAssign: !props.loadAssign,
     });
   },
   handleLoadAssign: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
@@ -317,7 +304,7 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess, { uid: response.uid })
         });
 
-        props.history.push(`/kpi/managerinputs/${props.match.params.employeeUid}/${response.uid}`);
+        props.history.push(`/kpi/employees/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -421,15 +408,18 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
               weight: item.weight,
               threshold: item.threshold || 0,
               amount: item.amount,
-              achieved: this.props.initialValues.items[index].achieved,
-              progress: this.props.initialValues.items[index].progress,
-              score: this.props.initialValues.items[index].score,
+              achieved: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].achieved || 0,
+              progress: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].progress || 0,
+              score: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].score || 0,
             })
           );
         }
 
         // set initial values
         this.props.setAssignValues(initialValues);
+        this.props.handleSetLoadAssign();
+      } else {
+        this.props.setAssignValues(this.props.initialValues);
         this.props.handleSetLoadAssign();
       }
     }

@@ -121,6 +121,7 @@
   "kpi.employee.field.period": "Semester",
   "kpi.employee.field.period.placeholder": "Type The Semester",
   "kpi.employee.field.isFinal": "Is KPI Final",
+  "kpi.employee.field.status": "KPI Status",
   "kpi.employee.field.isFinal.final": "Final",
   "kpi.employee.field.isFinal.pending": "Not Final",
   "kpi.employee.field.revision": "Revision Note",

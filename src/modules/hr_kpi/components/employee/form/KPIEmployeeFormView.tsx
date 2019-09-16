@@ -19,8 +19,8 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
         uid: AppMenu.ManagerKPIInput,
         parentUid: AppMenu.HumanResource,
         parentUrl: `/kpi/employees`,
-        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.newTitle),
-        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.newSubHeader)
+        title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newTitle : kpiMessage.employee.page.modifyTitle),
+        description: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.newSubHeader : kpiMessage.employee.page.modifySubHeader)
       }}
       state={props.kpiEmployeeState.detail}
       onLoadApi={props.handleOnLoadDetail}
@@ -65,6 +65,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                       labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                       labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                     }}
+                    disableButtons={((!props.assignData || (props.assignData && props.assignData.kpiAssignUid === '')) && props.formMode === FormMode.New)}
                   />
                 </div>
 

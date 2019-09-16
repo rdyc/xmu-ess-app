@@ -29,10 +29,10 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
   const setAssignValue = () => {
     props.formikBag.setValues({
       uid: props.formikBag.values.uid,
-      kpiAssignUid: props.assignData.uid,
+      kpiAssignUid: props.assignData.kpiAssignUid,
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
-      templateName: props.formikBag.values.templateName,
+      templateName: props.assignData.templateName,
       year: props.formikBag.values.year,
       period: props.formikBag.values.period,
       totalScore: props.formikBag.values.totalScore,
@@ -101,7 +101,6 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
                 {...GlobalStyle.TextField.ReadOnly}
                 disabled={props.formikBag.isSubmitting}
                 label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
-                helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
               />
             )}
           />
@@ -115,7 +114,6 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
               {...GlobalStyle.TextField.ReadOnly}
               disabled={props.formikBag.isSubmitting}
               label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-              helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
             />
           )}
         />

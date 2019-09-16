@@ -86,6 +86,7 @@ export const KPIEmployeeField = defineMessages({
   period: { id: `${prefix}.field.period`},
   periodPlaceholder: { id: `${prefix}.field.period.placeholder`},
   totalScore: { id: `${prefix}.field.totalScore`},
+  status: { id: `${prefix}.field.status`},
   isFinal: { id: `${prefix}.field.isFinal`},
   isFinalTrue: { id: `${prefix}.field.isFinal.final`},
   isFinalFalse: { id: `${prefix}.field.isFinal.pending`},

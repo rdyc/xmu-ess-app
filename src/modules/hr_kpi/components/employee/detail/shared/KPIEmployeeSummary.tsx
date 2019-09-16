@@ -24,47 +24,58 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
         value={props.data.uid}
-      /> */}<TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.year)}
-          value={props.data.kpiAssign && props.data.kpiAssign.year.toString() || ''}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.period)}
-          value={props.intl.formatNumber(props.data.period)}
-        />
+      /> */}
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
+        value={props.data.kpiAssign && props.data.kpiAssign.employee && props.data.kpiAssign.employee.fullName || 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.year)}
+        value={props.data.kpiAssign && props.data.kpiAssign.year.toString() || ''}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.period)}
+        value={props.intl.formatNumber(props.data.period)}
+      />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
-    <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.kpiAssign && props.data.kpiAssign.template && props.data.kpiAssign.template.name || 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.totalScore)}
-          value={`${props.intl.formatNumber(props.data.totalScore)} %`}
-        />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
+        value={props.data.kpiAssign && props.data.kpiAssign.template && props.data.kpiAssign.template.name || 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.totalScore)}
+        value={`${props.intl.formatNumber(props.data.totalScore)} %`}
+      />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
-    <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
-          value={props.data.isFinal && 
-            props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
-            props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
-        />
-        {
-          props.data.revision && 
-          <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
-          value={props.data.revision}
-        />
-        }
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.status)}
+        value={props.data.status && props.data.status.value}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+        value={props.data.isFinal && 
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
+      />
+      {
+        props.data.revision && 
+        <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        multiline
+        label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+        value={props.data.revision}
+      />
+      }
     </Grid>
 
     {

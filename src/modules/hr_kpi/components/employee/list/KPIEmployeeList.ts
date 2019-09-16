@@ -22,7 +22,6 @@ import { IKPIEmployeeGetAllFilter } from '@kpi/classes/filter';
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeField } from '@kpi/classes/types';
 import { withKPIEmployee, WithKPIEmployee } from '@kpi/hoc/withKPIEmployee';
-import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
 import { KPIEmployeeListView } from './KPIEmployeeListView';
 
@@ -130,10 +129,10 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
   },
   handleOnBind: (props: KPIEmployeeListProps) => (item: IKPIEmployee, index: number) => ({
     key: index,
-    primary: item.kpiAssign && item.kpiAssign.year.toString() || '',
-    secondary: `Semester ${props.intl.formatNumber(item.period)}`,
-    tertiary: `${props.intl.formatNumber(item.totalScore)} %`,
-    quaternary: item.isFinal && props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) || props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse),
+    primary: item.kpiAssign && item.kpiAssign.employee && item.kpiAssign.employee.fullName || '',
+    secondary: item.kpiAssign && item.kpiAssign.year.toString() || '',
+    tertiary: `Semester ${props.intl.formatNumber(item.period)}`,
+    quaternary: `${props.intl.formatNumber(item.totalScore)} %`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
   }),
