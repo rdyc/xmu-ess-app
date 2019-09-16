@@ -2,6 +2,8 @@ import AppMenu from '@constants/AppMenu';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { KPIApprovalDetail } from './approval/detail/KPIApprovalDetail';
+import { KPIApprovalList } from './approval/list/KPIApprovalList';
 import { KPIAssignDetail } from './assign/detail/KPIAssignDetail';
 import { KPIAssignBulkForm } from './assign/form/createbulk/KPIAssignBulkForm';
 import { KPIAssignForm } from './assign/form/edit/KPIAssignForm';
@@ -25,13 +27,10 @@ const final = () => (
   </Switch>
 );
 
-const approval = () => (
+const approval = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/:employeeUid/form`} component={KPIHRInputForm} />
-    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIHRInputDetail} />
-    <Route path={`${props.match.path}/form`} component={KPIHRInputBulkForm} />
-    <Route path={`${props.match.path}/:employeeUid`} component={KPIHRInputList} />
-    <Route path={`${props.match.path}`} component={EmployeeHRInputList} /> */}
+    <Route path={`${props.match.path}/:kpiUid`} component={KPIApprovalDetail} />
+    <Route path={`${props.match.path}`} component={KPIApprovalList} />
   </Switch>
 );
 

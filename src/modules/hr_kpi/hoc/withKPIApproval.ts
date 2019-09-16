@@ -30,8 +30,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   kpiApprovalDispatch: {
     // command
-    createRequest: typeof KPIApprovalPostRequest;
-    createDispose: typeof KPIApprovalPostDispose;
+    approvalRequest: typeof KPIApprovalPostRequest;
+    approvalDispose: typeof KPIApprovalPostDispose;
 
     // query
     loadAllRequest: typeof KPIApprovalGetAllRequest;
@@ -53,8 +53,8 @@ const mapStateToProps = ({ kpiApprovalGetAll, kpiApprovalGetById }: IAppState) =
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   kpiApprovalDispatch: {
     // command
-    createRequest: (request: IKPIApprovalPostRequest) => dispatch(KPIApprovalPostRequest(request)),
-    createDispose: () => dispatch(KPIApprovalPostDispose()),
+    approvalRequest: (request: IKPIApprovalPostRequest) => dispatch(KPIApprovalPostRequest(request)),
+    approvalDispose: () => dispatch(KPIApprovalPostDispose()),
     
     // query
     loadAllRequest: (request: IKPIApprovalGetAllRequest) => dispatch(KPIApprovalGetAllRequest(request)),

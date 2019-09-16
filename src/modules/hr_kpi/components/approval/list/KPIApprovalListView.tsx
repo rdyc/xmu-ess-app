@@ -2,28 +2,27 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeSummary } from '@kpi/components/employee/detail/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { KPIEmployeeListProps } from './KPIEmployeeList';
+import { KPIApprovalListProps } from './KPIApprovalList';
 
-export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
+export const KPIApprvoalListView: React.SFC<KPIApprovalListProps> = props => (
   <React.Fragment>
     <CollectionPage 
       // page info
       info={{
-        uid: AppMenu.ManagerKPIInput,
+        uid: AppMenu.HRKPIInput,
         parentUid: AppMenu.HumanResource,
         title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: 'Employee'}),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
       }}
 
       // state & fields
-      state={props.kpiEmployeeState.all}
+      state={props.kpiApprovalState.all}
       fields={props.fields}
 
       // callback
@@ -39,15 +38,7 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/form`, {uid : item.uid})}
-          >
-            {props.intl.formatMessage(layoutMessage.action.modify)}
-          </Button>
-
-          <Button 
-            size="small"
-            color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/${item.uid}`)}
+            onClick={() => props.history.push(`/kpi/approvals/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -57,19 +48,11 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="kpi.employee"
-          default={props.kpiEmployeeState.all.request && props.kpiEmployeeState.all.request.filter && props.kpiEmployeeState.all.request.filter.find}
+          key="kpi.approval"
+          default={props.kpiApprovalState.all.request && props.kpiApprovalState.all.request.filter && props.kpiApprovalState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
-      }
-      appBarCustomComponent={
-        <IconButton
-          color="inherit"
-          onClick={() => props.history.push(`/kpi/employees/form`)}
-        >
-          <AddCircle/>
-        </IconButton>
       }
 
     />

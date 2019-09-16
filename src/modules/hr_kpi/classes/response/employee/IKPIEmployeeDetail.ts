@@ -10,8 +10,9 @@ export interface IKPIEmployeeDetail {
   period: number;
   totalScore: number;
   isFinal: boolean;
+  isFirst: boolean;
   revision?: string;
-  statusType?: string;
+  statusType: string;
   status?: ICommonSystem;
   items?: IKPIEmployeeItem[] | null;
   // sentBy?: string | null;
