@@ -245,9 +245,9 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
 
     if (user) {
       // create 
-      const kpiUid = props.history.location.state.uid;
+      const kpiUid = props.match.params.kpiUid;
 
-      // must have templateUid
+      // must have kpiUid
       if (kpiUid) {
 
         // fill payload 
