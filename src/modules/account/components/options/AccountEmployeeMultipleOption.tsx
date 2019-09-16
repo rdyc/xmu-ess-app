@@ -18,10 +18,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-export interface IEmployeesOption {
-  [key: string]: ISelectFieldOption[];
-}
-
 interface IOwnOption {
   companyUid?: string;
   positoinUid?: string;
@@ -29,8 +25,7 @@ interface IOwnOption {
 
 interface IOwnState {
   isLoading: boolean;
-  optionsList: IEmployeesOption;
-  optionBlank: ISelectFieldOption[];
+  options: ISelectFieldOption[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -39,7 +34,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (companyUid?: string, positionUid?: string) => void;
+  handleOnLoadApi: (companyUid: string, positionUid: string) => void;
 }
 
 export type AccountEmployeeMultipleOptionProps
@@ -51,8 +46,7 @@ export type AccountEmployeeMultipleOptionProps
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => ({
   isLoading: false,
-  optionBlank: [{ label: '', value: ''}],
-  optionsList: {},
+  options: [{ label: '', value: ''}]
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeMultipleOptionProps, IOwnState, IOwnStateUpdater> = {
@@ -70,17 +64,14 @@ const stateUpdaters: StateUpdaters<AccountEmployeeMultipleOptionProps, IOwnState
       data: item
     }));
 
-    const optionsList = prevState.optionsList;
-    optionsList[props.positoinUid || 'isAll'] = options;
-
     return {
-      optionsList
+      options
     };
   }
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeMultipleOptionProps, IOwnHandler> = {
-  handleOnLoadApi: (props: AccountEmployeeMultipleOptionProps) => (companyUid?: string, positionUid?: string) => {
+  handleOnLoadApi: (props: AccountEmployeeMultipleOptionProps) => (companyUid: string, positionUid: string) => {
     const { isExpired, isLoading } = props.accountEmployeeState.list;
     const { loadListRequest } = props.accountEmployeeDispatch;
 
@@ -103,38 +94,27 @@ const handlerCreators: HandleCreators<AccountEmployeeMultipleOptionProps, IOwnHa
 
 const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOwnState> = {
   componentDidMount() {
-    const { request, response, isLoading } = this.props.accountEmployeeState.list;
+    const { request, response } = this.props.accountEmployeeState.list;
     
     // 1st load only when request are empty
     if (!request) {
-      if (this.props.positoinUid) {
+      if (this.props.companyUid && this.props.positoinUid) {
         this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
-      } else {
-        this.props.handleOnLoadApi();
       }
     } else {
       // 2nd load only when request filter are present
       if (request && request.filter) {
-        if (request.filter.positionUids && this.props.positoinUid) {
+        if (request.filter.positionUids && this.props.companyUid && this.props.positoinUid) {
           // comparing some props
-          const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
           const shouldUpdatePosition = !shallowEqual(request.filter.positionUids, this.props.positoinUid);
     
           // then should update the list?
-          if ((shouldUpdate && shouldUpdatePosition) && !isLoading) {
+          if (shouldUpdatePosition) {
             this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
           } else {
-            if (response && response.data && !isLoading && !shouldUpdatePosition) {
-              this.props.setOptions(response.data);
-            }
-          }
-        } else {
-          if (request && request.filter && !request.filter.positionUids && !this.props.position) {
             if (response && response.data) {
               this.props.setOptions(response.data);
             }
-          } else {
-            this.props.handleOnLoadApi(this.props.companyUid, this.props.positoinUid);
           }
         }
       }
@@ -144,7 +124,7 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
     const { request, response } = this.props.accountEmployeeState.list;
 
     // if no positoin before, and next one is exist *this happen for field that need other field data
-    if (!this.props.positoinUid && nextProps.positoinUid) {
+    if (!this.props.positoinUid && nextProps.companyUid && nextProps.positoinUid) {
       // when no data then load
       if (!request) {
         this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
@@ -154,38 +134,30 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
           const shouldUpdate = !shallowEqual(request.filter.positionUids, nextProps.positoinUid);
   
           // should update the list?
-          if (shouldUpdate && !this.props.optionsList[nextProps.positoinUid]) {
+          if (shouldUpdate) {
             this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
           } else {
             if (response && response.data) {
               this.props.setOptions(response.data);
             }
           }
-        } else if (!request.filter.positionUids && nextProps.positoinUid) {
-          this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
         }
       }
     }
 
     // this used for update list when changing the filter(position) *not the 1st time load
-    if (this.props.positoinUid && nextProps.positoinUid) {
+    if (this.props.positoinUid && nextProps.companyUid && nextProps.positoinUid) {
       if (this.props.positoinUid !== nextProps.positoinUid) {
         if (request && request.filter) {
           if (request.filter.positionUids) {
             const shouldUpdate = !shallowEqual(request.filter.positionUids, nextProps.positoinUid);
     
-            if (!this.props.optionsList[nextProps.positoinUid]) {
-              if (shouldUpdate) {
-                this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
-              } else {
-                if (response && response.data) {
-                  this.props.setOptions(response.data);
-                }
-              }
-            }
-          } else {
-            if (!this.props.optionsList[nextProps.positoinUid]) {
+            if (shouldUpdate) {
               this.props.handleOnLoadApi(nextProps.companyUid, nextProps.positoinUid);
+            } else {
+              if (response && response.data) {
+                this.props.setOptions(response.data);
+              }
             }
           }
         }
@@ -201,11 +173,10 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeMultipleOptionProps, IOw
     }
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data && !this.props.optionsList[this.props.positoinUid || 'isAll']) {
+      if (thisResponse && thisResponse.data) {
         this.props.setOptions(thisResponse.data);
       }
     }
-    // console.log(this.props.optionsList);
   }
 };
 
@@ -218,8 +189,8 @@ const component: React.SFC<AccountEmployeeMultipleOptionProps> = props => {
         {
           React.cloneElement(children, { 
             isLoading: props.isLoading,
-            options: props.optionsList[props.positoinUid || 'isAll'] && props.optionsList[props.positoinUid || 'isAll'] || props.optionBlank,
-            value: props.optionsList[props.positoinUid || 'isAll'] && props.optionsList[props.positoinUid || 'isAll'].find(option => option.value === children.props.valueString) || props.optionBlank
+            options: props.options,
+            value: props.options.find(option => option.value === children.props.valueString)
           })
         }
       </React.Fragment>
