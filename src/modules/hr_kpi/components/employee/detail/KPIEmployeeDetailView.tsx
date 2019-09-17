@@ -6,16 +6,16 @@ import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
-import { KPIEmployeeInformation } from '@kpi/components/shared/KPIEmployeeInformation';
-import { KPIEmployeeItem } from '@kpi/components/shared/KPIEmployeeItem';
+import { KPIEmployeeInformation } from '@kpi/components/employee/detail/shared/KPIEmployeeInformation';
+import { KPIEmployeeItem } from '@kpi/components/employee/detail/shared/KPIEmployeeItem';
 import { KPIEmployeeDetailProps } from './KPIEmployeeDetail';
 
 export const KPIEmployeeDetailView: React.SFC<KPIEmployeeDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.EmployeeKPI,
+      uid: AppMenu.ManagerKPIInput,
       parentUid: AppMenu.HumanResource,
-      parentUrl: `/kpi/employees/${props.match.params.employeeUid}`,
+      parentUrl: `/kpi/employees`,
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
@@ -27,7 +27,7 @@ export const KPIEmployeeDetailView: React.SFC<KPIEmployeeDetailProps> = props =>
     appBarComponent={
       props.menuOptions &&
       <PopupMenu 
-        id="kpi-template-option"
+        id="kpi-employee-option"
         selectable={false}
         menuOptions={props.menuOptions} 
         onSelected={props.handleOnSelectedMenu} 

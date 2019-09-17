@@ -1,22 +1,13 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { IKPICategory } from '../category';
-import { IKPIMeasurement } from '../measurement';
+import { IKPIAssignItem } from '..';
 import { IKPIEmployee } from './IKPIEmployee';
 
 export interface IKPIEmployeeItem {
   uid: string;
   kpiUid: string;
   kpi?: IKPIEmployee | null;
-  categoryUid: string;
-  category?: IKPICategory | null;
-  categoryName: string;
-  measurementUid: string;
-  measurement?: IKPIMeasurement | null;
-  measurementDescription: string;
-  target: string;
-  weight: number;
-  threshold?: number;
-  amount: number;
+  kpiAssignItemUid: string;
+  kpiAssignItem?: IKPIAssignItem | null;
   achieved: number;
   progress: number;
   score: number;

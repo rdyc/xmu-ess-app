@@ -30,6 +30,8 @@ export const KPIEmployeePage = defineMessages({
 // message
 export const KPIEmployeeMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },
+  approvalSuccess: { id: `${prefix}.message.approval.success` },
+  approvalFailure: { id: `${prefix}.message.approval.failure` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createsSuccess: { id: `${prefix}.message.creates.success` },
   createFailure: { id: `${prefix}.message.create.failure` },
@@ -40,7 +42,8 @@ export const KPIEmployeeMessage = defineMessages({
 
 // submission
 export const KPIEmployeeSubmission = defineMessages({
-  form: { id: `${prefix}.submission.form` }
+  form: { id: `${prefix}.submission.form` },
+  approvalForm: { id: `${prefix}.approval.form` },
 });
 
 // dialog
@@ -49,6 +52,8 @@ export const KPIEmployeeDialog = defineMessages({
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
   createTitle: { id: `${prefix}.dialog.newTitle`},
   createDescription: { id: `${prefix}.dialog.newDescription`},
+  approvalTitle: { id: `${prefix}.dialog.approvalTitle`},
+  approvalDescription: { id: `${prefix}.dialog.approvalDescription`},
   
   assignModifyTitle: { id: `${prefix}.dialog.assign.modifyTitle`},
   assignModifyDescription: { id: `${prefix}.dialog.assign.modifyDescription`},
@@ -64,6 +69,8 @@ export const KPIEmployeeSection = defineMessages({
   itemSubHeader: { id: `${prefix}.section.item.subHeader` },
   employeeTitle: { id: `${prefix}.section.employee.title` },
   employeeSubHeader: { id: `${prefix}.section.employee.subHeader` },
+  approvalTitle: { id: `${prefix}.section.approval.title` },
+  approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });
 
 // confimation
@@ -86,6 +93,7 @@ export const KPIEmployeeField = defineMessages({
   period: { id: `${prefix}.field.period`},
   periodPlaceholder: { id: `${prefix}.field.period.placeholder`},
   totalScore: { id: `${prefix}.field.totalScore`},
+  status: { id: `${prefix}.field.status`},
   isFinal: { id: `${prefix}.field.isFinal`},
   isFinalTrue: { id: `${prefix}.field.isFinal.final`},
   isFinalFalse: { id: `${prefix}.field.isFinal.pending`},
@@ -94,6 +102,7 @@ export const KPIEmployeeField = defineMessages({
   sentAt: { id: `${prefix}.field.sentAt`},
   sentBy: { id: `${prefix}.field.sentBy`},
   totalWeight: { id: `${prefix}.field.totalWeight`},
+  completion: { id: `${prefix}.field.completion`},
 
   // item
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},

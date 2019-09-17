@@ -1,5 +1,4 @@
 export * from './IKPIEmployeeGetAllRequest';
 export * from './IKPIEmployeeGetByIdRequest';
-export * from './IKPIEmployeePostBulkRequest';
+export * from './IKPIEmployeePostRequest';
 export * from './IKPIEmployeePutRequest';
-export * from './IKPIEmployeePutAchievedRequest';

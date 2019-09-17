@@ -1,10 +1,7 @@
-import { IKPIEmployeePostItemPayload } from './IKPIEmployeePostItemPayload';
+import { IKPIEmployeeItemPutPayload } from './IKPIEmployeeItemPutPayload';
 
 export interface IKPIEmployeePutPayload {
-  templateUid: string;
-  year: number;
+  kpiAssignUid: string;
   period: number;
-  isFinal: boolean;
-  revision?: string;
-  items: IKPIEmployeePostItemPayload[];
+  items: IKPIEmployeeItemPutPayload[];
 }
