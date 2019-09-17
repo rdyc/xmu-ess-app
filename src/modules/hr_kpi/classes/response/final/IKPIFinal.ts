@@ -9,10 +9,6 @@ export interface IKPIFinal {
   template?: IKPITemplate | null;
   year: number;
   period: number;
-  isFinal: boolean;
-  revision?: string;
-  // sentBy?: string | null;
-  // sent?: IEmployee | null;
-  // sentAt?: string | null;
+  totalScore: number;
   changes: IBaseChanges | null;
 }

@@ -15,15 +15,18 @@ import { KPICategoryList } from './category/list/KPICategoryList';
 import { KPIEmployeeDetail } from './employee/detail/KPIEmployeeDetail';
 import { KPIEmployeeForm } from './employee/form/KPIEmployeeForm';
 import { KPIEmployeeList } from './employee/list/KPIEmployeeList';
+import { KPIFinalDetail } from './final/detail/KPIFinalDetail';
+import { EmployeeFinalList } from './final/list/employee/EmployeeFinalList';
+import { KPIFinalList } from './final/list/kpi/KPIFinalList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
 
-const final = () => (
+const final = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIEmployeeDetail} />
-    <Route path={`${props.match.path}/:employeeUid`} component={KPIEmployeeList} />
-    <Route path={`${props.match.path}`} component={EmployeeList} /> */}
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIFinalDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIFinalList} />
+    <Route path={`${props.match.path}`} component={EmployeeFinalList} />
   </Switch>
 );
 
@@ -91,7 +94,7 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
     <SecureMenuRoute 
       path={`${props.match.path}/finals`}
       menu={AppMenu.HumanResource} 
-      subMenu={AppMenu.EmployeeKPI} 
+      subMenu={AppMenu.KPIEmployee} 
       component={final} 
     />
     <SecureMenuRoute 

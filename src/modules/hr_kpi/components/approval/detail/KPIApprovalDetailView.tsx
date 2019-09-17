@@ -18,7 +18,7 @@ import KPIApprovalPartialForm from './partial/KPIApprovalPartialForm';
 export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.EmployeeKPI,
+      uid: AppMenu.KPIEmployee,
       parentUid: AppMenu.HumanResource,
       parentUrl: `/kpi/approvals`,
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
