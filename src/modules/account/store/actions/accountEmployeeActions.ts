@@ -12,6 +12,10 @@ export const enum AccountEmployeeAction {
   GET_LIST_SUCCESS = '@@account/employee/GET_LIST_SUCCESS',
   GET_LIST_ERROR = '@@account/employee/GET_LIST_ERROR',
   GET_LIST_DISPOSE = '@@account/employee/GET_LIST_DISPOSE',
+  GET_ALL_LIST_REQUEST = '@@account/employee/GET_ALL_LIST_REQUEST',
+  GET_ALL_LIST_SUCCESS = '@@account/employee/GET_ALL_LIST_SUCCESS',
+  GET_ALL_LIST_ERROR = '@@account/employee/GET_ALL_LIST_ERROR',
+  GET_ALL_LIST_DISPOSE = '@@account/employee/GET_ALL_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@account/employee/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@account/employee/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@account/employee/GET_BY_ID_ERROR',
@@ -41,6 +45,12 @@ export const accountEmployeeGetListRequest = (request: IEmployeeListRequest) => 
 export const accountEmployeeGetListSuccess = (response: IResponseCollection<IEmployee>) => action(AccountEmployeeAction.GET_LIST_SUCCESS, response);
 export const accountEmployeeGetListError = (error: any) => action(AccountEmployeeAction.GET_LIST_ERROR, error);
 export const accountEmployeeGetListDispose = () => action(AccountEmployeeAction.GET_LIST_DISPOSE);
+
+// get all list
+export const accountEmployeeGetAllListRequest = (request: IEmployeeListRequest) => action(AccountEmployeeAction.GET_ALL_LIST_REQUEST, request);
+export const accountEmployeeGetAllListSuccess = (response: IResponseCollection<IEmployee>) => action(AccountEmployeeAction.GET_ALL_LIST_SUCCESS, response);
+export const accountEmployeeGetAllListError = (error: any) => action(AccountEmployeeAction.GET_ALL_LIST_ERROR, error);
+export const accountEmployeeGetAllListDispose = () => action(AccountEmployeeAction.GET_ALL_LIST_DISPOSE);
 
 // get by id
 export const accountEmployeeGetByIdRequest = (request: IEmployeeByIdRequest) => action(AccountEmployeeAction.GET_BY_ID_REQUEST, request);

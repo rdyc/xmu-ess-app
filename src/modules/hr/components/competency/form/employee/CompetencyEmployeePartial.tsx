@@ -85,6 +85,20 @@ const CompetencyEmployeePartial: React.ComponentType<CompetencyEmployeePartialPr
           </LookupPositionOption>
         )}
       />
+
+      <Field
+        name="year"
+        render={({ field, form }: FieldProps<ICompetencyEmployeeFormValue>) => (
+          <TextField 
+            {...field}
+            fullWidth
+            disabled
+            margin="normal"
+            label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+          />
+        )}
+      />
     </CardContent>
   </Card>
 );

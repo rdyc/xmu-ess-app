@@ -5,7 +5,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 import { HrCompetencyEmployeeFilter } from './HrCompetencyEmployeeFilter';
 import { HrCompetencyEmployeeListProps } from './HrCompetencyEmployeeList';
@@ -36,13 +36,17 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         )}
         actionComponent={(item: IHrCompetencyEmployee) => (
           <React.Fragment>
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
+            {
+              item.isDraft &&
+              !item.isExpired && 
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, positionUid: item.positionUid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.modify)}
+              </Button>
+            }
   
             <Button 
               size="small"
@@ -85,14 +89,6 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
               </IconButton>
             </div>
           </Tooltip>
-        }
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push('/hr/assessmentinput/form')}
-          >
-            <AddCircle/>
-          </IconButton>
         }
       />
 

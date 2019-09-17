@@ -81,7 +81,7 @@ enum AppMenu {
   HRCorner = 'MNU70',
   CompetencyAssessment = 'MNU77',
   CompetencyAssessmentInput = 'MNU83',
-  CompetencyAssesmentResult = 'MNU76',
+  CompetencyAssessmentResult = 'MNU76',
   CompetencyEmployee = 'MNU76',
   HRKPIAssign = 'MNU84'
 }

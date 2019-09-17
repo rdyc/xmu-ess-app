@@ -212,9 +212,17 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
       this.props.handleOnLoadApi();
     }
 
-      // handle updated response state
+    // handle updated response state
     if (this.props.hrCompetencyEmployeeState.detail.response !== prevProps.hrCompetencyEmployeeState.detail.response) {
-      const { isLoading } = this.props.hrCompetencyEmployeeState.detail;
+      const { isLoading, response } = this.props.hrCompetencyEmployeeState.detail;
+
+      let isDraft: boolean = true;
+      let isExpired: boolean = false;
+
+      if (response && response.data) {
+        isDraft = response.data.isDraft;
+        isExpired = response.data.isExpired;
+      }
 
       const options: IPopupMenuOption[] = [
         {
@@ -226,7 +234,7 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
         {
           id: IHrCompetencyEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: true,
+          enabled: isDraft && !isExpired,
           visible: true,
         }
       ];

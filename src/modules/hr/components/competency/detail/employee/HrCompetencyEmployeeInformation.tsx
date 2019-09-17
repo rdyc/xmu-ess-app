@@ -32,7 +32,7 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.name)}
-          value={data.employee && data.employee.fullName}
+          value={data.responden && data.responden.fullName}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -47,6 +47,13 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
           multiline
           label={intl.formatMessage(hrMessage.competency.field.position)}
           value={data.position && data.position.name}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          multiline
+          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+          value={data.assessmentYear}
         />
         {
           props.data.changes &&
@@ -66,9 +73,9 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
                 value={props.data.changes.updated.fullName || 'N/A'}
                 helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
               />
-          }
-        </React.Fragment>
-      }
+            }
+          </React.Fragment>
+        }
       </CardContent>
     </Card>
   );
