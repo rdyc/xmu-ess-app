@@ -2,13 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
+import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeSummary } from '@kpi/components/employee/detail/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { KPIEmployeeFilter } from './KPIEmployeeFilter';
 import { KPIEmployeeListProps } from './KPIEmployeeList';
 
 export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
@@ -72,6 +73,41 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
         </IconButton>
       }
 
+      // data toolbar component
+      toolbarDataComponent={
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
+        >
+          <div>
+            <IconButton
+              id="option-filter"
+              disabled={props.kpiEmployeeState.all.isLoading || props.kpiEmployeeState.all.isError}
+              onClick={props.handleFilterVisibility} 
+            >
+              <Badge
+                invisible={!props.handleFilterBadge()}
+                badgeContent={
+                  <CheckCircle color="secondary" fontSize="small" />
+                }
+              >
+                <Tune/>
+              </Badge>
+            </IconButton>
+          </div>
+        </Tooltip>
+      }
+    />
+
+    <KPIEmployeeFilter 
+      isOpen={props.isFilterOpen}
+      initialProps={{
+        statusTypes: props.statusTypes,
+        status: props.status,
+        isFinal: props.isFinal
+      }}
+      onClose={props.handleFilterVisibility}
+      onApply={props.handleFilterApplied}
     />
   </React.Fragment>
 );

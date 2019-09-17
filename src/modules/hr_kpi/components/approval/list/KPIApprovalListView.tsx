@@ -2,12 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button } from '@material-ui/core';
+import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import * as React from 'react';
 
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeSummary } from '@kpi/components/employee/detail/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { CheckCircle, Tune } from '@material-ui/icons';
+import { KPIApprovalFilter } from './KPIApprovalFilter';
 import { KPIApprovalListProps } from './KPIApprovalList';
 
 export const KPIApprvoalListView: React.SFC<KPIApprovalListProps> = props => (
@@ -55,6 +57,42 @@ export const KPIApprvoalListView: React.SFC<KPIApprovalListProps> = props => (
         />
       }
 
+      // data toolbar component
+      toolbarDataComponent={
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
+        >
+          <div>
+            <IconButton
+              id="option-filter"
+              disabled={props.kpiApprovalState.all.isLoading || props.kpiApprovalState.all.isError}
+              onClick={props.handleFilterVisibility} 
+            >
+              <Badge
+                invisible={!props.handleFilterBadge()}
+                badgeContent={
+                  <CheckCircle color="secondary" fontSize="small" />
+                }
+              >
+                <Tune/>
+              </Badge>
+            </IconButton>
+          </div>
+        </Tooltip>
+      }
+    />
+
+    <KPIApprovalFilter 
+      isOpen={props.isFilterOpen}
+      initialProps={{
+        companyUid: props.companyUid,
+        statusTypes: props.statusTypes,
+        status: props.status,
+        isFinal: props.isFinal
+      }}
+      onClose={props.handleFilterVisibility}
+      onApply={props.handleFilterApplied}
     />
   </React.Fragment>
 );

@@ -12,6 +12,7 @@ import {
   ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -23,6 +24,7 @@ import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeField } from '@kpi/classes/types';
 import { withKPIEmployee, WithKPIEmployee } from '@kpi/hoc/withKPIEmployee';
 import { ICollectionValue } from '@layout/classes/core';
+import { IKPIEmployeeFilterResult } from './KPIEmployeeFilter';
 import { KPIEmployeeListView } from './KPIEmployeeListView';
 
 interface IOwnRouteParams {
@@ -31,17 +33,23 @@ interface IOwnRouteParams {
 interface IOwnOption {
 }
 
-interface IOwnState {
+interface IOwnState extends IKPIEmployeeFilterResult {
   fields: ICollectionValue[];
+  isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IKPIEmployee, index: number) => IDataBindResult;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: IKPIEmployeeFilterResult) => void;
+  handleFilterBadge: () => boolean;
 }
 
 export type KPIEmployeeListProps 
@@ -55,19 +63,34 @@ export type KPIEmployeeListProps
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<KPIEmployeeListProps, IOwnState> = (): IOwnState => {
+const createProps: mapper<KPIEmployeeListProps, IOwnState> = (props: KPIEmployeeListProps): IOwnState => {
+  const { request } = props.kpiEmployeeState.all;
+  
   const state: IOwnState = {
+    isFilterOpen: false,
+    status: 'pending',
     fields: Object.keys(KPIEmployeeField).map(key => ({
       value: key,
       name: KPIEmployeeField[key]
     }))
   };
 
+  if (request && request.filter) {
+    state.statusTypes = request.filter.statusTypes,
+    state.status = request.filter.status;
+  }
+
   return state;
 };
 
 const stateUpdaters: StateUpdaters<KPIEmployeeListProps, IOwnState, IOwnStateUpdater> = {
-  
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
+  }),
+  setFilterApplied: () => (filter: IKPIEmployeeFilterResult): Partial<IOwnState> => ({
+    ...filter,
+    isFilterOpen: false
+  }),
 };
 
 const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
@@ -79,6 +102,9 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
     if (user && !isLoading) {
       // predefined filter
       const filter: IKPIEmployeeGetAllFilter = {
+        statusTypes: props.statusTypes,
+        status: props.status,
+        isFinal: props.isFinal,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -136,11 +162,38 @@ const handlerCreators: HandleCreators<KPIEmployeeListProps, IOwnHandler> = {
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
   }),
+  handleFilterVisibility: (props: KPIEmployeeListProps) => () => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: KPIEmployeeListProps) => (filter: IKPIEmployeeGetAllFilter) => {
+    props.setFilterApplied(filter);
+  },
+  handleFilterBadge: (props: KPIEmployeeListProps) => () => {
+    return props.statusTypes !== undefined || 
+      props.status !== 'pending' ||
+      props.isFinal !== undefined;
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<KPIEmployeeListProps, IOwnState> = {
   componentDidUpdate(prevProps: KPIEmployeeListProps) {
-    // 
+    // track any changes in filter props
+    const isFilterChanged = !shallowEqual(
+      {
+        statusTypes: this.props.statusTypes,
+        status: this.props.status,
+        isFinal: this.props.isFinal,
+      },
+      {
+        statusTypes: prevProps.statusTypes,
+        status: prevProps.status,
+        isFinal: prevProps.isFinal,
+      }
+    );
+
+    if (isFilterChanged) {
+      this.props.handleOnLoadApi(undefined, true);
+    }
   }
 };
 
