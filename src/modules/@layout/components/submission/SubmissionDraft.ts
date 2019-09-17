@@ -44,6 +44,7 @@ interface IOwnProps {
   confirmationDialogFinalProps: ISubmissionDialogProps;
   disableButtons?: boolean;
   saveAs: (type: DraftType) => void;
+  isFinal: boolean;
 }
 
 interface IOwnHandler {
