@@ -7,6 +7,7 @@ import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { HrCompetencyResponderItem } from '../../detail/result/shared/HrCompetencyResponderItem';
 import { CompetencyResultCategory } from './CompetencyResultCategory';
 import { CompetencyResultFormProps, ICompetencyResultFormValue } from './CompetencyResultForm';
 import CompetencyResultPartial from './CompetencyResultPartial';
@@ -14,7 +15,7 @@ import CompetencyResultPartial from './CompetencyResultPartial';
 export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.CompetencyAssessmentInput,
+      uid: AppMenu.CompetencyAssessmentResult,
       parentUid: AppMenu.HumanResource,
       parentUrl: '/hr/assessmentresult',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: '360 Assessment Result'}),
@@ -26,7 +27,6 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
-      // validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyResultFormValue>) => (
         <Form>
@@ -38,6 +38,15 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
                   intl={props.intl}
                   formikBag={formikBag}
                   filterCompany={props.filterCompany}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrCompetencyResponderItem 
+                  positionUid={props.history.location.state && props.history.location.state.positionUid}
+                  data={props.hrCompetencyResultState.detailList.response && props.hrCompetencyResultState.detailList.response.data}
                 />
               </div>
             </div>
@@ -66,6 +75,7 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}  
                   saveAs={props.handleSaveType}
+                  isFinal={formikBag.values.levelRespond.every(item => item.levelUid === '')}
                 />
               </div>
             </div>

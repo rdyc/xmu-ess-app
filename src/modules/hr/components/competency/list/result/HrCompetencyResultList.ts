@@ -102,7 +102,6 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
 
     if (user && !isLoading) {
       const filter: IHrCompetencyEmployeeGetAllFilter = {
-        employeeUid: user.uid,
         isResult: true,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -110,7 +109,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size,
-        // status: props.status
+        status: props.status
       };
 
       // when request is defined, then compare the filter props
@@ -135,8 +134,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
         ...request && request.filter,
         find,
         findBy,
-        page: undefined,
-        status: props.status
+        page: undefined
       };
       
       // compare request
@@ -164,7 +162,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
     primary: item.responden && item.responden.fullName || 'N/A',
     secondary: item.position && item.position.company && item.position.company.name || 'N/A',
     tertiary: item.position && item.position.name || 'N/A',
-    quaternary: '',
+    quaternary: item.status && item.status.value || item.statusType,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -173,18 +171,18 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyResultListProps, IOwnState> = {
   componentDidUpdate(prevProps: HrCompetencyResultListProps) {
     // track any changes in filter props
-    // const isFilterChanged = !shallowEqual(
-    //   {
-    //     status: this.props.status,
-    //   },
-    //   {
-    //     status: prevProps.status
-    //   }
-    // );
+    const isFilterChanged = !shallowEqual(
+      {
+        status: this.props.status,
+      },
+      {
+        status: prevProps.status
+      }
+    );
 
-    // if (isFilterChanged) {
-    //   this.props.handleOnLoadApi(undefined, true);
-    // }
+    if (isFilterChanged) {
+      this.props.handleOnLoadApi(undefined, true);
+    }
   }
 };
 

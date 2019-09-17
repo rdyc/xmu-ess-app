@@ -5,7 +5,7 @@ import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
 import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 import { HrCompetencyResultFilter } from './HrCompetencyResultFilter';
 import { HrCompetencyResultListProps } from './HrCompetencyResultList';
@@ -16,7 +16,7 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
     <CollectionPage
         // page info
         info={{
-          uid: AppMenu.CompetencyAssesmentResult,
+          uid: AppMenu.CompetencyAssessmentResult,
           parentUid: AppMenu.HumanResource,
           title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: '360 Assessment Result'}),
           description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
@@ -36,18 +36,21 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
         )}
         actionComponent={(item: IHrCompetencyEmployee) => (
           <React.Fragment>
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
+            {
+              item.isDraft &&
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, positionUid: item.positionUid, respondenUid: item.respondenUid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.modify)}
+              </Button>
+            }
   
             <Button 
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`)}
+              onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`, { positionUid: item.positionUid, respondenUid: item.respondenUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}
             </Button>
@@ -85,14 +88,6 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
               </IconButton>
             </div>
           </Tooltip>
-        }
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push('/hr/assessmentresult/form')}
-          >
-            <AddCircle/>
-          </IconButton>
         }
       />
 

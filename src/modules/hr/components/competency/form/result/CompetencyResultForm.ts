@@ -32,7 +32,6 @@ import { isNullOrUndefined } from 'util';
 import { CompetencyResultFormView } from './CompetencyResultFormView';
 
 export interface ILevelOption {
-  // [key: string]: string;
   uid?: string;
   categoryUid: string;
   levelUid: string;
@@ -43,6 +42,7 @@ export interface ICompetencyResultFormValue {
   respondenUid: string;
   companyUid: string;
   positionUid: string;
+  year: string;
   levelRespond: ILevelOption[];
 }
 
@@ -58,7 +58,6 @@ interface IOwnState {
   formMode: FormMode;
 
   initialValues?: ICompetencyResultFormValue;
-  // validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyResultFormValue>>>;
 
   filterCompany?: ILookupCompanyGetListFilter;
 
@@ -73,6 +72,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
+  handleOnLoadResult: () => void;
   handleOnSubmit: (values: ICompetencyResultFormValue, actions: FormikActions<ICompetencyResultFormValue>) => void;
   handleSaveType: (saveType: DraftType) => void;
   handleIsUpdatedValue: () => void;
@@ -100,6 +100,7 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
     respondenUid: '',
     companyUid: '',
     positionUid: '',
+    year: '',
     levelRespond: []
   },
   saveType: DraftType.draft,
@@ -148,10 +149,25 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           competencyEmployeeUid
         });
       }
+      const positionUid = props.history.location.state.positionUid;
+      const respondenUid = props.history.location.state.respondenUid;
+      const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
+    
+      if (user && positionUid && respondenUid && !resultLoading) {
+        props.hrCompetencyResultDispatch.loadDetailListRequest({
+          positionUid,
+          respondenUid
+        });
+      }
+    }
+  },
+  handleOnLoadResult: (props: CompetencyResultFormProps) => () => { 
+    // const { user } = props.userState;
+    if (!isNullOrUndefined(props.history.location.state)) {
+      // 
     }
   },
   handleOnSubmit: (props: CompetencyResultFormProps) => (values: ICompetencyResultFormValue, actions: FormikActions<ICompetencyResultFormValue>) => {
-    console.log('save type', props.saveType);
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
 
@@ -176,7 +192,8 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
             payload.items.push({
               uid: item.uid,
               categoryUid: item.categoryUid,
-              levelUid: item.levelUid
+              levelUid: item.levelUid,
+              note: item.note
             })
           );
 
@@ -210,8 +227,16 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment Input', uid: response.uid })
         });
 
+        let positionUid: string | undefined;
+        let respondenUid: string | undefined;
+
+        if (props.history.location.state) {
+          positionUid = props.history.location.state.positionUid;
+          respondenUid = props.history.location.state.respondenUid;
+        }
+
         // redirect to detail
-        props.history.push(`/hr/assessmentresult/${response.uid}`);
+        props.history.push(`/hr/assessmentresult/${response.uid}`, {positionUid, respondenUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -239,14 +264,23 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOwnState> = {
   componentDidMount() {
-    //
+    const { response, request } = this.props.hrCompetencyMappedState.list;
+    const { history, handleOnLoadDetail } = this.props;
+    
+    if (history.location.state) {
+      const positionUid = history.location.state.positionUid;
+
+      if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
+        handleOnLoadDetail();
+      }
+    }
   },
   componentWillUpdate(nextProps: CompetencyResultFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyResultState.detail; 
     const { response: nextResponse } = nextProps.hrCompetencyResultState.detail;
-    const { response } = this.props.hrCompetencyMappedState.list;
+    const { response, request } = this.props.hrCompetencyMappedState.list;
 
-    if (!response) {
+    if (!response || (request && request.filter && request.filter.positionUid) !== (nextResponse && nextResponse.data && nextResponse.data.positionUid)) {
       if (thisResponse !== nextResponse) {
         if (nextResponse && nextResponse.data) {
           this.props.hrCompetencyMappedDispatch.loadListRequest({
@@ -268,14 +302,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
     if (thisResponse && thisResponse.data && 
         thisMapped && thisMapped.data 
         && !this.props.isUpdatedValue) {
-
-        console.log('thisMapped', thisMapped);
         
         // define initial values
         const initialValues: ICompetencyResultFormValue = {
           respondenUid: thisResponse.data.respondenUid,
           companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
           positionUid: thisResponse.data.positionUid,
+          year: thisResponse.data.assessmentYear.toString(),
           levelRespond: []
         };
 
@@ -286,7 +319,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
           initialValues.levelRespond.push({
             uid: find && find.uid || '',
             categoryUid: item.category.uid,
-            levelUid: find && find.levelUid || ''
+            levelUid: find && find.levelUid || '',
+            note: find && find.note
           });  
         });
         this.props.setInitialValues(initialValues);
