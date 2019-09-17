@@ -23,3 +23,13 @@ export * from './competency/indicator/IHrCompetencyIndicatorPutPayload';
 export * from './competency/mapped/IHrCompetencyMappedPostPayload';
 export * from './competency/mapped/IHrCompetencyMappedPutPayload';
 export * from './competency/mapped/IMappedItemPayload';
+
+// assessment
+export * from './competency/assessment/IAssessmentItemCreate';
+export * from './competency/assessment/IHrCompetencyAssessmentPostPayload';
+export * from './competency/assessment/IHrCompetencyAssessmentPutPayload';
+
+// employee
+export * from './competency/employee/IEmployeeItemCreate';
+export * from './competency/employee/IHrCompetencyEmployeePatchPayload';
+export * from './competency/employee/IHrCompetencyEmployeePostPayload';

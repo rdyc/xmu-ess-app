@@ -7,7 +7,7 @@ import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import HrCategoryItem from './HrCategoryItem';
+import { HrCategoryItem } from './HrCategoryItem';
 import { HrCompetencyClusterFormProps, IClusterFormValue } from './HrCompetencyClusterForm';
 import HrCompetencyClusterPartial from './HrCompetencyClusterPartial';
 
@@ -47,10 +47,6 @@ export const HrCompetencyClusterFormView: React.SFC<HrCompetencyClusterFormProps
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  classes={{
-                    flexContent: props.classes.flexContent,
-                    marginFarRight: props.classes.marginFarRight
-                  }}
                 />
               </div>
             </div>

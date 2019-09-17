@@ -73,12 +73,12 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyCategoryL
       name: IHrCompetencyField[key]
     })),
     isFilterOpen: true,
-    clusterUid: ''
+    competencyUid: ''
   };
 
   // fill from previous request if any
   if (request && request.filter) {
-    state.clusterUid = request.filter.clusterUid,
+    state.competencyUid = request.filter.competencyUid,
     state.isFilterOpen = false;
   }
 
@@ -99,26 +99,26 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
   handleOnLoadApi: (props: HrCompetencyCategoryListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { loadAllRequest } = props.hrCompetencyCategoryDispatch;
     const { isExpired, isLoading, request } = props.hrCompetencyCategoryState.all;
-
-    if (props.userState.user && !isLoading && props.clusterUid) {
+    const { competencyUid } = props;
+    if (props.userState.user && !isLoading && competencyUid) {
       const filter: IHrCompetencyCategoryGetAllFilter = {
+        competencyUid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size,
-        clusterUid: props.clusterUid
       };
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if ((isExpired || shouldLoad || isRetry) && props.clusterUid) {
+      if ((isExpired || shouldLoad || isRetry) && competencyUid) {
         loadAllRequest({
           filter,
-          clusterUid: props.clusterUid
+          competencyUid
         });
       }
     }
@@ -127,15 +127,16 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
     const { isLoading, request } = props.hrCompetencyCategoryState.all;
     const { loadAllRequest } = props.hrCompetencyCategoryDispatch;
     const { user } = props.userState;
+    const { competencyUid } = props;
 
-    if (user && !isLoading && props.clusterUid) {
+    if (user && !isLoading && competencyUid) {
       // predefined filter
       const filter = {
         ...request && request.filter,
         find,
         findBy,
+        competencyUid,
         page: undefined,
-        clusterUid: props.clusterUid
       };
       
       // compare request
@@ -145,7 +146,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
       if (shouldLoad) {
         loadAllRequest({
           filter,
-          clusterUid: props.clusterUid
+          competencyUid
         });
       }
     }
@@ -157,11 +158,11 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: HrCompetencyCategoryListProps) => () => {
-    return props.clusterUid !== undefined && props.clusterUid !== '';
+    return props.competencyUid !== undefined && props.competencyUid !== '';
   },
   handleOnBind: () => (item: IHrCompetencyCategory, index: number) => ({
     key: index,
-    primary: item.cluster.name,
+    primary: item.competency.name,
     secondary: item.name,
     tertiary: `${item.levels.length === 0 ? 'No level recorded' : `${item.levels.length} ${item.levels.length < 2 ? 'level' : 'levels'}`}`,
     quaternary: '',
@@ -175,10 +176,10 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyCategoryListProps, IOwnSta
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
-        clusterUid: this.props.clusterUid,
+        competencyUid: this.props.competencyUid,
       },
       {
-        clusterUid: prevProps.clusterUid
+        competencyUid: prevProps.competencyUid
       }
     );
 

@@ -1,5 +1,9 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  IHrCompetencyAssessmentGetAllRequest,
+  IHrCompetencyAssessmentGetDetailRequest,
+  IHrCompetencyAssessmentPostRequest,
+  IHrCompetencyAssessmentPutRequest,
   IHrCompetencyCategoryGetAllRequest,
   IHrCompetencyCategoryGetDetailRequest,
   IHrCompetencyCategoryGetListRequest,
@@ -12,6 +16,12 @@ import {
   IHrCompetencyClusterPatchRequest,
   IHrCompetencyClusterPostRequest,
   IHrCompetencyClusterPutRequest,
+  IHrCompetencyEmployeeGetAllRequest,
+  IHrCompetencyEmployeeGetDetailListRequest,
+  IHrCompetencyEmployeeGetDetailRequest,
+  IHrCompetencyEmployeeGetListRequest,
+  IHrCompetencyEmployeePatchRequest,
+  IHrCompetencyEmployeePostRequest,
   IHrCompetencyIndicatorGetAllRequest,
   IHrCompetencyIndicatorGetDetailRequest,
   IHrCompetencyIndicatorGetListRequest,
@@ -29,12 +39,17 @@ import {
   IHrCompetencyMappedPutRequest,
 } from '../queries';
 import {
+  IHrCompetencyAssessment,
+  IHrCompetencyAssessmentDetail,
   IHrCompetencyCategory,
   IHrCompetencyCategoryDetail,
   IHrCompetencyCategoryList,
   IHrCompetencyCluster,
   IHrCompetencyClusterDetail,
   IHrCompetencyClusterList,
+  IHrCompetencyEmployee,
+  IHrCompetencyEmployeeDetail,
+  IHrCompetencyEmployeeDetailList,
   IHrCompetencyIndicator,
   IHrCompetencyIndicatorDetail,
   IHrCompetencyIndicatorList,
@@ -45,6 +60,7 @@ import {
   IHrCompetencyMappedDetail,
   IHrCompetencyMappedList,
 } from '../response';
+import { IHrCompetencyEmployeeList } from '../response/competency/employee/IHrCompetencyEmployeeList';
 
 export interface IHrCompetencyState {
   // category
@@ -83,4 +99,27 @@ export interface IHrCompetencyState {
   hrCompetencyMappedGetById: IQuerySingleState<IHrCompetencyMappedGetDetailRequest, IHrCompetencyMappedDetail>;
   hrCompetencyMappedPost: IQuerySingleState<IHrCompetencyMappedPostRequest, IHrCompetencyMapped>;
   hrCompetencyMappedPut: IQuerySingleState<IHrCompetencyMappedPutRequest, IHrCompetencyMapped>;
+
+  // assessment
+  hrCompetencyAssessmentGetAll: IQueryCollectionState<IHrCompetencyAssessmentGetAllRequest, IHrCompetencyAssessment>;
+  hrCompetencyAssessmentGetById: IQuerySingleState<IHrCompetencyAssessmentGetDetailRequest, IHrCompetencyAssessmentDetail>;
+  hrCompetencyAssessmentPost: IQuerySingleState<IHrCompetencyAssessmentPostRequest, IHrCompetencyAssessment>;
+  hrCompetencyAssessmentPut: IQuerySingleState<IHrCompetencyAssessmentPutRequest, IHrCompetencyAssessment>;
+
+  // employee
+  hrCompetencyEmployeeGetAll: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;
+  hrCompetencyEmployeeGetList: IQueryCollectionState<IHrCompetencyEmployeeGetListRequest, IHrCompetencyEmployeeList>;
+  hrCompetencyEmployeeGetDetailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
+  hrCompetencyEmployeeGetById: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
+  hrCompetencyEmployeePost: IQuerySingleState<IHrCompetencyEmployeePostRequest, IHrCompetencyEmployee>;
+  hrCompetencyEmployeePatch: IQuerySingleState<IHrCompetencyEmployeePatchRequest, IHrCompetencyEmployee>;
+  
+  // result
+  hrCompetencyResultGetAll: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;
+  hrCompetencyResultGetList: IQueryCollectionState<IHrCompetencyEmployeeGetListRequest, IHrCompetencyEmployeeList>;
+  hrCompetencyResultGetDetailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
+  hrCompetencyResultGetById: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
+  hrCompetencyResultPost: IQuerySingleState<IHrCompetencyEmployeePostRequest, IHrCompetencyEmployee>;
+  hrCompetencyResultPatch: IQuerySingleState<IHrCompetencyEmployeePatchRequest, IHrCompetencyEmployee>;
+  
 }

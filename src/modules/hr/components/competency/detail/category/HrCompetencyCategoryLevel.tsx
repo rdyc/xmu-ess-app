@@ -120,13 +120,6 @@ const hrCompetencyCategoryLevel: React.SFC<AllProps> = props => {
                     label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Indicators'})}
                     value={handleIndicators(level.indicators)}
                   />
-                  {/* {
-                    level.indicators.map((indicator, indicatorIndex) =>
-                      <ListItemText key={indicator.uid || indicatorIndex} className={props.classes.marginThinBottom}>
-                        &#10004; {indicator.description}
-                      </ListItemText>
-                    ) 
-                  } */}
                 </Collapse>
               </React.Fragment>  
             )

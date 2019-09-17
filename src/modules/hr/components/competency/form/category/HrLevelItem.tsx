@@ -56,6 +56,15 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
           <Card square>
             <CardHeader 
               title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Competency Level'})} 
+              subheader={
+                props.formikBag.submitCount > 0 &&
+                typeof props.formikBag.errors.levels === 'string' &&
+                props.formikBag.errors.levels
+              }
+              subheaderTypographyProps={{
+                color: 'error',
+                variant: 'body1'
+              }}
             />
             <List>
               {
@@ -172,12 +181,15 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                                             />
                                           </ListItemText>
                                           <ListItemSecondaryAction className={props.classes.marginWideTop}>
-                                            <IconButton 
-                                              disabled={props.formikBag.isSubmitting}
-                                              onClick={() => fieldsIndicator.remove(idx)}
-                                            >
-                                              <DeleteForever color="action" />
-                                            </IconButton>
+                                            {
+                                              props.formikBag.values.levels[index].indicators.length > 1 &&
+                                              <IconButton 
+                                                disabled={props.formikBag.isSubmitting}
+                                                onClick={() => fieldsIndicator.remove(idx)}
+                                              >
+                                                <DeleteForever color="action" />
+                                              </IconButton>
+                                            }
                                           </ListItemSecondaryAction>
                                         </ListItem>
                                     );
@@ -227,7 +239,10 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                     onClick={() => {
                       fields.push({
                         level: props.formikBag.values.levels.length + 1,
-                        description: ''
+                        description: '',
+                        indicators: [{
+                          description: ''
+                        }]
                       });
                       handleToggle(props.formikBag.values.levels.length);
                     }}

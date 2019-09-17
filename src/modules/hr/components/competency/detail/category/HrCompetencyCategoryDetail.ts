@@ -121,14 +121,14 @@ const stateUpdaters: StateUpdaters<HrCompetencyCategoryDetailProps, IOwnState, I
 const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyCategoryDetailProps) => () => { 
     const { user } = props.userState;
-    const clusterUid = props.history.location.state.clusterUid;
+    const competencyUid = props.history.location.state.clusterUid;
     const categoryUid = props.match.params.categoryUid;
     const { isLoading } = props.hrCompetencyCategoryState.detail;
 
-    if (user && clusterUid && categoryUid && !isLoading) {
+    if (user && competencyUid && categoryUid && !isLoading) {
       props.hrCompetencyCategoryDispatch.loadDetailRequest({
-        clusterUid,
-        categoryUid
+        categoryUid,
+        competencyUid
       });
     }
   },
@@ -164,7 +164,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandl
     // get project uid
     if (response.data) {
       categoryUid = response.data.uid;
-      clusterUid = response.data.clusterUid;
+      clusterUid = response.data.competencyUid;
     }
 
     // actions with new page

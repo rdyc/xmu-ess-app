@@ -1,13 +1,13 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { IHrCompetencyClusterList } from '../cluster/IHrCompetencyClusterList';
-import { IHrCompetencyLevelList } from '../level/IHrCompetencyLevelList';
+import { IHrCompetencyItem } from './IHrCompetencyItem';
+import { IHrLevelItem } from './IHrLevelItem';
 
 export interface IHrCompetencyCategoryDetail {
   uid: string;
-  clusterUid: string;
-  cluster: IHrCompetencyClusterList;
+  competencyUid: string;
+  competency: IHrCompetencyItem;
   name: string;
   description: string;
+  levels: IHrLevelItem[];
   changes?: IBaseChanges;  
-  levels: IHrCompetencyLevelList[];
 }

@@ -1,13 +1,13 @@
 import { ISystemListFilter } from '@common/classes/filters';
-import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
+// import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
+// import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -27,7 +27,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
       title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Mapped'})}
     />
     <CardContent>
-      <Field 
+      {/* <Field 
         name="uid"
         render={({ field}: FieldProps<IMappedFormValue>) => (
           <TextField 
@@ -39,7 +39,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="companyUid"
@@ -96,7 +96,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
         )}
       />
 
-      <Field
+      {/* <Field
         name="levelType"
         render={({ field, form }: FieldProps<IMappedFormValue>) => (
           <CommonSystemOption category="level" filter={props.filterCommonSystem}>
@@ -121,7 +121,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
             />
           </CommonSystemOption>
         )}
-      />
+      /> */}
     </CardContent>
   </Card>
 );

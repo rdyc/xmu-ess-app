@@ -93,6 +93,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                 props.formikBag.setFieldValue('positionUid', '');
+                props.formikBag.setFieldValue('employeeUid', '');
                 // props.handleFilterEmployee('', '');
               }}
             />
@@ -121,7 +122,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => {
                 props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                // props.handleFilterEmployee(props.formikBag.values.companyUid, selected && selected.value || '');
+                props.formikBag.setFieldValue('employeeUid', '');                
               }}
             />
           </LookupPositionOption>

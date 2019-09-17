@@ -39,7 +39,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
             <Button 
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/lookup/competencycategory/form`, { uid: item.uid, clusterUid: item.clusterUid })}
+              onClick={() => props.history.push(`/lookup/competencycategory/form`, { uid: item.uid, clusterUid: item.competencyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -48,7 +48,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
               size="small"
               // disabled
               color="secondary"
-              onClick={() => props.history.push(`/lookup/competencycategory/${item.uid}`, {clusterUid: item.clusterUid})}
+              onClick={() => props.history.push(`/lookup/competencycategory/${item.uid}`, {clusterUid: item.competencyUid})}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}
             </Button>
@@ -87,20 +87,12 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
             </div>
           </Tooltip>
         }
-        // appBarCustomComponent={
-        //   <IconButton
-        //     color="inherit"
-        //     onClick={() => props.history.push('/lookup/competencycategory/form')}
-        //   >
-        //     <AddCircle/>
-        //   </IconButton>
-        // }
       />
 
     <HrCompetencyCategoryFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        clusterUid: props.clusterUid
+        competencyUid: props.competencyUid
       }}
       onApply={props.handleFilterApplied}
       onClose={props.handleFilterVisibility}

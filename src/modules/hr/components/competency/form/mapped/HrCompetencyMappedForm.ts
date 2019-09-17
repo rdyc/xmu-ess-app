@@ -1,9 +1,9 @@
-import { ISystemListFilter } from '@common/classes/filters';
+// import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
-import { IHrCompetencyCategoryList, IHrCompetencyMapped, MappedItem } from '@hr/classes/response';
+import { IHrCompetencyMapped, MappedItem } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -34,29 +34,33 @@ import * as Yup from 'yup';
 
 import { HrCompetencyMappedFormView } from './HrCompetencyMappedFormView';
 
-// export interface CategoryMenus {
-//   uid: string;
-//   parentUid?: string;
-//   name: string;
-//   isAccess: boolean;
-//   itemUid?: string;
+export interface CategoryMenus {
+  uid: string;
+  parentUid?: string;
+  name: string;
+  isAccess: boolean;
+  itemUid?: string;
+}
+
+// export interface CategoryChild {
+//   uid?: string;
+//   categoryUid: string;
 // }
 
-export interface CategoriesItem {
-  itemUid?: string;
-  uid: string;
-  name: string;
-  checked: boolean;
-  child: IHrCompetencyCategoryList[];
-}
+// export interface CategoriesItem {
+//   itemUid?: string;
+//   uid: string;
+//   name: string;
+//   checked: boolean;
+//   child: CategoryChild[];
+// }
 
 export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  levelType: string;
-  categories: CategoriesItem[];
-  // categories: CategoryMenus[];
+  // levelType: string;
+  categories: CategoryMenus[];
 }
 
 interface IOwnRouteParams {
@@ -75,7 +79,7 @@ interface IOwnState {
   
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  filterCommonSystem?: ISystemListFilter;
+  // filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -108,11 +112,9 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   // form values
   initialValues: {
     uid: 'Auto Generated',
-    // categoryUid: '',
-    // clusterUid: '',
     companyUid: '',
     positionUid: '',
-    levelType: '',
+    // levelType: '',
     categories: []
   },
 
@@ -124,9 +126,9 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     positionUid: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
       .required(),
-    levelType: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'}))
-      .required()
+    // levelType: Yup.string()
+    //   .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'}))
+    //   .required()
   }),
 
   // filter
@@ -142,10 +144,10 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   },
 
   // filter props
-  filterCommonSystem: {
-    orderBy: 'value',
-    direction: 'ascending'
-  }
+  // filterCommonSystem: {
+  //   orderBy: 'value',
+  //   direction: 'ascending'
+  // }
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedFormProps, IOwnState, IOwnStateUpdater> = {
@@ -178,24 +180,18 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         // fill payload
         const payload: IHrCompetencyMappedPostPayload = {
           positionUid: values.positionUid,
-          levelType: values.levelType,
+          // levelType: values.levelType,
           categories: []
         };
-
-        // fill categories
-        // values.categories.forEach(item => 
-        //   item.parentUid &&
-        //   item.isAccess &&
-        //   payload.categories.push({
-        //     categoryUid: item.uid
-        //   })
-        // );
+        
         values.categories.forEach(item =>
-          item.checked &&
+          item.parentUid &&
+          item.isAccess &&
           payload.categories.push({
             categoryUid: item.uid,
           })
         );
+
         // set the promise
         promise = new Promise((resolve, reject) => {
           props.hrCompetencyMappedDispatch.createRequest({
@@ -214,24 +210,16 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         if (mappedUid) {
           const payload: IHrCompetencyMappedPutPayload = {
             positionUid: values.positionUid,
-            levelType: values.levelType,
+            // levelType: values.levelType,
             categories: []
           };
 
-          // fill categories
-          // values.categories.forEach(item => 
-          //   item.parentUid &&
-          //   item.isAccess &&
-          //   payload.categories.push({
-          //     uid: item.itemUid,
-          //     categoryUid: item.uid
-          //   })
-          // );
           values.categories.forEach(item =>
-            item.checked &&
+            item.parentUid &&
+            item.isAccess &&
             payload.categories.push({
               uid: item.itemUid,
-              categoryUid: item.uid
+              categoryUid: item.uid,
             })
           );
 
@@ -302,48 +290,40 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
           direction: 'ascending'
         }
       });
-    } 
-    // else if (response && response.data) {
-      // const categoriesList: CategoryMenus[] = [];
-      // response.data.map(item => {
-      //   categoriesList.push({
-      //     uid: item.uid,
-      //     parentUid: '',
-      //     name: item.name || '',
-      //     isAccess: false,
-      //     itemUid: ''
-      //   });
+    } else if (response && response.data) {
+      const categoriesList: CategoryMenus[] = [];
+      response.data.map(item => {
+        categoriesList.push({
+          uid: item.uid,
+          parentUid: '',
+          name: item.name || '',
+          isAccess: false,
+          itemUid: ''
+        });
 
-      //   if (item.categories.length >= 1) {
-      //     item.categories.map(category => {
-      //       categoriesList.push({
-      //         uid: category.uid,
-      //         parentUid: item.uid,
-      //         name: category.name,
-      //         isAccess: false,
-      //         itemUid: ''
-      //       });
-      //     });
-      //   }
-      // });
-    //   const categoriesList: CategoriesItem[] = [];
-    //   response.data.map(item => {
-    //     categoriesList.push({
-    //       uid: item.uid,
-    //       checked: false
-    //     });
-    //   });
+        if (item.categories.length >= 1) {
+          item.categories.map(category => {
+            categoriesList.push({
+              uid: category.uid,
+              parentUid: item.uid,
+              name: category.name,
+              isAccess: false,
+              itemUid: ''
+            });
+          });
+        }
+      });
 
-    //   const initialValues: IMappedFormValue = {
-    //     uid: 'Auto generated',
-    //     companyUid: '',
-    //     positionUid: '',
-    //     levelType: '',
-    //     categories: categoriesList
-    //   };
+      const initialValues: IMappedFormValue = {
+        uid: 'Auto generated',
+        companyUid: '',
+        positionUid: '',
+        // levelType: '',
+        categories: categoriesList
+      };
 
-    //   this.props.setInitialValues(initialValues);
-    // }
+      this.props.setInitialValues(initialValues);
+    }
   },
   componentWillUpdate(nextProps: HrCompetencyMappedFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyClusterState.list;
@@ -352,49 +332,34 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     if (this.props.formMode === FormMode.New) {
       if (thisResponse !== nextResponse) {
         if (nextResponse && nextResponse.data) {
-          // const categoriesList: CategoryMenus[] = [];
-          // nextResponse.data.map(item => {
-          //   categoriesList.push({
-          //     uid: item.uid,
-          //     parentUid: '',
-          //     name: item.name || '',
-          //     isAccess: false,
-          //     itemUid: ''
-          //   });
-    
-          //   if (item.categories.length >= 1) {
-          //     item.categories.map(category => {
-          //       // const categoryId: MappedItem | undefined = nextResponse.data.categories.find(data => data.category.uid === category.uid);
-
-          //       // if (categoryId) {
-          //       //   const parent = categoriesList.findIndex(find => find.uid === item.uid && !find.isAccess);
-          //       //   categoriesList[parent].isAccess = Boolean(categoryId);
-          //       // }
-          //       categoriesList.push({
-          //         uid: category.uid,
-          //         parentUid: item.uid,
-          //         name: category.name,
-          //         isAccess: false,
-          //         itemUid: ''
-          //       });
-          //     });
-          //   }
-          // });
-          const categoriesList: CategoriesItem[] = [];
+          const categoriesList: CategoryMenus[] = [];
           nextResponse.data.map(item => {
             categoriesList.push({
               uid: item.uid,
-              name: item.name,
-              checked: false,
-              child: item.categories
+              parentUid: '',
+              name: item.name || '',
+              isAccess: false,
+              itemUid: ''
             });
+
+            if (item.categories.length >= 1) {
+              item.categories.map(category => {
+                categoriesList.push({
+                  uid: category.uid,
+                  parentUid: item.uid,
+                  name: category.name,
+                  isAccess: false,
+                  itemUid: ''
+                });
+              });
+            }
           });
 
           const initialValues: IMappedFormValue = {
             uid: 'Auto generated',
             companyUid: '',
             positionUid: '',
-            levelType: '',
+            // levelType: '',
             categories: categoriesList
           };
     
@@ -412,64 +377,49 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     if (formMode === FormMode.Edit) {
       if (thisResponse !== prevResponse) {
         if (thisResponse && thisResponse.data) {
-          // const categoriesList: CategoryMenus[] = [];
-          // if (clusterList && clusterList.data) {
-          //   // parent
-          //   clusterList.data.map((item, index) => {
-          //     categoriesList.push({
-          //       uid: item.uid,
-          //       parentUid: '',
-          //       name: item.name,
-          //       isAccess: false,
-          //       itemUid: ''
-          //     });
-  
-          //     if (item.categories.length >= 1 && categoriesList.length >= 1) {
-                
-          //       // for the child
-          //       item.categories.map(category => {
-          //         const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
-
-          //         if (categoryId) {
-          //           const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
-          //           if (parent) {
-          //             parent.isAccess = true;
-          //           }
-          //         }
-                  
-          //         categoriesList.push({
-          //           uid: category.uid,
-          //           parentUid: item.uid,
-          //           name: category.name,
-          //           isAccess: Boolean(categoryId) || false,
-          //           itemUid: categoryId && categoryId.uid || ''
-          //         });
-          //       });
-          //     }
-          //   });
-          // }
-          const categoriesList: CategoriesItem[] = [];
+          const categoriesList: CategoryMenus[] = [];
           if (clusterList && clusterList.data) {
             // parent
             clusterList.data.map((item, index) => {
-              const find: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === item.uid);
-
               categoriesList.push({
-                itemUid: find && find.uid || '',
-                // itemUid: String(thisResponse.data.categories.find(data => data.category.uid === item.uid && data.uid)),
                 uid: item.uid,
+                parentUid: '',
                 name: item.name,
-                checked: Boolean(thisResponse.data.categories.find(category => item.uid === category.category.uid)),
-                child: item.categories
+                isAccess: false,
+                itemUid: ''
               });
+  
+              if (item.categories.length >= 1 && categoriesList.length >= 1) {
+                
+                // for the child
+                item.categories.map(category => {
+                  const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
+
+                  if (categoryId) {
+                    const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
+                    if (parent) {
+                      parent.isAccess = true;
+                    }
+                  }
+                  
+                  categoriesList.push({
+                    uid: category.uid,
+                    parentUid: item.uid,
+                    name: category.name,
+                    isAccess: Boolean(categoryId) || false,
+                    itemUid: categoryId && categoryId.uid || ''
+                  });
+                });
+              }
             });
           }
+
           // define initial values
           const initialValues: IMappedFormValue = {
             uid: thisResponse.data.uid,
             companyUid: thisResponse.data.position.companyUid,
             positionUid: thisResponse.data.positionUid,
-            levelType: '',
+            // levelType: '',
             categories: categoriesList
           };
   

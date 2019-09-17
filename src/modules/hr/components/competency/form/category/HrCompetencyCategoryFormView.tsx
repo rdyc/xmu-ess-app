@@ -38,7 +38,6 @@ export const HrCompetencyCategoryFormView: React.SFC<HrCompetencyCategoryFormPro
                   intl={props.intl}
                   formikBag={formikBag}
                   filterCluster={props.filterCluster}
-                  filterCategories={props.filterCategories}
                 />
               </div>
             </div>

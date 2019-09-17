@@ -1,10 +1,10 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { IHrCompetencyCategoryList } from '../category/IHrCompetencyCategoryList';
+import { IHrCategoryItem } from './IHrCategoryItem';
 
 export interface IHrCompetencyCluster {
   uid: string;
   name: string;
   description: string;
-  categories: IHrCompetencyCategoryList[];
+  categories: IHrCategoryItem[];
   changes?: IBaseChanges;
 }

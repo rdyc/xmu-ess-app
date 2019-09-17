@@ -1,7 +1,7 @@
 import { IHrIndicatorItem } from './IHrIndicatorItem';
 
 export interface IHrLevelItem {
-  levelUid?: string;
+  uid: string;
   level: number;
   description: string;
   indicators: IHrIndicatorItem[];
