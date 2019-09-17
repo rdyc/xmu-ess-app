@@ -5,7 +5,6 @@ import { IHrCompetencyAssessmentPostPayload, IHrCompetencyAssessmentPutPayload }
 import { IHrCompetencyAssessment } from '@hr/classes/response';
 import { withHrCompetencyAssessment, WithHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { DraftType } from '@layout/components/submission/DraftType';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
@@ -45,7 +44,6 @@ export interface ICompetencyAssessmentFormValue {
   positionUid: string;
   employeeUid: string;
   responder: IResponderEmployee[];
-  save: DraftType;
 }
 
 interface IOwnRouteParams {
@@ -60,27 +58,20 @@ interface IOwnState {
   formMode: FormMode;
 
   initialValues?: ICompetencyAssessmentFormValue;
-  // validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
 
   filterCompany?: ILookupCompanyGetListFilter;
   filterPosition?: IPositionGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
-  // filterResponden?: IEmployeeListFilter;
-
-  saveType: DraftType;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
-  handleType: (saveType: DraftType) => IOwnState;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
-  // handleFilterEmployee: (companyUid: string, positionUid: string) => void;
   handleOnSubmit: (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => void;
-  handleSaveType: (saveType: DraftType) => void;
 }
 
 export type CompetencyAssessmentFormProps
@@ -106,34 +97,8 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     companyUid: '',
     positionUid: '',
     employeeUid: '',
-    responder: [],
-    save: DraftType.draft
+    responder: []
   },
-
-  // validation props
-  // validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({
-  //   year: Yup.string()
-  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))
-  //     .required(),
-  //   companyUid: Yup.string()
-  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))
-  //     .required(),
-  //   positionUid: Yup.string()
-  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
-  //     .required(),
-  //   employeeUid: Yup.string()
-  //     .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
-  //     .required(),
-  //   responder: Yup.array()
-  //     .of(
-  //       Yup.object().shape({
-  //         employeeUid: Yup.string()
-  //           .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))
-  //           .required()
-  //       })
-  //     )
-  //     .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories)),
-  // }),
   filterAccountEmployee: {
     useAccess: true,
     orderBy: 'fullName',
@@ -147,8 +112,6 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     orderBy: 'name',
     direction: 'ascending'
   },
-
-  saveType: DraftType.draft
 });
 
 const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOwnStateUpdater> = {
@@ -158,20 +121,10 @@ const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOw
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  }),
-  handleType: (staet: IOwnState) => (saveType: DraftType) => ({
-    saveType
   })
 };
 
 const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler> = {
-  handleSaveType: (props: CompetencyAssessmentFormProps) => (saveType: DraftType) => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      saveType
-    });
-  },
   handleOnLoadDetail: (props: CompetencyAssessmentFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
@@ -186,7 +139,6 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
     }
   },
   handleOnSubmit: (props: CompetencyAssessmentFormProps) => (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => {
-    console.log('save type', props.saveType);
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
 
@@ -198,7 +150,6 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
           positionUid: values.positionUid,
           employeeUid: values.employeeUid,
           assessmentYear: Number(values.year),
-          isDraft: props.saveType === DraftType.draft ? true : false,
           responders: []
         };
 
@@ -227,7 +178,6 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
             positionUid: values.positionUid,
             employeeUid: values.employeeUid,
             assessmentYear: Number(values.year),
-            isDraft: props.saveType === DraftType.draft ? true : false,
             responders: []
           };
 
@@ -310,7 +260,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
             employeeUid: thisResponse.data.employeeUid,
             year: thisResponse.data.assessmentYear.toString(),
             responder: [],
-            save: thisResponse.data.isDraft ? DraftType.draft : DraftType.final
         };
 
         // fill categories

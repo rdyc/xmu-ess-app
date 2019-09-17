@@ -1,4 +1,4 @@
-import { IHrCompetencyEmployeeDetail } from '@hr/classes/response';
+import {  IHrCompetencyEmployeeDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -19,13 +19,13 @@ interface OwnProps {
 
 type AllProps = OwnProps & InjectedIntlProps;
 
-const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
+const hrCompetencyResultInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Employee'})}
+        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Result'})}
       />
       <CardContent>
         <TextField
@@ -73,9 +73,9 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
                 value={props.data.changes.updated.fullName || 'N/A'}
                 helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
               />
-            }
-          </React.Fragment>
-        }
+          }
+        </React.Fragment>
+      }
       </CardContent>
     </Card>
   );
@@ -83,6 +83,6 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HrCompetencyEmployeeInformation = compose<AllProps,  OwnProps>(
+export const HrCompetencyResultInformation = compose<AllProps,  OwnProps>(
   injectIntl
-)(hrCompetencyEmployeeInformation);
+)(hrCompetencyResultInformation);

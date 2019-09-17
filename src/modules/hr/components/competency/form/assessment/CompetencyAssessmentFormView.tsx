@@ -27,7 +27,6 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
-      // validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyAssessmentFormValue>) => (
         <Form>
@@ -39,7 +38,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                   intl={props.intl}
                   formikBag={formikBag}
                   filterCompany={props.filterCompany}
-                  filterPosition={props.filterPosition}
+                  filterPosition={props.filterPosition}                 
                 />
               </div>
             </div>
@@ -62,29 +61,6 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                {/* <SubmissionDraft 
-                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
-                  className={props.classes.flexContent}
-                  formikProps={formikBag}
-                  buttonLabelProps={{
-                    reset: props.intl.formatMessage(layoutMessage.action.reset),
-                    submit: props.intl.formatMessage(layoutMessage.action.submit),
-                    processing: props.intl.formatMessage(layoutMessage.text.processing)
-                  }}
-                  confirmationDialogDraftProps={{
-                    title: props.intl.formatMessage(hrMessage.shared.confirm.saveAsTitle, {state: 'draft'}),
-                    message: props.intl.formatMessage(hrMessage.shared.confirm.saveAsDescription, {state: 'draft'}),
-                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
-                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                  }}
-                  confirmationDialogFinalProps={{
-                    title: props.intl.formatMessage(hrMessage.shared.confirm.saveAsTitle, {state: 'final'}),
-                    message: props.intl.formatMessage(hrMessage.shared.confirm.saveAsDescription, {state: 'final'}),
-                    labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
-                    labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                  }}  
-                  saveAs={props.handleSaveType}
-                /> */}
                 <SubmissionForm 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Assessment'})}
                   className={props.classes.flexContent}

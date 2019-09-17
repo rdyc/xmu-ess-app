@@ -7,7 +7,7 @@ import {
   IHrCompetencyEmployeePatchRequest,
   IHrCompetencyEmployeePostRequest
 } from '@hr/classes/queries/';
-import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail } from '@hr/classes/response/';
+import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyEmployeeList } from '@hr/classes/response/';
 import { 
   hrCompetencyResultGetAllDispose, 
   hrCompetencyResultGetAllRequest, 
@@ -29,6 +29,8 @@ interface PropsFromState {
   hrCompetencyResultState: {
     all: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;
     detail: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
+    detailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
+    list: IQueryCollectionState<IHrCompetencyEmployeeGetListRequest, IHrCompetencyEmployeeList>;
   };
 }
 

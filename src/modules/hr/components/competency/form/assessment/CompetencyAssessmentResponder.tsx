@@ -1,5 +1,5 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
-import { AccountEmployeeMultipleOption } from '@account/components/options/AccountEmployeeMultipleOption';
+import { AccountEmployeeAllOption } from '@account/components/options/AccountAllEmployeeOption';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -79,7 +79,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                             <React.Fragment>
                               <ListItem disableGutters>
                                 <ListItemText>
-                                  <AccountEmployeeMultipleOption >
+                                  <AccountEmployeeAllOption filter={props.filterAccountEmployee}>
                                     <SelectField
                                       autoFocus
                                       isSearchable
@@ -112,7 +112,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                                         }
                                       }}
                                     />
-                                  </AccountEmployeeMultipleOption>
+                                  </AccountEmployeeAllOption>
                                 </ListItemText>
                                 {
                                   isDeleteAble(item.employeeUid) &&

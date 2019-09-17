@@ -20,8 +20,6 @@ type CompetencyAssessmentPartialProps = {
   intl: InjectedIntl;
   filterCompany?: ILookupCompanyGetListFilter;
   filterPosition?: IPositionGetListFilter;
-  // filterAccountEmployee?: IEmployeeListFilter;
-  // handleFilterEmployee: (companyUid: string, positionUid: string) => void;
 };
 
 const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentPartialProps> = props => (

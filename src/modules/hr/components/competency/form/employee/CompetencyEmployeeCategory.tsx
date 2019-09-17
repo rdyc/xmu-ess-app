@@ -75,9 +75,7 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
                         control={<Radio 
                           checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
                           onChange={() => {
-                            console.log('level.uid', index);
                             props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
-                            props.formikBag.setFieldValue(`levelRespond.${index}.categoryUid`, item.category.uid);
                           }}
                         />}
                         value={level.uid}

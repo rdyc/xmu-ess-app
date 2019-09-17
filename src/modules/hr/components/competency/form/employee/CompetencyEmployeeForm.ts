@@ -32,7 +32,6 @@ import { isNullOrUndefined } from 'util';
 import { CompetencyEmployeeFormView } from './CompetencyEmployeeFormView';
 
 export interface ILevelOption {
-  // [key: string]: string;
   uid?: string;
   categoryUid: string;
   levelUid: string;
@@ -43,6 +42,7 @@ export interface ICompetencyEmployeeFormValue {
   respondenUid: string;
   companyUid: string;
   positionUid: string;
+  year: string;
   levelRespond: ILevelOption[];
 }
 
@@ -58,8 +58,6 @@ interface IOwnState {
   formMode: FormMode;
 
   initialValues?: ICompetencyEmployeeFormValue;
-  // validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyEmployeeFormValue>>>;
-
   filterCompany?: ILookupCompanyGetListFilter;
 
   saveType: DraftType;
@@ -100,6 +98,7 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
     respondenUid: '',
     companyUid: '',
     positionUid: '',
+    year: '',
     levelRespond: []
   },
   saveType: DraftType.draft,
@@ -239,7 +238,16 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, IOwnState> = {
   componentDidMount() {
-    //
+    const { response, request } = this.props.hrCompetencyMappedState.list;
+    const { history, handleOnLoadDetail } = this.props;
+    
+    if (history.location.state) {
+      const positionUid = history.location.state.positionUid;
+
+      if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
+        handleOnLoadDetail();
+      }
+    }
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
@@ -260,22 +268,18 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
   },
   componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
-    // const { response: prevResponse } = prevProps.hrCompetencyEmployeeState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
-    // const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
 
-    // if (thisResponse !== prevResponse) {
     if (thisResponse && thisResponse.data && 
         thisMapped && thisMapped.data 
         && !this.props.isUpdatedValue) {
-
-        console.log('thisMapped', thisMapped);
         
         // define initial values
         const initialValues: ICompetencyEmployeeFormValue = {
           respondenUid: thisResponse.data.respondenUid,
           companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
           positionUid: thisResponse.data.positionUid,
+          year: thisResponse.data.assessmentYear.toString(),
           levelRespond: []
         };
 

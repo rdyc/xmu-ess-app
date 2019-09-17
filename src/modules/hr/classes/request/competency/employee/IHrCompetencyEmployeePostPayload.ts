@@ -2,5 +2,5 @@ import { IEmployeeItemCreate } from './IEmployeeItemCreate';
 
 export interface IHrCompetencyEmployeePostPayload {
   items: IEmployeeItemCreate[];
-  isDraft?: boolean;
+  assessmentYear: number;
 }

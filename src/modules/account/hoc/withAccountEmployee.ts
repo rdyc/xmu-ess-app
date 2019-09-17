@@ -4,6 +4,8 @@ import {
   accountEmployeeDeleteDispose,
   accountEmployeeDeleteRequest,
   accountEmployeeGetAllDispose,
+  accountEmployeeGetAllListDispose,
+  accountEmployeeGetAllListRequest,
   accountEmployeeGetAllRequest,
   accountEmployeeGetByIdDispose,
   accountEmployeeGetByIdRequest,
@@ -22,6 +24,7 @@ interface PropsFromState {
   accountEmployeeState: {
     all: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
     list: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
+    allList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
     detail: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
   };
 }
@@ -45,6 +48,9 @@ interface PropsFromDispatch {
     loadListRequest: typeof accountEmployeeGetListRequest;
     loadListDispose: typeof accountEmployeeGetListDispose;
 
+    loadAllListRequest: typeof accountEmployeeGetAllListRequest;
+    loadAllListDispose: typeof accountEmployeeGetAllListDispose;
+
     loadDetailRequest: typeof accountEmployeeGetByIdRequest;
     loadDetailDispose: typeof accountEmployeeGetByIdDispose;
   };
@@ -52,11 +58,12 @@ interface PropsFromDispatch {
 
 export interface WithAccountEmployee extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ accountEmployeeGetAll, accountEmployeeGetList, accountEmployeeGetById }: IAppState) => ({
+const mapStateToProps = ({ accountEmployeeGetAll, accountEmployeeGetList, accountEmployeeGetById, accountEmployeeGetAllList }: IAppState) => ({
   accountEmployeeState: {
     all: accountEmployeeGetAll,
     list: accountEmployeeGetList,
-    detail: accountEmployeeGetById
+    detail: accountEmployeeGetById,
+    allList: accountEmployeeGetAllList
   }
 });
 
@@ -78,6 +85,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     loadListRequest: (request: IEmployeeListRequest) => dispatch(accountEmployeeGetListRequest(request)),
     loadListDispose: () => dispatch(accountEmployeeGetListDispose()),
+    
+    loadAllListRequest: (request: IEmployeeListRequest) => dispatch(accountEmployeeGetAllListRequest(request)),
+    loadAllListDispose: () => dispatch(accountEmployeeGetAllListDispose()),
 
     loadDetailRequest: (request: IEmployeeByIdRequest) => dispatch(accountEmployeeGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(accountEmployeeGetByIdDispose())

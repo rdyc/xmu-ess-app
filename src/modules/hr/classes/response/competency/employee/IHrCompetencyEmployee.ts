@@ -6,6 +6,7 @@ import { ICompetencyEmployeeItem } from './ICompetencyEmployeeItem';
 
 export interface IHrCompetencyEmployee {
   uid: string;
+  assessmentYear: number;
   employeeUid: string;
   employee?: IAccountEmployee;
   respondenUid: string;
@@ -16,7 +17,9 @@ export interface IHrCompetencyEmployee {
   statusType: string;
   status?: ICommonSystem;
   dueDate?: string;
-  isDraft?: boolean;
+  isDraft: boolean;
+  isExpired: boolean;
+  isHR: boolean;
   items: ICompetencyEmployeeItem[];
   changes?: IBaseChanges;
 }
