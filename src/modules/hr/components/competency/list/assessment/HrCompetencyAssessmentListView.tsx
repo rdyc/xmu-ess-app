@@ -7,7 +7,6 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button, IconButton } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
-// import { HrCompetencyAssessmentFilter } from './HrCompetencyAssessmentFilter';
 import { HrCompetencyAssessmentListProps } from './HrCompetencyAssessmentList';
 import { HrCompetencySummaryAssessment } from './HrCompetencyAssessmentSummary';
 
@@ -36,17 +35,6 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
         )}
         actionComponent={(item: IHrCompetencyAssessment) => (
           <React.Fragment>
-            {/* {
-              item.isDraft &&
-              <Button 
-                size="small"
-                color="secondary"
-                onClick={() => props.history.push(`/hr/assessment/form`, { uid: item.uid })}
-              >
-                {props.intl.formatMessage(layoutMessage.action.modify)}
-              </Button>
-            } */}
-  
             <Button 
               size="small"
               color="secondary"
@@ -73,30 +61,6 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
             onApply={props.handleOnLoadApiSearch}
           />
         }
-        // data toolbar component
-        // toolbarDataComponent={
-        //   <Tooltip
-        //     placement="bottom"
-        //     title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-        //   >
-        //     <div>
-        //       <IconButton
-        //         id="option-filter"
-        //         disabled={props.hrCompetencyAssessmentState.all.isLoading || props.hrCompetencyAssessmentState.all.isError}
-        //         onClick={props.handleFilterVisibility} 
-        //       >
-        //         <Badge
-        //           invisible={!props.handleFilterBadge()}
-        //           badgeContent={
-        //             <CheckCircle color="secondary" fontSize="small" />
-        //           }
-        //         >
-        //           <Tune/>
-        //         </Badge>
-        //       </IconButton>
-        //     </div>
-        //   </Tooltip>
-        // }
         appBarCustomComponent={
           <IconButton
             color="inherit"
@@ -106,14 +70,5 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           </IconButton>
         }
       />
-
-    {/* <HrCompetencyAssessmentFilter 
-      isOpen={props.isFilterOpen}
-      initialProps={{
-        status: props.status
-      }}
-      onApply={props.handleFilterApplied}
-      onClose={props.handleFilterVisibility}
-    /> */}
   </React.Fragment>
 );
