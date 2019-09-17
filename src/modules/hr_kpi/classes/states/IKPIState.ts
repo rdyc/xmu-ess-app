@@ -12,6 +12,8 @@ import {
   IKPIEmployeeGetByIdRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
+  IKPIFinalGetAllRequest,
+  IKPIFinalGetByIdRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -43,10 +45,12 @@ import {
   IKPICategoryList,
   IKPIEmployee,
   IKPIEmployeeDetail,
+  IKPIFinal, 
+  IKPIFinalDetail,
   IKPIMeasurement, 
-  IKPIMeasurementDetail,
-  IKPIMeasurementList, 
-  IKPITemplate, 
+  IKPIMeasurementDetail, 
+  IKPIMeasurementList,
+  IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
 
@@ -61,6 +65,10 @@ export interface IKPIState {
   kpiApprovalGetAll: IQueryCollectionState<IKPIApprovalGetAllRequest, IKPIEmployee>;
   kpiApprovalGetById: IQuerySingleState<IKPIApprovalGetByIdRequest, IKPIEmployeeDetail>;
   kpiApprovalPost: IQueryCollectionState<IKPIApprovalPostRequest, IKPIEmployee>;
+
+  // final
+  kpiFinalGetAll: IQueryCollectionState<IKPIFinalGetAllRequest, IKPIFinal>;
+  kpiFinalGetById: IQuerySingleState<IKPIFinalGetByIdRequest, IKPIFinalDetail>;
   
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
