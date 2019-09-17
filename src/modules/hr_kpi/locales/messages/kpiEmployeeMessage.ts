@@ -102,6 +102,7 @@ export const KPIEmployeeField = defineMessages({
   sentAt: { id: `${prefix}.field.sentAt`},
   sentBy: { id: `${prefix}.field.sentBy`},
   totalWeight: { id: `${prefix}.field.totalWeight`},
+  completion: { id: `${prefix}.field.completion`},
 
   // item
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},

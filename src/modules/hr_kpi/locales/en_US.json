@@ -158,6 +158,7 @@
   "kpi.employee.field.achieved.placeholder": "Type The Achieved",
   "kpi.employee.field.progress": "Progress",
   "kpi.employee.field.score": "Score",
+  "kpi.employee.field.completion": "Approval Completion",
 
   "kpi.measurement.message.create.success": "A new Measurement {uid} has been created",
   "kpi.measurement.message.create.failure": "Unable to process your submission",
