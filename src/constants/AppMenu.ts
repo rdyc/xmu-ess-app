@@ -75,7 +75,7 @@ enum AppMenu {
   KPICategory = 'MNU67',
   KPITemplate = 'MNU68',
   HumanResource = 'MNU72',
-  EmployeeKPI = 'MNU73',
+  KPIEmployee = 'MNU73',
   ManagerKPIInput = 'MNU74',
   HRKPIInput = 'MNU75',
   HRCorner = 'MNU70',

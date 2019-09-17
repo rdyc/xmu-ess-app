@@ -1,15 +1,19 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  IKPIApprovalGetAllRequest, 
+  IKPIApprovalGetByIdRequest, 
+  IKPIApprovalPostRequest, 
   IKPIAssignGetAllRequest, 
-  IKPIAssignGetByIdRequest, 
-  IKPIAssignGetByYearRequest, 
-  IKPIAssignPostBulkRequest, 
+  IKPIAssignGetByIdRequest,
+  IKPIAssignGetByYearRequest,
+  IKPIAssignPostBulkRequest,
   IKPIAssignPutRequest,
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
-  IKPIEmployeePostBulkRequest,
-  IKPIEmployeePutAchievedRequest,
+  IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
+  IKPIFinalGetAllRequest,
+  IKPIFinalGetByIdRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -41,10 +45,12 @@ import {
   IKPICategoryList,
   IKPIEmployee,
   IKPIEmployeeDetail,
+  IKPIFinal, 
+  IKPIFinalDetail,
   IKPIMeasurement, 
-  IKPIMeasurementDetail,
-  IKPIMeasurementList, 
-  IKPITemplate, 
+  IKPIMeasurementDetail, 
+  IKPIMeasurementList,
+  IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
 
@@ -52,10 +58,18 @@ export interface IKPIState {
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
-  kpiEmployeePostBulk: IQueryCollectionState<IKPIEmployeePostBulkRequest, IKPIEmployee>;
+  kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
-  kpiEmployeePutAchieved: IQuerySingleState<IKPIEmployeePutAchievedRequest, IKPIEmployee>;
+  
+  // approval
+  kpiApprovalGetAll: IQueryCollectionState<IKPIApprovalGetAllRequest, IKPIEmployee>;
+  kpiApprovalGetById: IQuerySingleState<IKPIApprovalGetByIdRequest, IKPIEmployeeDetail>;
+  kpiApprovalPost: IQueryCollectionState<IKPIApprovalPostRequest, IKPIEmployee>;
 
+  // final
+  kpiFinalGetAll: IQueryCollectionState<IKPIFinalGetAllRequest, IKPIFinal>;
+  kpiFinalGetById: IQuerySingleState<IKPIFinalGetByIdRequest, IKPIFinalDetail>;
+  
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
   kpiAssignGetById: IQuerySingleState<IKPIAssignGetByIdRequest, IKPIAssignDetail>;

@@ -6,3 +6,5 @@ export * from './category/KPICategoryField';
 export * from './category/KPICategoryUserAction';
 export * from './employee/KPIEmployeeField';
 export * from './employee/KPIEmployeeUserAction';
+export * from './final/KPIFinalField';
+export * from './final/KPIFinalUserAction';
