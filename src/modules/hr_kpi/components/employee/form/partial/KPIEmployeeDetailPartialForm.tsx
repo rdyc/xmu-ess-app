@@ -1,5 +1,6 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { AccountEmployeeOption } from '@account/components/options/AccountEmployeeOption';
+import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -33,8 +34,10 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
       templateName: props.assignData.templateName,
+      statusType: props.formikBag.values.statusType,
       year: props.formikBag.values.year,
       period: props.formikBag.values.period,
+      revision: props.formikBag.values.revision,
       totalScore: props.formikBag.values.totalScore,
       items: props.assignData.items,
     });
@@ -153,6 +156,8 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             <InputSemesterOption>
               <SelectField
                 isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
                 isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
@@ -171,6 +176,27 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             </InputSemesterOption>
           )}
         />
+
+        {
+          props.formikBag.values.statusType === WorkflowStatusType.Accepted &&
+          <Field
+            name="revision"
+            render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+              <TextField
+                {...field}
+                fullWidth
+                required={true}
+                margin="normal"
+                autoComplete="off"
+                disabled={form.isSubmitting}
+                label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+                placeholder={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+                helperText={(form.touched.revision) && (form.errors.revision)}
+                error={(form.touched.revision) && Boolean(form.errors.revision)}
+              />
+            )}
+          />
+        }
 
         <Field
           name="totalScore"

@@ -35,25 +35,25 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
     return(
       items.map((item, index) => 
       <TableRow key={index}>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.category && item.category.name}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.categoryName}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.measurement && item.measurement.description}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.measurementDescription}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.target}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.weight)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             item.measurement.measurementType === MeasurementType.Scoring  &&
@@ -61,7 +61,7 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             (item.measurement.measurementType === MeasurementType.Scoring ||
@@ -96,32 +96,32 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
                 <TableRow>
                   {
                     props.useSelect &&
-                    <TableCell>
+                    <TableCell style={{ verticalAlign: 'top' }}>
                       {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
                     </TableCell>
                   }
-                  <TableCell>
+                  <TableCell style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
                   {
                     props.useSelect &&
-                    <TableCell>
+                    <TableCell style={{ verticalAlign: 'top' }}>
                       {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
                     </TableCell>
                   }
-                  <TableCell>
+                  <TableCell style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.target)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.weight)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.threshold)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric style={{ verticalAlign: 'top' }}>
                     {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                   </TableCell>
                 </TableRow>

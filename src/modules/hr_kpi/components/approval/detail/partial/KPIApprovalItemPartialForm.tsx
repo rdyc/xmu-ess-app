@@ -80,26 +80,26 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                     props.formikBag.values.items.length > 0 &&
                     props.formikBag.values.items.map((item, index) =>
                     <TableRow key={index}>
-                      <TableCell>
+                      <TableCell style={{ verticalAlign: 'top' }}>
                         {props.formikBag.values.items[index].categoryName}
                       </TableCell>
-                      <TableCell>
+                      <TableCell style={{ verticalAlign: 'top' }}>
                         {props.formikBag.values.items[index].measurementDescription}
                       </TableCell>
-                      <TableCell>
+                      <TableCell style={{ verticalAlign: 'top' }}>
                         {props.formikBag.values.items[index].target}
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {
                           props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
                           props.intl.formatNumber(item.threshold || 0) ||
                           '-'
                         }
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {
                           (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
                             props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
@@ -107,7 +107,7 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                           '-'
                         }
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                       {
                         props.formikBag.values.items[index].measurementType &&
                         props.formikBag.values.items[index].measurementType !== MeasurementType.Completion &&
@@ -238,10 +238,10 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                           />
                         }
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {`${props.intl.formatNumber(props.formikBag.values.items[index].progress)} %`}
                       </TableCell>
-                      <TableCell numeric>
+                      <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {props.intl.formatNumber(props.formikBag.values.items[index].score)}
                       </TableCell>
                     </TableRow>

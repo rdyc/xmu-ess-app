@@ -49,6 +49,7 @@ export const layoutTooltip = defineMessages({
 // action
 export const layoutAction = defineMessages({
   add: { id: `${prefix}.action.add`},
+  accept: { id: `${prefix}.action.accept`},
   remove: { id: `${prefix}.action.remove`},
   apply: { id: `${prefix}.action.apply`},
   yes: { id: `${prefix}.action.yes`},
