@@ -37,13 +37,16 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
       )}
       actionComponent={(item: IKPIEmployee) => (
         <React.Fragment>
-          <Button 
-            size="small"
-            color="secondary"
-            onClick={() => props.history.push(`/kpi/employees/form`, {uid : item.uid})}
-          >
-            {props.intl.formatMessage(layoutMessage.action.modify)}
-          </Button>
+          {
+            !item.isFinal &&
+            <Button 
+              size="small"
+              color="secondary"
+              onClick={() => props.history.push(`/kpi/employees/form`, {uid : item.uid})}
+            >
+              {props.intl.formatMessage(layoutMessage.action.modify)}
+            </Button>
+          }
 
           <Button 
             size="small"

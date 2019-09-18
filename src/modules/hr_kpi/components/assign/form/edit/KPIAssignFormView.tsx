@@ -19,7 +19,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
   return (
     <FormPage
       info={{
-        uid: AppMenu.HRKPIInput,
+        uid: AppMenu.HRKPIAssign,
         parentUid: AppMenu.HumanResource,
         parentUrl: `/kpi/assigns/${props.match.params.employeeUid}`,
         title: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.page.assignNewTitle : kpiMessage.employee.page.assignModifyTitle),

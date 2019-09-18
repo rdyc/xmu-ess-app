@@ -1,4 +1,5 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
+import { WorkflowStatusType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { IKPIEmployeePostPayload, IKPIEmployeePutPayload } from '@kpi/classes/request';
@@ -55,6 +56,8 @@ export interface IKPIEmployeeFormValue {
   templateName: string;
   year: string;
   period: string;
+  statusType: string;
+  revision: string;
   totalScore: number;
   items: IKPIEmployeeItemFormValue[];
 }
@@ -118,6 +121,8 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     templateName: '',
     year: moment().year().toString(),
     period: '1',
+    statusType: '',
+    revision: '',
     totalScore: 0,
     items: []
   },
@@ -138,6 +143,14 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
 
     period: Yup.string()
       .max(2),
+
+    revision: Yup.string()
+      .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
+      .when('statusType', ({
+        is: (val) => val === WorkflowStatusType.Accepted,
+        then: Yup.string().required(),
+      }))
+      .max(300),
 
     totalScore: Yup.number(),
 
@@ -267,6 +280,7 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
           const payload: IKPIEmployeePutPayload = {
             kpiAssignUid: values.kpiAssignUid,
             period: parseInt(values.period, 10),
+            revision: values.revision,
             items: []
           };
 
@@ -351,6 +365,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
           templateName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.template && thisResponse.data.kpiAssign.template.name || '',
           year: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.year.toString() || '0',
           period: thisResponse.data.period.toString() || '0',
+          statusType: thisResponse.data.statusType,
+          revision: '',
           totalScore: thisResponse.data.totalScore,
           items: []
         };
@@ -391,6 +407,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
           templateName: thisAssignResponse.data.template && thisAssignResponse.data.template.name || '',
           year: thisAssignResponse.data.year.toString() || '0',
           period: this.props.initialValues.period,
+          statusType: '',
+          revision: '',
           totalScore: this.props.initialValues.totalScore,
           items: []
         };

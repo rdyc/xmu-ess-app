@@ -126,6 +126,8 @@
   "kpi.employee.field.year": "Year",
   "kpi.employee.field.year.placeholder": "Type The Year",
   "kpi.employee.field.period": "Semester",
+  "kpi.employee.field.period.midYear": "Mid Year",
+  "kpi.employee.field.period.fullYear": "Full Year",
   "kpi.employee.field.period.placeholder": "Type The Semester",
   "kpi.employee.field.isFinal": "Is KPI Final",
   "kpi.employee.field.status": "KPI Status",

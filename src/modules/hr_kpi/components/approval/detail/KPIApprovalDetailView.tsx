@@ -6,6 +6,7 @@ import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
+import { WorkflowStatusType } from '@common/classes/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
@@ -18,7 +19,7 @@ import KPIApprovalPartialForm from './partial/KPIApprovalPartialForm';
 export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props => (
   <PreviewPage
     info={{
-      uid: AppMenu.KPIEmployee,
+      uid: AppMenu.HRKPIInput,
       parentUid: AppMenu.HumanResource,
       parentUrl: `/kpi/approvals`,
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
@@ -74,7 +75,10 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
                     formikProps={formikBag}
                     buttonLabelProps={{
                       reset: props.intl.formatMessage(layoutMessage.action.reset),
-                      submit: props.intl.formatMessage(layoutMessage.action.submit),
+                      submit: props.kpiApprovalState.detail.response && props.kpiApprovalState.detail.response.data && 
+                        props.kpiApprovalState.detail.response.data.statusType === WorkflowStatusType.Submitted &&
+                        props.intl.formatMessage(layoutMessage.action.accept) ||
+                        props.intl.formatMessage(layoutMessage.action.submit),
                       processing: props.intl.formatMessage(layoutMessage.text.processing)
                     }}
                     confirmationDialogProps={{
