@@ -33,14 +33,14 @@ const createProps: mapper<InputSemesterOptionProps, IOwnState> = (): IOwnState =
 });
 
 const stateUpdaters: StateUpdaters<InputSemesterOptionProps, IOwnState, IOwnStateUpdater> = {
-  setOptions: () => (values: number[]): Partial<IOwnState> => {
+  setOptions: () => (values: ISelectFieldOption[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
       { label: '', value: ''}
     ];
         
     values.forEach(item => options.push({ 
-      value: item.toString(), 
-      label: item.toString() 
+      value: item.value, 
+      label: item.label 
     }));
 
     return {
@@ -51,7 +51,10 @@ const stateUpdaters: StateUpdaters<InputSemesterOptionProps, IOwnState, IOwnStat
 
 const lifeCycle: ReactLifeCycleFunctions<InputSemesterOptionProps, IOwnState> = {
   componentDidMount() {    
-    const year: number[] = [1, 2];
+    const year: ISelectFieldOption[] = [
+      { label: 'Mid Year', value: '1'},
+      { label: 'Full Year', value: '2'}
+    ];
 
     this.props.setOptions(year);
   }

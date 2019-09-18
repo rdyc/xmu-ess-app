@@ -1,6 +1,5 @@
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -18,7 +17,7 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
         title={props.intl.formatMessage(kpiMessage.employee.section.approvalTitle)}
       />
       <CardContent>
-        <Field
+        {/* <Field
           name="isApproved"
           render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
             <RadioGroup>
@@ -52,7 +51,7 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
               />
             </RadioGroup>
           )}
-        />  
+        />   */}
 
         <Field
           name="isFinal"
@@ -72,7 +71,6 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
         />  
 
         {
-          (props.formikBag.values.isApproved !== undefined && !props.formikBag.values.isApproved) &&
           (!props.formikBag.values.isFirst && !props.formikBag.values.isFinal) &&
           <Field
             name="revision"

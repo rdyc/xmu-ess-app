@@ -22,7 +22,6 @@ import {
 } from 'recompose';
 import * as Yup from 'yup';
 
-import { WorkflowStatusType } from '@common/classes/types';
 import { IKPIApprovalPostPayload } from '@kpi/classes/request';
 import { withKPIApproval, WithKPIApproval } from '@kpi/hoc/withKPIApproval';
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
@@ -49,7 +48,7 @@ interface IKPIApprovalItemFormValue {
 export interface IKPIApprovalFormValue {
   uid: string;
   statusType: string;
-  isApproved?: boolean;
+  // isApproved?: boolean;
   isFinal: boolean;
   isFirst: boolean;
   revision?: string;
@@ -129,7 +128,7 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
     initialValues: {
       uid: props.match.params.kpiUid,
       statusType: '',
-      isApproved: false,
+      // isApproved: false,
       isFinal: false,
       isFirst: true,
       revision: '',
@@ -139,8 +138,8 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
     validationSchema: Yup.object().shape<Partial<IKPIApprovalFormValue>>({
       uid: Yup.string(),
   
-      isApproved: Yup.boolean()
-        .required(),
+      // isApproved: Yup.boolean()
+      //   .required(),
   
       isFinal: Yup.boolean()
         .required(),
@@ -149,18 +148,10 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
   
       revision: Yup.string()
         .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
-        // .when('isApproved', ({
-        //   is: false,
-        //   then: Yup.string().required(),
-        // }))
-        // .when('isFinal', ({
-        //   is: false,
-        //   then: Yup.string().required(),
-        // }))
-        // .when('isFirst', ({
-        //   is: false,
-        //   then: Yup.string().required(),
-        // }))
+        .when(['isFinal', 'isFirst'] , ({
+          is: false,
+          then: Yup.string().required(),
+        }))
         .max(300),
   
       totalScore: Yup.number(),
@@ -205,10 +196,10 @@ const stateUpdaters: StateUpdaters<KPIApprovalDetailProps, IOwnState, IOwnStateU
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setShouldLoad: (state: IOwnState, props: KPIApprovalDetailProps) => (): Partial<IOwnState> => ({
+  setShouldLoad: (state: IOwnState) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: IOwnState, props: KPIApprovalDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+  setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: KPIApprovalDetailProps) => (): Partial<IOwnState> => ({
@@ -220,7 +211,7 @@ const stateUpdaters: StateUpdaters<KPIApprovalDetailProps, IOwnState, IOwnStateU
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
-  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
+  setDefault: () => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -252,7 +243,7 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
 
         // fill payload 
         const payload: IKPIApprovalPostPayload = {
-          isApproved: values.isApproved || false,
+          isApproved: true,
           isFinal: values.isFinal,
           revision: values.revision || '',
           items: []
@@ -386,7 +377,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
         const initialValues: IKPIApprovalFormValue = {
           uid: thisResponse.data.uid,
           statusType: thisResponse.data.statusType,
-          isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
+          // isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.isFirst,
           revision: thisResponse.data.revision || '',
