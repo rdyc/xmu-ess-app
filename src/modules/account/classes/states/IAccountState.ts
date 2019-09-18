@@ -109,6 +109,7 @@ export interface IAccountState {
   // account employee
   accountEmployeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
   accountEmployeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
+  accountEmployeeGetAllList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
   accountEmployeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
   accountEmployeePost: IQuerySingleState<IEmployeePostRequest, IEmployee>;
   accountEmployeePut: IQuerySingleState<IEmployeePutRequest, IEmployee>;

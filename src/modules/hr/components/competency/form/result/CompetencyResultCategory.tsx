@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyMappedList } from '@hr/classes/response';
-import { Card, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { Card, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -66,6 +67,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
           name="levelRespond"
           render={(fields: FieldArrayRenderProps) =>
             item.category.levels.map((level) =>           
+            <React.Fragment>         
               <TableRow>
                 <TableCell colSpan={1}>
                   <Field 
@@ -75,9 +77,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                         control={<Radio 
                           checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
                           onChange={() => {
-                            console.log('level.uid', index);
                             props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
-                            props.formikBag.setFieldValue(`levelRespond.${index}.categoryUid`, item.category.uid);
                           }}
                         />}
                         value={level.uid}
@@ -100,6 +100,29 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                   </Typography>
                 </TableCell>
               </TableRow>
+              {
+                Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Field
+                      name={`levelRespond.${index}.note`}
+                      render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => (
+                        <TextField
+                          {...field}
+                          fullWidth
+                          required
+                          disabled={form.isSubmitting}
+                          margin="normal"
+                          autoComplete="off"
+                          label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                          placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+              }
+            </React.Fragment>
             ) 
           }
         />

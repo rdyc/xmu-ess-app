@@ -26,7 +26,6 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
-      // validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyEmployeeFormValue>) => (
         <Form>
@@ -66,6 +65,7 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}  
                   saveAs={props.handleSaveType}
+                  isFinal={formikBag.values.levelRespond.every(item => item.levelUid === '')}
                 />
               </div>
             </div>
@@ -79,6 +79,7 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexContent}>
               {
+                !props.hrCompetencyEmployeeState.detail.isLoading &&
                 props.hrCompetencyMappedState.list.response &&
                 props.hrCompetencyMappedState.list.response.data &&
                 props.hrCompetencyMappedState.list.response.data[0] &&

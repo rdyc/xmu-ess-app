@@ -16,7 +16,10 @@ export interface IHrCompetencyEmployeeDetail {
   statusType: string;
   status?: ICommonSystem;
   dueDate?: string;
-  isDraft?: boolean;
+  assessmentYear: number;
+  isDraft: boolean;
+  isExpired: boolean;
+  isHR: boolean;
   items: ICompetencyEmployeeItem[];
   changes?: IBaseChanges;
 }

@@ -1,5 +1,6 @@
 import { IHrCompetencyEmployeeDetail } from '@hr/classes/response';
-import { Card, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,6 +17,9 @@ type AllProps
 
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
   <Card square>
+    <CardHeader 
+      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+    />
     <Table>
     <TableBody>
     {
@@ -31,7 +35,9 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
         </TableRow>
         <TableRow>
           <TableCell colSpan={1}>
-            {`Level ${item.level && item.level.level} - ${item.level && item.level.description}`}
+            <Typography>
+              {`Level ${item.level && item.level.level} - ${item.level && item.level.description}`}
+            </Typography>
           </TableCell>
           <TableCell colSpan={1}>
             <Typography>
@@ -47,7 +53,16 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
             </Typography>
           </TableCell>
         </TableRow>
-      
+        {
+          item.note &&
+          <TableRow>
+            <TableCell colSpan={2}>
+              <Typography>
+                {item.note}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        }    
       </React.Fragment>
       )
     }

@@ -71,10 +71,13 @@ export const SubmissionDraftView: React.ComponentType<SubmissionDraftProps> = pr
           </ListItemIcon>
           <ListItemText inset primary={props.intl.formatMessage(layoutMessage.action.draft)} />
           </MenuItem>
-          <MenuItem color="primary" onClick={() => {
-            props.handleSaveType(DraftType.final);
-            props.setOpen();          
-          }}>
+          <MenuItem color="primary"
+            disabled={props.isFinal}
+            onClick={() => {
+              props.handleSaveType(DraftType.final);
+              props.setOpen();          
+            }}
+          >
           <ListItemIcon>
             <ArchiveIcon />
           </ListItemIcon>

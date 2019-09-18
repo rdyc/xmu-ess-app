@@ -7,29 +7,33 @@ import { PopupMenu } from '@layout/components/PopupMenu';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { HrCompetencyEmployeeCategoryItem } from './HrCompetencyEmployeeCategoryItem';
-import { HrCompetencyEmployeeDetailProps } from './HrCompetencyEmployeeDetail';
-import { HrCompetencyEmployeeInformation } from './HrCompetencyEmployeeInformation';
+import { HrCompetencyEmployeeCategoryItem } from '../employee/HrCompetencyEmployeeCategoryItem';
+import { HrCompetencyResultDetailProps } from './HrCompetencyResultDetail';
+import { HrCompetencyResultInformation } from './HrCompetencyResultInformation';
+import { HrCompetencyResponderItem } from './shared/HrCompetencyResponderItem';
 
-export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetailProps> = props => (
+export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailProps> = props => (
   <React.Fragment>
     <PreviewPage 
       info={{
-        uid: AppMenu.CompetencyAssessmentInput,
+        uid: AppMenu.CompetencyAssessmentResult,
         parentUid: AppMenu.HumanResource,
-        parentUrl: '/hr/assessmentinput',
-        title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: '360 Assessment Input'}),
+        parentUrl: '/hr/assessmentresult',
+        title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: '360 Assessment Result'}),
         description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
       }}
       state={props.hrCompetencyEmployeeState.detail}
       onLoadApi={props.handleOnLoadApi}
       primary={(data: IHrCompetencyEmployeeDetail) => ([
-        <HrCompetencyEmployeeInformation data={data} />
+        <HrCompetencyResultInformation data={data} />
+      ])}
+      secondary={(data: IHrCompetencyEmployeeDetail) => ([
+        <HrCompetencyResponderItem positionUid={data.positionUid} data={props.hrCompetencyResultState.detailList.response && props.hrCompetencyResultState.detailList.response.data} />
       ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu
-          id="hr-competency-assessment-input-option"
+          id="hr-competency-assessment-result-option"
           selectable={false}
           menuOptions={props.menuOptions}
           onSelected={props.handleOnSelectedMenu}

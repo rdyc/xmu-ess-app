@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { HrCompetencyAssessmentDetail } from './competency/detail/assessment/HrCompetencyAssessmentDetail';
 import { HrCompetencyEmployeeDetail } from './competency/detail/employee/HrCompetencyEmployeeDetail';
+import { HrCompetencyResultDetail } from './competency/detail/result/HrCompetencyResultDetail';
 import { CompetencyAssessmentForm } from './competency/form/assessment/CompetencyAssessmentForm';
 import { CompetencyEmployeeForm } from './competency/form/employee/CompetencyEmployeeForm';
 import { CompetencyResultForm } from './competency/form/result/CompetencyResultForm';
@@ -30,7 +31,7 @@ const employee = (props: RouteComponentProps) => (
 const result = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={CompetencyResultForm} />
-    {/* <Route path={`${props.match.path}/:employeeUid`} component={HrCompetencyEmployeeDetail} /> */}
+    <Route path={`${props.match.path}/:competencyEmployeeUid`} component={HrCompetencyResultDetail} />
     <Route path={`${props.match.path}`} component={HrCompetencyResultList} />
   </Switch>
 );
@@ -52,7 +53,7 @@ export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
     <SecureMenuRoute 
       path={`${props.match.path}/assessmentresult`}
       menu={AppMenu.HumanResource} 
-      subMenu={AppMenu.CompetencyAssesmentResult} 
+      subMenu={AppMenu.CompetencyAssessmentResult} 
       component={result} 
     />
   </Switch>

@@ -1,6 +1,7 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyEmployeeUserAction } from '@hr/classes/types';
-import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { withHrCompetencyEmployee, WithHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -23,8 +24,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
-import { HrCompetencyEmployeeDetailView } from './HrCompetencyEmployeeDetailView';
+import { HrCompetencyResultDetailView } from './HrCompetencyResultDetailView';
 
 interface IOwnRouteParams {
   competencyEmployeeUid: string;
@@ -32,6 +34,7 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
+  handleOnLoadResult: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -57,9 +60,10 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setDefault: StateHandler<IOwnState>;
 }
 
-export type HrCompetencyEmployeeDetailProps
+export type HrCompetencyResultDetailProps
   = WithOidc
   & WithUser
+  & WithHrCompetencyResult
   & WithHrCompetencyEmployee
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
@@ -68,7 +72,7 @@ export type HrCompetencyEmployeeDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<HrCompetencyEmployeeDetailProps, IOwnState> = (props: HrCompetencyEmployeeDetailProps): IOwnState => { 
+const createProps: mapper<HrCompetencyResultDetailProps, IOwnState> = (props: HrCompetencyResultDetailProps): IOwnState => { 
     // checking admin status
     const { user } = props.oidcState;
     let isAdmin: boolean = false;
@@ -93,19 +97,19 @@ const createProps: mapper<HrCompetencyEmployeeDetailProps, IOwnState> = (props: 
   };
 };
 
-const stateUpdaters: StateUpdaters<HrCompetencyEmployeeDetailProps, IOwnState, IOwnStateUpdaters> = {
-  setShouldLoad: (state: IOwnState, props: HrCompetencyEmployeeDetailProps) => (): Partial<IOwnState> => ({
+const stateUpdaters: StateUpdaters<HrCompetencyResultDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setShouldLoad: (state: IOwnState, props: HrCompetencyResultDetailProps) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
-  setOptions: (prevState: IOwnState, props: HrCompetencyEmployeeDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
+  setOptions: (prevState: IOwnState, props: HrCompetencyResultDetailProps) => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
-  setModify: (prevState: IOwnState, props: HrCompetencyEmployeeDetailProps) => (): Partial<IOwnState> => ({
+  setModify: (prevState: IOwnState, props: HrCompetencyResultDetailProps) => (): Partial<IOwnState> => ({
     action: IHrCompetencyEmployeeUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Assessment input'}),
-    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'assessment input'}),
+    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Assessment resut'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'assessment result'}),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
@@ -120,8 +124,8 @@ const stateUpdaters: StateUpdaters<HrCompetencyEmployeeDetailProps, IOwnState, I
   })
 };
 
-const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HrCompetencyEmployeeDetailProps) => () => { 
+const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: HrCompetencyResultDetailProps) => () => { 
     const { user } = props.userState;
     const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
     const { isLoading } = props.hrCompetencyEmployeeState.detail;
@@ -131,8 +135,36 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
         competencyEmployeeUid
       });
     }
+
+    if (!isNullOrUndefined(props.history.location.state)) {
+      const positionUid = props.history.location.state.positionUid;
+      const respondenUid = props.history.location.state.respondenUid;
+      const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
+    
+      if (user && positionUid && respondenUid && !resultLoading) {
+        props.hrCompetencyResultDispatch.loadDetailListRequest({
+          positionUid,
+          respondenUid
+        });
+      }
+    }
   },
-  handleOnSelectedMenu: (props: HrCompetencyEmployeeDetailProps) => (item: IPopupMenuOption) => {
+  handleOnLoadResult: (props: HrCompetencyResultDetailProps) => () => { 
+    const { user } = props.userState;
+    if (!isNullOrUndefined(props.history.location.state)) {
+      const positionUid = props.history.location.state.positionUid;
+      const respondenUid = props.history.location.state.respondenUid;
+      const { isLoading } = props.hrCompetencyResultState.detailList;
+    
+      if (user && positionUid && respondenUid && !isLoading) {
+        props.hrCompetencyResultDispatch.loadDetailListRequest({
+          positionUid,
+          respondenUid
+        });
+      }
+    }
+  },
+  handleOnSelectedMenu: (props: HrCompetencyResultDetailProps) => (item: IPopupMenuOption) => {
     switch (item.id) {
       case IHrCompetencyEmployeeUserAction.Refresh:
         props.setShouldLoad();
@@ -146,10 +178,10 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
         break;
     }
   },
-  handleOnCloseDialog: (props: HrCompetencyEmployeeDetailProps) => () => {
+  handleOnCloseDialog: (props: HrCompetencyResultDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: HrCompetencyEmployeeDetailProps) => () => {
+  handleOnConfirm: (props: HrCompetencyResultDetailProps) => () => {
     const { response } = props.hrCompetencyEmployeeState.detail;
 
     // skipp untracked action or empty response
@@ -159,10 +191,17 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
     // define vars
     let competencyEmployeeUid: string | undefined;
+    let positionUid: string | undefined;
+    let respondenUid: string | undefined;
 
     // get project uid
     if (response.data) {
       competencyEmployeeUid = response.data.uid;
+    }
+
+    if (props.history.location.state) {
+      positionUid = props.history.location.state.positionUid;
+      respondenUid = props.history.location.state.respondenUid;
     }
 
     // actions with new page
@@ -175,7 +214,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
       switch (props.action) {
         case IHrCompetencyEmployeeUserAction.Modify:
-          next = '/hr/assessmentinput/form';
+          next = '/hr/assessmentresult/form';
           break;
 
         default:
@@ -185,28 +224,25 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
       props.setDefault();
 
       props.history.push(next, { 
-        uid: competencyEmployeeUid
+        positionUid,
+        respondenUid,
+        uid: competencyEmployeeUid,
       });
     }
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnState> = {
+const lifecycles: ReactLifeCycleFunctions<HrCompetencyResultDetailProps, IOwnState> = {
   componentDidMount() {
-    const { response, request } = this.props.hrCompetencyEmployeeState.detail;
-    const { match } = this.props;
-
-    if (!response || request && request.competencyEmployeeUid !== match.params.competencyEmployeeUid) {
-      this.props.handleOnLoadApi();
-    }
+    // 
   },
-  componentDidUpdate(prevProps: HrCompetencyEmployeeDetailProps) {
+  componentDidUpdate(prevProps: HrCompetencyResultDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       this.props.setShouldLoad();
       this.props.handleOnLoadApi();
     }
-    
+
     // handle updated route params
     if (this.props.match.params.competencyEmployeeUid !== prevProps.match.params.competencyEmployeeUid) {
       this.props.handleOnLoadApi();
@@ -217,11 +253,9 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
       const { isLoading, response } = this.props.hrCompetencyEmployeeState.detail;
 
       let isDraft: boolean = true;
-      let isExpired: boolean = false;
 
       if (response && response.data) {
         isDraft = response.data.isDraft;
-        isExpired = response.data.isExpired;
       }
 
       const options: IPopupMenuOption[] = [
@@ -234,7 +268,7 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
         {
           id: IHrCompetencyEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: isDraft && !isExpired,
+          enabled: isDraft,
           visible: true,
         }
       ];
@@ -244,15 +278,16 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
   }
 }; 
 
-export const HrCompetencyEmployeeDetail = compose(
+export const HrCompetencyResultDetail = compose(
   withRouter,
   withOidc,
   withUser,
   withHrCompetencyEmployee,
+  withHrCompetencyResult,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
   withStyles(styles),
-  setDisplayName('HrCompetencyEmployeeDetail')
-)(HrCompetencyEmployeeDetailView);
+  setDisplayName('HrCompetencyResultDetail')
+)(HrCompetencyResultDetailView);
