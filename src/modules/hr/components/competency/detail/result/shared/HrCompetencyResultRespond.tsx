@@ -15,7 +15,7 @@ type AllProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
+const hrCompetencyResultRespond: React.SFC<AllProps> = props => (
   <Card square className={props.classes.reportContentScrollable}>
     <CardHeader 
       title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
@@ -53,7 +53,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
             </Typography>
           </TableCell>
         </TableRow>
-        {/* {
+        {
           item.note &&
           <TableRow>
             <TableCell colSpan={2}>
@@ -62,7 +62,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
               </Typography>
             </TableCell>
           </TableRow>
-        }     */}
+        }    
       </React.Fragment>
       )
     }
@@ -71,7 +71,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
   </Card>
 );
 
-export const HrCompetencyEmployeeCategoryItem = compose<AllProps, OwnProps>(
+export const HrCompetencyResultRespond = compose<AllProps, OwnProps>(
   withStyles(styles),
   injectIntl
-)(hrCompetencyEmployeeCategoryItem);
+)(hrCompetencyResultRespond);

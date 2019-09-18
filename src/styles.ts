@@ -763,6 +763,12 @@ const styles = (theme: Theme) =>
       fontFamily: theme.typography.fontFamily,
       textTransform: 'capitalize'
       // color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white
+    },
+
+    hrTable: {
+      height: '75vh',
+      overflowX: 'auto',
+      overflowY: 'auto'
     }
   });
 

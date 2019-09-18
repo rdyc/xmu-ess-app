@@ -7,10 +7,10 @@ import { PopupMenu } from '@layout/components/PopupMenu';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { HrCompetencyEmployeeCategoryItem } from '../employee/HrCompetencyEmployeeCategoryItem';
 import { HrCompetencyResultDetailProps } from './HrCompetencyResultDetail';
 import { HrCompetencyResultInformation } from './HrCompetencyResultInformation';
-import { HrCompetencyResponderItem } from './shared/HrCompetencyResponderItem';
+// import { HrCompetencyResponderItem } from './shared/HrCompetencyResponderItem';
+import { HrCompetencyResultRespond } from './shared/HrCompetencyResultRespond';
 
 export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailProps> = props => (
   <React.Fragment>
@@ -27,9 +27,9 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
       primary={(data: IHrCompetencyEmployeeDetail) => ([
         <HrCompetencyResultInformation data={data} />
       ])}
-      secondary={(data: IHrCompetencyEmployeeDetail) => ([
-        <HrCompetencyResponderItem positionUid={data.positionUid} data={props.hrCompetencyResultState.detailList.response && props.hrCompetencyResultState.detailList.response.data} />
-      ])}
+      // secondary={(data: IHrCompetencyEmployeeDetail) => ([
+      //   <HrCompetencyResponderItem positionUid={data.positionUid} data={props.hrCompetencyResultState.detailList.response && props.hrCompetencyResultState.detailList.response.data} />
+      // ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu
@@ -57,7 +57,7 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
         props.hrCompetencyEmployeeState.detail.response &&
         props.hrCompetencyEmployeeState.detail.response.data &&
         props.hrCompetencyEmployeeState.detail.response.data.items.length > 0 ?
-        <HrCompetencyEmployeeCategoryItem 
+        <HrCompetencyResultRespond 
           data={props.hrCompetencyEmployeeState.detail.response.data}
         />
         :

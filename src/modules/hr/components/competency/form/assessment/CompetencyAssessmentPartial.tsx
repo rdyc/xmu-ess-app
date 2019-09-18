@@ -77,7 +77,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formikBag.isSubmitting || props.formMode === FormMode.Edit}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -107,7 +107,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
+              isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting || props.formMode === FormMode.Edit}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -136,7 +136,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               menuPlacement="auto"
               menuPosition="fixed"
               isClearable={field.value !== ''}
-              isDisabled={props.formikBag.values.positionUid === '' || props.formikBag.isSubmitting}
+              isDisabled={props.formikBag.values.positionUid === '' || props.formikBag.isSubmitting || props.formMode === FormMode.Edit}
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{

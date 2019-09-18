@@ -55,6 +55,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                   }}
                   filterAccountEmployee={props.filterAccountEmployee}
                   data={props.hrCompetencyAssessmentState.detail.response && props.hrCompetencyAssessmentState.detail.response.data}
+                  creator={props.userState && props.userState.user && props.userState.user.uid}
                 />
               </div>
             </div>

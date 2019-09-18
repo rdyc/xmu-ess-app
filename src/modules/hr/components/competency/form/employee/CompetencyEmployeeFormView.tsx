@@ -65,7 +65,7 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}  
                   saveAs={props.handleSaveType}
-                  isFinal={formikBag.values.levelRespond.every(item => item.levelUid === '')}
+                  isFinal={!formikBag.values.levelRespond.every(item => item.levelUid !== '')}
                 />
               </div>
             </div>

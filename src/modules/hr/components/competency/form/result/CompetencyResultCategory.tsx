@@ -1,7 +1,8 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyMappedList } from '@hr/classes/response';
+import { IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardHeader, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+// import { Done } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -14,6 +15,7 @@ interface IOwnProps {
   formikBag: FormikProps<ICompetencyResultFormValue>;
   intl: InjectedIntl;
   data: IHrCompetencyMappedList;
+  responders: IHrCompetencyEmployeeDetailList[];
 }
 
 interface IOwnState {
@@ -49,89 +51,126 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const competencyResultCategory: React.ComponentType<AllProps> = props => (
-  <Card square>
+  <Card square className={props.classes.hrTable}>
+    <CardHeader
+      title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Result'})}
+    />
     <Table>
-    <TableBody>
-    {
-      props.data &&
-      props.data.categories.map((item, index) => 
-      <React.Fragment key={item.uid}>
+      <TableBody>
         <TableRow>
-          <TableCell colSpan={2} className={props.classes.toolbar}>
-            <Typography variant="body1" color="inherit">
-              {item.category.name}
-            </Typography>
+          <TableCell colSpan={1}>
+            
+          </TableCell>
+          {
+            props.responders.map(responder => 
+              !responder.isHR &&
+              <TableCell style={{maxWidth: '100px', padding: '0 5px'}}>
+                {responder.employee && responder.employee.fullName}
+              </TableCell>  
+            )
+          }
+          <TableCell colSpan={1}>
+            HR
           </TableCell>
         </TableRow>
-        <FieldArray 
-          name="levelRespond"
-          render={(fields: FieldArrayRenderProps) =>
-            item.category.levels.map((level) =>           
-            <React.Fragment>         
-              <TableRow>
-                <TableCell colSpan={1}>
-                  <Field 
-                    name={`levelRespond.${index}`}
-                    render={({field}: FieldProps<ICompetencyResultFormValue>) => (
-                      <FormControlLabel
-                        control={<Radio 
-                          checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
-                          onChange={() => {
-                            props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
-                          }}
-                        />}
-                        value={level.uid}
-                        label={`Level ${level.level} - ${level.description}`}
-                      />
-                    )}
-                  />
-                </TableCell>
-                <TableCell colSpan={1}>
-                  <Typography>
-                    <ul>
+        {
+          props.data &&
+          props.data.categories.map((item, index) => 
+          <React.Fragment key={item.uid}>
+            <TableRow>
+              <TableCell colSpan={props.responders.length + 1} className={props.classes.toolbar}>
+                <Typography variant="body1" color="inherit">
+                  {item.category.name}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <FieldArray 
+              name="levelRespond"
+              render={(fields: FieldArrayRenderProps) =>
+                item.category.levels.map((level) =>           
+                <React.Fragment>         
+                  <TableRow>
+                    <TableCell colSpan={1}>
+                        <Typography>
+                          {`Level ${level.level} - ${level.description}`}
+                        </Typography>
+                        <Typography>
+                          <ul>
+                          {
+                            level.indicators.map(indicator =>
+                              <li>
+                                {indicator.description}
+                              </li>
+                            )
+                          }    
+                          </ul>
+                        </Typography>
+                    </TableCell>
                     {
-                      level.indicators.map(indicator =>
-                        <li>
-                          {indicator.description}
-                        </li>
+                      props.responders.map(responder => 
+                        !responder.isHR &&
+                        <TableCell>
+                          {
+                            responder.items.length > 0 &&
+                            responder.items.find(findData => findData.levelUid === level.uid) &&
+                            <Typography>
+                              &#10004;
+                              {/* <Done /> */}
+                            </Typography>
+                          }
+                        </TableCell>
                       )
-                    }    
-                    </ul>
-                  </Typography>
-                </TableCell>
-              </TableRow>
-              {
-                Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    <Field
-                      name={`levelRespond.${index}.note`}
-                      render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => (
-                        <TextField
-                          {...field}
-                          fullWidth
-                          required
-                          disabled={form.isSubmitting}
-                          margin="normal"
-                          autoComplete="off"
-                          label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                          placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                    }
+                    <TableCell colSpan={1}>
+                      <Field 
+                        name={`levelRespond.${index}`}
+                        render={({field}: FieldProps<ICompetencyResultFormValue>) => (
+                          <FormControlLabel
+                            control={<Radio 
+                              checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
+                              onChange={() => { 
+                                props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
+                              }}
+                            />}
+                            value={level.uid}
+                            label={''}
+                          />
+                        )}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  {
+                    Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
+                    <TableRow>
+                      <TableCell colSpan={props.responders.length + 1}>
+                        <Field
+                          name={`levelRespond.${index}.note`}
+                          render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => (
+                            <TextField
+                              {...field}
+                              fullWidth
+                              required
+                              disabled={form.isSubmitting}
+                              margin="normal"
+                              autoComplete="off"
+                              label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                              placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
+                      </TableCell>
+                    </TableRow>
+                  }
+                </React.Fragment>
+                ) 
               }
-            </React.Fragment>
-            ) 
-          }
-        />
-      
-      </React.Fragment>
-      )
-    }
-    </TableBody>
-  </Table>
+            />
+          
+          </React.Fragment>
+          )
+        }
+      </TableBody>
+    </Table>
   </Card>
 );
 
