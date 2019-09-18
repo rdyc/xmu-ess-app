@@ -48,7 +48,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
-  <Card square>
+  <Card square className={props.classes.reportContentScrollable}>
     <Table>
     <TableBody>
     {

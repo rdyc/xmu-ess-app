@@ -22,6 +22,7 @@ type CompetencyAssessmentResponderProps = {
   };
   filterAccountEmployee?: IEmployeeListFilter;
   data?: IHrCompetencyAssessmentDetail;
+  creator: string | undefined;
 };
 
 const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentResponderProps> = props => {
@@ -84,7 +85,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                                       autoFocus
                                       isSearchable
                                       isClearable={field.value !== ''}
-                                      isDisabled={props.formikBag.isSubmitting}
+                                      isDisabled={props.formikBag.isSubmitting || !isDeleteAble(item.employeeUid)}
                                       escapeClearsValue={true} 
                                       menuPlacement="auto"
                                       menuPosition="fixed"
@@ -103,8 +104,10 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                                         // prevent duplicate
                                         if (value !== '') {
                                           const isExist = props.formikBag.values.responder.findIndex(responder => responder.employeeUid === value);
+                                          const isCreator = Boolean(props.creator && props.creator === value);
+                                          const isAssessment = Boolean(props.formikBag.values.employeeUid === value);
 
-                                          if (isExist === -1) {
+                                          if (isExist === -1 && !isCreator && !isAssessment) {
                                             props.formikBag.setFieldValue(field.name, value);
                                           }
                                         } else {

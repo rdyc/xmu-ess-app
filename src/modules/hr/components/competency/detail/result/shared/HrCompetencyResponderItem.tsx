@@ -23,7 +23,7 @@ import { compose, lifecycle, mapper, ReactLifeCycleFunctions, StateHandlerMap, S
 
 interface IOwnOption {
   positionUid: string;
-  data?: IHrCompetencyEmployeeDetailList[] | null;
+  data: IHrCompetencyEmployeeDetailList[];
 }
 
 interface IOwnState {
