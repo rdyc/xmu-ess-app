@@ -1,6 +1,8 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { InputCategoryGroupOption } from '@layout/components/input/categoryGroup';
 import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -49,6 +51,33 @@ const KPICategoryDetailPartialForm: React.ComponentType<KPIcategoryDetailPartial
             helperText={form.touched.name && form.errors.name}
             error={form.touched.name && Boolean(form.errors.name)}
           />
+        )}
+      />
+
+      <Field
+        name="group"
+        render={({ field, form }: FieldProps<IKPICategoryFormValue>) => (
+          <InputCategoryGroupOption>
+            <SelectField
+              isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
+              isDisabled={props.formikBag.isSubmitting}
+              isClearable={field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(kpiMessage.employee.field.period),
+                required: true,
+                helperText: form.touched.group && form.errors.group,
+                error: form.touched.group && Boolean(form.errors.group)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+              }}
+            />
+          </InputCategoryGroupOption>
         )}
       />
     </CardContent>

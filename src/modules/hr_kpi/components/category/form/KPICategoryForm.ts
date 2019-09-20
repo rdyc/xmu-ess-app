@@ -35,6 +35,7 @@ import { KPICategoryFormView } from './KPICategoryFormView';
 export interface IKPICategoryFormValue {
   uid: string;
   name: string;
+  group: 'kPI' | 'personal';
   items: IKPIMeasurementFormValue[];
 }
 
@@ -91,6 +92,7 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   initialValues: {
     uid: 'Auto Generated',
     name: '',
+    group: 'kPI',
     items: []
   },
 
@@ -98,6 +100,10 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
     name: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.category.field.name))
       .max(100)
+      .required(),
+
+    group: Yup.mixed()
+      // .matches(/(kPI|personal)/)
       .required(),
   }),
 
@@ -196,6 +202,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
 
         const payload: IKPICategoryMeasurementPostPayload = {
           name: values.name,
+          group: values.group,
           items: itemPayload,
         };
 
@@ -218,6 +225,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
           // fill payload 
           const payload: IKPICategoryPutPayload = {
             name: values.name,
+            group: values.group,
           };
 
           promise = new Promise((resolve, reject) => {
@@ -285,6 +293,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPICategoryFormProps, IOwnStat
         const initialValues: IKPICategoryFormValue = {
           uid: thisResponse.data.uid,
           name: thisResponse.data.name,
+          group: thisResponse.data.group,
           items: []
         };
 
