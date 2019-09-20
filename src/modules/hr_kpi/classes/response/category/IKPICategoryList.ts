@@ -1,7 +1,7 @@
 export interface IKPICategoryList {
   uid: string;
   name: string;
-  group: 'kPI' | 'personal';
+  group: 'KPI' | 'Personal';
   groupName: string;
   measurementCount: number;
 }

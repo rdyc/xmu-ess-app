@@ -35,7 +35,7 @@ import { KPICategoryFormView } from './KPICategoryFormView';
 export interface IKPICategoryFormValue {
   uid: string;
   name: string;
-  group: 'kPI' | 'personal';
+  group: 'KPI' | 'Personal';
   items: IKPIMeasurementFormValue[];
 }
 
@@ -92,7 +92,7 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   initialValues: {
     uid: 'Auto Generated',
     name: '',
-    group: 'kPI',
+    group: 'KPI',
     items: []
   },
 

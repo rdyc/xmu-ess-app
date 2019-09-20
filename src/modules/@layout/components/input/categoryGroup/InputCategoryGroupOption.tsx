@@ -52,8 +52,8 @@ const stateUpdaters: StateUpdaters<InputCategoryGroupOptionProps, IOwnState, IOw
 const lifeCycle: ReactLifeCycleFunctions<InputCategoryGroupOptionProps, IOwnState> = {
   componentDidMount() {    
     const year: ISelectFieldOption[] = [
-      { label: 'KPI', value: 'kPI'},
-      { label: 'Personal Development', value: 'personal'}
+      { label: 'KPI', value: 'KPI'},
+      { label: 'Personal Development', value: 'Personal'}
     ];
 
     this.props.setOptions(year);

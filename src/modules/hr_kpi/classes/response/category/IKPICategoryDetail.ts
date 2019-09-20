@@ -3,7 +3,7 @@ import { IBaseChanges } from '@generic/interfaces';
 export interface IKPICategoryDetail {
   uid: string;
   name: string;
-  group: 'kPI' | 'personal';
+  group: 'KPI' | 'Personal';
   groupName: string;
   measurementCount: number;
   changes?: IBaseChanges;

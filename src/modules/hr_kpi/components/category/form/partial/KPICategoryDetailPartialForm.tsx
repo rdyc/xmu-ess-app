@@ -67,7 +67,7 @@ const KPICategoryDetailPartialForm: React.ComponentType<KPIcategoryDetailPartial
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(kpiMessage.employee.field.period),
+                label: props.intl.formatMessage(kpiMessage.category.field.group),
                 required: true,
                 helperText: form.touched.group && form.errors.group,
                 error: form.touched.group && Boolean(form.errors.group)
