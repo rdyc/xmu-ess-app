@@ -29,9 +29,9 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
         name="uid"
         render={({ field}: FieldProps<IKPITemplateFormValue>) => (
           <TextField 
+            {...GlobalStyle.TextField.ReadOnly}
             {...field}
-            fullWidth
-            disabled
+            disabled={props.formikBag.isSubmitting}
             margin="normal"
             label={props.intl.formatMessage(kpiMessage.template.field.uid)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}

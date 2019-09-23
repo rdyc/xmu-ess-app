@@ -105,7 +105,7 @@ const handlerCreators: HandleCreators<KPICategoryListProps, IOwnHandler> = {
     key: index,
     primary: item.name,
     secondary: `${props.intl.formatNumber(item.measurementCount)} Measurements`,
-    tertiary: '',
+    tertiary: item.groupName,
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
