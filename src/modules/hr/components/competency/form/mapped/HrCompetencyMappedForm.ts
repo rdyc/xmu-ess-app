@@ -59,8 +59,10 @@ export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  // levelType: string;
+  levelType: string;
   categories: CategoryMenus[];
+  activeCluster?: string;
+  activeCategory?: string;
 }
 
 interface IOwnRouteParams {
@@ -114,8 +116,10 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     uid: 'Auto Generated',
     companyUid: '',
     positionUid: '',
-    // levelType: '',
-    categories: []
+    levelType: '',
+    categories: [],
+    activeCategory: '',
+    activeCluster: ''
   },
 
   // validation props
@@ -318,7 +322,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
         uid: 'Auto generated',
         companyUid: '',
         positionUid: '',
-        // levelType: '',
+        levelType: '',
         categories: categoriesList
       };
 
@@ -359,7 +363,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: 'Auto generated',
             companyUid: '',
             positionUid: '',
-            // levelType: '',
+            levelType: '',
             categories: categoriesList
           };
     
@@ -419,7 +423,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: thisResponse.data.uid,
             companyUid: thisResponse.data.position.companyUid,
             positionUid: thisResponse.data.positionUid,
-            // levelType: '',
+            levelType: '',
             categories: categoriesList
           };
   

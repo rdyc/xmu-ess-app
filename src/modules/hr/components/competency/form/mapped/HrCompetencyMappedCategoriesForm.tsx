@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
@@ -8,6 +8,46 @@ import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { IMappedFormValue } from './HrCompetencyMappedForm';
+
+interface Levels {
+  name: string;
+  value: number;
+}
+
+const levelingDummy: Levels[] = [
+  {
+    name: 'Junior',
+    value: 0
+  },
+  {
+    name: 'Staff',
+    value: 0
+  },
+  {
+    name: 'Master',
+    value: 0
+  }
+];
+
+interface LevelValue {
+  label: string;
+  value: number;
+}
+
+const levelValueDummy: LevelValue[] = [
+  {
+    label: '1',
+    value: 1,
+  },
+  {
+    label: '2',
+    value: 2,
+  },
+  {
+    label: '3',
+    value: 3,
+  },
+];
 
 interface IOwnProps {
   formikBag: FormikProps<IMappedFormValue>;
@@ -23,6 +63,8 @@ interface ChildList {
 interface IOwnState {
   active?: string;
   isExpanded: boolean;
+  activeCategory?: string;
+  isExpandedCategory: boolean;
   childList: ChildList[];
   firstHitEdit: boolean;
 }
@@ -33,6 +75,7 @@ interface IOwnHandler {
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
   handleToggle: (uid: string) => IOwnState;
+  handleToggleCategory: (uid: string) => IOwnState;
   stateUpdate: StateHandler<IOwnState>;
 }
 
@@ -46,6 +89,8 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   active: undefined,
   isExpanded: false,
+  activeCategory: undefined,
+  isExpandedCategory: false,
   childList: [],
   firstHitEdit: false
 });
@@ -72,6 +117,10 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
     active: uid,
     isExpanded: state.active === uid ? !state.isExpanded : true
   }),
+  handleToggleCategory: (state: IOwnState) => (uid: string) => ({
+    activeCategory: uid,
+    isExpandedCategory: state.activeCategory === uid ? !state.isExpandedCategory : true
+  }),
   stateUpdate: (prevState: IOwnState) => (newState: IOwnState) => ({
     ...prevState,
     ...newState
@@ -79,7 +128,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props => {
-  const { active, isExpanded, formikBag} = props;
+  const { active, isExpanded, formikBag, activeCategory, isExpandedCategory } = props;
 
   const render = (
     <Card square>
@@ -100,7 +149,10 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                         <ListItem
                           button
                           disableGutters
-                          onClick={() => props.handleToggle(parent.uid)}
+                          onClick={() => {
+                            props.handleToggle(parent.uid);
+                            formikBag.setFieldValue('activeCluster', parent.uid);
+                          }}
                           selected={parent.uid === active && isExpanded}
                         >
                           <Field 
@@ -152,49 +204,63 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           {
                             formikBag.values.categories.map((child, idxChild) => 
                               child.parentUid === parent.uid &&
-                                <ListItem
-                                  key={idxChild}
-                                  color="inherit"
-                                  style={{marginLeft: '54px'}}
-                                >
-                                  {/* <Field 
-                                    name={`categories.${idxChild}.isAccess`}
-                                    render={({ field }: FieldProps<IMappedFormValue>) => (
-                                      <Checkbox 
-                                        {...field}
-                                        value={child.uid}
-                                        checked={child.isAccess}
-                                        disabled={props.formikBag.isSubmitting} 
-                                        onChange={() => {
-                                          props.handleCheckChild(child.uid, parent.uid);
-                                          formikBag.setFieldValue(`categories.${idxChild}.isAccess`, !child.isAccess);
-                                          if (!child.isAccess && !parent.isAccess) {
-                                            formikBag.setFieldValue(`categories.${idxParent}.isAccess`, true);
-                                          }
-                                          // to find the child of parent is still on the list or no
-                                          const parentIsFound: number = props.childList.findIndex(item => item.parentUid === child.parentUid);
-                                          // if no then uncheck it's parent
-                                          if (parentIsFound === -1) {
-                                            formikBag.setFieldValue(`categories.${idxParent}.isAccess`, !child.isAccess);
-                                          }
-                                        }}
-                                        style={{
-                                          height: 10,
-                                          width: 10,
-                                          marginLeft: 25,
-                                          marginRight: 5
-                                        }}
-                                      />
-                                    )}
-                                  /> */}
-                                  <ListItemText 
-                                    primary={child.name} 
-                                    primaryTypographyProps={{
-                                      noWrap: true,
-                                      color: 'inherit'
-                                    }} 
-                                  />
-                                </ListItem>
+                                <React.Fragment>
+                                  <ListItem
+                                    button
+                                    onClick={() => {
+                                      props.handleToggleCategory(child.uid);
+                                      formikBag.setFieldValue('activeCategory', child.uid);
+                                    }}
+                                    selected={child.uid === activeCategory && isExpandedCategory}
+                                    key={idxChild}
+                                    color="inherit"
+                                    style={{marginLeft: '54px'}}
+                                  >
+                                    <ListItemText 
+                                      primary={child.name} 
+                                      primaryTypographyProps={{
+                                        noWrap: true,
+                                        color: 'inherit'
+                                      }} 
+                                    />
+                                    <ListItemSecondaryAction>
+                                      {activeCategory === child.uid && isExpandedCategory ? <ExpandLess /> : <ExpandMore />}
+                                    </ListItemSecondaryAction>
+                                  </ListItem>
+                                  <Collapse
+                                    in={activeCategory === child.uid && isExpandedCategory}
+                                    timeout="auto"
+                                    unmountOnExit
+                                  >
+                                    {
+                                      levelingDummy.map((item, index) => 
+                                        <ListItem
+                                          key={index}
+                                          color="inherit"
+                                          style={{marginLeft: '70px'}}
+                                        >
+                                          <ListItemText
+                                            primary={item.name}
+                                          />
+                                          <ListItemSecondaryAction style={{right: '130px'}} >
+                                            <Select>
+                                              {
+                                                levelValueDummy.map(opt => 
+                                                  <MenuItem
+                                                    key={opt.value}
+                                                    value={opt.value}
+                                                  >
+                                                    {opt.label}
+                                                  </MenuItem>  
+                                                )
+                                              }
+                                            </Select>
+                                          </ListItemSecondaryAction>
+                                        </ListItem>
+                                      )
+                                    }
+                                  </Collapse>
+                                </React.Fragment>
                             )
                           }
                         </Collapse>

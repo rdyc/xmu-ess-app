@@ -10,6 +10,7 @@ import * as React from 'react';
 import { HrCompetencyMappedCategoriesForm } from './HrCompetencyMappedCategoriesForm';
 import { HrCompetencyMappedFormProps, IMappedFormValue } from './HrCompetencyMappedForm';
 import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
+import { HrMappedLevelItem } from './HrMappedLevelItem';
 // import { HrMappedCategoriesItem } from './HrMappedCategoriesItem';
 // import { HrCompetencyMappedSummary } from './HrCompetencyMappedSummary';
 
@@ -42,19 +43,6 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   filterCompany={props.filterCompany}
                 />
               </div>
-            </div>
-
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                <HrCompetencyMappedCategoriesForm 
-                  formMode={props.formMode}
-                  intl={props.intl}
-                  formikBag={formikBag}
-                />
-              </div>
-            </div>
-
-            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Mapped'})}
@@ -73,7 +61,29 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   }} 
                 />
               </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
+                <HrCompetencyMappedCategoriesForm 
+                  formMode={props.formMode}
+                  intl={props.intl}
+                  formikBag={formikBag}
+                />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                {
+                  props.hrCompetencyClusterState.list.response &&
+                  props.hrCompetencyClusterState.list.response.data &&
+                  <HrMappedLevelItem 
+                    intl={props.intl}
+                    formikBag={formikBag}
+                    data={props.hrCompetencyClusterState.list.response.data}
+                  />
+                }
                 <FormikJsonValues formikBag={formikBag} />
               </div>
             </div>
