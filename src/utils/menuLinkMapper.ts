@@ -270,6 +270,14 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/hr/assessmentinput';
       break;
 
+    case 'MNU83':
+      path = '/hr/assessmentinput';
+      break;
+    
+    case 'MNU85':
+      path = '/account/profile/detail';
+      break;
+
     default:
       path = '/home/dashboard';
       break;
