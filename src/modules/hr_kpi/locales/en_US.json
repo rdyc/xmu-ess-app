@@ -201,6 +201,7 @@
   "kpi.category.field.name": "Name",
   "kpi.category.field.name.placeholder": "Type The Name",
   "kpi.category.field.measurementCount": "Measurement Count",
+  "kpi.category.field.group": "Category Group",
   "kpi.category.field.name.required": "Name is Required",
 
   "kpi.category.page.list.title": "All KPI Categories",

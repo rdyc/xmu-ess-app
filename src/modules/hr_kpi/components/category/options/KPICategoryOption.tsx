@@ -62,7 +62,8 @@ const stateUpdaters: StateUpdaters<KPICategoryOptionProps, IOwnState, IOwnStateU
         
     values.forEach(item => options.push({ 
       value: item.uid, 
-      label: item.name 
+      label: item.name,
+      data: item,
     }));
 
     return {

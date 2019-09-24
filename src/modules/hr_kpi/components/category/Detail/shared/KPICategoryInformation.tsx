@@ -30,12 +30,21 @@ const kpiCategoryInformation: React.SFC<AllProps> = props => {
           value={props.data.uid}
           multiline
         />
+
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.category.field.name)}
           value={props.data.name}
           multiline
         />
+
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(kpiMessage.category.field.group)}
+          value={props.data.groupName}
+          multiline
+        />
+
         {
           props.data.changes &&
           <React.Fragment>
