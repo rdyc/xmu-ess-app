@@ -11,6 +11,7 @@ import enKPIMessages from '../../modules/hr_kpi/locales/en_US.json';
 import enLeaveMessages from '../../modules/leave/locales/en_US.json';
 import enLookupMessages from '../../modules/lookup/locales/en_US.json';
 import enMileageMessages from '../../modules/mileage/locales/en_US.json';
+import enProfile from '../../modules/myprofile/locales/en_US.json';
 import enWorkflowMessages from '../../modules/organization/locales/en_US.json';
 import enProjectMessages from '../../modules/project/locales/en_US.json';
 import enPurchaseMessages from '../../modules/purchase/locales/en_US.json';
@@ -39,7 +40,8 @@ const EnLang = {
     ...enLookupMessages,
     ...enAccountMessages,
     ...enKPIMessages,
-    ...enHr
+    ...enHr,
+    ...enProfile
   },
   locale: 'en-US',
   data: appLocaleData,

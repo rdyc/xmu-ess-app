@@ -24,7 +24,8 @@
       "@summary/*": [ "modules/summary/*" ],
       "@infor/*": [ "modules/infor/*" ],
       "@hr/*": [ "modules/hr/*" ],
-      "@kpi/*": [ "modules/hr_kpi/*" ]
+      "@kpi/*": [ "modules/hr_kpi/*" ],
+      "@profile/*": [ "modules/myprofile/*" ],
     },
     "outDir": "build/dist",
     "module": "esnext",
