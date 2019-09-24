@@ -22,10 +22,9 @@ import {
 
 import { KPIAssignUserAction } from '@kpi/classes/types/assign/KPIAssignUserAction';
 import { WithKPIFinal, withKPIFinal } from '@kpi/hoc/withKPIFinal';
-import { KPIFinalDetailView } from './KPIFinalDetailView';
+import { MyKPIFinalDetailView } from './MyKPIFinalDetailView';
 
 interface IOwnRouteParams {
-  employeeUid: string;
   kpiUid: string;
 }
 
@@ -46,7 +45,7 @@ interface IOwnHandler {
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
 }
 
-export type KPIFinalDetailProps
+export type MyKPIFinalDetailProps
   = WithUser
   & WithOidc
   & WithKPIFinal
@@ -56,7 +55,7 @@ export type KPIFinalDetailProps
   & IOwnStateUpdaters
   & IOwnHandler;
 
-const createProps: mapper<KPIFinalDetailProps, IOwnState> = (props: KPIFinalDetailProps): IOwnState => {
+const createProps: mapper<MyKPIFinalDetailProps, IOwnState> = (props: MyKPIFinalDetailProps): IOwnState => {
   // checking admin status
   const { user } = props.oidcState;
   let isAdmin: boolean = false;
@@ -78,7 +77,7 @@ const createProps: mapper<KPIFinalDetailProps, IOwnState> = (props: KPIFinalDeta
   };
 };
 
-const stateUpdaters: StateUpdaters<KPIFinalDetailProps, IOwnState, IOwnStateUpdaters> = {
+const stateUpdaters: StateUpdaters<MyKPIFinalDetailProps, IOwnState, IOwnStateUpdaters> = {
   setShouldLoad: (state: IOwnState) => (): Partial<IOwnState> => ({
     shouldLoad: !state.shouldLoad
   }),
@@ -87,16 +86,16 @@ const stateUpdaters: StateUpdaters<KPIFinalDetailProps, IOwnState, IOwnStateUpda
   }),
 };
 
-const handlerCreators: HandleCreators<KPIFinalDetailProps, IOwnHandler> = {
-  handleOnLoadApi: (props: KPIFinalDetailProps) => () => { 
+const handlerCreators: HandleCreators<MyKPIFinalDetailProps, IOwnHandler> = {
+  handleOnLoadApi: (props: MyKPIFinalDetailProps) => () => { 
     if (props.userState.user && props.match.params.kpiUid && props.match.params.kpiUid && !props.kpiFinalState.detail.isLoading) {
       props.kpiFinalDispatch.loadDetailRequest({
-        employeeUid: props.match.params.employeeUid,
+        employeeUid: props.userState.user.uid,
         kpiUid: props.match.params.kpiUid
       });
     }
   },
-  handleOnSelectedMenu: (props: KPIFinalDetailProps) => (item: IPopupMenuOption) => { 
+  handleOnSelectedMenu: (props: MyKPIFinalDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
       case KPIAssignUserAction.Refresh:
         props.setShouldLoad();
@@ -106,10 +105,10 @@ const handlerCreators: HandleCreators<KPIFinalDetailProps, IOwnHandler> = {
         break;
     }
   },
-  handleOnCloseDialog: (props: KPIFinalDetailProps) => () => {
+  handleOnCloseDialog: (props: MyKPIFinalDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: KPIFinalDetailProps) => () => {
+  handleOnConfirm: (props: MyKPIFinalDetailProps) => () => {
     const { response } = props.kpiFinalState.detail;
 
     // skipp untracked action or empty response
@@ -119,8 +118,8 @@ const handlerCreators: HandleCreators<KPIFinalDetailProps, IOwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<KPIFinalDetailProps, IOwnState> = {
-  componentDidUpdate(prevProps: KPIFinalDetailProps) {
+const lifecycles: ReactLifeCycleFunctions<MyKPIFinalDetailProps, IOwnState> = {
+  componentDidUpdate(prevProps: MyKPIFinalDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {
       this.props.setShouldLoad();
@@ -151,7 +150,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIFinalDetailProps, IOwnState> = {
   }
 };
 
-export const KPIFinalDetail = compose(
+export const MyKPIFinalDetail = compose(
   withRouter,
   withOidc,
   withUser,
@@ -160,5 +159,5 @@ export const KPIFinalDetail = compose(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
-  setDisplayName('KPIFinalDetail')
-)(KPIFinalDetailView);
+  setDisplayName('MyKPIFinalDetail')
+)(MyKPIFinalDetailView);
