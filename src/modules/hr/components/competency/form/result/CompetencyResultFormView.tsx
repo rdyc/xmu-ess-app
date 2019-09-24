@@ -27,6 +27,7 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
+      // validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyResultFormValue>) => (
         <Form>
@@ -41,19 +42,6 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
                 />
               </div>
             </div>
-
-            {/* <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                {
-                  props.hrCompetencyResultState.detailList.response &&
-                  props.hrCompetencyResultState.detailList.response.data &&
-                  <HrCompetencyResponderItem 
-                    positionUid={props.history.location.state && props.history.location.state.positionUid}
-                    data={props.hrCompetencyResultState.detailList.response.data}
-                  />
-                }
-              </div>
-            </div> */}
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
@@ -102,7 +90,7 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  data={props.hrCompetencyMappedState.list.response.data[0]}
+                  mapped={props.hrCompetencyMappedState.list.response.data[0]}
                   responders={props.hrCompetencyResultState.detailList.response.data}
                 />
               }
