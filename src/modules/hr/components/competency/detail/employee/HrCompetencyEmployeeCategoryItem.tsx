@@ -1,4 +1,4 @@
-import { IHrCompetencyEmployeeDetail } from '@hr/classes/response';
+import { IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -8,6 +8,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   data: IHrCompetencyEmployeeDetail;
+  mapped: IHrCompetencyMappedList;
 }
 
 type AllProps
@@ -15,35 +16,24 @@ type AllProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
-  <Card square className={props.classes.reportContentScrollable}>
-    <CardHeader 
-      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
-    />
-    <Table>
-    <TableBody>
-    {
-      props.data &&
-      props.data.items.map((item, index) => 
-      <React.Fragment key={item.uid}>
-        <TableRow>
-          <TableCell colSpan={2} className={props.classes.toolbar}>
-            <Typography variant="body1" color="inherit">
-              {item.category && item.category.name}
+const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
+
+  const findData = (categoryUid: string) => {
+    const find = props.data.items.find(item => item.categoryUid === categoryUid);
+
+    if (find) {
+      return (
+        <React.Fragment>
+          <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
+            <Typography className={props.classes.hrTableChild}>
+              {`Level ${find.level && find.level.level} - ${find.level && find.level.description}`}
             </Typography>
           </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell colSpan={1}>
+          <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
             <Typography>
-              {`Level ${item.level && item.level.level} - ${item.level && item.level.description}`}
-            </Typography>
-          </TableCell>
-          <TableCell colSpan={1}>
-            <Typography>
-              <ul>
+              <ul className={props.classes.hrTableChild}>
               {
-                item.level && item.level.indicators.map(indicator =>
+                find.level && find.level.indicators.map(indicator =>
                   <li>
                     {indicator.description}
                   </li>
@@ -52,24 +42,51 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => (
               </ul>
             </Typography>
           </TableCell>
-        </TableRow>
-        {/* {
-          item.note &&
+        </React.Fragment>
+      );
+    } 
+
+    return (
+      <TableCell colSpan={2}>
+        <Typography variant="body1" color="inherit">
+          {props.intl.formatMessage(hrMessage.competency.field.zeroItem, {item: 'level'})}
+        </Typography>
+      </TableCell>
+    );
+  };
+
+  const render = (
+    <Card square className={props.classes.hrTable}>
+      <CardHeader 
+        title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+      />
+      <Table>
+      <TableBody>
+      {
+        props.mapped.categories.map((item, index) => 
+        <React.Fragment key={item.uid}>
           <TableRow>
-            <TableCell colSpan={2}>
-              <Typography>
-                {item.note}
+            <TableCell colSpan={2} className={props.classes.toolbar}>
+              <Typography variant="body1" color="inherit">
+                {item.category && item.category.name}
               </Typography>
             </TableCell>
           </TableRow>
-        }     */}
-      </React.Fragment>
-      )
-    }
-    </TableBody>
-  </Table>
-  </Card>
-);
+          <TableRow>
+            {
+              findData(item.category.uid)
+            }
+          </TableRow>
+        </React.Fragment>
+        )
+      }
+      </TableBody>
+    </Table>
+    </Card>
+  );
+
+  return render;
+};
 
 export const HrCompetencyEmployeeCategoryItem = compose<AllProps, OwnProps>(
   withStyles(styles),

@@ -1,6 +1,7 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyEmployeeUserAction } from '@hr/classes/types';
 import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { withHrCompetencyMapped, WithHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -61,6 +62,7 @@ export type HrCompetencyEmployeeDetailProps
   = WithOidc
   & WithUser
   & WithHrCompetencyEmployee
+  & WithHrCompetencyMapped
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -193,11 +195,28 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnState> = {
   componentDidMount() {
-    const { response, request } = this.props.hrCompetencyEmployeeState.detail;
-    const { match } = this.props;
+    // const { response, request } = this.props.hrCompetencyEmployeeState.detail;
+    // const { match } = this.props;
 
-    if (!response || request && request.competencyEmployeeUid !== match.params.competencyEmployeeUid) {
-      this.props.handleOnLoadApi();
+    // if (!response || request && request.competencyEmployeeUid !== match.params.competencyEmployeeUid) {
+    //   this.props.handleOnLoadApi();
+    // }
+  },
+  componentWillUpdate(nextProps: HrCompetencyEmployeeDetailProps) {
+    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
+    const { response: nextResponse } = nextProps.hrCompetencyEmployeeState.detail;
+    const { response, request } = this.props.hrCompetencyMappedState.list;
+
+    if (thisResponse !== nextResponse) {
+      if (nextResponse && nextResponse.data) {
+        if (!response || request && request.filter && request.filter.positionUid !== nextResponse.data.positionUid) {
+          this.props.hrCompetencyMappedDispatch.loadListRequest({
+            filter: {
+              positionUid: nextResponse.data.positionUid
+            }
+          });
+        }
+      }
     }
   },
   componentDidUpdate(prevProps: HrCompetencyEmployeeDetailProps) {
@@ -249,6 +268,7 @@ export const HrCompetencyEmployeeDetail = compose(
   withOidc,
   withUser,
   withHrCompetencyEmployee,
+  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
