@@ -103,7 +103,7 @@ const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasu
         .required(),
       weight: Yup.number()
         .label(props.intl.formatMessage(kpiMessage.measurement.field.weight))
-        .min(1)
+        .min(0)
         .required(),
     }),
 
