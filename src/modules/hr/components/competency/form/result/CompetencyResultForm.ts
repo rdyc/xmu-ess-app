@@ -28,13 +28,14 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
+import * as Yup from 'yup';
 
 import { CompetencyResultFormView } from './CompetencyResultFormView';
 
 export interface ILevelOption {
   uid?: string;
-  categoryUid: string;
-  levelUid: string;
+  categoryUid?: string;
+  levelUid?: string;
   note?: string;
 }
 
@@ -60,6 +61,7 @@ interface IOwnState {
   initialValues?: ICompetencyResultFormValue;
 
   filterCompany?: ILookupCompanyGetListFilter;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyResultFormValue>>>;
 
   saveType: DraftType;
   isUpdatedValue: boolean;
@@ -111,6 +113,21 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
     orderBy: 'name',
     direction: 'ascending'
   },
+
+  // validation props
+  validationSchema: Yup.object().shape<Partial<ICompetencyResultFormValue>>({
+    levelRespond: Yup.array()
+      .of(
+        Yup.object().shape({
+          note: Yup.string()
+            .label(props.intl.formatMessage(hrMessage.competency.field.note))
+            .when('levelUid', ({
+              is: (val) => val !== '',
+              then: Yup.string().required()
+            }))
+        })
+      )
+  })
 });
 
 const stateUpdaters: StateUpdaters<CompetencyResultFormProps, IOwnState, IOwnStateUpdater> = {
@@ -159,6 +176,12 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           respondenUid
         });
       }
+
+      props.hrCompetencyMappedDispatch.loadListRequest({
+        filter: {
+          positionUid
+        }
+      });
     }
   },
   handleOnLoadResult: (props: CompetencyResultFormProps) => () => { 
@@ -188,6 +211,7 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
           // fill responder
           values.levelRespond.forEach(item =>
+            item.categoryUid &&
             item.levelUid &&
             payload.items.push({
               uid: item.uid,
@@ -264,33 +288,33 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOwnState> = {
   componentDidMount() {
-    const { response, request } = this.props.hrCompetencyMappedState.list;
-    const { history, handleOnLoadDetail } = this.props;
+    // const { response, request } = this.props.hrCompetencyMappedState.list;
+    // const { history, handleOnLoadDetail } = this.props;
     
-    if (history.location.state) {
-      const positionUid = history.location.state.positionUid;
+    // if (history.location.state) {
+    //   const positionUid = history.location.state.positionUid;
 
-      if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
-        handleOnLoadDetail();
-      }
-    }
+    //   if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
+    //     handleOnLoadDetail();
+    //   }
+    // }
   },
   componentWillUpdate(nextProps: CompetencyResultFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyResultState.detail; 
-    const { response: nextResponse } = nextProps.hrCompetencyResultState.detail;
-    const { response, request } = this.props.hrCompetencyMappedState.list;
+    // const { response: thisResponse } = this.props.hrCompetencyResultState.detail; 
+    // const { response: nextResponse } = nextProps.hrCompetencyResultState.detail;
+    // const { response, request } = this.props.hrCompetencyMappedState.list;
 
-    if (!response || (request && request.filter && request.filter.positionUid) !== (nextResponse && nextResponse.data && nextResponse.data.positionUid)) {
-      if (thisResponse !== nextResponse) {
-        if (nextResponse && nextResponse.data) {
-          this.props.hrCompetencyMappedDispatch.loadListRequest({
-            filter: {
-              positionUid: nextResponse.data.positionUid
-            }
-          });
-        }
-      }
-    }
+    // if (!response || (request && request.filter && request.filter.positionUid) !== (nextResponse && nextResponse.data && nextResponse.data.positionUid)) {
+    //   if (thisResponse !== nextResponse) {
+    //     if (nextResponse && nextResponse.data) {
+    //       this.props.hrCompetencyMappedDispatch.loadListRequest({
+    //         filter: {
+    //           positionUid: nextResponse.data.positionUid
+    //         }
+    //       });
+    //     }
+    //   }
+    // }
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyResultState.detail;

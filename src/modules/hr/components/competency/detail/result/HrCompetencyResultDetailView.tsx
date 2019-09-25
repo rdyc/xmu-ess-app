@@ -4,12 +4,9 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { HrCompetencyResultDetailProps } from './HrCompetencyResultDetail';
 import { HrCompetencyResultInformation } from './HrCompetencyResultInformation';
-// import { HrCompetencyResponderItem } from './shared/HrCompetencyResponderItem';
 import { HrCompetencyResultRespond } from './shared/HrCompetencyResultRespond';
 
 export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailProps> = props => (
@@ -27,9 +24,6 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
       primary={(data: IHrCompetencyEmployeeDetail) => ([
         <HrCompetencyResultInformation data={data} />
       ])}
-      // secondary={(data: IHrCompetencyEmployeeDetail) => ([
-      //   <HrCompetencyResponderItem positionUid={data.positionUid} data={props.hrCompetencyResultState.detailList.response && props.hrCompetencyResultState.detailList.response.data} />
-      // ])}
       appBarComponent={
         props.menuOptions &&
         <PopupMenu
@@ -53,27 +47,18 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
     </PreviewPage>
     {
       !props.hrCompetencyEmployeeState.detail.isLoading &&
-      (
-        props.hrCompetencyEmployeeState.detail.response &&
-        props.hrCompetencyEmployeeState.detail.response.data &&
-        props.hrCompetencyEmployeeState.detail.response.data.items.length > 0 ?
-        <HrCompetencyResultRespond 
-          data={props.hrCompetencyEmployeeState.detail.response.data}
-        />
-        :
-        <Card square>
-          <CardHeader
-            title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
-          />
-          <CardContent>
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              margin="dense"
-              value={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'No item is recorded'})}
-            />
-          </CardContent>
-        </Card>
-      )
+      props.hrCompetencyEmployeeState.detail.response &&
+      props.hrCompetencyEmployeeState.detail.response.data &&
+      props.hrCompetencyResultState.detailList.response &&
+      props.hrCompetencyResultState.detailList.response.data &&
+      props.hrCompetencyMappedState.list.response &&
+      props.hrCompetencyMappedState.list.response.data &&
+      props.hrCompetencyMappedState.list.response.data[0] &&
+      <HrCompetencyResultRespond 
+        data={props.hrCompetencyEmployeeState.detail.response.data}
+        responders={props.hrCompetencyResultState.detailList.response.data}
+        mapped={props.hrCompetencyMappedState.list.response.data[0]}
+      />
     }
   </React.Fragment>
 );

@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyMappedList } from '@hr/classes/response';
-import { Card, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { Card, CardHeader, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -48,7 +49,10 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
-  <Card square className={props.classes.reportContentScrollable}>
+  <Card square className={props.classes.hrTable}>
+    <CardHeader 
+      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+    />
     <Table>
     <TableBody>
     {
@@ -67,11 +71,12 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
           render={(fields: FieldArrayRenderProps) =>
             item.category.levels.map((level) =>           
               <TableRow>
-                <TableCell colSpan={1}>
+                <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
                   <Field 
                     name={`levelRespond.${index}`}
                     render={({field}: FieldProps<ICompetencyEmployeeFormValue>) => (
                       <FormControlLabel
+                        className={props.classes.hrTableChild}
                         control={<Radio 
                           checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
                           onChange={() => {
@@ -84,9 +89,9 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
                     )}
                   />
                 </TableCell>
-                <TableCell colSpan={1}>
+                <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
                   <Typography>
-                    <ul>
+                    <ul className={props.classes.hrTableChild}>
                     {
                       level.indicators.map(indicator =>
                         <li>

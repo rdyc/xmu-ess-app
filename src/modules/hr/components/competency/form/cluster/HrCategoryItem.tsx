@@ -104,7 +104,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                             autoComplete="off"
                             label={props.intl.formatMessage(hrMessage.competency.field.name)}
                             placeholder={props.intl.formatMessage(hrMessage.competency.field.namePlaceholder)}
-                            helperText={error && touch}
+                            helperText={touch && error}
                             error={touch && Boolean(error)}
                           />
                         );
@@ -128,7 +128,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                             autoComplete="off"
                             label={props.intl.formatMessage(hrMessage.competency.field.description)}
                             placeholder={props.intl.formatMessage(hrMessage.competency.field.descriptionPlaceholder)}
-                            helperText={error && touch}
+                            helperText={touch && error}
                             error={touch && Boolean(error)}
                           />
                         );
@@ -149,20 +149,6 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                       </Button>
                     </CardActions>
                   </Collapse>
-                  {/* <Card square>
-                    <CardHeader 
-                      title={`#${index + 1} - Category`}
-                      titleTypographyProps={{variant: 'body2'}}
-                      action={
-                        <IconButton disabled={Boolean(item.uid)} onClick={() => fields.remove(index)}>
-                          <DeleteForever />
-                        </IconButton>
-                      }
-                    />
-                    <CardContent>
-                      
-                    </CardContent>
-                  </Card> */}
                 </React.Fragment>
               )
             }
@@ -171,18 +157,6 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
   
         <div className={props.classes.flexContent}>
           <Card square>
-            {/* <CardHeader 
-              title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Category'})}
-              subheader={
-                props.formikBag.submitCount > 0 &&
-                typeof props.formikBag.errors.categories === 'string' &&
-                props.formikBag.errors.categories
-              }
-              subheaderTypographyProps={{
-                color: 'error',
-                variant: 'body1'
-              }}
-            /> */}
             <CardActions>
               <Button
                 fullWidth

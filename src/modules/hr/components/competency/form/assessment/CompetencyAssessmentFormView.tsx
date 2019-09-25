@@ -27,6 +27,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
+      validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyAssessmentFormValue>) => (
         <Form>

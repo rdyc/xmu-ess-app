@@ -238,25 +238,25 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, IOwnState> = {
   componentDidMount() {
-    const { response, request } = this.props.hrCompetencyMappedState.list;
-    const { history, handleOnLoadDetail } = this.props;
+    // const { response, request } = this.props.hrCompetencyMappedState.list;
+    // const { history, handleOnLoadDetail } = this.props;
     
-    if (history.location.state) {
-      const positionUid = history.location.state.positionUid;
+    // if (history.location.state) {
+    //   const positionUid = history.location.state.positionUid;
 
-      if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
-        handleOnLoadDetail();
-      }
-    }
+    //   if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
+    //     handleOnLoadDetail();
+    //   }
+    // }
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
     const { response: nextResponse } = nextProps.hrCompetencyEmployeeState.detail;
-    const { response } = this.props.hrCompetencyMappedState.list;
+    const { response, request } = this.props.hrCompetencyMappedState.list;
 
-    if (!response) {
-      if (thisResponse !== nextResponse) {
-        if (nextResponse && nextResponse.data) {
+    if (thisResponse !== nextResponse) {
+      if (nextResponse && nextResponse.data) {
+        if (!response || request && request.filter && request.filter.positionUid !== nextResponse.data.positionUid) {
           this.props.hrCompetencyMappedDispatch.loadListRequest({
             filter: {
               positionUid: nextResponse.data.positionUid
@@ -271,7 +271,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
 
     if (thisResponse && thisResponse.data && 
-        thisMapped && thisMapped.data 
+        thisMapped && thisMapped.data && thisMapped.data.length > 0
         && !this.props.isUpdatedValue) {
         
         // define initial values

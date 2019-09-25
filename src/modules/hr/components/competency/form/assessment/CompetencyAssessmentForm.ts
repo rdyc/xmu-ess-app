@@ -29,6 +29,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
+import * as Yup from 'yup';
+
 import { CompetencyAssessmentFormView } from './CompetencyAssessmentFormView';
 
 export interface IResponderEmployee {
@@ -62,6 +64,7 @@ interface IOwnState {
   filterCompany?: ILookupCompanyGetListFilter;
   filterPosition?: IPositionGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -112,6 +115,31 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     orderBy: 'name',
     direction: 'ascending'
   },
+
+  // validation props	
+  validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({	
+    year: Yup.string()	
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))	
+      .required(),	
+    companyUid: Yup.string()	
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))	
+      .required(),	
+    positionUid: Yup.string()	
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))	
+      .required(),	
+    employeeUid: Yup.string()	
+      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+      .required(),	
+    responder: Yup.array()	
+      .of(	
+        Yup.object().shape({	
+          employeeUid: Yup.string()	
+            .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+            .required()	
+        })	
+      )	
+      .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories)),	
+  }),
 });
 
 const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOwnStateUpdater> = {
