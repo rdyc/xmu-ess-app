@@ -128,6 +128,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementUid`, selected && selected.value || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.weight`, selected && selected.data && selected.data.weight || 0);
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementValue`, selected && selected.label || '');
+                  props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementDescription`, selected && selected.label || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementType`, selected && selected.data && selected.data.measurementType || '');
 
                   if (selected && selected.data && selected.data.measurementType === MeasurementType.Completion) {
