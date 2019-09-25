@@ -4,7 +4,7 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { Done } from '@material-ui/icons';
 import styles from '@styles';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -65,12 +65,16 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
             props.responders.map(responder => 
               !responder.isHR &&
               <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
-                {responder.employee && responder.employee.fullName}
+                <div className={props.classes.writingVertical} >
+                  {responder.employee && responder.employee.fullName}
+                </div>
               </TableCell>  
             )
           }
           <TableCell className={props.classes.hrTableResponder} style={{padding: '0 15px'}}>
-            {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
+            <div>
+              {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
+            </div>
           </TableCell>
         </TableRow>
         {
@@ -142,8 +146,8 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                         <Field
                           name={`levelRespond.${index}.note`}
                           render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
-                            // const error = getIn(form.errors, `levelRespond.${index}.note`);
-                            // const touch = getIn(form.touched, `levelRespond.${index}.note`);
+                            const error = getIn(form.errors, `levelRespond.${index}.note`);
+                            const touch = getIn(form.touched, `levelRespond.${index}.note`);
 
                             return (
                               <TextField
@@ -154,9 +158,9 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                                 margin="normal"
                                 autoComplete="off"
                                 label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                                placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                                // helperText={props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid) && error && touch}
-                                // error={props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid) && touch && Boolean(error)}
+                                placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Type any note'})}
+                                helperText={touch && error}
+                                error={touch && Boolean(error)}
                               />
                             );
                           }}

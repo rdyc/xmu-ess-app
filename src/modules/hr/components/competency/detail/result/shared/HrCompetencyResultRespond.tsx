@@ -39,12 +39,16 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
               props.responders.map(responder => 
                 !responder.isHR &&
                 <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
-                  {responder.employee && responder.employee.fullName}
+                  <div className={props.classes.writingVertical} >
+                    {responder.employee && responder.employee.fullName}
+                  </div>
                 </TableCell>  
               )
             }
             <TableCell className={props.classes.hrTableResponder} style={{padding: '0 15px'}}>
-              {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
+              <div>
+                {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
+              </div>
             </TableCell>
           </TableRow>
           {

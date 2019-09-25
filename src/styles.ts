@@ -783,11 +783,17 @@ const styles = (theme: Theme) =>
 
     hrTableResponder: {
       maxWidth: '100px',
-      padding: '0 5px',
+      maxHeight: '10px',
+      padding: '5px',
       textAlign: 'center',
       backgroundColor: theme.palette.background.paper,
       position: 'sticky',
       top: 0
+    },
+
+    writingVertical: {
+      writingMode: 'vertical-rl',
+      transform: 'rotate(180deg)'
     }
   });
 
