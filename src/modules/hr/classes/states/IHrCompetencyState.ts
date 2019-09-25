@@ -37,6 +37,20 @@ import {
   IHrCompetencyMappedGetListRequest,
   IHrCompetencyMappedPostRequest,
   IHrCompetencyMappedPutRequest,
+  IHrCornerBlogGetAllByCategoryRequest,
+  IHrCornerBlogGetAllRequest,
+  IHrCornerBlogGetDetailRequest,
+  IHrCornerCategoryDeleteRequest,
+  IHrCornerCategoryGetAllRequest,
+  IHrCornerCategoryGetDetailRequest,
+  IHrCornerCategoryGetListRequest,
+  IHrCornerCategoryPostRequest,
+  IHrCornerCategoryPutRequest,
+  IHrCornerPageDeleteRequest,
+  IHrCornerPageGetAllRequest,
+  IHrCornerPageGetDetailRequest,
+  IHrCornerPagePostRequest,
+  IHrCornerPagePutRequest,
 } from '../queries';
 import {
   IHrCompetencyAssessment,
@@ -59,6 +73,14 @@ import {
   IHrCompetencyMapped,
   IHrCompetencyMappedDetail,
   IHrCompetencyMappedList,
+  IHrCornerBlog,
+  IHrCornerBlogCategory,
+  IHrCornerBlogDetail,
+  IHrCornerCategory,
+  IHrCornerCategoryDetail,
+  IHrCornerCategoryList,
+  IHrCornerPage,
+  IHrCornerPageDetail,
 } from '../response';
 import { IHrCompetencyEmployeeList } from '../response/competency/employee/IHrCompetencyEmployeeList';
 
@@ -122,4 +144,24 @@ export interface IHrCompetencyState {
   hrCompetencyResultPost: IQuerySingleState<IHrCompetencyEmployeePostRequest, IHrCompetencyEmployee>;
   hrCompetencyResultPatch: IQuerySingleState<IHrCompetencyEmployeePatchRequest, IHrCompetencyEmployee>;
   
+  // corner blog
+  hrCornerBlogGetAll: IQueryCollectionState<IHrCornerBlogGetAllRequest, IHrCornerBlog>;
+  hrCornerBlogGetAllByCategory: IQueryCollectionState<IHrCornerBlogGetAllByCategoryRequest, IHrCornerBlogCategory>;
+  hrCornerBlogGetDetail: IQuerySingleState<IHrCornerBlogGetDetailRequest, IHrCornerBlogDetail>;
+
+  // corner category
+  hrCornerCategoryGetAll: IQueryCollectionState<IHrCornerCategoryGetAllRequest, IHrCornerCategory>;
+  hrCornerCategoryGetList: IQueryCollectionState<IHrCornerCategoryGetListRequest, IHrCornerCategoryList>;
+  hrCornerCategoryGetDetail: IQuerySingleState<IHrCornerCategoryGetDetailRequest, IHrCornerCategoryDetail>;
+  hrCornerCategoryPost: IQuerySingleState<IHrCornerCategoryPostRequest, IHrCornerCategory>;
+  hrCornerCategoryPut: IQuerySingleState<IHrCornerCategoryPutRequest, IHrCornerCategory>;
+  hrCornerCategoryDelete: IQuerySingleState<IHrCornerCategoryDeleteRequest, boolean>;
+
+  // corner page
+  hrCornerPageGetAll: IQueryCollectionState<IHrCornerPageGetAllRequest, IHrCornerPage>;
+  hrCornerPageGetDetail: IQuerySingleState<IHrCornerPageGetDetailRequest, IHrCornerPageDetail>;
+  hrCornerPagePost: IQuerySingleState<IHrCornerPagePostRequest, IHrCornerPage>;
+  hrCornerPagePut: IQuerySingleState<IHrCornerPagePutRequest, IHrCornerPage>;
+  hrCornerPageDelete: IQuerySingleState<IHrCornerPageDeleteRequest, boolean>;
+
 }

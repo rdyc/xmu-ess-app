@@ -38,3 +38,17 @@ export * from './competency/employee/IHrCompetencyEmployee';
 export * from './competency/employee/IHrCompetencyEmployeeList';
 export * from './competency/employee/IHrCompetencyEmployeeDetail';
 export * from './competency/employee/IHrCompetencyEmployeeDetailList';
+
+// corner blog
+export * from './corner/blog/IHrCornerBlog';
+export * from './corner/blog/IHrCornerBlogCategory';
+export * from './corner/blog/IHrCornerBlogDetail';
+
+// corner category
+export * from './corner/category/IHrCornerCategory';
+export * from './corner/category/IHrCornerCategoryDetail';
+export * from './corner/category/IHrCornerCategoryList';
+
+// corner page
+export * from './corner/page/IHrCornerPage';
+export * from './corner/page/IHrCornerPageDetail';

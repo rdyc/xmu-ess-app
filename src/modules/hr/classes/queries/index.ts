@@ -48,3 +48,23 @@ export * from './competency/employee/IHrCompetencyEmployeePatchRequest';
 export * from './competency/employee/IHrCompetencyEmployeePostRequest';
 export * from './competency/employee/IHrCompetencyEmployeeGetListRequest';
 export * from './competency/employee/IHrCompetencyEmployeeGetDetailListRequest';
+
+// corner blog
+export * from './corner/blog/IHrCornerBlogGetAllByCategoryRequest';
+export * from './corner/blog/IHrCornerBlogGetAllRequest';
+export * from './corner/blog/IHrCornerBlogGetDetailRequest';
+
+// corner category
+export * from './corner/category/IHrCornerCategoryDeleteRequest';
+export * from './corner/category/IHrCornerCategoryGetAllRequest';
+export * from './corner/category/IHrCornerCategoryGetDetailRequest';
+export * from './corner/category/IHrCornerCategoryGetListRequest';
+export * from './corner/category/IHrCornerCategoryPostRequest';
+export * from './corner/category/IHrCornerCategoryPutRequest';
+
+// corner page
+export * from './corner/page/IHrCornerPageDeleteRequest';
+export * from './corner/page/IHrCornerPageGetAllRequest';
+export * from './corner/page/IHrCornerPageGetDetailRequest';
+export * from './corner/page/IHrCornerPagePostRequest';
+export * from './corner/page/IHrCornerPagePutRequest';
