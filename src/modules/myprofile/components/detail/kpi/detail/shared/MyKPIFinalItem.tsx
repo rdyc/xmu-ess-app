@@ -34,19 +34,19 @@ const myKPIFinalItem: React.SFC<AllProps> = props => {
     return(
       items.map((item, index) => 
       <TableRow key={index}>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.categoryName}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.measurementDescription}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.target}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.weight)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             item.measurement.measurementType === MeasurementType.Scoring  &&
@@ -54,7 +54,7 @@ const myKPIFinalItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             (item.measurement.measurementType === MeasurementType.Scoring ||
@@ -63,13 +63,13 @@ const myKPIFinalItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {props.intl.formatNumber(item.achieved)}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.progress)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.score)} %`}
         </TableCell>
       </TableRow>     

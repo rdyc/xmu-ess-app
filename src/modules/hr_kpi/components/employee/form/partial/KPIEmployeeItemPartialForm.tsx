@@ -83,36 +83,39 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                     props.formikBag.values.items.map((item, index) =>
                     <TableRow key={index}>
                       <TableCell style={{ verticalAlign: 'top' }}>
-                        {props.formikBag.values.items[index].categoryName}
+                        {item.categoryName}
                       </TableCell>
                       <TableCell style={{ verticalAlign: 'top' }}>
-                        {props.formikBag.values.items[index].measurementDescription}
+                        {item.measurementDescription}
                       </TableCell>
                       <TableCell style={{ verticalAlign: 'top' }}>
-                        {props.formikBag.values.items[index].target}
+                        {item.target}
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
-                        {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
+                        {`${props.intl.formatNumber(item.weight)} %`}
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {
-                          props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
+                          item.measurementType === MeasurementType.Scoring  &&
                           props.intl.formatNumber(item.threshold || 0) ||
                           '-'
                         }
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
                         {
-                          (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
-                            props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
+                          (item.measurementType === MeasurementType.Scoring ||
+                            item.measurementType === MeasurementType.Attendance) &&
                           props.intl.formatNumber(item.amount) ||
                           '-'
                         }
                       </TableCell>
+                      {
+
+                      }
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
                       {
-                        props.formikBag.values.items[index].measurementType &&
-                        props.formikBag.values.items[index].measurementType !== MeasurementType.Completion &&
+                        item.measurementType &&
+                        item.measurementType !== MeasurementType.Completion &&
                           <Field
                             name={`items.${index}.achieved`}
                             render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => {
@@ -189,11 +192,11 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                           ||
                           <Checkbox
                             key={index}
-                            checked={props.formikBag.values.items[index].achieved > 0}
+                            checked={item.achieved > 0}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                              const weight = props.formikBag.values.items[index].weight || 0;
-                              const threshold = props.formikBag.values.items[index].threshold || 0;
-                              const amount = props.formikBag.values.items[index].amount || 0;
+                              const weight = item.weight || 0;
+                              const threshold = item.threshold || 0;
+                              const amount = item.amount || 0;
 
                               let value = 0;
                               let progress = 0;
@@ -241,10 +244,10 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         }
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
-                        {`${props.intl.formatNumber(props.formikBag.values.items[index].progress)} %`}
+                        {`${props.intl.formatNumber(item.progress)} %`}
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }}>
-                        {props.intl.formatNumber(props.formikBag.values.items[index].score)}
+                        {props.intl.formatNumber(item.score)}
                       </TableCell>
                     </TableRow>
                   )}
