@@ -49,7 +49,7 @@ interface IKPIEmployeeItemFormValue {
 }
 
 export interface IKPIEmployeeFormValue {
-  uid: string;
+  kpiUid: string;
   employeeUid: string;
   employeeName?: string;
   kpiAssignUid: string;
@@ -114,7 +114,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
   loadAssign: false,
 
   initialValues: {
-    uid: 'Auto Generated',
+    kpiUid: 'Auto Generated',
     employeeUid: props.match.params.employeeUid,
     employeeName: props.history.location.state && props.history.location.state.employeeName && props.history.location.state.employeeName || '',
     kpiAssignUid: '',
@@ -130,6 +130,8 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
   assignData: props.initialValues,
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({
+    kpiUid: Yup.string(),
+
     employeeUid: Yup.string(),
 
     kpiAssignUid: Yup.string()
@@ -358,7 +360,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
       if (thisResponse && thisResponse.data) {
         // define initial values 
         const initialValues: IKPIEmployeeFormValue = {
-          uid: thisResponse.data.uid,
+          kpiUid: thisResponse.data.uid,
           employeeUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employeeUid || '',
           employeeName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employee && thisResponse.data.kpiAssign.employee.fullName || '',
           kpiAssignUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.uid || '',
@@ -400,7 +402,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
       if (thisAssignResponse && thisAssignResponse.data) {
         // define initial values 
         const initialValues: IKPIEmployeeFormValue = {
-          uid: this.props.initialValues.uid,
+          kpiUid: this.props.initialValues.kpiUid,
           employeeUid: thisAssignResponse.data.employeeUid || '',
           employeeName: thisAssignResponse.data.employee && thisAssignResponse.data.employee.fullName || '',
           kpiAssignUid: thisAssignResponse.data.uid || '',
