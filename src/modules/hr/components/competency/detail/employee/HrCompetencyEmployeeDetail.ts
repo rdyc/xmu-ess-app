@@ -253,8 +253,8 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnS
         {
           id: IHrCompetencyEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: isDraft && !isExpired,
-          visible: true,
+          enabled: true,
+          visible: isDraft && !isExpired,
         }
       ];
 

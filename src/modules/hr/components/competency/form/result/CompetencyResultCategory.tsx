@@ -64,7 +64,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
           {
             props.responders.map(responder => 
               !responder.isHR &&
-              <TableCell className={props.classes.hrTableResponder}>
+              <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
                 {responder.employee && responder.employee.fullName}
               </TableCell>  
             )
@@ -88,7 +88,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
               name="levelRespond"
               render={(fields: FieldArrayRenderProps) =>
                 item.category.levels.map((level) =>           
-                <React.Fragment>         
+                <React.Fragment key={level.uid}>         
                   <TableRow>
                     <TableCell className={props.classes.hrTableVerAlign}>
                         <Typography className={props.classes.hrTableChild}>
@@ -98,7 +98,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                           <ul>
                           {
                             level.indicators.map(indicator =>
-                              <li>
+                              <li key={indicator.uid}>
                                 {indicator.description}
                               </li>
                             )
@@ -109,7 +109,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                     {
                       props.responders.map(responder => 
                         !responder.isHR &&
-                        <TableCell style={{padding: 0, textAlign: 'center'}}>
+                        <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                           {
                             responder.items.length > 0 &&
                             responder.items.find(findData => findData.levelUid === level.uid) &&
@@ -155,8 +155,8 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                                 autoComplete="off"
                                 label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
                                 placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                                // helperText={error && touch}
-                                // error={touch && Boolean(error)}
+                                // helperText={props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid) && error && touch}
+                                // error={props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid) && touch && Boolean(error)}
                               />
                             );
                           }}

@@ -38,7 +38,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
             {
               props.responders.map(responder => 
                 !responder.isHR &&
-                <TableCell className={props.classes.hrTableResponder}>
+                <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
                   {responder.employee && responder.employee.fullName}
                 </TableCell>  
               )
@@ -60,7 +60,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
               </TableRow>
               {
                 item.category.levels.map((level) =>           
-                <React.Fragment>         
+                <React.Fragment key={level.uid}>         
                   <TableRow>
                     <TableCell className={props.classes.hrTableVerAlign}>
                         <Typography className={props.classes.hrTableChild}>
@@ -70,7 +70,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                           <ul>
                           {
                             level.indicators.map(indicator =>
-                              <li>
+                              <li key={indicator.uid}>
                                 {indicator.description}
                               </li>
                             )
@@ -81,7 +81,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                     {
                       props.responders.map(responder => 
                         !responder.isHR &&
-                        <TableCell style={{padding: 0, textAlign: 'center'}}>
+                        <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                           {
                             responder.items.length > 0 &&
                             responder.items.find(findData => findData.levelUid === level.uid) &&

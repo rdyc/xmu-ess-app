@@ -111,6 +111,7 @@ const hrCompetencyResponderItem: React.SFC<AllProps> = props => {
                     if (item.items.length > 0 && findData) {
                       return (
                         <TextField
+                          key={category.uid}
                           {...GlobalStyle.TextField.ReadOnly}
                           multiline
                           margin="dense"
@@ -123,6 +124,7 @@ const hrCompetencyResponderItem: React.SFC<AllProps> = props => {
                     return (
                       <TextField
                         {...GlobalStyle.TextField.ReadOnly}
+                        key={category.uid}
                         multiline
                         className={props.classes.textStrikethrough}
                         margin="dense"

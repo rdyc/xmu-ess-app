@@ -34,7 +34,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
               <ul className={props.classes.hrTableChild}>
               {
                 find.level && find.level.indicators.map(indicator =>
-                  <li>
+                  <li key={indicator.uid}>
                     {indicator.description}
                   </li>
                 )
