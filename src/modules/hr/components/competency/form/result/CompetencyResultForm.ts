@@ -116,14 +116,17 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
 
   // validation props
   validationSchema: Yup.object().shape<Partial<ICompetencyResultFormValue>>({
-    // levelRespond: Yup.array()
-    //   .of(
-    //     Yup.object().shape({
-    //       note: Yup.string()
-    //         .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'}))
-    //         .required(),
-    //     })
-    //   )
+    levelRespond: Yup.array()
+      .of(
+        Yup.object().shape({
+          note: Yup.string()
+            .label(props.intl.formatMessage(hrMessage.competency.field.note))
+            .when('levelUid', ({
+              is: (val) => val !== '',
+              then: Yup.string().required()
+            }))
+        })
+      )
   })
 });
 

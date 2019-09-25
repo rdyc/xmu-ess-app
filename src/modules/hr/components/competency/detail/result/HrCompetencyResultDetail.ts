@@ -277,7 +277,7 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyResultDetailProps, IOwnSta
           id: IHrCompetencyEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: isDraft,
-          visible: true,
+          visible: isDraft,
         }
       ];
 

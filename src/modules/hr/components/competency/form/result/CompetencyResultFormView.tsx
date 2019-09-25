@@ -27,7 +27,7 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
     <Formik
       enableReinitialize
       initialValues={props.initialValues}
-      // validationSchema={props.validationSchema}
+      validationSchema={props.validationSchema}
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICompetencyResultFormValue>) => (
         <Form>

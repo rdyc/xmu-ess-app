@@ -45,6 +45,10 @@
   "hr.competency.field.level.placeholder": "Type any level",
   "hr.competency.field.level.required": "Level is required",
 
+  "hr.competency.field.note": "Note",
+  "hr.competency.field.note.placeholder": "Type any note",
+  "hr.competency.field.note.required": "Note is required",
+
   "hr.competency.field.indicator": "Indicator",
   "hr.competency.field.indicatorNum": "Indicator - {num}",
   "hr.competency.field.indicator.placeholder": "Type any indicator",
