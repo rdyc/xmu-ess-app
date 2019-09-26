@@ -57,7 +57,7 @@ export const hrCompetencyResultGetDetailListDispose = () => action(HrCompetencyR
 
 // get by id
 export const hrCompetencyResultGetByIdRequest = (request: IHrCompetencyEmployeeGetDetailRequest) => action(HrCompetencyResultAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyResultGetByIdSuccess = (response: IResponseCollection<IHrCompetencyEmployeeDetail>) => action(HrCompetencyResultAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyResultGetByIdSuccess = (response: IResponseSingle<IHrCompetencyEmployeeDetail>) => action(HrCompetencyResultAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyResultGetByIdError = (error: any) => action(HrCompetencyResultAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyResultGetByIdDispose = () => action(HrCompetencyResultAction.GET_BY_ID_DISPOSE);
 

@@ -40,7 +40,7 @@ export const hrCompetencyLevelGetListDispose = () => action(HrCompetencyLevelAct
 
 // get by id
 export const hrCompetencyLevelGetByIdRequest = (request: IHrCompetencyLevelGetDetailRequest) => action(HrCompetencyLevelAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyLevelGetByIdSuccess = (response: IResponseCollection<IHrCompetencyLevelDetail>) => action(HrCompetencyLevelAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyLevelGetByIdSuccess = (response: IResponseSingle<IHrCompetencyLevelDetail>) => action(HrCompetencyLevelAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyLevelGetByIdError = (error: any) => action(HrCompetencyLevelAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyLevelGetByIdDispose = () => action(HrCompetencyLevelAction.GET_BY_ID_DISPOSE);
 

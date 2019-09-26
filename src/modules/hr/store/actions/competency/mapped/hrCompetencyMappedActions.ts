@@ -40,7 +40,7 @@ export const hrCompetencyMappedGetListDispose = () => action(HrCompetencyMappedA
 
 // get by id
 export const hrCompetencyMappedGetByIdRequest = (request: IHrCompetencyMappedGetDetailRequest) => action(HrCompetencyMappedAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyMappedGetByIdSuccess = (response: IResponseCollection<IHrCompetencyMappedDetail>) => action(HrCompetencyMappedAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyMappedGetByIdSuccess = (response: IResponseSingle<IHrCompetencyMappedDetail>) => action(HrCompetencyMappedAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyMappedGetByIdError = (error: any) => action(HrCompetencyMappedAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyMappedGetByIdDispose = () => action(HrCompetencyMappedAction.GET_BY_ID_DISPOSE);
 

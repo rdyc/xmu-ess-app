@@ -51,7 +51,7 @@ export const hrCompetencyCategoryGetListDispose = () => action(HrCompetencyCateg
 
 // get by id
 export const hrCompetencyCategoryGetByIdRequest = (request: IHrCompetencyCategoryGetDetailRequest) => action(HrCompetencyCategoryAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyCategoryGetByIdSuccess = (response: IResponseCollection<IHrCompetencyCategoryDetail>) => action(HrCompetencyCategoryAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyCategoryGetByIdSuccess = (response: IResponseSingle<IHrCompetencyCategoryDetail>) => action(HrCompetencyCategoryAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyCategoryGetByIdError = (error: any) => action(HrCompetencyCategoryAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyCategoryGetByIdDispose = () => action(HrCompetencyCategoryAction.GET_BY_ID_DISPOSE);
 
