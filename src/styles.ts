@@ -769,6 +769,31 @@ const styles = (theme: Theme) =>
       height: '75vh',
       overflowX: 'auto',
       overflowY: 'auto'
+    },
+
+    hrTableVerAlign: {
+      verticalAlign: 'top',
+      padding: 0
+    },
+
+    hrTableChild: {
+      paddingLeft: theme.spacing.unit * 4,
+      marginTop: theme.spacing.unit
+    },
+
+    hrTableResponder: {
+      maxWidth: '100px',
+      maxHeight: '10px',
+      padding: '5px',
+      textAlign: 'center',
+      backgroundColor: theme.palette.background.paper,
+      position: 'sticky',
+      top: 0
+    },
+
+    writingVertical: {
+      writingMode: 'vertical-rl',
+      transform: 'rotate(180deg)'
     }
   });
 

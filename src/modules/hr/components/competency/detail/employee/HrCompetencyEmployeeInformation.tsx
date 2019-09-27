@@ -55,6 +55,13 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
           label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
           value={data.assessmentYear}
         />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          multiline
+          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Status'})}
+          value={data.status && data.status.value || 'N/A'}
+        />
         {
           props.data.changes &&
           <React.Fragment>

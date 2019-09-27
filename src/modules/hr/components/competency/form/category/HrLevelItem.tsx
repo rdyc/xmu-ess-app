@@ -106,7 +106,7 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                               autoComplete="off"
                               label={props.intl.formatMessage(hrMessage.competency.field.level)}
                               placeholder={props.intl.formatMessage(hrMessage.competency.field.levelPlaceholder)}
-                              helperText={error && touch}
+                              helperText={touch && error}
                               error={touch && Boolean(error)}
                               InputProps={{
                                 inputComponent: NumberFormatter,
@@ -140,7 +140,7 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                               autoComplete="off"
                               label={props.intl.formatMessage(hrMessage.competency.field.description)}
                               placeholder={props.intl.formatMessage(hrMessage.competency.field.descriptionPlaceholder)}
-                              helperText={error && touch}
+                              helperText={touch && error}
                               error={touch && Boolean(error)}
                             />
                           );
@@ -176,7 +176,7 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                                               autoComplete="off"
                                               label={props.intl.formatMessage(hrMessage.competency.field.indicatorNum, {num: idx + 1})}
                                               placeholder={props.intl.formatMessage(hrMessage.competency.field.indicatorPlaceholder)}
-                                              helperText={error && touch}
+                                              helperText={touch && error}
                                               error={touch && Boolean(error)}
                                             />
                                           </ListItemText>

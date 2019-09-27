@@ -1,6 +1,7 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyEmployeeUserAction } from '@hr/classes/types';
 import { withHrCompetencyEmployee, WithHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { withHrCompetencyMapped, WithHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
@@ -65,6 +66,7 @@ export type HrCompetencyResultDetailProps
   & WithUser
   & WithHrCompetencyResult
   & WithHrCompetencyEmployee
+  & WithHrCompetencyMapped
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -126,17 +128,17 @@ const stateUpdaters: StateUpdaters<HrCompetencyResultDetailProps, IOwnState, IOw
 
 const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyResultDetailProps) => () => { 
-    const { user } = props.userState;
-    const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
-    const { isLoading } = props.hrCompetencyEmployeeState.detail;
-
-    if (user && competencyEmployeeUid && !isLoading) {
-      props.hrCompetencyEmployeeDispatch.loadDetailRequest({
-        competencyEmployeeUid
-      });
-    }
-
     if (!isNullOrUndefined(props.history.location.state)) {
+      const { user } = props.userState;
+      const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
+      const { isLoading } = props.hrCompetencyEmployeeState.detail;
+  
+      if (user && competencyEmployeeUid && !isLoading) {
+        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
+          competencyEmployeeUid
+        });
+      }
+
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
       const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
@@ -147,6 +149,12 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
           respondenUid
         });
       }
+
+      props.hrCompetencyMappedDispatch.loadListRequest({
+        filter: {
+          positionUid
+        }
+      });
     }
   },
   handleOnLoadResult: (props: HrCompetencyResultDetailProps) => () => { 
@@ -269,7 +277,7 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyResultDetailProps, IOwnSta
           id: IHrCompetencyEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: isDraft,
-          visible: true,
+          visible: isDraft,
         }
       ];
 
@@ -284,6 +292,7 @@ export const HrCompetencyResultDetail = compose(
   withUser,
   withHrCompetencyEmployee,
   withHrCompetencyResult,
+  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -232,6 +232,22 @@ const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?
       }
       break;
 
+    case ModuleDefinitionType.Assessment:
+      path = '/hr/assessmentinput';
+      
+      if (type === NotificationType.Assessment) {      
+          
+        if (type === NotificationType.Assessment && uid) {
+          path = path.concat('/form');
+
+          state = {
+            uid
+          };
+        }
+      }
+
+      break;
+
     default:
       break;
   }

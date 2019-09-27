@@ -1,10 +1,10 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
-// import { Done } from '@material-ui/icons';
+import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Done } from '@material-ui/icons';
 import styles from '@styles';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -14,7 +14,7 @@ interface IOwnProps {
   formMode: FormMode; 
   formikBag: FormikProps<ICompetencyResultFormValue>;
   intl: InjectedIntl;
-  data: IHrCompetencyMappedList;
+  mapped: IHrCompetencyMappedList;
   responders: IHrCompetencyEmployeeDetailList[];
 }
 
@@ -58,27 +58,31 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
     <Table>
       <TableBody>
         <TableRow>
-          <TableCell colSpan={1}>
+          <TableCell>
             
           </TableCell>
           {
             props.responders.map(responder => 
               !responder.isHR &&
-              <TableCell style={{maxWidth: '100px', padding: '0 5px'}}>
-                {responder.employee && responder.employee.fullName}
+              <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
+                <div className={props.classes.writingVertical} >
+                  {responder.employee && responder.employee.fullName}
+                </div>
               </TableCell>  
             )
           }
-          <TableCell colSpan={1}>
-            HR
+          <TableCell className={props.classes.hrTableResponder} style={{padding: '0 15px'}}>
+            <div>
+              {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
+            </div>
           </TableCell>
         </TableRow>
         {
-          props.data &&
-          props.data.categories.map((item, index) => 
+          props.mapped &&
+          props.mapped.categories.map((item, index) => 
           <React.Fragment key={item.uid}>
             <TableRow>
-              <TableCell colSpan={props.responders.length + 1} className={props.classes.toolbar}>
+              <TableCell colSpan={props.responders.length + 1} className={props.classes.toolbar} >
                 <Typography variant="body1" color="inherit">
                   {item.category.name}
                 </Typography>
@@ -88,17 +92,17 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
               name="levelRespond"
               render={(fields: FieldArrayRenderProps) =>
                 item.category.levels.map((level) =>           
-                <React.Fragment>         
+                <React.Fragment key={level.uid}>         
                   <TableRow>
-                    <TableCell colSpan={1}>
-                        <Typography>
+                    <TableCell className={props.classes.hrTableVerAlign}>
+                        <Typography className={props.classes.hrTableChild}>
                           {`Level ${level.level} - ${level.description}`}
                         </Typography>
-                        <Typography>
+                        <Typography className={props.classes.hrTableChild}>
                           <ul>
                           {
                             level.indicators.map(indicator =>
-                              <li>
+                              <li key={indicator.uid}>
                                 {indicator.description}
                               </li>
                             )
@@ -109,31 +113,27 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                     {
                       props.responders.map(responder => 
                         !responder.isHR &&
-                        <TableCell>
+                        <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                           {
                             responder.items.length > 0 &&
                             responder.items.find(findData => findData.levelUid === level.uid) &&
                             <Typography>
-                              &#10004;
-                              {/* <Done /> */}
+                              <Done />
                             </Typography>
                           }
                         </TableCell>
                       )
                     }
-                    <TableCell colSpan={1}>
+                    <TableCell style={{padding: '0 15px'}}>
                       <Field 
                         name={`levelRespond.${index}`}
                         render={({field}: FieldProps<ICompetencyResultFormValue>) => (
-                          <FormControlLabel
-                            control={<Radio 
-                              checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
-                              onChange={() => { 
-                                props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
-                              }}
-                            />}
+                          <Radio 
+                            checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
+                            onChange={() => { 
+                              props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
+                            }}
                             value={level.uid}
-                            label={''}
                           />
                         )}
                       />
@@ -145,18 +145,25 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
                       <TableCell colSpan={props.responders.length + 1}>
                         <Field
                           name={`levelRespond.${index}.note`}
-                          render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => (
-                            <TextField
-                              {...field}
-                              fullWidth
-                              required
-                              disabled={form.isSubmitting}
-                              margin="normal"
-                              autoComplete="off"
-                              label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                              placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                            />
-                          )}
+                          render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
+                            const error = getIn(form.errors, `levelRespond.${index}.note`);
+                            const touch = getIn(form.touched, `levelRespond.${index}.note`);
+
+                            return (
+                              <TextField
+                                {...field}
+                                fullWidth
+                                required
+                                disabled={form.isSubmitting}
+                                margin="normal"
+                                autoComplete="off"
+                                label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                                placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Type any note'})}
+                                helperText={touch && error}
+                                error={touch && Boolean(error)}
+                              />
+                            );
+                          }}
                         />
                       </TableCell>
                     </TableRow>
