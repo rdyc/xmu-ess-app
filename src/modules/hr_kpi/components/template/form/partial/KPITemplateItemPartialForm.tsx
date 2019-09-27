@@ -87,29 +87,53 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                     props.formikBag.values.items.map((item, index) =>
                     <Tooltip key={index} title={props.intl.formatMessage(kpiMessage.measurement.field.tooltip)}>
                       <TableRow key={index}>
-                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {props.formikBag.values.items[index].categoryValue}
                         </TableCell>
-                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {props.formikBag.values.items[index].categoryName}
                         </TableCell>
-                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {props.formikBag.values.items[index].measurementValue}
                         </TableCell>
-                        <TableCell onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {props.formikBag.values.items[index].target}
                         </TableCell>
-                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          numeric 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
                         </TableCell>
-                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          numeric 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {
                             props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
                           }
                         </TableCell>
-                        <TableCell numeric onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}>
+                        <TableCell 
+                          numeric 
+                          style={{ verticalAlign: 'top' }}
+                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                        >
                           {
                             (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
                               props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&

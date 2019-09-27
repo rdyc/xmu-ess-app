@@ -22,6 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WorkflowStatusType } from '@common/classes/types';
 import { KPIEmployeeDetailView } from './KPIEmployeeDetailView';
 
 interface IOwnRouteParams {
@@ -214,7 +215,9 @@ const lifecycles: ReactLifeCycleFunctions<KPIEmployeeDetailProps, IOwnState> = {
           id: KPIEmployeeUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
-          visible: this.props.kpiEmployeeState.detail.response && !this.props.kpiEmployeeState.detail.response.data.isFinal || true,
+          visible: this.props.kpiEmployeeState.detail.response && 
+            (this.props.kpiEmployeeState.detail.response.data.statusType === WorkflowStatusType.Submitted ||
+            (this.props.kpiEmployeeState.detail.response.data.statusType === WorkflowStatusType.Accepted || !this.props.kpiEmployeeState.detail.response.data.isFinal)) || true,
         },
       ];
 

@@ -29,7 +29,7 @@ type KPIEmployeeDetailPartialFormProps = {
 const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartialFormProps> = props => {
   const setAssignValue = () => {
     props.formikBag.setValues({
-      uid: props.formikBag.values.uid,
+      kpiUid: props.formikBag.values.kpiUid,
       kpiAssignUid: props.assignData.kpiAssignUid,
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
