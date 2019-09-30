@@ -68,7 +68,7 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
         });
         item.valueObject.map(division => {
           props.division.name.push(division.name);
-          props.division.value.push(division.value);
+          props.division.value.push(Number(division.value.toFixed(2)));
           if (division.value > 100) {
             props.division.color.push('#2e7d32');
           } else {
@@ -81,7 +81,7 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
         });
         item.valueObject.map(lob => {
           props.lob.name.push(lob.name);
-          props.lob.value.push(lob.value);
+          props.lob.value.push(Number(lob.value.toFixed(2)));
           if (lob.value > 100) {
             props.lob.color.push('#2e7d32');
           } else {
@@ -94,7 +94,7 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
         });
         item.valueObject.map(department => {
           props.department.name.push(department.name);
-          props.department.value.push(department.value);
+          props.department.value.push(Number(department.value.toFixed(2)));
           if (department.value > 100) {
             props.department.color.push('#2e7d32');
           } else {
@@ -107,7 +107,7 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
         });
         item.valueObject.map(sales => {
           props.sales.name.push(sales.name);
-          props.sales.value.push(sales.value);
+          props.sales.value.push(Number(sales.value.toFixed(2)));
           if (sales.value > 100) {
             props.sales.color.push('#2e7d32');
           } else {
