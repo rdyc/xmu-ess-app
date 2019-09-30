@@ -278,6 +278,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/account/profile/detail';
       break;
 
+    case 'MNU86':
+      path = '/lookup/employeelevels';
+      break;
+
     default:
       path = '/home/dashboard';
       break;

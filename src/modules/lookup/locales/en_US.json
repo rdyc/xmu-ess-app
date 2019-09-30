@@ -591,5 +591,45 @@
   "lookup.achievement.field.file": "Upload File (Excel)",
 
   "lookup.achievement.section.info.title": "Upload Achievement Form",
-  "lookup.achievement.section.info.subHeader": " "
+  "lookup.achievement.section.info.subHeader": " ",
+
+  "lookup.employeeLevel.page.list.title": "Employee Level",
+  "lookup.employeeLevel.page.list.subHeader": " ",
+  
+  "lookup.employeeLevel.page.detail.title": "Employee Level Detail",
+  "lookup.employeeLevel.page.detail.subHeader": " ",
+  "lookup.employeeLevel.page.modify.title": "Modify Employee Level",
+  "lookup.employeeLevel.page.modify.subHeader": " ",
+  "lookup.employeeLevel.page.new.title": "New Employee Level",
+  "lookup.employeeLevel.page.new.subHeader": " ",
+  
+  "lookup.employeeLevel.section.info.title": "Employee Level",
+  "lookup.employeeLevel.section.info.subHeader": " ",
+  
+  "lookup.employeeLevel.dialog.newTitle": "Submit Confirmation",
+  "lookup.employeeLevel.dialog.newDescription": "Do you want to submit employeeLevel ?",
+  
+  "lookup.employeeLevel.field.uid": "Employee Level ID",
+  "lookup.employeeLevel.field.uid.placeholder": "Employee Level ID",
+  "lookup.employeeLevel.field.seq": "Sequence",
+  "lookup.employeeLevel.field.seq.placeholder": "Type any description",
+  "lookup.employeeLevel.field.value": "Value",
+  "lookup.employeeLevel.field.value.placeholder": "Type any value",
+  "lookup.employeeLevel.field.value.required": "value is required",
+  "lookup.employeeLevel.field.description": "Description",
+  "lookup.employeeLevel.field.description.placeholder": "Type any description",
+  "lookup.employeeLevel.field.description.required": "description is required",
+  
+  "lookup.employeeLevel.confirm.modify.title": "Modify Confirmation",
+  "lookup.employeeLevel.confirm.modify.description": "You are about to modify current employee level. Do you want to continue ?",
+  "lookup.employeeLevel.confirm.delete.title": "Delete Confirmation",
+  "lookup.employeeLevel.confirm.delete.description": "You are about to delete current employee level. Do you want to continue ?",
+  
+  "lookup.employeeLevel.message.emptyProps": "Some props are empty",
+  "lookup.employeeLevel.message.create.success": "A new Employee Level {uid} has been created",
+  "lookup.employeeLevel.message.create.failure": "Unable to process your submission",
+  "lookup.employeeLevel.message.update.success": "Existing Employee Level {uid} has been updated",
+  "lookup.employeeLevel.message.update.failure": "Unable to process your submission",
+  "lookup.employeeLevel.message.delete.success": "Current data with ID {uid} has been deleted",
+  "lookup.employeeLevel.message.delete.failure": "Unable to process your submission"
 }

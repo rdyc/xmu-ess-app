@@ -84,7 +84,8 @@ enum AppMenu {
   CompetencyAssessmentResult = 'MNU76',
   CompetencyEmployee = 'MNU76',
   HRKPIAssign = 'MNU84',
-  MyProfile = 'MNU85'
+  MyProfile = 'MNU85',
+  LookupEmployeeLevel = 'MNU86',
 }
 
 export default AppMenu;
