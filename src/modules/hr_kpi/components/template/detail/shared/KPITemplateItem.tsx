@@ -34,22 +34,22 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.category && item.category.name}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.categoryName}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.measurement && item.measurement.description}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}> 
           {item.target}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.weight)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             item.measurement.measurementType === MeasurementType.Scoring  &&
@@ -57,7 +57,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.measurement && 
             (item.measurement.measurementType === MeasurementType.Scoring ||

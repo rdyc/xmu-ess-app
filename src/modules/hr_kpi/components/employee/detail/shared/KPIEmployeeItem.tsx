@@ -34,19 +34,19 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.kpiAssignItem && item.kpiAssignItem.categoryName}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.kpiAssignItem && item.kpiAssignItem.measurementDescription}
         </TableCell>
-        <TableCell>
+        <TableCell style={{ verticalAlign: 'top' }}>
           {item.kpiAssignItem && item.kpiAssignItem.target}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.kpiAssignItem &&
             item.kpiAssignItem.measurement && 
@@ -55,7 +55,7 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {
             item.kpiAssignItem &&
             item.kpiAssignItem.measurement && 
@@ -65,13 +65,13 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {props.intl.formatNumber(item.achieved)}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.progress)} %`}
         </TableCell>
-        <TableCell numeric>
+        <TableCell numeric style={{ verticalAlign: 'top' }}>
           {`${props.intl.formatNumber(item.score)} %`}
         </TableCell>
       </TableRow>     
