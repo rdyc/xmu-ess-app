@@ -511,6 +511,11 @@ const styles = (theme: Theme) =>
       }
     },
 
+    flex2Column: {
+      width: `calc(100% / 2)`,
+      padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+    },
+
     flexContent: {
       marginBottom: theme.spacing.unit * 2,
       verticalAlign: 'middle',
@@ -794,6 +799,10 @@ const styles = (theme: Theme) =>
     writingVertical: {
       writingMode: 'vertical-rl',
       transform: 'rotate(180deg)'
+    },
+
+    globalFont: {
+      fontFamily: theme.typography.fontFamily
     }
   });
 
