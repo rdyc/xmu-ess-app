@@ -6,6 +6,9 @@ import { hrCompetencyIndicatorReducers } from './competency/indicator';
 import { hrCompetencyLevelReducers } from './competency/level';
 import { hrCompetencyMappedReducers } from './competency/mapped';
 import { hrCompetencyResultReducers } from './competency/result';
+import { hrCornerBlogReducers } from './corner/blog';
+import { hrCornerCategoryReducers } from './corner/category';
+import { hrCornerPageReducers } from './corner/page';
 
 const hrCompetencyReducers = {
   ...hrCompetencyCategoryReducers,
@@ -15,7 +18,10 @@ const hrCompetencyReducers = {
   ...hrCompetencyMappedReducers,
   ...hrCompetencyAssessmentReducers,
   ...hrCompetencyEmployeeReducers,
-  ...hrCompetencyResultReducers
+  ...hrCompetencyResultReducers,
+  ...hrCornerBlogReducers,
+  ...hrCornerCategoryReducers,
+  ...hrCornerPageReducers
 };
 
 export default hrCompetencyReducers;

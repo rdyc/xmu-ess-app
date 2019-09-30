@@ -57,6 +57,9 @@ import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrC
 import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
 import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import hrCompetencyResultSagas from '@hr/store/sagas/competency/result/hrCompetencyResultSagas';
+import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
+import hrCornerCategorySagas from '@hr/store/sagas/corner/category/hrCornerCategorySagas';
+import hrCornerPageSagas from '@hr/store/sagas/corner/page/hrCornerPageSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
 import kpiApprovalSagas from '@kpi/store/sagas/kpiApprovalSagas';
 import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
@@ -269,5 +272,10 @@ export function* rootSaga() {
     fork(kpiApprovalSagas),
     fork(kpiAssignSagas),
     fork(kpiFinalSagas),
+
+    // corner
+    fork(hrCornerBlogSagas),
+    fork(hrCornerCategorySagas),
+    fork(hrCornerPageSagas)
   ]);
 }

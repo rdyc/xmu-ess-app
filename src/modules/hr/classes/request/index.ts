@@ -33,3 +33,13 @@ export * from './competency/assessment/IHrCompetencyAssessmentPutPayload';
 export * from './competency/employee/IEmployeeItemCreate';
 export * from './competency/employee/IHrCompetencyEmployeePatchPayload';
 export * from './competency/employee/IHrCompetencyEmployeePostPayload';
+
+// corner category
+export * from './corner/category/IHrCornerCategoryDeletePayload';
+export * from './corner/category/IHrCornerCategoryPostPayload';
+export * from './corner/category/IHrCornerCategoryPutPayload';
+
+// corner page
+export * from './corner/page/IHrCornerPageDeletePayload';
+export * from './corner/page/IHrCornerPagePostPayload';
+export * from './corner/page/IHrCornerPagePutPayload';

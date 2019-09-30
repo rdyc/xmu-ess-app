@@ -27,6 +27,8 @@ export const hrSharedMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
 // confirmation
@@ -37,6 +39,8 @@ export const hrSharedConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
   saveAsTitle: { id: `${prefix}.confirm.saveAs.title` },
   saveAsDescription: { id: `${prefix}.confirm.saveAs.subHeader` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
 });
 
 // section

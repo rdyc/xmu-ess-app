@@ -11,6 +11,9 @@ import { CompetencyResultForm } from './competency/form/result/CompetencyResultF
 import { HrCompetencyAssessmentList } from './competency/list/assessment/HrCompetencyAssessmentList';
 import { HrCompetencyEmployeeList } from './competency/list/employee/HrCompetencyEmployeeList';
 import { HrCompetencyResultList } from './competency/list/result/HrCompetencyResultList';
+import { HrCornerPageDetail } from './corner/detail/page/HrCornerPageDetail';
+import { HrCornerPageForm } from './corner/form/page/HrCornerPageForm';
+import { HrCornerPageList } from './corner/list/page/HrCornerPageList';
 
 const assessment = (props: RouteComponentProps) => (
   <Switch>
@@ -36,6 +39,20 @@ const result = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const corner = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/page`} component={page} />
+  </Switch>
+);
+
+const page = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={HrCornerPageForm} />
+    <Route path={`${props.match.path}/:pageUid`} component={HrCornerPageDetail} />
+    <Route path={`${props.match.path}`} component={HrCornerPageList} />
+  </Switch>
+);
+
 export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
@@ -55,6 +72,12 @@ export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
       menu={AppMenu.HumanResource} 
       subMenu={AppMenu.CompetencyAssessmentResult} 
       component={result} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/corner`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.HRCorner} 
+      component={corner} 
     />
   </Switch>
 );

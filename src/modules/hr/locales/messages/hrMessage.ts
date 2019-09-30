@@ -1,4 +1,5 @@
 import { hrCompetencyField, hrCompetencyFieldHelperFor } from './hrCompetency';
+import { hrCornerField, hrCornerFieldHelperFor } from './hrCorner';
 import {
   hrSharedConfirm,
   hrSharedMessage,
@@ -18,5 +19,9 @@ export const hrMessage = {
   competency: {
     field: hrCompetencyField,
     fieldFor: hrCompetencyFieldHelperFor
+  },
+  corner: {
+    field: hrCornerField,
+    fieldFor: hrCornerFieldHelperFor
   }
 };
