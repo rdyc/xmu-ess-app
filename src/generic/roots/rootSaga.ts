@@ -77,6 +77,7 @@ import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/lookupCurrencySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
+import lookupEmployeeLevelSagas from '@lookup/store/sagas/lookupEmployeeLevelSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/lookupHolidaySagas';
 import lookupImageGallerySagas from '@lookup/store/sagas/lookupImageGallerySagas';
 import lookupLeaveCalculationSagas from '@lookup/store/sagas/lookupLeaveCalculationSagas';
@@ -172,6 +173,7 @@ export function* rootSaga() {
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
     fork(lookupAchievementSagas),
+    fork(lookupEmployeeLevelSagas),
 
     fork(lookupVersionSagas),
     fork(lookupImageGallerySagas),
