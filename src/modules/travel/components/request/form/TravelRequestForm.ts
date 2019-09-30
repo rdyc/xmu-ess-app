@@ -534,7 +534,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
           end: response.data.end,
           customerUid: response.data.customerUid,
           projectUid: response.data.projectUid,
-          projectType: response.data.project && response.data.project.projectType === 'SPT01' ? 'SPT01' : 'SPT04',
+          projectType: response.data.project && response.data.project.projectType || '',
           siteUid: response.data.siteUid,
           activityType: response.data.activityType,
           objective: response.data.objective,
