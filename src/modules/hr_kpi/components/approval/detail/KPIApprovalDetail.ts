@@ -380,7 +380,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
           // isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.isFirst,
-          revision: thisResponse.data.revision || '',
+          revision: '',
           totalScore: thisResponse.data.totalScore,
           items: [],
         };

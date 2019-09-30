@@ -14,3 +14,5 @@ export * from './competency/assessment/IHrCompetencyAssessmentRequestField';
 export * from './competency/assessment/IHrCompetencyAssessmentUserAction';
 export * from './competency/employee/IHrCompetencyEmployeeRequestField';
 export * from './competency/employee/IHrCompetencyEmployeeUserAction';
+export * from './corner/page/IHrCornerPageRequestField';
+export * from './corner/page/IHrCornerPageUserAction';

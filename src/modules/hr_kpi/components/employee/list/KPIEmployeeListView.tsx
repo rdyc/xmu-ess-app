@@ -6,6 +6,7 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
+import { WorkflowStatusType } from '@common/classes/types';
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeSummary } from '@kpi/components/employee/detail/shared/KPIEmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
@@ -38,7 +39,8 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
       actionComponent={(item: IKPIEmployee) => (
         <React.Fragment>
           {
-            !item.isFinal &&
+            (item.statusType === WorkflowStatusType.Submitted ||
+            (item.statusType === WorkflowStatusType.Accepted && item.isFinal)) &&
             <Button 
               size="small"
               color="secondary"

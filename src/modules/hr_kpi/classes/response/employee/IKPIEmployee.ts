@@ -9,7 +9,7 @@ export interface IKPIEmployee {
   totalScore: number;
   isFinal: boolean;
   revision?: string;
-  statusType?: string;
+  statusType: string;
   status?: ICommonSystem;
   // sentBy?: string | null;
   // sent?: IEmployee | null;
