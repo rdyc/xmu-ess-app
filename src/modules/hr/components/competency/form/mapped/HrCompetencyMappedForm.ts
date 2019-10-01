@@ -1,8 +1,8 @@
-// import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
+import { IMappedLevelItemPayload } from '@hr/classes/request/competency/mapped/IMappedLevelItemPayload';
 import { IHrCompetencyMapped, MappedItem } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
@@ -11,6 +11,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { WithEmployeeLevel, withEmployeeLevel } from '@lookup/hoc/withEmployeeLevel';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { FormikActions } from 'formik';
@@ -34,32 +35,27 @@ import * as Yup from 'yup';
 
 import { HrCompetencyMappedFormView } from './HrCompetencyMappedFormView';
 
+interface MappedLevel {
+  uid?: string;
+  employeeLevelUid: string;
+  employeeLevelName: string;
+  categoryLevelUid: string;
+  // categoryLevelLabel: string;
+}
+
 export interface CategoryMenus {
   uid: string;
   parentUid?: string;
   name: string;
   isAccess: boolean;
   itemUid?: string;
+  mappedLevel: MappedLevel[];
 }
-
-// export interface CategoryChild {
-//   uid?: string;
-//   categoryUid: string;
-// }
-
-// export interface CategoriesItem {
-//   itemUid?: string;
-//   uid: string;
-//   name: string;
-//   checked: boolean;
-//   child: CategoryChild[];
-// }
 
 export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  levelType: string;
   categories: CategoryMenus[];
   activeCluster?: string;
   activeCategory?: string;
@@ -81,7 +77,6 @@ interface IOwnState {
   
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
-  // filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -90,12 +85,15 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
+  handleOnLoadCluster: () => void;
+  handleOnLoadLevel: () => void;
   handleOnSubmit: (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => void;
 }
 
 export type HrCompetencyMappedFormProps
   = WithHrCompetencyMapped
   & WithHrCompetencyCluster
+  & WithEmployeeLevel
   & WithCommonSystem
   & WithMasterPage
   & WithUser
@@ -116,7 +114,6 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     uid: 'Auto Generated',
     companyUid: '',
     positionUid: '',
-    levelType: '',
     categories: [],
     activeCategory: '',
     activeCluster: ''
@@ -130,9 +127,6 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     positionUid: Yup.string()
       .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
       .required(),
-    // levelType: Yup.string()
-    //   .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'}))
-    //   .required()
   }),
 
   // filter
@@ -146,12 +140,6 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     orderBy: 'name',
     direction: 'ascending'
   },
-
-  // filter props
-  // filterCommonSystem: {
-  //   orderBy: 'value',
-  //   direction: 'ascending'
-  // }
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedFormProps, IOwnState, IOwnStateUpdater> = {
@@ -172,7 +160,45 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
           mappedUid
         });
       }
+
+      const { loadListRequest: loadCluster } = props.hrCompetencyClusterDispatch;
+
+      loadCluster({
+        filter: {
+          orderBy: 'name',
+          direction: 'ascending'
+        }
+      });
+
+      const { loadListRequest: loadLevel } = props.employeeLevelDispatch;
+
+      loadLevel({
+        filter: {
+          orderBy: 'seq',
+          direction: 'descending'
+        }
+      });
     }
+  },
+  handleOnLoadCluster: (props: HrCompetencyMappedFormProps) => () => {
+    const { loadListRequest: loadCluster } = props.hrCompetencyClusterDispatch;
+
+    loadCluster({
+      filter: {
+        orderBy: 'name',
+        direction: 'ascending'
+      }
+    });
+  },
+  handleOnLoadLevel: (props: HrCompetencyMappedFormProps) => () => {
+    const { loadListRequest: loadLevel } = props.employeeLevelDispatch;
+
+    loadLevel({
+      filter: {
+        orderBy: 'seq',
+        direction: 'descending'
+      }
+    });
   },
   handleOnSubmit: (props: HrCompetencyMappedFormProps) => (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => {
     const { user } = props.userState;
@@ -184,17 +210,25 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         // fill payload
         const payload: IHrCompetencyMappedPostPayload = {
           positionUid: values.positionUid,
-          // levelType: values.levelType,
           categories: []
         };
         
-        values.categories.forEach(item =>
-          item.parentUid &&
-          item.isAccess &&
-          payload.categories.push({
-            categoryUid: item.uid,
-          })
-        );
+        values.categories.forEach(item => {
+          if (item.parentUid && item.isAccess) {
+            const itemLevel: IMappedLevelItemPayload[] = [];
+            
+            item.mappedLevel.forEach(lv =>
+              itemLevel.push({
+                categoryLevelUid: lv.categoryLevelUid,
+                employeeLevelUid: lv.employeeLevelUid
+              })  
+            );
+            payload.categories.push({
+              categoryUid: item.uid,
+              mappedLevels: itemLevel
+            });
+          }
+        });
 
         // set the promise
         promise = new Promise((resolve, reject) => {
@@ -214,18 +248,26 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         if (mappedUid) {
           const payload: IHrCompetencyMappedPutPayload = {
             positionUid: values.positionUid,
-            // levelType: values.levelType,
             categories: []
           };
 
-          values.categories.forEach(item =>
-            item.parentUid &&
-            item.isAccess &&
-            payload.categories.push({
-              uid: item.itemUid,
-              categoryUid: item.uid,
-            })
-          );
+          values.categories.forEach(item => {
+            if (item.parentUid && item.isAccess) {
+              const itemLevel: IMappedLevelItemPayload[] = [];
+              item.mappedLevel.forEach(lv =>
+                itemLevel.push({
+                  uid: lv.uid,
+                  categoryLevelUid: lv.categoryLevelUid,
+                  employeeLevelUid: lv.employeeLevelUid
+                })  
+              );
+              payload.categories.push({
+                uid: item.itemUid,
+                categoryUid: item.uid,
+                mappedLevels: itemLevel
+              });
+            }
+          });
 
           // set the promise
           promise = new Promise((resolve, reject) => {
@@ -284,16 +326,14 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, IOwnState> = {
   componentDidMount() {
-    const { loadListRequest } = this.props.hrCompetencyClusterDispatch;
     const { response } = this.props.hrCompetencyClusterState.list;
+    const { response: levelList } = this.props.employeeLevelState.list;
 
     if (!response) {
-      loadListRequest({
-        filter: {
-          orderBy: 'name',
-          direction: 'ascending'
-        }
-      });
+      if (this.props.formMode === FormMode.New) {
+        this.props.handleOnLoadCluster();
+        this.props.handleOnLoadLevel();
+      }
     } else if (response && response.data) {
       const categoriesList: CategoryMenus[] = [];
       response.data.map(item => {
@@ -302,8 +342,21 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
           parentUid: '',
           name: item.name || '',
           isAccess: false,
-          itemUid: ''
+          itemUid: '',
+          mappedLevel: []
         });
+
+        const levelItem: MappedLevel[] = [];
+
+        if (levelList && levelList.data) {
+          levelList.data.map(lv => {
+            levelItem.push({
+              employeeLevelUid: lv.uid,
+              employeeLevelName: lv.value,
+              categoryLevelUid: '',
+            });
+          });
+        }
 
         if (item.categories.length >= 1) {
           item.categories.map(category => {
@@ -312,7 +365,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
               parentUid: item.uid,
               name: category.name,
               isAccess: false,
-              itemUid: ''
+              itemUid: '',
+              mappedLevel: levelItem
             });
           });
         }
@@ -322,7 +376,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
         uid: 'Auto generated',
         companyUid: '',
         positionUid: '',
-        levelType: '',
         categories: categoriesList
       };
 
@@ -332,6 +385,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
   componentWillUpdate(nextProps: HrCompetencyMappedFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyClusterState.list;
     const { response: nextResponse } = nextProps.hrCompetencyClusterState.list;
+    const { response: nextLevel } = nextProps.employeeLevelState.list;
 
     if (this.props.formMode === FormMode.New) {
       if (thisResponse !== nextResponse) {
@@ -343,9 +397,22 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
               parentUid: '',
               name: item.name || '',
               isAccess: false,
-              itemUid: ''
+              itemUid: '',
+              mappedLevel: []
             });
 
+            const levelItem: MappedLevel[] = [];
+
+            if (nextLevel && nextLevel.data) {
+              nextLevel.data.map(lv => {
+                levelItem.push({
+                  employeeLevelUid: lv.uid,
+                  employeeLevelName: lv.value,
+                  categoryLevelUid: '',
+                });
+              });
+            }
+    
             if (item.categories.length >= 1) {
               item.categories.map(category => {
                 categoriesList.push({
@@ -353,7 +420,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
                   parentUid: item.uid,
                   name: category.name,
                   isAccess: false,
-                  itemUid: ''
+                  itemUid: '',
+                  mappedLevel: levelItem
                 });
               });
             }
@@ -363,7 +431,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: 'Auto generated',
             companyUid: '',
             positionUid: '',
-            levelType: '',
             categories: categoriesList
           };
     
@@ -376,6 +443,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     const { response: thisResponse } = this.props.hrCompetencyMappedState.detail;
     const { response: prevResponse } = prevProps.hrCompetencyMappedState.detail;
     const { response: clusterList } = this.props.hrCompetencyClusterState.list;
+
     const { formMode } = this.props;
     
     if (formMode === FormMode.Edit) {
@@ -383,26 +451,40 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
         if (thisResponse && thisResponse.data) {
           const categoriesList: CategoryMenus[] = [];
           if (clusterList && clusterList.data) {
-            // parent
+            // parent *fill the menus with cluster list
             clusterList.data.map((item, index) => {
               categoriesList.push({
                 uid: item.uid,
                 parentUid: '',
                 name: item.name,
                 isAccess: false,
-                itemUid: ''
+                itemUid: '',
+                mappedLevel: []
               });
   
               if (item.categories.length >= 1 && categoriesList.length >= 1) {
                 
-                // for the child
+                // for the child menus
                 item.categories.map(category => {
+                  // categoryId is for checking with detail data
                   const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
+                  const levelItem: MappedLevel[] = [];
 
                   if (categoryId) {
+                    // if there is child that are sync then check the parent to true
                     const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
                     if (parent) {
                       parent.isAccess = true;
+
+                      // this one is for filling the mappedlevel for everychild if the parent is checked
+                      categoryId.mappedLevels.map(lv => {
+                        levelItem.push({
+                          uid: lv.uid,
+                          categoryLevelUid: lv.categoryLevelUid,
+                          employeeLevelUid: lv.employeeLevelUid,
+                          employeeLevelName: lv.employeeLevel.value
+                        });
+                      });
                     }
                   }
                   
@@ -411,7 +493,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
                     parentUid: item.uid,
                     name: category.name,
                     isAccess: Boolean(categoryId) || false,
-                    itemUid: categoryId && categoryId.uid || ''
+                    itemUid: categoryId && categoryId.uid || '',
+                    mappedLevel: levelItem
                   });
                 });
               }
@@ -423,7 +506,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             uid: thisResponse.data.uid,
             companyUid: thisResponse.data.position.companyUid,
             positionUid: thisResponse.data.positionUid,
-            levelType: '',
             categories: categoriesList
           };
   
@@ -440,6 +522,7 @@ export const HrCompetencyMappedForm = compose<HrCompetencyMappedFormProps, IOwnO
   withRouter,
   withHrCompetencyMapped,
   withHrCompetencyCluster,
+  withEmployeeLevel,
   withUser,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
