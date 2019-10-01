@@ -219,15 +219,15 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
       
     case 'MNU69':
-      path = '/lookup/competencycluster';
+      path = '/hr/competency/cluster';
       break;
 
     case 'MNU78':
-      path = '/lookup/competencycategory';
+      path = '/hr/competency/category';
       break;
 
     case 'MNU79':
-      path = '/lookup/competencymapped';
+      path = '/hr/competency/mapped';
       break;
       
     case 'MNU67':
@@ -276,6 +276,10 @@ export const menuLinkMapper = (menuUid: string) => {
     
     case 'MNU85':
       path = '/account/profile/detail';
+      break;
+
+    case 'MNU86':
+      path = '/lookup/employeelevels';
       break;
 
     default:

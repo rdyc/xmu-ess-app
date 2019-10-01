@@ -40,7 +40,7 @@ export const hrCompetencyIndicatorGetListDispose = () => action(HrCompetencyIndi
 
 // get by id
 export const hrCompetencyIndicatorGetByIdRequest = (request: IHrCompetencyIndicatorGetDetailRequest) => action(HrCompetencyIndicatorAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyIndicatorGetByIdSuccess = (response: IResponseCollection<IHrCompetencyIndicatorDetail>) => action(HrCompetencyIndicatorAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyIndicatorGetByIdSuccess = (response: IResponseSingle<IHrCompetencyIndicatorDetail>) => action(HrCompetencyIndicatorAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyIndicatorGetByIdError = (error: any) => action(HrCompetencyIndicatorAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyIndicatorGetByIdDispose = () => action(HrCompetencyIndicatorAction.GET_BY_ID_DISPOSE);
 

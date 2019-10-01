@@ -69,9 +69,9 @@ enum AppMenu {
   Common = 'MNU53',
   AchievementChart = 'MNU63',
   COGSUpload = 'MNU64',
-  LookupCompetencyCluster = 'MNU69',
-  LookupCompetencyCategory = 'MNU78',
-  LookupCompetencyMapped = 'MNU79',
+  CompetencyCluster = 'MNU69',
+  CompetencyCategory = 'MNU78',
+  CompetencyMapped = 'MNU79',
   KPICategory = 'MNU67',
   KPITemplate = 'MNU68',
   HumanResource = 'MNU72',
@@ -84,7 +84,8 @@ enum AppMenu {
   CompetencyAssessmentResult = 'MNU76',
   CompetencyEmployee = 'MNU76',
   HRKPIAssign = 'MNU84',
-  MyProfile = 'MNU85'
+  MyProfile = 'MNU85',
+  LookupEmployeeLevel = 'MNU86',
 }
 
 export default AppMenu;

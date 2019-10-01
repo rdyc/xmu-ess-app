@@ -51,7 +51,7 @@ export const hrCompetencyClusterGetListDispose = () => action(HrCompetencyCluste
 
 // get by id
 export const hrCompetencyClusterGetByIdRequest = (request: IHrCompetencyClusterGetDetailRequest) => action(HrCompetencyClusterAction.GET_BY_ID_REQUEST, request);
-export const hrCompetencyClusterGetByIdSuccess = (response: IResponseCollection<IHrCompetencyClusterDetail>) => action(HrCompetencyClusterAction.GET_BY_ID_SUCCESS, response);
+export const hrCompetencyClusterGetByIdSuccess = (response: IResponseSingle<IHrCompetencyClusterDetail>) => action(HrCompetencyClusterAction.GET_BY_ID_SUCCESS, response);
 export const hrCompetencyClusterGetByIdError = (error: any) => action(HrCompetencyClusterAction.GET_BY_ID_ERROR, error);
 export const hrCompetencyClusterGetByIdDispose = () => action(HrCompetencyClusterAction.GET_BY_ID_DISPOSE);
 

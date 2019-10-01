@@ -177,7 +177,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandl
 
       switch (props.action) {
         case IHrCompetencyCategoryUserAction.Modify:
-          next = '/lookup/competencycategory/form';
+          next = '/hr/competency/category/form';
           break;
 
         default:

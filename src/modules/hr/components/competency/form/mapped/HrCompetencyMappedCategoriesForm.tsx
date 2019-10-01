@@ -1,5 +1,8 @@
 import { FormMode } from '@generic/types';
+import { IHrCategoryItem, IHrCompetencyClusterList } from '@hr/classes/response';
+import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+// import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
@@ -7,47 +10,8 @@ import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } fro
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+// import { HrCompetencyMappedLevelOption } from '../../options/HrCompetencyMappedLevelOption';
 import { IMappedFormValue } from './HrCompetencyMappedForm';
-
-interface Levels {
-  name: string;
-  value: number;
-}
-
-const levelingDummy: Levels[] = [
-  {
-    name: 'Junior',
-    value: 0
-  },
-  {
-    name: 'Staff',
-    value: 0
-  },
-  {
-    name: 'Master',
-    value: 0
-  }
-];
-
-interface LevelValue {
-  label: string;
-  value: number;
-}
-
-const levelValueDummy: LevelValue[] = [
-  {
-    label: '1',
-    value: 1,
-  },
-  {
-    label: '2',
-    value: 2,
-  },
-  {
-    label: '3',
-    value: 3,
-  },
-];
 
 interface IOwnProps {
   formikBag: FormikProps<IMappedFormValue>;
@@ -84,6 +48,7 @@ type AllProps
   & IOwnHandler
   & IOwnState
   & IOwnStateHandler
+  & WithHrCompetencyCluster
   & WithStyles<typeof styles>;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
@@ -129,6 +94,27 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 
 const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props => {
   const { active, isExpanded, formikBag, activeCategory, isExpandedCategory } = props;
+  const { response } = props.hrCompetencyClusterState.list;
+
+  const handleLevel = (clusterUid: string, categoryIdx: number, categoryUid: string) => {
+    if (response && response.data) {
+      const cluster: IHrCompetencyClusterList | undefined = response.data.find(data => data.uid === clusterUid);
+      if (cluster) {
+        const category: IHrCategoryItem | undefined = cluster.categories.find(cat => cat.uid === categoryUid);
+        if (category) {
+          return category.levels.map((lv, lvIdx) => 
+            <MenuItem
+              key={lv.uid}
+              value={lv.uid}
+            >
+              {lv.level}
+            </MenuItem>   
+          );
+        }
+      }
+    }
+    return null;
+  };
 
   const render = (
     <Card square>
@@ -232,33 +218,48 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                     timeout="auto"
                                     unmountOnExit
                                   >
-                                    {
-                                      levelingDummy.map((item, index) => 
-                                        <ListItem
-                                          key={index}
-                                          color="inherit"
-                                          style={{marginLeft: '70px'}}
-                                        >
-                                          <ListItemText
-                                            primary={item.name}
-                                          />
-                                          <ListItemSecondaryAction style={{right: '130px'}} >
-                                            <Select>
-                                              {
-                                                levelValueDummy.map(opt => 
-                                                  <MenuItem
-                                                    key={opt.value}
-                                                    value={opt.value}
-                                                  >
-                                                    {opt.label}
-                                                  </MenuItem>  
-                                                )
-                                              }
-                                            </Select>
-                                          </ListItemSecondaryAction>
-                                        </ListItem>
-                                      )
-                                    }
+                                    <FieldArray
+                                      name={`categories.${idxChild}.mappedLevel`}
+                                      render={(fieldsIndicator: FieldArrayRenderProps) => (
+                                        <React.Fragment>
+                                          {
+                                            props.formikBag.values.categories[idxChild].mappedLevel.length > 0 &&
+                                            props.formikBag.values.categories[idxChild].mappedLevel.map((lv, lvIdx) =>
+                                              <Field 
+                                                key={lvIdx}
+                                                name={`categories.${idxChild}.mappedLevel.${lvIdx}.categoryLevelUid`}
+                                                render={({field, form}: FieldProps<IMappedFormValue>) => {
+
+                                                  return (
+                                                    <ListItem
+                                                      key={lvIdx}
+                                                      color="inherit"
+                                                      style={{marginLeft: '70px'}}
+                                                    >
+                                                      <ListItemText 
+                                                        primary={lv.employeeLevelName}
+                                                      />
+                                                      <ListItemSecondaryAction style={{right: '90px'}}>
+                                                        <Select
+                                                          value={field.value}
+                                                          onChange={e => {
+                                                            props.formikBag.setFieldValue(field.name, e.target.value);
+                                                          }}
+                                                        >
+                                                          {
+                                                            handleLevel(parent.uid, lvIdx, child.uid)
+                                                          }
+                                                        </Select>
+                                                      </ListItemSecondaryAction>
+                                                    </ListItem>
+                                                  );
+                                                }}
+                                              />
+                                            )
+                                          }
+                                        </React.Fragment>
+                                      )}
+                                    />
                                   </Collapse>
                                 </React.Fragment>
                             )
@@ -304,6 +305,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 };
 
 export const HrCompetencyMappedCategoriesForm = compose<AllProps, IOwnProps>(
+  withHrCompetencyCluster,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

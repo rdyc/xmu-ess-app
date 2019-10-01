@@ -14,7 +14,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
   <CollectionPage
       // page info
       info={{
-        uid: AppMenu.LookupCompetencyCluster,
+        uid: AppMenu.CompetencyCluster,
         parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Cluster'}),
         description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
@@ -37,7 +37,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/competencycluster/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/hr/competency/cluster/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -45,7 +45,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/competencycluster/${item.uid}`)}
+            onClick={() => props.history.push(`/hr/competency/cluster/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -54,7 +54,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="lookup.competency.cluster"
+          key="hr.competency.cluster"
           default={props.hrCompetencyClusterState.all.request && props.hrCompetencyClusterState.all.request.filter && props.hrCompetencyClusterState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -63,7 +63,7 @@ export const HrCompetencyClusterListView: React.SFC<HrCompetencyClusterListProps
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/lookup/competencycluster/form')}
+          onClick={() => props.history.push('/hr/competency/cluster/form')}
         >
           <AddCircle/>
         </IconButton>

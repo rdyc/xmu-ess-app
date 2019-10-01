@@ -1,20 +1,10 @@
 import AppMenu from '@constants/AppMenu';
-import { HrCompetencyCategoryDetail } from '@hr/components/competency/detail/category/HrCompetencyCategoryDetail';
-import { HrCompetencyClusterDetail } from '@hr/components/competency/detail/cluster/HrCompetencyClusterDetail';
-import { HrCompetencyMappedDetail } from '@hr/components/competency/detail/mapped/HrCompetencyMappedDetail';
-import { HrCompetencyCategoryForm } from '@hr/components/competency/form/category/HrCompetencyCategoryForm';
-import { HrCompetencyClusterForm } from '@hr/components/competency/form/cluster/HrCompetencyClusterForm';
-import { HrCompetencyMappedForm } from '@hr/components/competency/form/mapped/HrCompetencyMappedForm';
-import { HrCompetencyCategoryList } from '@hr/components/competency/list/category/HrCompetencyCategoryList';
-import { HrCompetencyClusterList } from '@hr/components/competency/list/cluster/HrCompetencyClusterList';
-import { HrCompetencyMappedList } from '@hr/components/competency/list/mapped/HrCompetencyMappedList';
 import { COGSUploadForm } from '@infor/components/form/COGSUploadForm';
 import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
-import { MarkdownForm } from 'playground/markdown/component/markdown/form/MarkdownForm';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupAchievementForm } from './achievement/form/LookupAchievementForm';
@@ -28,6 +18,9 @@ import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import { LookupDiemForm } from './diem/form/LookupDiemForm';
 import { LookupDiemList } from './diem/list/LookupDiemList';
+import { LookupEmployeeLevelDetail } from './employeeLevel/detail/LookupEmployeeLevelDetail';
+import { LookupEmployeeLevelForm } from './employeeLevel/form/LookupEmployeeLevelForm';
+import { LookupEmployeeLevelList } from './employeeLevel/list/LookupEmployeeLevelList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
 import { LookupGalleryForm } from './gallery/form/LookupGalleryForm';
 import { ImageGalleryList } from './gallery/list/ImageGalleryList';
@@ -160,34 +153,11 @@ const employeeLeave = (props: RouteComponentProps) => (
   </Switch>
 );
 
-const cluster = (props: RouteComponentProps) => (
+const employeeLevel = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={HrCompetencyClusterForm} />
-    <Route path={`${props.match.path}/:clusterUid`} component={HrCompetencyClusterDetail} />
-    <Route path={`${props.match.path}`} component={HrCompetencyClusterList} />
-  </Switch>
-);
-
-const category = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}/form`} component={HrCompetencyCategoryForm} />
-    <Route path={`${props.match.path}/:categoryUid`} component={HrCompetencyCategoryDetail} />
-    <Route path={`${props.match.path}`} component={HrCompetencyCategoryList} />
-  </Switch>
-);
-
-const mapped = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}/form`} component={HrCompetencyMappedForm} />
-    <Route path={`${props.match.path}/:mappedUid`} component={HrCompetencyMappedDetail} />
-    <Route path={`${props.match.path}`} component={HrCompetencyMappedList} />
-  </Switch>
-);
-
-const corner = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}`} component={MarkdownForm} />
-    {/* <Route path={`${props.match.path}`} component={HrCompetencyList} /> */}
+    <Route path={`${props.match.path}/form`} component={LookupEmployeeLevelForm} />
+    <Route path={`${props.match.path}/:employeeLevelUid`} component={LookupEmployeeLevelDetail} />
+    <Route path={`${props.match.path}`} component={LookupEmployeeLevelList} />
   </Switch>
 );
 
@@ -284,28 +254,10 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       component={employeeLeave} 
     />
     <SecureMenuRoute 
-      path={`${props.match.path}/competencycluster`}
+      path={`${props.match.path}/employeelevels`}
       menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupCompetencyCluster} 
-      component={cluster} 
-    />
-    <SecureMenuRoute 
-      path={`${props.match.path}/competencycategory`}
-      menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupCompetencyCategory} 
-      component={category} 
-    />
-    <SecureMenuRoute 
-      path={`${props.match.path}/competencymapped`}
-      menu={AppMenu.Lookup} 
-      subMenu={AppMenu.LookupCompetencyMapped} 
-      component={mapped} 
-    />
-    <SecureMenuRoute 
-      path={`${props.match.path}/hrcorner`}
-      menu={AppMenu.Lookup} 
-      subMenu={AppMenu.HRCorner} 
-      component={corner} 
+      subMenu={AppMenu.LookupEmployeeLevel} 
+      component={employeeLevel} 
     />
   </Switch>
 );
