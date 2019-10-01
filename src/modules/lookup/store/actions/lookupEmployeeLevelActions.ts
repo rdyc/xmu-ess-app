@@ -31,37 +31,37 @@ export const enum LookupEmployeeLevelAction {
 }
 
 // get all
-export const lookupEmployeeLevelGetAllRequest = (request: IEmployeeLevelGetAllRequest) => action(EmployeeLevelAction.GET_ALL_REQUEST, request);
-export const lookupEmployeeLevelGetAllSuccess = (response: IResponseCollection<IEmployeeLevel>) => action(EmployeeLevelAction.GET_ALL_SUCCESS, response);
-export const lookupEmployeeLevelGetAllError = (error: any) => action(EmployeeLevelAction.GET_ALL_ERROR, error);
-export const lookupEmployeeLevelGetAllDispose = () => action(EmployeeLevelAction.GET_ALL_DISPOSE);
+export const lookupEmployeeLevelGetAllRequest = (request: IEmployeeLevelGetAllRequest) => action(LookupEmployeeLevelAction.GET_ALL_REQUEST, request);
+export const lookupEmployeeLevelGetAllSuccess = (response: IResponseCollection<IEmployeeLevel>) => action(LookupEmployeeLevelAction.GET_ALL_SUCCESS, response);
+export const lookupEmployeeLevelGetAllError = (error: any) => action(LookupEmployeeLevelAction.GET_ALL_ERROR, error);
+export const lookupEmployeeLevelGetAllDispose = () => action(LookupEmployeeLevelAction.GET_ALL_DISPOSE);
 
 // get list
-export const lookupEmployeeLevelGetListRequest = (request: IEmployeeLevelGetListRequest) => action(EmployeeLevelAction.GET_LIST_REQUEST, request);
-export const lookupEmployeeLevelGetListSuccess = (response: IResponseCollection<IEmployeeLevelList>) => action(EmployeeLevelAction.GET_LIST_SUCCESS, response);
-export const lookupEmployeeLevelGetListError = (error: any) => action(EmployeeLevelAction.GET_LIST_ERROR, error);
-export const lookupEmployeeLevelGetListDispose = () => action(EmployeeLevelAction.GET_LIST_DISPOSE);
+export const lookupEmployeeLevelGetListRequest = (request: IEmployeeLevelGetListRequest) => action(LookupEmployeeLevelAction.GET_LIST_REQUEST, request);
+export const lookupEmployeeLevelGetListSuccess = (response: IResponseCollection<IEmployeeLevelList>) => action(LookupEmployeeLevelAction.GET_LIST_SUCCESS, response);
+export const lookupEmployeeLevelGetListError = (error: any) => action(LookupEmployeeLevelAction.GET_LIST_ERROR, error);
+export const lookupEmployeeLevelGetListDispose = () => action(LookupEmployeeLevelAction.GET_LIST_DISPOSE);
 
 // get by id
-export const lookupEmployeeLevelGetByIdRequest = (request: IEmployeeLevelGetDetailRequest) => action(EmployeeLevelAction.GET_BY_ID_REQUEST, request);
-export const lookupEmployeeLevelGetByIdSuccess = (response: IResponseCollection<IEmployeeLevelDetail>) => action(EmployeeLevelAction.GET_BY_ID_SUCCESS, response);
-export const lookupEmployeeLevelGetByIdError = (error: any) => action(EmployeeLevelAction.GET_BY_ID_ERROR, error);
-export const lookupEmployeeLevelGetByIdDispose = () => action(EmployeeLevelAction.GET_BY_ID_DISPOSE);
+export const lookupEmployeeLevelGetByIdRequest = (request: IEmployeeLevelGetDetailRequest) => action(LookupEmployeeLevelAction.GET_BY_ID_REQUEST, request);
+export const lookupEmployeeLevelGetByIdSuccess = (response: IResponseCollection<IEmployeeLevelDetail>) => action(LookupEmployeeLevelAction.GET_BY_ID_SUCCESS, response);
+export const lookupEmployeeLevelGetByIdError = (error: any) => action(LookupEmployeeLevelAction.GET_BY_ID_ERROR, error);
+export const lookupEmployeeLevelGetByIdDispose = () => action(LookupEmployeeLevelAction.GET_BY_ID_DISPOSE);
 
 // post
-export const lookupEmployeeLevelPostRequest = (request: IEmployeeLevelPostRequest) => action(EmployeeLevelAction.POST_REQUEST, request);
-export const lookupEmployeeLevelPostSuccess = (response: IResponseSingle<IEmployeeLevel>) => action(EmployeeLevelAction.POST_SUCCESS, response);
-export const lookupEmployeeLevelPostError = (error: any) => action(EmployeeLevelAction.POST_ERROR, error);
-export const lookupEmployeeLevelPostDispose = () => action(EmployeeLevelAction.POST_DISPOSE);
+export const lookupEmployeeLevelPostRequest = (request: IEmployeeLevelPostRequest) => action(LookupEmployeeLevelAction.POST_REQUEST, request);
+export const lookupEmployeeLevelPostSuccess = (response: IResponseSingle<IEmployeeLevel>) => action(LookupEmployeeLevelAction.POST_SUCCESS, response);
+export const lookupEmployeeLevelPostError = (error: any) => action(LookupEmployeeLevelAction.POST_ERROR, error);
+export const lookupEmployeeLevelPostDispose = () => action(LookupEmployeeLevelAction.POST_DISPOSE);
 
 // put
-export const lookupEmployeeLevelPutRequest = (request: IEmployeeLevelPutRequest) => action(EmployeeLevelAction.PUT_REQUEST, request);
-export const lookupEmployeeLevelPutSuccess = (response: IResponseSingle<IEmployeeLevel>) => action(EmployeeLevelAction.PUT_SUCCESS, response);
-export const lookupEmployeeLevelPutError = (error: any) => action(EmployeeLevelAction.PUT_ERROR, error);
-export const lookupEmployeeLevelPutDispose = () => action(EmployeeLevelAction.PUT_DISPOSE);
+export const lookupEmployeeLevelPutRequest = (request: IEmployeeLevelPutRequest) => action(LookupEmployeeLevelAction.PUT_REQUEST, request);
+export const lookupEmployeeLevelPutSuccess = (response: IResponseSingle<IEmployeeLevel>) => action(LookupEmployeeLevelAction.PUT_SUCCESS, response);
+export const lookupEmployeeLevelPutError = (error: any) => action(LookupEmployeeLevelAction.PUT_ERROR, error);
+export const lookupEmployeeLevelPutDispose = () => action(LookupEmployeeLevelAction.PUT_DISPOSE);
 
 // delete
-export const lookupEmployeeLevelDeleteRequest = (request: IEmployeeLevelDeleteRequest) => action(EmployeeLevelAction.DELETE_REQUEST, request);
-export const lookupEmployeeLevelDeleteSuccess = (response: boolean) => action(EmployeeLevelAction.DELETE_SUCCESS, response);
-export const lookupEmployeeLevelDeleteError = (error: any) => action(EmployeeLevelAction.DELETE_ERROR, error);
-export const lookupEmployeeLevelDeleteDispose = () => action(EmployeeLevelAction.DELETE_DISPOSE);
+export const lookupEmployeeLevelDeleteRequest = (request: IEmployeeLevelDeleteRequest) => action(LookupEmployeeLevelAction.DELETE_REQUEST, request);
+export const lookupEmployeeLevelDeleteSuccess = (response: boolean) => action(LookupEmployeeLevelAction.DELETE_SUCCESS, response);
+export const lookupEmployeeLevelDeleteError = (error: any) => action(LookupEmployeeLevelAction.DELETE_ERROR, error);
+export const lookupEmployeeLevelDeleteDispose = () => action(LookupEmployeeLevelAction.DELETE_DISPOSE);

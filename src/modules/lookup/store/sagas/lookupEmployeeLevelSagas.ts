@@ -83,7 +83,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/levels/${action.payload.uid}`,
+      path: `/v1/lookup/levels/${action.payload.employeeLevelUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupEmployeeLevelGetByIdSuccess(response.body)),
       ]), 
@@ -142,7 +142,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/lookup/levels/${action.payload.uid}`,
+      path: `/v1/lookup/levels/${action.payload.employeeLevelUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupEmployeeLevelPutSuccess(response.body)),

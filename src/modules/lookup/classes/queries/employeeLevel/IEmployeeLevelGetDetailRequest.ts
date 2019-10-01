@@ -1,3 +1,3 @@
 export interface IEmployeeLevelGetDetailRequest {
-  uid: string;
+  employeeLevelUid: string;
 }

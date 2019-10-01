@@ -7,7 +7,7 @@ import {
   IEmployeeLevelPostRequest, 
   IEmployeeLevelPutRequest 
 } from '@lookup/classes/queries';
-import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response';
+import { IEmployeeLevel, IEmployeeLevelDetail, IEmployeeLevelList } from '@lookup/classes/response';
 import { 
   lookupEmployeeLevelDeleteDispose, 
   lookupEmployeeLevelDeleteRequest, 
@@ -26,15 +26,15 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  lookupEmployeeLevelState: {
-    all: IQueryCollectionState<IEmployeeLevelGetAllRequest, ICompany>;
-    list: IQueryCollectionState<IEmployeeLevelGetListRequest, ICompanyList>;
-    detail: IQuerySingleState<IEmployeeLevelGetDetailRequest, ICompanyDetail>;
+  employeeLevelState: {
+    all: IQueryCollectionState<IEmployeeLevelGetAllRequest, IEmployeeLevel>;
+    list: IQueryCollectionState<IEmployeeLevelGetListRequest, IEmployeeLevelList>;
+    detail: IQuerySingleState<IEmployeeLevelGetDetailRequest, IEmployeeLevelDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  lookupEmployeeLevelDispatch: {
+  employeeLevelDispatch: {
     // command
     createRequest: typeof lookupEmployeeLevelPostRequest;
     createDispose: typeof lookupEmployeeLevelPostDispose;
@@ -56,7 +56,7 @@ interface PropsFromDispatch {
 export interface WithEmployeeLevel extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ employeeLevelGetAll, employeeLevelGetList, employeeLevelGetById }: IAppState) => ({
-  lookupEmployeeLevelState: {
+  employeeLevelState: {
     all: employeeLevelGetAll,
     list: employeeLevelGetList,
     detail: employeeLevelGetById,
@@ -64,7 +64,7 @@ const mapStateToProps = ({ employeeLevelGetAll, employeeLevelGetList, employeeLe
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  lookupEmployeeLevelDispatch: {
+  employeeLevelDispatch: {
     // command
     createRequest: (request: IEmployeeLevelPostRequest) => dispatch(lookupEmployeeLevelPostRequest(request)),
     createDispose: () => dispatch(lookupEmployeeLevelPostDispose()),
