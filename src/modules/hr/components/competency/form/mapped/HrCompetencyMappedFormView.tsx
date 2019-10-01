@@ -17,9 +17,9 @@ import { HrMappedLevelItem } from './HrMappedLevelItem';
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompetencyMapped,
+      uid: AppMenu.CompetencyMapped,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencymapped',
+      parentUrl: '/hr/competency/mapped',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Mapped'})
     }}

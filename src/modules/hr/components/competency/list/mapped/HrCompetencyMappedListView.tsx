@@ -14,7 +14,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
   <CollectionPage
       // page info
       info={{
-        uid: AppMenu.LookupCompetencyMapped,
+        uid: AppMenu.CompetencyMapped,
         parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Mapping'}),
         description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
@@ -37,7 +37,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/competencymapped/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/hr/competency/mapped/form`, { uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>
@@ -45,7 +45,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/competencymapped/${item.uid}`)}
+            onClick={() => props.history.push(`/hr/competency/mapped/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -54,7 +54,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="lookup.competency.mapped"
+          key="hr.competency.mapped"
           default={props.hrCompetencyMappedState.all.request && props.hrCompetencyMappedState.all.request.filter && props.hrCompetencyMappedState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -63,7 +63,7 @@ export const HrCompetencyMappedListView: React.SFC<HrCompetencyMappedListProps> 
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/lookup/competencymapped/form')}
+          onClick={() => props.history.push('/hr/competency/mapped/form')}
         >
           <AddCircle/>
         </IconButton>

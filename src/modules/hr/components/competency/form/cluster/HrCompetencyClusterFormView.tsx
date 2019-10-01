@@ -14,9 +14,9 @@ import HrCompetencyClusterPartial from './HrCompetencyClusterPartial';
 export const HrCompetencyClusterFormView: React.SFC<HrCompetencyClusterFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.LookupCompetencyCluster,
+      uid: AppMenu.CompetencyCluster,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencycluster',
+      parentUrl: '/hr/competency/cluster',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Cluster'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Cluster'})
     }}

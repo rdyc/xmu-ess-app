@@ -256,7 +256,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         });
 
         // redirect to detail
-        props.history.push(`/lookup/competencymapped/${response.uid}`);
+        props.history.push(`/hr/competency/mapped/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

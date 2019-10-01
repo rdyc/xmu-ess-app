@@ -12,9 +12,9 @@ import { HrCompetencyClusterInformation } from './HrCompetencyClusterInformation
 export const HrCompetencyClusterDetailView: React.SFC<HrCompetencyClusterDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.LookupCompetencyCluster,
+      uid: AppMenu.CompetencyCluster,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencycluster',
+      parentUrl: '/hr/competency/cluster',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Cluster'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}

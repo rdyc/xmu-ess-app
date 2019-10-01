@@ -172,7 +172,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterDetailProps, IOwnHandle
 
       switch (props.action) {
         case IHrCompetencyClusterUserAction.Modify:
-          next = '/lookup/competencycluster/form';
+          next = '/hr/competency/cluster/form';
           break;
 
         default:

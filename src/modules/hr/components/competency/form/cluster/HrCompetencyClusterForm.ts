@@ -212,7 +212,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
         });
 
         // redirect to detail
-        props.history.push(`/lookup/competencycluster/${response.uid}`);
+        props.history.push(`/hr/competency/cluster/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

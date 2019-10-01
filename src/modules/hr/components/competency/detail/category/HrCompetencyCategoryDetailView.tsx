@@ -13,9 +13,9 @@ import { HrCompetencyCategoryLevel } from './HrCompetencyCategoryLevel';
 export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.LookupCompetencyCategory,
+      uid: AppMenu.CompetencyCategory,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencycategory',
+      parentUrl: '/hr/competency/category',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Category'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}

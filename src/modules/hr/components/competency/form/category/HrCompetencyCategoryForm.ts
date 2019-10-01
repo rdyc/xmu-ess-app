@@ -245,7 +245,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         const clusterUid = props.history.location.state.clusterUid;
 
         // redirect to detail
-        props.history.push(`/lookup/competencycategory/${response.uid}`, {clusterUid});
+        props.history.push(`/hr/competency/category/${response.uid}`, {clusterUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

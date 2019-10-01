@@ -12,9 +12,9 @@ import { HrCompetencyMappedInformation } from './HrCompetencyMappedInformation';
 export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.LookupCompetencyMapped,
+      uid: AppMenu.CompetencyMapped,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/competencymapped',
+      parentUrl: '/hr/competency/mapped',
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Mapped'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
