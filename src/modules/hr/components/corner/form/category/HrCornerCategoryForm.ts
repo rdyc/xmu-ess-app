@@ -1,5 +1,4 @@
 import { IBasePagingFilter } from '@generic/interfaces';
-import { FormMode } from '@generic/types';
 import { IHrCornerCategoryPostPayload, IHrCornerCategoryPutPayload } from '@hr/classes/request';
 import { IHrCornerCategory } from '@hr/classes/response';
 import { WithHrCornerCategory, withHrCornerCategory } from '@hr/hoc/withHrCornerCategory';
@@ -47,8 +46,6 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  formMode: FormMode;
-
   initialValues?: ICornerCategoryFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICornerCategoryFormValue>>>;
 
@@ -79,10 +76,7 @@ export type HrCornerCategoryFormProps
   & IOwnHandler;
 
 const createProps: mapper<HrCornerCategoryFormProps, IOwnState> = (props: HrCornerCategoryFormProps): IOwnState => ({
-  // form props
-  formMode: isNullOrUndefined(props.category) ? FormMode.New : FormMode.Edit,
-  
-  // form values
+// form values
   initialValues: {
     name: '',
     description: '',
@@ -131,9 +125,11 @@ const handlerCreators: HandleCreators<HrCornerCategoryFormProps, IOwnHandler> = 
     const { user } = props.userState;
     let promise = new Promise((resolve, reject) => undefined);
 
+    const { category } = props;
+
     if (user) {
       // New
-      if (props.formMode === FormMode.New) {
+      if (!category) {
         // fill payload
         const payload: IHrCornerCategoryPostPayload = {
           name: values.name,
@@ -151,26 +147,21 @@ const handlerCreators: HandleCreators<HrCornerCategoryFormProps, IOwnHandler> = 
       }
 
       // Edit
-      if (props.formMode === FormMode.Edit) {
-        const { category } = props;
+      if (category) {
+        const payload: IHrCornerCategoryPutPayload = {
+          name: values.name,
+         description: values.description
+        };
 
-        // must have category
-        if (category) {
-          const payload: IHrCornerCategoryPutPayload = {
-            name: values.name,
-           description: values.description
-          };
-
-          // set the promise
-          promise = new Promise((resolve, reject) => {
-            props.hrCornerCategoryDispatch.updateRequest({
-              resolve,
-              reject,
-              categoryUid: category.uid,
-              data: payload
-            });
+        // set the promise
+        promise = new Promise((resolve, reject) => {
+          props.hrCornerCategoryDispatch.updateRequest({
+            resolve,
+            reject,
+            categoryUid: category.uid,
+            data: payload
           });
-        }
+        });
       }
     }
 
@@ -186,7 +177,7 @@ const handlerCreators: HandleCreators<HrCornerCategoryFormProps, IOwnHandler> = 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Corner Category', uid: response.uid })
+          message: props.intl.formatMessage(!category ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Corner category', type: 'name', uid: response.name })
         });
 
         // redirect to detail
@@ -217,7 +208,7 @@ const handlerCreators: HandleCreators<HrCornerCategoryFormProps, IOwnHandler> = 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+          message: props.intl.formatMessage(!category ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
         });
       });
   },
@@ -228,20 +219,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCornerCategoryFormProps, IOw
     // this.props.handleOnLoadDetail();
   },
   componentDidUpdate(prevProps: HrCornerCategoryFormProps) {
-    // const { response: thisResponse } = this.props.hrCornerCategoryState.detail;
-    // const { response: prevResponse } = prevProps.hrCornerCategoryState.detail;
-    
-    // if (thisResponse !== prevResponse) {
-    //   if (thisResponse && thisResponse.data) {
-    //     // define initial values
-    //     const initialValues: ICornerCategoryFormValue = {
-    //       name: thisResponse.data.name,
-    //       description: thisResponse.data.description,
-    //     };
-
-    //     this.props.setInitialValues(initialValues);
-    //   }
-    // }
     const { category: thisCategory, stateUpdate } = this.props;
     const { category: prevCategory } = prevProps;
 
