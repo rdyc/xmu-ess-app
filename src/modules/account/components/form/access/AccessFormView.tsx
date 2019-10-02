@@ -40,6 +40,7 @@ export const AccessFormView: React.SFC<AccessFormProps> = props => (
                   filterDepartment={props.filterDepartment}
                   filterUnit={props.filterUnit}
                   filterLookupCompany={props.filterLookupCompany}
+                  filterLookupLevel={props.filterLookupLevel}
                   handleFilterUnit={props.handleFilterUnit}
                   handleFilterDepartment={props.handleFilterDepartment}
                 />
