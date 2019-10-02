@@ -14,9 +14,9 @@
   "hr.shared.message.bProps": "Some props are empty",
   "hr.shared.message.create.success": "New {state} Data has been created",
   "hr.shared.message.create.failure": "Unable to process your submission",
-  "hr.shared.message.update.success": "{state} Data with ID {uid} has been updated",
+  "hr.shared.message.update.success": "{state} with {type} {uid} has been updated",
   "hr.shared.message.update.failure": "Unable to process your submission",
-  "hr.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
+  "hr.shared.message.delete.success": "{state} with {type} {uid} has been deleted",
   "hr.shared.message.delete.failure": "Unable to process your submission",
 
   "hr.shared.confirm.create.title": "Create New {state}",

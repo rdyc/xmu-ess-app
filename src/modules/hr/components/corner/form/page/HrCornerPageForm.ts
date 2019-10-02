@@ -213,7 +213,7 @@ const handlerCreators: HandleCreators<HrCornerPageFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Corner Page', uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Corner Page', type: 'title', uid: response.title })
         });
 
         // redirect to detail
