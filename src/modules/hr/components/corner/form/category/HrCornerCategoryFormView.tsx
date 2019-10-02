@@ -1,4 +1,3 @@
-import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
@@ -31,7 +30,7 @@ export const HrCornerCategoryFormView: React.SFC<HrCornerCategoryFormProps> = pr
           </IconButton>
 
           <Typography variant="h6" color="inherit" className={props.classes.flex}>
-            {props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Corner Category'})}
+            {props.intl.formatMessage(!props.category ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Corner Category'})}
           </Typography>
 
         </Toolbar>
@@ -51,7 +50,6 @@ export const HrCornerCategoryFormView: React.SFC<HrCornerCategoryFormProps> = pr
                 <div className={props.classes.flexColumn}>
                   <div className={props.classes.flexContent}>
                     <HrCornerCategoryPartial 
-                      formMode={props.formMode}
                       intl={props.intl}
                       formikBag={formikBag}
                     />

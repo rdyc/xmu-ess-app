@@ -1,4 +1,3 @@
-import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -7,7 +6,6 @@ import { InjectedIntl } from 'react-intl';
 import { ICornerCategoryFormValue } from './HrCornerCategoryForm';
 
 type HrCornerCategoryPartialProps = {
-  formMode: FormMode; 
   formikBag: FormikProps<ICornerCategoryFormValue>;
   intl: InjectedIntl;
 };

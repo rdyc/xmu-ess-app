@@ -240,7 +240,7 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment', uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment', type: 'responden', uid: response.employee.fullName })
         });
 
         // redirect to detail

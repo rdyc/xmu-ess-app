@@ -1,4 +1,4 @@
-import { IHrCompetencyMappedDetail } from '@hr/classes/response';
+import { IHrCompetencyMappedDetail, MappedItem } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import {
@@ -26,10 +26,13 @@ interface IOwnOption {
 interface IOwnState {
   active: string | undefined;
   isExpanded: boolean;
+  activeCategory?: string;
+  isExpandedCategory: boolean;
 }
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
   handleToggle: (uid: string) => IOwnState;
+  handleToggleCategory: (uid: string) => IOwnState;
 }
 
 type AllProps
@@ -42,24 +45,40 @@ type AllProps
 
 const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
   active: undefined,
-  isExpanded: false
+  isExpanded: false,
+  activeCategory: undefined,
+  isExpandedCategory: false,
 });
 
 const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
   handleToggle: (state: IOwnState) => (uid: string) => ({
     active: uid,
     isExpanded: state.active === uid ? !state.isExpanded : true
-  })
+  }),
+  handleToggleCategory: (state: IOwnState) => (uid: string) => ({
+    activeCategory: uid,
+    isExpandedCategory: state.activeCategory === uid ? !state.isExpandedCategory : true
+  }),
 };
+
 const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
-  const { data, intl, active, isExpanded, handleToggle } = props;
+  const { data, intl, active, isExpanded, handleToggle, activeCategory, isExpandedCategory } = props;
   const { response } = props.hrCompetencyClusterState.list;
+
+  const checkCategory = (categoryUid: string) => {
+    const category: MappedItem | undefined = data.categories.find(find => find.category.uid === categoryUid);
+
+    if (category) {
+      return category.mappedLevels;
+    }
+
+    return [];
+  };
 
   const render = (
     <Card square>
       <CardHeader
         title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Categories'})}
-        // subheader={intl.formatMessage(hrMessage.request.field.subHeader)}
       />
       <List>
         {
@@ -88,20 +107,49 @@ const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
               >
                 {
                   item.categories.map(category => 
-                    data.categories.find(find => find.category.uid === category.uid) ?
-                      <ListItem
-                        key={category.uid}
-                        color="inherit"
-                        className={props.classes.marginFarLeft}
-                      >
-                        <ListItemText
-                            primary={category.name}
-                            primaryTypographyProps={{
-                              noWrap: true,
-                              color: 'inherit'
-                            }}
-                        />
-                      </ListItem>
+                    checkCategory(category.uid).length > 0 ?
+                      <React.Fragment>
+                        <ListItem
+                          key={category.uid}
+                          color="inherit"
+                          className={props.classes.marginFarLeft}
+                          button
+                          onClick={() => 
+                            props.handleToggleCategory(category.uid)
+                          }
+                          selected={category.uid === activeCategory && isExpandedCategory}
+                        >
+                          <ListItemText
+                              primary={category.name}
+                              primaryTypographyProps={{
+                                noWrap: true,
+                                color: 'inherit'
+                              }}
+                          />
+                          <ListItemSecondaryAction>
+                            {activeCategory === category.uid && isExpandedCategory ? <ExpandLess /> : <ExpandMore />}
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Collapse
+                          in={activeCategory === category.uid && isExpandedCategory}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          {
+                            checkCategory(category.uid).map((lv, lvIdx) => 
+                              <ListItem
+                                style={{marginLeft: '48px'}}
+                                key={lvIdx}
+                                color="inherit"
+                              >
+                                <ListItemText 
+                                  primary={`${lv.employeeLevel.value} - Level ${lv.categoryLevel.level}`}
+                                />
+                              </ListItem>
+                            )
+                          }
+                        </Collapse>
+                      </React.Fragment>
                       :
                       <ListItem
                         key={category.uid}

@@ -49,13 +49,10 @@ const stateUpdaters: StateUpdaters<{}, {}, OwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<DeleteProps, OwnHandler> = {
   handleDeleteConfirmed: (props: DeleteProps) => () => { 
-    const { stateUpdate } = props;
     const { submitForm } = props.submitDispatch;
 
-    stateUpdate({
-      isOpenDialog: false
-    });
-
+    props.handleDialogClose();
+    
     submitForm(formName);
   },
 };

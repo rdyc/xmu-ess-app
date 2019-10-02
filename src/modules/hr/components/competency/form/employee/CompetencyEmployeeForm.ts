@@ -206,7 +206,8 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment Input', uid: response.uid })
+          message: props.intl.formatMessage(
+            hrMessage.shared.message.updateSuccess, {state: 'Assessment Input', type: 'responden', uid: (response.responden && response.responden.fullName) })
         });
 
         // redirect to detail
@@ -230,7 +231,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+          message: props.intl.formatMessage(hrMessage.shared.message.updateFailure)
         });
       });
   }
@@ -238,16 +239,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, IOwnState> = {
   componentDidMount() {
-    // const { response, request } = this.props.hrCompetencyMappedState.list;
-    // const { history, handleOnLoadDetail } = this.props;
-    
-    // if (history.location.state) {
-    //   const positionUid = history.location.state.positionUid;
-
-    //   if (!response || request && request.filter && request.filter.positionUid !== positionUid) {
-    //     handleOnLoadDetail();
-    //   }
-    // }
+    // 
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 

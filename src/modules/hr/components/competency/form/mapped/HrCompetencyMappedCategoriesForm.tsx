@@ -2,15 +2,13 @@ import { FormMode } from '@generic/types';
 import { IHrCategoryItem, IHrCompetencyClusterList } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-// import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText,  MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-// import { HrCompetencyMappedLevelOption } from '../../options/HrCompetencyMappedLevelOption';
 import { IMappedFormValue } from './HrCompetencyMappedForm';
 
 interface IOwnProps {
@@ -96,24 +94,17 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
   const { active, isExpanded, formikBag, activeCategory, isExpandedCategory } = props;
   const { response } = props.hrCompetencyClusterState.list;
 
-  const handleLevel = (clusterUid: string, categoryIdx: number, categoryUid: string) => {
+  const handleLevel = (clusterUid: string, categoryUid: string) => {
     if (response && response.data) {
       const cluster: IHrCompetencyClusterList | undefined = response.data.find(data => data.uid === clusterUid);
       if (cluster) {
         const category: IHrCategoryItem | undefined = cluster.categories.find(cat => cat.uid === categoryUid);
         if (category) {
-          return category.levels.map((lv, lvIdx) => 
-            <MenuItem
-              key={lv.uid}
-              value={lv.uid}
-            >
-              {lv.level}
-            </MenuItem>   
-          );
+          return category.levels;
         }
       }
     }
-    return null;
+    return [];
   };
 
   const render = (
@@ -137,7 +128,9 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           disableGutters
                           onClick={() => {
                             props.handleToggle(parent.uid);
+                            props.handleToggleCategory('');
                             formikBag.setFieldValue('activeCluster', parent.uid);
+                            formikBag.setFieldValue('activeCategory', undefined);
                           }}
                           selected={parent.uid === active && isExpanded}
                         >
@@ -190,7 +183,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           {
                             formikBag.values.categories.map((child, idxChild) => 
                               child.parentUid === parent.uid &&
-                                <React.Fragment>
+                                <React.Fragment key={idxChild}>
                                   <ListItem
                                     button
                                     onClick={() => {
@@ -217,6 +210,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                     in={activeCategory === child.uid && isExpandedCategory}
                                     timeout="auto"
                                     unmountOnExit
+                                    style={{padding: '10px 0'}}
                                   >
                                     <FieldArray
                                       name={`categories.${idxChild}.mappedLevel`}
@@ -239,15 +233,20 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                                       <ListItemText 
                                                         primary={lv.employeeLevelName}
                                                       />
-                                                      <ListItemSecondaryAction style={{right: '90px'}}>
+                                                      <ListItemSecondaryAction style={{right: '90px', width: '50px'}}>
                                                         <Select
-                                                          value={field.value}
-                                                          onChange={e => {
-                                                            props.formikBag.setFieldValue(field.name, e.target.value);
-                                                          }}
+                                                          {...field}
                                                         >
                                                           {
-                                                            handleLevel(parent.uid, lvIdx, child.uid)
+                                                            handleLevel(parent.uid, child.uid).length > 0 &&
+                                                            handleLevel(parent.uid, child.uid).map((lvCat, idx) =>
+                                                              <MenuItem
+                                                                key={idx}
+                                                                value={lvCat.uid}
+                                                              >
+                                                                {lvCat.level}
+                                                              </MenuItem>
+                                                            )
                                                           }
                                                         </Select>
                                                       </ListItemSecondaryAction>
@@ -270,7 +269,6 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                   ))
                 }
               />
-              
             </List>
           )
         }        

@@ -56,6 +56,7 @@ interface IOwnHandler {
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
   setDelete: StateHandler<IOwnState>;
+  setDialogClose: StateHandler<IOwnState>;
 }
 
 type AllProps 
@@ -87,6 +88,9 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdaters> = {
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.deleteTitle, {state: 'Corner category'}),
     dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.deleteDescription, {state: 'corner category'}),
+  }),
+  setDialogClose: (props: AllProps) => (): Partial<IOwnState> => ({
+    dialogOpen: false
   })
 };
 
@@ -118,6 +122,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
       };
   
       if (action === LookupUserAction.Delete) {
+
         return new Promise((resolve, reject) => {
           deleteRequest({
             resolve,
@@ -135,7 +140,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: props.intl.formatMessage(hrMessage.shared.message.deleteSuccess, { uid : props.data.uid, state: 'Corner category' })
+        message: props.intl.formatMessage(hrMessage.shared.message.deleteSuccess, { uid : props.data.name, state: 'Corner category', type: 'name' })
       });
       props.handleOnLoadList(undefined, true, true);
       props.hrCornerCategoryDispatch.loadListRequest({
@@ -144,6 +149,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
           direction: 'ascending',
         }
       });
+      
       props.onClose(false);
     }
   },
