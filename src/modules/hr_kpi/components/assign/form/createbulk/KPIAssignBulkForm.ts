@@ -197,6 +197,7 @@ const handleCreators: HandleCreators<KPIAssignBulkFormProps, IOwnHandler> = {
           companyUids: companyUid,
           positionUids: positionUid,
           useAccess: true,
+          useCompanyOrigin: true,
           orderBy: 'fullName',
           direction: 'ascending'
         })

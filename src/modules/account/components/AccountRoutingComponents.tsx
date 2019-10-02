@@ -5,6 +5,8 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { MyKPIFinalDetail } from '@profile/components/detail/kpi/detail/MyKPIFinalDetail';
 import { MyKPIFinalList } from '@profile/components/detail/kpi/list/MyKPIFinalList';
+import { MyKPIAssignDetail } from '@profile/components/detail/kpiAssign/detail/MyKPIAssignDetail';
+import { MyKPIAssignList } from '@profile/components/detail/kpiAssign/list/MyKPIAssignList';
 import { MyProfileDetail } from '@profile/components/detail/profile/MyProfileDetail';
 import { AccountAccess } from './access';
 import { AccountEmployeeAccessDetail } from './detail/access/AccountEmployeeAccessDetail';
@@ -42,7 +44,9 @@ const access = (props: RouteComponentProps) => (
 
 const profile = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/kpiassign/:kpiAssignUid`} component={MyKPIAssignDetail} />
     <Route path={`${props.match.path}/kpi/:kpiUid`} component={MyKPIFinalDetail} />
+    <Route path={`${props.match.path}/kpiassign`} component={MyKPIAssignList} />
     <Route path={`${props.match.path}/kpi`} component={MyKPIFinalList} />
     <Route path={`${props.match.path}/detail`} component={MyProfileDetail} />
     <Route path={`${props.match.path}`} component={AccountProfile} />
