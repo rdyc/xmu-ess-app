@@ -100,7 +100,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/mappeds`,
+      path: `/v1/mappeds/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyMappedGetByIdDispose()),

@@ -40,7 +40,6 @@ interface MappedLevel {
   employeeLevelUid: string;
   employeeLevelName: string;
   categoryLevelUid: string;
-  // categoryLevelLabel: string;
 }
 
 export interface CategoryMenus {
@@ -235,6 +234,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
           props.hrCompetencyMappedDispatch.createRequest({
             resolve,
             reject,
+            positionUid: values.positionUid,
             data: payload
           });
         });
@@ -294,7 +294,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', type: 'position', uid: response.position.name })
         });
 
         // redirect to detail
@@ -400,21 +400,21 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
               itemUid: '',
               mappedLevel: []
             });
-
-            const levelItem: MappedLevel[] = [];
-
-            if (nextLevel && nextLevel.data) {
-              nextLevel.data.map(lv => {
-                levelItem.push({
-                  employeeLevelUid: lv.uid,
-                  employeeLevelName: lv.value,
-                  categoryLevelUid: '',
-                });
-              });
-            }
     
             if (item.categories.length >= 1) {
               item.categories.map(category => {
+                const levelItem: MappedLevel[] = [];
+
+                if (nextLevel && nextLevel.data) {
+                  nextLevel.data.map(lv => {
+                    levelItem.push({
+                      employeeLevelUid: lv.uid,
+                      employeeLevelName: lv.value,
+                      categoryLevelUid: '',
+                    });
+                  });
+                }
+                
                 categoriesList.push({
                   uid: category.uid,
                   parentUid: item.uid,
@@ -443,6 +443,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     const { response: thisResponse } = this.props.hrCompetencyMappedState.detail;
     const { response: prevResponse } = prevProps.hrCompetencyMappedState.detail;
     const { response: clusterList } = this.props.hrCompetencyClusterState.list;
+    const { response: levelList } = this.props.employeeLevelState.list;
 
     const { formMode } = this.props;
     
@@ -466,17 +467,20 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
                 
                 // for the child menus
                 item.categories.map(category => {
+                  const levelItem: MappedLevel[] = [];
+                  
                   // categoryId is for checking with detail data
                   const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
-                  const levelItem: MappedLevel[] = [];
 
                   if (categoryId) {
                     // if there is child that are sync then check the parent to true
                     const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
                     if (parent) {
                       parent.isAccess = true;
-
                       // this one is for filling the mappedlevel for everychild if the parent is checked
+                    }
+
+                    if (categoryId.mappedLevels.length > 0) {
                       categoryId.mappedLevels.map(lv => {
                         levelItem.push({
                           uid: lv.uid,
@@ -485,9 +489,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
                           employeeLevelName: lv.employeeLevel.value
                         });
                       });
-                    }
+                    } 
                   }
                   
+                  if (levelItem.length < 1 && levelList && levelList.data) {
+                    levelList.data.map(lv => {
+                      levelItem.push({
+                        employeeLevelUid: lv.uid,
+                        employeeLevelName: lv.value,
+                        categoryLevelUid: '',
+                      });
+                    });
+                  }
+
                   categoriesList.push({
                     uid: category.uid,
                     parentUid: item.uid,
