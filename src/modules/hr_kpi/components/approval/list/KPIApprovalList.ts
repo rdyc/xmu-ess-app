@@ -23,6 +23,7 @@ import { IKPIApprovalGetAllFilter } from '@kpi/classes/filter/approval';
 import { IKPIEmployee } from '@kpi/classes/response';
 import { KPIEmployeeField } from '@kpi/classes/types';
 import { WithKPIApproval, withKPIApproval } from '@kpi/hoc/withKPIApproval';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
 import { IKPIApprovalFilterResult } from './KPIApprovalFilter';
 import { KPIApprvoalListView } from './KPIApprovalListView';
@@ -156,7 +157,7 @@ const handlerCreators: HandleCreators<KPIApprovalListProps, IOwnHandler> = {
     key: index,
     primary: item.kpiAssign && item.kpiAssign.employee && item.kpiAssign.employee.fullName || '',
     secondary: item.kpiAssign && item.kpiAssign.year.toString() || '',
-    tertiary: `Semester ${props.intl.formatNumber(item.period)}`,
+    tertiary: item.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear),
     quaternary: `${props.intl.formatNumber(item.totalScore)} %`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    

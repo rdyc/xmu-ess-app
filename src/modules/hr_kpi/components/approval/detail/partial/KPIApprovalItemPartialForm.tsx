@@ -108,8 +108,8 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                         }
                       </TableCell>
                       {
-                        (!props.formikBag.values.isFinal ||
-                        (props.formikBag.values.isFinal && props.formikBag.values.statusType === WorkflowStatusType.Submitted)) &&
+                        !props.formikBag.values.isFinal && 
+                        props.formikBag.values.statusType === WorkflowStatusType.Accepted &&
                           <TableCell numeric style={{ verticalAlign: 'top' }}>
                           {
                             item.measurementType &&

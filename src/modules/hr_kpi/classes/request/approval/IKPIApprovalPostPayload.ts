@@ -1,8 +1,8 @@
 import { IKPIApprovalItemPostPayload } from '.';
 
 export interface IKPIApprovalPostPayload {
-  isApproved: boolean;
+  // isApproved: boolean;
   isFinal: boolean;
-  revision: string;
+  // revision: string;
   items: IKPIApprovalItemPostPayload[];
 }

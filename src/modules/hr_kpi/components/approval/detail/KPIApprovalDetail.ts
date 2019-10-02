@@ -51,7 +51,7 @@ export interface IKPIApprovalFormValue {
   // isApproved?: boolean;
   isFinal: boolean;
   isFirst: boolean;
-  revision?: string;
+  // revision?: string;
   totalScore: number;
   items: IKPIApprovalItemFormValue[];
 }
@@ -131,7 +131,7 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
       // isApproved: false,
       isFinal: false,
       isFirst: true,
-      revision: '',
+      // revision: '',
       totalScore: 0,
       items: []
     },
@@ -146,13 +146,13 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
   
       isFirst: Yup.boolean(),
   
-      revision: Yup.string()
-        .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
-        .when(['isFinal', 'isFirst'] , ({
-          is: false,
-          then: Yup.string().required(),
-        }))
-        .max(300),
+      // revision: Yup.string()
+      //   .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
+      //   .when(['isFinal', 'isFirst'] , ({
+      //     is: false,
+      //     then: Yup.string().required(),
+      //   }))
+      //   .max(300),
   
       totalScore: Yup.number(),
   
@@ -243,9 +243,9 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
 
         // fill payload 
         const payload: IKPIApprovalPostPayload = {
-          isApproved: true,
+          // isApproved: true,
           isFinal: values.isFinal,
-          revision: values.revision || '',
+          // revision: values.revision || '',
           items: []
         };
 
@@ -277,10 +277,10 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(kpiMessage.employee.message.approvalSuccess, {uid: props.match.params.kpiUid})
+          message: props.intl.formatMessage(kpiMessage.employee.message.approvalSuccess)
         });
 
-        props.history.push(`/kpi/approvals/${props.match.params.kpiUid}`);
+        props.setShouldLoad();
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -380,7 +380,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
           // isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.isFirst,
-          revision: '',
+          // revision: '',
           totalScore: thisResponse.data.totalScore,
           items: [],
         };

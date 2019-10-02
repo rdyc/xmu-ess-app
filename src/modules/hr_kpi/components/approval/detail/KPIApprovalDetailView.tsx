@@ -63,31 +63,37 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
 
               <div className={props.classes.flexColumn}>
                 <div className={props.classes.flexContent}>
-                  <KPIApprovalPartialForm
-                    formikBag={formikBag}
-                    intl={props.intl}
-                  />
+                  {
+                    !props.initialValues.isFinal &&
+                    <KPIApprovalPartialForm
+                      formikBag={formikBag}
+                      intl={props.intl}
+                    />
+                  }
                 </div>
                 <div className={props.classes.flexContent}>
-                  <SubmissionForm
-                    title={props.intl.formatMessage(kpiMessage.employee.submission.approvalForm)}
-                    className={props.classes.flexContent}
-                    formikProps={formikBag}
-                    buttonLabelProps={{
-                      reset: props.intl.formatMessage(layoutMessage.action.reset),
-                      submit: props.kpiApprovalState.detail.response && props.kpiApprovalState.detail.response.data && 
-                        props.kpiApprovalState.detail.response.data.statusType === WorkflowStatusType.Submitted &&
-                        props.intl.formatMessage(layoutMessage.action.accept) ||
-                        props.intl.formatMessage(layoutMessage.action.submit),
-                      processing: props.intl.formatMessage(layoutMessage.text.processing)
-                    }}
-                    confirmationDialogProps={{
-                      title: props.intl.formatMessage(kpiMessage.employee.dialog.approvalTitle),
-                      message: props.intl.formatMessage(kpiMessage.employee.dialog.approvalDescription),
-                      labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
-                      labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
-                    }}
-                  />
+                  {
+                    !props.initialValues.isFinal &&
+                    <SubmissionForm
+                      title={props.intl.formatMessage(kpiMessage.employee.submission.approvalForm)}
+                      className={props.classes.flexContent}
+                      formikProps={formikBag}
+                      buttonLabelProps={{
+                        reset: props.intl.formatMessage(layoutMessage.action.reset),
+                        submit: props.kpiApprovalState.detail.response && props.kpiApprovalState.detail.response.data && 
+                          props.kpiApprovalState.detail.response.data.statusType === WorkflowStatusType.Submitted &&
+                          props.intl.formatMessage(layoutMessage.action.accept) ||
+                          props.intl.formatMessage(layoutMessage.action.submit),
+                        processing: props.intl.formatMessage(layoutMessage.text.processing)
+                      }}
+                      confirmationDialogProps={{
+                        title: props.intl.formatMessage(kpiMessage.employee.dialog.approvalTitle),
+                        message: props.intl.formatMessage(kpiMessage.employee.dialog.approvalDescription),
+                        labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                        labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+                      }}
+                    />
+                  }
                 </div>
 
                 <div className={props.classes.flexContent}>

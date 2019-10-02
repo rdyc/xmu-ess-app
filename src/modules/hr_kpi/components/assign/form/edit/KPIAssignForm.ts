@@ -365,7 +365,7 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess)
         });
 
         props.history.push(`/kpi/assigns/${props.match.params.employeeUid}/${response.uid}`);
