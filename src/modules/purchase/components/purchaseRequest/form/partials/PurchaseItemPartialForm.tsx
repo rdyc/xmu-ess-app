@@ -159,7 +159,6 @@ const PurchaseItemPartialForm: React.ComponentType<PurchaseItemPartialFormProps>
                 color="primary" 
                 disabled={props.formikBag.isSubmitting}
                 onClick={() => fields.push({
-                  uid: '',
                   description: '',
                   request: 0,
                 })}

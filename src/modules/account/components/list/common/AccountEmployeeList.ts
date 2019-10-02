@@ -103,7 +103,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       const filter: IEmployeeAllFilter = {
         companyUids: props.companyUids,
         useAccess: false,
-        isActive: props.isActive ? false : true,
+        isActive: !props.isActive,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
