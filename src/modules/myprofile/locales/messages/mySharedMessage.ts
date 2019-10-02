@@ -13,6 +13,7 @@ export const myProfileTabs = defineMessages({
   profile: {id: `${prefix}.tab.profile`},
   competency: {id: `${prefix}.tab.competency`},
   kpi: {id: `${prefix}.tab.kpi`},
+  kpiAssign: {id: `${prefix}.tab.kpiAssign`},
 });
 
 // helper
@@ -22,6 +23,7 @@ export const mySharedHelperFor = (field: string, type: 'fieldTab') => {
       case 'profile': return myProfileTabs.profile;
       case 'competency': return myProfileTabs.competency;
       case 'kpi': return myProfileTabs.kpi;
+      case 'kpiAssign': return myProfileTabs.kpiAssign;
 
       default: return {id: field};
     }

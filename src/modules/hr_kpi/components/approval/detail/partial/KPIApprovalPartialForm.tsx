@@ -1,5 +1,5 @@
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -70,7 +70,7 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
           )}
         />  
 
-        {
+        {/* {
           (!props.formikBag.values.isFirst && !props.formikBag.values.isFinal) &&
           <Field
             name="revision"
@@ -89,7 +89,7 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
               />
             )}
           />
-        }
+        } */}
       </CardContent>
     </Card>
   );

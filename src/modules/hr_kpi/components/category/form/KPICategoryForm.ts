@@ -251,7 +251,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.message.createSuccess : kpiMessage.category.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.category.message.createSuccess : kpiMessage.category.message.updateSuccess)
         });
 
         props.history.push(`/kpi/categories/${response.uid}`);

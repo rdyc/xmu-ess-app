@@ -262,7 +262,7 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(isNew ? kpiMessage.measurement.message.createSuccess : kpiMessage.measurement.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(isNew ? kpiMessage.measurement.message.createSuccess : kpiMessage.measurement.message.updateSuccess)
         });
 
         const measurementValueList = props.measurementValueList;

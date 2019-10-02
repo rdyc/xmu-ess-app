@@ -89,6 +89,7 @@ export const KPIEmployeeField = defineMessages({
   templateUid: { id: `${prefix}.field.templateUid`},
   templateUidPlaceholder: { id: `${prefix}.field.templateUid.placeholder`},
   year: { id: `${prefix}.field.year`},
+  latestYear: { id: `${prefix}.field.latestYear`},
   yearPlaceholder: { id: `${prefix}.field.year.placeholder`},
   period: { id: `${prefix}.field.period`},
   periodMidYear: { id: `${prefix}.field.period.midYear`},

@@ -1,9 +1,10 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  IEmployeeKPIGetAllRequest, 
   IKPIApprovalGetAllRequest, 
   IKPIApprovalGetByIdRequest, 
   IKPIApprovalPostRequest, 
-  IKPIAssignGetAllRequest, 
+  IKPIAssignGetAllRequest,
   IKPIAssignGetByIdRequest,
   IKPIAssignGetByYearRequest,
   IKPIAssignPostBulkRequest,
@@ -38,23 +39,27 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IKPIAssign, 
+  IEmployeeKPI, 
+  IKPIAssign,
   IKPIAssignDetail,
   IKPICategory,
   IKPICategoryDetail,
   IKPICategoryList,
   IKPIEmployee,
-  IKPIEmployeeDetail,
-  IKPIFinal, 
-  IKPIFinalDetail,
+  IKPIEmployeeDetail, 
+  IKPIFinal,
+  IKPIFinalDetail, 
   IKPIMeasurement, 
-  IKPIMeasurementDetail, 
+  IKPIMeasurementDetail,
   IKPIMeasurementList,
   IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
 
 export interface IKPIState {
+  // employee
+  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
+
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;

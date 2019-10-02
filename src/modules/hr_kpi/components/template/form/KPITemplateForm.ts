@@ -313,7 +313,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.message.createSuccess : kpiMessage.template.message.updateSuccess, { uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.template.message.createSuccess : kpiMessage.template.message.updateSuccess)
         });
 
         props.history.push(`/kpi/templates/${response.uid}`, {companyUid: response.companyUid, positionUid: response.positionUid});

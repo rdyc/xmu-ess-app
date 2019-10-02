@@ -217,7 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIEmployeeDetailProps, IOwnState> = {
           enabled: !isLoading,
           visible: this.props.kpiEmployeeState.detail.response && 
             (this.props.kpiEmployeeState.detail.response.data.statusType === WorkflowStatusType.Submitted ||
-            (this.props.kpiEmployeeState.detail.response.data.statusType === WorkflowStatusType.Accepted || !this.props.kpiEmployeeState.detail.response.data.isFinal)) || true,
+            (this.props.kpiEmployeeState.detail.response.data.statusType === WorkflowStatusType.Accepted && this.props.kpiEmployeeState.detail.response.data.isFinal)) || false,
         },
       ];
 

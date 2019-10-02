@@ -1,5 +1,6 @@
 export enum MyProfileTabs {
   Detail = 'detail',
   Competency = 'competency',
-  KPI = 'kpi'
+  KPI = 'kpi',
+  KPIAssign = 'kpiAssign'
 }

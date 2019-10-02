@@ -16,9 +16,9 @@
   "kpi.template.submission.form": "KPI Template Submission",
 
   "kpi.template.message.emptyProps": "Some props are empty",
-  "kpi.template.message.create.success": "A new Templae {uid} has been created",
+  "kpi.template.message.create.success": "A new Templae has been created",
   "kpi.template.message.create.failure": "Unable to process your submission",
-  "kpi.template.message.update.success": "Existing Template {uid} has been updated",
+  "kpi.template.message.update.success": "Existing Template has been updated",
   "kpi.template.message.update.failure": "Unable to process your submission",
 
   "kpi.template.section.info.title": "KPI Template",
@@ -95,12 +95,12 @@
   "kpi.employee.approval.form": "KPI Employee Approval Submission",
 
   "kpi.employee.message.emptyProps": "Some props are empty",
-  "kpi.employee.message.approval.success": "Employee KPI {uid} approval successful",
+  "kpi.employee.message.approval.success": "Employee KPI approval successful",
   "kpi.employee.message.approval.failure": "Employee KPI approval failed",
-  "kpi.employee.message.create.success": "A new Employee KPI {uid} has been created",
+  "kpi.employee.message.create.success": "A new Employee KPI has been created",
   "kpi.employee.message.creates.success": "A new Employee KPIs has been created",
   "kpi.employee.message.create.failure": "Unable to process your submission",
-  "kpi.employee.message.update.success": "Existing Employee KPI {uid} has been updated",
+  "kpi.employee.message.update.success": "Existing Employee KPI has been updated",
   "kpi.employee.message.updates.success": "Existing Employee KPIs has been updated",
   "kpi.employee.message.update.failure": "Unable to process your submission",
 
@@ -124,6 +124,7 @@
   "kpi.employee.field.templateUid.placeholder": "Select The Template",
   "kpi.employee.field.totalScore": "Total Score",
   "kpi.employee.field.year": "Year",
+  "kpi.employee.field.latestYear": "Last Assigned KPI Year",
   "kpi.employee.field.year.placeholder": "Type The Year",
   "kpi.employee.field.period": "Semester",
   "kpi.employee.field.period.midYear": "Mid Year",
@@ -162,9 +163,9 @@
   "kpi.employee.field.score": "Score",
   "kpi.employee.field.completion": "Approval Completion",
 
-  "kpi.measurement.message.create.success": "A new Measurement {uid} has been created",
+  "kpi.measurement.message.create.success": "A new Measurement has been created",
   "kpi.measurement.message.create.failure": "Unable to process your submission",
-  "kpi.measurement.message.update.success": "Existing Measurement {uid} has been updated",
+  "kpi.measurement.message.update.success": "Existing Measurement has been updated",
   "kpi.measurement.message.update.failure": "Unable to process your submission",
 
   "kpi.measurement.field.uid": "Measurement ID",
@@ -192,9 +193,9 @@
   "kpi.measurement.confirm.modify.title": "Modify KPI measurement",
   "kpi.measurement.confirm.modify.description": "You are about to modify current KPI measurement. Do you want to continue?",
 
-  "kpi.category.message.create.success": "A new Category {uid} has been created",
+  "kpi.category.message.create.success": "A new Category has been created",
   "kpi.category.message.create.failure": "Unable to process your submission",
-  "kpi.category.message.update.success": "Existing Category {uid} has been updated",
+  "kpi.category.message.update.success": "Existing Category has been updated",
   "kpi.category.message.update.failure": "Unable to process your submission",
 
   "kpi.category.field.uid": "Category ID",
