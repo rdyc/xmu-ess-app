@@ -124,6 +124,7 @@
   "kpi.employee.field.templateUid.placeholder": "Select The Template",
   "kpi.employee.field.totalScore": "Total Score",
   "kpi.employee.field.year": "Year",
+  "kpi.employee.field.latestYear": "Last Assigned KPI Year",
   "kpi.employee.field.year.placeholder": "Type The Year",
   "kpi.employee.field.period": "Semester",
   "kpi.employee.field.period.midYear": "Mid Year",

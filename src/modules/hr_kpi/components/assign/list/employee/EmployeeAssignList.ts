@@ -22,9 +22,9 @@ import {
 } from 'recompose';
 
 import { IEmployeeAllFilter } from '@account/classes/filters';
-import { IEmployee } from '@account/classes/response';
 import { AccountEmployeeField } from '@account/classes/types';
-import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
+import { IEmployeeKPI } from '@kpi/classes/response';
+import { withEmployeeKPI, WithEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
 import { IAccountEmployeeFilterResult } from './EmployeeAssignFilter';
 import { EmployeeAssignListView } from './EmployeeAssignListView';
 
@@ -45,7 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IEmployee, index: number) => IDataBindResult;
+  handleOnBind: (item: IEmployeeKPI, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
   handleFilterBadge: () => boolean;
@@ -57,12 +57,12 @@ export type AccountEmployeeAssignListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithAccountEmployee
+  & WithEmployeeKPI
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AccountEmployeeAssignListProps, IOwnState> = (props: AccountEmployeeAssignListProps): IOwnState => {
-  const { request } = props.accountEmployeeState.all;
+  const { request } = props.employeeKPIState.all;
   
   // default state
   const state: IOwnState = {
@@ -101,8 +101,8 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignListProps, IOwnState, IO
 
 const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeAssignListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.accountEmployeeState.all;
-    const { loadAllRequest } = props.accountEmployeeDispatch;
+    const { isExpired, isLoading, request } = props.employeeKPIState.all;
+    const { loadAllRequest } = props.employeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -131,8 +131,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
     }
   },
   handleOnLoadApiSearch: (props: AccountEmployeeAssignListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.accountEmployeeState.all;
-    const { loadAllRequest } = props.accountEmployeeDispatch;
+    const { isLoading, request } = props.employeeKPIState.all;
+    const { loadAllRequest } = props.employeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -154,11 +154,11 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
       }
     }
   },
-  handleOnBind: (props: AccountEmployeeAssignListProps) => (item: IEmployee, index: number) => ({
+  handleOnBind: (props: AccountEmployeeAssignListProps) => (item: IEmployeeKPI, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.company ? item.company.name : 'N/A',
-    tertiary: item.fullName,
+    primary: item.company ? item.company.name : 'N/A',
+    secondary: item.fullName,
+    tertiary: item.year && item.year.toString() || 'N/A',
     quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
@@ -204,7 +204,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignListProps, IOwnSt
 export const EmployeeAssignList = compose(
   setDisplayName('EmployeeAssignList'),
   withUser,
-  withAccountEmployee,
+  withEmployeeKPI,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

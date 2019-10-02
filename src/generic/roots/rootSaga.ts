@@ -61,6 +61,7 @@ import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
 import hrCornerCategorySagas from '@hr/store/sagas/corner/category/hrCornerCategorySagas';
 import hrCornerPageSagas from '@hr/store/sagas/corner/page/hrCornerPageSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import employeeKPISagas from '@kpi/store/sagas/employeeKPISagas';
 import kpiApprovalSagas from '@kpi/store/sagas/kpiApprovalSagas';
 import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
@@ -274,6 +275,7 @@ export function* rootSaga() {
     fork(kpiApprovalSagas),
     fork(kpiAssignSagas),
     fork(kpiFinalSagas),
+    fork(employeeKPISagas),
 
     // corner
     fork(hrCornerBlogSagas),

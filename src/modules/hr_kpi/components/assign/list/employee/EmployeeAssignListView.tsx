@@ -6,7 +6,7 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IEmployee } from '@account/classes/response';
+import { IEmployeeKPI } from '@kpi/classes/response';
 import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeAssignFilter } from './EmployeeAssignFilter';
@@ -25,7 +25,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       }}
 
       // state & fields
-      state={props.accountEmployeeState.all}
+      state={props.employeeKPIState.all}
       fields={props.fields}
 
       // callback
@@ -33,10 +33,10 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IEmployee) => ( 
+      summaryComponent={(item: IEmployeeKPI) => ( 
         <EmployeeSummary data={item} />
       )}
-      actionComponent={(item: IEmployee) => (
+      actionComponent={(item: IEmployeeKPI) => (
         <React.Fragment>
           <Button 
             size="small"
@@ -51,8 +51,8 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee"
-          default={props.accountEmployeeState.all.request && props.accountEmployeeState.all.request.filter && props.accountEmployeeState.all.request.filter.find}
+          key="account.employee.kpi"
+          default={props.employeeKPIState.all.request && props.employeeKPIState.all.request.filter && props.employeeKPIState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
@@ -75,7 +75,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
           <div>
             <IconButton
               id="option-filter"
-              disabled={props.accountEmployeeState.all.isLoading || props.accountEmployeeState.all.isError}
+              disabled={props.employeeKPIState.all.isLoading || props.employeeKPIState.all.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge

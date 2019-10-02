@@ -1,4 +1,3 @@
-import { IEmployeeAllFilter } from '@account/classes/filters';
 import { withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
@@ -20,11 +19,12 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { IPositionList } from '@lookup/classes/response';
 import { EmployeeAssignFilterView } from './EmployeeFinalFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeKPIGetAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;

@@ -4,3 +4,4 @@ export * from './category';
 export * from './employee';
 export * from './assign';
 export * from './final';
+export * from './employeeKPI';
