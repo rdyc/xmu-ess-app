@@ -208,7 +208,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Cluster', uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Cluster', type: 'name', uid: response.name })
         });
 
         // redirect to detail

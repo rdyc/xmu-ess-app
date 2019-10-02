@@ -240,7 +240,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Category', uid: response.uid })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Category', type: 'name', uid: response.name })
         });
         const clusterUid = props.history.location.state.clusterUid;
 
