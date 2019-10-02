@@ -9,21 +9,6 @@ export const hrCompetencyField = defineMessages({
   uidRequired: { id: `${prefix}.field.uid.required`},
   
   type: { id: `${prefix}.field.type`},
-  // clusterUid: { id: `${prefix}.field.clusterUid`},
-  // clusterUidPlaceholder: { id: `${prefix}.field.clusterUid.placeholder`},
-  // clusterUidRequired: { id: `${prefix}.field.clusterUid.required`},
-
-  // categoryUid: { id: `${prefix}.field.categoryUid`},
-  // categoryUidPlaceholder: { id: `${prefix}.field.categoryUid.placeholder`},
-  // categoryUidRequired: { id: `${prefix}.field.categoryUid.required`},
-
-  // levelUid: { id: `${prefix}.field.levelUid`},
-  // levelUidPlaceholder: { id: `${prefix}.field.levelUid.placeholder`},
-  // levelUidRequired: { id: `${prefix}.field.levelUid.required`},
-
-  // indicatorUid: { id: `${prefix}.field.indicatorUid`},
-  // indicatorUidPlaceholder: { id: `${prefix}.field.indicatorUid.placeholder`},
-  // indicatorUidRequired: { id: `${prefix}.field.indicatorUid.required`},
 
   name: { id: `${prefix}.field.name`},
   namePlaceholder: { id: `${prefix}.field.name.placeholder`},
