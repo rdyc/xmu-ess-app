@@ -175,6 +175,7 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: IHrCompetencyAssessmentPostPayload = {
+          companyUid: values.companyUid,
           positionUid: values.positionUid,
           employeeUid: values.employeeUid,
           assessmentYear: Number(values.year),
@@ -203,6 +204,7 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
         // must have assessmentUid
         if (assessmentUid) {
           const payload: IHrCompetencyAssessmentPutPayload = {
+            companyUid: values.companyUid,
             positionUid: values.positionUid,
             employeeUid: values.employeeUid,
             assessmentYear: Number(values.year),
