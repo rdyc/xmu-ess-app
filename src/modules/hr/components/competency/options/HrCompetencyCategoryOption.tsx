@@ -77,7 +77,6 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryOptionProps, IOwnHandl
       loadListRequest({ 
         competencyUid,
         filter: {
-          competencyUid,
           direction: 'ascending',
           orderBy: 'name'
         },
