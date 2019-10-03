@@ -161,10 +161,12 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
     // define vars
     let competencyEmployeeUid: string | undefined;
+    let positionUid: string | undefined;
 
     // get project uid
     if (response.data) {
       competencyEmployeeUid = response.data.uid;
+      positionUid = response.data.positionUid;
     }
 
     // actions with new page
@@ -187,6 +189,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
       props.setDefault();
 
       props.history.push(next, { 
+        positionUid,
         uid: competencyEmployeeUid
       });
     }

@@ -236,6 +236,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                                       <ListItemSecondaryAction style={{right: '90px', width: '50px'}}>
                                                         <Select
                                                           {...field}
+                                                          disabled={form.isSubmitting}
                                                         >
                                                           {
                                                             handleLevel(parent.uid, child.uid).length > 0 &&

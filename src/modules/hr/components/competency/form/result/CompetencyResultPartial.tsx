@@ -1,6 +1,7 @@
+import { AccountEmployeeMultipleOption } from '@account/components/options/AccountEmployeeMultipleOption';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { SelectField } from '@layout/components/fields/SelectField';
+import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
@@ -25,16 +26,43 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
     />
     <CardContent>
       <Field 
-        name="respondenUid"
+        name="uid"
         render={({ field}: FieldProps<ICompetencyResultFormValue>) => (
           <TextField 
             {...field}
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Responden'})}
-            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+            label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Result'})}
           />
+        )}
+      />
+
+      <Field
+        name="respondenUid"
+        render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => (
+          <AccountEmployeeMultipleOption companyUid={props.formikBag.values.companyUid} positoinUid={props.formikBag.values.positionUid}>
+            <SelectField
+              isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
+              isClearable={field.value !== ''}
+              isDisabled={props.formikBag.values.positionUid === '' || props.formikBag.isSubmitting || props.formMode === FormMode.Edit}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                placeholder: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                required: true,
+                helperText: form.touched.respondenUid && form.errors.respondenUid,
+                error: form.touched.respondenUid && Boolean(form.errors.respondenUid)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+              }}
+            />
+          </AccountEmployeeMultipleOption>
         )}
       />
       
