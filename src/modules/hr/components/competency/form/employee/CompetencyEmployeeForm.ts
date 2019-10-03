@@ -39,6 +39,7 @@ export interface ILevelOption {
 }
 
 export interface ICompetencyEmployeeFormValue {
+  uid: string;
   respondenUid: string;
   companyUid: string;
   positionUid: string;
@@ -61,7 +62,6 @@ interface IOwnState {
   filterCompany?: ILookupCompanyGetListFilter;
 
   saveType: DraftType;
-  isUpdatedValue: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -73,7 +73,6 @@ interface IOwnHandler {
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ICompetencyEmployeeFormValue, actions: FormikActions<ICompetencyEmployeeFormValue>) => void;
   handleSaveType: (saveType: DraftType) => void;
-  handleIsUpdatedValue: () => void;
 }
 
 export type CompetencyEmployeeFormProps
@@ -95,6 +94,7 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
   
   // form values
   initialValues: {
+    uid: '',
     respondenUid: '',
     companyUid: '',
     positionUid: '',
@@ -102,7 +102,6 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
     levelRespond: []
   },
   saveType: DraftType.draft,
-  isUpdatedValue: false,
 
   // filter
   filterCompany: {
@@ -129,24 +128,24 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
       saveType
     });
   },
-  handleIsUpdatedValue: (props: CompetencyEmployeeFormProps) => () => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      isUpdatedValue: true
-    });
-  },
   handleOnLoadDetail: (props: CompetencyEmployeeFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyEmployeeState.detail;
+      const positionUid = props.history.location.state.positionUid;
 
       if (user && competencyEmployeeUid && !isLoading) {
         props.hrCompetencyEmployeeDispatch.loadDetailRequest({
           competencyEmployeeUid
         });
       }
+
+      props.hrCompetencyMappedDispatch.loadListRequest({
+        filter: {
+          positionUid
+        }
+      });
     }
   },
   handleOnSubmit: (props: CompetencyEmployeeFormProps) => (values: ICompetencyEmployeeFormValue, actions: FormikActions<ICompetencyEmployeeFormValue>) => {
@@ -242,32 +241,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
     // 
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
-    const { response: nextResponse } = nextProps.hrCompetencyEmployeeState.detail;
-    const { response, request } = this.props.hrCompetencyMappedState.list;
-
-    if (thisResponse !== nextResponse) {
-      if (nextResponse && nextResponse.data) {
-        if (!response || request && request.filter && request.filter.positionUid !== nextResponse.data.positionUid) {
-          this.props.hrCompetencyMappedDispatch.loadListRequest({
-            filter: {
-              positionUid: nextResponse.data.positionUid
-            }
-          });
-        }
-      }
-    }
+    //
   },
   componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
+    const { response: prevResponse } = prevProps.hrCompetencyEmployeeState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
+    const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
 
-    if (thisResponse && thisResponse.data && 
-        thisMapped && thisMapped.data && thisMapped.data.length > 0
-        && !this.props.isUpdatedValue) {
-        
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
         // define initial values
         const initialValues: ICompetencyEmployeeFormValue = {
+          uid: thisResponse.data.uid,
           respondenUid: thisResponse.data.respondenUid,
           companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
           positionUid: thisResponse.data.positionUid,
@@ -275,20 +261,29 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
           levelRespond: []
         };
 
-        // fill 
-        thisMapped.data[0].categories.forEach(item => {
-          const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-
-          initialValues.levelRespond.push({
-            uid: find && find.uid || '',
-            categoryUid: item.category.uid,
-            levelUid: find && find.levelUid || ''
-          });  
-        });
         this.props.setInitialValues(initialValues);
-        this.props.handleIsUpdatedValue();
+      }
     }
-    // }
+
+    // to fill the level respond here
+    if (thisMapped !== prevMapped) {
+      if (thisMapped && thisMapped.data && thisResponse) {
+        const initialVal: ICompetencyEmployeeFormValue | undefined = this.props.initialValues;
+
+        if (initialVal) {
+          thisMapped.data[0].categories.forEach(item => {
+            const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+  
+            initialVal.levelRespond.push({
+              uid: find && find.uid || '',
+              categoryUid: item.category.uid,
+              levelUid: find && find.levelUid || ''
+            });  
+          });
+          this.props.setInitialValues(initialVal);
+        }
+      }
+    }
   }
 };
 
