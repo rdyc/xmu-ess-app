@@ -2,7 +2,7 @@ import { IEmployeeAccessList } from '@account/classes';
 import { WithAccountEmployeeMy, withAccountEmployeeMy } from '@account/hoc/withAccountEmployeeMy';
 import AppStorage from '@constants/AppStorage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppUser, IUserCompany, IUserPosition, IUserRole } from '@layout/interfaces';
+import { IAppUser, IUserCompany, IUserLevel, IUserPosition, IUserRole } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { RemoveDuplicates } from '@utils/index';
@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
     if (response && response.data && response.data.access) {
       const access = response.data.access.filter(item => item.uid === uid)[0];
   
-      if (access && access.company && access.role && access.position) {
+      if (access && access.company && access.role && access.position && access.level) {
         const company: IUserCompany = {
           uid: access.company.uid,
           code: access.company.code,
@@ -116,10 +116,18 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
           description: access.role.description || ''
         };
 
+        const level: IUserLevel = {
+          uid: access.level.uid,
+          seq: access.level.seq,
+          value: access.level.value,
+          description: access.level.description
+        };
+
         const user: IAppUser = {
           company,
           position,
           role,
+          level,
           uid: response.data.uid,
           email: response.data.email,
           fullName: response.data.fullName,

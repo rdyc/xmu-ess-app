@@ -13,6 +13,7 @@ export * from './IUserCompany';
 export * from './IUserPosition';
 export * from './IUserRole';
 export * from './IUserState';
+export * from './IUserLevel';
 export * from './IView';
 export * from './IValidationError';
 export * from './IValidationErrorResponse';
