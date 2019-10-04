@@ -94,6 +94,7 @@ import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSaga
 import organizationHierarchySagas from '@organization/store/sagas/organizationHierarchySagas';
 import organizationStructureSagas from '@organization/store/sagas/organizationStructureSagas';
 import organizationWorkflowSagas from '@organization/store/sagas/organizationWorkflowSagas';
+import employeeFinalSagas from '@profile/store/sagas/employeeFinalSagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectAdministrationSagas from '@project/store/sagas/projectAdministrationSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
@@ -280,6 +281,9 @@ export function* rootSaga() {
     // corner
     fork(hrCornerBlogSagas),
     fork(hrCornerCategorySagas),
-    fork(hrCornerPageSagas)
+    fork(hrCornerPageSagas),
+
+    // employee final
+    fork(employeeFinalSagas)
   ]);
 }

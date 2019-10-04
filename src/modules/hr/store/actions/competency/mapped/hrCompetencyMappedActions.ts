@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IHrCompetencyMappedGetAllRequest, IHrCompetencyMappedGetDetailRequest, IHrCompetencyMappedGetListRequest, IHrCompetencyMappedPostRequest, IHrCompetencyMappedPutRequest } from 'modules/hr/classes/queries';
-import { IHrCompetencyMapped, IHrCompetencyMappedDetail, IHrCompetencyMappedList } from 'modules/hr/classes/response';
+import { IHrCompetencyMappedGetAllRequest, IHrCompetencyMappedGetDetailRequest, IHrCompetencyMappedGetListRequest, IHrCompetencyMappedGetNextRequest, IHrCompetencyMappedPostRequest, IHrCompetencyMappedPutRequest } from 'modules/hr/classes/queries';
+import { IHrCompetencyMapped, IHrCompetencyMappedDetail, IHrCompetencyMappedList, IHrCompetencyMappedNext } from 'modules/hr/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum HrCompetencyMappedAction {
@@ -16,6 +16,10 @@ export const enum HrCompetencyMappedAction {
   GET_BY_ID_SUCCESS = '@@hr/competency/mapped/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@hr/competency/mapped/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@hr/competency/mapped/GET_BY_ID_DISPOSE',
+  GET_NEXT_REQUEST = '@@hr/competency/mapped/GET_NEXT_REQUEST',
+  GET_NEXT_SUCCESS = '@@hr/competency/mapped/GET_NEXT_SUCCESS',
+  GET_NEXT_ERROR = '@@hr/competency/mapped/GET_NEXT_ERROR',
+  GET_NEXT_DISPOSE = '@@hr/competency/mapped/GET_NEXT_DISPOSE',
   POST_REQUEST = '@@hr/competency/mapped/POST_REQUEST',
   POST_SUCCESS = '@@hr/competency/mapped/POST_SUCCESS',
   POST_ERROR = '@@hr/competency/mapped/POST_ERROR',
@@ -37,6 +41,12 @@ export const hrCompetencyMappedGetListRequest = (request: IHrCompetencyMappedGet
 export const hrCompetencyMappedGetListSuccess = (response: IResponseCollection<IHrCompetencyMappedList>) => action(HrCompetencyMappedAction.GET_LIST_SUCCESS, response);
 export const hrCompetencyMappedGetListError = (error: any) => action(HrCompetencyMappedAction.GET_LIST_ERROR, error);
 export const hrCompetencyMappedGetListDispose = () => action(HrCompetencyMappedAction.GET_LIST_DISPOSE);
+
+// get list
+export const hrCompetencyMappedGetNextRequest = (request: IHrCompetencyMappedGetNextRequest) => action(HrCompetencyMappedAction.GET_NEXT_REQUEST, request);
+export const hrCompetencyMappedGetNextSuccess = (response: IResponseCollection<IHrCompetencyMappedNext>) => action(HrCompetencyMappedAction.GET_NEXT_SUCCESS, response);
+export const hrCompetencyMappedGetNextError = (error: any) => action(HrCompetencyMappedAction.GET_NEXT_ERROR, error);
+export const hrCompetencyMappedGetNextDispose = () => action(HrCompetencyMappedAction.GET_NEXT_DISPOSE);
 
 // get by id
 export const hrCompetencyMappedGetByIdRequest = (request: IHrCompetencyMappedGetDetailRequest) => action(HrCompetencyMappedAction.GET_BY_ID_REQUEST, request);

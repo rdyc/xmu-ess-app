@@ -12,6 +12,10 @@ import {
   hrCompetencyMappedGetListError,
   hrCompetencyMappedGetListRequest,
   hrCompetencyMappedGetListSuccess,
+  hrCompetencyMappedGetNextDispose,
+  hrCompetencyMappedGetNextError,
+  hrCompetencyMappedGetNextRequest,
+  hrCompetencyMappedGetNextSuccess,
   hrCompetencyMappedPostError,
   hrCompetencyMappedPostRequest,
   hrCompetencyMappedPostSuccess,
@@ -74,6 +78,26 @@ function* watchFetchListRequest() {
   };
 
   yield takeEvery(Action.GET_LIST_REQUEST, worker);
+}
+
+function* watchFetchNextRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyMappedGetNextRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/mappeds/${action.payload.positionUid}/${action.payload.employeeLevel}`,
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetNextSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetNextError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyMappedGetNextError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_NEXT_REQUEST, worker);
 }
 
 function* watchFetchByIdRequest() {
@@ -182,6 +206,7 @@ function* watchSwitchAccess() {
       put(hrCompetencyMappedGetAllDispose()),
       put(hrCompetencyMappedGetListDispose()),
       put(hrCompetencyMappedGetByIdDispose()),
+      put(hrCompetencyMappedGetNextDispose())
     ]);
   }
 
@@ -193,6 +218,7 @@ function* hrCompetencyMappedSagas() {
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
+    fork(watchFetchNextRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess)

@@ -26,6 +26,7 @@ export * from './competency/mapped/IHrCompetencyMapped';
 export * from './competency/mapped/IHrCompetencyMappedList';
 export * from './competency/mapped/IHrCompetencyMappedDetail';
 export * from './competency/mapped/MappedItem';
+export * from './competency/mapped/IHrCompetencyMappedNext';
 
 // assessment
 export * from './competency/assessment/IAssessmentItem';

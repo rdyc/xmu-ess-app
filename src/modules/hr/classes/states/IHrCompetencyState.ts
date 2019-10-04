@@ -35,6 +35,7 @@ import {
   IHrCompetencyMappedGetAllRequest,
   IHrCompetencyMappedGetDetailRequest,
   IHrCompetencyMappedGetListRequest,
+  IHrCompetencyMappedGetNextRequest,
   IHrCompetencyMappedPostRequest,
   IHrCompetencyMappedPutRequest,
   IHrCornerBlogGetAllByCategoryRequest,
@@ -73,6 +74,7 @@ import {
   IHrCompetencyMapped,
   IHrCompetencyMappedDetail,
   IHrCompetencyMappedList,
+  IHrCompetencyMappedNext,
   IHrCornerBlog,
   IHrCornerBlogCategory,
   IHrCornerBlogDetail,
@@ -119,9 +121,10 @@ export interface IHrCompetencyState {
   hrCompetencyMappedGetAll: IQueryCollectionState<IHrCompetencyMappedGetAllRequest, IHrCompetencyMapped>;
   hrCompetencyMappedGetList: IQueryCollectionState<IHrCompetencyMappedGetListRequest, IHrCompetencyMappedList>;
   hrCompetencyMappedGetById: IQuerySingleState<IHrCompetencyMappedGetDetailRequest, IHrCompetencyMappedDetail>;
+  hrCompetencyMappedGetNext: IQueryCollectionState<IHrCompetencyMappedGetNextRequest, IHrCompetencyMappedNext>;
   hrCompetencyMappedPost: IQuerySingleState<IHrCompetencyMappedPostRequest, IHrCompetencyMapped>;
   hrCompetencyMappedPut: IQuerySingleState<IHrCompetencyMappedPutRequest, IHrCompetencyMapped>;
-
+  
   // assessment
   hrCompetencyAssessmentGetAll: IQueryCollectionState<IHrCompetencyAssessmentGetAllRequest, IHrCompetencyAssessment>;
   hrCompetencyAssessmentGetById: IQuerySingleState<IHrCompetencyAssessmentGetDetailRequest, IHrCompetencyAssessmentDetail>;
