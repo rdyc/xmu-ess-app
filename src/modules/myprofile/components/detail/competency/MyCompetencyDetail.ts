@@ -4,8 +4,10 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
 import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { WithEmployeeFinal, withEmployeeFinal } from '@profile/hoc/withEmployeeFinal';
 import { myMessage } from '@profile/locales/messages/myMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -39,6 +41,7 @@ export type MyCompetencyDetailProps
   & WithMasterPage
   & WithEmployeeFinal
   & WithHrCompetencyMapped
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<MyCompetencyDetailProps, IOwnState> = (): IOwnState => ({
@@ -101,6 +104,7 @@ export const MyCompetencyDetail = compose<MyCompetencyDetailProps, {}>(
   withEmployeeFinal,
   withHrCompetencyMapped,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<MyCompetencyDetailProps, IOwnHandler>(handlerCreators),
   lifecycle(lifecycles),

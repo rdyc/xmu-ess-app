@@ -6,8 +6,6 @@ import { MyProfileTabs } from '@profile/classes/types/MyProfileTabs';
 import { myMessage } from '@profile/locales/messages/myMessage';
 import * as React from 'react';
 import { DetailProfile } from '../DetailProfile';
-import { MyProfileBank } from './MyProfileBank';
-import { MyProfileContact } from './MyProfileContact';
 import { MyProfileDetailProps } from './MyProfileDetail';
 import { MyProfileInformation } from './MyProfileInformation';
 
@@ -31,12 +29,12 @@ export const MyProfileDetailView: React.SFC<MyProfileDetailProps> = props => {
         primary={(data: IEmployeeMy) => ([
           <MyProfileInformation data={data} />
         ])}
-        secondary={(data: IEmployeeMy) => ([
-          <MyProfileContact data={data} />
-        ])}
-        tertiary={(data: IEmployeeMy) => ([
-          <MyProfileBank data={data} />
-        ])}
+        // secondary={(data: IEmployeeMy) => ([
+        //   <MyProfileContact data={data} />
+        // ])}
+        // tertiary={(data: IEmployeeMy) => ([
+        //   <MyProfileBank data={data} />
+        // ])}
         appBarComponent={
           props.menuOptions &&
           <PopupMenu 

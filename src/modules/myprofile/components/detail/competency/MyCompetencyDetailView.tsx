@@ -1,4 +1,5 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { Card, CardContent, CircularProgress, Typography } from '@material-ui/core';
 import { MyProfileTabs } from '@profile/classes/types/MyProfileTabs';
 import * as React from 'react';
 import { DetailProfile } from '../DetailProfile';
@@ -12,6 +13,23 @@ export const MyCompetencyDetailView: React.SFC<MyCompetencyDetailProps> = props 
     <DetailProfile
       tab={MyProfileTabs.Competency}      
     >
+      {
+        props.employeeFinalState.detail.isLoading &&
+        <div className={props.classes.preloader}>
+          <div className={props.classes.preloaderContent}>
+            <CircularProgress 
+              style={{margin: 'auto'}} 
+              color="secondary"
+            />
+
+            <Typography
+              className={props.classes.marginFarTop}
+            >
+              {props.intl.formatMessage(layoutMessage.text.waiting)}
+            </Typography>
+          </div>    
+        </div>
+      }
       {
         !props.employeeFinalState.detail.isLoading &&
         (
