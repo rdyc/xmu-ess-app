@@ -3,6 +3,7 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { MyCompetencyDetail } from '@profile/components/detail/competency/MyCompetencyDetail';
 import { MyKPIFinalDetail } from '@profile/components/detail/kpi/detail/MyKPIFinalDetail';
 import { MyKPIFinalList } from '@profile/components/detail/kpi/list/MyKPIFinalList';
 import { MyKPIAssignDetail } from '@profile/components/detail/kpiAssign/detail/MyKPIAssignDetail';
@@ -48,6 +49,7 @@ const profile = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/kpi/:kpiUid`} component={MyKPIFinalDetail} />
     <Route path={`${props.match.path}/kpiassign`} component={MyKPIAssignList} />
     <Route path={`${props.match.path}/kpi`} component={MyKPIFinalList} />
+    <Route path={`${props.match.path}/competency`} component={MyCompetencyDetail} />
     <Route path={`${props.match.path}/detail`} component={MyProfileDetail} />
     <Route path={`${props.match.path}`} component={AccountProfile} />
   </Switch>
