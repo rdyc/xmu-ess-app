@@ -4,5 +4,5 @@ export interface IHrCornerPagePutPayload {
   headline: string;
   content: string;
   start: string;
-  end: string;
+  end?: string;
 }

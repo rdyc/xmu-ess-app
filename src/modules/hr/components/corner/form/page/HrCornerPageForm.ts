@@ -36,7 +36,7 @@ export interface ICornerPageFormValue {
   category: string;
   content: string;
   start: string;
-  end: string;
+  end?: string;
 }
 
 interface IOwnRouteParams {
@@ -110,10 +110,7 @@ const createProps: mapper<HrCornerPageFormProps, IOwnState> = (props: HrCornerPa
       .required(),
     start: Yup.string()
       .label(props.intl.formatMessage(hrMessage.corner.field.start))
-      .required(),
-    end: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.corner.field.end))
-      .required(),
+      .required()
   }),
 
   filterCategory: {

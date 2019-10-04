@@ -9,6 +9,6 @@ export interface IHrCornerPage {
   slug: string;
   headline: string;
   start: string;
-  end: string;
+  end?: string;
   changes: IBaseChanges;
 }
