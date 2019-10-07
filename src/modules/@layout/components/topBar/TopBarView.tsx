@@ -1,6 +1,7 @@
 import { AppBar, Badge, Divider, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Book from '@material-ui/icons/Book';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
 import * as classNames from 'classnames';
@@ -43,6 +44,13 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       {props.searchComponent}
       
+      <IconButton
+        color="inherit"
+        onClick={() => props.history.push('/corner/blog')}
+      >
+        <Book />
+      </IconButton>
+
       <IconButton
         color="inherit"
         className={props.totalNotif === 0 && props.classes.hide || ''}

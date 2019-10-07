@@ -5,6 +5,9 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
+// import { HrCornerBlogDetail } from '@hr/components/corner/detail/blog/HrCornerBlogDetail';
+// import { HrCornerBlogList } from '@hr/components/corner/list/blog/HrCornerBlogList';
+import { CornerRoutingComponents } from '@hr/components/CornerRouter';
 import { HrRoutingComponents } from '@hr/components/HrRouter';
 import { KPIRoutingComponents } from '@kpi/components/KPIRouter';
 import { Callback, SigninPopupCallback, SilentRenew } from '@layout/components/base';
@@ -33,8 +36,8 @@ import { Route, Router, Switch } from 'react-router';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
-import * as store from 'store';
 
+import * as store from 'store';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -70,6 +73,8 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/silent_renew" component={SilentRenew} />
               <Route path="/callback" component={Callback} />
               <Route path="/account/access" component={AccountAccess} />
+              {/* <Route path="/corner/blog/:pageSlug" component={HrCornerBlogDetail} /> */}
+              <Route path="/corner/blog" component={CornerRoutingComponents} />
 
               <MasterPage>
                 <Route path="/home" component={HomeRoutingComponents} />
