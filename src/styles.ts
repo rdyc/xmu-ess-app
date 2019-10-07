@@ -825,6 +825,14 @@ const styles = (theme: Theme) =>
       fontFamily: theme.typography.fontFamily
     },
 
+    contentHover: {
+      cursor: 'pointer',
+      transition: 'all .3s',
+      '&:hover': {
+        backgroundColor: '#ebebeb',
+      },
+    },
+
     buttonActive: {
       backgroundColor: '#ebebeb',
     },

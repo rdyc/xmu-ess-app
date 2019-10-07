@@ -48,9 +48,6 @@ export const HrCornerPageFormView: React.SFC<HrCornerPageFormProps> = props => (
                 />
               </Grid>
               <Grid item xs={12} md={3} xl={3}>
-                <FormikJsonValues formikBag={formikBag} />
-              </Grid>
-              <Grid item xs={12} md={3} xl={3}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Corner Page'})}
                   className={props.classes.flexContent}
@@ -67,6 +64,9 @@ export const HrCornerPageFormView: React.SFC<HrCornerPageFormProps> = props => (
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
                 />
+              </Grid>
+              <Grid item xs={12} md={3} xl={3}>
+                <FormikJsonValues formikBag={formikBag} />
               </Grid>
             </Grid>
         </Form>

@@ -87,7 +87,7 @@ const createProps: mapper<HrCornerPageFormProps, IOwnState> = (props: HrCornerPa
     title: '',
     category: '',
     headline: '',
-    content: '# Click here to edit',
+    content: '',
     start: '',
     end: ''
   },

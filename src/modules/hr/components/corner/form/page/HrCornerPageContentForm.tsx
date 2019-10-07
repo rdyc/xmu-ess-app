@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { DemoContentMarkdown } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, Typography, withStyles, WithStyles } from '@material-ui/core';
 import { HelpOutline } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldProps, FormikProps } from 'formik';
@@ -84,11 +84,20 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
         <CardContent>
           {
             props.isMarkdown ?
-            <div onClick={() => {
-              if (!props.formikBag.isSubmitting) {
-                props.handleOnMarkdown();
+            <div 
+              onClick={() => {
+                if (!props.formikBag.isSubmitting) {
+                  props.handleOnMarkdown();
+                }
+              }}
+              className={props.classes.contentHover}
+            >
+              {
+                !props.formikBag.values.content &&
+                <Typography variant="title">
+                  Click here to edit
+                </Typography>
               }
-            }}>
               <ReactMarkdown className={props.classes.globalFont} source={props.formikBag.values.content} escapeHtml={false} />
             </div>
             :
@@ -100,6 +109,7 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
                   fullWidth
                   required
                   multiline
+                  variant="outlined"
                   disabled={form.isSubmitting}
                   margin="normal"
                   autoComplete="off"
@@ -110,14 +120,9 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
                   autoFocus={!props.isMarkdown}
                   onBlur={() => props.handleOnMarkdown()}
                   rows="10"
+                  rowsMax="99"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    if (e.target.value === '') {
-                      // set current field
-                      props.formikBag.setFieldValue(field.name, '# Click here to edit');
-                    } else {
-                      // set current field
-                      props.formikBag.setFieldValue(field.name, e.target.value);
-                    }
+                    props.formikBag.setFieldValue(field.name, e.target.value);                    
                   }}
                 />
               )}
