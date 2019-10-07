@@ -68,7 +68,7 @@ const hrCornerPageInformation: React.SFC<AllProps> = props => {
           margin="dense"
           multiline
           label={intl.formatMessage(hrMessage.corner.field.end)}
-          value={intl.formatDate(data.end, GlobalFormat.Date)}
+          value={data.end && intl.formatDate(data.end, GlobalFormat.Date) || 'N/A'}
         />
         {
           props.data.changes &&

@@ -4,6 +4,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -55,6 +56,7 @@ export type TopBarProps
   = WithMasterPage
   & WithWidth
   & WithStyles<typeof styles>
+  & RouteComponentProps
   & IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -139,6 +141,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
 export const TopBar = compose<TopBarProps, IOwnOption>(
   setDisplayName('TopBar'),
   withMasterPage,
+  withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycles),

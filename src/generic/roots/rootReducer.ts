@@ -12,6 +12,7 @@ import { leaveReducers } from '@leave/store/reducers/leaveReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import organizationReducers from '@organization/store/reducers/organizationReducers';
+import myProfileReducers from '@profile/store/reducers/myProfileReducers';
 import { projectReducers } from '@project/store/reducers/projectReducers';
 import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import summaryReducers from '@summary/store/reducers/summaryReducers';
@@ -52,5 +53,6 @@ export const rootReducer = combineReducers<IAppState>({
   ...inforReducers,
   ...markdownReducers,
   ...hrCompetencyReducers,
-  ...kpiReducers
+  ...kpiReducers,
+  ...myProfileReducers
 });

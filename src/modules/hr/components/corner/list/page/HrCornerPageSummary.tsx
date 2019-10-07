@@ -53,7 +53,7 @@ const hrCornerPageSummary: React.SFC<AllProps> = props => (
         multiline
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.corner.field.end)}
-        value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
+        value={props.data.end && props.intl.formatDate(props.data.end, GlobalFormat.Date) || 'N/A'}
       />
     </Grid>
 
