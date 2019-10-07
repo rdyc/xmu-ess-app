@@ -73,29 +73,27 @@ const stateUpdaters: StateUpdaters<HrCornerBlogDetailProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<HrCornerBlogDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCornerBlogDetailProps) => (category: string) => {
-    const { user } = props.userState;
+    // const { user } = props.userState;
     const { loadDetailRequest } = props.hrCornerBlogDispatch;
     const { isLoading, request } = props.hrCornerBlogState.detail;
     const pageSlug: string = props.match.params.pageSlug;
 
-    if (!isLoading && user) {
+    if (!isLoading) {
       loadDetailRequest({
         pageSlug,
         categorySlug: request ? request.categorySlug : category
       });
-    }
-    if (props.isReload) {
       props.stateUpdate({
         isReload: false
       });
     }
   },
   handleOnLoadAllByCategory: (props: HrCornerBlogDetailProps) => (category: string) => {
-    const { user } = props.userState;
+    // const { user } = props.userState;
     const { loadAllByCategoryRequest } = props.hrCornerBlogDispatch;
     const { isLoading } = props.hrCornerBlogState.allByCategory;
 
-    if (!isLoading && user) {
+    if (!isLoading) {
       loadAllByCategoryRequest({
         categorySlug: category
       });

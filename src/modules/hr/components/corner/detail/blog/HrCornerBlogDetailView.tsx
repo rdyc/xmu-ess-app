@@ -60,7 +60,7 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
                         button
                         selected={props.match.params.pageSlug === item.slug}
                         className={props.classes.buttonHover}
-                        onClick={() => props.history.push(`/corner/blog/${item.slug}`)}
+                        onClick={() => props.history.push(`/corner/blog/${item.slug}`, {category: props.location.state && props.location.state.category})}
                       >
                         <ListItemText 
                           primary={

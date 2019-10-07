@@ -70,13 +70,15 @@ export const HrCornerBlogListView: React.SFC<HrCornerBlogListProps> = props => {
             </div>
           </Grid>
           {
-            props.hrCornerBlogState.allByCategory.isLoading &&
+            (props.hrCornerBlogState.all.isLoading ||
+            props.hrCornerBlogState.allByCategory.isLoading) &&
             <Grid item xs={12}>
               <LoadingCircular />
             </Grid>
           }
           {
             !props.category &&
+            !props.hrCornerBlogState.all.isLoading &&
             !props.hrCornerBlogState.allByCategory.response &&
             <Grid item xs={12}>
               <Typography variant="h2" style={{textAlign: 'center'}}>
