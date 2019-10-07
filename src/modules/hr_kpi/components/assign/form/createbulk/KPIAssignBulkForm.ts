@@ -213,6 +213,7 @@ const handleCreators: HandleCreators<KPIAssignBulkFormProps, IOwnHandler> = {
       if (props.formMode === FormMode.New) {
         // fill payload 
         const payload: IKPIAssignPostBulkPayload = {
+          year: parseInt(values.year, 10),
           templateUid: values.templateUid,
           employees: []
         };
@@ -226,7 +227,6 @@ const handleCreators: HandleCreators<KPIAssignBulkFormProps, IOwnHandler> = {
           props.kpiAssignDispatch.createBulkRequest({
             resolve,
             reject,
-            year: parseInt(values.year, 10),
             data: payload
           });
         });

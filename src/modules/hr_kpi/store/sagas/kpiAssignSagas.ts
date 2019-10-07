@@ -103,7 +103,7 @@ function* watchPostBulkRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/assign/${action.payload.year}`,
+      path: `/v1/kpi/assign`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),
