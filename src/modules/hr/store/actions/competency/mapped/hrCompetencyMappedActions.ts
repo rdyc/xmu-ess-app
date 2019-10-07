@@ -20,6 +20,10 @@ export const enum HrCompetencyMappedAction {
   GET_NEXT_SUCCESS = '@@hr/competency/mapped/GET_NEXT_SUCCESS',
   GET_NEXT_ERROR = '@@hr/competency/mapped/GET_NEXT_ERROR',
   GET_NEXT_DISPOSE = '@@hr/competency/mapped/GET_NEXT_DISPOSE',
+  GET_CURRENT_REQUEST = '@@hr/competency/mapped/GET_CURRENT_REQUEST',
+  GET_CURRENT_SUCCESS = '@@hr/competency/mapped/GET_CURRENT_SUCCESS',
+  GET_CURRENT_ERROR = '@@hr/competency/mapped/GET_CURRENT_ERROR',
+  GET_CURRENT_DISPOSE = '@@hr/competency/mapped/GET_CURRENT_DISPOSE',
   POST_REQUEST = '@@hr/competency/mapped/POST_REQUEST',
   POST_SUCCESS = '@@hr/competency/mapped/POST_SUCCESS',
   POST_ERROR = '@@hr/competency/mapped/POST_ERROR',
@@ -42,11 +46,17 @@ export const hrCompetencyMappedGetListSuccess = (response: IResponseCollection<I
 export const hrCompetencyMappedGetListError = (error: any) => action(HrCompetencyMappedAction.GET_LIST_ERROR, error);
 export const hrCompetencyMappedGetListDispose = () => action(HrCompetencyMappedAction.GET_LIST_DISPOSE);
 
-// get list
+// get next
 export const hrCompetencyMappedGetNextRequest = (request: IHrCompetencyMappedGetNextRequest) => action(HrCompetencyMappedAction.GET_NEXT_REQUEST, request);
 export const hrCompetencyMappedGetNextSuccess = (response: IResponseCollection<IHrCompetencyMappedNext>) => action(HrCompetencyMappedAction.GET_NEXT_SUCCESS, response);
 export const hrCompetencyMappedGetNextError = (error: any) => action(HrCompetencyMappedAction.GET_NEXT_ERROR, error);
 export const hrCompetencyMappedGetNextDispose = () => action(HrCompetencyMappedAction.GET_NEXT_DISPOSE);
+
+// get current
+export const hrCompetencyMappedGetCurrentRequest = (request: IHrCompetencyMappedGetNextRequest) => action(HrCompetencyMappedAction.GET_CURRENT_REQUEST, request);
+export const hrCompetencyMappedGetCurrentSuccess = (response: IResponseCollection<IHrCompetencyMappedNext>) => action(HrCompetencyMappedAction.GET_CURRENT_SUCCESS, response);
+export const hrCompetencyMappedGetCurrentError = (error: any) => action(HrCompetencyMappedAction.GET_CURRENT_ERROR, error);
+export const hrCompetencyMappedGetCurrentDispose = () => action(HrCompetencyMappedAction.GET_CURRENT_DISPOSE);
 
 // get by id
 export const hrCompetencyMappedGetByIdRequest = (request: IHrCompetencyMappedGetDetailRequest) => action(HrCompetencyMappedAction.GET_BY_ID_REQUEST, request);

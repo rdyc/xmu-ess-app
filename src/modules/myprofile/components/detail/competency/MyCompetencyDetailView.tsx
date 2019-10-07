@@ -21,12 +21,14 @@ export const MyCompetencyDetailView: React.SFC<MyCompetencyDetailProps> = props 
         !props.employeeFinalState.detail.isLoading &&
         (
           props.userState && props.userState.user && props.userState.user.level &&
-          props.employeeFinalState.detail.response && props.employeeFinalState.detail.response.data &&
+          // props.employeeFinalState.detail.response && props.employeeFinalState.detail.response.data &&
+          props.hrCompetencyMappedState.current.response && props.hrCompetencyMappedState.current.response.data  &&
           props.hrCompetencyMappedState.next.response && props.hrCompetencyMappedState.next.response.data ?
           <MyCompetencyTable 
-            data={props.employeeFinalState.detail.response.data}
-            next={props.hrCompetencyMappedState.next.response.data }
+            data={props.employeeFinalState.detail.response && props.employeeFinalState.detail.response.data}
+            next={props.hrCompetencyMappedState.next.response.data}
             level={props.userState.user.level}
+            current={props.hrCompetencyMappedState.current.response.data}
           />
           :
           <Card>

@@ -796,6 +796,11 @@ const styles = (theme: Theme) =>
       overflowY: 'auto'
     },
 
+    hrTableTitle: {
+      textAlign: 'center',
+      padding: '10px'
+    },
+
     hrTableVerAlign: {
       verticalAlign: 'top',
       padding: 0

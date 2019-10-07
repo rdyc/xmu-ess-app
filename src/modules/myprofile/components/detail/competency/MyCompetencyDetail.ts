@@ -61,10 +61,11 @@ const handlerCreators: HandleCreators<MyCompetencyDetailProps, IOwnHandler> = {
     const { isLoading } = props.employeeFinalState.detail;
     const { user } = props.userState;
 
-    const { loadNextRequest } = props.hrCompetencyMappedDispatch;
+    const { loadNextRequest, loadCurrentRequest } = props.hrCompetencyMappedDispatch;
     const { isLoading: nextLoading } = props.hrCompetencyMappedState.next;
+    const { isLoading: currentLoading } = props.hrCompetencyMappedState.current;
 
-    if (user && !isLoading && !nextLoading) {
+    if (user && !isLoading && !nextLoading && !currentLoading) {
       loadDetailRequest({
         employeeUid: user.uid,
         positionUid: user.position.uid
@@ -73,6 +74,12 @@ const handlerCreators: HandleCreators<MyCompetencyDetailProps, IOwnHandler> = {
       loadNextRequest({
         positionUid: user.position.uid,
         employeeLevel: user.level.uid
+      });
+
+      loadCurrentRequest({
+        positionUid: user.position.uid,
+        employeeLevel: user.level.uid,
+        isCurrent: true
       });
     }
   },
