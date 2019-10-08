@@ -34,6 +34,7 @@ export * from './competency/mapped/IHrCompetencyMappedGetDetailRequest';
 export * from './competency/mapped/IHrCompetencyMappedGetListRequest';
 export * from './competency/mapped/IHrCompetencyMappedPostRequest';
 export * from './competency/mapped/IHrCompetencyMappedPutRequest';
+export * from './competency/mapped/IHrCompetencyMappedGetNextRequest';
 
 // assessment
 export * from './competency/assessment/IHrCompetencyAssessmentGetAllRequest';

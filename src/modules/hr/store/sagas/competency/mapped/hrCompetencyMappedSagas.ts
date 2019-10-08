@@ -8,10 +8,18 @@ import {
   hrCompetencyMappedGetByIdError,
   hrCompetencyMappedGetByIdRequest,
   hrCompetencyMappedGetByIdSuccess,
+  hrCompetencyMappedGetCurrentDispose,
+  hrCompetencyMappedGetCurrentError,
+  hrCompetencyMappedGetCurrentRequest,
+  hrCompetencyMappedGetCurrentSuccess,
   hrCompetencyMappedGetListDispose,
   hrCompetencyMappedGetListError,
   hrCompetencyMappedGetListRequest,
   hrCompetencyMappedGetListSuccess,
+  hrCompetencyMappedGetNextDispose,
+  hrCompetencyMappedGetNextError,
+  hrCompetencyMappedGetNextRequest,
+  hrCompetencyMappedGetNextSuccess,
   hrCompetencyMappedPostError,
   hrCompetencyMappedPostRequest,
   hrCompetencyMappedPostSuccess,
@@ -74,6 +82,46 @@ function* watchFetchListRequest() {
   };
 
   yield takeEvery(Action.GET_LIST_REQUEST, worker);
+}
+
+function* watchFetchNextRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyMappedGetNextRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/mappeds/${action.payload.positionUid}/${action.payload.employeeLevel}`,
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetNextSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetNextError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyMappedGetNextError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_NEXT_REQUEST, worker);
+}
+
+function* watchFetchCurrentRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyMappedGetCurrentRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/mappeds/${action.payload.positionUid}/${action.payload.employeeLevel}`,
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetCurrentSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyMappedGetCurrentError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyMappedGetCurrentError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_CURRENT_REQUEST, worker);
 }
 
 function* watchFetchByIdRequest() {
@@ -182,6 +230,8 @@ function* watchSwitchAccess() {
       put(hrCompetencyMappedGetAllDispose()),
       put(hrCompetencyMappedGetListDispose()),
       put(hrCompetencyMappedGetByIdDispose()),
+      put(hrCompetencyMappedGetNextDispose()),
+      put(hrCompetencyMappedGetCurrentDispose()),
     ]);
   }
 
@@ -193,6 +243,8 @@ function* hrCompetencyMappedSagas() {
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
+    fork(watchFetchNextRequest),
+    fork(watchFetchCurrentRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess)

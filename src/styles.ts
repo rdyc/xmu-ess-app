@@ -191,6 +191,19 @@ const styles = (theme: Theme) =>
       color: lightBlue[500]
     },
 
+    // Corner Appbar
+    cornerAppBar: {
+      background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
+      color: theme.palette.common.white,
+      zIndex: theme.zIndex.drawer + 1,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100%)`
+      },
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    },
     // Application Bar
     appBar: {
       background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
@@ -377,6 +390,13 @@ const styles = (theme: Theme) =>
         padding: 0,
         marginTop: theme.spacing.unit * 7,
       }
+    },
+    // shift corner
+    shiftCorner: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: drawerWidth,
+        marginRight: drawerWidth
+      },
     },
     shift: {
       [theme.breakpoints.up('md')]: {
@@ -776,6 +796,11 @@ const styles = (theme: Theme) =>
       overflowY: 'auto'
     },
 
+    hrTableTitle: {
+      textAlign: 'center',
+      padding: '10px'
+    },
+
     hrTableVerAlign: {
       verticalAlign: 'top',
       padding: 0
@@ -803,6 +828,41 @@ const styles = (theme: Theme) =>
 
     globalFont: {
       fontFamily: theme.typography.fontFamily
+    },
+
+    contentHover: {
+      cursor: 'pointer',
+      transition: 'all .3s',
+      '&:hover': {
+        backgroundColor: '#ebebeb',
+      },
+    },
+
+    buttonActive: {
+      backgroundColor: '#ebebeb',
+    },
+    
+    buttonHover: {
+      transition: 'all .3s',
+      '&:hover': {
+        transform: 'scale(1.03)'
+      },
+    },
+
+    titleText: {
+      display: 'grid',
+      gridTemplateColumns: '1fr max-content 1fr',
+      gridColumnGap: '1.5rem',
+      alignItems: 'center',
+      
+      // fontSize: '1.6rem',
+
+      '&::after, &::before' : {
+        content: `''`,  
+        height: '1px',
+        display: 'block',
+        backgroundColor: 'currentColor'
+      }
     }
   });
 

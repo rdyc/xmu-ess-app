@@ -35,12 +35,12 @@ const myProfileInformation: React.SFC<AllProps> = props => {
         label={intl.formatMessage(accountMessage.employee.field.name)}
         value={data.fullName}
       />
-      <TextField
+      {/* <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.gender)}
         value={data.gender ? data.gender.value : 'N/A'}
-      />
+      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
@@ -65,7 +65,7 @@ const myProfileInformation: React.SFC<AllProps> = props => {
         label={intl.formatMessage(accountMessage.employee.field.employment)}
         value={data.employment ? data.employment.value : 'N/A'}
       />
-      <TextField
+      {/* <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.ptkp)}
@@ -82,7 +82,7 @@ const myProfileInformation: React.SFC<AllProps> = props => {
         margin="dense"
         label={intl.formatMessage(accountMessage.employee.field.religion)}
         value={data.religion ? data.religion.value : 'N/A'}
-      />
+      /> */}
     </CardContent>
   </Card>
   );

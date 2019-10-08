@@ -12,6 +12,7 @@ import { ILeaveState } from '@leave/classes/states';
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
 import { IOrganizationState } from '@organization/classes/states';
+import { IMyProfileState } from '@profile/classes/states/IMyProfileState';
 import { IProjectState } from '@project/classes/states';
 import { IPurchaseState } from '@purchase/classes/states';
 import { ISummaryState } from '@summary/classes/states';
@@ -42,6 +43,7 @@ export interface IAppState extends
   IMarkdownState,
   IHrCompetencyState,
   IKPIState,
+  IMyProfileState,
   IInforState {
   oidc: UserState;
   user: IUserState;

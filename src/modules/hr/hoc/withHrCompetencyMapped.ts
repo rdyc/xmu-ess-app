@@ -3,21 +3,26 @@ import {
   IHrCompetencyMappedGetAllRequest, 
   IHrCompetencyMappedGetDetailRequest, 
   IHrCompetencyMappedGetListRequest, 
+  IHrCompetencyMappedGetNextRequest, 
   IHrCompetencyMappedPostRequest, 
-  IHrCompetencyMappedPutRequest 
+  IHrCompetencyMappedPutRequest
 } from '@hr/classes/queries/';
-import { IHrCompetencyMapped, IHrCompetencyMappedDetail, IHrCompetencyMappedList } from '@hr/classes/response/';
+import { IHrCompetencyMapped, IHrCompetencyMappedDetail, IHrCompetencyMappedList, IHrCompetencyMappedNext } from '@hr/classes/response/';
 import { 
   hrCompetencyMappedGetAllDispose, 
   hrCompetencyMappedGetAllRequest, 
   hrCompetencyMappedGetByIdDispose, 
   hrCompetencyMappedGetByIdRequest, 
+  hrCompetencyMappedGetCurrentDispose, 
+  hrCompetencyMappedGetCurrentRequest, 
   hrCompetencyMappedGetListDispose, 
   hrCompetencyMappedGetListRequest, 
-  hrCompetencyMappedPostDispose, 
-  hrCompetencyMappedPostRequest, 
-  hrCompetencyMappedPutDispose, 
-  hrCompetencyMappedPutRequest 
+  hrCompetencyMappedGetNextDispose, 
+  hrCompetencyMappedGetNextRequest, 
+  hrCompetencyMappedPostDispose,
+  hrCompetencyMappedPostRequest,
+  hrCompetencyMappedPutDispose,
+  hrCompetencyMappedPutRequest
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -27,6 +32,8 @@ interface PropsFromState {
     all: IQueryCollectionState<IHrCompetencyMappedGetAllRequest, IHrCompetencyMapped>;
     list: IQueryCollectionState<IHrCompetencyMappedGetListRequest, IHrCompetencyMappedList>;
     detail: IQuerySingleState<IHrCompetencyMappedGetDetailRequest, IHrCompetencyMappedDetail>;
+    next: IQueryCollectionState<IHrCompetencyMappedGetNextRequest, IHrCompetencyMappedNext>;
+    current: IQueryCollectionState<IHrCompetencyMappedGetNextRequest, IHrCompetencyMappedNext>;
   };
 }
 
@@ -43,6 +50,10 @@ interface PropsFromDispatch {
     loadAllDispose: typeof hrCompetencyMappedGetAllDispose;
     loadListRequest: typeof hrCompetencyMappedGetListRequest;
     loadListDispose: typeof hrCompetencyMappedGetListDispose;
+    loadNextRequest: typeof hrCompetencyMappedGetNextRequest;
+    loadNextDispose: typeof hrCompetencyMappedGetNextDispose;
+    loadCurrentRequest: typeof hrCompetencyMappedGetCurrentRequest;
+    loadCurrentDispose: typeof hrCompetencyMappedGetCurrentDispose;
     loadDetailRequest: typeof hrCompetencyMappedGetByIdRequest;
     loadDetailDispose: typeof hrCompetencyMappedGetByIdDispose;
   };
@@ -50,11 +61,13 @@ interface PropsFromDispatch {
 
 export interface WithHrCompetencyMapped extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrCompetencyMappedGetAll, hrCompetencyMappedGetList, hrCompetencyMappedGetById }: IAppState) => ({
+const mapStateToProps = ({ hrCompetencyMappedGetAll, hrCompetencyMappedGetList, hrCompetencyMappedGetById, hrCompetencyMappedGetNext, hrCompetencyMappedGetCurrent }: IAppState) => ({
   hrCompetencyMappedState: {
     all: hrCompetencyMappedGetAll,
     list: hrCompetencyMappedGetList,
     detail: hrCompetencyMappedGetById,
+    next: hrCompetencyMappedGetNext,
+    current: hrCompetencyMappedGetCurrent
   }
 });
 
@@ -71,6 +84,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(hrCompetencyMappedGetAllDispose()),
     loadListRequest: (request: IHrCompetencyMappedGetListRequest) => dispatch(hrCompetencyMappedGetListRequest(request)),
     loadListDispose: () => dispatch(hrCompetencyMappedGetListDispose()),
+    loadNextRequest: (request: IHrCompetencyMappedGetNextRequest) => dispatch(hrCompetencyMappedGetNextRequest(request)),
+    loadNextDispose: () => dispatch(hrCompetencyMappedGetNextDispose()),
+    loadCurrentRequest: (request: IHrCompetencyMappedGetNextRequest) => dispatch(hrCompetencyMappedGetCurrentRequest(request)),
+    loadCurrentDispose: () => dispatch(hrCompetencyMappedGetCurrentDispose()),
     loadDetailRequest: (request: IHrCompetencyMappedGetDetailRequest) => dispatch(hrCompetencyMappedGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(hrCompetencyMappedGetByIdDispose()),
   }

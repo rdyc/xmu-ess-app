@@ -10,6 +10,6 @@ export interface IHrCornerPageDetail {
   headline: string;
   content: string;
   start: string;
-  end: string;
+  end?: string;
   changes: IBaseChanges;
 }
