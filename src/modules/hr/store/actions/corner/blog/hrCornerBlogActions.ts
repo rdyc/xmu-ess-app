@@ -16,6 +16,10 @@ export const enum HrCornerBlogAction {
   GET_ALL_BY_CATEGORY_SUCCESS = '@@hr/corner/blog/GET_ALL_BY_CATEGORY_SUCCESS',
   GET_ALL_BY_CATEGORY_ERROR = '@@hr/corner/blog/GET_ALL_BY_CATEGORY_ERROR',
   GET_ALL_BY_CATEGORY_DISPOSE = '@@hr/corner/blog/GET_ALL_BY_CATEGORY_DISPOSE',
+  GET_LATEST_BY_CATEGORY_REQUEST = '@@hr/corner/blog/GET_LATEST_BY_CATEGORY_REQUEST',
+  GET_LATEST_BY_CATEGORY_SUCCESS = '@@hr/corner/blog/GET_LATEST_BY_CATEGORY_SUCCESS',
+  GET_LATEST_BY_CATEGORY_ERROR = '@@hr/corner/blog/GET_LATEST_BY_CATEGORY_ERROR',
+  GET_LATEST_BY_CATEGORY_DISPOSE = '@@hr/corner/blog/GET_LATEST_BY_CATEGORY_DISPOSE',
   GET_BY_ID_REQUEST = '@@hr/corner/blog/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@hr/corner/blog/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@hr/corner/blog/GET_BY_ID_ERROR',
@@ -33,6 +37,12 @@ export const hrCornerBlogGetAllByCategoryRequest = (request: IHrCornerBlogGetAll
 export const hrCornerBlogGetAllByCategorySuccess = (response: IResponseCollection<IHrCornerBlogCategory>) => action(HrCornerBlogAction.GET_ALL_BY_CATEGORY_SUCCESS, response);
 export const hrCornerBlogGetAllByCategoryError = (error: any) => action(HrCornerBlogAction.GET_ALL_BY_CATEGORY_ERROR, error);
 export const hrCornerBlogGetAllByCategoryDispose = () => action(HrCornerBlogAction.GET_ALL_BY_CATEGORY_DISPOSE);
+
+// get latest by category
+export const hrCornerBlogGetLatestByCategoryRequest = (request: IHrCornerBlogGetAllByCategoryRequest) => action(HrCornerBlogAction.GET_LATEST_BY_CATEGORY_REQUEST, request);
+export const hrCornerBlogGetLatestByCategorySuccess = (response: IResponseCollection<IHrCornerBlogCategory>) => action(HrCornerBlogAction.GET_LATEST_BY_CATEGORY_SUCCESS, response);
+export const hrCornerBlogGetLatestByCategoryError = (error: any) => action(HrCornerBlogAction.GET_LATEST_BY_CATEGORY_ERROR, error);
+export const hrCornerBlogGetLatestByCategoryDispose = () => action(HrCornerBlogAction.GET_LATEST_BY_CATEGORY_DISPOSE);
 
 // get by id
 export const hrCornerBlogGetByIdRequest = (request: IHrCornerBlogGetDetailRequest) => action(HrCornerBlogAction.GET_BY_ID_REQUEST, request);

@@ -12,6 +12,10 @@ import {
   hrCornerBlogGetByIdError,
   hrCornerBlogGetByIdRequest,
   hrCornerBlogGetByIdSuccess,
+  hrCornerBlogGetLatestByCategoryDispose,
+  hrCornerBlogGetLatestByCategoryError,
+  hrCornerBlogGetLatestByCategoryRequest,
+  hrCornerBlogGetLatestByCategorySuccess,
 } from '@hr/store/actions';
 import { UserAction } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -71,6 +75,32 @@ function* watchFetchAllByCategoryRequest() {
   yield takeEvery(Action.GET_ALL_BY_CATEGORY_REQUEST, worker);
 }
 
+function* watchFetchLatestByCategoryRequest() {
+  const worker = (action: ReturnType<typeof hrCornerBlogGetLatestByCategoryRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      host: 'http://10.0.20.150:5000',
+      method: 'get',
+      path: `/v1/hr/corner/${action.payload.categorySlug}?${params}`,
+      successEffects: (response: IApiResponse) => ([
+        put(hrCornerBlogGetLatestByCategorySuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCornerBlogGetLatestByCategoryError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCornerBlogGetLatestByCategoryError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_LATEST_BY_CATEGORY_REQUEST, worker);
+}
+
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCornerBlogGetByIdRequest>) => {
     return saiyanSaga.fetch({
@@ -97,6 +127,7 @@ function* watchSwitchAccess() {
     yield all([
       put(hrCornerBlogGetAllDispose()),
       put(hrCornerBlogGetAllByCategoryDispose()),
+      put(hrCornerBlogGetLatestByCategoryDispose()),
       put(hrCornerBlogGetByIdDispose()),
     ]);
   }
@@ -109,6 +140,7 @@ function* hrCornerBlogSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchAllByCategoryRequest),
+    fork(watchFetchLatestByCategoryRequest),
     fork(watchFetchByIdRequest),
     fork(watchSwitchAccess)
   ]);
