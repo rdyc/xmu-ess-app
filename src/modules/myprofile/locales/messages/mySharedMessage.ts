@@ -22,8 +22,8 @@ export const mySharedHelperFor = (field: string, type: 'fieldTab') => {
     switch (field) {
       case 'profile': return myProfileTabs.profile;
       case 'competency': return myProfileTabs.competency;
-      case 'kpi': return myProfileTabs.kpi;
-      case 'kpiAssign': return myProfileTabs.kpiAssign;
+      case 'KPI': return myProfileTabs.kpi;
+      case 'KPIAssign': return myProfileTabs.kpiAssign;
 
       default: return {id: field};
     }
