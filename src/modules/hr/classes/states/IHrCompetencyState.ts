@@ -151,6 +151,7 @@ export interface IHrCompetencyState {
   // corner blog
   hrCornerBlogGetAll: IQueryCollectionState<IHrCornerBlogGetAllRequest, IHrCornerBlog>;
   hrCornerBlogGetAllByCategory: IQueryCollectionState<IHrCornerBlogGetAllByCategoryRequest, IHrCornerBlogCategory>;
+  hrCornerBlogGetLatestByCategory: IQueryCollectionState<IHrCornerBlogGetAllByCategoryRequest, IHrCornerBlogCategory>;
   hrCornerBlogGetDetail: IQuerySingleState<IHrCornerBlogGetDetailRequest, IHrCornerBlogDetail>;
 
   // corner category

@@ -849,13 +849,19 @@ const styles = (theme: Theme) =>
       },
     },
 
+    titleTopBarCorner: {
+      padding: '0',
+      transition: 'all .3s',
+      '&:hover': {
+        transform: 'scale(1.03)'
+      },
+    },
+
     titleText: {
       display: 'grid',
       gridTemplateColumns: '1fr max-content 1fr',
       gridColumnGap: '1.5rem',
       alignItems: 'center',
-      
-      // fontSize: '1.6rem',
 
       '&::after, &::before' : {
         content: `''`,  

@@ -12,6 +12,8 @@ import {
   hrCornerBlogGetAllRequest, 
   hrCornerBlogGetByIdDispose, 
   hrCornerBlogGetByIdRequest,
+  hrCornerBlogGetLatestByCategoryDispose,
+  hrCornerBlogGetLatestByCategoryRequest,
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -20,6 +22,7 @@ interface PropsFromState {
   hrCornerBlogState: {
     all: IQueryCollectionState<IHrCornerBlogGetAllRequest, IHrCornerBlog>;
     allByCategory: IQueryCollectionState<IHrCornerBlogGetAllByCategoryRequest, IHrCornerBlogCategory>;
+    latestByCategory: IQueryCollectionState<IHrCornerBlogGetAllByCategoryRequest, IHrCornerBlogCategory>;
     detail: IQuerySingleState<IHrCornerBlogGetDetailRequest, IHrCornerBlogDetail>;
   };
 }
@@ -31,6 +34,8 @@ interface PropsFromDispatch {
     loadAllDispose: typeof hrCornerBlogGetAllDispose;
     loadAllByCategoryRequest: typeof hrCornerBlogGetAllByCategoryRequest;
     loadAllByCategoryDispose: typeof hrCornerBlogGetAllByCategoryDispose;
+    loadLatestByCategoryRequest: typeof hrCornerBlogGetLatestByCategoryRequest;
+    loadLatestByCategoryDispose: typeof hrCornerBlogGetLatestByCategoryDispose;
     loadDetailRequest: typeof hrCornerBlogGetByIdRequest;
     loadDetailDispose: typeof hrCornerBlogGetByIdDispose;
   };
@@ -38,10 +43,11 @@ interface PropsFromDispatch {
 
 export interface WithHrCornerBlog extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrCornerBlogGetAll, hrCornerBlogGetAllByCategory, hrCornerBlogGetDetail }: IAppState) => ({
+const mapStateToProps = ({ hrCornerBlogGetAll, hrCornerBlogGetAllByCategory, hrCornerBlogGetDetail, hrCornerBlogGetLatestByCategory }: IAppState) => ({
   hrCornerBlogState: {
     all: hrCornerBlogGetAll,
     allByCategory: hrCornerBlogGetAllByCategory,
+    latestByCategory: hrCornerBlogGetLatestByCategory,
     detail: hrCornerBlogGetDetail,
   }
 });
@@ -53,6 +59,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(hrCornerBlogGetAllDispose()),
     loadAllByCategoryRequest: (request: IHrCornerBlogGetAllByCategoryRequest) => dispatch(hrCornerBlogGetAllByCategoryRequest(request)),
     loadAllByCategoryDispose: () => dispatch(hrCornerBlogGetAllByCategoryDispose()),
+    loadLatestByCategoryRequest: (request: IHrCornerBlogGetAllByCategoryRequest) => dispatch(hrCornerBlogGetLatestByCategoryRequest(request)),
+    loadLatestByCategoryDispose: () => dispatch(hrCornerBlogGetLatestByCategoryDispose()),
     loadDetailRequest: (request: IHrCornerBlogGetDetailRequest) => dispatch(hrCornerBlogGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(hrCornerBlogGetByIdDispose()),
   }

@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar, Typography, WithStyles, withStyles } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styles from '@styles';
 import * as classNames from 'classnames';
@@ -8,8 +8,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
 
 interface IOwnProps {
-  title: string;
-  parentUrl?: string;
+  parentTitle: string;
+  parentUrl: string;
+  childTitle?: string;
+  childUrl?: string;
   appBarSearchComponent?: React.ReactNode;
   appBarCustomComponent?: React.ReactNode;
 }
@@ -21,7 +23,7 @@ type AllProps =
   & WithStyles<typeof styles>;
 
 const topbarCorner: React.SFC<AllProps> = props => {
-  const { title, parentUrl, appBarSearchComponent, appBarCustomComponent } = props;
+  const { parentTitle, parentUrl, appBarSearchComponent, appBarCustomComponent, childTitle, childUrl } = props;
 
   const render = (
     <AppBar
@@ -31,24 +33,55 @@ const topbarCorner: React.SFC<AllProps> = props => {
       className={classNames(props.classes.cornerAppBar, props.classes.shift)}
     >
       <Toolbar>
+        <IconButton
+          color="inherit"
+          onClick={() => props.history.push(childUrl ? childUrl : parentUrl)}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+
         {
-          parentUrl &&
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push(parentUrl)}
+          childUrl ?
+          <Button
+            className={classNames(props.classes.titleTopBarCorner)}
+            onClick={() => {
+              if (childUrl) {
+                props.history.push(parentUrl);
+              }
+            }}
           >
-            <ArrowBackIcon />
-          </IconButton>
+            <Typography 
+              noWrap
+              variant="h6"
+              style={{textTransform: 'capitalize', color: '#fff'}}
+            >
+              {parentTitle}
+            </Typography>
+          </Button>
+          :
+          <Typography 
+            noWrap
+            color="inherit"
+            variant="h6"
+            className={props.classes.flex}
+            style={{textTransform: 'capitalize', display: childTitle ? 'contents' : 'block'}}
+          >
+            {parentTitle}
+          </Typography>
         }
 
-        <Typography 
-          noWrap
-          color="inherit"
-          variant="h6"
-          className={props.classes.flex}
-        >
-          {title}
-        </Typography>
+        {
+          childTitle &&
+          <Typography 
+            noWrap
+            color="inherit"
+            variant="h6"
+            className={props.classes.flex}
+            style={{textTransform: 'capitalize', paddingLeft: '8px'}}
+          >
+            > {childTitle}
+          </Typography>
+        }
         {
           appBarSearchComponent
         }
