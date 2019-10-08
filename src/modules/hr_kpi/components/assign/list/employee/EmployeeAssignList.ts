@@ -158,7 +158,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
     key: index,
     primary: item.company ? item.company.name : 'N/A',
     secondary: item.fullName,
-    tertiary: item.year && item.year.toString() || 'N/A',
+    tertiary: item.yearAssign && item.yearAssign.toString() || 'N/A',
     quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

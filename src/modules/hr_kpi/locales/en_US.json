@@ -95,6 +95,7 @@
   "kpi.employee.approval.form": "KPI Employee Approval Submission",
 
   "kpi.employee.message.emptyProps": "Some props are empty",
+  "kpi.employee.message.noAssign": "No Assigned KPI Found",
   "kpi.employee.message.approval.success": "Employee KPI approval successful",
   "kpi.employee.message.approval.failure": "Employee KPI approval failed",
   "kpi.employee.message.create.success": "A new Employee KPI has been created",
@@ -124,7 +125,8 @@
   "kpi.employee.field.templateUid.placeholder": "Select The Template",
   "kpi.employee.field.totalScore": "Total Score",
   "kpi.employee.field.year": "Year",
-  "kpi.employee.field.latestYear": "Last Assigned KPI Year",
+  "kpi.employee.field.latestAssignYear": "Last Assigned KPI Year",
+  "kpi.employee.field.latestFinalYear": "Last Final KPI Year",
   "kpi.employee.field.year.placeholder": "Type The Year",
   "kpi.employee.field.period": "Semester",
   "kpi.employee.field.period.midYear": "Mid Year",
