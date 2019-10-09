@@ -7,10 +7,10 @@ import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
 import { IEmployeeKPI } from '@kpi/classes/response';
-import { EmployeeSummary } from '@kpi/components/shared/EmployeeSummary';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeAssignFilter } from './EmployeeAssignFilter';
 import { AccountEmployeeAssignListProps } from './EmployeeAssignList';
+import { EmployeeAssignSummary } from './EmployeeAssignSummary';
 
 export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> = props => (
   <React.Fragment>
@@ -34,7 +34,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       
       // row components
       summaryComponent={(item: IEmployeeKPI) => ( 
-        <EmployeeSummary data={item} />
+        <EmployeeAssignSummary data={item} />
       )}
       actionComponent={(item: IEmployeeKPI) => (
         <React.Fragment>

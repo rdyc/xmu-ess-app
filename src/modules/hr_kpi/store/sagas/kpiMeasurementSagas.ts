@@ -1,3 +1,4 @@
+import { newHostAddress } from '@constants/newHostAddress';
 import {
   KPIMeasurementAction as Action,
   KPIMeasurementGetAllDispose,
@@ -38,6 +39,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/kpi/measurements?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -66,6 +68,7 @@ function* watchGetByCategoryRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/kpi/measurements/${action.payload.categoryUid}?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -94,6 +97,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/kpi/measurements/${action.payload.categoryUid}/list?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -117,6 +121,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementGetByIdRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       successEffects: (response: IApiResponse) => [
@@ -137,6 +142,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'post',
       path: `/v1/kpi/measurements/${action.payload.categoryUid}`,
       payload: action.payload.data,
@@ -177,6 +183,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPutRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'put',
       path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       payload: action.payload.data,

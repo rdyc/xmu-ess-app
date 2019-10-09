@@ -17,7 +17,7 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const employeeSummary: React.SFC<AllProps> = props => (
+const employeeAssignSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField 
@@ -50,8 +50,8 @@ const employeeSummary: React.SFC<AllProps> = props => (
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(kpiMessage.employee.field.latestYear)}
-        value={props.data.year && props.data.year.toString() || 'N/A'}
+        label={props.intl.formatMessage(kpiMessage.employee.field.latestAssignYear)}
+        value={props.data.yearAssign && props.data.yearAssign.toString() || 'N/A'}
       />
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
@@ -101,5 +101,5 @@ const employeeSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const EmployeeSummary = 
-  compose<AllProps, OwnProps>(injectIntl)(employeeSummary);
+export const EmployeeAssignSummary = 
+  compose<AllProps, OwnProps>(injectIntl)(employeeAssignSummary);

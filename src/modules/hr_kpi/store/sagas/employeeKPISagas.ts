@@ -1,3 +1,4 @@
+import { newHostAddress } from '@constants/newHostAddress';
 import {
   EmployeeKPIAction as Action,
   EmployeeKPIGetAllDispose,
@@ -19,6 +20,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/account/employees/all/kpis?${params}`,
       successEffects: (response: IApiResponse) => [

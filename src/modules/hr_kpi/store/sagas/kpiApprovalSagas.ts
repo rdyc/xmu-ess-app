@@ -1,3 +1,4 @@
+import { newHostAddress } from '@constants/newHostAddress';
 import {
   KPIApprovalAction as Action,
   KPIApprovalGetAllDispose,
@@ -27,6 +28,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/approval/kpi?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -50,6 +52,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/approval/kpi/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
@@ -70,6 +73,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIApprovalPostRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'post',
       path: `/v1/approval/kpi/${action.payload.kpiUid}`,
       payload: action.payload.data,

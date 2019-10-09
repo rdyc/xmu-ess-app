@@ -4,6 +4,6 @@
 
   "account.profile.tab.detail": "Profile",
   "account.profile.tab.competency": "Competency",
-  "account.profile.tab.kpi": "KPI Score",
-  "account.profile.tab.kpiAssign": "KPI"
+  "account.profile.tab.kpi": "KPI Result",
+  "account.profile.tab.kpiAssign": "KPI Assigned"
 }
