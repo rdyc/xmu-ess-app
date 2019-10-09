@@ -35,7 +35,6 @@ interface IOwnRouteParams {
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
-  handleOnLoadResult: () => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -141,12 +140,14 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
 
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
+      const assessmentYear = props.history.location.state.assessmentYear;
       const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
     
-      if (user && positionUid && respondenUid && !resultLoading) {
+      if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
         props.hrCompetencyResultDispatch.loadDetailListRequest({
           positionUid,
-          respondenUid
+          respondenUid,
+          assessmentYear
         });
       }
 
@@ -155,21 +156,6 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
           positionUid
         }
       });
-    }
-  },
-  handleOnLoadResult: (props: HrCompetencyResultDetailProps) => () => { 
-    const { user } = props.userState;
-    if (!isNullOrUndefined(props.history.location.state)) {
-      const positionUid = props.history.location.state.positionUid;
-      const respondenUid = props.history.location.state.respondenUid;
-      const { isLoading } = props.hrCompetencyResultState.detailList;
-    
-      if (user && positionUid && respondenUid && !isLoading) {
-        props.hrCompetencyResultDispatch.loadDetailListRequest({
-          positionUid,
-          respondenUid
-        });
-      }
     }
   },
   handleOnSelectedMenu: (props: HrCompetencyResultDetailProps) => (item: IPopupMenuOption) => {
@@ -201,6 +187,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
     let competencyEmployeeUid: string | undefined;
     let positionUid: string | undefined;
     let respondenUid: string | undefined;
+    let assessmentYear: string | undefined;
 
     // get project uid
     if (response.data) {
@@ -210,6 +197,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
     if (props.history.location.state) {
       positionUid = props.history.location.state.positionUid;
       respondenUid = props.history.location.state.respondenUid;
+      assessmentYear = props.history.location.state.assessmentYear;
     }
 
     // actions with new page
@@ -234,6 +222,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
       props.history.push(next, { 
         positionUid,
         respondenUid,
+        assessmentYear,
         uid: competencyEmployeeUid,
       });
     }

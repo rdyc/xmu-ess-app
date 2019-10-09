@@ -11,8 +11,6 @@ import { HrCompetencyMappedCategoriesForm } from './HrCompetencyMappedCategories
 import { HrCompetencyMappedFormProps, IMappedFormValue } from './HrCompetencyMappedForm';
 import HrCompetencyMappedPartial from './HrCompetencyMappedPartial';
 import { HrMappedLevelItem } from './HrMappedLevelItem';
-// import { HrMappedCategoriesItem } from './HrMappedCategoriesItem';
-// import { HrCompetencyMappedSummary } from './HrCompetencyMappedSummary';
 
 export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> = props => (
   <FormPage
@@ -69,7 +67,8 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                />
+                  isLoading={formikBag.values.categories.length === 0}
+                    />
               </div>
             </div>
 
