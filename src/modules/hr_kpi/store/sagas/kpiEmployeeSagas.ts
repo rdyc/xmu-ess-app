@@ -33,7 +33,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}?${params}`,
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetAllSuccess(response.body)),
       ],
@@ -57,7 +57,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdSuccess(response.body))
       ],
@@ -78,7 +78,7 @@ function* watchPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}`,
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),
@@ -119,7 +119,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),

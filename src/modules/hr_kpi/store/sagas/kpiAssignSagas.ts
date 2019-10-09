@@ -103,7 +103,7 @@ function* watchPostBulkRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/assign`,
+      path: `/v1/hr/kpi/assign`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),
@@ -145,7 +145,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
+      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),
