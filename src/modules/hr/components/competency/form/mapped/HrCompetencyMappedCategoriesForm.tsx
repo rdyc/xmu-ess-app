@@ -2,6 +2,7 @@ import { FormMode } from '@generic/types';
 import { IHrCategoryItem, IHrCompetencyClusterList } from '@hr/classes/response';
 import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText,  MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
@@ -15,6 +16,7 @@ interface IOwnProps {
   formikBag: FormikProps<IMappedFormValue>;
   intl: InjectedIntl;
   formMode: FormMode;
+  isLoading: boolean;
 }
 
 interface ChildList {
@@ -112,6 +114,10 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
       <CardHeader 
         title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Categories'})}
       />
+        {
+          props.isLoading &&
+          <LoadingCircular />          
+        }
         {
           formikBag.values.categories.length > 0 && (
             <List>

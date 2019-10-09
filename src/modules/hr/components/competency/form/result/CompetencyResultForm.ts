@@ -159,12 +159,14 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
       }
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
+      const assessmentYear = props.history.location.state.assessmentYear;
       const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
     
-      if (user && positionUid && respondenUid && !resultLoading) {
+      if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
         props.hrCompetencyResultDispatch.loadDetailListRequest({
           positionUid,
-          respondenUid
+          respondenUid,
+          assessmentYear
         });
       }
 
@@ -238,14 +240,16 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
         let positionUid: string | undefined;
         let respondenUid: string | undefined;
+        let assessmentYear: string | undefined;
 
         if (props.history.location.state) {
           positionUid = props.history.location.state.positionUid;
           respondenUid = props.history.location.state.respondenUid;
+          assessmentYear = props.history.location.state.assessmentYear;
         }
 
         // redirect to detail
-        props.history.push(`/hr/assessmentresult/${response.uid}`, {positionUid, respondenUid});
+        props.history.push(`/hr/assessmentresult/${response.uid}`, {positionUid, respondenUid, assessmentYear});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -285,7 +289,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
     const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data) {
+      if (thisResponse && thisResponse.data && this.props.initialValues) {
           
           // define initial values
           const initialValues: ICompetencyResultFormValue = {
@@ -294,7 +298,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
             companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
             positionUid: thisResponse.data.positionUid,
             year: thisResponse.data.assessmentYear.toString(),
-            levelRespond: []
+            levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
           };
           this.props.setInitialValues(initialValues);
       }
@@ -302,7 +306,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
 
     // to fill the level respond is here
     if (thisMapped !== prevMapped) {
-      if (thisMapped && thisMapped.data && thisResponse) {
+      if (thisMapped && thisMapped.data && thisResponse && thisResponse.data) {
         const initialVal: ICompetencyResultFormValue | undefined = this.props.initialValues;
 
         if (initialVal) {

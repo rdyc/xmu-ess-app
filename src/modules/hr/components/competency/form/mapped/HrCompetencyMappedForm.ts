@@ -76,10 +76,15 @@ interface IOwnState {
   
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
+
+  levelTouched: boolean;
+  detailTouched: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setLevelTouched: StateHandler<IOwnState>;
+  setDetailTouched: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -139,11 +144,19 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     orderBy: 'name',
     direction: 'ascending'
   },
+  levelTouched: false,
+  detailTouched: false
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
+  }),
+  setLevelTouched: () => (): Partial<IOwnState> => ({
+    levelTouched: true
+  }),
+  setDetailTouched: () => (): Partial<IOwnState> => ({
+    detailTouched: true
   })
 };
 
@@ -326,73 +339,95 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, IOwnState> = {
   componentDidMount() {
-    const { response } = this.props.hrCompetencyClusterState.list;
+    const { response: clusterList } = this.props.hrCompetencyClusterState.list;
     const { response: levelList } = this.props.employeeLevelState.list;
+    const { formMode } = this.props;
 
-    if (!response) {
-      if (this.props.formMode === FormMode.New) {
+    if (formMode === FormMode.New) {
+
+      // check if cluster list is already exist or no, if there is then fill the initial values
+      if (!clusterList) {
         this.props.handleOnLoadCluster();
-        this.props.handleOnLoadLevel();
+      } else {
+        if (clusterList && clusterList.data) {
+          const initialVal: IMappedFormValue  | undefined = this.props.initialValues;
+  
+          if (initialVal) {
+            clusterList.data.map((item, index) => {
+              // for Parent
+              initialVal.categories.push({
+                uid: item.uid,
+                parentUid: '',
+                name: item.name || '',
+                isAccess: false,
+                itemUid: '',
+                mappedLevel: []
+              });
+      
+              if (item.categories.length >= 1) {
+                // for child
+                item.categories.map(category => {
+                  initialVal.categories.push({
+                    uid: category.uid,
+                    parentUid: item.uid,
+                    name: category.name,
+                    isAccess: false,
+                    itemUid: '',
+                    mappedLevel: initialVal.categories[index].mappedLevel.length > 0 ? initialVal.categories[index].mappedLevel : []
+                  });
+                });
+              }
+            });
+            this.props.setInitialValues(initialVal);
+          }
+        }
       }
-    } else if (response && response.data) {
-      const categoriesList: CategoryMenus[] = [];
-      response.data.map(item => {
-        categoriesList.push({
-          uid: item.uid,
-          parentUid: '',
-          name: item.name || '',
-          isAccess: false,
-          itemUid: '',
-          mappedLevel: []
-        });
 
-        const levelItem: MappedLevel[] = [];
-
+      // check if level list is already exist or no, if there is then fill the initial values
+      if (!levelList) {
+        this.props.handleOnLoadLevel();
+      } else {
         if (levelList && levelList.data) {
-          levelList.data.map(lv => {
-            levelItem.push({
-              employeeLevelUid: lv.uid,
-              employeeLevelName: lv.value,
-              categoryLevelUid: '',
+          const initialVal: IMappedFormValue  | undefined = this.props.initialValues;
+    
+          if (initialVal && initialVal.categories.length !== 0) {
+            initialVal.categories.map((item, index) => {
+              if (item.mappedLevel.length < 1 && levelList.data) {
+                if (item.parentUid) {
+                  levelList.data.map(lv => {
+                    item.mappedLevel.push({
+                      employeeLevelUid: lv.uid,
+                      employeeLevelName: lv.value,
+                      categoryLevelUid: '',
+                    });
+                  });
+                }
+              }
             });
-          });
+            this.props.setInitialValues(initialVal);
+          } 
         }
-
-        if (item.categories.length >= 1) {
-          item.categories.map(category => {
-            categoriesList.push({
-              uid: category.uid,
-              parentUid: item.uid,
-              name: category.name,
-              isAccess: false,
-              itemUid: '',
-              mappedLevel: levelItem
-            });
-          });
-        }
-      });
-
-      const initialValues: IMappedFormValue = {
-        uid: 'Auto generated',
-        companyUid: '',
-        positionUid: '',
-        categories: categoriesList
-      };
-
-      this.props.setInitialValues(initialValues);
+      }
     }
   },
   componentWillUpdate(nextProps: HrCompetencyMappedFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyClusterState.list;
-    const { response: nextResponse } = nextProps.hrCompetencyClusterState.list;
-    const { response: nextLevel } = nextProps.employeeLevelState.list;
+    // 
+  },
+  componentDidUpdate(prevProps: HrCompetencyMappedFormProps) {
+    const { response: thisResponse, request, isLoading } = this.props.hrCompetencyMappedState.detail;
+    // const { response: prevResponse } = prevProps.hrCompetencyMappedState.detail;
+    const { response: thisCluster } = this.props.hrCompetencyClusterState.list;
+    const { response: prevCluster } = prevProps.hrCompetencyClusterState.list;
+    const { response: thisLevel } = this.props.employeeLevelState.list;
 
-    if (this.props.formMode === FormMode.New) {
-      if (thisResponse !== nextResponse) {
-        if (nextResponse && nextResponse.data) {
-          const categoriesList: CategoryMenus[] = [];
-          nextResponse.data.map(item => {
-            categoriesList.push({
+    if (thisCluster !== prevCluster) {
+      if (thisCluster && thisCluster.data) {
+        const initialVal: IMappedFormValue  | undefined = this.props.initialValues;
+
+        if (initialVal) {
+          thisCluster.data.map((item, index) => {
+            // for Parent
+            initialVal.categories.push({
               uid: item.uid,
               parentUid: '',
               name: item.name || '',
@@ -402,128 +437,89 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             });
     
             if (item.categories.length >= 1) {
+              // for child
               item.categories.map(category => {
-                const levelItem: MappedLevel[] = [];
-
-                if (nextLevel && nextLevel.data) {
-                  nextLevel.data.map(lv => {
-                    levelItem.push({
-                      employeeLevelUid: lv.uid,
-                      employeeLevelName: lv.value,
-                      categoryLevelUid: '',
-                    });
-                  });
-                }
-                
-                categoriesList.push({
+                initialVal.categories.push({
                   uid: category.uid,
                   parentUid: item.uid,
                   name: category.name,
                   isAccess: false,
                   itemUid: '',
-                  mappedLevel: levelItem
+                  mappedLevel: initialVal.categories[index].mappedLevel.length > 0 ? initialVal.categories[index].mappedLevel : []
                 });
               });
             }
           });
-
-          const initialValues: IMappedFormValue = {
-            uid: 'Auto generated',
-            companyUid: '',
-            positionUid: '',
-            categories: categoriesList
-          };
-    
-          this.props.setInitialValues(initialValues);
+          this.props.setInitialValues(initialVal);
         }
       }
     }
-  },
-  componentDidUpdate(prevProps: HrCompetencyMappedFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyMappedState.detail;
-    const { response: prevResponse } = prevProps.hrCompetencyMappedState.detail;
-    const { response: clusterList } = this.props.hrCompetencyClusterState.list;
-    const { response: levelList } = this.props.employeeLevelState.list;
 
-    const { formMode } = this.props;
-    
-    if (formMode === FormMode.Edit) {
-      if (thisResponse !== prevResponse) {
-        if (thisResponse && thisResponse.data) {
-          const categoriesList: CategoryMenus[] = [];
-          if (clusterList && clusterList.data) {
-            // parent *fill the menus with cluster list
-            clusterList.data.map((item, index) => {
-              categoriesList.push({
-                uid: item.uid,
-                parentUid: '',
-                name: item.name,
-                isAccess: false,
-                itemUid: '',
-                mappedLevel: []
-              });
-  
-              if (item.categories.length >= 1 && categoriesList.length >= 1) {
-                
-                // for the child menus
-                item.categories.map(category => {
-                  const levelItem: MappedLevel[] = [];
-                  
-                  // categoryId is for checking with detail data
-                  const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === category.uid);
+    if (thisCluster && thisLevel && thisLevel.data && !this.props.levelTouched) {
+      const initialVal: IMappedFormValue  | undefined = this.props.initialValues;
 
-                  if (categoryId) {
-                    // if there is child that are sync then check the parent to true
-                    const parent: CategoryMenus | undefined = categoriesList.find(find => find.uid === item.uid && !find.isAccess);
-                    if (parent) {
-                      parent.isAccess = true;
-                      // this one is for filling the mappedlevel for everychild if the parent is checked
-                    }
-
-                    if (categoryId.mappedLevels.length > 0) {
-                      categoryId.mappedLevels.map(lv => {
-                        levelItem.push({
-                          uid: lv.uid,
-                          categoryLevelUid: lv.categoryLevelUid,
-                          employeeLevelUid: lv.employeeLevelUid,
-                          employeeLevelName: lv.employeeLevel.value
-                        });
-                      });
-                    } 
-                  }
-                  
-                  if (levelItem.length < 1 && levelList && levelList.data) {
-                    levelList.data.map(lv => {
-                      levelItem.push({
-                        employeeLevelUid: lv.uid,
-                        employeeLevelName: lv.value,
-                        categoryLevelUid: '',
-                      });
-                    });
-                  }
-
-                  categoriesList.push({
-                    uid: category.uid,
-                    parentUid: item.uid,
-                    name: category.name,
-                    isAccess: Boolean(categoryId) || false,
-                    itemUid: categoryId && categoryId.uid || '',
-                    mappedLevel: levelItem
-                  });
+      if (initialVal && initialVal.categories.length !== 0) {
+        initialVal.categories.map((item, index) => {
+          if (item.mappedLevel.length < 1 && thisLevel.data) {
+            if (item.parentUid) {
+              thisLevel.data.map(lv => {
+                item.mappedLevel.push({
+                  employeeLevelUid: lv.uid,
+                  employeeLevelName: lv.value,
+                  categoryLevelUid: '',
                 });
-              }
-            });
+              });
+            }
           }
+        });
+        this.props.setLevelTouched();
+        this.props.setInitialValues(initialVal);
+      } 
+    }
 
-          // define initial values
-          const initialValues: IMappedFormValue = {
-            uid: thisResponse.data.uid,
-            companyUid: thisResponse.data.position.companyUid,
-            positionUid: thisResponse.data.positionUid,
-            categories: categoriesList
-          };
+    if (this.props.formMode === FormMode.Edit && this.props.location.state) {
+      if (!isLoading && thisResponse && thisResponse.data && (request && request.mappedUid === this.props.location.state.uid) && !this.props.detailTouched) {
+        const initialVal: IMappedFormValue  | undefined = this.props.initialValues;
   
-          this.props.setInitialValues(initialValues);
+        if (initialVal && initialVal.categories.length !== 0) {
+          initialVal.categories.map((item, index) => {
+            if (item.parentUid) {
+              const categoryId: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === item.uid);
+  
+              if (categoryId) {
+                // if there is child that are sync then check the parent to true
+                const parent: CategoryMenus | undefined = initialVal.categories.find(find => find.uid === item.parentUid && !find.isAccess);
+  
+                if (parent) {
+                  parent.isAccess = true;
+                  // this one is for filling the mappedlevel for everychild if the parent is checked
+                }
+                item.isAccess = true;
+  
+                if (categoryId.mappedLevels.length > 0) {
+                  const levelItem: MappedLevel[] = [];
+                  categoryId.mappedLevels.map((lv, lvIdx) => {
+                    levelItem.push({
+                      uid: lv.uid,
+                      categoryLevelUid: lv.categoryLevelUid,
+                      employeeLevelUid: lv.employeeLevelUid,
+                      employeeLevelName: lv.employeeLevel.value
+                    });
+                  });
+  
+                  if (item.parentUid) {
+                    item.mappedLevel = levelItem;
+                  }
+                } 
+              }
+            }
+          });
+  
+          initialVal.companyUid = thisResponse.data.position.companyUid;
+          initialVal.positionUid = thisResponse.data.positionUid;
+  
+          this.props.setDetailTouched();
+          this.props.setInitialValues(initialVal);
         }
       }
     }

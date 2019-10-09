@@ -59,7 +59,7 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
                   }}>
                     <CardHeader
                       title={item.title}
-                      subheader={props.intl.formatDate(item.publishedAt, GlobalFormat.Date)}
+                      subheader={`${props.intl.formatDate(item.publishedAt, GlobalFormat.Date)} by ${item.publishedBy}`}
                     />
                     <CardContent>
                       <Typography>
