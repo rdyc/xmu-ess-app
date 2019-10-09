@@ -1,3 +1,4 @@
+import { IHrCornerBlogGetAllByCategoryFilter } from '@hr/classes/filters';
 import { IHrCompetencyField } from '@hr/classes/types';
 import { WithHrCornerBlog, withHrCornerBlog } from '@hr/hoc/withHrCornerBlog';
 import { ICollectionValue } from '@layout/classes/core';
@@ -23,6 +24,7 @@ import {
 import { HrCornerBlogDetailView } from './HrCornerBlogDetailView';
 
 interface IOwnOption {
+  categorySlug: string;
   pageSlug: string;
 }
 
@@ -37,8 +39,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnReload: () => void;
-  handleOnLoadApi: (category: string) => void;
-  handleOnLoadAllByCategory: (category: string) => void;
+  handleOnLoadApi: () => void;
+  handleOnLoadAllByCategory: () => void;
 }
 
 export type HrCornerBlogDetailProps
@@ -72,30 +74,37 @@ const stateUpdaters: StateUpdaters<HrCornerBlogDetailProps, IOwnState, IOwnState
 };
 
 const handlerCreators: HandleCreators<HrCornerBlogDetailProps, IOwnHandler> = {
-  handleOnLoadApi: (props: HrCornerBlogDetailProps) => (category: string) => {
+  handleOnLoadApi: (props: HrCornerBlogDetailProps) => () => {
     // const { user } = props.userState;
     const { loadDetailRequest } = props.hrCornerBlogDispatch;
-    const { isLoading, request } = props.hrCornerBlogState.detail;
+    const { isLoading } = props.hrCornerBlogState.detail;
+    const categorySlug: string = props.match.params.categorySlug;
     const pageSlug: string = props.match.params.pageSlug;
 
     if (!isLoading) {
       loadDetailRequest({
+        categorySlug,
         pageSlug,
-        categorySlug: request ? request.categorySlug : category
       });
       props.stateUpdate({
         isReload: false
       });
     }
   },
-  handleOnLoadAllByCategory: (props: HrCornerBlogDetailProps) => (category: string) => {
+  handleOnLoadAllByCategory: (props: HrCornerBlogDetailProps) => () => {
     // const { user } = props.userState;
-    const { loadAllByCategoryRequest } = props.hrCornerBlogDispatch;
+    const { loadLatestByCategoryRequest } = props.hrCornerBlogDispatch;
     const { isLoading } = props.hrCornerBlogState.allByCategory;
+    const categorySlug: string = props.match.params.categorySlug;
 
     if (!isLoading) {
-      loadAllByCategoryRequest({
-        categorySlug: category
+      const filter: IHrCornerBlogGetAllByCategoryFilter = {
+        size: 5
+      };
+      
+      loadLatestByCategoryRequest({
+        categorySlug,
+        filter
       });
     }
   },
@@ -108,22 +117,15 @@ const handlerCreators: HandleCreators<HrCornerBlogDetailProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<HrCornerBlogDetailProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-      this.props.handleOnLoadApi(this.props.location.state.category);
-      this.props.handleOnLoadAllByCategory(this.props.location.state.category);
-    }
-  },
-  componentWillUpdate(nextProps: HrCornerBlogDetailProps) {
-    console.log(this.props.location);
+    this.props.handleOnLoadApi();
+    this.props.handleOnLoadAllByCategory();
   },
   componentDidUpdate(prevProps: HrCornerBlogDetailProps) {
     const { pageSlug: thisSlug } = this.props.match.params;
     const { pageSlug: prevSlug } = prevProps.match.params;
 
     if (thisSlug !== prevSlug || this.props.isReload) {
-      if (this.props.location.state) {
-        this.props.handleOnLoadApi(this.props.location.state.category);
-      }
+      this.props.handleOnLoadApi();
     }
   }
 };

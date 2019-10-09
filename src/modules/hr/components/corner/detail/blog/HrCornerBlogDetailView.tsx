@@ -14,8 +14,15 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
   const render = (
     <React.Fragment>
       <TopbarCorner 
-        title={props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Corner Blog'})}
+        parentTitle={props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: 'Corner Blog'})}
         parentUrl={'/corner/blog'}
+
+        childTitle={props.intl.formatMessage(
+          hrMessage.shared.page.listTitle, 
+          {state: `${props.match.params.categorySlug.replace(/-/g, ' ')} > ${props.match.params.pageSlug.replace(/-/g, ' ')}`}
+        )}
+        childUrl={`/corner/blog/${props.match.params.categorySlug}`}
+
         appBarCustomComponent={
           <IconButton
             color="inherit"
@@ -47,11 +54,12 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
             <Card>
               <List>
                 {
-                  !props.hrCornerBlogState.allByCategory.isLoading &&
-                  props.hrCornerBlogState.allByCategory.response &&
-                  props.hrCornerBlogState.allByCategory.response.data &&
-                  props.hrCornerBlogState.allByCategory.response.data.map((item, index) =>
-                    <React.Fragment>
+                  !props.hrCornerBlogState.latestByCategory.isLoading &&
+                  props.hrCornerBlogState.latestByCategory.response &&
+                  props.hrCornerBlogState.latestByCategory.response.data &&
+                  props.hrCornerBlogState.latestByCategory.response.data.map((item, index) =>
+                    index < 5 &&
+                    <React.Fragment key={index}>
                       {
                         index !== 0 &&
                         <Divider />
@@ -60,7 +68,7 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
                         button
                         selected={props.match.params.pageSlug === item.slug}
                         className={props.classes.buttonHover}
-                        onClick={() => props.history.push(`/corner/blog/${item.slug}`, {category: props.location.state && props.location.state.category})}
+                        onClick={() => props.history.push(`/corner/blog/${props.match.params.categorySlug}/${item.slug}`)}
                       >
                         <ListItemText 
                           primary={

@@ -29,7 +29,6 @@ interface IOwnOption {
 
 interface IOwnState {
   fields: ICollectionValue[];
-  category: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -39,7 +38,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleCategory: (category: string) => void;
 }
 
 export type HrCornerBlogListProps
@@ -54,14 +52,11 @@ export type HrCornerBlogListProps
   & WithHrCornerBlog;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: HrCornerBlogListProps): IOwnState => {
-  const { request } = props.hrCornerBlogState.allByCategory;
-
   const state: IOwnState = {
     fields: Object.keys(IHrCompetencyField).map(key => ({
       value: key,
       name: IHrCompetencyField[key]
     })),
-    category: request && request.categorySlug || ''
   };
 
   return state;
@@ -107,20 +102,6 @@ const handlerCreators: HandleCreators<HrCornerBlogListProps, IOwnHandler> = {
           filter
         });
       }
-    }
-  },
-  handleCategory: (props: HrCornerBlogListProps) => (category: string) => {
-    const { loadAllByCategoryRequest } = props.hrCornerBlogDispatch;
-    const { isLoading, request } = props.hrCornerBlogState.allByCategory;
-
-    props.stateUpdate({
-      category
-    });
-
-    if (!isLoading && (!request || request && request.categorySlug !== category)) {
-      loadAllByCategoryRequest({
-        categorySlug: category
-      });
     }
   },
 };
