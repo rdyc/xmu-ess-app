@@ -441,6 +441,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
       } else {
         this.props.setAssignValues(this.props.initialValues);
         this.props.handleSetLoadAssign();
+
+        // show flash message
+        this.props.masterPage.flashMessage({
+          message: this.props.intl.formatMessage(kpiMessage.employee.message.noAssign)
+        });
       }
     }
   }

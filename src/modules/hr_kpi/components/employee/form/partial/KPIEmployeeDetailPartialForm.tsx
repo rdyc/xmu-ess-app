@@ -52,7 +52,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       />
       <CardContent>
         <Field 
-          name="uid"
+          name="kpiUid"
           render={({ field}: FieldProps<IKPIEmployeeFormValue>) => (
             <TextField 
               {...field}

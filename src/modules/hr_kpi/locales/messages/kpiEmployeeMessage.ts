@@ -30,6 +30,7 @@ export const KPIEmployeePage = defineMessages({
 // message
 export const KPIEmployeeMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },
+  noAssign: { id: `${prefix}.message.noAssign` },
   approvalSuccess: { id: `${prefix}.message.approval.success` },
   approvalFailure: { id: `${prefix}.message.approval.failure` },
   createSuccess: { id: `${prefix}.message.create.success` },
@@ -89,7 +90,8 @@ export const KPIEmployeeField = defineMessages({
   templateUid: { id: `${prefix}.field.templateUid`},
   templateUidPlaceholder: { id: `${prefix}.field.templateUid.placeholder`},
   year: { id: `${prefix}.field.year`},
-  latestYear: { id: `${prefix}.field.latestYear`},
+  latestAssignYear: { id: `${prefix}.field.latestAssignYear`},
+  latestFinalYear: { id: `${prefix}.field.latestFinalYear`},
   yearPlaceholder: { id: `${prefix}.field.year.placeholder`},
   period: { id: `${prefix}.field.period`},
   periodMidYear: { id: `${prefix}.field.period.midYear`},

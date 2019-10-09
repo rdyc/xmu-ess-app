@@ -1,3 +1,4 @@
+import { newHostAddress } from '@constants/newHostAddress';
 import {
   KPIFinalAction as Action,
   KPIFinalGetAllDispose,
@@ -23,6 +24,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -46,6 +48,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIFinalGetByIdRequest>) => {
     return saiyanSaga.fetch({
+      host: newHostAddress,
       method: 'get',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
