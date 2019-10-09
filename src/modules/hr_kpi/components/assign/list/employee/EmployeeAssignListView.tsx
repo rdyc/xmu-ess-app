@@ -51,7 +51,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee.kpi"
+          key="employee.kpi.assign"
           default={props.employeeKPIState.all.request && props.employeeKPIState.all.request.filter && props.employeeKPIState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -74,7 +74,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
         >
           <div>
             <IconButton
-              id="option-filter"
+              id="option-filter-employee-assign"
               disabled={props.employeeKPIState.all.isLoading || props.employeeKPIState.all.isError}
               onClick={props.handleFilterVisibility} 
             >

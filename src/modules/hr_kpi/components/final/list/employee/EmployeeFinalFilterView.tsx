@@ -81,7 +81,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         </ListItem>
         <Divider />
         
-        <ListItem button onClick={props.handleFilterPositionVisibility} disabled={!props.filterCompany}>
+        {/* <ListItem button onClick={props.handleFilterPositionVisibility} disabled={!props.filterCompany}>
           <ListItemText 
             primary={props.intl.formatMessage(accountMessage.employee.filter.position)}
             secondary={props.filterPosition && props.filterPosition.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -114,7 +114,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
             />
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         {/* <ListItem button onClick={props.handleFilterRoleVisibility} disabled={props.filterRoleValue && props.filterCompany ? false : true}>
           <ListItemText 

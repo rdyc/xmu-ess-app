@@ -100,6 +100,7 @@ export const KPIEmployeeField = defineMessages({
   totalScore: { id: `${prefix}.field.totalScore`},
   status: { id: `${prefix}.field.status`},
   isFinal: { id: `${prefix}.field.isFinal`},
+  isNotAssigned: { id: `${prefix}.field.isNotAssigned`},
   isFinalTrue: { id: `${prefix}.field.isFinal.final`},
   isFinalFalse: { id: `${prefix}.field.isFinal.pending`},
   revision: { id: `${prefix}.field.revision`},
