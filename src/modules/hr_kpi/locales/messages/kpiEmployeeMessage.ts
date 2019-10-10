@@ -109,6 +109,8 @@ export const KPIEmployeeField = defineMessages({
   sentBy: { id: `${prefix}.field.sentBy`},
   totalWeight: { id: `${prefix}.field.totalWeight`},
   completion: { id: `${prefix}.field.completion`},
+  note: { id: `${prefix}.field.note`},
+  notePlaceholder: { id: `${prefix}.field.note.placeholder`},
 
   // item
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
@@ -147,6 +149,7 @@ export const KPIEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'isFinal': return KPIEmployeeField.isFinal;
       case 'revision': return KPIEmployeeField.revision;
       case 'totalWeight': return KPIEmployeeField.totalWeight;
+      case 'note': return KPIEmployeeField.note;
 
       case 'itemUid': return KPIEmployeeField.itemUid;
       case 'categoryUid': return KPIEmployeeField.categoryUid;
@@ -171,6 +174,7 @@ export const KPIEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'year': return KPIEmployeeField.yearPlaceholder;
       case 'period': return KPIEmployeeField.periodPlaceholder;
       case 'revision': return KPIEmployeeField.revisionPlaceholder;
+      case 'note': return KPIEmployeeField.notePlaceholder;
 
       case 'categoryUid': return KPIEmployeeField.categoryUidPlaceholder;
       case 'measurementUid': return KPIEmployeeField.measurementUidPlaceholder;

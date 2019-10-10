@@ -23,6 +23,7 @@ interface KPIHRInputItemPartialFormProps {
   isDialogFullScreen: boolean;
   loadItem: boolean;
   listItem: IKPIAssignItemFormValue[];
+  templateNotes: string;
   handleSetLoadItem: () => void;
 }
 
@@ -45,6 +46,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
       isFinal: props.formikBag.values.isFinal,
       isFirst: props.formikBag.values.isFirst,
       revision: props.formikBag.values.revision,
+      note: props.templateNotes,
       items: props.listItem,
     });
 

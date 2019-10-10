@@ -39,6 +39,8 @@
   "kpi.template.field.name.placeholder": "Type The Name",
   "kpi.template.field.totalWeight": "Total Weight",
   "kpi.template.field.itemsMinimum": "Must have at least one item",
+  "kpi.template.field.note": "Additional Notes",
+  "kpi.template.field.note.placeholder": "Type the Additional Notes",
   "kpi.template.field.itemUid": "Template Item ID",
   "kpi.template.field.categoryUid": "Category",
   "kpi.template.field.categoryUid.placeholder": "Select The Category",
@@ -165,6 +167,8 @@
   "kpi.employee.field.progress": "Progress",
   "kpi.employee.field.score": "Score",
   "kpi.employee.field.completion": "Approval Completion",
+  "kpi.employee.field.note": "Additional Notes",
+  "kpi.employee.field.note.placeholder": "Type the Additional Notes",
 
   "kpi.measurement.message.create.success": "A new Measurement has been created",
   "kpi.measurement.message.create.failure": "Unable to process your submission",

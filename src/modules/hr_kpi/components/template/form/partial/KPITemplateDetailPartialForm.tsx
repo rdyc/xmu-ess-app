@@ -116,6 +116,26 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
       />
 
       <Field
+        name="note"
+        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+          return (
+            <TextField
+              {...field}
+              fullWidth
+              multiline
+              disabled={form.isSubmitting}
+              margin="normal"
+              autoComplete="off"
+              label={props.intl.formatMessage(kpiMessage.template.field.note)}
+              placeholder={props.intl.formatMessage(kpiMessage.template.field.notePlaceholder)}
+              helperText={form.touched.note && form.errors.note}
+              error={form.touched.note && Boolean(form.errors.note)}
+            />
+          );
+        }}
+      />
+
+      <Field
         name="totalWeight"
         render={({ field, form }: FieldProps<IKPITemplateFormValue>) => (
           <TextField

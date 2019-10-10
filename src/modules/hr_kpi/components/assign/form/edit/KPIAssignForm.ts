@@ -65,6 +65,7 @@ export interface IKPIAssignFormValue {
   isFinal: boolean;
   isFirst: boolean;
   revision: string;
+  note: string;
   year: string;
   totalWeight: number;
   items: IKPIAssignItemFormValue[];
@@ -81,6 +82,7 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   loadItem: boolean;
+  templateNotes: string;
   listItem: IKPIAssignItemFormValue[];
 
   initialValues: IKPIAssignFormValue;
@@ -126,6 +128,7 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   loadItem: false,
+  templateNotes: '',
   listItem: [],
 
   initialValues: {
@@ -141,6 +144,7 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
     isFinal: false,
     isFirst: true,
     revision: '',
+    note: '',
     items: []
   },
 
@@ -260,8 +264,9 @@ const stateUpdaters: StateUpdaters<KPIAssignFormProps, IOwnState, IOwnStateUpdat
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setItemValues: () => (items: IKPIAssignItemFormValue[]): Partial<IOwnState> => ({
-    listItem: items
+  setItemValues: () => (items: IKPIAssignItemFormValue[], notes: string): Partial<IOwnState> => ({
+    listItem: items,
+    templateNotes: notes,
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
@@ -325,6 +330,7 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
             year: parseInt(values.year, 10),
             isFinal: values.isFinal,
             revision: values.revision,
+            note: values.note,
             items: []
           };
 
@@ -420,6 +426,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.changes && !thisResponse.data.changes.updated || false,
           revision: '',
+          note: '',
           items: []
         };
 
@@ -480,7 +487,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
         }
 
         // set initial values
-        this.props.setItemValues(items);
+        this.props.setItemValues(items, thisTemplate.data.note || '');
         this.props.handleSetLoadItem();
       }
     }

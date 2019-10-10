@@ -13,9 +13,7 @@ export interface IKPIAssignDetail {
   year: number;
   isFinal: boolean;
   revision?: string;
+  note?: string;
   items?: IKPIAssignItem[] | null;
-  // sentBy?: string | null;
-  // sent?: IEmployee | null;
-  // sentAt?: string | null;
   changes: IBaseChanges | null;
 }

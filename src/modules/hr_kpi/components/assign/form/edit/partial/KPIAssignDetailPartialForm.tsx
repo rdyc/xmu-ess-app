@@ -221,6 +221,24 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
         }
 
         <Field
+          name="note"
+          render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
+            <TextField
+              {...field}
+              fullWidth
+              multiline
+              margin="normal"
+              autoComplete="off"
+              disabled={form.isSubmitting}
+              label={props.intl.formatMessage(kpiMessage.employee.field.note)}
+              placeholder={props.intl.formatMessage(kpiMessage.employee.field.notePlaceholder)}
+              helperText={(form.touched.note) && (form.errors.note)}
+              error={(form.touched.note) && Boolean(form.errors.note)}
+            />
+          )}
+        />
+
+        <Field
           name="totalWeight"
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
             <TextField
