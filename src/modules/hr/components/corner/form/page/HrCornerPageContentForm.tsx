@@ -5,6 +5,7 @@ import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, Typography, withStyles, WithStyles } from '@material-ui/core';
 import { HelpOutline } from '@material-ui/icons';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -149,7 +150,7 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
               />
             </Grid>
             <Grid item xs={6} md={6} xl={6}>
-              <ReactMarkdown className={props.classes.globalFont} source={DemoContentMarkdown.Demo} escapeHtml={false} />
+              <ReactMarkdown className={classNames(props.classes.globalFont, props.classes.textDecorationNone)} source={DemoContentMarkdown.Demo} escapeHtml={false} />
             </Grid>
           </Grid>
         </DialogContent>

@@ -5,7 +5,6 @@ import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
 import { layoutMessage } from '@layout/locales/messages';
-import { Grid } from '@material-ui/core';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { HrCornerPageContentForm } from './HrCornerPageContentForm';
@@ -31,23 +30,17 @@ export const HrCornerPageFormView: React.SFC<HrCornerPageFormProps> = props => (
       onSubmit={props.handleOnSubmit}
       render={(formikBag: FormikProps<ICornerPageFormValue>) => (
         <Form>
-            <Grid container spacing={16}>
-              <Grid item xs={12} md={3} xl={3}>
+          <div className={props.classes.flexRow}>
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
                 <HrCornerPagePartial 
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
                   filterCategory={props.filterCategory}
                 />
-              </Grid>
-              <Grid item xs={12} md={6} xl={6}>
-                <HrCornerPageContentForm 
-                  formMode={props.formMode}
-                  intl={props.intl}
-                  formikBag={formikBag}
-                />
-              </Grid>
-              <Grid item xs={12} md={3} xl={3}>
+              </div>
+              <div className={props.classes.flexContent}>
                 <SubmissionForm 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Corner Page'})}
                   className={props.classes.flexContent}
@@ -64,11 +57,23 @@ export const HrCornerPageFormView: React.SFC<HrCornerPageFormProps> = props => (
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 
                 />
-              </Grid>
-              <Grid item xs={12} md={3} xl={3}>
+              </div>             
+            </div>
+            <div className={props.classes.flex2Column}>
+              <div className={props.classes.flexContent}>
+                <HrCornerPageContentForm 
+                  formMode={props.formMode}
+                  intl={props.intl}
+                  formikBag={formikBag}
+                />
+              </div>  
+            </div>
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
                 <FormikJsonValues formikBag={formikBag} />
-              </Grid>
-            </Grid>
+              </div>            
+            </div>
+          </div>
         </Form>
       )}
     />
