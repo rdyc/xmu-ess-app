@@ -2,7 +2,6 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -25,6 +24,7 @@ import { AccountEmployeeField } from '@account/classes/types';
 import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
 import { IEmployeeKPI } from '@kpi/classes/response';
 import { withEmployeeKPI, WithEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { IAccountEmployeeFilterResult } from './EmployeeAssignFilter';
 import { EmployeeAssignListView } from './EmployeeAssignListView';
 
@@ -164,8 +164,10 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
     key: index,
     primary: item.company ? item.company.name : 'N/A',
     secondary: item.fullName,
-    tertiary: item.yearAssign && item.yearAssign.toString() || 'N/A',
-    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    tertiary: item.lastAssign && item.lastAssign.year.toString() || 'N/A',
+    quaternary: item.lastAssign && (item.lastAssign.isFinal && 
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)) || 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
