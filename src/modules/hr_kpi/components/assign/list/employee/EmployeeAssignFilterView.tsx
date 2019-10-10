@@ -206,21 +206,6 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         </ListItem>
         <Divider />
 
-      <ListItem>
-        <ListItemText 
-          primary={props.intl.formatMessage(accountMessage.employee.filter.isActive)}
-          secondary={props.intl.formatMessage(props.filterStatus ? layoutMessage.action.yes : layoutMessage.action.no) }
-        />
-        <ListItemSecondaryAction>
-          <Switch
-            color="secondary"
-            checked={props.filterStatus || false}
-            onChange={props.handleFilterStatusOnChange}
-          />
-        </ListItemSecondaryAction>
-      </ListItem>
-      <Divider />
-
       </List>
 
       <FilterCompany 

@@ -211,7 +211,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
 
   // filter year
   setFilterYearVisibility: (prevState: OwnState) => () => ({
-    isFilterYearOpen: !prevState.isFilterFinalOpen
+    isFilterYearOpen: !prevState.isFilterYearOpen
   }),
   setFilterYear: () => (data?: ICollectionValue) => ({
     isFilterYearOpen: false,
