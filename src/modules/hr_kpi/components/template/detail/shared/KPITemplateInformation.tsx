@@ -43,6 +43,12 @@ const kpiTemplateInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
           value={props.data.position && props.data.position.name || 'N/A'}
         />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline
+          label={props.intl.formatMessage(kpiMessage.template.field.note)}
+          value={props.data.note || 'N/A'}
+        />
         {
         props.data.changes &&
         <React.Fragment>

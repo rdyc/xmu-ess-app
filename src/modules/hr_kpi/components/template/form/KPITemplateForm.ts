@@ -276,6 +276,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
             companyUid: values.companyUid,
             positionUid: values.positionUid,
             name: values.name,
+            note: values.note,
             items: []
           };
 
