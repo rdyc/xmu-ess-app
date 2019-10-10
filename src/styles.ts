@@ -394,9 +394,17 @@ const styles = (theme: Theme) =>
     // shift corner
     shiftCorner: {
       [theme.breakpoints.up('md')]: {
-        marginLeft: drawerWidth,
-        marginRight: drawerWidth
+        width: `calc(100% - (100% / 5))`,
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%)'
       },
+      [theme.breakpoints.only('lg')]: {
+        width: `calc(100% - (100% / 4))`,
+      },
+      [theme.breakpoints.only('xl')]: {
+        width: `calc(100% - (100% / 3))`
+      }
     },
     shift: {
       [theme.breakpoints.up('md')]: {
@@ -532,8 +540,22 @@ const styles = (theme: Theme) =>
     },
 
     flex2Column: {
-      width: `calc(100% / 2)`,
-      padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      padding: 0,
+      [theme.breakpoints.up('xs')]: {
+        width: '100%'
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% / 2)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: `calc(100% - (100% / 3))`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: `calc(100% / 2)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      }
     },
 
     flexContent: {
@@ -868,6 +890,12 @@ const styles = (theme: Theme) =>
         height: '1px',
         display: 'block',
         backgroundColor: 'currentColor'
+      }
+    },
+
+    textDecorationNone: {
+      '& a' : {
+        textDecoration: 'none',
       }
     }
   });
