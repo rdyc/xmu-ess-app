@@ -79,7 +79,9 @@ const handlerCreators: HandleCreators<MyCompetencyDetailProps, IOwnHandler> = {
       loadCurrentRequest({
         positionUid: user.position.uid,
         employeeLevel: user.level.uid,
-        isCurrent: true
+        filter: {
+          isCurrent: true
+        }
       });
     }
   },
