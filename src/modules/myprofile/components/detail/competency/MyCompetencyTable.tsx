@@ -88,14 +88,14 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
           <TableRow>
             {/* Category */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
-              <Typography variant="title">
+              <Typography variant="subheading">
                 Category
               </Typography>
             </TableCell>
 
             {/* Current */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
-              <Typography variant="title">
+              <Typography variant="subheading">
                 Current
                 <br/>
                 {
@@ -107,14 +107,14 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
             
             {/* Result */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
-              <Typography variant="title">
+              <Typography variant="subheading">
                 Result
               </Typography>
             </TableCell>
 
             {/* Next */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)}>
-              <Typography variant="title">
+              <Typography variant="subheading">
                 Next
                 <br/>
                 {
@@ -130,7 +130,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
               <TableRow>
 
                 {/* Category */}
-                <TableCell className={classNames(props.classes.toolbar, props.classes.hrTableTitle)}>
+                <TableCell className={classNames(props.classes.hrTableTitle)} style={{verticalAlign: 'top'}}>
                   <Typography variant="body1" color="inherit">
                     {item.categoryLevel.category.name}
                   </Typography> 

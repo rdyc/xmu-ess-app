@@ -8,6 +8,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import * as ReactMarkdown from 'react-markdown';
@@ -28,7 +29,7 @@ const hrCornerPageContent: React.SFC<AllProps> = props => {
         title={intl.formatMessage(hrMessage.corner.field.type, {state: 'Content'})}
       />
       <CardContent>
-        <ReactMarkdown className={props.classes.globalFont} source={data.content} escapeHtml={false} />
+        <ReactMarkdown className={classNames(props.classes.globalFont, props.classes.textDecorationNone)} source={data.content} escapeHtml={false} />
       </CardContent>
     </Card>
   );

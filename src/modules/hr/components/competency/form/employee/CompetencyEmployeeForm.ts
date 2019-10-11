@@ -250,7 +250,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
     const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
 
     if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data) {
+      if (thisResponse && thisResponse.data && this.props.initialValues) {
         // define initial values
         const initialValues: ICompetencyEmployeeFormValue = {
           uid: thisResponse.data.uid,
@@ -258,7 +258,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
           companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
           positionUid: thisResponse.data.positionUid,
           year: thisResponse.data.assessmentYear.toString(),
-          levelRespond: []
+          levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
         };
 
         this.props.setInitialValues(initialValues);
@@ -267,7 +267,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
 
     // to fill the level respond here
     if (thisMapped !== prevMapped) {
-      if (thisMapped && thisMapped.data && thisResponse) {
+      if (thisMapped && thisMapped.data && thisResponse && thisResponse.data) {
         const initialVal: ICompetencyEmployeeFormValue | undefined = this.props.initialValues;
 
         if (initialVal) {

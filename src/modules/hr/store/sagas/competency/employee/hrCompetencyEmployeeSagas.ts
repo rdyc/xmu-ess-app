@@ -88,7 +88,7 @@ function* watchFetchDetailListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}?${params}`, 
+      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}/${action.payload.assessmentYear}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyEmployeeGetDetailListSuccess(response.body)),
       ]), 
