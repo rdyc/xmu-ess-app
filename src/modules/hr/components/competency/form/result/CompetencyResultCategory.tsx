@@ -57,6 +57,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => (
     />
     <Table>
       <TableBody>
+        {/* Responder row */}
         <TableRow>
           <TableCell>
             
