@@ -117,6 +117,7 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
       .of(
         Yup.object().shape({
           note: Yup.string()
+            .max(300)
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
             .when('levelUid', ({
               is: (val) => val !== '',

@@ -119,6 +119,7 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
         Yup.object().shape({
           note: Yup.string()
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
+            .max(300)
             .when('levelUid', ({
               is: (val) => val !== '',
               then: Yup.string().required()

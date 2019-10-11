@@ -97,6 +97,7 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
                           onChange={() => {
                             props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
                           }}
+                          disabled={props.formikBag.isSubmitting}
                           value={level.uid}
                         />
                       )}
