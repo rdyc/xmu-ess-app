@@ -105,15 +105,34 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                       }
                     </TableCell>
                   </TableRow>
-                  
+
                   {
-                    // NOTE HERE
+                    // NOTE RESPONDER HERE
+                    props.responders.map(responder => 
+                      !responder.isHR &&
+                      responder.items.length > 0 &&
+                      responder.items.find(findData => findData.levelUid === level.uid) &&
+                      <TableRow>
+                        <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
+                          <Typography>
+                            {
+                              `${responder.employee && responder.employee.fullName} - 
+                              ${findNote(responder.items.find(findData => findData.levelUid === level.uid))}`
+                            }
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  }
+
+                  {
+                    // NOTE HR HERE
                     props.data.items.find(findData => findData.levelUid === level.uid) &&
                     <TableRow>
                       <TableCell colSpan={props.responders.length + 1}>
                         <Typography>
                           {
-                            findNote(props.data.items.find(findData => findData.levelUid === level.uid))
+                            `Hr - ${findNote(props.data.items.find(findData => findData.levelUid === level.uid))}`
                           }
                         </Typography>
                       </TableCell>
