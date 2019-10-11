@@ -2,7 +2,8 @@ import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
   IKPIEmployeeGetAllRequest, 
   IKPIEmployeeGetByIdRequest, 
-  IKPIEmployeePostRequest, 
+  IKPIEmployeeGetLatestRequest, 
+  IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
 } from '@kpi/classes/queries/employee';
 import { IKPIEmployee, IKPIEmployeeDetail } from '@kpi/classes/response/employee';
@@ -17,6 +18,10 @@ export const enum KPIEmployeeAction {
   GET_BY_ID_SUCCESS = '@@kpi/employee/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@kpi/employee/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@kpi/employee/GET_BY_ID_DISPOSE',
+  GET_LATEST_REQUEST = '@@kpi/employee/GET_LATEST_REQUEST',
+  GET_LATEST_SUCCESS = '@@kpi/employee/GET_LATEST_SUCCESS',
+  GET_LATEST_ERROR = '@@kpi/employee/GET_LATEST_ERROR',
+  GET_LATEST_DISPOSE = '@@kpi/employee/GET_LATEST_DISPOSE',
   POST_REQUEST = '@@kpi/employee/POST_REQUEST',
   POST_SUCCESS = '@@kpi/employee/POST_SUCCESS',
   POST_ERROR = '@@kpi/employee/POST_ERROR',
@@ -38,6 +43,12 @@ export const KPIEmployeeGetByIdRequest = (request: IKPIEmployeeGetByIdRequest) =
 export const KPIEmployeeGetByIdSuccess = (response: IResponseSingle<IKPIEmployeeDetail>) => action(KPIEmployeeAction.GET_BY_ID_SUCCESS, response);
 export const KPIEmployeeGetByIdError = (error: any) => action(KPIEmployeeAction.GET_BY_ID_ERROR, error);
 export const KPIEmployeeGetByIdDispose = () => action(KPIEmployeeAction.GET_BY_ID_DISPOSE);
+
+// get latest
+export const KPIEmployeeGetLatestRequest = (request: IKPIEmployeeGetLatestRequest) => action(KPIEmployeeAction.GET_LATEST_REQUEST, request);
+export const KPIEmployeeGetLatestSuccess = (response: IResponseSingle<IKPIEmployee>) => action(KPIEmployeeAction.GET_LATEST_SUCCESS, response);
+export const KPIEmployeeGetLatestError = (error: any) => action(KPIEmployeeAction.GET_LATEST_ERROR, error);
+export const KPIEmployeeGetLatestDispose = () => action(KPIEmployeeAction.GET_LATEST_DISPOSE);
 
 // post
 export const KPIEmployeePostRequest = (request: IKPIEmployeePostRequest) => action(KPIEmployeeAction.POST_REQUEST, request);

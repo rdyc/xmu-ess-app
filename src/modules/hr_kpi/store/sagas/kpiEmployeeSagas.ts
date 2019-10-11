@@ -9,6 +9,10 @@ import {
   KPIEmployeeGetByIdError,
   KPIEmployeeGetByIdRequest,
   KPIEmployeeGetByIdSuccess,
+  KPIEmployeeGetLatestDispose,
+  KPIEmployeeGetLatestError,
+  KPIEmployeeGetLatestRequest,
+  KPIEmployeeGetLatestSuccess,
   KPIEmployeePostError,
   KPIEmployeePostRequest,
   KPIEmployeePostSuccess,
@@ -71,6 +75,27 @@ function* watchGetByIdRequest() {
   };
 
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+function* watchGetLatestRequest() {
+  const worker = (action: ReturnType<typeof KPIEmployeeGetLatestRequest>) => {
+    return saiyanSaga.fetch({
+      host: newHostAddress,
+      method: 'get',
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiAssignUid}/latest`,
+      successEffects: (response: IApiResponse) => [
+        put(KPIEmployeeGetLatestSuccess(response.body))
+      ],
+      failureEffects: (response: IApiResponse) => [
+        put(KPIEmployeeGetLatestError(response))
+      ],
+      errorEffects: (error: TypeError) => [
+        put(KPIEmployeeGetLatestError(error.message))
+      ]
+    });
+  };
+
+  yield takeEvery(Action.GET_LATEST_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -160,6 +185,7 @@ function* watchSwitchAccess() {
     yield all([
       put(KPIEmployeeGetAllDispose()),
       put(KPIEmployeeGetByIdDispose()),
+      put(KPIEmployeeGetLatestDispose()),
     ]);
   }
 
@@ -170,6 +196,7 @@ function* kpiEmployeeSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
+    fork(watchGetLatestRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess),

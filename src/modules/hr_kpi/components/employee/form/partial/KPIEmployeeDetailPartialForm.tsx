@@ -4,7 +4,6 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { InputSemesterOption } from '@layout/components/input/semester';
 import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -21,9 +20,13 @@ type KPIEmployeeDetailPartialFormProps = {
   
   handleLoadAssign: (employeeUid: string, year: string) => void;
   handleSetLoadAssign: () => void;
+  handleLoadLatest: (employeeUid: string) => void;
+  handleSetLoadLatest: () => void;
   assignData: IKPIEmployeeFormValue;
+  periodData: number;
   filterAccountEmployee: IEmployeeListFilter;
   loadAssign: boolean;
+  loadLatest: boolean;
 };
 
 const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartialFormProps> = props => {
@@ -36,13 +39,19 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       templateName: props.assignData.templateName,
       statusType: props.formikBag.values.statusType,
       year: props.formikBag.values.year,
-      period: props.formikBag.values.period,
+      period: props.assignData.period,
       revision: props.formikBag.values.revision,
       totalScore: props.formikBag.values.totalScore,
       items: props.assignData.items,
     });
 
     props.handleSetLoadAssign();
+  };
+
+  const setPeriodValue = () => {
+    props.formikBag.setFieldValue('period', props.periodData.toString());
+
+    props.handleSetLoadLatest();
   };
   
   return (
@@ -124,7 +133,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
         <Field
           name="year"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <InputYearOption withFuture>
+            <InputYearOption>
               <SelectField
                 isSearchable
                 isDisabled={props.formikBag.isSubmitting}
@@ -150,7 +159,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
           )}
         />
         
-        <Field
+        {/* <Field
           name="period"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
             <InputSemesterOption>
@@ -174,6 +183,25 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
                 }}
               />
             </InputSemesterOption>
+          )}
+        /> */}
+
+        <Field
+          name="period"
+          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              {...field}
+              disabled={props.formikBag.isSubmitting}
+              label={props.intl.formatMessage(kpiMessage.employee.field.period)}
+              value={props.formikBag.values.period !== '' &&
+                (parseInt(props.formikBag.values.period, 10) === 1 && 
+                  props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || 
+                  props.intl.formatMessage(kpiMessage.employee.field.periodFullYear)) ||
+                ''}
+              helperText={form.touched.period && form.errors.period}
+              error={form.touched.period && Boolean(form.errors.period)}
+            />
           )}
         />
 
@@ -216,6 +244,10 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       {
         props.loadAssign &&
         setAssignValue()
+      }
+      {
+        props.loadLatest &&
+        setPeriodValue()
       }
     </Card>
   );
