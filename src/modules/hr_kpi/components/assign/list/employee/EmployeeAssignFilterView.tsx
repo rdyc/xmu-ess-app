@@ -154,7 +154,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         <ListItem>
           <ListItemText 
             primary={props.intl.formatMessage(kpiMessage.employee.field.isNotAssigned)}
-            secondary={props.intl.formatMessage(props.filterNoAssign ? layoutMessage.action.yes : layoutMessage.action.no) }
+            secondary={props.intl.formatMessage(props.filterNotAssign ? layoutMessage.action.yes : layoutMessage.action.no) }
           />
           <ListItemSecondaryAction>
             <Switch

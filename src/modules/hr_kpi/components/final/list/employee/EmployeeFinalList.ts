@@ -81,8 +81,8 @@ const createProps: mapper<AccountEmployeeFinalListProps, IOwnState> = (props: Ac
     // state.useSuperOrdinate = false,
     state.isActive = request.filter.isActive;
   } else {
-    state.useAccess = false;
-    // state.isActive = true,
+    state.useAccess = false,
+    state.isActive = true;
     // state.useSuperOrdinate = false;
   }
 
