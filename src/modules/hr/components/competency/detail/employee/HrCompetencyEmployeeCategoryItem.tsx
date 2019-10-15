@@ -1,6 +1,7 @@
-import { IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
+import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Done } from '@material-ui/icons';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,43 +19,10 @@ type AllProps
 
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
 
-  const findData = (categoryUid: string) => {
-    const find = props.data.items.find(item => item.categoryUid === categoryUid);
-
-    if (find) {
-      return (
-        <React.Fragment>
-          <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
-            <Typography className={props.classes.hrTableChild}>
-              {`Level ${find.level && find.level.level} - ${find.level && find.level.description}`}
-            </Typography>
-          </TableCell>
-          <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
-            <Typography>
-              <ul className={props.classes.hrTableChild}>
-              {
-                find.level && find.level.indicators.map(indicator =>
-                  <li key={indicator.uid}>
-                    {indicator.description}
-                  </li>
-                )
-              }    
-              </ul>
-            </Typography>
-          </TableCell>
-        </React.Fragment>
-      );
-    } 
-
-    return (
-      <TableCell colSpan={2}>
-        <Typography variant="body1" color="inherit">
-          {props.intl.formatMessage(hrMessage.competency.field.zeroItem, {item: 'level'})}
-        </Typography>
-      </TableCell>
-    );
+  const findNote = (item?: ICompetencyEmployeeItem) => {
+    return item && item.note;
   };
-
+  
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader 
@@ -72,11 +40,52 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
               </Typography>
             </TableCell>
           </TableRow>
-          <TableRow>
-            {
-              findData(item.category.uid)
-            }
-          </TableRow>
+          {
+            item.category.levels.map((level) =>           
+            <React.Fragment key={level.uid}>         
+              <TableRow>
+                <TableCell className={props.classes.hrTableVerAlign}>
+                    <Typography className={props.classes.hrTableChild}>
+                      {`Level ${level.level} - ${level.description}`}
+                    </Typography>
+                    <Typography className={props.classes.hrTableChild}>
+                      <ul>
+                      {
+                        level.indicators.map(indicator =>
+                          <li key={indicator.uid}>
+                            {indicator.description}
+                          </li>
+                        )
+                      }    
+                      </ul>
+                    </Typography>
+                </TableCell>
+                <TableCell style={{padding: '0 15px', textAlign: 'center'}}>
+                  {
+                    props.data.items.find(find => find.levelUid === level.uid) &&
+                    <Typography>
+                      <Done />
+                    </Typography>
+                  }
+                </TableCell>
+              </TableRow>
+              
+              {
+                // NOTE HERE
+                props.data.items.find(find => find.levelUid === level.uid) &&
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Typography>
+                      {
+                        findNote(props.data.items.find(find => find.levelUid === level.uid))
+                      }
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              }
+            </React.Fragment>
+            ) 
+          }
         </React.Fragment>
         )
       }

@@ -391,20 +391,18 @@ const styles = (theme: Theme) =>
         marginTop: theme.spacing.unit * 7,
       }
     },
+
     // shift corner
     shiftCorner: {
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing.unit * 8.5,
+      },
       [theme.breakpoints.up('md')]: {
-        width: `calc(100% - (100% / 5))`,
+        width: `982px`,
         position: 'absolute',
         left: '50%',
         transform: 'translateX(-50%)'
       },
-      [theme.breakpoints.only('lg')]: {
-        width: `calc(100% - (100% / 4))`,
-      },
-      [theme.breakpoints.only('xl')]: {
-        width: `calc(100% - (100% / 3))`
-      }
     },
     shift: {
       [theme.breakpoints.up('md')]: {
@@ -897,6 +895,39 @@ const styles = (theme: Theme) =>
       '& a' : {
         textDecoration: 'none',
       }
+    },
+    
+    contentCenter: {
+      position: 'absolute',
+      left: '50%',
+      transform: ''
+    },
+
+    // this is for elipsis on 2nd / .. lane *depneds on line clamp
+    textElipsis2ndLine: {
+      overflow: 'hidden',
+      display: '-webkit-box',
+      '-webkit-box-orient': 'vertical',
+      '-webkit-line-clamp': '2'
+    },
+
+    // this is for elipsis on 1st line
+    textElipsis: {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis'
+    },
+
+    breadcrumb: {
+      background: '#ebebeb', 
+      borderRadius: '5px'
+    },
+
+    breadcrumbChild: {
+      textTransform: 'capitalize',
+      display: 'inline',
+      verticalAlign: 'middle',
+      marginLeft: '4px'
     }
   });
 

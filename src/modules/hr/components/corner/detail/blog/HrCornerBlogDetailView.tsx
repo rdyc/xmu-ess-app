@@ -5,6 +5,7 @@ import { Card, Divider, Grid, IconButton, List, ListItem, ListItemText, Typograp
 import { Refresh } from '@material-ui/icons';
 import * as classNames from 'classnames';
 import * as React from 'react';
+import { BreadcrumbCorner } from '../../breadcrumb/BreadcrumbCorner';
 import { TopbarCorner } from '../../topbar/TopbarCorner';
 import { HrCornerBlogContent } from './HrCornerBlogContent';
 import { HrCornerBlogDetailProps } from './HrCornerBlogDetail';
@@ -14,14 +15,11 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
   const render = (
     <React.Fragment>
       <TopbarCorner 
-        parentTitle={props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: 'Corner Blog'})}
-        parentUrl={'/corner/blog'}
-
-        childTitle={props.intl.formatMessage(
+        backUrl={`/corner/blog/${props.match.params.categorySlug}`}
+        title={props.intl.formatMessage(
           hrMessage.shared.page.listTitle, 
-          {state: `${props.match.params.categorySlug.replace(/-/g, ' ')} > ${props.match.params.pageSlug.replace(/-/g, ' ')}`}
+          {state: `${props.match.params.pageSlug.replace(/-/g, ' ')}`}
         )}
-        childUrl={`/corner/blog/${props.match.params.categorySlug}`}
 
         appBarCustomComponent={
           <IconButton
@@ -36,6 +34,30 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
         className={classNames(props.classes.content, props.classes.shiftCorner)}
       >
         <Grid container spacing={16}>
+
+          {/* Bread crumb */}
+          <Grid item xs={12}
+            className={classNames(props.classes.textElipsis, props.classes.breadcrumb)}          
+          >
+            <BreadcrumbCorner 
+              child={() => ([
+                <Typography 
+                  noWrap
+                  className={classNames(props.classes.breadcrumbChild)}
+                >
+                  / {props.match.params.categorySlug.replace(/-/g, ' ')} 
+                </Typography>,
+                <Typography 
+                  noWrap
+                  className={classNames(props.classes.breadcrumbChild)}
+                >
+                  / {props.match.params.pageSlug.replace(/-/g, ' ')}
+                </Typography>
+              ])}
+            />
+          </Grid>
+          
+          {/* Detail */}
           <Grid item xs={12} md={8} lg={8}>
             {
               props.hrCornerBlogState.detail.isLoading &&
@@ -53,6 +75,10 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
           <Grid item xs={12} md={4} lg={4}>
             <Card>
               <List>
+                {
+                  props.hrCornerBlogState.latestByCategory.isLoading &&
+                  <LoadingCircular />
+                }
                 {
                   !props.hrCornerBlogState.latestByCategory.isLoading &&
                   props.hrCornerBlogState.latestByCategory.response &&
@@ -73,15 +99,19 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
                         <ListItemText 
                           primary={
                             <React.Fragment>
-                              <Typography variant="title">
+                              <Typography variant="title" className={props.classes.textElipsis2ndLine}>
                                 {item.title}
                               </Typography>
                               <Typography variant="caption">
-                                {props.intl.formatDate(item.publishedAt, GlobalFormat.Date)}
+                                {props.intl.formatDate(item.publishedAt, GlobalFormat.Date)} by {item.publishedBy}
                               </Typography>
                             </React.Fragment>
                           }
-                          secondary={item.headline}
+                          secondary={
+                            <Typography className={props.classes.textElipsis2ndLine}>
+                              {item.headline}
+                            </Typography>
+                          }
                         />
                       </ListItem>
                     </React.Fragment>

@@ -106,9 +106,14 @@ function* watchFetchNextRequest() {
 
 function* watchFetchCurrentRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedGetCurrentRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/mappeds/${action.payload.positionUid}/${action.payload.employeeLevel}`,
+      path: `/v1/mappeds/${action.payload.positionUid}/${action.payload.employeeLevel}?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetCurrentSuccess(response.body)),
       ]), 

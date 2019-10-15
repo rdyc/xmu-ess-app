@@ -45,6 +45,9 @@ export const hrCornerField = defineMessages({
   endPlaceholder: { id: `${prefix}.field.end.placeholder`},
 
   type: { id: `${prefix}.field.type`},
+  select: { id: `${prefix}.field.select`},
+
+  parentTitle: { id: `${prefix}.field.parent.title`},
 });
 
 // helper

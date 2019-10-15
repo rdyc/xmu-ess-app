@@ -1,3 +1,4 @@
+import { IHrCornerBlogGetAllFilter } from '@hr/classes/filters';
 import { IHrCompetencyField } from '@hr/classes/types';
 import { WithHrCornerBlog, withHrCornerBlog } from '@hr/hoc/withHrCornerBlog';
 import { ICollectionValue } from '@layout/classes/core';
@@ -29,10 +30,14 @@ interface IOwnOption {
 
 interface IOwnState {
   fields: ICollectionValue[];
+  page?: number;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
+  setPageOne: StateHandler<IOwnState>;
+  setPageNext: StateHandler<IOwnState>;
+  setPagePrevious: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -67,16 +72,28 @@ const stateUpdaters: StateUpdaters<HrCornerBlogListProps, IOwnState, IOwnStateUp
     ...prevState,
     ...newState
   }),
+  setPageNext: (state: IOwnState) => () => ({
+    page: (state.page || 1) + 1
+  }),
+  setPagePrevious: (state: IOwnState) => () => ({
+    page: (state.page || 1) > 1 ? (state.page || 1) - 1 : 1
+  }),
+  setPageOne: (state: IOwnState) => () => ({
+    page: 1
+  }),
 };
 
 const handlerCreators: HandleCreators<HrCornerBlogListProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCornerBlogListProps) => () => {
     const { loadAllRequest } = props.hrCornerBlogDispatch;
 
+    const filter: IHrCornerBlogGetAllFilter = {
+      page: props.page,
+      direction: 'descending'
+    };
+
     loadAllRequest({
-      filter: {
-        direction: 'descending'
-      }
+      filter
     });
   },
   handleOnLoadApiSearch: (props: HrCornerBlogListProps) => (find?: string, findBy?: string) => {
@@ -109,6 +126,20 @@ const handlerCreators: HandleCreators<HrCornerBlogListProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<HrCornerBlogListProps, IOwnState> = {
   componentDidMount() {
     this.props.handleOnLoadApi();
+  },
+  componentDidUpdate(prevProps: HrCornerBlogListProps) {
+    const isChanged = !shallowEqual(
+      {
+        page: this.props.page,
+      }, 
+      {
+        page: prevProps.page,
+      }
+    );
+
+    if (isChanged) {
+      this.props.handleOnLoadApi();
+    }
   }
 };
 

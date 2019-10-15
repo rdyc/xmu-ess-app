@@ -51,14 +51,14 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
     return undefined;
   };
 
-  const findResult = (item: IHrCompetencyMappedNext) => {
+  const findResult = (item: IHrCompetencyMappedNext, currentLevel: number) => {
     if (data) {
       const result: ICompetencyEmployeeItemFinal | undefined = data.items.find(fnd => fnd.categoryUid === item.categoryLevel.categoryUid);
   
       if (result) {
         return (
           <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw'}}>
-            <Typography className={props.classes.hrTableChild}>
+            <Typography className={props.classes.hrTableChild} color={result.level && result.level.level >= currentLevel ? 'primary' : 'error' }>
               {`Level ${result.level && result.level.level} - ${result.level && result.level.description}`}
             </Typography>
             <Typography className={props.classes.hrTableChild}>
@@ -158,7 +158,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
                 {
                   data &&
                   data.items.length > 0 ?
-                  findResult(item)
+                  findResult(item, item.categoryLevel.level)
                   :
                   <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw'}}>
                     <Typography style={{textAlign: 'center'}}>

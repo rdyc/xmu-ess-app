@@ -23,6 +23,7 @@ const HrCornerCategoryPartial: React.ComponentType<HrCornerCategoryPartialProps>
             {...field}
             fullWidth
             required
+            multiline
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"

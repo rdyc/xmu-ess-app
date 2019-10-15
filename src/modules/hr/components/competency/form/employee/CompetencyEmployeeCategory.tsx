@@ -1,9 +1,9 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, FormControlLabel, Radio, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -69,40 +69,71 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
         <FieldArray 
           name="levelRespond"
           render={(fields: FieldArrayRenderProps) =>
-            item.category.levels.map((level) =>           
-              <TableRow>
-                <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
-                  <Field 
-                    name={`levelRespond.${index}`}
-                    render={({field}: FieldProps<ICompetencyEmployeeFormValue>) => (
-                      <FormControlLabel
-                        className={props.classes.hrTableChild}
-                        control={<Radio 
+            item.category.levels.map((level) =>
+              <React.Fragment key={level.uid}>
+                <TableRow>
+                  <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
+                    <Typography className={props.classes.hrTableChild}>
+                      {`Level ${level.level} - ${level.description}`}
+                    </Typography>
+                    <Typography className={props.classes.hrTableChild}>
+                      <ul>
+                      {
+                        level.indicators.map(indicator =>
+                          <li key={indicator.uid}>
+                            {indicator.description}
+                          </li>
+                        )
+                      }    
+                      </ul>
+                    </Typography>
+                  </TableCell>
+                  <TableCell style={{padding: '0 15px'}}>
+                    <Field 
+                      name={`levelRespond.${index}`}
+                      render={({field}: FieldProps<ICompetencyEmployeeFormValue>) => (
+                        <Radio 
                           checked={Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid))}
                           onChange={() => {
                             props.formikBag.setFieldValue(`levelRespond.${index}.levelUid`, level.uid);
                           }}
-                        />}
-                        value={level.uid}
-                        label={`Level ${level.level} - ${level.description}`}
-                      />
-                    )}
-                  />
-                </TableCell>
-                <TableCell colSpan={1} className={props.classes.hrTableVerAlign}>
-                  <Typography>
-                    <ul className={props.classes.hrTableChild}>
-                    {
-                      level.indicators.map(indicator =>
-                        <li>
-                          {indicator.description}
-                        </li>
-                      )
-                    }    
-                    </ul>
-                  </Typography>
-                </TableCell>
-              </TableRow>
+                          disabled={props.formikBag.isSubmitting}
+                          value={level.uid}
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+                {
+                  Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
+                    <TableRow>
+                      <TableCell colSpan={2}>
+                        <Field
+                          name={`levelRespond.${index}.note`}
+                          render={({ field, form }: FieldProps<ICompetencyEmployeeFormValue>) => {
+                            const error = getIn(form.errors, `levelRespond.${index}.note`);
+                            const touch = getIn(form.touched, `levelRespond.${index}.note`);
+
+                            return (
+                              <TextField
+                                {...field}
+                                fullWidth
+                                required
+                                disabled={form.isSubmitting}
+                                margin="normal"
+                                autoComplete="off"
+                                label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
+                                placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Type any note'})}
+                                helperText={touch && error}
+                                error={touch && Boolean(error)}
+                              />
+                            );
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  }
+              </React.Fragment>           
             ) 
           }
         />

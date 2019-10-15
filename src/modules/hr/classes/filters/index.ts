@@ -17,6 +17,7 @@ export * from './competency/indicator/IHrCompetencyIndicatorGetListFilter';
 // mapped
 export * from './competency/mapped/IHrCompetencyMappedGetAllFilter';
 export * from './competency/mapped/IHrCompetencyMappedGetListFilter';
+export * from './competency/mapped/IHrCompetencyMappedGetNextFilter';
 
 // assessment
 export * from './competency/assessment/IHrCompetencyAssessmentGetAllFilter';
