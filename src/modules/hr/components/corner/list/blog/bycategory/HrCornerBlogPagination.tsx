@@ -27,7 +27,9 @@ const hrCornerBlogPagination: React.SFC<AllProps> = props => (
       !props.isLoading &&
       props.metadata &&
       props.metadata.paginate &&
-      <Toolbar>
+      <Toolbar
+        disableGutters
+      >
         <Tooltip
           placement="right"
           title={props.intl.formatMessage(layoutMessage.tooltip.prevPage)}

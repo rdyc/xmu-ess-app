@@ -1,3 +1,4 @@
+import { BreadcrumbCorner } from '@hr/components/corner/breadcrumb/BreadcrumbCorner';
 import { TopbarCorner } from '@hr/components/corner/topbar/TopbarCorner';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
@@ -14,10 +15,8 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
   const render = (
     <React.Fragment>
       <TopbarCorner 
-        parentTitle={props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: 'Corner Blog'})}
-        parentUrl={'/corner/blog'}
-
-        childTitle={props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: `${props.match.params.categorySlug.replace(/-/g, ' ')}`})}
+        backUrl={'/corner/blog'}
+        title={props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: `${props.match.params.categorySlug.replace(/-/g, ' ')}`})}
 
         appBarSearchComponent={
           <SearchBox
@@ -32,13 +31,23 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
         className={classNames(props.classes.content, props.classes.shiftCorner)}
       >
         <Grid container spacing={16}>
-          {/* <Grid item xs={12}>
-            <div className={props.classes.titleText}>
-              <Typography variant="title">
-                {props.intl.formatMessage(hrMessage.corner.field.type, {state: 'Blog'})}
-              </Typography>
-            </div>
-          </Grid> */}
+          {/* Bread crumb */}
+          <Grid item xs={12}
+            className={classNames(props.classes.textElipsis, props.classes.breadcrumb)}          
+          >
+            <BreadcrumbCorner 
+              child={() => ([
+                <Typography 
+                  noWrap
+                  className={classNames(props.classes.breadcrumbChild)}
+                >
+                  / {props.match.params.categorySlug.replace(/-/g, ' ')} 
+                </Typography>
+              ])}
+            />
+          </Grid>
+
+          {/* List */}
           {
             props.hrCornerBlogState.allByCategory.isLoading &&
             <Grid item xs={12}>
@@ -53,16 +62,20 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
             props.hrCornerBlogState.allByCategory.response.data.length > 0 ?
             props.hrCornerBlogState.allByCategory.response.data.map(item =>
               <Grid item xs={12} md={6} xl={6} key={item.slug}>
-                <Card square className={props.classes.buttonHover}>
+                <Card square className={props.classes.buttonHover} style={{height: '168px'}}>
                   <CardActionArea onClick={() => {
                     props.history.push(`/corner/blog/${props.match.params.categorySlug}/${item.slug}`);
                   }}>
                     <CardHeader
-                      title={item.title}
+                      title={
+                        <Typography variant="title" className={props.classes.textElipsis2ndLine}>
+                          {item.title}
+                        </Typography>
+                      }
                       subheader={`${props.intl.formatDate(item.publishedAt, GlobalFormat.Date)} by ${item.publishedBy}`}
                     />
-                    <CardContent>
-                      <Typography>
+                    <CardContent style={{height: '168px'}}>
+                      <Typography className={props.classes.textElipsis2ndLine}>
                         {item.headline}
                       </Typography>
                     </CardContent>
@@ -78,44 +91,6 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
             </Grid>
             )
           }
-          {/* {
-            props.blogs.length > 0 &&
-            props.blogs.map(blog =>
-              blog.items.map(item =>
-                <Grid item xs={12} md={6} xl={6} key={item.slug}>
-                  <Card square className={props.classes.buttonHover}>
-                    <CardActionArea onClick={() => {
-                      props.history.push(`/corner/blog/${props.match.params.categorySlug}/${item.slug}`);
-                    }}>
-                      <CardHeader
-                        title={item.title}
-                        subheader={props.intl.formatDate(item.publishedAt, GlobalFormat.Date)}
-                      />
-                      <CardContent>
-                        <Typography>
-                          {item.headline}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>  
-              )
-            ) */}
-          {/* {
-            props.hrCornerBlogState.allByCategory.response &&
-            props.hrCornerBlogState.allByCategory.response.metadata.paginate &&
-            <Grid item xs={12} style={{textAlign: 'center'}}>
-              <IconButton
-                color="inherit"
-                disabled={!props.hrCornerBlogState.allByCategory.response.metadata.paginate.next}
-                onClick={() => props.handleOnLoadApi(
-                  props.hrCornerBlogState.allByCategory.response &&
-                  props.hrCornerBlogState.allByCategory.response.metadata.paginate && props.hrCornerBlogState.allByCategory.response.metadata.paginate.current + 1)}
-              >
-                <ExpandMore/>
-              </IconButton>
-            </Grid>
-          } */}
           <Grid item xs={12}>
             {
               props.hrCornerBlogState.allByCategory.response &&
