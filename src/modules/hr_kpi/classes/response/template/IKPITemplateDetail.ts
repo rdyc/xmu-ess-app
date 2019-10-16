@@ -9,6 +9,7 @@ export interface IKPITemplateDetail {
   positionUid: string;
   position?: IPosition | null;
   name: string;
+  note?: string;
   items?: IKPITemplateItem[] | null;
   changes: IBaseChanges | null;
 }

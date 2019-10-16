@@ -19,9 +19,9 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { FilterCompany } from '@lookup/components/company/select';
-import { FilterPosition } from '@lookup/components/position/select';
-import { FilterRole } from '@lookup/components/role/select';
 import { AccountEmployeeAssignFilterProps } from './EmployeeAssignFilter';
 
 export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProps> = props => (
@@ -81,7 +81,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         </ListItem>
         <Divider />
         
-        <ListItem button onClick={props.handleFilterPositionVisibility} disabled={!props.filterCompany}>
+        {/* <ListItem button onClick={props.handleFilterPositionVisibility} disabled={!props.filterCompany}>
           <ListItemText 
             primary={props.intl.formatMessage(accountMessage.employee.filter.position)}
             secondary={props.filterPosition && props.filterPosition.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -114,7 +114,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
             />
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         {/* <ListItem button onClick={props.handleFilterRoleVisibility} disabled={props.filterRoleValue && props.filterCompany ? false : true}>
           <ListItemText 
@@ -151,6 +151,61 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         </ListItem>
         <Divider />
 
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(kpiMessage.employee.field.isNotAssigned)}
+            secondary={props.intl.formatMessage(props.filterNotAssign ? layoutMessage.action.yes : layoutMessage.action.no) }
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="secondary"
+              checked={props.filterNotAssign || false}
+              onChange={props.handleFilterNotAssignOnChange}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterFinalVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+            secondary={props.filterFinal && props.filterFinal.name || props.intl.formatMessage(layoutMessage.text.all)} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              (props.filterFinal) &&
+              <IconButton onClick={props.handleFilterFinalOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterFinalVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterYearVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(kpiMessage.employee.field.year)}
+            secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.all)} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              (props.filterYear) &&
+              <IconButton onClick={props.handleFilterYearOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterYearVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
       </List>
 
       <FilterCompany 
@@ -162,7 +217,28 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         onClose={props.handleFilterCompanyOnClose}        
       />
 
-      <FilterPosition 
+      <DialogValue
+        title={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+        isOpen={props.isFilterFinalOpen}
+        hideBackdrop={true}
+        items={props.finalStatus}
+        value={props.filterFinal && props.filterFinal.value}
+        onSelected={props.handleFilterFinalOnSelected}
+        onClose={props.handleFilterFinalOnClose}
+        isCompletion={true}
+      />
+
+      <DialogValue
+        title={props.intl.formatMessage(kpiMessage.employee.field.year)}
+        isOpen={props.isFilterYearOpen}
+        hideBackdrop={true}
+        items={props.yearOptions}
+        value={props.filterYear && props.filterYear.value}
+        onSelected={props.handleFilterYearOnSelected}
+        onClose={props.handleFilterYearOnClose}
+      />
+
+      {/* <FilterPosition 
         title={props.intl.formatMessage(accountMessage.employee.filter.position)}
         filter={props.filterPositionValue}
         hideBackdrop={true}
@@ -180,7 +256,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
         onSelected={props.handleFilterRoleOnSelected}
         onClose={props.handleFilterRoleOnClose}
         filter={props.filterRoleValue}
-      />
+      /> */}
     </Dialog>
   </React.Fragment>
 );

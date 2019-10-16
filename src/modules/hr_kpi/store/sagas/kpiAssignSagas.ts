@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}?${params}`,
+      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetAllSuccess(response.body)),
       ],
@@ -61,7 +61,7 @@ function* watchGetByYearRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
+      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByYearSuccess(response.body))
       ],
@@ -82,7 +82,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
+      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdSuccess(response.body))
       ],
@@ -103,7 +103,7 @@ function* watchPostBulkRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/assign`,
+      path: `/v1/hr/kpi/assign`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),
@@ -145,7 +145,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
+      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),

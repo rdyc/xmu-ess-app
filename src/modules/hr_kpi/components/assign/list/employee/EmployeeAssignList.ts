@@ -2,7 +2,6 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -21,10 +20,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllFilter } from '@account/classes/filters';
 import { AccountEmployeeField } from '@account/classes/types';
+import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
 import { IEmployeeKPI } from '@kpi/classes/response';
 import { withEmployeeKPI, WithEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { IAccountEmployeeFilterResult } from './EmployeeAssignFilter';
 import { EmployeeAssignListView } from './EmployeeAssignListView';
 
@@ -78,12 +78,15 @@ const createProps: mapper<AccountEmployeeAssignListProps, IOwnState> = (props: A
     state.companyUids = request.filter.companyUids,
     state.positionUids = request.filter.positionUids,
     state.useAccess = request.filter.useAccess,
-    state.useSuperOrdinate = false,
+    state.isFinal = request.filter.isFinal,
+    state.year = request.filter.year,
+    state.isNotAssigned = request.filter.isNotAssigned,
+    // state.useSuperOrdinate = false,
     state.isActive = request.filter.isActive;
   } else {
-    state.useAccess = true,
-    state.isActive = true,
-    state.useSuperOrdinate = false;
+    state.useAccess = false,
+    state.isActive = true;
+    // state.useSuperOrdinate = false;
   }
 
   return state;
@@ -93,7 +96,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignListProps, IOwnState, IO
   setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (state: IOwnState) => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
+  setFilterApplied: () => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   })
@@ -106,11 +109,14 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IEmployeeAllFilter = {
+      const filter: IEmployeeKPIGetAllFilter = {
         companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        useAccess: props.useAccess,
+        // positionUids: props.positionUids,
+        useAccess: false,
         isActive: props.isActive,
+        isFinal: props.isFinal,
+        isNotAssigned: props.isNotAssigned,
+        year: props.year,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -158,12 +164,14 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
     key: index,
     primary: item.company ? item.company.name : 'N/A',
     secondary: item.fullName,
-    tertiary: item.yearAssign && item.yearAssign.toString() || 'N/A',
-    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    tertiary: item.lastAssign && item.lastAssign.year.toString() || 'N/A',
+    quaternary: item.lastAssign && (item.lastAssign.isFinal && 
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)) || 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: AccountEmployeeAssignListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: AccountEmployeeAssignListProps) => () => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AccountEmployeeAssignListProps) => (filter: IAccountEmployeeFilterResult) => {
@@ -171,9 +179,12 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
   },
   handleFilterBadge: (props: AccountEmployeeAssignListProps) => () => {
     return props.companyUids !== undefined || 
-      props.positionUids !== undefined || 
-      props.useAccess === true || 
-      props.isActive === true;
+      // props.positionUids !== undefined || 
+      // props.useAccess === true || 
+      props.isActive === true ||
+      props.isFinal !== undefined ||
+      props.isNotAssigned !== undefined ||
+      props.year !== undefined;
   },
 };
 
@@ -183,15 +194,21 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignListProps, IOwnSt
     const isFilterChanged = !shallowEqual(
       {
         companyUids: this.props.companyUids,
-        positionUids: this.props.positionUids,
+        // positionUids: this.props.positionUids,
         isActive: this.props.isActive,
-        useAccess: this.props.useAccess,
+        // useAccess: this.props.useAccess,
+        isFinal: this.props.isFinal,
+        isNotAssigned: this.props.isNotAssigned,
+        year: this.props.year,
       },
       {
         companyUids: prevProps.companyUids,
-        positionUids: prevProps.positionUids,
+        // positionUids: prevProps.positionUids,
         isActive: prevProps.isActive,
-        useAccess: prevProps.useAccess,
+        // useAccess: prevProps.useAccess,
+        isFinal: prevProps.isFinal,
+        isNotAssigned: prevProps.isNotAssigned,
+        year: prevProps.year,
       }
     );
 

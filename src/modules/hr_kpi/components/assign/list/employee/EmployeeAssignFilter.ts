@@ -20,11 +20,27 @@ import {
 } from 'recompose';
 
 import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
+import { ICollectionValue } from '@layout/classes/core';
 import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { IPositionList } from '@lookup/classes/response';
+import * as moment from 'moment';
 import { EmployeeAssignFilterView } from './EmployeeAssignFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeKPIGetAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeKPIGetAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive' | 'isNotAssigned' | 'year' | 'isFinal'>;
+
+const nowYear: number = Number(moment().format('YYYY'));
+
+const finalStatus: ICollectionValue[] = [
+  { value: 'true', name: 'Final' },
+  { value: 'false', name: 'Not Final' }
+];
+
+const yearOptions: ICollectionValue[] = [
+  { value: nowYear - 2, name: (nowYear - 2).toString() },
+  { value: nowYear - 1, name: (nowYear - 1).toString() },
+  { value: nowYear, name: nowYear.toString() },
+  { value: nowYear + 1, name: (nowYear + 1).toString() },
+];
 
 interface OwnOption {
   isOpen: boolean;
@@ -34,6 +50,16 @@ interface OwnOption {
 }
 
 interface OwnState {
+  finalStatus: ICollectionValue[];
+  yearOptions: ICollectionValue[];
+
+  // filter final
+  isFilterFinalOpen: boolean;
+  filterFinal?: ICollectionValue;
+
+  // filter year
+  isFilterYearOpen: boolean;
+  filterYear?: ICollectionValue;
 
   // filter company
   isFilterCompanyOpen: boolean;
@@ -52,6 +78,9 @@ interface OwnState {
   // filter status
   filterStatus?: boolean; 
 
+  // filter assign
+  filterNotAssign?: boolean; 
+
   // filter access
   filterAccess?: boolean;
 }
@@ -59,6 +88,14 @@ interface OwnState {
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   // main filter
   setFilterReset: StateHandler<OwnState>;
+
+  // filter final
+  setFilterFinalVisibility: StateHandler<OwnState>;
+  setFilterFinal: StateHandler<OwnState>;
+
+  // filter year
+  setFilterYearVisibility: StateHandler<OwnState>;
+  setFilterYear: StateHandler<OwnState>;
 
   // filter company
   setFilterCompanyVisibility: StateHandler<OwnState>;
@@ -75,6 +112,9 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   // filter status
   setFilterStatus: StateHandler<OwnState>;
 
+  // filter assign
+  setFilterNotAssign: StateHandler<OwnState>;
+
   // filter access
   setFilterAccess: StateHandler<OwnState>;
 }
@@ -83,6 +123,18 @@ interface OwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+
+  // filter final
+  handleFilterFinalVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterFinalOnSelected: (data: ICollectionValue) => void;
+  handleFilterFinalOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterFinalOnClose: () => void;
+
+  // filter year
+  handleFilterYearVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterYearOnSelected: (data: ICollectionValue) => void;
+  handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterYearOnClose: () => void;
 
   // filter company
   handleFilterCompanyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -105,6 +157,9 @@ interface OwnHandler {
   // filter status
   handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 
+  // filter assign
+  handleFilterNotAssignOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+
   // filter access
   handleFilterAccessOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
@@ -119,9 +174,14 @@ export type AccountEmployeeAssignFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeAssignFilterProps, OwnState> = (props: AccountEmployeeAssignFilterProps): OwnState => ({
+  finalStatus,
+  yearOptions,
+
   isFilterCompanyOpen: false,
   isFilterPositionOpen: false,
   isFilterRoleOpen: false,
+  isFilterFinalOpen: false,
+  isFilterYearOpen: false,
 
   filterStatus: props.initialProps && props.initialProps.isActive,
   filterAccess: props.initialProps && props.initialProps.useAccess,
@@ -130,11 +190,32 @@ const createProps: mapper<AccountEmployeeAssignFilterProps, OwnState> = (props: 
 const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
+    filterYear: undefined,
+    filterFinal: undefined,
     filterCompany: undefined,
     filterPosition: undefined,
     filterRole: undefined,
     filterStatus: false,
+    filterNotAssign: false,
     filterAccess: false,
+  }),
+
+  // filter completion
+  setFilterFinalVisibility: (prevState: OwnState) => () => ({
+    isFilterFinalOpen: !prevState.isFilterFinalOpen
+  }),
+  setFilterFinal: () => (data?: ICollectionValue) => ({
+    isFilterFinalOpen: false,
+    filterFinal: data
+  }),
+
+  // filter year
+  setFilterYearVisibility: (prevState: OwnState) => () => ({
+    isFilterYearOpen: !prevState.isFilterYearOpen
+  }),
+  setFilterYear: () => (data?: ICollectionValue) => ({
+    isFilterYearOpen: false,
+    filterYear: data
   }),
 
   // filter company
@@ -175,6 +256,11 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
     filterStatus: checked
   }),
 
+  // filter not assign
+  setFilterNotAssign: () => (checked: boolean) => ({
+    filterNotAssign: checked
+  }),
+
   // filter access
   setFilterAccess: () => (checked: boolean) => ({
     filterAccess: checked
@@ -188,11 +274,42 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignFilterProps, OwnHandl
   },
   handleFilterOnApply: (props: AccountEmployeeAssignFilterProps) => () => {
     props.onApply({
+      isFinal: props.filterFinal && props.filterFinal.value && props.filterFinal.value === 'true' ? true : (props.filterFinal && props.filterFinal.value === 'false' ? false : undefined ),
+      year: props.filterYear && props.filterYear.value,
       companyUids: props.filterCompany && props.filterCompany.uid,
       positionUids: props.filterPosition && props.filterPosition.uid,
       useAccess: props.filterAccess,
+      isNotAssigned: props.filterNotAssign,
       isActive: props.filterStatus,
     });
+  },
+
+  // filter completion
+  handleFilterFinalVisibility: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterFinalVisibility();
+  },
+  handleFilterFinalOnSelected: (props: AccountEmployeeAssignFilterProps) => (data: ICollectionValue) => {
+    props.setFilterFinal(data);
+  },
+  handleFilterFinalOnClear: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterFinal();
+  },
+  handleFilterFinalOnClose: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterFinalVisibility();
+  },
+
+  // filter year
+  handleFilterYearVisibility: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterYearVisibility();
+  },
+  handleFilterYearOnSelected: (props: AccountEmployeeAssignFilterProps) => (data: ICollectionValue) => {
+    props.setFilterYear(data);
+  },
+  handleFilterYearOnClear: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterYear();
+  },
+  handleFilterYearOnClose: (props: AccountEmployeeAssignFilterProps) => () => {
+    props.setFilterYearVisibility();
   },
 
   // filter company
@@ -241,6 +358,11 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignFilterProps, OwnHandl
   // filter status
   handleFilterStatusOnChange: (props: AccountEmployeeAssignFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterStatus(checked);
+  },
+
+  // filter no assign
+  handleFilterNotAssignOnChange: (props: AccountEmployeeAssignFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNotAssign(checked);
   },
 
   // filter access

@@ -51,7 +51,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="account.employee"
+          key="employee.kpi.final"
           default={props.employeeKPIState.all.request && props.employeeKPIState.all.request.filter && props.employeeKPIState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
@@ -66,7 +66,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
         >
           <div>
             <IconButton
-              id="option-filter"
+              id="option-filter-employee-final"
               disabled={props.employeeKPIState.all.isLoading || props.employeeKPIState.all.isError}
               onClick={props.handleFilterVisibility} 
             >

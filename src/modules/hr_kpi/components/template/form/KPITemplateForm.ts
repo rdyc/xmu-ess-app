@@ -53,6 +53,7 @@ export interface IKPITemplateFormValue {
   companyUid: string;
   positionUid: string;
   name: string;
+  note: string;
   totalWeight: number;
   items: IKPITemplateItemFormValue[];
 }
@@ -110,6 +111,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
     companyUid: '',
     positionUid: '',
     name: '',
+    note: '',
     totalWeight: 0,
     items: []
   },
@@ -235,6 +237,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
           companyUid: values.companyUid,
           positionUid: values.positionUid,
           name: values.name,
+          note: values.note,
           items: []
         };
 
@@ -273,6 +276,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
             companyUid: values.companyUid,
             positionUid: values.positionUid,
             name: values.name,
+            note: values.note,
             items: []
           };
 
@@ -357,6 +361,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
           companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
           name: thisResponse.data.name,
+          note: thisResponse.data.note || '',
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           items: []
         };

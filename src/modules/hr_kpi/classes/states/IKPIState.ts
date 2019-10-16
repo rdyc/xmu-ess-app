@@ -11,6 +11,7 @@ import {
   IKPIAssignPutRequest,
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
+  IKPIEmployeeGetLatestRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
   IKPIFinalGetAllRequest,
@@ -63,6 +64,7 @@ export interface IKPIState {
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
+  kpiEmployeeGetLatest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>;
   kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
   

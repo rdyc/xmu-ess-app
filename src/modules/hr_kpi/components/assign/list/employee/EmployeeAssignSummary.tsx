@@ -51,17 +51,24 @@ const employeeAssignSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(kpiMessage.employee.field.latestAssignYear)}
-        value={props.data.yearAssign && props.data.yearAssign.toString() || 'N/A'}
+        value={props.data.lastAssign && props.data.lastAssign.year.toString() || 'N/A'}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+        value={props.data.lastAssign && (props.data.lastAssign.isFinal && 
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)) || 'N/A'}
+      />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(accountMessage.employee.field.nik)}
         value={props.data.employmentNumber}
       />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"

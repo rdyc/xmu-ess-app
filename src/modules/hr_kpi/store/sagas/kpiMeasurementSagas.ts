@@ -41,7 +41,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/measurements?${params}`,
+      path: `/v1/hr/kpi/measurements?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetAllSuccess(response.body)),
       ],
@@ -70,7 +70,7 @@ function* watchGetByCategoryRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}?${params}`,
+      path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByCategorySuccess(response.body)),
       ],
@@ -99,7 +99,7 @@ function* watchGetListRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}/list?${params}`,
+      path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetListSuccess(response.body)),
       ],
@@ -123,7 +123,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
+      path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdSuccess(response.body))
       ],
@@ -144,7 +144,7 @@ function* watchPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}`,
+      path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),
@@ -185,7 +185,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
+      path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),

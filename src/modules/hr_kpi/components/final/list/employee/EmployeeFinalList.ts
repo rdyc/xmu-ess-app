@@ -21,8 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllFilter } from '@account/classes/filters';
 import { AccountEmployeeField } from '@account/classes/types';
+import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
 import { IEmployeeKPI } from '@kpi/classes/response';
 import { WithEmployeeKPI, withEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
 import { IAccountEmployeeFilterResult } from './EmployeeFinalFilter';
@@ -76,14 +76,14 @@ const createProps: mapper<AccountEmployeeFinalListProps, IOwnState> = (props: Ac
   // fill from previous request if any
   if (request && request.filter) {
     state.companyUids = request.filter.companyUids,
-    state.positionUids = request.filter.positionUids,
-    state.useAccess = request.filter.useAccess,
-    state.useSuperOrdinate = false,
+    // state.positionUids = request.filter.positionUids,
+    state.useAccess = false,
+    // state.useSuperOrdinate = false,
     state.isActive = request.filter.isActive;
   } else {
-    state.useAccess = true,
-    state.isActive = true,
-    state.useSuperOrdinate = false;
+    state.useAccess = false,
+    state.isActive = true;
+    // state.useSuperOrdinate = false;
   }
 
   return state;
@@ -106,10 +106,10 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IEmployeeAllFilter = {
+      const filter: IEmployeeKPIGetAllFilter = {
         companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        useAccess: props.useAccess,
+        // positionUids: props.positionUids,
+        useAccess: false,
         isActive: props.isActive,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -171,8 +171,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
   },
   handleFilterBadge: (props: AccountEmployeeFinalListProps) => () => {
     return props.companyUids !== undefined || 
-      props.positionUids !== undefined || 
-      props.useAccess === true || 
+      // props.positionUids !== undefined || 
+      // props.useAccess === true || 
       props.isActive === true;
   },
 };
@@ -183,15 +183,15 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFinalListProps, IOwnSta
     const isFilterChanged = !shallowEqual(
       {
         companyUids: this.props.companyUids,
-        positionUids: this.props.positionUids,
+        // positionUids: this.props.positionUids,
         isActive: this.props.isActive,
-        useAccess: this.props.useAccess,
+        // useAccess: this.props.useAccess,
       },
       {
         companyUids: prevProps.companyUids,
-        positionUids: prevProps.positionUids,
+        // positionUids: prevProps.positionUids,
         isActive: prevProps.isActive,
-        useAccess: prevProps.useAccess,
+        // useAccess: prevProps.useAccess,
       }
     );
 
