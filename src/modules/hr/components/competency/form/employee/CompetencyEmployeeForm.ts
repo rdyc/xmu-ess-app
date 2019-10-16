@@ -28,13 +28,14 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { isNullOrUndefined } from 'util';
+import * as Yup from 'yup';
 
 import { CompetencyEmployeeFormView } from './CompetencyEmployeeFormView';
 
 export interface ILevelOption {
   uid?: string;
-  categoryUid: string;
-  levelUid: string;
+  categoryUid?: string;
+  levelUid?: string;
   note?: string;
 }
 
@@ -60,6 +61,7 @@ interface IOwnState {
 
   initialValues?: ICompetencyEmployeeFormValue;
   filterCompany?: ILookupCompanyGetListFilter;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyEmployeeFormValue>>>;
 
   saveType: DraftType;
 }
@@ -108,6 +110,22 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
     orderBy: 'name',
     direction: 'ascending'
   },
+
+  // validation props
+  validationSchema: Yup.object().shape<Partial<ICompetencyEmployeeFormValue>>({
+    levelRespond: Yup.array()
+      .of(
+        Yup.object().shape({
+          note: Yup.string()
+            .max(300)
+            .label(props.intl.formatMessage(hrMessage.competency.field.note))
+            .when('levelUid', ({
+              is: (val) => val !== '',
+              then: Yup.string().required()
+            }))
+        })
+      )
+  })
 });
 
 const stateUpdaters: StateUpdaters<CompetencyEmployeeFormProps, IOwnState, IOwnStateUpdater> = {
@@ -170,11 +188,13 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
           // fill responder
           values.levelRespond.forEach(item =>
+            item.categoryUid &&
             item.levelUid &&
             payload.items.push({
               uid: item.uid,
               categoryUid: item.categoryUid,
-              levelUid: item.levelUid
+              levelUid: item.levelUid,
+              note: item.note
             })
           );
 
@@ -277,7 +297,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
             initialVal.levelRespond.push({
               uid: find && find.uid || '',
               categoryUid: item.category.uid,
-              levelUid: find && find.levelUid || ''
+              levelUid: find && find.levelUid || '',
+              note: find && find.note
             });  
           });
           this.props.setInitialValues(initialVal);

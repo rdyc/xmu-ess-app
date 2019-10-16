@@ -1,5 +1,3 @@
-// import { IHrCornerBlogGetAllByCategoryFilter } from '@hr/classes/filters';
-// import { IHrCornerBlogCategory } from '@hr/classes/response';
 import { IHrCornerBlogGetAllByCategoryFilter } from '@hr/classes/filters';
 import { IHrCompetencyField } from '@hr/classes/types';
 import { WithHrCornerBlog, withHrCornerBlog } from '@hr/hoc/withHrCornerBlog';
@@ -26,24 +24,18 @@ import {
 
 import { HrCornerBlogByCategoryListView } from './HrCornerBlogByCategoryListView';
 
-// interface BlogItem {
-//   items: IHrCornerBlogCategory[];
-// }
-
 interface IOwnOption {
   categorySlug: string;
 }
 
 interface IOwnState {
   fields: ICollectionValue[];
-  // blogs: BlogItem[];
   page?: number;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
   setPageOne: StateHandler<IOwnState>;
-  // setPageEnd: StateHandler<IOwnState>;
   setPageNext: StateHandler<IOwnState>;
   setPagePrevious: StateHandler<IOwnState>;
 }
@@ -139,24 +131,10 @@ const lifecycles: ReactLifeCycleFunctions<HrCornerBlogByCategoryListProps, IOwnS
   componentDidMount() {
     const { request } = this.props.hrCornerBlogState.allByCategory;
     const categorySlug = this.props.match.params.categorySlug;
-    // const { blogs } = this.props;
 
     if (!request || (request && request.categorySlug !== categorySlug)) {
       this.props.handleOnLoadApi();
     }
-  },
-  componentWillUpdate(nextProps: HrCornerBlogByCategoryListProps) {
-    // const { blogs } = this.props;
-    // const { response: thisResponse } = this.props.hrCornerBlogState.allByCategory;
-    // const { response: nextResponse } = nextProps.hrCornerBlogState.allByCategory;
-
-    // if (thisResponse !== nextResponse) {
-    //   if (nextResponse && nextResponse.data) {
-    //     blogs.push({
-    //       items: nextResponse.data
-    //     });
-    //   }
-    // }
   },
   componentDidUpdate(prevProps: HrCornerBlogByCategoryListProps) {
     const isChanged = !shallowEqual(

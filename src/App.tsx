@@ -5,8 +5,6 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
-// import { HrCornerBlogDetail } from '@hr/components/corner/detail/blog/HrCornerBlogDetail';
-// import { HrCornerBlogList } from '@hr/components/corner/list/blog/HrCornerBlogList';
 import { CornerRoutingComponents } from '@hr/components/CornerRouter';
 import { HrRoutingComponents } from '@hr/components/HrRouter';
 import { KPIRoutingComponents } from '@kpi/components/KPIRouter';
@@ -73,7 +71,6 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/silent_renew" component={SilentRenew} />
               <Route path="/callback" component={Callback} />
               <Route path="/account/access" component={AccountAccess} />
-              {/* <Route path="/corner/blog/:pageSlug" component={HrCornerBlogDetail} /> */}
               <Route path="/corner/blog" component={CornerRoutingComponents} />
 
               <MasterPage>

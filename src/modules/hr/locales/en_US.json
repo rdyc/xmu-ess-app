@@ -110,5 +110,8 @@
   "hr.corner.field.end.placeholder": "pick any end date",
   "hr.corner.field.end.required": "End date is required",
 
-  "hr.corner.field.type": "{state}"
+  "hr.corner.field.type": "{state}",
+  "hr.corner.field.select": "Please select one {state}",
+
+  "hr.corner.field.parent.title": "HR Corner"
 }
