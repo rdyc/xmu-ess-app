@@ -25,7 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupHolidayDetailView } from './LookupHolidayDetailView';
 
@@ -129,11 +129,13 @@ const stateUpdaters: StateUpdaters<HolidayDetailProps, IOwnState, IOwnStateUpdat
 
 const handlerCreators: HandleCreators<HolidayDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HolidayDetailProps) => () => { 
-    if (props.userState.user && props.match.params.holidayUid && !props.lookupHolidayState.detail.isLoading) {
-      props.lookupHolidayDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        holidayUid: props.match.params.holidayUid
-      });
+    if (!isNullOrUndefined(props.history.location.state)) {
+      if (props.userState.user && props.match.params.holidayUid && !props.lookupHolidayState.detail.isLoading) {
+        props.lookupHolidayDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          holidayUid: props.match.params.holidayUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: HolidayDetailProps) => (item: IPopupMenuOption) => { 

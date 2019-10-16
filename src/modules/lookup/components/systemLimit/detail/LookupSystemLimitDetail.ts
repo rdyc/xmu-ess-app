@@ -25,7 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupSystemLimitDetailView } from './LookupSystemLimitDetailView';
 
@@ -130,11 +130,13 @@ const stateUpdaters: StateUpdaters<SystemLimitDetailProps, IOwnState, IOwnStateU
 
 const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: SystemLimitDetailProps) => () => { 
-    if (props.userState.user && props.match.params.systemLimitUid && !props.systemLimitState.detail.isLoading) {
-      props.systemLimitDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        systemLimitUid: props.match.params.systemLimitUid
-      });
+    if (!isNullOrUndefined(props.history.location.state)) {
+      if (props.userState.user && props.match.params.systemLimitUid && !props.systemLimitState.detail.isLoading) {
+        props.systemLimitDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          systemLimitUid: props.match.params.systemLimitUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: SystemLimitDetailProps) => (item: IPopupMenuOption) => { 

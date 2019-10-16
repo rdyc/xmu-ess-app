@@ -226,7 +226,7 @@ const handlerCreators: HandleCreators<DiemFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/diemvalues/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/diemvalues/${response.uid}`, { company: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

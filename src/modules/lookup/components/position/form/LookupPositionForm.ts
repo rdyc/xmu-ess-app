@@ -212,7 +212,7 @@ const handlerCreators: HandleCreators<PositionFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/positions/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/positions/${response.uid}`, {companyUid: response.companyUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

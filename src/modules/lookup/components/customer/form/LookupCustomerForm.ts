@@ -301,7 +301,7 @@ const handlerCreators: HandleCreators<CustomerFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/customers/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/customers/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

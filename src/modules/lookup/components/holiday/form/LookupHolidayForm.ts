@@ -197,7 +197,7 @@ const handlerCreators: HandleCreators<HolidayFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/holidays/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/holidays/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
