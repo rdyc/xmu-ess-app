@@ -39,7 +39,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/leaves/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/lookup/leaves/form`, { companyUid: item.companyUid, uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>

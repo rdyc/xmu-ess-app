@@ -13,6 +13,7 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
     info={{
       uid: AppMenu.LookupCompany,
       parentUid: AppMenu.Lookup,
+      parentUrl: '/lookup/company',
       title: props.intl.formatMessage(lookupMessage.company.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.company.page.detailSubHeader),
     }}

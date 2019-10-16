@@ -232,7 +232,7 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/leaves/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/leaves/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

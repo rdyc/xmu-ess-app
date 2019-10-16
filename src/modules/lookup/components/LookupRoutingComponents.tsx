@@ -104,7 +104,7 @@ const systemLimit = (props: RouteComponentProps) => (
 const position = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupPositionForm} />
-    <Route path={`${props.match.path}/:companyUid/:positionUid`} component={PositionDetail} />
+    <Route path={`${props.match.path}/:positionUid`} component={PositionDetail} />
     <Route path={`${props.match.path}`} component={PositionList} />
   </Switch>
 );

@@ -39,7 +39,7 @@ export const LookupHolidayListView: React.SFC<LookupHolidayListProps> = props =>
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/holidays/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/lookup/holidays/form`, { companyUid: item.companyUid, uid: item.uid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
