@@ -8,7 +8,6 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
-import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -62,7 +61,6 @@ interface IOwnState {
   initialValues?: ICompetencyAssessmentFormValue;
 
   filterCompany?: ILookupCompanyGetListFilter;
-  filterPosition?: IPositionGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
 }
@@ -108,10 +106,6 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     direction: 'ascending'
   },
   filterCompany: {
-    orderBy: 'name',
-    direction: 'ascending'
-  },
-  filterPosition: {
     orderBy: 'name',
     direction: 'ascending'
   },
