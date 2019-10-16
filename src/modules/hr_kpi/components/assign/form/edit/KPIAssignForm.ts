@@ -426,7 +426,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.changes && !thisResponse.data.changes.updated || false,
           revision: '',
-          note: '',
+          note: thisResponse.data.note || '',
           items: []
         };
 
