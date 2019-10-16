@@ -16,7 +16,7 @@ export interface IHrCompetencyEmployee {
   score?: number;
   statusType: string;
   status?: ICommonSystem;
-  dueDate?: string;
+  dueDate?: Date;
   isDraft: boolean;
   isExpired: boolean;
   isHR: boolean;

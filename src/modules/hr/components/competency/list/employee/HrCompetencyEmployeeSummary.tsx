@@ -3,7 +3,9 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -14,7 +16,8 @@ interface OwnProps {
 
 type AllProps
   = OwnProps
-  & InjectedIntlProps;
+  & InjectedIntlProps
+  & WithStyles<typeof styles>;
 
 const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
   <Grid container>
@@ -48,6 +51,15 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Status'})}
         value={props.data.status && props.data.status.value}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        inputProps={{
+          className: props.data.isExpired ? props.classes.colorRed : ''
+        }}
+        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
+        value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+      />
+
     </Grid>
     {
       props.data.changes &&
@@ -74,5 +86,6 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
 );
 
 export const HrCompetencySummaryEmployee = compose<AllProps, OwnProps>(
-  injectIntl
+  injectIntl,
+  withStyles(styles)
 )(hrCompetencySummaryEmployee);
