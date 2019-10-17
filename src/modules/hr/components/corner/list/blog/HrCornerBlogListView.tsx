@@ -43,7 +43,7 @@ export const HrCornerBlogListView: React.SFC<HrCornerBlogListProps> = props => {
               (
                 <React.Fragment>
                   <Grid item xs={12}>
-                    <Typography variant="h6" style={{textAlign: 'center'}}>
+                    <Typography variant="h6" align="center">
                       {props.intl.formatMessage(hrMessage.corner.field.select, {state: 'category'})}                
                     </Typography>
                   </Grid>

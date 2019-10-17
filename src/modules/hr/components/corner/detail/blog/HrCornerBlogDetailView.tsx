@@ -1,6 +1,6 @@
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
-import { Card, Divider, Grid, IconButton, List, Typography } from '@material-ui/core';
+import { Divider, Grid, IconButton, List, Typography } from '@material-ui/core';
 import { Refresh } from '@material-ui/icons';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -80,56 +80,24 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
             }
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
-            <Card>
-              <List>
-                {
-                  props.hrCornerBlogState.latestByCategory.isLoading &&
-                  <LoadingCircular />
-                }
-                {
-                  !props.hrCornerBlogState.latestByCategory.isLoading &&
-                  props.hrCornerBlogState.latestByCategory.response &&
-                  props.hrCornerBlogState.latestByCategory.response.data &&
-                  <HrCornerBlogLatest 
-                    data={props.hrCornerBlogState.latestByCategory.response.data}
-                    categorySlug={props.match.params.categorySlug}
-                  />
-                  // props.hrCornerBlogState.latestByCategory.response.data.map((item, index) =>
-                  //   index < 5 &&
-                  //   <React.Fragment key={index}>
-                  //     {
-                  //       index !== 0 &&
-                  //       <Divider />
-                  //     }
-                  //     <ListItem 
-                  //       button
-                  //       selected={props.match.params.pageSlug === item.slug}
-                  //       className={props.classes.buttonHover}
-                  //       onClick={() => props.history.push(`/corner/blog/${props.match.params.categorySlug}/${item.slug}`)}
-                  //     >
-                  //       <ListItemText 
-                  //         primary={
-                  //           <React.Fragment>
-                  //             <Typography variant="title" className={props.classes.textElipsis2ndLine}>
-                  //               {item.title}
-                  //             </Typography>
-                  //             <Typography variant="caption">
-                  //               {props.intl.formatDate(item.publishedAt, GlobalFormat.Date)} by {item.publishedBy}
-                  //             </Typography>
-                  //           </React.Fragment>
-                  //         }
-                  //         secondary={
-                  //           <Typography className={props.classes.textElipsis2ndLine}>
-                  //             {item.headline}
-                  //           </Typography>
-                  //         }
-                  //       />
-                  //     </ListItem>
-                  //   </React.Fragment>
-                  // )
-                }
-              </List>
-            </Card>
+            <Typography align="center" variant="h6">
+              {props.intl.formatMessage(hrMessage.corner.field.latest)}
+            </Typography>
+            <List>
+              {
+                props.hrCornerBlogState.latestByCategory.isLoading &&
+                <LoadingCircular />
+              }
+              {
+                !props.hrCornerBlogState.latestByCategory.isLoading &&
+                props.hrCornerBlogState.latestByCategory.response &&
+                props.hrCornerBlogState.latestByCategory.response.data &&
+                <HrCornerBlogLatest 
+                  data={props.hrCornerBlogState.latestByCategory.response.data}
+                  categorySlug={props.match.params.categorySlug}
+                />
+              }
+            </List>
           </Grid>
         </Grid>
       </div>
