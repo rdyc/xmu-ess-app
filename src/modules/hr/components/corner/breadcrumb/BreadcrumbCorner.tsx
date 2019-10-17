@@ -1,10 +1,11 @@
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Button, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import * as classNames from 'classnames';
+// import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 
 interface IOwnProps {
@@ -22,19 +23,14 @@ const breadcrumbCorner: React.SFC<AllProps> = props => {
 
   const render = (
     <React.Fragment>
-      <Button
-        className={classNames(props.classes.titleTopBarCorner)}
-        onClick={() => {
-          props.history.push('/corner/blog');
-        }}
-      >
+      <Link to={`/corner/blog/`} className={props.classes.breadcrumbLink}>
         <Typography 
           noWrap
-          style={{textTransform: 'capitalize'}}
+          className={props.classes.breadcrumb}
         >
           {props.intl.formatMessage(hrMessage.corner.field.parentTitle)}                
         </Typography>
-      </Button>
+      </Link>
       {
         child &&
         child().map((children) => 
