@@ -117,6 +117,7 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import webJobMonitoringSagas from '@webjob/store/sagas/monitoring/webJobMonitoringSagas';
 import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
 import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
@@ -284,6 +285,9 @@ export function* rootSaga() {
     fork(hrCornerPageSagas),
 
     // employee final
-    fork(employeeFinalSagas)
+    fork(employeeFinalSagas),
+
+    // web job
+    fork(webJobMonitoringSagas)
   ]);
 }
