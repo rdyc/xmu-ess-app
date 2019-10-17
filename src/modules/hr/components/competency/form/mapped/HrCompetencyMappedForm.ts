@@ -126,10 +126,10 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
   // validation props
   validationSchema: Yup.object().shape<Partial<IMappedFormValue>>({
     companyUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.company))
       .required(),
     positionUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.position))
       .required(),
   }),
 

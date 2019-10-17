@@ -22,7 +22,7 @@ type CompetencyResultPartialProps = {
 const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps> = props => (
   <Card square>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Responden'})}
+      title={props.intl.formatMessage(hrMessage.competency.field.responden)}
     />
     <CardContent>
       <Field 
@@ -51,8 +51,8 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
-                placeholder: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.employee),
+                placeholder: props.intl.formatMessage(hrMessage.competency.field.employee),
                 required: true,
                 helperText: form.touched.respondenUid && form.errors.respondenUid,
                 error: form.touched.respondenUid && Boolean(form.errors.respondenUid)
@@ -79,7 +79,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.company),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -103,7 +103,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}),
+                label: props.intl.formatMessage(hrMessage.competency.fieldposition),
                 required: true,
                 helperText: form.touched.positionUid && form.errors.positionUid,
                 error: form.touched.positionUid && Boolean(form.errors.positionUid)
@@ -122,7 +122,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
             fullWidth
             disabled
             margin="normal"
-            label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+            label={props.intl.formatMessage(hrMessage.competency.field.year)}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}

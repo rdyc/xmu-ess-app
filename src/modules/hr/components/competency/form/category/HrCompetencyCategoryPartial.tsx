@@ -37,7 +37,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.cluster),
                 required: true,
                 helperText: form.touched.clusterUid && form.errors.clusterUid,
                 error: form.touched.clusterUid && Boolean(form.errors.clusterUid)
@@ -64,7 +64,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.category),
                 required: true,
                 helperText: form.touched.categoryUid && form.errors.categoryUid,
                 error: form.touched.categoryUid && Boolean(form.errors.categoryUid)

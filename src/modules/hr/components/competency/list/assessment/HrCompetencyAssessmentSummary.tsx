@@ -21,24 +21,24 @@ const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.employee)}
         value={props.data.employee.fullName}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.year)}
         value={props.data.assessmentYear}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.company)}
         value={props.data.position.company && props.data.position.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.position)}
         value={props.data.position.name}
       />
     </Grid>

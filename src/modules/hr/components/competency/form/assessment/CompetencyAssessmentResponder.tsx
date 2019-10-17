@@ -47,7 +47,7 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
   const render = (
     <Card square>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Responder'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Responder'})}
         subheader={
           props.formikBag.submitCount > 0 &&
           typeof props.formikBag.errors.responder === 'string' &&
@@ -91,8 +91,8 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
                                       menuPosition="fixed"
                                       valueString={item.employeeUid}
                                       textFieldProps={{
-                                        label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
-                                        placeholder: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                                        label: props.intl.formatMessage(hrMessage.competency.field.employee),
+                                        placeholder: props.intl.formatMessage(hrMessage.competency.field.employee),
                                         required: true,
                                         helperText: touch && error,
                                         error: touch && Boolean(error)

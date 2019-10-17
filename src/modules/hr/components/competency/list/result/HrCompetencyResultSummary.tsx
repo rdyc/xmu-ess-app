@@ -21,31 +21,31 @@ const hrCompetencySummaryResult: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.employee)}
         value={props.data.responden && props.data.responden.fullName}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.year)}
         value={props.data.assessmentYear}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.company)}
         value={props.data.position && props.data.position.company && props.data.position.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.position)}
         value={props.data.position && props.data.position.name}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Status'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.status)}
         value={props.data.status && props.data.status.value}
       />
     </Grid>

@@ -113,22 +113,22 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
   // validation props	
   validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({	
     year: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.year))	
       .required(),	
     companyUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.company))	
       .required(),	
     positionUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.position))	
       .required(),	
     employeeUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
       .required(),	
     responder: Yup.array()	
       .of(	
         Yup.object().shape({	
           employeeUid: Yup.string()	
-            .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+            .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
             .required()	
         })	
       )	

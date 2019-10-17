@@ -52,14 +52,14 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           multiline
-          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+          label={intl.formatMessage(hrMessage.competency.field.year)}
           value={data.assessmentYear}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           multiline
-          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Status'})}
+          label={intl.formatMessage(hrMessage.competency.field.staus)}
           value={data.status && data.status.value || 'N/A'}
         />
         {

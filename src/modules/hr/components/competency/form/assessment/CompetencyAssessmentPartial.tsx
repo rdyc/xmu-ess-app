@@ -53,7 +53,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.year),
                 required: true,
                 helperText: form.touched.year && form.errors.year,
                 error: form.touched.year && Boolean(form.errors.year)
@@ -80,7 +80,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.company),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -109,7 +109,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.position),
                 required: true,
                 helperText: form.touched.positionUid && form.errors.positionUid,
                 error: form.touched.positionUid && Boolean(form.errors.positionUid)
@@ -137,8 +137,8 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
-                placeholder: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.employee),
+                placeholder: props.intl.formatMessage(hrMessage.competency.field.employee),
                 required: true,
                 helperText: form.touched.employeeUid && form.errors.employeeUid,
                 error: form.touched.employeeUid && Boolean(form.errors.employeeUid)

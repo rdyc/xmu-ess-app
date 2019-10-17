@@ -31,7 +31,7 @@ const hrCompetencyAssessmentInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+          label={intl.formatMessage(hrMessage.competency.field.year)}
           value={data.assessmentYear}
         />
         <TextField

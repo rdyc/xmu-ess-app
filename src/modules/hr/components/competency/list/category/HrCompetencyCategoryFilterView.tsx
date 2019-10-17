@@ -71,7 +71,7 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
       <List>
         <ListItem button onClick={props.handleFilterClusterVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
+            primary={props.intl.formatMessage(hrMessage.competency.field.cluster)}
             secondary={props.filterCluster ? props.filterCluster.name : props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -99,7 +99,7 @@ export const HrCompetencyCategoryFilterView: React.SFC<HrCompetencyCategoryFilte
       </List>
 
       <FilterCluster 
-        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.cluster)}
         hideBackdrop={true}
         isOpen={props.isFilterClusterOpen}
         value={props.filterCluster && props.filterCluster.uid}

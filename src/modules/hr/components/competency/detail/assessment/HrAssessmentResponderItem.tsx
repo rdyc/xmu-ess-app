@@ -39,7 +39,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
           data.responders.length === 0 &&
           <ListItem>
             <ListItemText
-              primary={intl.formatMessage(hrMessage.competency.field.type, {state: 'Responder not found'})}
+              primary={intl.formatMessage(hrMessage.competency.field.notFound, {state: 'Responder'})}
               primaryTypographyProps={{
                 align: 'center'
               }} 

@@ -102,10 +102,10 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
   // validation props
   validationSchema: Yup.object().shape<Partial<ICategoryFormValue>>({
     clusterUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.cluster))
       .required(),
     categoryUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.category))
       .required(),
     levels: Yup.array()
       .of(

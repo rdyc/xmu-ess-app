@@ -31,13 +31,13 @@ const hrCompetencyCategoryInformation: React.SFC<AllProps> = props => {
       <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
+          label={intl.formatMessage(hrMessage.competency.field.cluster)}
           value={data.competency.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'})}
+          label={intl.formatMessage(hrMessage.competency.field.category)}
           value={data.name}
         />
         <TextField
