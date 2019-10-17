@@ -2,6 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyEmployeeDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
+// import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
@@ -45,6 +46,10 @@ export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetai
         onClickConfirm={props.handleOnConfirm}
       />  
     </PreviewPage>
+    {/* {
+      props.hrCompetencyMappedState.list.isLoading &&
+      <LoadingCircular />
+    } */}
     {
       !props.hrCompetencyEmployeeState.detail.isLoading &&
       props.hrCompetencyEmployeeState.detail.response &&
@@ -54,7 +59,7 @@ export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetai
       props.hrCompetencyMappedState.list.response.data[0] &&
       <HrCompetencyEmployeeCategoryItem 
         data={props.hrCompetencyEmployeeState.detail.response.data}
-        mapped={props.hrCompetencyMappedState.list.response.data[0]}          
+        mapped={props.hrCompetencyMappedState.list.response.data[0]}        
       />
     }
   </React.Fragment>

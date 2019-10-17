@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -37,7 +38,18 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         actionComponent={(item: IHrCompetencyEmployee) => (
           <React.Fragment>
             {
-              item.isDraft &&
+              item.statusType === WorkflowStatusType.New &&
+              !item.isExpired && 
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, positionUid: item.positionUid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.process)}
+              </Button>
+            }
+            {
+              item.statusType === WorkflowStatusType.Draft &&
               !item.isExpired && 
               <Button 
                 size="small"
@@ -47,14 +59,16 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
                 {props.intl.formatMessage(layoutMessage.action.modify)}
               </Button>
             }
-  
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`)}
-            >
-              {props.intl.formatMessage(layoutMessage.action.details)}
-            </Button>
+            {
+              item.statusType !== WorkflowStatusType.New &&
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`, { positionUid: item.positionUid })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.details)}
+              </Button>
+            }
           </React.Fragment>
         )}
         // app bar component
