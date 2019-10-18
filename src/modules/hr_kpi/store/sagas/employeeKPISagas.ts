@@ -22,7 +22,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/account/employees/all/kpis?${params}`,
+      path: `/v1/account/employees/kpis/assign?${params}`,
       successEffects: (response: IApiResponse) => [
         put(EmployeeKPIGetAllSuccess(response.body)),
       ],
