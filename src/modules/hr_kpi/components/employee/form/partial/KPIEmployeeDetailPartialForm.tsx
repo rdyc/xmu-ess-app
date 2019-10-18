@@ -119,18 +119,6 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
         }
 
         <Field
-          name="templateName"
-          render={({ field }: FieldProps<IKPIEmployeeFormValue>) => (
-            <TextField 
-              {...field}
-              {...GlobalStyle.TextField.ReadOnly}
-              disabled={props.formikBag.isSubmitting}
-              label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-            />
-          )}
-        />
-
-        <Field
           name="year"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
             <InputYearOption>
