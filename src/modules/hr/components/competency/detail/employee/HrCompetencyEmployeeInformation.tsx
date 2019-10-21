@@ -59,7 +59,7 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           multiline
-          label={intl.formatMessage(hrMessage.competency.field.staus)}
+          label={intl.formatMessage(hrMessage.competency.field.status)}
           value={data.status && data.status.value || 'N/A'}
         />
         {

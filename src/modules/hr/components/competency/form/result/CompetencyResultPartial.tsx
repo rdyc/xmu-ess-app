@@ -103,7 +103,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.fieldposition),
+                label: props.intl.formatMessage(hrMessage.competency.field.position),
                 required: true,
                 helperText: form.touched.positionUid && form.errors.positionUid,
                 error: form.touched.positionUid && Boolean(form.errors.positionUid)
