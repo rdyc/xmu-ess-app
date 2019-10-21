@@ -18,10 +18,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
 import { IKPIFinalGetAllFilter } from '@kpi/classes/filter';
 import { IKPIFinal } from '@kpi/classes/response';
 import { KPIFinalField } from '@kpi/classes/types';
-import { WithKPIFinal, withKPIFinal } from '@kpi/hoc/withKPIFinal';
 import { ICollectionValue } from '@layout/classes/core';
 import { MyKPIAssignListView } from './MyKPIFinalListView';
 
@@ -51,7 +51,7 @@ export type MyKPIFinalListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithKPIFinal
+  & WithAccountEmployeeKPI
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -72,8 +72,8 @@ const stateUpdaters: StateUpdaters<MyKPIFinalListProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MyKPIFinalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.kpiFinalState.all;
-    const { loadAllRequest } = props.kpiFinalDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -100,8 +100,8 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
     }
   },
   handleOnLoadApiSearch: (props: MyKPIFinalListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.kpiFinalState.all;
-    const { loadAllRequest } = props.kpiFinalDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -145,7 +145,7 @@ const lifecycles: ReactLifeCycleFunctions<MyKPIFinalListProps, IOwnState> = {
 export const MyKPIFinalList = compose(
   setDisplayName('MyKPIFinalList'),
   withUser,
-  withKPIFinal,
+  withAccountEmployeeKPI,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

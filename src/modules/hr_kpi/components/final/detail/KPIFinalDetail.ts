@@ -20,8 +20,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
 import { KPIAssignUserAction } from '@kpi/classes/types/assign/KPIAssignUserAction';
-import { WithKPIFinal, withKPIFinal } from '@kpi/hoc/withKPIFinal';
 import { KPIFinalDetailView } from './KPIFinalDetailView';
 
 interface IOwnRouteParams {
@@ -49,7 +49,7 @@ interface IOwnHandler {
 export type KPIFinalDetailProps
   = WithUser
   & WithOidc
-  & WithKPIFinal
+  & WithAccountEmployeeKPI
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<KPIFinalDetailProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<KPIFinalDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: KPIFinalDetailProps) => () => { 
-    if (props.userState.user && props.match.params.kpiUid && props.match.params.kpiUid && !props.kpiFinalState.detail.isLoading) {
-      props.kpiFinalDispatch.loadDetailRequest({
+    if (props.userState.user && props.match.params.kpiUid && props.match.params.kpiUid && !props.accountEmployeeKPIState.detail.isLoading) {
+      props.accountEmployeeKPIDispatch.loadDetailRequest({
         employeeUid: props.match.params.employeeUid,
         kpiUid: props.match.params.kpiUid
       });
@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<KPIFinalDetailProps, IOwnHandler> = {
     props.setDefault();
   },
   handleOnConfirm: (props: KPIFinalDetailProps) => () => {
-    const { response } = props.kpiFinalState.detail;
+    const { response } = props.accountEmployeeKPIState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -133,8 +133,8 @@ const lifecycles: ReactLifeCycleFunctions<KPIFinalDetailProps, IOwnState> = {
     }
 
     // handle updated response state
-    if (this.props.kpiFinalState.detail.response !== prevProps.kpiFinalState.detail.response) {
-      const { isLoading } = this.props.kpiFinalState.detail;
+    if (this.props.accountEmployeeKPIState.detail.response !== prevProps.accountEmployeeKPIState.detail.response) {
+      const { isLoading } = this.props.accountEmployeeKPIState.detail;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
@@ -155,7 +155,7 @@ export const KPIFinalDetail = compose(
   withRouter,
   withOidc,
   withUser,
-  withKPIFinal,
+  withAccountEmployeeKPI,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

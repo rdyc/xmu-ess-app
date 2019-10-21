@@ -52,7 +52,7 @@ interface PropsFromDispatch {
 export interface WithAccountEmployeeKPI extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ accountEmployeeGetAllKPIAssign, accountEmployeeGetAllKPIFinal, accountEmployeeKPIFinalGetAll, accountEmployeeKPIFinalGetById }: IAppState) => ({
-  accountEmployeeState: {
+  accountEmployeeKPIState: {
     allAssign: accountEmployeeGetAllKPIAssign,
     allFinal: accountEmployeeGetAllKPIFinal,
     all: accountEmployeeKPIFinalGetAll,
