@@ -4,8 +4,7 @@ import {
   IHrCompetencyCategoryGetDetailRequest, 
   IHrCompetencyCategoryGetListRequest, 
   IHrCompetencyCategoryPatchRequest, 
-  IHrCompetencyCategoryPostRequest, 
-  IHrCompetencyCategoryPutRequest, 
+  IHrCompetencyCategoryPostRequest,
 } from 'modules/hr/classes/queries';
 import { IHrCompetencyCategory, IHrCompetencyCategoryDetail, IHrCompetencyCategoryList } from 'modules/hr/classes/response';
 import { action } from 'typesafe-actions';
@@ -27,10 +26,6 @@ export const enum HrCompetencyCategoryAction {
   POST_SUCCESS = '@@hr/competency/category/POST_SUCCESS',
   POST_ERROR = '@@hr/competency/category/POST_ERROR',
   POST_DISPOSE = '@@hr/competency/category/POST_DISPOSE',
-  PUT_REQUEST = '@@hr/competency/category/PUT_REQUEST',
-  PUT_SUCCESS = '@@hr/competency/category/PUT_SUCCESS',
-  PUT_ERROR = '@@hr/competency/category/PUT_ERROR',
-  PUT_DISPOSE = '@@hr/competency/category/PUT_DISPOSE',
   PATCH_REQUEST = '@@hr/competency/category/PATCH_REQUEST',
   PATCH_SUCCESS = '@@hr/competency/category/PATCH_SUCCESS',
   PATCH_ERROR = '@@hr/competency/category/PATCH_ERROR',
@@ -60,12 +55,6 @@ export const hrCompetencyCategoryPostRequest = (request: IHrCompetencyCategoryPo
 export const hrCompetencyCategoryPostSuccess = (response: IResponseSingle<IHrCompetencyCategory>) => action(HrCompetencyCategoryAction.POST_SUCCESS, response);
 export const hrCompetencyCategoryPostError = (error: any) => action(HrCompetencyCategoryAction.POST_ERROR, error);
 export const hrCompetencyCategoryPostDispose = () => action(HrCompetencyCategoryAction.POST_DISPOSE);
-
-// put
-export const hrCompetencyCategoryPutRequest = (request: IHrCompetencyCategoryPutRequest) => action(HrCompetencyCategoryAction.PUT_REQUEST, request);
-export const hrCompetencyCategoryPutSuccess = (response: IResponseSingle<IHrCompetencyCategory>) => action(HrCompetencyCategoryAction.PUT_SUCCESS, response);
-export const hrCompetencyCategoryPutError = (error: any) => action(HrCompetencyCategoryAction.PUT_ERROR, error);
-export const hrCompetencyCategoryPutDispose = () => action(HrCompetencyCategoryAction.PUT_DISPOSE);
 
 // patch
 export const hrCompetencyCategoryPatchRequest = (request: IHrCompetencyCategoryPatchRequest) => action(HrCompetencyCategoryAction.PATCH_REQUEST, request);

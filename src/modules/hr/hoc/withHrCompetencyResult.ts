@@ -3,11 +3,9 @@ import {
   IHrCompetencyEmployeeGetAllRequest, 
   IHrCompetencyEmployeeGetDetailListRequest,
   IHrCompetencyEmployeeGetDetailRequest, 
-  IHrCompetencyEmployeeGetListRequest,
   IHrCompetencyEmployeePatchRequest,
-  IHrCompetencyEmployeePostRequest
 } from '@hr/classes/queries/';
-import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyEmployeeList } from '@hr/classes/response/';
+import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList } from '@hr/classes/response/';
 import { 
   hrCompetencyResultGetAllDispose, 
   hrCompetencyResultGetAllRequest, 
@@ -15,12 +13,8 @@ import {
   hrCompetencyResultGetByIdRequest,
   hrCompetencyResultGetDetailListDispose, 
   hrCompetencyResultGetDetailListRequest, 
-  hrCompetencyResultGetListDispose, 
-  hrCompetencyResultGetListRequest,
   hrCompetencyResultPatchDispose,
   hrCompetencyResultPatchRequest,
-  hrCompetencyResultPostDispose,
-  hrCompetencyResultPostRequest,
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -30,23 +24,18 @@ interface PropsFromState {
     all: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;
     detail: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
     detailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
-    list: IQueryCollectionState<IHrCompetencyEmployeeGetListRequest, IHrCompetencyEmployeeList>;
   };
 }
 
 interface PropsFromDispatch {
   hrCompetencyResultDispatch: {
     // command
-    createRequest: typeof hrCompetencyResultPostRequest;
-    createDispose: typeof hrCompetencyResultPostDispose;
     patchRequest: typeof hrCompetencyResultPatchRequest;
     patchDispose: typeof hrCompetencyResultPatchDispose;
 
     // query
     loadAllRequest: typeof hrCompetencyResultGetAllRequest;
     loadAllDispose: typeof hrCompetencyResultGetAllDispose;
-    loadListRequest: typeof hrCompetencyResultGetListRequest;
-    loadListDispose: typeof hrCompetencyResultGetListDispose;
     loadDetailListRequest: typeof hrCompetencyResultGetDetailListRequest;
     loadDetailListDispose: typeof hrCompetencyResultGetDetailListDispose;
     loadDetailRequest: typeof hrCompetencyResultGetByIdRequest;
@@ -56,11 +45,10 @@ interface PropsFromDispatch {
 
 export interface WithHrCompetencyResult extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrCompetencyResultGetAll, hrCompetencyResultGetById, hrCompetencyResultGetList, hrCompetencyResultGetDetailList }: IAppState) => ({
+const mapStateToProps = ({ hrCompetencyResultGetAll, hrCompetencyResultGetById, hrCompetencyResultGetDetailList }: IAppState) => ({
   hrCompetencyResultState: {
     all: hrCompetencyResultGetAll,
     detail: hrCompetencyResultGetById,
-    list: hrCompetencyResultGetList,
     detailList: hrCompetencyResultGetDetailList
   }
 });
@@ -68,16 +56,12 @@ const mapStateToProps = ({ hrCompetencyResultGetAll, hrCompetencyResultGetById, 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   hrCompetencyResultDispatch: {
     // command
-    createRequest: (request: IHrCompetencyEmployeePostRequest) => dispatch(hrCompetencyResultPostRequest(request)),
-    createDispose: () => dispatch(hrCompetencyResultPostDispose()),
     patchRequest: (request: IHrCompetencyEmployeePatchRequest) => dispatch(hrCompetencyResultPatchRequest(request)),
     patchDispose: () => dispatch(hrCompetencyResultPatchDispose()),
 
     // query
     loadAllRequest: (request: IHrCompetencyEmployeeGetAllRequest) => dispatch(hrCompetencyResultGetAllRequest(request)),
     loadAllDispose: () => dispatch(hrCompetencyResultGetAllDispose()),
-    loadListRequest: (request: IHrCompetencyEmployeeGetListRequest) => dispatch(hrCompetencyResultGetListRequest(request)),
-    loadListDispose: () => dispatch(hrCompetencyResultGetListDispose()),
     loadDetailListRequest: (request: IHrCompetencyEmployeeGetDetailListRequest) => dispatch(hrCompetencyResultGetDetailListRequest(request)),
     loadDetailListDispose: () => dispatch(hrCompetencyResultGetDetailListDispose()),
     loadDetailRequest: (request: IHrCompetencyEmployeeGetDetailRequest) => dispatch(hrCompetencyResultGetByIdRequest(request)),

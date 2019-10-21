@@ -188,7 +188,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
             props.hrCompetencyClusterDispatch.patchRequest({
               resolve,
               reject,
-              competencyUid: clusterUid,
+              clusterUid,
               data: payload
             });
           });

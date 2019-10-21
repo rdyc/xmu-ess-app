@@ -18,9 +18,6 @@ import {
   hrCompetencyClusterPostError,
   hrCompetencyClusterPostRequest,
   hrCompetencyClusterPostSuccess,
-  hrCompetencyClusterPutError,
-  hrCompetencyClusterPutRequest,
-  hrCompetencyClusterPutSuccess,
 } from '@hr/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
@@ -38,7 +35,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency?${params}`, 
+      path: `/v1/hr/competency/cluster?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetAllSuccess(response.body)),
       ]), 
@@ -63,7 +60,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/list?${params}`,
+      path: `/v1/hr/competency/cluster/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetListSuccess(response.body)),
       ]), 
@@ -83,7 +80,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/${action.payload.competencyUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetByIdSuccess(response.body)),
       ]), 
@@ -103,7 +100,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/competency`,
+      path: `/v1/hr/competency/cluster`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -139,51 +136,11 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof hrCompetencyClusterPutRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'put',
-      path: `/v1/competency/${action.payload.competencyUid}`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(hrCompetencyClusterGetByIdDispose()),
-        put(hrCompetencyClusterGetAllDispose()),
-        put(hrCompetencyClusterPutSuccess(response.body)),
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(hrCompetencyClusterPutError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(hrCompetencyClusterPutError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.PUT_REQUEST, worker);
-}
-
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/competency/${action.payload.competencyUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
@@ -238,7 +195,6 @@ function* hrCompetencyClusterSagas() {
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
-    fork(watchPutRequest),
     fork(watchPatchRequest),
     fork(watchSwitchAccess)
   ]);

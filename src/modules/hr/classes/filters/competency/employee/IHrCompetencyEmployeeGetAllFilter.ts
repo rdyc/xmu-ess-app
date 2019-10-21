@@ -5,4 +5,7 @@ export interface IHrCompetencyEmployeeGetAllFilter extends IBasePagingFilter {
   isResult?: boolean;
   status?: 'pending' | 'complete' | string;
   statusType?: string;
+  assessmentYear?: string;
+  companyUid?: string;
+  positionUid?: string;
 }
