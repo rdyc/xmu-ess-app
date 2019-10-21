@@ -109,7 +109,10 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
     <HrCompetencyEmployeeFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        status: props.status
+        status: props.status,
+        assessmentYear: props.assessmentYear,
+        companyUid: props.companyUid,
+        positionUid: props.positionUid
       }}
       onApply={props.handleFilterApplied}
       onClose={props.handleFilterVisibility}

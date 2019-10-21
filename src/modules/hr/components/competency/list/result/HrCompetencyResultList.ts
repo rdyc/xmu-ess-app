@@ -78,6 +78,9 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyResultLis
 
   // fill from previous request if any
   if (request && request.filter) {
+    state.assessmentYear = request.filter.assessmentYear,
+    state.companyUid = request.filter.companyUid,
+    state.positionUid = request.filter.positionUid,
     state.status = request.filter.status;
   }
 
@@ -109,7 +112,10 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size,
-        status: props.status
+        status: props.status,
+        assessmentYear: props.assessmentYear,
+        companyUid: props.companyUid,
+        positionUid: props.companyUid ? props.positionUid : undefined,
       };
 
       // when request is defined, then compare the filter props
@@ -155,7 +161,10 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: HrCompetencyResultListProps) => () => {
-    return props.status !== 'pending';
+    return props.assessmentYear !== undefined ||
+    props.companyUid !== undefined ||
+    props.positionUid !== undefined ||
+    props.status !== 'pending';
   },
   handleOnBind: () => (item: IHrCompetencyEmployee, index: number) => ({
     key: index,
@@ -174,9 +183,15 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyResultListProps, IOwnState
     const isFilterChanged = !shallowEqual(
       {
         status: this.props.status,
+        year: this.props.assessmentYear,
+        companyUid: this.props.companyUid,
+        positionUid: this.props.positionUid
       },
       {
-        status: prevProps.status
+        status: prevProps.status,
+        year: prevProps.assessmentYear,
+        companyUid: prevProps.companyUid,
+        positionUid: prevProps.positionUid
       }
     );
 
