@@ -142,7 +142,7 @@ const createProps: mapper<AccountEmployeeAssignFilterProps, OwnState> = (props: 
   isFilterFinalOpen: false,
   isFilterYearOpen: false,
 
-  filterStatus: props.initialProps && props.initialProps.isActive,\
+  filterStatus: props.initialProps && props.initialProps.isActive,
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, OwnStateUpdater> = {

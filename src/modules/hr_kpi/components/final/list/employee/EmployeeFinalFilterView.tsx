@@ -20,8 +20,6 @@ import * as React from 'react';
 
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FilterCompany } from '@lookup/components/company/select';
-import { FilterPosition } from '@lookup/components/position/select';
-import { FilterRole } from '@lookup/components/role/select';
 import { AccountEmployeeAssignFilterProps } from './EmployeeFinalFilter';
 
 export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProps> = props => (

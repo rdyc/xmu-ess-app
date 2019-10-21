@@ -18,10 +18,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
-import { IKPIFinalGetAllFilter } from '@kpi/classes/filter';
-import { IKPIFinal } from '@kpi/classes/response';
 import { KPIFinalField } from '@kpi/classes/types';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
 import { MyKPIAssignListView } from './MyKPIFinalListView';
 
@@ -78,7 +79,7 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
 
     if (user && !isLoading) {
       // predefined filter
-      const filter: IKPIFinalGetAllFilter = {
+      const filter: IEmployeeKPIFinalAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -125,11 +126,11 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: () => (item: IKPIFinal, index: number) => ({
+  handleOnBind: (props: MyKPIFinalListProps) => (item: IKPIFinal, index: number) => ({
     key: index,
     primary: item.employee && item.employee.fullName || '',
     secondary: item.year.toString(),
-    tertiary: `Semester ${item.period.toString()}`,
+    tertiary: item.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear),
     quaternary: `${item.totalScore.toString()} %`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    

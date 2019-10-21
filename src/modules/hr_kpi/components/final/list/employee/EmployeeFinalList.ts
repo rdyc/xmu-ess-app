@@ -25,7 +25,6 @@ import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPI
 import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
 import { AccountEmployeeField } from '@account/classes/types';
 import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
-import { IEmployeeKPI } from '@kpi/classes/response';
 import { IAccountEmployeeFilterResult } from './EmployeeFinalFilter';
 import { EmployeeFinalListView } from './EmployeeFinalListView';
 
@@ -46,7 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IEmployeeKPI, index: number) => IDataBindResult;
+  handleOnBind: (item: IEmployeeKPIFinal, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
   handleFilterBadge: () => boolean;

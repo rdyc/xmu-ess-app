@@ -18,9 +18,9 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
-import { IKPIFinalGetAllFilter } from '@kpi/classes/filter';
-import { IKPIFinal } from '@kpi/classes/response';
 import { KPIFinalField } from '@kpi/classes/types';
 import { ICollectionValue } from '@layout/classes/core';
 import { KPIAssignListView } from './KPIFinalListView';
@@ -79,7 +79,7 @@ const handlerCreators: HandleCreators<KPIFinalListProps, IOwnHandler> = {
 
     if (user && !isLoading && props.match.params.employeeUid) {
       // predefined filter
-      const filter: IKPIFinalGetAllFilter = {
+      const filter: IEmployeeKPIFinalAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,

@@ -1,5 +1,5 @@
-import { IKPIFinal } from '@kpi/classes/response';
 import { IEmployee } from '..';
+import { IKPIFinal } from './IKPIFinal';
 
 export interface IEmployeeKPIFinal extends IEmployee {
   kpiFinals?: IKPIFinal[];
