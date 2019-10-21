@@ -1,0 +1,62 @@
+{
+  "web.job.shared.page.list.title": "{state}",
+  "web.job.shared.page.list.subHeader": " ",
+  "web.job.shared.page.detail.title": "{state} Detail",
+  "web.job.shared.page.detail.subHeader": " ",
+
+  "web.job.shared.tab.jobs": "Jobs",
+  "web.job.shared.tab.retries": "Retries",
+  "web.job.shared.tab.recurring": "Recurring Jobs",
+  "web.job.shared.tab.servers": "Servers",
+  "web.job.shared.tab.enqueued": "Enqueued",
+  "web.job.shared.tab.scheduled": "Scheduled",
+  "web.job.shared.tab.processing": "Processing",
+  "web.job.shared.tab.succeeded": "Succeeded",
+  "web.job.shared.tab.failed": "Failed",
+  "web.job.shared.tab.deleted": "Deleted",
+  "web.job.shared.tab.queues": "Queues",
+  "web.job.shared.tab.fetched": "Fetched",
+
+  "web.job.monitoring.field.id": "ID",
+  "web.job.monitoring.field.job": "Job",
+  "web.job.monitoring.field.result": "Result",
+  "web.job.monitoring.field.totalDuration": "Total Duration",
+  "web.job.monitoring.field.succeededAt": "Succeeded At",
+  "web.job.monitoring.field.inSucceededState": "In Succeeded State",
+
+  "web.job.monitoring.field.deletedAt": "Deleted At",
+  "web.job.monitoring.field.inDeletedState": "In Deleted State",
+
+  "web.job.monitoring.field.state": "State",
+  "web.job.monitoring.field.enqueuedAt": "Enqueued At",
+  "web.job.monitoring.field.inEnqueuedState": "In Enqueued State",
+
+  "web.job.monitoring.field.reason": "Reason",
+  "web.job.monitoring.field.failedAt": "Failed At",
+  "web.job.monitoring.field.exceptionType": "Exception Type",
+  "web.job.monitoring.field.exceptionMessage": "Exception Message",
+  "web.job.monitoring.field.exceptionDetails": "Exception Details",
+  "web.job.monitoring.field.inFailedState": "In Failed State",
+
+  "web.job.monitoring.field.fetchedAt": "Fetched At",
+
+  "web.job.monitoring.field.serverId": "ServerId",
+  "web.job.monitoring.field.startedAt": "Started At",
+  "web.job.monitoring.field.inProcessingState": "In Processing State",
+
+  "web.job.monitoring.field.scheduledAt": "Scheduled At",
+  "web.job.monitoring.field.inScheduledState": "In Scheduled State",
+
+  "web.job.monitoring.field.createdAt": "Created At",
+  "web.job.monitoring.field.properties": "Properties",
+  "web.job.monitoring.field.history": "History",
+  "web.job.monitoring.field.statename": "State Name",
+  "web.job.monitoring.field.data": "Data",
+  "web.job.monitoring.field.expireAt": "Expire At",
+
+  "web.job.monitoring.field.name": "Name",
+  "web.job.monitoring.field.length": "Length",
+  "web.job.monitoring.field.fetched": "Fetched",
+
+  "web.job.monitoring.field.type": "{state}"
+}

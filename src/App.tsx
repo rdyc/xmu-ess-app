@@ -23,6 +23,7 @@ import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingC
 import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
 import { TimesheetRoutingComponents } from '@timesheet/components';
 import { TravelRoutingComponents } from '@travel/components';
+import { WebJobRouter } from '@webjob/components/WebJobRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import { User } from 'oidc-client';
@@ -90,6 +91,7 @@ const app: React.ComponentType<AllProps> = props => (
                 <Route path="/organization" component={OrganizationRoutingComponents} />
                 <Route path="/kpi" component={KPIRoutingComponents} />
                 <Route path="/hr" component={HrRoutingComponents} />
+                <Route path="/webjob" component={WebJobRouter} />
 
                 <Route path="/playground" component={playgroundRouter} />
               </MasterPage>

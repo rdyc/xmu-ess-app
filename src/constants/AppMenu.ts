@@ -86,6 +86,10 @@ enum AppMenu {
   HRKPIAssign = 'MNU84',
   MyProfile = 'MNU85',
   LookupEmployeeLevel = 'MNU86',
+  WebJob = 'MNU87',
+  WebJobDefinition = 'MNU88',
+  WebJobMonitoring = 'MNU89',
+  WebJobRecurring = 'MNU90',
 }
 
 export default AppMenu;

@@ -4,5 +4,5 @@ export interface IWebJobMonitoringQueue {
   name: string;
   length: number;
   fetched: number;
-  firstJobs: IWebJobMonitoringJobEnqueued;
+  firstJobs: IWebJobMonitoringJobEnqueued[];
 }
