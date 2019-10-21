@@ -103,7 +103,14 @@ import {
 } from '@account/classes/response/employeeTraining';
 import { IEmployeeMy } from '@account/classes/response/IEmployeeMy';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
+import { 
+  IEmployeeAllKPIAssignRequest, 
+  IEmployeeAllKPIFinalRequest, 
+  IEmployeeKPIFinalAllRequest, 
+  IEmployeeKPIFinalByIdRequest 
+} from '../queries/employeeKPI';
 import { IEmployeeAccess, IEmployeeAccessList } from '../response/employeeAccess';
+import { IEmployeeKPIAssign, IEmployeeKPIFinal, IKPIFinal } from '../response/employeeKPI';
 
 export interface IAccountState {
   // account employee
@@ -178,4 +185,10 @@ export interface IAccountState {
   accountEmployeeAccessPost: IQuerySingleState<IEmployeeAccessPostRequest, IEmployeeAccess>;
   accountEmployeeAccessPut: IQuerySingleState<IEmployeeAccessPutRequest, IEmployeeAccess>;
   accountEmployeeAccessDelete: IQuerySingleState<IEmployeeAccessDeleteRequest, boolean>;
+
+  // account employee KPI
+  accountEmployeeGetAllKPIAssign: IQueryCollectionState<IEmployeeAllKPIAssignRequest, IEmployeeKPIAssign>;
+  accountEmployeeGetAllKPIFinal: IQueryCollectionState<IEmployeeAllKPIFinalRequest, IEmployeeKPIFinal>;
+  accountEmployeeKPIFinalGetAll: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal>;
+  accountEmployeeKPIFinalGetById: IQuerySingleState<IEmployeeKPIFinalByIdRequest, IKPIFinal>;
 }
