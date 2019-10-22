@@ -7,7 +7,8 @@ import { WebJobMonitoringList } from './monitoring/list/WebJobMonitoringList';
 
 const monitoring = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:jobId`} component={WebJobMonitoringDetail} />
+    <Route path={`${props.match.path}/:type/:jobId`} component={WebJobMonitoringDetail} />
+    <Route path={`${props.match.path}/:type`} component={WebJobMonitoringList} />
     <Route path={`${props.match.path}`} component={WebJobMonitoringList} />
   </Switch>
 );

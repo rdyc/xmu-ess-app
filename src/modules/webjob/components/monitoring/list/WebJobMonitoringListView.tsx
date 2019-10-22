@@ -17,10 +17,10 @@ import { WebJobMonitoringListProps } from './WebJobMonitoringList';
 
 export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = props => {
   const { isLoading, response } = props.webJobMonitoringState.statisticAll;
-  const { jobsType } = props;
+  const { jobsType, match } = props;
 
   const handlerList = () => {
-    switch (jobsType) {
+    switch (match.params.type) {
       case  MonitoringJobsItem.Succeeded:
         return <MonitoringSucceededList />;
 
@@ -74,7 +74,7 @@ export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = pr
             {
               response &&
               response.data &&
-              <MonitoringJobsItemTabs data={response.data} jobsType={props.jobsType} handleJobsItem={props.handleJobsItem} />
+              <MonitoringJobsItemTabs data={response.data} jobsType={jobsType} handleJobsItem={props.handleJobsItem} />
             }
           </Grid>
           <Grid item xs={12} md={9} lg={9}>

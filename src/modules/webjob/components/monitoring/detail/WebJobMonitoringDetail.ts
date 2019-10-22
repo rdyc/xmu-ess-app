@@ -24,6 +24,7 @@ import {
 import { WebJobMonitoringDetailView } from './WebJobMonitoringDetailView';
 
 interface IOwnRouteParams {
+  type: string;
   jobId: string;
 }
 

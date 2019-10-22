@@ -14,7 +14,7 @@ import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, se
 import { WebJobMonitoringListView } from './WebJobMonitoringListView';
 
 interface IOwnRouteParams {
-  //
+  type: string;
 }
 
 interface IOwnState {

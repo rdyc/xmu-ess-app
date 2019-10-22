@@ -30,6 +30,10 @@ interface IOwnOption {
   
 }
 
+interface IOwnParams {
+  type: string;
+}
+
 interface IOwnState {
   fields: ICollectionValue[];
 }
@@ -50,7 +54,7 @@ export type MonitoringProcessingListProps
   & IOwnStateUpdater
   & IOwnHandler
   & InjectedIntlProps
-  & RouteComponentProps
+  & RouteComponentProps<IOwnParams>
   & WithStyles<typeof styles>
   & WithUser
   & WithWebJobMonitoring;

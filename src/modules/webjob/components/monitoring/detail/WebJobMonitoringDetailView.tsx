@@ -12,7 +12,7 @@ export const WebJobMonitoringDetailView: React.SFC<WebJobMonitoringDetailProps> 
     info={{
       uid: AppMenu.WebJobMonitoring,
       parentUid: AppMenu.WebJob,
-      parentUrl: '/webjob/monitoring/jobs',
+      parentUrl: `/webjob/monitoring/jobs/${props.match.params.type}`,
       title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Monitoring'}),
     }}
     state={props.webJobMonitoringState.jobDetail}

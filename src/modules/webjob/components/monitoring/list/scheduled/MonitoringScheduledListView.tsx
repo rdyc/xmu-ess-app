@@ -1,4 +1,6 @@
 import { CollectionPage } from '@layout/components/pages';
+import { layoutMessage } from '@layout/locales/messages';
+import { Button } from '@material-ui/core';
 import { IWebJobMonitoringJobScheduled } from '@webjob/classes/response';
 import * as React from 'react';
 
@@ -18,6 +20,17 @@ export const MonitoringScheduledListView: React.SFC<MonitoringScheduledListProps
     // row components
     summaryComponent={(item: IWebJobMonitoringJobScheduled) => ( 
       <MonitoringScheduledSummary data={item}/>
+    )}
+    actionComponent={(item: IWebJobMonitoringJobScheduled) => (
+      <React.Fragment>
+        <Button 
+          size="small"
+          color="secondary"
+          onClick={() => props.history.push(`/webjob/monitoring/jobs/${props.match.params.type}/${item.id}`)}
+        >
+          {props.intl.formatMessage(layoutMessage.action.details)}
+        </Button>
+      </React.Fragment>
     )}
   />
 );

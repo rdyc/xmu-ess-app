@@ -18,7 +18,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
 interface IOwnOption {
-  monitoringJob: string;
+  type: string;
 }
 
 interface IOwnProps {
@@ -76,9 +76,10 @@ const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
               }
               <ListItem
                 button
-                selected={item.name === props.jobsType}
+                selected={item.name === props.match.params.type}
                 onClick={() => {
-                  props.handleJobsItem(item.name);
+                  // props.handleJobsItem(item.name);
+                  props.history.push(`/webjob/monitoring/jobs/${item.name}`);
                 }}
               >
                 <ListItemText

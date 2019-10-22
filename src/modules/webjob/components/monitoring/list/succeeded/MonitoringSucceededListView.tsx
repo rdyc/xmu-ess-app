@@ -26,7 +26,7 @@ export const MonitoringSucceededListView: React.SFC<MonitoringSucceededListProps
         <Button 
           size="small"
           color="secondary"
-          onClick={() => props.history.push(`/webjob/monitoring/jobs/${item.id}`)}
+          onClick={() => props.history.push(`/webjob/monitoring/jobs/${props.match.params.type}/${item.id}`)}
         >
           {props.intl.formatMessage(layoutMessage.action.details)}
         </Button>
