@@ -4,6 +4,8 @@
   "web.job.shared.page.detail.title": "{state} Detail",
   "web.job.shared.page.detail.subHeader": " ",
 
+  "web.job.shared.section.info.title": "{state} Information",
+
   "web.job.shared.tab.jobs": "Jobs",
   "web.job.shared.tab.retries": "Retries",
   "web.job.shared.tab.recurring": "Recurring Jobs",

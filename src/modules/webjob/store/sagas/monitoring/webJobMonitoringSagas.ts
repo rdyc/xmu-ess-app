@@ -374,7 +374,7 @@ function* watchFetchJobByIdRequest() {
     });
   };
 
-  yield takeEvery(Action.JOB_GET_BY_ID_ERROR, worker);
+  yield takeEvery(Action.JOB_GET_BY_ID_REQUEST, worker);
 }
 
 function* watchSwitchAccess() {

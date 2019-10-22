@@ -1,5 +1,5 @@
 import { webJobMonitoringField } from './webJobMonitoringMessage';
-import { webJobPage, webJobSharedHelperFor } from './webJobSharedMessage';
+import { webJobPage, webJobSection, webJobSharedHelperFor } from './webJobSharedMessage';
 
 export const webJobMessage = {
   monitoring: {
@@ -7,6 +7,7 @@ export const webJobMessage = {
   },
   shared: {
     page: webJobPage,
+    section: webJobSection,
     fieldFor: webJobSharedHelperFor
   }
 };

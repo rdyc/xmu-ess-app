@@ -26,6 +26,11 @@ export const webJobTabs = defineMessages({
   fetched: {id: `${prefix}.tab.fetched`},  
 });
 
+// section
+export const webJobSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title`},
+});
+
 // helper
 export const webJobSharedHelperFor = (field: string, type: 'fieldTab') => {
   if (type === 'fieldTab') {

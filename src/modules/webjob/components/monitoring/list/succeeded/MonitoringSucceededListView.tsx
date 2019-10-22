@@ -1,4 +1,6 @@
 import { CollectionPage } from '@layout/components/pages';
+import { layoutMessage } from '@layout/locales/messages';
+import { Button } from '@material-ui/core';
 import { IWebJobMonitoringJobSucceeded } from '@webjob/classes/response';
 import * as React from 'react';
 
@@ -18,6 +20,17 @@ export const MonitoringSucceededListView: React.SFC<MonitoringSucceededListProps
     // row components
     summaryComponent={(item: IWebJobMonitoringJobSucceeded) => ( 
       <MonitoringSucceededSummary data={item}/>
+    )}
+    actionComponent={(item: IWebJobMonitoringJobSucceeded) => (
+      <React.Fragment>
+        <Button 
+          size="small"
+          color="secondary"
+          onClick={() => props.history.push(`/webjob/monitoring/jobs/${item.id}`)}
+        >
+          {props.intl.formatMessage(layoutMessage.action.details)}
+        </Button>
+      </React.Fragment>
     )}
   />
 );

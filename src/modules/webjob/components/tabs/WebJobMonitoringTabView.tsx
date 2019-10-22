@@ -1,4 +1,4 @@
-import { AppBar, Badge, Tab, Tabs } from '@material-ui/core';
+import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
@@ -27,9 +27,15 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
                 <Tab
                   key={item.id}
                   label={
-                    <Badge color="secondary" badgeContent={response.data[item.name] || 9999} style={{padding: '0 16px'}}>
-                      {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
-                    </Badge>
+                    // <Badge color="secondary" badgeContent={response.data[item.name] || 9999} style={{padding: '0 16px'}}>
+                    //   {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
+                    // </Badge>
+                    <span className={props.classes.badgeParent}>
+                    {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
+                      <span className={props.classes.badgeChild}>
+                        {response.data[item.name] > 99 ? '99+' : response.data[item.name]}
+                      </span>
+                    </span>
                   }
                   onClick={() => props.history.push(`/webjob/monitoring/${item.name}`)}
                 />
