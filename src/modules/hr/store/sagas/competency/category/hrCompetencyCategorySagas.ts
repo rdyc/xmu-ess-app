@@ -35,7 +35,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}/categories?${params}`, 
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetAllSuccess(response.body)),
       ]), 
@@ -60,7 +60,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}/categories/list?${params}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetListSuccess(response.body)),
       ]), 
@@ -80,7 +80,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetByIdSuccess(response.body)),
       ]), 
@@ -100,7 +100,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyCategoryGetByIdDispose()),
@@ -140,7 +140,7 @@ function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyCategoryGetByIdDispose()),

@@ -37,12 +37,12 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.company)}
-        value={props.data.position && props.data.position.company && props.data.position.company.name || 'N/A'}
+        value={props.data.company && props.data.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.position)}
-        value={props.data.position && props.data.position.name}
+        value={props.data.position && props.data.position.name || 'N/A'}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>

@@ -169,7 +169,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultListProps, IOwnHandler> 
   handleOnBind: () => (item: IHrCompetencyEmployee, index: number) => ({
     key: index,
     primary: item.responden && item.responden.fullName || 'N/A',
-    secondary: item.position && item.position.company && item.position.company.name || 'N/A',
+    secondary: item.company && item.company.name || 'N/A',
     tertiary: item.position && item.position.name || 'N/A',
     quaternary: item.status && item.status.value || item.statusType,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',

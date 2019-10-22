@@ -22,7 +22,7 @@ const hrCompetencySummaryMapped: React.SFC<AllProps> = props => (
     <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.company)}
-        value={props.data.position.company.name}
+        value={props.data.company && props.data.company.name || 'N/A'}
       />
     </Grid>
 
@@ -30,7 +30,7 @@ const hrCompetencySummaryMapped: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.position)}
-        value={props.data.position.name}
+        value={props.data.position && props.data.position.name || 'N/A'}
       />
     </Grid>
 

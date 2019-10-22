@@ -54,7 +54,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
       <Field
         name="categoryUid"
         render={({ field, form }: FieldProps<ICategoryFormValue>) => (
-          <HrCompetencyCategoryOption competencyUid={props.formikBag.values.clusterUid}>
+          <HrCompetencyCategoryOption clusterUid={props.formikBag.values.clusterUid}>
             <SelectField
               isSearchable
               menuPlacement="auto"

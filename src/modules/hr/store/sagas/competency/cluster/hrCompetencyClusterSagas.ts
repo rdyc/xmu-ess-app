@@ -80,7 +80,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyClusterGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/cluster/${action.payload.competencyUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyClusterGetByIdSuccess(response.body)),
       ]), 

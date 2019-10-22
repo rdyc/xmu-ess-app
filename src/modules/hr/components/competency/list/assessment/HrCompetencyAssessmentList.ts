@@ -152,8 +152,8 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
   handleOnBind: () => (item: IHrCompetencyAssessment, index: number) => ({
     key: index,
     primary: item.employee.fullName,
-    secondary: item.position.company && item.position.company.name || 'N/A',
-    tertiary: item.position.name,
+    secondary: item.company && item.company.name || 'N/A',
+    tertiary: item.position && item.position.name || 'N/A',
     quaternary: item.assessmentYear.toString(),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

@@ -55,9 +55,9 @@ export interface IMappedFormValue {
   uid: string;
   companyUid: string;
   positionUid: string;
-  categories: CategoryMenus[];
   activeCluster?: string;
   activeCategory?: string;
+  categories: CategoryMenus[];
 }
 
 interface IOwnRouteParams {
@@ -118,9 +118,9 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     uid: 'Auto Generated',
     companyUid: '',
     positionUid: '',
-    categories: [],
     activeCategory: '',
-    activeCluster: ''
+    activeCluster: '',
+    categories: [],
   },
 
   // validation props
@@ -221,6 +221,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: IHrCompetencyMappedPostPayload = {
+          companyUid: values.companyUid,
           positionUid: values.positionUid,
           categories: []
         };
@@ -247,7 +248,6 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
           props.hrCompetencyMappedDispatch.createRequest({
             resolve,
             reject,
-            positionUid: values.positionUid,
             data: payload
           });
         });
@@ -260,6 +260,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         // must have mappedUid
         if (mappedUid) {
           const payload: IHrCompetencyMappedPutPayload = {
+            companyUid: values.companyUid,
             positionUid: values.positionUid,
             categories: []
           };
@@ -307,7 +308,7 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', type: 'position', uid: response.position.name })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapped', type: 'position', uid: response.position && response.position.name })
         });
 
         // redirect to detail
@@ -515,7 +516,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
             }
           });
   
-          initialVal.companyUid = thisResponse.data.position.companyUid;
+          initialVal.companyUid = thisResponse.data.companyUid;
           initialVal.positionUid = thisResponse.data.positionUid;
   
           this.props.setDetailTouched();

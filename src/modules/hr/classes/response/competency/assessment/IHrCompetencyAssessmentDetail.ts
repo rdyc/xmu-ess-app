@@ -1,12 +1,14 @@
 import { IAccountEmployee } from '@account/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { IPosition } from '@lookup/classes/response';
+import { ILookupCompany, ILookupPosition } from '@lookup/classes';
 import { IAssessmentItem } from './IAssessmentItem';
 
 export interface IHrCompetencyAssessmentDetail {
   uid: string;
+  companyUid: string;
+  company?: ILookupCompany;
   positionUid: string;
-  position: IPosition;
+  position?: ILookupPosition;
   employeeUid: string;
   employee: IAccountEmployee;
   assessmentYear: number;

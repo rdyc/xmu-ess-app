@@ -92,7 +92,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
     <HrCompetencyCategoryFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        competencyUid: props.competencyUid
+        clusterUid: props.clusterUid
       }}
       onApply={props.handleFilterApplied}
       onClose={props.handleFilterVisibility}

@@ -42,7 +42,7 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
               >
                 {props.intl.formatMessage(layoutMessage.action.process)}
               </Button>
@@ -52,7 +52,7 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
               >
                 {props.intl.formatMessage(layoutMessage.action.modify)}
               </Button>
@@ -62,7 +62,7 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`, { positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+                onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`, { companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
               >
                 {props.intl.formatMessage(layoutMessage.action.details)}
               </Button>

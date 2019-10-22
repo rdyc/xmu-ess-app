@@ -151,6 +151,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyEmployeeState.detail;
+      const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
 
       if (user && competencyEmployeeUid && !isLoading) {
@@ -161,6 +162,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
       props.hrCompetencyMappedDispatch.loadListRequest({
         filter: {
+          companyUid,
           positionUid
         }
       });
@@ -178,10 +180,11 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
         
         // must have competencyEmployeeUid
         if (competencyEmployeeUid) {
-          const respondenUid = values.respondenUid;
-          const positionUid = values.positionUid;
 
           const payload: IHrCompetencyEmployeePatchPayload = {
+            respondenUid: values.respondenUid,
+            companyUid: values.companyUid,
+            positionUid: values.positionUid,
             items: [],
             isDraft: props.saveType === DraftType.draft ? true : false
           };
@@ -202,8 +205,6 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyEmployeeDispatch.patchRequest({
               competencyEmployeeUid,
-              respondenUid,
-              positionUid,
               resolve,
               reject,
               data: payload
@@ -230,7 +231,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
         });
 
         // redirect to detail
-        props.history.push(`/hr/assessmentinput/${response.uid}`);
+        props.history.push(`/hr/assessmentinput/${response.uid}`, { companyUid: response.companyUid,  positionUid: response.positionUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

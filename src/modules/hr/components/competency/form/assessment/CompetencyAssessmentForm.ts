@@ -279,7 +279,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
         // define initial values
         const initialValues: ICompetencyAssessmentFormValue = {
             uid: thisResponse.data.uid,
-            companyUid: thisResponse.data.position.companyUid,
+            companyUid: thisResponse.data.companyUid,
             positionUid: thisResponse.data.positionUid,
             employeeUid: thisResponse.data.employeeUid,
             year: thisResponse.data.assessmentYear.toString(),

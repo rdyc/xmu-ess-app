@@ -34,7 +34,7 @@ const hrCompetencySummaryResult: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.company)}
-        value={props.data.position && props.data.position.company && props.data.position.company.name || 'N/A'}
+        value={props.data.company && props.data.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}

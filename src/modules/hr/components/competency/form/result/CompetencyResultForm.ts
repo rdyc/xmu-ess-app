@@ -158,6 +158,7 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           competencyEmployeeUid
         });
       }
+      const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
       const assessmentYear = props.history.location.state.assessmentYear;
@@ -165,14 +166,18 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
     
       if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
         props.hrCompetencyResultDispatch.loadDetailListRequest({
-          positionUid,
-          respondenUid,
-          assessmentYear
+          filter: {
+            companyUid,
+            positionUid,
+            respondenUid,
+            assessmentYear
+          }
         });
       }
 
       props.hrCompetencyMappedDispatch.loadListRequest({
         filter: {
+          companyUid,
           positionUid
         }
       });
@@ -189,10 +194,11 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
         
         // must have competencyEmployeeUid
         if (competencyEmployeeUid) {
-          const respondenUid = values.respondenUid;
-          const positionUid = values.positionUid;
 
           const payload: IHrCompetencyEmployeePatchPayload = {
+            respondenUid: values.respondenUid,
+            companyUid: values.companyUid,
+            positionUid: values.positionUid,
             items: [],
             isDraft: props.saveType === DraftType.draft ? true : false
           };
@@ -213,8 +219,6 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyResultDispatch.patchRequest({
               competencyEmployeeUid,
-              respondenUid,
-              positionUid,
               resolve,
               reject,
               data: payload
@@ -239,18 +243,20 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
           message: props.intl.formatMessage(hrMessage.shared.message.updateSuccess, {state: 'Assessment Result', type: 'name', uid: (response.responden && response.responden.fullName) })
         });
 
+        let companyUid: string | undefined;
         let positionUid: string | undefined;
         let respondenUid: string | undefined;
         let assessmentYear: string | undefined;
 
         if (props.history.location.state) {
+          companyUid = props.history.location.state.companyUid;
           positionUid = props.history.location.state.positionUid;
           respondenUid = props.history.location.state.respondenUid;
           assessmentYear = props.history.location.state.assessmentYear;
         }
 
         // redirect to detail
-        props.history.push(`/hr/assessmentresult/${response.uid}`, {positionUid, respondenUid, assessmentYear});
+        props.history.push(`/hr/assessmentresult/${response.uid}`, {companyUid, positionUid, respondenUid, assessmentYear});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

@@ -72,11 +72,13 @@ const handlerCreators: HandleCreators<MyCompetencyDetailProps, IOwnHandler> = {
       });
 
       loadNextRequest({
+        companyUid: user.company.uid,
         positionUid: user.position.uid,
         employeeLevel: user.level.uid
       });
 
       loadCurrentRequest({
+        companyUid: user.company.uid,
         positionUid: user.position.uid,
         employeeLevel: user.level.uid,
         filter: {

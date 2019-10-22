@@ -46,10 +46,6 @@ export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetai
         onClickConfirm={props.handleOnConfirm}
       />  
     </PreviewPage>
-    {/* {
-      props.hrCompetencyMappedState.list.isLoading &&
-      <LoadingCircular />
-    } */}
     {
       !props.hrCompetencyEmployeeState.detail.isLoading &&
       props.hrCompetencyEmployeeState.detail.response &&

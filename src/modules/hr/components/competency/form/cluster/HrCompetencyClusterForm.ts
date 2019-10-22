@@ -124,12 +124,12 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
   handleOnLoadDetail: (props: HrCompetencyClusterFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const competencyUid = props.history.location.state.uid;
+      const clusterUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyClusterState.detail;
 
-      if (user && competencyUid && !isLoading) {
+      if (user && clusterUid && !isLoading) {
         props.hrCompetencyClusterDispatch.loadDetailRequest({
-          competencyUid
+          clusterUid
         });
       }
     }

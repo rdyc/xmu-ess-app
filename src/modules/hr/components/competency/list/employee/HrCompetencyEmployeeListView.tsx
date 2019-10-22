@@ -43,7 +43,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, positionUid: item.positionUid })}
+                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid })}
               >
                 {props.intl.formatMessage(layoutMessage.action.process)}
               </Button>
@@ -54,7 +54,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, positionUid: item.positionUid })}
+                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid })}
               >
                 {props.intl.formatMessage(layoutMessage.action.modify)}
               </Button>
@@ -64,7 +64,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`, { positionUid: item.positionUid })}
+                onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`, { companyUid: item.companyUid,  positionUid: item.positionUid })}
               >
                 {props.intl.formatMessage(layoutMessage.action.details)}
               </Button>

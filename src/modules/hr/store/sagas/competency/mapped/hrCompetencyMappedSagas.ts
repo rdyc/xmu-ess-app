@@ -88,7 +88,7 @@ function* watchFetchNextRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedGetNextRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/mapping/${action.payload.positionUid}/${action.payload.employeeLevel}`,
+      path: `/v1/hr/competency/mapping/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.employeeLevel}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetNextSuccess(response.body)),
       ]), 
@@ -113,7 +113,7 @@ function* watchFetchCurrentRequest() {
     
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/hr/competency/mapping/${action.payload.positionUid}/${action.payload.employeeLevel}?${params}`,
+      path: `/v1/hr/competency/mapping/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.employeeLevel}?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyMappedGetCurrentSuccess(response.body)),
       ]), 
@@ -153,7 +153,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyMappedPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/hr/competency/mapping/${action.payload.positionUid}`,
+      path: `/v1/hr/competency/mapping`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyMappedGetByIdDispose()),

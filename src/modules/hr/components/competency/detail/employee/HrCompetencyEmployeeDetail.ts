@@ -136,10 +136,12 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
         });
       }
 
+      const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
 
       props.hrCompetencyMappedDispatch.loadListRequest({
         filter: {
+          companyUid,
           positionUid
         }
       });
@@ -172,11 +174,13 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
     // define vars
     let competencyEmployeeUid: string | undefined;
+    let companyUid: string | undefined;
     let positionUid: string | undefined;
 
     // get project uid
     if (response.data) {
       competencyEmployeeUid = response.data.uid;
+      companyUid = response.data.companyUid;
       positionUid = response.data.positionUid;
     }
 
@@ -200,6 +204,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
       props.setDefault();
 
       props.history.push(next, { 
+        companyUid,
         positionUid,
         uid: competencyEmployeeUid
       });
@@ -208,31 +213,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyEmployeeDetailProps, IOwnState> = {
-  componentDidMount() {
-    // const { response, request } = this.props.hrCompetencyEmployeeState.detail;
-    // const { match } = this.props;
 
-    // if (!response || request && request.competencyEmployeeUid !== match.params.competencyEmployeeUid) {
-    //   this.props.handleOnLoadApi();
-    // }
-  },
-  componentWillUpdate(nextProps: HrCompetencyEmployeeDetailProps) {
-    // const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail; 
-    // const { response: nextResponse } = nextProps.hrCompetencyEmployeeState.detail;
-    // const { response, request } = this.props.hrCompetencyMappedState.list;
-
-    // if (thisResponse !== nextResponse) {
-    //   if (nextResponse && nextResponse.data) {
-    //     if (!response || request && request.filter && request.filter.positionUid !== nextResponse.data.positionUid) {
-    //       this.props.hrCompetencyMappedDispatch.loadListRequest({
-    //         filter: {
-    //           positionUid: nextResponse.data.positionUid
-    //         }
-    //       });
-    //     }
-    //   }
-    // }
-  },
   componentDidUpdate(prevProps: HrCompetencyEmployeeDetailProps) {
     // handle updated reload state
     if (this.props.shouldLoad && this.props.shouldLoad !== prevProps.shouldLoad) {

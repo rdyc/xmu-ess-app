@@ -138,6 +138,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
         });
       }
 
+      const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
       const assessmentYear = props.history.location.state.assessmentYear;
@@ -145,14 +146,18 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
     
       if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
         props.hrCompetencyResultDispatch.loadDetailListRequest({
-          positionUid,
-          respondenUid,
-          assessmentYear
+          filter: {
+            companyUid,
+            positionUid,
+            respondenUid,
+            assessmentYear
+          }
         });
       }
 
       props.hrCompetencyMappedDispatch.loadListRequest({
         filter: {
+          companyUid,
           positionUid
         }
       });
@@ -185,6 +190,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
 
     // define vars
     let competencyEmployeeUid: string | undefined;
+    let companyUid: string | undefined;
     let positionUid: string | undefined;
     let respondenUid: string | undefined;
     let assessmentYear: string | undefined;
@@ -195,6 +201,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
     }
 
     if (props.history.location.state) {
+      companyUid = props.history.location.state.companyUid;
       positionUid = props.history.location.state.positionUid;
       respondenUid = props.history.location.state.respondenUid;
       assessmentYear = props.history.location.state.assessmentYear;
@@ -220,6 +227,7 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
       props.setDefault();
 
       props.history.push(next, { 
+        companyUid,
         positionUid,
         respondenUid,
         assessmentYear,
