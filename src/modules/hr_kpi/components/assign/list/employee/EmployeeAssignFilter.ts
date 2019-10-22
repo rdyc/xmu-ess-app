@@ -1,6 +1,5 @@
 import { withLayout } from '@layout/hoc/withLayout';
-import { ILookupCompany, ILookupRole } from '@lookup/classes';
-import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
+import { ILookupCompany } from '@lookup/classes';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -19,14 +18,12 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeKPIGetAllFilter } from '@kpi/classes/filter';
+import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPI';
 import { ICollectionValue } from '@layout/classes/core';
-import { IPositionGetListFilter } from '@lookup/classes/filters';
-import { IPositionList } from '@lookup/classes/response';
 import * as moment from 'moment';
 import { EmployeeAssignFilterView } from './EmployeeAssignFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeKPIGetAllFilter, 'companyUids' | 'positionUids' | 'useAccess' | 'useSuperOrdinate' | 'isActive' | 'isNotAssigned' | 'year' | 'isFinal'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllKPIAssignFilter, 'companyUid' | 'isActive' | 'isNotAssigned' | 'year' | 'isFinal'>;
 
 const nowYear: number = Number(moment().format('YYYY'));
 
@@ -65,24 +62,11 @@ interface OwnState {
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
 
-  // filter position
-  filterPositionValue?: IPositionGetListFilter;
-  isFilterPositionOpen: boolean;
-  filterPosition?: IPositionList;
-
-  // filter role
-  filterRoleValue?: ILookupRoleGetListFilter;
-  isFilterRoleOpen: boolean;
-  filterRole?: ILookupRole;
-
   // filter status
   filterStatus?: boolean; 
 
   // filter assign
   filterNotAssign?: boolean; 
-
-  // filter access
-  filterAccess?: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -101,22 +85,11 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setFilterCompanyVisibility: StateHandler<OwnState>;
   setFilterCompany: StateHandler<OwnState>;
 
-  // filter position
-  setFilterPositionVisibility: StateHandler<OwnState>;
-  setFilterPosition: StateHandler<OwnState>;
-
-  // filter role
-  setFilterRoleVisibility: StateHandler<OwnState>;
-  setFilterRole: StateHandler<OwnState>;
-
   // filter status
   setFilterStatus: StateHandler<OwnState>;
 
   // filter assign
   setFilterNotAssign: StateHandler<OwnState>;
-
-  // filter access
-  setFilterAccess: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -142,18 +115,6 @@ interface OwnHandler {
   handleFilterCompanyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompanyOnClose: () => void;
 
-  // filter position
-  handleFilterPositionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterPositionOnSelected: (data: IPositionList) => void;
-  handleFilterPositionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterPositionOnClose: () => void;
-  
-  // filter role
-  handleFilterRoleVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterRoleOnSelected: (data: ILookupRole) => void;
-  handleFilterRoleOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterRoleOnClose: () => void;
-
   // filter status
   handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 
@@ -178,13 +139,10 @@ const createProps: mapper<AccountEmployeeAssignFilterProps, OwnState> = (props: 
   yearOptions,
 
   isFilterCompanyOpen: false,
-  isFilterPositionOpen: false,
-  isFilterRoleOpen: false,
   isFilterFinalOpen: false,
   isFilterYearOpen: false,
 
   filterStatus: props.initialProps && props.initialProps.isActive,
-  filterAccess: props.initialProps && props.initialProps.useAccess,
 });
 
 const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, OwnStateUpdater> = {
@@ -193,11 +151,8 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
     filterYear: undefined,
     filterFinal: undefined,
     filterCompany: undefined,
-    filterPosition: undefined,
-    filterRole: undefined,
     filterStatus: false,
     filterNotAssign: false,
-    filterAccess: false,
   }),
 
   // filter completion
@@ -233,24 +188,6 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
     },
   }),
 
-  // filter position
-  setFilterPositionVisibility: (prevState: OwnState) => () => ({
-    isFilterPositionOpen: !prevState.isFilterPositionOpen
-  }),
-  setFilterPosition: () => (data?: IPositionList) => ({
-    isFilterPositionOpen: false,
-    filterPosition: data,
-  }),
-
-  // filter role
-  setFilterRoleVisibility: (prevState: OwnState) => () => ({
-    isFilterRoleOpen: !prevState.isFilterRoleOpen
-  }),
-  setFilterRole: () => (data?: ILookupRole) => ({
-    isFilterRoleOpen: false,
-    filterRole: data
-  }),
-
   // filter status
   setFilterStatus: () => (checked: boolean) => ({
     filterStatus: checked
@@ -259,11 +196,6 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
   // filter not assign
   setFilterNotAssign: () => (checked: boolean) => ({
     filterNotAssign: checked
-  }),
-
-  // filter access
-  setFilterAccess: () => (checked: boolean) => ({
-    filterAccess: checked
   }),
 };
 
@@ -276,9 +208,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignFilterProps, OwnHandl
     props.onApply({
       isFinal: props.filterFinal && props.filterFinal.value && props.filterFinal.value === 'true' ? true : (props.filterFinal && props.filterFinal.value === 'false' ? false : undefined ),
       year: props.filterYear && props.filterYear.value,
-      companyUids: props.filterCompany && props.filterCompany.uid,
-      positionUids: props.filterPosition && props.filterPosition.uid,
-      useAccess: props.filterAccess,
+      companyUid: props.filterCompany && props.filterCompany.uid,
       isNotAssigned: props.filterNotAssign,
       isActive: props.filterStatus,
     });
@@ -327,34 +257,6 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignFilterProps, OwnHandl
     props.setFilterCompanyVisibility();
   },
 
-  // filter position
-  handleFilterPositionVisibility: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterPositionVisibility();
-  },
-  handleFilterPositionOnSelected: (props: AccountEmployeeAssignFilterProps) => (data: IPositionList) => {
-    props.setFilterPosition(data);
-  },
-  handleFilterPositionOnClear: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterPosition();
-  },
-  handleFilterPositionOnClose: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterPositionVisibility();
-  },
-
-  // filter role
-  handleFilterRoleVisibility: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterRoleVisibility();
-  },
-  handleFilterRoleOnSelected: (props: AccountEmployeeAssignFilterProps) => (data: ILookupRole) => {
-    props.setFilterRole(data);
-  },
-  handleFilterRoleOnClear: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterRole();
-  },
-  handleFilterRoleOnClose: (props: AccountEmployeeAssignFilterProps) => () => {
-    props.setFilterRoleVisibility();
-  },
-
   // filter status
   handleFilterStatusOnChange: (props: AccountEmployeeAssignFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterStatus(checked);
@@ -375,14 +277,14 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignFilterProps, OwnS
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { companyUids } = this.props.initialProps;
+      const { companyUid } = this.props.initialProps;
 
       // filter company
-      if (companyUids) {
+      if (companyUid) {
         const { response } = this.props.lookupCompanyState.list;
 
         if (response && response.data) {
-          const selected = response.data.find(item => item.uid === companyUids);
+          const selected = response.data.find(item => item.uid === companyUid);
 
           this.props.setFilterCompany(selected);
         }

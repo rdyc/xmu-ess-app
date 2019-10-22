@@ -1,6 +1,5 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IEmployeeKPIGetAllRequest, 
   IKPIApprovalGetAllRequest, 
   IKPIApprovalGetByIdRequest, 
   IKPIApprovalPostRequest, 
@@ -14,8 +13,6 @@ import {
   IKPIEmployeeGetLatestRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
-  IKPIFinalGetAllRequest,
-  IKPIFinalGetByIdRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -40,7 +37,6 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IEmployeeKPI, 
   IKPIAssign,
   IKPIAssignDetail,
   IKPICategory,
@@ -48,8 +44,6 @@ import {
   IKPICategoryList,
   IKPIEmployee,
   IKPIEmployeeDetail, 
-  IKPIFinal,
-  IKPIFinalDetail, 
   IKPIMeasurement, 
   IKPIMeasurementDetail,
   IKPIMeasurementList,
@@ -58,9 +52,6 @@ import {
 } from '../response';
 
 export interface IKPIState {
-  // employee
-  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
-
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
@@ -73,10 +64,6 @@ export interface IKPIState {
   kpiApprovalGetById: IQuerySingleState<IKPIApprovalGetByIdRequest, IKPIEmployeeDetail>;
   kpiApprovalPost: IQueryCollectionState<IKPIApprovalPostRequest, IKPIEmployee>;
 
-  // final
-  kpiFinalGetAll: IQueryCollectionState<IKPIFinalGetAllRequest, IKPIFinal>;
-  kpiFinalGetById: IQuerySingleState<IKPIFinalGetByIdRequest, IKPIFinalDetail>;
-  
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
   kpiAssignGetById: IQuerySingleState<IKPIAssignGetByIdRequest, IKPIAssignDetail>;

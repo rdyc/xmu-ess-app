@@ -3,6 +3,7 @@ import accountEmployeeAccessSagas from '@account/store/sagas/accountEmployeeAcce
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
+import accountEmployeeKPISagas from '@account/store/sagas/accountEmployeeKPISagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeNoteSagas from '@account/store/sagas/accountEmployeeNoteSagas';
@@ -61,12 +62,10 @@ import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
 import hrCornerCategorySagas from '@hr/store/sagas/corner/category/hrCornerCategorySagas';
 import hrCornerPageSagas from '@hr/store/sagas/corner/page/hrCornerPageSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
-import employeeKPISagas from '@kpi/store/sagas/employeeKPISagas';
 import kpiApprovalSagas from '@kpi/store/sagas/kpiApprovalSagas';
 import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
 import kpiEmployeeSagas from '@kpi/store/sagas/kpiEmployeeSagas';
-import kpiFinalSagas from '@kpi/store/sagas/kpiFinalSagas';
 import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
 import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
@@ -197,6 +196,7 @@ export function* rootSaga() {
     fork(accountEmployeeRateSagas),
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
+    fork(accountEmployeeKPISagas),
 
     // project
     fork(projectRegistrationSagas),
@@ -275,8 +275,6 @@ export function* rootSaga() {
     fork(kpiEmployeeSagas),
     fork(kpiApprovalSagas),
     fork(kpiAssignSagas),
-    fork(kpiFinalSagas),
-    fork(employeeKPISagas),
 
     // corner
     fork(hrCornerBlogSagas),

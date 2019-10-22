@@ -6,7 +6,7 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IEmployeeKPI } from '@kpi/classes/response';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeAssignFilter } from './EmployeeFinalFilter';
 import { AccountEmployeeFinalListProps } from './EmployeeFinalList';
@@ -25,7 +25,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       }}
 
       // state & fields
-      state={props.employeeKPIState.all}
+      state={props.accountEmployeeKPIState.allFinal}
       fields={props.fields}
 
       // callback
@@ -33,10 +33,10 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       onBind={props.handleOnBind}
       
       // row components
-      summaryComponent={(item: IEmployeeKPI) => ( 
+      summaryComponent={(item: IEmployeeKPIFinal) => ( 
         <EmployeeFinalSummary data={item} />
       )}
-      actionComponent={(item: IEmployeeKPI) => (
+      actionComponent={(item: IEmployeeKPIFinal) => (
         <React.Fragment>
           <Button 
             size="small"
@@ -52,7 +52,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       appBarSearchComponent={
         <SearchBox
           key="employee.kpi.final"
-          default={props.employeeKPIState.all.request && props.employeeKPIState.all.request.filter && props.employeeKPIState.all.request.filter.find}
+          default={props.accountEmployeeKPIState.allFinal.request && props.accountEmployeeKPIState.allFinal.request.filter && props.accountEmployeeKPIState.allFinal.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
@@ -67,7 +67,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
           <div>
             <IconButton
               id="option-filter-employee-final"
-              disabled={props.employeeKPIState.all.isLoading || props.employeeKPIState.all.isError}
+              disabled={props.accountEmployeeKPIState.allFinal.isLoading || props.accountEmployeeKPIState.allFinal.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge
@@ -87,9 +87,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
     <EmployeeAssignFilter
       isOpen={props.isFilterOpen}
       initialProps={{
-        companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        useAccess: props.useAccess,
+        companyUid: props.companyUid,
         isActive: props.isActive,
       }}
       onClose={props.handleFilterVisibility}

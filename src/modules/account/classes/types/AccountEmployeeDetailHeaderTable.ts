@@ -73,3 +73,10 @@ export enum AccountEmployeeNoteHeaderTable {
   updated = 'Updated',
   action = 'Action'
 }
+
+export enum AccountEmployeeKPIHeaderTable {
+  uid = 'ID',
+  employeeUid = 'Employee',
+  year = 'Year',
+  period = 'Period'
+}
