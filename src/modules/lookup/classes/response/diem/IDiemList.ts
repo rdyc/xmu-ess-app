@@ -1,12 +1,12 @@
 import { ICommonSystem } from '@common/classes';
-import { ICompanyList } from '@lookup/classes/response';
+import { ICompanyList, ICurrencyList } from '@lookup/classes/response';
 
 export interface IDiemList {
   uid: string; 
   companyUid: string;
   company?: ICompanyList;
   currencyUid: string; 
-  currency?: string;  // ICurrencyList;   
+  currency?: ICurrencyList;   
   projectType: string;
   project?: ICommonSystem;
   destinationType: string;
