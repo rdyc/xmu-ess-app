@@ -6,7 +6,7 @@ import { ISelectFieldOption, SelectField } from '@layout/components/fields/Selec
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IDiem } from '@lookup/classes/response';
+import { IDiemList } from '@lookup/classes/response';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
@@ -30,7 +30,7 @@ type TravelRequestDetailPartialFormProps = {
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectRegistrationGetListFilter;
   filterProjectSite?: IProjectSiteGetRequest;
-  diemData?: IDiem[];
+  diemData?: IDiemList[];
   setProjectFilter: (customerUid: string) => void;
   SetProjectSiteFilter: (projectUid: string) => void;
 };
