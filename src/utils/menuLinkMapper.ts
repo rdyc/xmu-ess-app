@@ -283,7 +283,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU89':
-      path = '/webjob/monitoring/jobs';
+      path = '/webjob/monitoring';
       break;
 
     case 'MNU90':

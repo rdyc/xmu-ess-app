@@ -6,9 +6,10 @@
 
   "web.job.shared.section.info.title": "{state} Information",
 
-  "web.job.shared.tab.jobs": "Jobs",
+  "web.job.shared.tab.monitoring": "Monitoring",
+  "web.job.shared.tab.definitions": "Definitions",
   "web.job.shared.tab.retries": "Retries",
-  "web.job.shared.tab.recurring": "Recurring Jobs",
+  "web.job.shared.tab.recurrings": "Recurrings",
   "web.job.shared.tab.servers": "Servers",
   "web.job.shared.tab.enqueued": "Enqueued",
   "web.job.shared.tab.scheduled": "Scheduled",
@@ -18,6 +19,13 @@
   "web.job.shared.tab.deleted": "Deleted",
   "web.job.shared.tab.queues": "Queues",
   "web.job.shared.tab.fetched": "Fetched",
+
+  "web.job.shared.confirm.create.title": "Create New {state}",
+  "web.job.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
+  "web.job.shared.confirm.modify.title": "Modify {state}",
+  "web.job.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
+  "web.job.shared.confirm.delete.title": "Delete {state}",
+  "web.job.shared.confirm.delete.subHeader": "You are about to delete this as {state} data. Do you want to continue?",
 
   "web.job.monitoring.field.id": "ID",
   "web.job.monitoring.field.job": "Job",
@@ -60,5 +68,34 @@
   "web.job.monitoring.field.length": "Length",
   "web.job.monitoring.field.fetched": "Fetched",
 
-  "web.job.monitoring.field.type": "{state}"
+  "web.job.monitoring.field.workersCount": "Workers Count",
+  "web.job.monitoring.field.queues": "Queues",
+  "web.job.monitoring.field.heartbeat": "Heartbeat",
+
+  "web.job.monitoring.field.type": "{state}",
+
+  "web.job.definition.field.type": "{state}",
+  "web.job.definition.field.uid": "ID",
+  "web.job.definition.field.assembly": "Assembly",
+  "web.job.definition.field.name": "Name",
+  "web.job.definition.field.description": "Description",
+  "web.job.definition.field.version": "Version",
+  "web.job.definition.field.jobsCount": "Jobs count",
+  "web.job.definition.field.namespace": "Namespace",
+  "web.job.definition.field.class": "Class",
+  "web.job.definition.field.method": "Method",
+  "web.job.definition.field.package": "Package",
+
+  "web.job.recurring.field.type": "{state}",
+  "web.job.recurring.field.uid": "ID",
+  "web.job.recurring.field.name": "Name",
+  "web.job.recurring.field.description": "Description",
+  "web.job.recurring.field.cron": "Cron",
+  "web.job.recurring.field.cronDesc": "Cron Description",
+  "web.job.recurring.field.expression": "Expression",
+  "web.job.recurring.field.job": "Job",
+  "web.job.recurring.field.namespace": "Namespace",
+  "web.job.recurring.field.class": "Class",
+  "web.job.recurring.field.method": "Method",
+  "web.job.recurring.field.isAutoStart": "Is Auto Start"
 }

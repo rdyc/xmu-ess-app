@@ -550,10 +550,10 @@ const styles = (theme: Theme) =>
         width: `calc(100% - (100% / 3))`,
         padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
       },
-      [theme.breakpoints.up('xl')]: {
-        width: `calc(100% / 2)`,
-        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
-      }
+      // [theme.breakpoints.up('xl')]: {
+      //   width: `calc(100% / 2)`,
+      //   padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      // }
     },
 
     flexContent: {

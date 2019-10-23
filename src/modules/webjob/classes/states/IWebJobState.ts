@@ -61,9 +61,9 @@ export interface IWebJobState {
   webJobDefinitionJobGetList: IQueryCollectionState<IWebJobDefinitionJobGetListRequest, IWebJobDefinitionJobList>;
   
   // recurring
-  webJobRecurringDelete: IQuerySingleState<IWebJobRecurringDeleteRequest, boolean>;
   webJobRecurringPost: IQuerySingleState<IWebJobRecurringPostRequest, IWebJobRecurring>;
   webJobRecurringPut: IQuerySingleState<IWebJobRecurringPutRequest, IWebJobRecurring>;
+  webJobRecurringDelete: IQuerySingleState<IWebJobRecurringDeleteRequest, boolean>;
   webJobRecurringTrigger: IQuerySingleState<IWebJobRecurringTriggerRequest, boolean>;
   webJobRecurringGetDetail: IQuerySingleState<IWebJobRecurringGetDetailRequest, IWebJobRecurringDetail>;
   webJobRecurringGetAll: IQueryCollectionState<IWebJobRecurringGetAllRequest, IWebJobRecurring>;

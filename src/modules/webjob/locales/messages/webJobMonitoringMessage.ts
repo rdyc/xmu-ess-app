@@ -54,6 +54,11 @@ export const webJobMonitoringField = defineMessages({
   length: {id: `${prefix}.field.length`},
   fetched: {id: `${prefix}.field.fetched`},
 
+  // server
+  workersCount: {id: `${prefix}.field.workersCount`},
+  queues: {id: `${prefix}.field.queues`},
+  heartbeat: {id: `${prefix}.field.heartbeat`},
+  
   // FREE TYPE
   type: {id: `${prefix}.field.type`},
 

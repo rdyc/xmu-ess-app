@@ -78,13 +78,13 @@ export const webJobDefinitionDeleteSuccess = (response: boolean) => action(WebJo
 export const webJobDefinitionDeleteError = (error: any) => action(WebJobDefinitionAction.DELETE_ERROR, error);
 export const webJobDefinitionDeleteDispose = () => action(WebJobDefinitionAction.DELETE_DISPOSE);
 
-// get all
+// get all job
 export const webJobDefinitionJobGetAllRequest = (request: IWebJobDefinitionJobGetAllRequest) => action(WebJobDefinitionAction.JOB_GET_ALL_REQUEST, request);
 export const webJobDefinitionJobGetAllSuccess = (response: IResponseCollection<IWebJobDefinitionJob>) => action(WebJobDefinitionAction.JOB_GET_ALL_SUCCESS, response);
 export const webJobDefinitionJobGetAllError = (error: any) => action(WebJobDefinitionAction.JOB_GET_ALL_ERROR, error);
 export const webJobDefinitionJobGetAllDispose = () => action(WebJobDefinitionAction.JOB_GET_ALL_DISPOSE);
 
-// get list
+// get list job
 export const webJobDefinitionJobGetListRequest = (request: IWebJobDefinitionJobGetListRequest) => action(WebJobDefinitionAction.JOB_GET_LIST_REQUEST, request);
 export const webJobDefinitionJobGetListSuccess = (response: IResponseCollection<IWebJobDefinitionJobList>) => action(WebJobDefinitionAction.JOB_GET_LIST_SUCCESS, response);
 export const webJobDefinitionJobGetListError = (error: any) => action(WebJobDefinitionAction.JOB_GET_LIST_ERROR, error);

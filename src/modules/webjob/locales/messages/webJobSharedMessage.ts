@@ -12,9 +12,10 @@ export const webJobPage = defineMessages({
 
 // tabs
 export const webJobTabs = defineMessages({
-  jobs: {id: `${prefix}.tab.jobs`},
+  monitoring: {id: `${prefix}.tab.monitoring`},
+  definitions: {id: `${prefix}.tab.definitions`},
   retries: {id: `${prefix}.tab.retries`},
-  recurring: {id: `${prefix}.tab.recurring`},
+  recurrings: {id: `${prefix}.tab.recurrings`},
   servers: {id: `${prefix}.tab.servers`},  
   enqueued: {id: `${prefix}.tab.enqueued`},  
   scheduled: {id: `${prefix}.tab.scheduled`},  
@@ -31,13 +32,24 @@ export const webJobSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
 });
 
+// confirmation
+export const webJobConfirm = defineMessages({
+  createTitle: { id: `${prefix}.confirm.create.title` },
+  createDescription: { id: `${prefix}.confirm.create.subHeader` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
+});
+
 // helper
 export const webJobSharedHelperFor = (field: string, type: 'fieldTab') => {
   if (type === 'fieldTab') {
     switch (field) {
-      case 'jobs': return webJobTabs.jobs;
+      case 'monitoring': return webJobTabs.monitoring;
+      case 'definitions': return webJobTabs.definitions;
       case 'retries': return webJobTabs.retries;
-      case 'recurring': return webJobTabs.recurring;
+      case 'recurrings': return webJobTabs.recurrings;
       case 'servers': return webJobTabs.servers;
       case 'enqueued': return webJobTabs.enqueued;
       case 'scheduled': return webJobTabs.scheduled;
