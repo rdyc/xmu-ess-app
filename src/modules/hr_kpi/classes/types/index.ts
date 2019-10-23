@@ -9,3 +9,5 @@ export * from './employee/KPIEmployeeUserAction';
 export * from './final/KPIFinalField';
 export * from './final/KPIFinalUserAction';
 export * from './employeeKPI/EmployeeKPIField';
+export * from './open/KPIOpenField';
+export * from './open/KPIOpenUserAction';

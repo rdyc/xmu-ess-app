@@ -1,4 +1,4 @@
-import { newHostAddress } from '@constants/newHostAddress';
+
 import {
   KPICategoryAction as Action,
   KPICategoryGetAllDispose,
@@ -38,7 +38,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/categories?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -67,7 +67,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/categories/list?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -91,7 +91,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPICategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => [
@@ -112,7 +112,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPostRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'post',
       path: `/v1/hr/kpi/categories`,
       payload: action.payload.data,
@@ -153,7 +153,7 @@ function* watchPostRequest() {
 function* watchMeasurementPostRequest() {
   const worker = (action: ReturnType<typeof KPICategoryMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'post',
       path: `/v1/hr/kpi/categories/measurement`,
       payload: action.payload.data,
@@ -194,7 +194,7 @@ function* watchMeasurementPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPutRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'put',
       path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,

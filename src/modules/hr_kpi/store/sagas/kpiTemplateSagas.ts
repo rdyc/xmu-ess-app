@@ -1,4 +1,4 @@
-import { newHostAddress } from '@constants/newHostAddress';
+
 import {
   KPITemplateAction as Action,
   KPITemplateGetAllDispose,
@@ -35,7 +35,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/templates?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -64,7 +64,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/templates/list?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -88,7 +88,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPITemplateGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
@@ -109,7 +109,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePostRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'post',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
@@ -150,7 +150,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePutRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'put',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       payload: action.payload.data,

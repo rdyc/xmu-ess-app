@@ -67,6 +67,7 @@ import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
 import kpiEmployeeSagas from '@kpi/store/sagas/kpiEmployeeSagas';
 import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
+import kpiOpenSagas from '@kpi/store/sagas/kpiOpenSagas';
 import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
@@ -275,6 +276,7 @@ export function* rootSaga() {
     fork(kpiEmployeeSagas),
     fork(kpiApprovalSagas),
     fork(kpiAssignSagas),
+    fork(kpiOpenSagas),
 
     // corner
     fork(hrCornerBlogSagas),

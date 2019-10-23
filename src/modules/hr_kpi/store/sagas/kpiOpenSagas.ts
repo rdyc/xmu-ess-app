@@ -1,24 +1,19 @@
-
 import {
-  KPIAssignAction as Action,
-  KPIAssignGetAllDispose,
-  KPIAssignGetAllError,
-  KPIAssignGetAllRequest,
-  KPIAssignGetAllSuccess,
-  KPIAssignGetByIdDispose,
-  KPIAssignGetByIdError,
-  KPIAssignGetByIdRequest,
-  KPIAssignGetByIdSuccess,
-  KPIAssignGetByYearDispose,
-  KPIAssignGetByYearError,
-  KPIAssignGetByYearRequest,
-  KPIAssignGetByYearSuccess,
-  KPIAssignPostBulkError,
-  KPIAssignPostBulkRequest,
-  KPIAssignPostBulkSuccess,
-  KPIAssignPutError,
-  KPIAssignPutRequest,
-  KPIAssignPutSuccess,
+  KPIOpenAction as Action,
+  KPIOpenGetAllDispose,
+  KPIOpenGetAllError,
+  KPIOpenGetAllRequest,
+  KPIOpenGetAllSuccess,
+  KPIOpenGetByIdDispose,
+  KPIOpenGetByIdError,
+  KPIOpenGetByIdRequest,
+  KPIOpenGetByIdSuccess,
+  KPIOpenPostError,
+  KPIOpenPostRequest,
+  KPIOpenPostSuccess,
+  KPIOpenPutError,
+  KPIOpenPutRequest,
+  KPIOpenPutSuccess,
 } from '@kpi/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
@@ -28,7 +23,7 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof KPIOpenGetAllRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
       skipNulls: true
@@ -37,15 +32,15 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       
       method: 'get',
-      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}?${params}`,
+      path: `/v1/hr/kpi/opens?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetAllSuccess(response.body)),
+        put(KPIOpenGetAllSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIAssignGetAllError(response))
+        put(KPIOpenGetAllError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIAssignGetAllError(error.message))
+        put(KPIOpenGetAllError(error.message))
       ],
       finallyEffects: [
         // nothing
@@ -56,41 +51,20 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchGetByYearRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignGetByYearRequest>) => {
-    return saiyanSaga.fetch({
-      
-      method: 'get',
-      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
-      successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByYearSuccess(response.body))
-      ],
-      failureEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByYearError(response))
-      ],
-      errorEffects: (error: TypeError) => [
-        put(KPIAssignGetByYearError(error.message))
-      ]
-    });
-  };
-
-  yield takeEvery(Action.GET_BY_YEAR_REQUEST, worker);
-}
-
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof KPIOpenGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
       method: 'get',
-      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
+      path: `/v1/hr/kpi/opens/${action.payload.openUid}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByIdSuccess(response.body))
+        put(KPIOpenGetByIdSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByIdError(response))
+        put(KPIOpenGetByIdError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIAssignGetByIdError(error.message))
+        put(KPIOpenGetByIdError(error.message))
       ]
     });
   };
@@ -98,24 +72,23 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostBulkRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignPostBulkRequest>) => {
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof KPIOpenPostRequest>) => {
     return saiyanSaga.fetch({
       
       method: 'post',
-      path: `/v1/hr/kpi/assign`,
+      path: `/v1/hr/kpi/opens`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByIdDispose()),
-        put(KPIAssignGetByYearDispose()),
-        put(KPIAssignGetAllDispose()),
-        put(KPIAssignPostBulkSuccess(response.body))
+        put(KPIOpenGetByIdDispose()),
+        put(KPIOpenGetAllDispose()),
+        put(KPIOpenPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(KPIAssignPostBulkError(response.statusText))
+        put(KPIOpenPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -123,7 +96,7 @@ function* watchPostBulkRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(KPIAssignPostBulkError(error.message)),
+        put(KPIOpenPostError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -137,26 +110,26 @@ function* watchPostBulkRequest() {
     });
   };
 
-  yield takeEvery(Action.POST_BULK_REQUEST, worker);
+  yield takeEvery(Action.POST_REQUEST, worker);
 }
 
 function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignPutRequest>) => {
+  const worker = (action: ReturnType<typeof KPIOpenPutRequest>) => {
     return saiyanSaga.fetch({
       
       method: 'put',
-      path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
+      path: `/v1/hr/kpi/opens/${action.payload.openUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByIdDispose()),
-        put(KPIAssignGetAllDispose()),
-        put(KPIAssignPutSuccess(response.body))
+        put(KPIOpenGetByIdDispose()),
+        put(KPIOpenGetAllDispose()),
+        put(KPIOpenPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(KPIAssignPutError(response.statusText))
+        put(KPIOpenPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         const result = handleResponse(response);
@@ -164,7 +137,7 @@ function* watchPutRequest() {
         action.payload.reject(result);
       },
       errorEffects: (error: TypeError) => [
-        put(KPIAssignPutError(error.message)),
+        put(KPIOpenPutError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -180,27 +153,26 @@ function* watchPutRequest() {
 
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
+
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
-      put(KPIAssignGetAllDispose()),
-      put(KPIAssignGetByIdDispose()),
-      put(KPIAssignGetByYearDispose()),
+      put(KPIOpenGetAllDispose()),
+      put(KPIOpenGetByIdDispose())
     ]);
   }
 
   yield takeEvery(UserAction.SWITCH_ACCESS, worker);
 }
 
-function* kpiAssignSagas() {
+function* kpiOpenSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
-    fork(watchGetByYearRequest),
-    fork(watchPostBulkRequest),
+    fork(watchPostRequest),
     fork(watchPutRequest),
-    fork(watchSwitchAccess),
+    fork(watchSwitchAccess)
   ]);
 }
 
-export default kpiAssignSagas;
+export default kpiOpenSagas;

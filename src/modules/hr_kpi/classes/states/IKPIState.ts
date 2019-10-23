@@ -37,6 +37,12 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
+  IKPIOpenGetAllRequest, 
+  IKPIOpenGetDetailRequest, 
+  IKPIOpenPostRequest, 
+  IKPIOpenPutRequest 
+} from '../queries/open';
+import { 
   IKPIAssign,
   IKPIAssignDetail,
   IKPICategory,
@@ -47,6 +53,8 @@ import {
   IKPIMeasurement, 
   IKPIMeasurementDetail,
   IKPIMeasurementList,
+  IKPIOpen,
+  IKPIOpenDetail,
   IKPITemplate,
   IKPITemplateDetail,
 } from '../response';
@@ -94,4 +102,10 @@ export interface IKPIState {
   kpiCategoryPost: IQuerySingleState<IKPICategoryPostRequest, IKPICategory>;
   kpiCategoryMeasurementPost: IQuerySingleState<IKPICategoryMeasurementPostRequest, IKPICategory>;
   kpiCategoryPut: IQuerySingleState<IKPICategoryPutRequest, IKPICategory>;
+
+  // open
+  kpiOpenGetAll: IQueryCollectionState<IKPIOpenGetAllRequest, IKPIOpen>;
+  kpiOpenGetById: IQuerySingleState<IKPIOpenGetDetailRequest, IKPIOpenDetail>;
+  kpiOpenPost: IQuerySingleState<IKPIOpenPostRequest, IKPIOpen>;
+  kpiOpenPut: IQuerySingleState<IKPIOpenPutRequest, IKPIOpen>;
 }
