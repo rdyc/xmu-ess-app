@@ -17,7 +17,7 @@ import { WebJobMonitoringListProps } from './WebJobMonitoringList';
 
 export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = props => {
   const { isLoading, response } = props.webJobMonitoringState.statisticAll;
-  const { jobsType, match } = props;
+  const { match } = props;
 
   const handlerList = () => {
     switch (match.params.type) {
@@ -67,14 +67,14 @@ export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = pr
       <LoadingCircular />
       :
       <WebJobMonitoringTab
-        tab={MonitoringTabs.Jobs}      
+        tab={MonitoringTabs.Monitoring}      
       >
         <Grid container spacing={16}>
           <Grid item xs={12} md={3} lg={3}>
             {
               response &&
               response.data &&
-              <MonitoringJobsItemTabs data={response.data} jobsType={jobsType} handleJobsItem={props.handleJobsItem} />
+              <MonitoringJobsItemTabs data={response.data} />
             }
           </Grid>
           <Grid item xs={12} md={9} lg={9}>

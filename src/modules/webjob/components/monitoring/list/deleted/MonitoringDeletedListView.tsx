@@ -27,7 +27,7 @@ export const MonitoringDeletedListView: React.SFC<MonitoringDeletedListProps> = 
         <Button 
           size="small"
           color="secondary"
-          onClick={() => props.history.push(`/webjob/monitoring/jobs/${props.match.params.type}/${item.id}`)}
+          onClick={() => props.history.push(`/webjob/monitoring/${props.match.params.type}/${item.id}`)}
         >
           {props.intl.formatMessage(layoutMessage.action.details)}
         </Button>

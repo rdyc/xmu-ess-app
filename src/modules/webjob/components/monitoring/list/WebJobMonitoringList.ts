@@ -18,7 +18,7 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
-  jobsType: string;
+  // jobsType: string;
 }
 
 interface IOwnHandler {
@@ -27,7 +27,7 @@ interface IOwnHandler {
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
-  handleJobsItem: (type: string) => IOwnState;
+  // handleJobsItem: (type: string) => IOwnState;
 }
 
 export type WebJobMonitoringListProps
@@ -44,7 +44,7 @@ export type WebJobMonitoringListProps
   & InjectedIntlProps;
 
 const createProps: mapper<WebJobMonitoringListProps, IOwnState> = (): IOwnState => ({
-  jobsType: ''
+  // jobsType: ''
 });
 
 const stateUpdaters: StateUpdaters<WebJobMonitoringListProps, IOwnState, IOwnStateUpdaters> = {
@@ -52,9 +52,9 @@ const stateUpdaters: StateUpdaters<WebJobMonitoringListProps, IOwnState, IOwnSta
     ...prevState,
     ...newState
   }),
-  handleJobsItem: (props: WebJobMonitoringListProps) => (type: string) => ({
-    jobsType: type
-  })
+  // handleJobsItem: (props: WebJobMonitoringListProps) => (type: string) => ({
+  //   jobsType: type
+  // })
 };
 
 const handlerCreators: HandleCreators<WebJobMonitoringListProps, IOwnHandler> = {

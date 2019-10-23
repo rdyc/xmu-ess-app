@@ -27,17 +27,17 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
                 <Tab
                   key={item.id}
                   label={
-                    // <Badge color="secondary" badgeContent={response.data[item.name] || 9999} style={{padding: '0 16px'}}>
-                    //   {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
-                    // </Badge>
+                    response.data[item.name] ?
                     <span className={props.classes.badgeParent}>
-                    {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
+                    {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
                       <span className={props.classes.badgeChild}>
                         {response.data[item.name] > 99 ? '99+' : response.data[item.name]}
                       </span>
                     </span>
+                    :
+                    props.intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))
                   }
-                  onClick={() => props.history.push(`/webjob/monitoring/${item.name}`)}
+                  onClick={() => props.history.push(`/webjob/${item.name}`)}
                 />
               ))}
             </Tabs>

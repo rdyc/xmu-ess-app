@@ -27,7 +27,7 @@ export const MonitoringQueuesListView: React.SFC<MonitoringQueuesListProps> = pr
           size="small"
           color="secondary"
           disabled
-          // onClick={() => props.history.push(`/webjob/monitoring/jobs/${props.match.params.type}/${item.id}`)}
+          // onClick={() => props.history.push(`/webjob/monitoring/${props.match.params.type}/${item.id}`)}
         >
           {props.intl.formatMessage(layoutMessage.action.details)}
         </Button>

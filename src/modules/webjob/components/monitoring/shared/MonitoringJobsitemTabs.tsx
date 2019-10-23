@@ -23,17 +23,12 @@ interface IOwnOption {
 
 interface IOwnProps {
   data: IWebJobMonitoringStatistic;
-  jobsType: string;
-  handleJobsItem: (type: string) => {};
 }
 
 interface IOwnState {
-  // active: string | undefined;
-  // isExpanded: boolean;
 }
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
-  // handleToggle: (uid: string) => IOwnState;
 }
 
 type AllProps
@@ -45,15 +40,9 @@ type AllProps
   & InjectedIntlProps;
 
 const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
-  // active: undefined,
-  // isExpanded: false
 });
 
 const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
-  // handleToggle: () => () => ({
-    // active: id,
-    // isExpanded: state.active === uid ? !state.isExpanded : true
-  // })
 };
 
 const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
@@ -78,12 +67,11 @@ const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
                 button
                 selected={item.name === props.match.params.type}
                 onClick={() => {
-                  // props.handleJobsItem(item.name);
-                  props.history.push(`/webjob/monitoring/jobs/${item.name}`);
+                  props.history.push(`/webjob/monitoring/${item.name}`);
                 }}
               >
                 <ListItemText
-                  primary={intl.formatMessage(webJobMessage.shared.fieldFor(item.id, 'fieldTab'))}
+                  primary={intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
                 />
                 <ListItemSecondaryAction>
                   <span className={props.classes.badgeChild} style={{right: '32px'}}>

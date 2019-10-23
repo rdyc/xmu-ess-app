@@ -41,7 +41,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
-  handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IWebJobMonitoringQueue, index: number) => IDataBindResult;
 }
 
@@ -73,22 +72,13 @@ const stateUpdaters: StateUpdaters<MonitoringQueuesListProps, IOwnState, IOwnSta
 const handlerCreators: HandleCreators<MonitoringQueuesListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MonitoringQueuesListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { loadAllQueueRequest } = props.webJobMonitoringDispatch;
-    const { isExpired, isLoading } = props.webJobMonitoringState.queueAll;
+    const { isExpired, isLoading, response } = props.webJobMonitoringState.queueAll;
 
     if (props.userState.user && !isLoading) {
       // only load when request parameter are differents
-      if (isExpired || isRetry) {
+      if (isExpired || isRetry || !response) {
         loadAllQueueRequest({});
       }
-    }
-  },
-  handleOnLoadApiSearch: (props: MonitoringQueuesListProps) => (find?: string, findBy?: string) => {
-    const { isLoading } = props.webJobMonitoringState.queueAll;
-    const { loadAllQueueRequest } = props.webJobMonitoringDispatch;
-    const { user } = props.userState;
-
-    if (user && !isLoading) {
-      loadAllQueueRequest({});
     }
   },
   handleOnBind: (props: MonitoringQueuesListProps) => (item: IWebJobMonitoringQueue, index: number) => ({

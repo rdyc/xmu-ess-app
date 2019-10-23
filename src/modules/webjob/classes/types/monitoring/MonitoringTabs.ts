@@ -1,6 +1,7 @@
 export enum MonitoringTabs {
-  Jobs = 'jobs',
-  Retries = 'retries',
-  Recurring = 'recurring',
+  Monitoring = 'monitoring',
+  // Retries = 'retries',
+  Definitions = 'definitions',
+  Recurrings = 'recurrings',
   Servers = 'servers'
 }
