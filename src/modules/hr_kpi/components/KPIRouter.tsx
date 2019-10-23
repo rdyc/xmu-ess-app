@@ -18,6 +18,9 @@ import { KPIEmployeeList } from './employee/list/KPIEmployeeList';
 import { KPIFinalDetail } from './final/detail/KPIFinalDetail';
 import { EmployeeFinalList } from './final/list/employee/EmployeeFinalList';
 import { KPIFinalList } from './final/list/kpi/KPIFinalList';
+import { KPIOpenDetail } from './open/Detail/KPIOpenDetail';
+import { KPIOpenForm } from './open/form/KPIOpenForm';
+import { KPIOpenList } from './open/list/KPIOpenList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
@@ -63,6 +66,14 @@ const template = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const open = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={KPIOpenForm} /> 
+    <Route path={`${props.match.path}/:categoryUid`} component={KPIOpenDetail} />
+    <Route path={`${props.match.path}`} component={KPIOpenList} />
+  </Switch>
+);
+
 const category = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={KPICategoryForm} /> 
@@ -78,6 +89,12 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.KPITemplate} 
       component={template} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/opens`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.KPITemplate} 
+      component={open} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/categories`}

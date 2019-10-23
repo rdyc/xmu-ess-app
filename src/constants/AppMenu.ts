@@ -86,6 +86,7 @@ enum AppMenu {
   HRKPIAssign = 'MNU84',
   MyProfile = 'MNU85',
   LookupEmployeeLevel = 'MNU86',
+  KPIOpen = 'MNU91',
 }
 
 export default AppMenu;

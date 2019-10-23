@@ -282,6 +282,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/employeelevels';
       break;
 
+    case 'MNU91':
+      path = '/kpi/opens';
+      break;
+
     default:
       path = '/home/dashboard';
       break;
