@@ -3,6 +3,7 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { WebJobDefinitionDetail } from './definition/detail/WebJobDefinitionDetail';
+import { WebJobDefinitionForm } from './definition/form/WebJobDefinitionForm';
 import { WebJobDefinitionList } from './definition/list/WebJobDefinitionList';
 import { WebJobMonitoringDetail } from './monitoring/detail/WebJobMonitoringDetail';
 import { WebJobMonitoringList } from './monitoring/list/WebJobMonitoringList';
@@ -20,7 +21,7 @@ const monitoring = (props: RouteComponentProps) => (
 
 const definitions = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={WebJobMonitoringList} /> */}
+    <Route path={`${props.match.path}/form`} component={WebJobDefinitionForm} />
     <Route path={`${props.match.path}/:definitionUid`} component={WebJobDefinitionDetail} />
     <Route path={`${props.match.path}`} component={WebJobDefinitionList} />
   </Switch>

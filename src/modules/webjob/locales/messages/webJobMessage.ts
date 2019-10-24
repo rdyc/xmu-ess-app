@@ -1,7 +1,7 @@
 import { webJobDefinitionField } from './webJobDefinitionMessage';
 import { webJobMonitoringField } from './webJobMonitoringMessage';
 import { webJobRecurringField } from './webJobRecurringMessage';
-import { webJobConfirm, webJobPage, webJobSection, webJobSharedHelperFor } from './webJobSharedMessage';
+import { webJobConfirm, webJobPage, webJobSection, webJobSharedHelperFor, webJobSharedMessage } from './webJobSharedMessage';
 
 export const webJobMessage = {
   monitoring: {
@@ -17,6 +17,7 @@ export const webJobMessage = {
     page: webJobPage,
     section: webJobSection,
     fieldFor: webJobSharedHelperFor,
-    confirm: webJobConfirm
+    confirm: webJobConfirm,
+    message: webJobSharedMessage,
   }
 };

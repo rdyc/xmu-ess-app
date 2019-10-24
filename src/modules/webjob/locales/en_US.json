@@ -1,10 +1,15 @@
 {
+  "web.job.shared.page.create.title": "Add New {state}",
+  "web.job.shared.page.create.subHeader": " ",
+  "web.job.shared.page.modify.title": "Modify {state}",
+  "web.job.shared.page.modify.subHeader": " ",
   "web.job.shared.page.list.title": "{state}",
   "web.job.shared.page.list.subHeader": " ",
   "web.job.shared.page.detail.title": "{state} Detail",
   "web.job.shared.page.detail.subHeader": " ",
 
   "web.job.shared.section.info.title": "{state} Information",
+  "web.job.shared.section.submission.title": "{state} Submission",
 
   "web.job.shared.tab.monitoring": "Monitoring",
   "web.job.shared.tab.definitions": "Definitions",
@@ -22,10 +27,22 @@
 
   "web.job.shared.confirm.create.title": "Create New {state}",
   "web.job.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
+  "web.job.shared.confirm.upload.title": "Upload New {state}",
+  "web.job.shared.confirm.upload.subHeader": "You are about to upload a new {state} data. Do you want to continue?",
   "web.job.shared.confirm.modify.title": "Modify {state}",
   "web.job.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
   "web.job.shared.confirm.delete.title": "Delete {state}",
   "web.job.shared.confirm.delete.subHeader": "You are about to delete this as {state} data. Do you want to continue?",
+
+  "web.job.shared.message.emptyProps": "Some props are empty",
+  "web.job.shared.message.create.success": "New {state} has been created",
+  "web.job.shared.message.create.failure": "Unable to process your submission",
+  "web.job.shared.message.upload.success": "New {state} has been uploaded ",
+  "web.job.shared.message.upload.failure": "Unable to process your submission",
+  "web.job.shared.message.update.success": "{state} with ID {uid} has been updated",
+  "web.job.shared.message.update.failure": "Unable to process your submission",
+  "web.job.shared.message.delete.success": "{state} with ID {uid} has been deleted",
+  "web.job.shared.message.delete.failure": "Unable to process your submission",
 
   "web.job.monitoring.field.id": "ID",
   "web.job.monitoring.field.job": "Job",

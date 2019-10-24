@@ -4,6 +4,10 @@ const prefix = 'web.job.shared';
 
 // page
 export const webJobPage = defineMessages({
+  createTitle: {id: `${prefix}.page.create.title`},
+  createSubheader: {id: `${prefix}.page.create.subheader`},
+  modifyTitle: {id: `${prefix}.page.modify.title`},
+  modifySubheader: {id: `${prefix}.page.modify.subheader`},
   listTitle: {id: `${prefix}.page.list.title`},
   listSubheader: {id: `${prefix}.page.list.subheader`},
   detailTitle: {id: `${prefix}.page.detail.title`},
@@ -30,16 +34,32 @@ export const webJobTabs = defineMessages({
 // section
 export const webJobSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
+  submissionTitle: { id: `${prefix}.section.submission.title`},
 });
 
 // confirmation
 export const webJobConfirm = defineMessages({
   createTitle: { id: `${prefix}.confirm.create.title` },
   createDescription: { id: `${prefix}.confirm.create.subHeader` },
+  uploadTitle: { id: `${prefix}.confirm.upload.title` },
+  uploadDescription: { id: `${prefix}.confirm.upload.subHeader` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
   deleteTitle: { id: `${prefix}.confirm.delete.title` },
   deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
+});
+
+// messages
+export const webJobSharedMessage = defineMessages({
+  emptyProps: { id: `${prefix}.message.emptyProps` },
+  uploadSuccess: { id: `${prefix}.message.upload.success` },
+  uploadFailure: { id: `${prefix}.message.upload.failure` },
+  createSuccess: { id: `${prefix}.message.create.success` },
+  createFailure: { id: `${prefix}.message.create.failure` },
+  updateSuccess: { id: `${prefix}.message.update.success` },
+  updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
 // helper

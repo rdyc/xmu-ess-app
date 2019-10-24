@@ -279,7 +279,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU88':
-      path = '/webjob/definition';
+      path = '/webjob/definitions';
       break;
 
     case 'MNU89':
@@ -287,7 +287,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU90':
-      path = '/webjob/recurring';
+      path = '/webjob/recurrings';
       break;
       
     default:
