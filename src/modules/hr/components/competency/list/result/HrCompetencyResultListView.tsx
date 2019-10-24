@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -37,23 +38,35 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
         actionComponent={(item: IHrCompetencyEmployee) => (
           <React.Fragment>
             {
-              item.isDraft &&
+              item.statusType === WorkflowStatusType.New &&
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.process)}
+              </Button>
+            }
+            {
+              item.statusType === WorkflowStatusType.Draft &&
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentresult/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
               >
                 {props.intl.formatMessage(layoutMessage.action.modify)}
               </Button>
             }
-  
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`, { positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.details)}
-            </Button>
+            {
+              item.statusType !== WorkflowStatusType.New &&
+              <Button 
+                size="small"
+                color="secondary"
+                onClick={() => props.history.push(`/hr/assessmentresult/${item.uid}`, { companyUid: item.companyUid, positionUid: item.positionUid, respondenUid: item.respondenUid, assessmentYear: item.assessmentYear })}
+              >
+                {props.intl.formatMessage(layoutMessage.action.details)}
+              </Button>
+            }
           </React.Fragment>
         )}
         // app bar component
@@ -94,7 +107,10 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
     <HrCompetencyResultFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
-        status: props.status
+        status: props.status,
+        assessmentYear: props.assessmentYear,
+        companyUid: props.companyUid,
+        positionUid: props.positionUid
       }}
       onApply={props.handleFilterApplied}
       onClose={props.handleFilterVisibility}

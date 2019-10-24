@@ -3,7 +3,9 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -14,40 +16,50 @@ interface OwnProps {
 
 type AllProps
   = OwnProps
-  & InjectedIntlProps;
+  & InjectedIntlProps
+  & WithStyles<typeof styles>;
 
 const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.employee)}
         value={props.data.responden && props.data.responden.fullName}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.year)}
         value={props.data.assessmentYear}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'})}
-        value={props.data.position && props.data.position.company && props.data.position.company.name || 'N/A'}
+        label={props.intl.formatMessage(hrMessage.competency.field.company)}
+        value={props.data.company && props.data.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'})}
-        value={props.data.position && props.data.position.name}
+        label={props.intl.formatMessage(hrMessage.competency.field.position)}
+        value={props.data.position && props.data.position.name || 'N/A'}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Status'})}
+        label={props.intl.formatMessage(hrMessage.competency.field.status)}
         value={props.data.status && props.data.status.value}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        inputProps={{
+          className: props.data.isExpired ? props.classes.colorRed : ''
+        }}
+        label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
+        value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+      />
+
     </Grid>
     {
       props.data.changes &&
@@ -74,5 +86,6 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
 );
 
 export const HrCompetencySummaryEmployee = compose<AllProps, OwnProps>(
-  injectIntl
+  injectIntl,
+  withStyles(styles)
 )(hrCompetencySummaryEmployee);

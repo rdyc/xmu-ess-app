@@ -12,7 +12,7 @@
   "hr.shared.page.modify.subHeader": " ",
 
   "hr.shared.message.bProps": "Some props are empty",
-  "hr.shared.message.create.success": "New {state} data has been created",
+  "hr.shared.message.create.success": "New {state} with {type} {uid} has been created",
   "hr.shared.message.create.failure": "Unable to process your submission",
   "hr.shared.message.update.success": "{state} with {type} {uid} has been updated",
   "hr.shared.message.update.failure": "Unable to process your submission",
@@ -58,6 +58,17 @@
   "hr.competency.field.indicator.placeholder": "Type any indicator",
   "hr.competency.field.indicator.required": "Indicator is required",
 
+  "hr.competency.field.cluster": "Cluster",
+  "hr.competency.field.category": "Category",
+  "hr.competency.field.status": "Status",
+
+  "hr.competency.field.employee": "Employee",
+  "hr.competency.field.responden": "Responden",
+  
+  "hr.competency.field.assessment": "Assessment {state}",
+  "hr.competency.field.competency": "Competency {state}",
+
+  "hr.competency.field.year": "Year",
   "hr.competency.field.company": "Company",
   "hr.competency.field.position": "Position",
   "hr.competency.field.minCategories": "Must have at least one category",
@@ -68,6 +79,7 @@
   "hr.competency.field.zeroItem": "No {item} recorded",
   "hr.competency.field.oneItem": "{total} {state}",
   "hr.competency.field.manyItem": "{total} {state}",
+  "hr.competency.field.notFound": "{state} not found",
   "hr.competency.field.cluster.required": "Cluster is required",
 
   "hr.corner.field.uid": "{state} ID",
@@ -112,6 +124,7 @@
 
   "hr.corner.field.type": "{state}",
   "hr.corner.field.select": "Please select one {state}",
+  "hr.corner.field.latest": "Latest articles",
 
   "hr.corner.field.parent.title": "HR Corner"
 }

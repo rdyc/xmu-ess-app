@@ -1,4 +1,4 @@
-import { AppBar, Badge, Divider, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Badge, Divider, IconButton, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Book from '@material-ui/icons/Book';
@@ -44,12 +44,14 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       {props.searchComponent}
       
-      <IconButton
-        color="inherit"
-        onClick={() => props.history.push('/corner/blog')}
-      >
-        <Book />
-      </IconButton>
+      <Tooltip title={'Go to HR Corner'}>
+        <IconButton
+          color="inherit"
+          onClick={() => props.history.push('/corner/blog')}
+        >
+          <Book />
+        </IconButton>
+      </Tooltip>
 
       <IconButton
         color="inherit"

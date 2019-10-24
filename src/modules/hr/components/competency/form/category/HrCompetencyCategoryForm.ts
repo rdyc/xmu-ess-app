@@ -102,10 +102,10 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
   // validation props
   validationSchema: Yup.object().shape<Partial<ICategoryFormValue>>({
     clusterUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.cluster))
       .required(),
     categoryUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'}))
+      .label(props.intl.formatMessage(hrMessage.competency.field.category))
       .required(),
     levels: Yup.array()
       .of(
@@ -152,14 +152,14 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
   handleOnLoadDetail: (props: HrCompetencyCategoryFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const competencyUid = props.history.location.state.clusterUid;
+      const clusterUid = props.history.location.state.clusterUid;
       const categoryUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyCategoryState.detail;
 
-      if (user && competencyUid && categoryUid && !isLoading) {
+      if (user && clusterUid && categoryUid && !isLoading) {
         props.hrCompetencyCategoryDispatch.loadDetailRequest({
           categoryUid,
-          competencyUid
+          clusterUid
         });
       }
     }
@@ -188,7 +188,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
           props.hrCompetencyCategoryDispatch.createRequest({
             resolve,
             reject,
-            competencyUid: values.clusterUid,
+            clusterUid: values.clusterUid,
             categoryUid: values.categoryUid,
             data: payload
           });
@@ -198,10 +198,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
       // Edit
       if (props.formMode === FormMode.Edit) {
         const categoryUid = props.history.location.state.uid;
-        const competencyUid = props.history.location.state.clusterUid;
+        const clusterUid = props.history.location.state.clusterUid;
 
         // must have categoryUid
-        if (categoryUid && competencyUid) {
+        if (categoryUid && clusterUid) {
           const payload: IHrCompetencyCategoryPutPayload = {
             levels: []
           };
@@ -217,7 +217,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
           // set the promise
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyCategoryDispatch.patchRequest({
-              competencyUid,
+              clusterUid,
               categoryUid,
               resolve,
               reject,

@@ -4,14 +4,13 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
-import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
-import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
+import { HrCompetencyMappedOption } from '../../options/HrCompetencyMappedOption';
 import { ICompetencyAssessmentFormValue } from './CompetencyAssessmentForm';
 
 type CompetencyAssessmentPartialProps = {
@@ -19,7 +18,6 @@ type CompetencyAssessmentPartialProps = {
   formikBag: FormikProps<ICompetencyAssessmentFormValue>;
   intl: InjectedIntl;
   filterCompany?: ILookupCompanyGetListFilter;
-  filterPosition?: IPositionGetListFilter;
 };
 
 const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentPartialProps> = props => (
@@ -55,7 +53,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.year),
                 required: true,
                 helperText: form.touched.year && form.errors.year,
                 error: form.touched.year && Boolean(form.errors.year)
@@ -82,7 +80,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.company),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -101,7 +99,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
       <Field
         name="positionUid"
         render={({ field, form }: FieldProps<ICompetencyAssessmentFormValue>) => (
-          <LookupPositionOption companyUid={props.formikBag.values.companyUid}>
+          <HrCompetencyMappedOption companyUid={props.formikBag.values.companyUid}>
             <SelectField
               isSearchable
               menuPlacement="auto"
@@ -111,7 +109,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.position),
                 required: true,
                 helperText: form.touched.positionUid && form.errors.positionUid,
                 error: form.touched.positionUid && Boolean(form.errors.positionUid)
@@ -122,7 +120,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
                 props.formikBag.setFieldValue('employeeUid', '');                
               }}
             />
-          </LookupPositionOption>
+          </HrCompetencyMappedOption>
         )}
       />
 
@@ -139,8 +137,8 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
-                placeholder: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.employee),
+                placeholder: props.intl.formatMessage(hrMessage.competency.field.employee),
                 required: true,
                 helperText: form.touched.employeeUid && form.errors.employeeUid,
                 error: form.touched.employeeUid && Boolean(form.errors.employeeUid)

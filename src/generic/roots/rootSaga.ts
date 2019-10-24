@@ -58,8 +58,6 @@ import hrCompetencyAssessmentSagas from '@hr/store/sagas/competency/assessment/h
 import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
 import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
 import hrCompetencyEmployeeSagas from '@hr/store/sagas/competency/employee/hrCompetencyEmployeeSagas';
-import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrCompetencyIndicatorSagas';
-import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
 import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import hrCompetencyResultSagas from '@hr/store/sagas/competency/result/hrCompetencyResultSagas';
 import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
@@ -274,8 +272,6 @@ export function* rootSaga() {
     // competency
     fork(hrCompetencyCategorySagas),
     fork(hrCompetencyClusterSagas),
-    fork(hrCompetencyIndicatorSagas),
-    fork(hrCompetencyLevelSagas),
     fork(hrCompetencyMappedSagas),
     fork(hrCompetencyAssessmentSagas),
     fork(hrCompetencyEmployeeSagas),

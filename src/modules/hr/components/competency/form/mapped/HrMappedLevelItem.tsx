@@ -93,7 +93,7 @@ const hrMappedLevelItem: React.ComponentType<AllProps> = props => {
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'})}
+                    label={props.intl.formatMessage(hrMessage.competency.field.level)}
                     value={level.level}
                   />
                   <TextField
@@ -107,7 +107,7 @@ const hrMappedLevelItem: React.ComponentType<AllProps> = props => {
                     {...GlobalStyle.TextField.ReadOnly}
                     multiline
                     margin="dense"
-                    label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Indicators'})}
+                    label={props.intl.formatMessage(hrMessage.competency.field.indicator)}
                     value={handleIndicators(level.indicators)}
                   />
                 </Collapse>

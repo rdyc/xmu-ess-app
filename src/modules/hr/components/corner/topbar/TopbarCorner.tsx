@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar, Tooltip, Typography, WithStyles, withStyles } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styles from '@styles';
 import * as classNames from 'classnames';
@@ -32,12 +32,14 @@ const topbarCorner: React.SFC<AllProps> = props => {
       className={classNames(props.classes.cornerAppBar, props.classes.shift)}
     >
       <Toolbar>
-        <IconButton
-          color="inherit"
-          onClick={() => props.history.push('/home/dashboard')}
-        >
-          <img src={logo} alt="Logo" style={{width: '32px', height: '32px'}} />
-        </IconButton>
+        <Tooltip title={'Go to Tessa'}>
+          <IconButton
+            color="inherit"
+            onClick={() => props.history.push('/home/dashboard')}
+          >
+            <img src={logo} alt="Logo" style={{width: '32px', height: '32px'}} />
+          </IconButton>
+        </Tooltip>
 
         {
           backUrl &&

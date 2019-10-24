@@ -4,7 +4,7 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { SearchBox } from '@layout/components/search';
 import { GlobalFormat } from '@layout/types';
-import { Card, CardActionArea, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardHeader, Divider, Grid, Typography } from '@material-ui/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { HrCornerBlogByCategoryListProps } from './HrCornerBlogByCategoryList';
@@ -39,14 +39,18 @@ export const HrCornerBlogByCategoryListView: React.SFC<HrCornerBlogByCategoryLis
               child={() => ([
                 <Typography 
                   noWrap
-                  className={classNames(props.classes.breadcrumbChild)}
+                  className={classNames(props.classes.breadcrumb, props.classes.breadcrumbChild)}
                 >
                   / {props.match.params.categorySlug.replace(/-/g, ' ')} 
                 </Typography>
               ])}
             />
           </Grid>
-
+          
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          
           {/* List */}
           {
             props.hrCornerBlogState.allByCategory.isLoading &&

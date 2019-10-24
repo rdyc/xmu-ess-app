@@ -14,33 +14,42 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
 
+import { IHrCompetencyMappedFilterResult } from './HrCompetencyMappedFilter';
 import { HrCompetencyMappedListView } from './HrCompetencyMappedListView';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState {
+interface IOwnState extends IHrCompetencyMappedFilterResult {
   fields: ICollectionValue[];
+  isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IHrCompetencyMapped, index: number) => IDataBindResult;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: IHrCompetencyMappedFilterResult) => void;
+  handleFilterBadge: () => boolean;
 }
 
 export type HrCompetencyMappedListProps
@@ -54,18 +63,34 @@ export type HrCompetencyMappedListProps
   & WithUser
   & WithHrCompetencyMapped;
 
-const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
+const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyMappedListProps): IOwnState => {
+  const { request } = props.hrCompetencyMappedState.all;
+
   const state: IOwnState = {
+    isFilterOpen: false,
     fields: Object.keys(IHrCompetencyField).map(key => ({
       value: key,
       name: IHrCompetencyField[key]
     })),
   };
 
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.companyUid = request.filter.companyUid,
+    state.positionUid = request.filter.positionUid;
+  }
+
   return state;
 };
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedListProps, IOwnState, IOwnStateUpdater> = {
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
+  }),
+  setFilterApplied: (state: IOwnState) => (filter: IHrCompetencyMappedFilterResult): Partial<IOwnState> => ({
+    ...filter,
+    isFilterOpen: false
+  }),
 };
 
 const handlerCreators: HandleCreators<HrCompetencyMappedListProps, IOwnHandler> = {
@@ -80,7 +105,9 @@ const handlerCreators: HandleCreators<HrCompetencyMappedListProps, IOwnHandler> 
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
-        size: params && params.size || request && request.filter && request.filter.size
+        size: params && params.size || request && request.filter && request.filter.size,
+        companyUid: props.companyUid,
+        positionUid: props.companyUid ? props.positionUid : undefined,
       };
 
       // when request is defined, then compare the filter props
@@ -121,13 +148,43 @@ const handlerCreators: HandleCreators<HrCompetencyMappedListProps, IOwnHandler> 
   },
   handleOnBind: () => (item: IHrCompetencyMapped, index: number) => ({
     key: index,
-    primary: item.position.company.name,
-    secondary: item.position.name,
+    primary: item.company && item.company.name || 'N/A',
+    secondary: item.position && item.position.name || 'N/A',
     tertiary: `${item.categories.length} categories`,
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+  handleFilterVisibility: (props: HrCompetencyMappedListProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: HrCompetencyMappedListProps) => (filter: IHrCompetencyMappedFilterResult) => {
+    props.setFilterApplied(filter);
+  },
+  handleFilterBadge: (props: HrCompetencyMappedListProps) => () => {
+    return props.companyUid !== undefined ||
+      props.positionUid !== undefined;
+  },
+};
+
+const lifecycles: ReactLifeCycleFunctions<HrCompetencyMappedListProps, IOwnState> = {
+  componentDidUpdate(prevProps: HrCompetencyMappedListProps) {
+    // track any changes in filter props
+    const isFilterChanged = !shallowEqual(
+      {
+        companyUid: this.props.companyUid,
+        positionUid: this.props.positionUid
+      },
+      {
+        companyUid: prevProps.companyUid,
+        positionUid: prevProps.positionUid
+      }
+    );
+
+    if (isFilterChanged) {
+      this.props.handleOnLoadApi(undefined, true);
+    }
+  }
 };
 
 export const HrCompetencyMappedList = compose<HrCompetencyMappedListProps, IOwnOption>(
@@ -138,5 +195,6 @@ export const HrCompetencyMappedList = compose<HrCompetencyMappedListProps, IOwnO
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  withStyles(styles)
+  withStyles(styles),
+  lifecycle(lifecycles),
 )(HrCompetencyMappedListView);

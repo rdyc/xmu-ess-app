@@ -73,12 +73,12 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyCategoryL
       name: IHrCompetencyField[key]
     })),
     isFilterOpen: true,
-    competencyUid: ''
+    clusterUid: ''
   };
 
   // fill from previous request if any
   if (request && request.filter) {
-    state.competencyUid = request.filter.competencyUid,
+    state.clusterUid = request.filter.clusterUid,
     state.isFilterOpen = false;
   }
 
@@ -99,10 +99,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
   handleOnLoadApi: (props: HrCompetencyCategoryListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
     const { loadAllRequest } = props.hrCompetencyCategoryDispatch;
     const { isExpired, isLoading, request } = props.hrCompetencyCategoryState.all;
-    const { competencyUid } = props;
-    if (props.userState.user && !isLoading && competencyUid) {
+    const { clusterUid } = props;
+    if (props.userState.user && !isLoading && clusterUid) {
       const filter: IHrCompetencyCategoryGetAllFilter = {
-        competencyUid,
+        clusterUid,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -115,10 +115,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
       
       // only load when request parameter are differents
-      if ((isExpired || shouldLoad || isRetry) && competencyUid) {
+      if ((isExpired || shouldLoad || isRetry) && clusterUid) {
         loadAllRequest({
           filter,
-          competencyUid
+          clusterUid
         });
       }
     }
@@ -127,15 +127,15 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
     const { isLoading, request } = props.hrCompetencyCategoryState.all;
     const { loadAllRequest } = props.hrCompetencyCategoryDispatch;
     const { user } = props.userState;
-    const { competencyUid } = props;
+    const { clusterUid } = props;
 
-    if (user && !isLoading && competencyUid) {
+    if (user && !isLoading && clusterUid) {
       // predefined filter
       const filter = {
         ...request && request.filter,
         find,
         findBy,
-        competencyUid,
+        clusterUid,
         page: undefined,
       };
       
@@ -146,7 +146,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
       if (shouldLoad) {
         loadAllRequest({
           filter,
-          competencyUid
+          clusterUid
         });
       }
     }
@@ -158,7 +158,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: HrCompetencyCategoryListProps) => () => {
-    return props.competencyUid !== undefined && props.competencyUid !== '';
+    return props.clusterUid !== undefined && props.clusterUid !== '';
   },
   handleOnBind: () => (item: IHrCompetencyCategory, index: number) => ({
     key: index,
@@ -176,10 +176,10 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyCategoryListProps, IOwnSta
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
-        competencyUid: this.props.competencyUid,
+        clusterUid: this.props.clusterUid,
       },
       {
-        competencyUid: prevProps.competencyUid
+        clusterUid: prevProps.clusterUid
       }
     );
 

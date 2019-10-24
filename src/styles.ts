@@ -919,14 +919,25 @@ const styles = (theme: Theme) =>
     },
 
     breadcrumb: {
-      background: '#ebebeb', 
-      borderRadius: '5px'
+      // background: '#ebebeb', 
+      // borderRadius: '5px',
+      textTransform: 'capitalize',
+      display: 'inline',
+    },
+
+    breadcrumbLink: {
+      textDecoration: 'none',
+      '& p': {
+        '&:hover': {
+          color: lightBlue[500]
+        },
+      },
     },
 
     breadcrumbChild: {
-      textTransform: 'capitalize',
-      display: 'inline',
-      verticalAlign: 'middle',
+      // textTransform: 'capitalize',
+      // display: 'inline',
+      // verticalAlign: 'middle',
       marginLeft: '4px'
     },
 

@@ -1,3 +1,3 @@
 export interface IHrCompetencyClusterGetDetailRequest {
-  competencyUid: string;
+  clusterUid: string;
 }

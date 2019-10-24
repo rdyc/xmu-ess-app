@@ -12,15 +12,9 @@ import {
   hrCompetencyResultGetDetailListError,
   hrCompetencyResultGetDetailListRequest,
   hrCompetencyResultGetDetailListSuccess,
-  hrCompetencyResultGetListError,
-  hrCompetencyResultGetListRequest,
-  hrCompetencyResultGetListSuccess,
   hrCompetencyResultPatchError,
   hrCompetencyResultPatchRequest,
   hrCompetencyResultPatchSuccess,
-  hrCompetencyResultPostError,
-  hrCompetencyResultPostRequest,
-  hrCompetencyResultPostSuccess,
 } from '@hr/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
@@ -38,7 +32,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/employees?${params}`, 
+      path: `/v1/hr/competency/employees?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetAllSuccess(response.body)),
       ]), 
@@ -54,31 +48,6 @@ function* watchFetchAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof hrCompetencyResultGetListRequest>) => {
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true
-    });
-
-    return saiyanSaga.fetch({
-      method: 'get',
-      path: `/v1/employees/list?${params}`, 
-      successEffects: (response: IApiResponse) => ([
-        put(hrCompetencyResultGetListSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(hrCompetencyResultGetListError(response)),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(hrCompetencyResultGetListError(error.message)),
-      ])
-    });
-  };
-
-  yield takeEvery(Action.GET_LIST_REQUEST, worker);
-}
-
 function* watchFetchDetailListRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyResultGetDetailListRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
@@ -88,7 +57,7 @@ function* watchFetchDetailListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}/${action.payload.assessmentYear}?${params}`, 
+      path: `/v1/hr/competency/employees/responder?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetDetailListSuccess(response.body)),
       ]), 
@@ -108,7 +77,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyResultGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/employees/${action.payload.competencyEmployeeUid}`,
+      path: `/v1/hr/competency/employees/${action.payload.competencyEmployeeUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetByIdSuccess(response.body)),
       ]), 
@@ -124,52 +93,11 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof hrCompetencyResultPostRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'post',
-      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(hrCompetencyResultGetByIdDispose()),
-        put(hrCompetencyResultGetAllDispose()),
-        put(hrCompetencyResultGetDetailListDispose()),
-        put(hrCompetencyResultPostSuccess(response.body)),
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(hrCompetencyResultPostError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(hrCompetencyResultPostError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.POST_REQUEST, worker);
-}
-
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyResultPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/employees/${action.payload.respondenUid}/${action.payload.positionUid}/${action.payload.competencyEmployeeUid}`,
+      path: `/v1/hr/competency/employees/${action.payload.competencyEmployeeUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyResultGetByIdDispose()),
@@ -220,10 +148,8 @@ function* watchSwitchAccess() {
 function* hrCompetencyResultSagas() {
   yield all([
     fork(watchFetchAllRequest),
-    fork(watchFetchListRequest),
     fork(watchFetchDetailListRequest),
     fork(watchFetchByIdRequest),
-    fork(watchPostRequest),
     fork(watchPatchRequest),
     fork(watchSwitchAccess)
   ]);

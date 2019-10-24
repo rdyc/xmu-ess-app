@@ -20,10 +20,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
-import { HrCompetencyResultFilterProps } from './HrCompetencyResultFilter';
 
-export const HrCompetencyResultFilterView: React.SFC<HrCompetencyResultFilterProps> = props => {
-  return (
+import { HrCompetencyAssessmentFilterProps } from './HrCompetencyAssessmentFilter';
+
+export const HrCompetencyAssessmentFilterView: React.SFC<HrCompetencyAssessmentFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -44,13 +44,11 @@ export const HrCompetencyResultFilterView: React.SFC<HrCompetencyResultFilterPro
           </IconButton>
 
           <Typography variant="h6" color="inherit" className={props.classes.flex}>
-            {
-              props.intl.formatMessage(layoutMessage.tooltip.filter)
-            }
+            {props.intl.formatMessage(layoutMessage.tooltip.filter)}
           </Typography>
+
           {
-            (props.filterCompletion && props.filterCompletion.value !== 'pending' || 
-            props.filterCompany || props.filterPosition || props.filterYear) &&
+            (props.filterCompany || props.filterPosition || props.filterYear) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -62,12 +60,14 @@ export const HrCompetencyResultFilterView: React.SFC<HrCompetencyResultFilterPro
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
+
         </Toolbar>
       </AppBar>
 
       <Divider/>
 
       <List>
+
         <ListItem button onClick={props.handleFilterYearVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(hrMessage.competency.field.year)}
@@ -128,67 +128,36 @@ export const HrCompetencyResultFilterView: React.SFC<HrCompetencyResultFilterPro
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Completion'})}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.all)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              (!props.filterCompletion || props.filterCompletion && props.filterCompletion.value !== 'pending') &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
       </List>
+
+      <DialogValue
+        title={props.intl.formatMessage(hrMessage.competency.field.year)}
+        isOpen={props.isFilterYearOpen}
+        hideBackdrop={true}
+        items={props.yearList}
+        value={props.filterYear && props.filterYear.value}
+        onSelected={props.handleFilterYearOnSelected}
+        onClose={props.handleFilterYearOnClose}
+      />
+
+      <FilterCompany 
+        title={props.intl.formatMessage(hrMessage.competency.field.company)}
+        hideBackdrop={true}
+        isOpen={props.isFilterCompanyOpen}
+        value={props.filterCompany && props.filterCompany.uid}
+        onSelected={props.handleFilterCompanyOnSelected}
+        onClose={props.handleFilterCompanyOnClose}        
+      />
+
+      <FilterPosition
+        title={props.intl.formatMessage(hrMessage.competency.field.position)}
+        hideBackdrop={true}
+        isOpen={props.isFilterPositionOpen}
+        value={props.filterPosition && props.filterPosition.uid}
+        onSelected={props.handleFilterPositionOnSelected}
+        onClose={props.handleFilterPositionOnClose}
+        filter={props.filterPositionValue}
+      />
     </Dialog>
-
-    <DialogValue
-      title={props.intl.formatMessage(hrMessage.competency.field.year)}
-      isOpen={props.isFilterYearOpen}
-      hideBackdrop={true}
-      items={props.yearList}
-      value={props.filterYear && props.filterYear.value}
-      onSelected={props.handleFilterYearOnSelected}
-      onClose={props.handleFilterYearOnClose}
-    />
-
-    <FilterCompany 
-      title={props.intl.formatMessage(hrMessage.competency.field.company)}
-      hideBackdrop={true}
-      isOpen={props.isFilterCompanyOpen}
-      value={props.filterCompany && props.filterCompany.uid}
-      onSelected={props.handleFilterCompanyOnSelected}
-      onClose={props.handleFilterCompanyOnClose}        
-    />
-
-    <FilterPosition
-      title={props.intl.formatMessage(hrMessage.competency.field.position)}
-      hideBackdrop={true}
-      isOpen={props.isFilterPositionOpen}
-      value={props.filterPosition && props.filterPosition.uid}
-      onSelected={props.handleFilterPositionOnSelected}
-      onClose={props.handleFilterPositionOnClose}
-      filter={props.filterPositionValue}
-    />
-    
-    <DialogValue
-      title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Completion'})}
-      isOpen={props.isFilterCompletionOpen}
-      hideBackdrop={true}
-      items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
-      onSelected={props.handleFilterCompletionOnSelected}
-      onClose={props.handleFilterCompletionOnClose}
-      isCompletion={true}
-    />
   </React.Fragment>
-  );
-};
+);

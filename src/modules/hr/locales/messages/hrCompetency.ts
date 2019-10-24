@@ -31,6 +31,7 @@ export const hrCompetencyField = defineMessages({
   noteRequired: { id: `${prefix}.field.note.required`},
   notePlaceholder: { id: `${prefix}.field.note.placeholder`},
 
+  year: { id: `${prefix}.field.year`},
   company: { id: `${prefix}.field.company`},
   position: { id: `${prefix}.field.position`},
 
@@ -41,7 +42,17 @@ export const hrCompetencyField = defineMessages({
   zeroItem: { id: `${prefix}.field.zeroItem`},
   oneItem: { id: `${prefix}.field.oneItem`},
   manyItem: { id: `${prefix}.field.manyItem`},
+  notFound: { id: `${prefix}.field.notFound`},
   
+  assessment: { id: `${prefix}.field.assessment`},
+  competency: { id: `${prefix}.field.competency`},
+
+  employee: { id: `${prefix}.field.employee`},
+  responden: { id: `${prefix}.field.responden`},
+
+  status: { id: `${prefix}.field.status`},
+  cluster: { id: `${prefix}.field.cluster`},
+  category: { id: `${prefix}.field.category`},
   clusterRequired: { id: `${prefix}.field.cluster.required`},
 });
 

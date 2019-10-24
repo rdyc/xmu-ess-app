@@ -38,8 +38,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  filterCompany={props.filterCompany}
-                  filterPosition={props.filterPosition}                 
+                  filterCompany={props.filterCompany}             
                 />
               </div>
             </div>

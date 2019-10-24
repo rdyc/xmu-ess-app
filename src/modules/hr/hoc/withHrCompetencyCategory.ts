@@ -4,8 +4,7 @@ import {
   IHrCompetencyCategoryGetDetailRequest, 
   IHrCompetencyCategoryGetListRequest, 
   IHrCompetencyCategoryPatchRequest, 
-  IHrCompetencyCategoryPostRequest, 
-  IHrCompetencyCategoryPutRequest
+  IHrCompetencyCategoryPostRequest,
 } from '@hr/classes/queries/';
 import { IHrCompetencyCategory, IHrCompetencyCategoryDetail, IHrCompetencyCategoryList } from '@hr/classes/response/';
 import { 
@@ -18,9 +17,7 @@ import {
   hrCompetencyCategoryPatchDispose, 
   hrCompetencyCategoryPatchRequest, 
   hrCompetencyCategoryPostDispose, 
-  hrCompetencyCategoryPostRequest, 
-  hrCompetencyCategoryPutDispose,
-  hrCompetencyCategoryPutRequest
+  hrCompetencyCategoryPostRequest,
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -38,8 +35,6 @@ interface PropsFromDispatch {
     // command
     createRequest: typeof hrCompetencyCategoryPostRequest;
     createDispose: typeof hrCompetencyCategoryPostDispose;
-    updateRequest: typeof hrCompetencyCategoryPutRequest;
-    updateDispose: typeof hrCompetencyCategoryPutDispose;
     patchRequest: typeof hrCompetencyCategoryPatchRequest;
     patchDispose: typeof hrCompetencyCategoryPatchDispose;
 
@@ -68,8 +63,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // command
     createRequest: (request: IHrCompetencyCategoryPostRequest) => dispatch(hrCompetencyCategoryPostRequest(request)),
     createDispose: () => dispatch(hrCompetencyCategoryPostDispose()),
-    updateRequest: (request: IHrCompetencyCategoryPutRequest) => dispatch(hrCompetencyCategoryPutRequest(request)),
-    updateDispose: () => dispatch(hrCompetencyCategoryPutDispose()),
     patchRequest: (request: IHrCompetencyCategoryPatchRequest) => dispatch(hrCompetencyCategoryPatchRequest(request)),
     patchDispose: () => dispatch(hrCompetencyCategoryPatchDispose()),
 
