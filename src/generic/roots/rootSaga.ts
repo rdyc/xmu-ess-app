@@ -1,5 +1,6 @@
 import accountEmployeeAccessHistorySagas from '@account/store/sagas/accountEmployeeAccessHistorySagas';
 import accountEmployeeAccessSagas from '@account/store/sagas/accountEmployeeAccessSagas';
+import accountEmployeeContractSagas from '@account/store/sagas/accountEmployeeContractSagas';
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
@@ -50,6 +51,9 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import notifPeriodSagas from '@hr.notification/store/sagas/notifPeriodSagas';
+import notifSettingSagas from '@hr.notification/store/sagas/notifSettingSagas';
+import notifTemplateSagas from '@hr.notification/store/sagas/notifTemplateSagas';
 import hrCompetencyAssessmentSagas from '@hr/store/sagas/competency/assessment/hrCompetencyAssessmentSagas';
 import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
 import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
@@ -196,6 +200,7 @@ export function* rootSaga() {
     fork(accountEmployeeRateSagas),
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
+    fork(accountEmployeeContractSagas),
     fork(accountEmployeeKPISagas),
 
     // project
@@ -253,6 +258,11 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
+
+    // hr notificationSagas
+    fork(notifPeriodSagas),
+    fork(notifSettingSagas),
+    fork(notifTemplateSagas),
 
     // markdown
     fork(markdownSagas),

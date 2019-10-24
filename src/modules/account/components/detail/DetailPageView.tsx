@@ -1,3 +1,4 @@
+import { AccountEmployeeTabsNoContract, AccountEmployementStatus } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AppBar, Tab, Tabs } from '@material-ui/core';
@@ -5,9 +6,11 @@ import * as React from 'react';
 import { DetailPageProps } from './DetailPage';
 
 export const DetailPageView: React.SFC<DetailPageProps> = props => {
-  const tabs = Object.keys(AccountEmployeeTabs).map((key, index) => ({
+  const { isLoading } = props.accountEmployeeState.detail;
+
+  const tabs = Object.keys(props.employmentType === AccountEmployementStatus.Permanent ? AccountEmployeeTabsNoContract : AccountEmployeeTabs).map((key, index) => ({
     id: key,
-    name: AccountEmployeeTabs[key]
+    name: props.employmentType === AccountEmployementStatus.Permanent ? AccountEmployeeTabsNoContract[key] : AccountEmployeeTabs[key]
   }));
   
   const render = (
@@ -20,6 +23,7 @@ export const DetailPageView: React.SFC<DetailPageProps> = props => {
           {tabs.map(item => (
             <Tab
               key={item.id}
+              disabled={isLoading}
               label={props.intl.formatMessage(accountMessage.employee.fieldFor(item.id, 'fieldTab'))}
               onClick={() =>
                 props.history.push(

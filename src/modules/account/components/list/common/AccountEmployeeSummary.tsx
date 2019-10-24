@@ -52,9 +52,21 @@ const accountEmployeeSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(accountMessage.employee.field.nik)}
         value={props.data.employmentNumber}
       />
+      <TextField 
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(accountMessage.employee.field.employment)}
+        value={props.data.employment && props.data.employment.value || props.data.employmentType}
+      />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
+      <TextField 
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(accountMessage.contract.field.contractNumber)}
+        value={props.data.contract && props.data.contract.contractNumber || 'N/A'}
+      />
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
