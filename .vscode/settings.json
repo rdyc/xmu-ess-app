@@ -4,7 +4,6 @@
   "files.autoSave": "off",
   "explorer.autoReveal": false,
   "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-  "workbench.sideBar.location": "right",
   "editor.renderControlCharacters": false,
   "editor.renderWhitespace": "none",
   "window.title": "${rootName} ${dirty}${activeEditorShort}",
