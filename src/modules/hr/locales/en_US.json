@@ -1,0 +1,117 @@
+{
+  "hr.shared.option.new": "New",
+  "hr.shared.option.modify": "Modify",
+
+  "hr.shared.page.list.title": "{state}",
+  "hr.shared.page.list.subHeader": " ",
+  "hr.shared.page.detail.title": "{state} Detail",
+  "hr.shared.page.detail.subHeader": " ",
+  "hr.shared.page.new.title": "Add New {state}",
+  "hr.shared.page.new.subHeader": " ",
+  "hr.shared.page.modify.title": "Modify {state}",
+  "hr.shared.page.modify.subHeader": " ",
+
+  "hr.shared.message.bProps": "Some props are empty",
+  "hr.shared.message.create.success": "New {state} data has been created",
+  "hr.shared.message.create.failure": "Unable to process your submission",
+  "hr.shared.message.update.success": "{state} with {type} {uid} has been updated",
+  "hr.shared.message.update.failure": "Unable to process your submission",
+  "hr.shared.message.delete.success": "{state} with {type} {uid} has been deleted",
+  "hr.shared.message.delete.failure": "Unable to process your submission",
+
+  "hr.shared.confirm.create.title": "Create New {state}",
+  "hr.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
+  "hr.shared.confirm.modify.title": "Modify {state}",
+  "hr.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
+  "hr.shared.confirm.saveAs.title": "Save as {state}",
+  "hr.shared.confirm.saveAs.subHeader": "You are about to save this as {state} data. Do you want to continue?",
+  "hr.shared.confirm.delete.title": "Delete {state}",
+  "hr.shared.confirm.delete.subHeader": "You are about to delete this as {state} data. Do you want to continue?",
+
+  "hr.shared.section.info.title": "{state} Information",
+  "hr.shared.section.info.subHeader": " ",
+  "hr.shared.section.submission": "{state} Submission",
+
+  "hr.competency.field.uid": "{state} ID",
+  "hr.competency.field.type": "{state}",
+  "hr.competency.field.uid.placeholder": "{state} ID",
+  "hr.competency.field.uid.required": "{state} is required",
+
+  "hr.competency.field.name": "Name",
+  "hr.competency.field.name.placeholder": "Type any name",
+  "hr.competency.field.name.required": "Name is required",
+
+  "hr.competency.field.description": "Description",
+  "hr.competency.field.description.placeholder": "Type any description",
+  "hr.competency.field.description.required": "Description is required",
+
+  "hr.competency.field.level": "Level",
+  "hr.competency.field.level.placeholder": "Type any level",
+  "hr.competency.field.level.required": "Level is required",
+
+  "hr.competency.field.note": "Note",
+  "hr.competency.field.note.placeholder": "Type any note",
+  "hr.competency.field.note.required": "Note is required",
+
+  "hr.competency.field.indicator": "Indicator",
+  "hr.competency.field.indicatorNum": "Indicator - {num}",
+  "hr.competency.field.indicator.placeholder": "Type any indicator",
+  "hr.competency.field.indicator.required": "Indicator is required",
+
+  "hr.competency.field.company": "Company",
+  "hr.competency.field.position": "Position",
+  "hr.competency.field.minCategories": "Must have at least one category",
+  "hr.competency.field.minLevels": "Must have at least one level",
+  "hr.competency.field.minIndicators": "Must have at least one indicator",
+
+  "hr.competency.field.totalItem": "Total {state}",
+  "hr.competency.field.zeroItem": "No {item} recorded",
+  "hr.competency.field.oneItem": "{total} {state}",
+  "hr.competency.field.manyItem": "{total} {state}",
+  "hr.competency.field.cluster.required": "Cluster is required",
+
+  "hr.corner.field.uid": "{state} ID",
+  "hr.corner.field.uid.placeholder": "{state} ID",
+  "hr.corner.field.uid.required": "ID is required",
+
+  "hr.corner.field.name": "Name",
+  "hr.corner.field.name.placeholder": "Type any name",
+  "hr.corner.field.name.required": "Name is required",
+
+  "hr.corner.field.category": "Category",
+  "hr.corner.field.category.placeholder": "Choose one Category",
+  "hr.corner.field.category.required": "Category is required",
+
+  "hr.corner.field.title": "Title",
+  "hr.corner.field.title.placeholder": "Type any title",
+  "hr.corner.field.title.required": "Title is required",
+
+  "hr.corner.field.slug": "Slug",
+  "hr.corner.field.slug.placeholder": "Type any slug",
+  "hr.corner.field.slug.required": "Slug is required",
+
+  "hr.corner.field.headline": "Headline",
+  "hr.corner.field.headline.placeholder": "Type any headline",
+  "hr.corner.field.headline.required": "Headline is required",
+
+  "hr.corner.field.content": "Content",
+  "hr.corner.field.content.placeholder": "Type any content",
+  "hr.corner.field.content.required": "Content is required",
+
+  "hr.corner.field.description": "Description",
+  "hr.corner.field.description.placeholder": "Type any description",
+  "hr.corner.field.description.required": "Description is required",
+
+  "hr.corner.field.start": "Start date",
+  "hr.corner.field.start.placeholder": "pick any start date",
+  "hr.corner.field.start.required": "Start date is required",
+
+  "hr.corner.field.end": "End date",
+  "hr.corner.field.end.placeholder": "pick any end date",
+  "hr.corner.field.end.required": "End date is required",
+
+  "hr.corner.field.type": "{state}",
+  "hr.corner.field.select": "Please select one {state}",
+
+  "hr.corner.field.parent.title": "HR Corner"
+}

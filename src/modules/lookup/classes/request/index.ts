@@ -10,4 +10,7 @@ export * from './leave/ILookupLeaveDeletePayload';
 export * from './systemLimit/ISystemLimitPostPayload';
 export * from './systemLimit/ISystemLimitPutPayload';
 export * from './systemLimit/ISystemLimitDeletePayload';
+export * from './employeeLevel/IEmployeeLevelPutPayload';
+export * from './employeeLevel/IEmployeeLevelDeletePayload';
+export * from './employeeLevel/IEmployeeLevelPostPayload';
 export * from './version';

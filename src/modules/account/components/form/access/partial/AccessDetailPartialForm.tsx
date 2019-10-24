@@ -4,8 +4,10 @@ import { CommonSystemOption } from '@common/components/options/CommonSystemOptio
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+import { IEmployeeLevelListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
+import { LookupEmployeeLevelOption } from '@lookup/components/employeeLevel/option/LookupEmployeeLevelOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
 import { LookupRoleOption } from '@lookup/components/role/options/LookupRoleOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -25,6 +27,7 @@ type AccessDetailPartialFormProps = {
   filterDepartment?: ISystemListFilter;
   filterUnit?: ISystemListFilter;
   filterLookupCompany?: ILookupCompanyGetListFilter;
+  filterLookupLevel?: IEmployeeLevelListFilter;
   handleFilterUnit: (companyUid: string) => void;
   handleFilterDepartment: (companyUid: string, unitUid: string) => void;
 };
@@ -145,9 +148,11 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
       <Field
         name="levelType"
         render={({ field, form }: FieldProps<IAccessFormValue>) => (
-          <CommonSystemOption category="level" filter={props.filterCommonSystem}>
+          <LookupEmployeeLevelOption filter={props.filterLookupLevel}>
             <SelectField
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -161,7 +166,7 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
             />
-          </CommonSystemOption>
+          </LookupEmployeeLevelOption>
         )}
       />
 

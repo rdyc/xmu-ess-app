@@ -1,4 +1,6 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { ISystemListFilter } from '@common/classes/filters';
+import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { InputYearDegreeOption } from '@layout/components/input/yearDegree/InputYearDegreeOption';
@@ -13,6 +15,7 @@ type ExperienceDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IExperienceFormValue>;
   intl: InjectedIntl;
+  filterCommonSystem?: ISystemListFilter;
 };
 
 const ExperienceDetailPartialForm: React.ComponentType<ExperienceDetailPartialFormProps> = props => (
@@ -45,6 +48,67 @@ const ExperienceDetailPartialForm: React.ComponentType<ExperienceDetailPartialFo
             label={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName'))}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
+        )}
+      />
+
+      <Field
+        name="company"
+        render={({ field, form }: FieldProps<IExperienceFormValue>) => (
+          <TextField
+            {...field}
+            fullWidth={true}
+            disabled={form.isSubmitting}
+            required={true}
+            margin="normal"
+            autoComplete="off"
+            label={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName'))}
+            placeholder={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldPlaceholder'))}
+            helperText={form.touched.company && form.errors.company}
+            error={form.touched.company && Boolean(form.errors.company)}
+          />
+        )}
+      />
+
+      <Field
+        name="position"
+        render={({ field, form }: FieldProps<IExperienceFormValue>) => (
+          <TextField
+            {...field}
+            fullWidth={true}
+            disabled={form.isSubmitting}
+            required={true}
+            margin="normal"
+            autoComplete="off"
+            label={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName'))}
+            placeholder={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldPlaceholder'))}
+            helperText={form.touched.position && form.errors.position}
+            error={form.touched.position && Boolean(form.errors.position)}
+          />
+        )}
+      />
+
+      <Field
+        name="professionType"
+        render={({ field, form }: FieldProps<IExperienceFormValue>) => (
+          <CommonSystemOption category="profession" filter={props.filterCommonSystem}>
+            <SelectField
+              isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
+              isDisabled={props.formikBag.isSubmitting}
+              isClearable={props.formMode === FormMode.New && field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName')),
+                required: true,
+                helperText: form.touched.professionType && form.errors.professionType,
+                error: form.touched.professionType && Boolean(form.errors.professionType)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+            />
+          </CommonSystemOption>
         )}
       />
 
@@ -100,42 +164,6 @@ const ExperienceDetailPartialForm: React.ComponentType<ExperienceDetailPartialFo
               }}
             />
           </InputYearDegreeOption>
-        )}
-      />
-
-      <Field
-        name="company"
-        render={({ field, form }: FieldProps<IExperienceFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth={true}
-            disabled={form.isSubmitting}
-            required={true}
-            margin="normal"
-            autoComplete="off"
-            label={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.company && form.errors.company}
-            error={form.touched.company && Boolean(form.errors.company)}
-          />
-        )}
-      />
-
-      <Field
-        name="position"
-        render={({ field, form }: FieldProps<IExperienceFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth={true}
-            disabled={form.isSubmitting}
-            required={true}
-            margin="normal"
-            autoComplete="off"
-            label={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(accountMessage.experience.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.position && form.errors.position}
-            error={form.touched.position && Boolean(form.errors.position)}
-          />
         )}
       />
 

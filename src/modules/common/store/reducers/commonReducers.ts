@@ -9,6 +9,7 @@ import siteReducers from '@common/store/reducers/site/siteReducers';
 import systemReducers from '@common/store/reducers/system/systemReducers';
 import bloodReducers from './blood/bloodReducers';
 import certificationReducers from './certification/certificationReducers';
+import competencyReducers from './competency/competencyReducers';
 import degreeReducers from './degree/degreeReducers';
 import departmentReducers from './department/departmentReducers';
 import employmentReducers from './employment/employmentReducers';
@@ -16,9 +17,12 @@ import familyReducers from './family/familyReducers';
 import financeReducers from './finance/financeReducer';
 import genderReducers from './gender/genderReducers';
 import gradeReducers from './grade/gradeReducer';
+import kpiReducers from './kpi/kpiReducers';
 import levelReducers from './level/levelReducers';
 import limiterReducers from './limiter/limiterReducers';
+import measurementReducers from './measurement/measurementReducers';
 import paymentReducers from './payment/paymentReducer';
+import professionReducers from './profession/professionReducers';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
 import relationReducers from './relation/relationReducer';
@@ -59,7 +63,11 @@ const commonReducers = {
   ...departmentReducers,
   ...familyReducers,
   ...levelReducers,
-  ...trainingReducers
+  ...trainingReducers,
+  ...competencyReducers,
+  ...professionReducers,
+  ...kpiReducers,
+  ...measurementReducers
 };
 
 export default commonReducers;

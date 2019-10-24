@@ -1,12 +1,14 @@
 import {
   ISummaryGetBillableRequest,
   ISummaryGetEffectivenessRequest,
+  ISummaryGetMappingRequest,
   ISummaryGetProfitabilityRequest,
   ISummaryGetProgressRequest,
   ISummaryGetWinningRequest
 } from '@summary/classes/queries';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
+import { ISummaryMapping } from '@summary/classes/response/mapping';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ISummaryWinning } from '@summary/classes/response/winning';
@@ -39,6 +41,11 @@ export const enum SummaryAction {
   GET_WINNING_SUCCESS = '@@summary/GET_WINNING_SUCCESS',
   GET_WINNING_ERROR = '@@summary/GET_WINNING_ERROR',
   GET_WINNING_DISPOSE = '@@summary/GET_WINNING_DISPOSE',
+
+  GET_MAPPING_REQUEST = '@@summary/GET_MAPPING_REQUEST',
+  GET_MAPPING_SUCCESS = '@@summary/GET_MAPPING_SUCCESS',
+  GET_MAPPING_ERROR = '@@summary/GET_MAPPING_ERROR',
+  GET_MAPPING_DISPOSE = '@@summary/GET_MAPPING_DISPOSE',
 }
 
 // get billable
@@ -70,3 +77,9 @@ export const summaryGetWinningRequest = (request: ISummaryGetWinningRequest) => 
 export const summaryGetWinningSuccess = (response: IResponseCollection<ISummaryWinning>) => action(SummaryAction.GET_WINNING_SUCCESS, response);
 export const summaryGetWinningError = (message: string) => action(SummaryAction.GET_WINNING_ERROR, message);
 export const summaryGetWinningDispose = () => action(SummaryAction.GET_WINNING_DISPOSE);
+
+// get mapping
+export const summaryGetMappingRequest = (request: ISummaryGetMappingRequest) => action(SummaryAction.GET_MAPPING_REQUEST, request);
+export const summaryGetMappingSuccess = (response: IResponseCollection<ISummaryMapping>) => action(SummaryAction.GET_MAPPING_SUCCESS, response);
+export const summaryGetMappingError = (message: string) => action(SummaryAction.GET_MAPPING_ERROR, message);
+export const summaryGetMappingDispose = () => action(SummaryAction.GET_MAPPING_DISPOSE);

@@ -34,6 +34,8 @@ export const categoryTypeTranslator = (category: string): CommonCategoryType => 
     case 'relation': result = 'relation'; break;
     case 'status': result = 'status'; break;
     case 'transportation': result = 'transportation'; break;
+    case 'profession': result = 'profession'; break;
+    case 'competency': result = 'competency'; break;
 
     default:  break;
   }

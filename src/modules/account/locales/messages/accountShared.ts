@@ -39,7 +39,8 @@ export const accountSharedMessage = defineMessages({
   updateFailure: { id: `${prefix}.message.update.failure` },
   deleteSuccess: { id: `${prefix}.message.delete.success` },
   deleteFailure: { id: `${prefix}.message.delete.failure` },
-  newEmployee: { id: `${prefix}.message.new.employee.success` }
+  newEmployee: { id: `${prefix}.message.new.employee.success` },
+  emptyCompetency: { id: `${prefix}.message.empty.competency` }
 });
 
 // confirmation
@@ -57,4 +58,5 @@ export const accountSharedSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
   infoSubHeader: { id: `${prefix}.section.info.subHeader`},
   submission: { id: `${prefix}.section.submission`},
+  competency: { id: `${prefix}.section.competency`},
 });

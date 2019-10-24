@@ -40,7 +40,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           fullWidth
           type="reset"
           color="secondary"
-          disabled={!props.formikProps.dirty || props.formikProps.isSubmitting}
+          disabled={!props.formikProps.dirty || props.formikProps.isSubmitting || props.disableButtons}
         >
           {props.buttonLabelProps.reset}
         </Button>
@@ -49,7 +49,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           fullWidth
           type="button"
           color="primary"
-          disabled={props.formikProps.isSubmitting}
+          disabled={props.formikProps.isSubmitting || props.disableButtons}
           onClick={() => props.setOpen()}
         >
           {props.formikProps.isSubmitting ? props.buttonLabelProps.processing : props.buttonLabelProps.submit}

@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { Amchart } from './chart/Amchart';
 import { SimpleForm } from './formik/SimpleForm';
+import { MarkdownForm } from './markdown/component/markdown/form/MarkdownForm';
+import { PlayMarkdown } from './markdown/PlayMarkdown';
 import { DemoSinglePage } from './pages/DemoSinglePage';
 import { Enhancer } from './recompose/Enhancer';
 import { ComplexEditor } from './redux/form/complex';
@@ -24,5 +27,8 @@ export const playgroundRouter: React.SFC<AllProps> = props => (
     <Route path={`${props.match.path}/redux/form/upload`} component={upload} />
     <Route path={`${props.match.path}/formik/simpleform`} component={() => <SimpleForm/>} />
     <Route path={`${props.match.path}/recompose/enhancer`} component={enhancer} />
+    <Route path={`${props.match.path}/chart/amchart`} component={Amchart}/>
+    <Route path={`${props.match.path}/markdown/satu`} component={PlayMarkdown} />
+    <Route path={`${props.match.path}/markdown/dua`} component={MarkdownForm} />
   </Switch>
 );

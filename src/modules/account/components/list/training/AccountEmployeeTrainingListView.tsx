@@ -11,21 +11,13 @@ import { DetailPage } from '@account/components/detail/DetailPage';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { AccountEmployeeTrainingListProps } from './AccountEmployeeTrainingList';
 import { AccountEmployeeTrainingSummary } from './AccountEmployeeTrainingSummary';
+import { ResourceMappingTrainingSummary } from './ResourceMappingTrainingSummary';
 
 export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingListProps> = props => (
   <React.Fragment>
-    <DetailPage
-        tab={AccountEmployeeTabs.training}        
-    >
+    {
+      props.employeeId ? 
       <CollectionPage
-        // page info
-        info={{
-          uid: AppMenu.LookupEmployee,
-          parentUid: AppMenu.Lookup,
-          parentUrl: '/account/employee',
-          title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
-          description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
-        }}
 
         // state & fields
         state={props.accountEmployeeTrainingState.all}
@@ -33,41 +25,70 @@ export const AccountEmployeeTrainingListView: React.SFC<AccountEmployeeTrainingL
 
         // callback
         onLoadApi={props.handleOnLoadApi}
-        onBind={props.handleOnBind}
+        onBind={props.handleMappingOnBind}
         
         // row components
         summaryComponent={(item: IEmployeeTraining) => ( 
-          <AccountEmployeeTrainingSummary data={item} employeeUid={props.match.params.employeeUid} />
+          <ResourceMappingTrainingSummary data={item} />
         )}
-        actionComponent={(item: IEmployeeTraining) => (
-          <React.Fragment>
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/form`, { trainingUid: item.uid })}
-            >
-              {props.intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-
-            <Button 
-              size="small"
-              color="secondary"
-              onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/${item.uid}`)}
-            >
-              {props.intl.formatMessage(layoutMessage.action.details)}
-            </Button>
-          </React.Fragment>
-        )}
-
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/form`)}
-          >
-            <AddCircle/>
-          </IconButton>
-        }
       />
-    </DetailPage>
+      :
+
+        <DetailPage
+            tab={AccountEmployeeTabs.training}        
+        >
+          <CollectionPage
+            // page info
+            info={{
+              uid: AppMenu.LookupEmployee,
+              parentUid: AppMenu.Lookup,
+              parentUrl: '/account/employee',
+              title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+              description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
+            }}
+
+            // state & fields
+            state={props.accountEmployeeTrainingState.all}
+            fields={props.fields}
+
+            // callback
+            onLoadApi={props.handleOnLoadApi}
+            onBind={props.handleOnBind}
+            
+            // row components
+            summaryComponent={(item: IEmployeeTraining) => ( 
+              <AccountEmployeeTrainingSummary data={item} employeeUid={props.match.params.employeeUid} />
+            )}
+            actionComponent={(item: IEmployeeTraining) => (
+              <React.Fragment>
+                <Button 
+                  size="small"
+                  color="secondary"
+                  onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/form`, { trainingUid: item.uid })}
+                >
+                  {props.intl.formatMessage(layoutMessage.action.modify)}
+                </Button>
+
+                <Button 
+                  size="small"
+                  color="secondary"
+                  onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/${item.uid}`)}
+                >
+                  {props.intl.formatMessage(layoutMessage.action.details)}
+                </Button>
+              </React.Fragment>
+            )}
+
+            appBarCustomComponent={
+              <IconButton
+                color="inherit"
+                onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/training/form`)}
+              >
+                <AddCircle/>
+              </IconButton>
+            }
+          />
+        </DetailPage>
+    }
   </React.Fragment>
 );

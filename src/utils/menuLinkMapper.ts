@@ -225,6 +225,74 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU82':
       path = '/hr/notification/templates';
       break;
+      
+    case 'MNU66':
+      path = '/reports/resourcemapping';
+      break;
+      
+    case 'MNU69':
+      path = '/hr/competency/cluster';
+      break;
+
+    case 'MNU78':
+      path = '/hr/competency/category';
+      break;
+
+    case 'MNU79':
+      path = '/hr/competency/mapped';
+      break;
+      
+    case 'MNU67':
+      path = '/kpi/categories';
+      break;
+
+    case 'MNU68':
+      path = '/kpi/templates';
+      break;
+
+    case 'MNU84':
+      path = '/kpi/assigns';
+      break;
+
+    case 'MNU73':
+      path = '/kpi/finals';
+      break;
+
+    case 'MNU74':
+      path = '/kpi/employees';
+      break;
+
+    case 'MNU75':
+      path = '/kpi/approvals';
+      break;
+    
+    case 'MNU70':
+      path = '/hr/corner/page';
+      break;
+
+    case 'MNU76':
+      path = '/hr/assessmentresult';
+      break;
+
+    case 'MNU77':
+      path = '/hr/assessment';
+      break;
+
+    case 'MNU83':
+      path = '/hr/assessmentinput';
+      break;
+
+    case 'MNU83':
+      path = '/hr/assessmentinput';
+      break;
+    
+    case 'MNU85':
+      path = '/account/profile/detail';
+      break;
+
+    case 'MNU86':
+      path = '/lookup/employeelevels';
+      break;
 
     default:
       path = '/home/dashboard';

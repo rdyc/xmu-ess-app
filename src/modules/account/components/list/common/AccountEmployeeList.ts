@@ -70,7 +70,8 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
     fields: Object.keys(AccountEmployeeField).map(key => ({ 
       value: key, 
       name: AccountEmployeeField[key] 
-    }))
+    })),
+    isActive: false
   };
 
   // fill from previous request if any
@@ -78,7 +79,7 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
     state.companyUids = request.filter.companyUids,
     state.employmentTypes = request.filter.employmentTypes;
     state.roleUids = request.filter.roleUids,
-    state.isActive = request.filter.isActive;
+    state.isActive = !request.filter.isActive;
   }
 
   return state;
@@ -105,8 +106,8 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
         companyUids: props.companyUids,
         employmentTypes: props.employmentTypes,
         useAccess: false,
-        isActive: props.isActive ? false : true,
-        roleUids: props.roleUids,
+        isActive: !props.isActive,
+        roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,

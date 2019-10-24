@@ -191,6 +191,19 @@ const styles = (theme: Theme) =>
       color: lightBlue[500]
     },
 
+    // Corner Appbar
+    cornerAppBar: {
+      background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
+      color: theme.palette.common.white,
+      zIndex: theme.zIndex.drawer + 1,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100%)`
+      },
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    },
     // Application Bar
     appBar: {
       background: theme.palette.type === 'light' ? lightBlue[500] : theme.palette.grey[900],
@@ -378,6 +391,19 @@ const styles = (theme: Theme) =>
         marginTop: theme.spacing.unit * 7,
       }
     },
+
+    // shift corner
+    shiftCorner: {
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing.unit * 8.5,
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `982px`,
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%)'
+      },
+    },
     shift: {
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.direction === 'ltr' ? drawerWidth : 0,
@@ -507,6 +533,25 @@ const styles = (theme: Theme) =>
       },
       [theme.breakpoints.up('xl')]: {
         width: `calc(100% / 4)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      }
+    },
+
+    flex2Column: {
+      padding: 0,
+      [theme.breakpoints.up('xs')]: {
+        width: '100%'
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% / 2)`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: `calc(100% - (100% / 3))`,
+        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: `calc(100% / 2)`,
         padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
       }
     },
@@ -649,6 +694,12 @@ const styles = (theme: Theme) =>
     cellWidthXL: {
       width: '25vw'
     },
+    cellWidthXXL: {
+      width: '30vw'
+    },
+    cellWidthXXXL: {
+      width: '40vw'
+    },
 
     /* -------- generic classes end ----------*/
 
@@ -749,6 +800,134 @@ const styles = (theme: Theme) =>
     },
     colorWhite: {
       color: '#fff'
+    },
+
+    // chart resource mapping
+    amChart: {
+      width: '100%',
+      fontFamily: theme.typography.fontFamily,
+      textTransform: 'capitalize'
+      // color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white
+    },
+
+    hrTable: {
+      height: '75vh',
+      overflowX: 'auto',
+      overflowY: 'auto'
+    },
+
+    hrTableTitle: {
+      textAlign: 'center',
+      padding: '10px'
+    },
+
+    hrTableVerAlign: {
+      verticalAlign: 'top',
+      padding: 0
+    },
+
+    hrTableChild: {
+      paddingLeft: theme.spacing.unit * 4,
+      marginTop: theme.spacing.unit
+    },
+
+    hrTableResponder: {
+      maxWidth: '100px',
+      maxHeight: '10px',
+      padding: '5px',
+      textAlign: 'center',
+      backgroundColor: theme.palette.background.paper,
+      position: 'sticky',
+      top: 0
+    },
+
+    writingVertical: {
+      writingMode: 'vertical-rl',
+      transform: 'rotate(180deg)'
+    },
+
+    globalFont: {
+      fontFamily: theme.typography.fontFamily
+    },
+
+    contentHover: {
+      cursor: 'pointer',
+      transition: 'all .3s',
+      '&:hover': {
+        backgroundColor: '#ebebeb',
+      },
+    },
+
+    buttonActive: {
+      backgroundColor: '#ebebeb',
+    },
+    
+    buttonHover: {
+      transition: 'all .3s',
+      '&:hover': {
+        transform: 'scale(1.03)'
+      },
+    },
+
+    titleTopBarCorner: {
+      padding: '0',
+      transition: 'all .3s',
+      '&:hover': {
+        transform: 'scale(1.03)'
+      },
+    },
+
+    titleText: {
+      display: 'grid',
+      gridTemplateColumns: '1fr max-content 1fr',
+      gridColumnGap: '1.5rem',
+      alignItems: 'center',
+
+      '&::after, &::before' : {
+        content: `''`,  
+        height: '1px',
+        display: 'block',
+        backgroundColor: 'currentColor'
+      }
+    },
+
+    textDecorationNone: {
+      '& a' : {
+        textDecoration: 'none',
+      }
+    },
+    
+    contentCenter: {
+      position: 'absolute',
+      left: '50%',
+      transform: ''
+    },
+
+    // this is for elipsis on 2nd / .. lane *depneds on line clamp
+    textElipsis2ndLine: {
+      overflow: 'hidden',
+      display: '-webkit-box',
+      '-webkit-box-orient': 'vertical',
+      '-webkit-line-clamp': '2'
+    },
+
+    // this is for elipsis on 1st line
+    textElipsis: {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis'
+    },
+
+    breadcrumb: {
+      background: '#ebebeb', 
+      borderRadius: '5px'
+    },
+
+    breadcrumbChild: {
+      textTransform: 'capitalize',
+      display: 'inline',
+      verticalAlign: 'middle',
+      marginLeft: '4px'
     }
   });
 

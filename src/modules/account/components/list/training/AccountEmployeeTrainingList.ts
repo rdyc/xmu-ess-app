@@ -2,6 +2,7 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -25,6 +26,10 @@ import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeFiel
 import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { AccountEmployeeTrainingListView } from './AccountEmployeeTrainingListView';
 
+interface IOwnOption {
+  employeeId?: string;
+}
+
 interface IOwnRouteParams {
   employeeUid: string;
 }
@@ -40,10 +45,12 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IEmployeeTraining, index: number) => IDataBindResult;
+  handleMappingOnBind: (item: IEmployeeTraining, index: number) => IDataBindResult;
 }
 
 export type AccountEmployeeTrainingListProps 
   = IOwnRouteParams
+  & IOwnOption
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -86,13 +93,20 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
-      
+
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
-          filter,
-          employeeUid: props.match.params.employeeUid,
-        });
+        if (props.employeeId) {
+          loadAllRequest({
+            filter,
+            employeeUid: props.employeeId,
+          });
+        } else {
+          loadAllRequest({
+            filter,
+            employeeUid: props.match.params.employeeUid,
+          });
+        }
       }
     }
   },
@@ -104,15 +118,26 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingListProps, IOwnHand
     quaternary: item.certification ? item.certification.value : 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  }),
+  handleMappingOnBind: (props: AccountEmployeeTrainingListProps) => (item: IEmployeeTraining, index: number) => ({
+    key: index,
+    primary: item.name,
+    secondary: item.training ? item.training.value : 'N/A',
+    tertiary: item.organizer,
+    quaternary: item.certification ? item.certification.value : 'N/A',
+    quinary: item.start ? props.intl.formatDate(item.start, GlobalFormat.Date) : 'N/A',
+    senary: item.end ? props.intl.formatDate(item.end, GlobalFormat.Date) : 'N/A'
   })
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingListProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-    //   if (this.props.location.state.employeeName) {
-
-    //   }
+    const { employeeId, employeeUid, handleOnLoadApi } = this.props;
+    const { request } = this.props.accountEmployeeTrainingState.all;
+    if (request) {
+      if (request.employeeUid !== employeeId || request.employeeUid !== employeeUid) {
+        handleOnLoadApi(undefined, true, true);
+      }
     }
   },
   componentDidUpdate(prevProps: AccountEmployeeTrainingListProps) {
@@ -120,7 +145,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingListProps, IOwn
   }
 };
 
-export const AccountEmployeeTrainingList = compose(
+export const AccountEmployeeTrainingList = compose<AccountEmployeeTrainingListProps, IOwnOption>(
   setDisplayName('AccountEmployeeTrainingList'),
   withUser,
   withAccountEmployeeTraining,

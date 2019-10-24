@@ -112,13 +112,16 @@ import {
   IEmployeeContractPostRequest, 
   IEmployeeContractPutRequest 
 } from '../queries/employeeContract';
+import { IEmployeeAllKPIAssignRequest, IEmployeeAllKPIFinalRequest, IEmployeeKPIFinalAllRequest, IEmployeeKPIFinalByIdRequest } from '../queries/employeeKPI';
 import { IEmployeeAccess, IEmployeeAccessList } from '../response/employeeAccess';
 import { IEmployeeContractDetail, IEmployeeContractList } from '../response/employeeContract';
+import { IEmployeeKPIAssign, IEmployeeKPIFinal, IKPIFinal } from '../response/employeeKPI';
 
 export interface IAccountState {
   // account employee
   accountEmployeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
   accountEmployeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
+  accountEmployeeGetAllList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
   accountEmployeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
   accountEmployeePost: IQuerySingleState<IEmployeePostRequest, IEmployee>;
   accountEmployeePut: IQuerySingleState<IEmployeePutRequest, IEmployee>;
@@ -195,4 +198,9 @@ export interface IAccountState {
   accountEmployeeContractPost: IQuerySingleState<IEmployeeContractPostRequest, IEmployeeContract>;
   accountEmployeeContractPut: IQuerySingleState<IEmployeeContractPutRequest, IEmployeeContract>;
   accountEmployeeContractDelete: IQuerySingleState<IEmployeeContractDeleteRequest, boolean>;
+  // account employee KPI
+  accountEmployeeGetAllKPIAssign: IQueryCollectionState<IEmployeeAllKPIAssignRequest, IEmployeeKPIAssign>;
+  accountEmployeeGetAllKPIFinal: IQueryCollectionState<IEmployeeAllKPIFinalRequest, IEmployeeKPIFinal>;
+  accountEmployeeKPIFinalGetAll: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal>;
+  accountEmployeeKPIFinalGetById: IQuerySingleState<IEmployeeKPIFinalByIdRequest, IKPIFinal>;
 }

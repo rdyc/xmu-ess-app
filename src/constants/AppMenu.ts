@@ -32,6 +32,7 @@ enum AppMenu {
   ReportProgress = 'MNU52',
   ReportWinningRatio = 'MNU60',
   ReportEffectiveness = 'MNU51',
+  ReportResourceMapping = 'MNU66',
   Purchase = 'MNU17',
   PurchaseRequest = 'MNU23',
   PurchaseApproval = 'MNU24',
@@ -71,7 +72,24 @@ enum AppMenu {
   HRNotif = 'MNU71',
   HRNotifPeriod = 'MNU80',
   HRNotifSetting = 'MNU81',
-  HRNotifTemplate = 'MNU82'
+  HRNotifTemplate = 'MNU82',
+  CompetencyCluster = 'MNU69',
+  CompetencyCategory = 'MNU78',
+  CompetencyMapped = 'MNU79',
+  KPICategory = 'MNU67',
+  KPITemplate = 'MNU68',
+  HumanResource = 'MNU72',
+  KPIEmployee = 'MNU73',
+  ManagerKPIInput = 'MNU74',
+  HRKPIInput = 'MNU75',
+  HRCorner = 'MNU70',
+  CompetencyAssessment = 'MNU77',
+  CompetencyAssessmentInput = 'MNU83',
+  CompetencyAssessmentResult = 'MNU76',
+  CompetencyEmployee = 'MNU76',
+  HRKPIAssign = 'MNU84',
+  MyProfile = 'MNU85',
+  LookupEmployeeLevel = 'MNU86',
 }
 
 export default AppMenu;

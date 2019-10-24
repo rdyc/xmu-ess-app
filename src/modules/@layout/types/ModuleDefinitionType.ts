@@ -10,4 +10,6 @@ export enum ModuleDefinitionType {
   PurchaseSettlement = 'MOD03',
   Mileage = 'MOD04',
   Finance = 'MOD11',
+  HR_KPI = 'MOD12',
+  Assessment = 'MOD13'
 }

@@ -5,6 +5,12 @@ import {
   ICurrencyGetListRequest,
   ICurrencyPostRequest,
   ICurrencyPutRequest,
+  IEmployeeLevelDeleteRequest,
+  IEmployeeLevelGetAllRequest,
+  IEmployeeLevelGetDetailRequest,
+  IEmployeeLevelGetListRequest,
+  IEmployeeLevelPostRequest,
+  IEmployeeLevelPutRequest,
   ILeaveCalculationGetAllRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
@@ -79,6 +85,9 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  IEmployeeLevel,
+  IEmployeeLevelDetail,
+  IEmployeeLevelList,
   ILeaveCalculation,
   ILookupHoliday,
   ILookupHolidayDetail,
@@ -194,4 +203,11 @@ export interface ILookupState {
   imageGalleryGetAll: IQueryCollectionState<IGalleryGetAllRequest, IGallery>;
   imageGalleryGetById: IQuerySingleState<IGalleryGetDetailRequest, IGallery>;  
   imageGalleryPost: IQuerySingleState<IGalleryPostRequest, IGallery>;
+
+  employeeLevelGetAll: IQueryCollectionState<IEmployeeLevelGetAllRequest, IEmployeeLevel>;
+  employeeLevelGetList: IQueryCollectionState<IEmployeeLevelGetListRequest, IEmployeeLevelList>;
+  employeeLevelGetById: IQuerySingleState<IEmployeeLevelGetDetailRequest, IEmployeeLevelDetail>;
+  employeeLevelPost: IQuerySingleState<IEmployeeLevelPostRequest, IEmployeeLevel>;
+  employeeLevelPut: IQuerySingleState<IEmployeeLevelPutRequest, IEmployeeLevel>;
+  employeeLevelDelete: IQuerySingleState<IEmployeeLevelDeleteRequest, boolean>;
 }

@@ -8,6 +8,7 @@ import { FormMode } from '@generic/types';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
+import { IEmployeeLevelListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -63,6 +64,7 @@ interface IOwnState {
   filterDepartment?: ISystemListFilter;
   filterUnit?: ISystemListFilter;
   filterLookupCompany?: ILookupCompanyGetListFilter;
+  filterLookupLevel?: IEmployeeLevelListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -152,6 +154,11 @@ const createProps: mapper<AccessFormProps, IOwnState> = (props: AccessFormProps)
     orderBy: 'name',
     direction: 'ascending'
   },
+
+  filterLookupLevel: {
+    orderBy: 'seq',
+    direction: 'descending'
+  }
 });
 
 const stateUpdaters: StateUpdaters<AccessFormProps, IOwnState, IOwnStateUpdater> = {

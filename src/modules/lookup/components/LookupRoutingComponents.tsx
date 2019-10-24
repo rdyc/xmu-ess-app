@@ -18,6 +18,9 @@ import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import { LookupDiemForm } from './diem/form/LookupDiemForm';
 import { LookupDiemList } from './diem/list/LookupDiemList';
+import { LookupEmployeeLevelDetail } from './employeeLevel/detail/LookupEmployeeLevelDetail';
+import { LookupEmployeeLevelForm } from './employeeLevel/form/LookupEmployeeLevelForm';
+import { LookupEmployeeLevelList } from './employeeLevel/list/LookupEmployeeLevelList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
 import { LookupGalleryForm } from './gallery/form/LookupGalleryForm';
 import { ImageGalleryList } from './gallery/list/ImageGalleryList';
@@ -34,7 +37,6 @@ import { LookupPositionForm } from './position/form/LookupPositionForm';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import { LookupRoleForm } from './role/form/LookupRoleForm';
-// import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import { SystemLimitForm } from './systemLimit/form/LookupSystemLimitForm';
@@ -151,6 +153,14 @@ const employeeLeave = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const employeeLevel = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupEmployeeLevelForm} />
+    <Route path={`${props.match.path}/:employeeLevelUid`} component={LookupEmployeeLevelDetail} />
+    <Route path={`${props.match.path}`} component={LookupEmployeeLevelList} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <SecureMenuRoute 
@@ -242,6 +252,12 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.LookupEmployeeLeave} 
       component={employeeLeave} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/employeelevels`}
+      menu={AppMenu.Lookup} 
+      subMenu={AppMenu.LookupEmployeeLevel} 
+      component={employeeLevel} 
     />
   </Switch>
 );

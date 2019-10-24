@@ -2,6 +2,7 @@ import { IEmployeeExperiencePostPayload, IEmployeeExperiencePutPayload } from '@
 import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
 import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -29,11 +30,20 @@ import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { ExperienceFormView } from './ExperienceFormView';
 
+interface IExperienceCompetency {
+  uid?: string;
+  label: string;
+  value: string;
+  isChecked: boolean;
+}
+
 export interface IExperienceFormValue {
   uid: string;
   employeeUid: string;
   company: string;
   position: string;
+  professionType: string;
+  competencies: IExperienceCompetency[];
   start: string;
   end: string;
 }
@@ -50,16 +60,19 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
 
+  filterCommonSystem: ISystemListFilter;
   initialValues?: IExperienceFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IExperienceFormValue>>>;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setInitialCompetenciesValues: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
+  handleOnLoadCompetencies: () => void;
   handleOnSubmit: (values: IExperienceFormValue, actions: FormikActions<IExperienceFormValue>) => void;
 }
 
@@ -87,6 +100,8 @@ const createProps: mapper<ExperienceFormProps, IOwnState> = (props: ExperienceFo
     uid: 'Auto Generated',
     company: '',
     position: '',
+    professionType: '',
+    competencies: [],
     start: '',
     end: ''
   },
@@ -102,6 +117,10 @@ const createProps: mapper<ExperienceFormProps, IOwnState> = (props: ExperienceFo
       .label(props.intl.formatMessage(accountMessage.experience.field.position))
       .required(),
 
+    professionType: Yup.string()
+      .label(props.intl.formatMessage(accountMessage.experience.field.profession))
+      .required(),
+
     start: Yup.string()
       .label(props.intl.formatMessage(accountMessage.experience.field.start))
       .required(),
@@ -109,13 +128,29 @@ const createProps: mapper<ExperienceFormProps, IOwnState> = (props: ExperienceFo
     end: Yup.string()
       .label(props.intl.formatMessage(accountMessage.experience.field.end))
       .required(),
-  })
+  }),
+
+  filterCommonSystem: {
+    orderBy: 'value',
+    direction: 'ascending'
+  },
 });
 
 const stateUpdaters: StateUpdaters<ExperienceFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
-  })
+  }),
+  setInitialCompetenciesValues: (state: IOwnState) => (values: any): Partial<IOwnState> => {
+    const initialValues = state.initialValues;
+
+    if (initialValues) {
+      initialValues.competencies = values;
+    }
+
+    return {
+      initialValues
+    };
+  }
 };
 
 const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
@@ -134,6 +169,16 @@ const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
       }
     }
   },
+  handleOnLoadCompetencies: (props: ExperienceFormProps) => () => {
+    const { isLoading } = props.commonCompetencyListState;
+
+    if (!isLoading) {
+      props.commonDispatch.competencyListRequest({
+        filter: props.filterCommonSystem,
+        category: 'competency'
+      });
+    }
+  },
   handleOnSubmit: (props: ExperienceFormProps) => (values: IExperienceFormValue, actions: FormikActions<IExperienceFormValue>) => {
     const { user } = props.userState;
     const employeeUid = props.match.params.employeeUid;
@@ -146,9 +191,17 @@ const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
         const payload: IEmployeeExperiencePostPayload = {
           company: values.company,
           position: values.position,
+          professionType: values.professionType,
           start: Number(values.start),
-          end: Number(values.end)
+          end: Number(values.end),
+          competencies: []
         };
+
+        // fill payload competencies
+        values.competencies.forEach(item => payload.competencies.push({
+          competencyType: item.value,
+          isChecked: item.isChecked
+        }));
 
         // set the promise
         promise = new Promise((resolve, reject) => {
@@ -168,12 +221,21 @@ const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
         // must have experienceUid
         if (experienceUid) {
           const payload: IEmployeeExperiencePutPayload = {
-            uid: values.uid,
+            experienceUid: values.uid,
             company: values.company,
             position: values.position,
+            professionType: values.professionType,
             start: Number(values.start),
-            end: Number(values.end)
+            end: Number(values.end),
+            competencies: []
           };
+
+          // fill payload competencies
+          values.competencies.forEach(item => payload.competencies.push({
+            uid: item.uid,
+            competencyType: item.value,
+            isChecked: item.isChecked
+          }));
 
           // set the promise
           promise = new Promise((resolve, reject) => {
@@ -233,12 +295,36 @@ const handlerCreators: HandleCreators<ExperienceFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState> = {
   componentDidMount() {
-    //
+    this.props.handleOnLoadCompetencies();
+    // if (!this.props.commonCompetencyListState.response) {
+    // }
+    // // new mode
+    // if (isNullOrUndefined(this.props.history.location.state)) {
+    //   // load common system
+    //   this.props.handleOnLoadCompetencies();
+    // }
   },
   componentDidUpdate(prevProps: ExperienceFormProps) {
     const { response: thisResponse } = this.props.accountEmployeeExperienceState.detail;
     const { response: prevResponse } = prevProps.accountEmployeeExperienceState.detail;
-    
+    const { response: thisCompetency } = this.props.commonCompetencyListState;
+    const { initialValues: initVal } = this.props;
+
+    // handle competency response
+    if (initVal && initVal.competencies.length === 0) {
+      if (thisCompetency && thisCompetency.data) {
+        const checklist: IExperienceCompetency[] = [];
+
+        thisCompetency.data.forEach(item => checklist.push({
+          label: item.name,
+          value: item.type,
+          isChecked: false
+        }));
+
+        this.props.setInitialCompetenciesValues(checklist);
+      }
+    }
+
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values
@@ -247,9 +333,19 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState
             employeeUid: this.props.match.params.employeeUid,
             company: thisResponse.data.company,
             position: thisResponse.data.position,
+            professionType: thisResponse.data.professionType,
             start: (thisResponse.data.start).toString(),
-            end: (thisResponse.data.end).toString()
+            end: (thisResponse.data.end).toString(),
+            competencies: []
         };
+
+        // fill competencies
+        thisResponse.data.competencies.forEach(item => initialValues.competencies.push({
+          uid: item.uid,
+          label: item.competency && item.competency.value || item.competencyType,
+          value: item.competencyType,
+          isChecked: item.isAvailable
+        }));
 
         this.props.setInitialValues(initialValues);
       }
