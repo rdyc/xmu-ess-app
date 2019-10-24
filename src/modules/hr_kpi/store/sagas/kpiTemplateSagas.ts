@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/templates?${params}`,
+      path: `/v1/hr/kpi/templates?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetAllSuccess(response.body)),
       ],
@@ -66,7 +66,7 @@ function* watchGetListRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/templates/list?${params}`,
+      path: `/v1/hr/kpi/templates/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetListSuccess(response.body)),
       ],
@@ -90,7 +90,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
+      path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdSuccess(response.body))
       ],
@@ -111,7 +111,7 @@ function* watchPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}`,
+      path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdDispose()),
@@ -152,7 +152,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
+      path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdDispose()),

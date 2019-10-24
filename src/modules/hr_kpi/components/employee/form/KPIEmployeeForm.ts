@@ -73,7 +73,9 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   loadAssign: boolean;
+  loadLatest: boolean;
   assignData: IKPIEmployeeFormValue;
+  periodData: number;
 
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
@@ -84,12 +86,15 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setAssignValues: StateHandler<IOwnState>;
+  setPeriodValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleSetLoadAssign: () => void;
   handleLoadAssign: (employeeUid: string, year: string) => void;
+  handleSetLoadLatest: () => void;
+  handleLoadLatest: (kpiAssignUid: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPIEmployeeFormValue, action: FormikActions<IKPIEmployeeFormValue>) => void;
 }
@@ -112,6 +117,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   loadAssign: false,
+  loadLatest: false,
 
   initialValues: {
     kpiUid: 'Auto Generated',
@@ -120,7 +126,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     kpiAssignUid: '',
     templateName: '',
     year: moment().year().toString(),
-    period: '1',
+    period: '',
     statusType: '',
     revision: '',
     totalScore: 0,
@@ -128,6 +134,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
   },
   
   assignData: props.initialValues,
+  periodData: 1,
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({
     kpiUid: Yup.string(),
@@ -207,6 +214,9 @@ const stateUpdaters: StateUpdaters<KPIEmployeeFormProps, IOwnState, IOwnStateUpd
   setAssignValues: () => (data: IKPIEmployeeFormValue): Partial<IOwnState> => ({
     assignData: data
   }),
+  setPeriodValues: () => (value: number): Partial<IOwnState> => ({
+    periodData: value,
+  }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
@@ -234,11 +244,25 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
       loadAssign: !props.loadAssign,
     });
   },
+  handleSetLoadLatest: (props: KPIEmployeeFormProps) => () => {
+    props.stateUpdate({
+      loadLatest: !props.loadLatest,
+    });
+  },
   handleLoadAssign: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
     props.kpiAssignDispatch.loadByYearRequest({
       employeeUid,
       year: parseInt(year, 10),
     });
+  },
+  handleLoadLatest: (props: KPIEmployeeFormProps) => (kpiAssignUid: string) => {
+    if (props.userState.user) {
+      props.kpiEmployeeDispatch.loadLatestRequest({
+        kpiAssignUid,
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+      });
+    }
   },
   handleOnSubmit: (props: KPIEmployeeFormProps) => (values: IKPIEmployeeFormValue, actions: FormikActions<IKPIEmployeeFormValue>) => {
     const { user } = props.userState;
@@ -356,6 +380,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
     const { response: thisAssignResponse } = this.props.kpiAssignState.byYear;
     const { response: prevAssignResponse } = prevProps.kpiAssignState.byYear;
 
+    const { response: thisLatestResponse } = this.props.kpiEmployeeState.latest;
+    const { response: prevLatestResponse } = prevProps.kpiEmployeeState.latest;
+
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values 
@@ -436,6 +463,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
         }
 
         // set initial values
+        this.props.handleLoadLatest(thisAssignResponse.data.uid);
         this.props.setAssignValues(initialValues);
         this.props.handleSetLoadAssign();
       } else {
@@ -446,6 +474,21 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
         this.props.masterPage.flashMessage({
           message: this.props.intl.formatMessage(kpiMessage.employee.message.noAssign)
         });
+      }
+    }
+
+    if (thisLatestResponse !== prevLatestResponse) {
+      if (thisLatestResponse && thisLatestResponse.data) {
+        if (thisLatestResponse.data.period === 1) {
+          // set initial values
+          this.props.setPeriodValues(2);
+        } else {
+          this.props.setPeriodValues(1);
+        }
+        this.props.handleSetLoadLatest();
+      } else {
+        this.props.setPeriodValues(1);
+        this.props.handleSetLoadLatest();
       }
     }
   }

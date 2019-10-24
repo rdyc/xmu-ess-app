@@ -1,5 +1,5 @@
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import { IEmployeeKPI } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -10,7 +10,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IEmployeeKPI;
+  data: IEmployeeKPIAssign;
 }
 
 type AllProps
@@ -51,17 +51,24 @@ const employeeAssignSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(kpiMessage.employee.field.latestAssignYear)}
-        value={props.data.yearAssign && props.data.yearAssign.toString() || 'N/A'}
+        value={props.data.lastKPIAssign && props.data.lastKPIAssign.year.toString() || 'N/A'}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+        value={props.data.lastKPIAssign && (props.data.lastKPIAssign.isFinal && 
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+          props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)) || 'N/A'}
+      />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(accountMessage.employee.field.nik)}
         value={props.data.employmentNumber}
       />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"

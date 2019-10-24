@@ -41,9 +41,13 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                     intl={props.intl}
                     handleLoadAssign={props.handleLoadAssign}
                     handleSetLoadAssign={props.handleSetLoadAssign}
+                    handleLoadLatest={props.handleLoadLatest}
+                    handleSetLoadLatest={props.handleSetLoadLatest}
                     filterAccountEmployee={props.filterAccountEmployee}
                     loadAssign={props.loadAssign}
+                    loadLatest={props.loadLatest}
                     assignData={props.assignData}
+                    periodData={props.periodData}
                   />
                 </div>
               </div>
@@ -81,6 +85,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                 formMode={props.formMode}
                 intl={props.intl}
                 classes={props.classes}
+                isAssignLoading={props.kpiAssignState.byYear.isLoading}
               />
             </div>
           </Form>

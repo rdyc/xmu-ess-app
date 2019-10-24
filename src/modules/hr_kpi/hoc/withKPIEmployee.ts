@@ -6,6 +6,7 @@ import {
 import {
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
+  IKPIEmployeeGetLatestRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
 } from '@kpi/classes/queries';
@@ -15,6 +16,8 @@ import {
   KPIEmployeeGetAllRequest,
   KPIEmployeeGetByIdDispose,
   KPIEmployeeGetByIdRequest,
+  KPIEmployeeGetLatestDispose,
+  KPIEmployeeGetLatestRequest,
   KPIEmployeePostDispose,
   KPIEmployeePostRequest,
   KPIEmployeePutDispose,
@@ -27,6 +30,7 @@ interface PropsFromState {
   kpiEmployeeState: {
     all: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
     detail: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
+    latest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>;
   };
 }
 
@@ -43,15 +47,18 @@ interface PropsFromDispatch {
     loadAllDispose: typeof KPIEmployeeGetAllDispose;
     loadDetailRequest: typeof KPIEmployeeGetByIdRequest;
     loadDetailDispose: typeof KPIEmployeeGetByIdDispose;
+    loadLatestRequest: typeof KPIEmployeeGetLatestRequest;
+    loadLatestDispose: typeof KPIEmployeeGetLatestDispose;
   };
 }
 
 export interface WithKPIEmployee extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ kpiEmployeeGetAll, kpiEmployeeGetById }: IAppState) => ({
+const mapStateToProps = ({ kpiEmployeeGetAll, kpiEmployeeGetById, kpiEmployeeGetLatest }: IAppState) => ({
   kpiEmployeeState: {
     all: kpiEmployeeGetAll,
-    detail: kpiEmployeeGetById
+    detail: kpiEmployeeGetById,
+    latest: kpiEmployeeGetLatest
   }
 });
 
@@ -68,6 +75,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(KPIEmployeeGetAllDispose()),
     loadDetailRequest: (request: IKPIEmployeeGetByIdRequest) => dispatch(KPIEmployeeGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(KPIEmployeeGetByIdDispose()),
+    loadLatestRequest: (request: IKPIEmployeeGetLatestRequest) => dispatch(KPIEmployeeGetLatestRequest(request)),
+    loadLatestDispose: () => dispatch(KPIEmployeeGetLatestDispose()),
   }
 });
 

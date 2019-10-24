@@ -1,6 +1,5 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IEmployeeKPIGetAllRequest, 
   IKPIApprovalGetAllRequest, 
   IKPIApprovalGetByIdRequest, 
   IKPIApprovalPostRequest, 
@@ -11,10 +10,9 @@ import {
   IKPIAssignPutRequest,
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
+  IKPIEmployeeGetLatestRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
-  IKPIFinalGetAllRequest,
-  IKPIFinalGetByIdRequest,
   IKPITemplateGetAllRequest,
   IKPITemplateGetByIdRequest,
   IKPITemplateGetListRequest,
@@ -39,7 +37,6 @@ import {
   IKPIMeasurementPutRequest 
 } from '../queries/measurement';
 import { 
-  IEmployeeKPI, 
   IKPIAssign,
   IKPIAssignDetail,
   IKPICategory,
@@ -47,8 +44,6 @@ import {
   IKPICategoryList,
   IKPIEmployee,
   IKPIEmployeeDetail, 
-  IKPIFinal,
-  IKPIFinalDetail, 
   IKPIMeasurement, 
   IKPIMeasurementDetail,
   IKPIMeasurementList,
@@ -58,11 +53,9 @@ import {
 
 export interface IKPIState {
   // employee
-  employeeKPIGetAll: IQueryCollectionState<IEmployeeKPIGetAllRequest, IEmployeeKPI>;
-
-  // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
+  kpiEmployeeGetLatest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>;
   kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
   
@@ -71,10 +64,6 @@ export interface IKPIState {
   kpiApprovalGetById: IQuerySingleState<IKPIApprovalGetByIdRequest, IKPIEmployeeDetail>;
   kpiApprovalPost: IQueryCollectionState<IKPIApprovalPostRequest, IKPIEmployee>;
 
-  // final
-  kpiFinalGetAll: IQueryCollectionState<IKPIFinalGetAllRequest, IKPIFinal>;
-  kpiFinalGetById: IQuerySingleState<IKPIFinalGetByIdRequest, IKPIFinalDetail>;
-  
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
   kpiAssignGetById: IQuerySingleState<IKPIAssignGetByIdRequest, IKPIAssignDetail>;

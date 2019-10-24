@@ -5,5 +5,6 @@ export interface IKPIAssignPutPayload {
   year: number;
   isFinal: boolean;
   revision?: string;
+  note?: string;
   items: IKPIAssignItemPostPayload[];
 }

@@ -21,10 +21,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllFilter } from '@account/classes/filters';
+import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPI';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
 import { AccountEmployeeField } from '@account/classes/types';
-import { IEmployeeKPI } from '@kpi/classes/response';
-import { WithEmployeeKPI, withEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
+import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
 import { IAccountEmployeeFilterResult } from './EmployeeFinalFilter';
 import { EmployeeFinalListView } from './EmployeeFinalListView';
 
@@ -45,7 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IEmployeeKPI, index: number) => IDataBindResult;
+  handleOnBind: (item: IEmployeeKPIFinal, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
   handleFilterBadge: () => boolean;
@@ -57,12 +57,12 @@ export type AccountEmployeeFinalListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithEmployeeKPI
+  & WithAccountEmployeeKPI
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AccountEmployeeFinalListProps, IOwnState> = (props: AccountEmployeeFinalListProps): IOwnState => {
-  const { request } = props.employeeKPIState.all;
+  const { request } = props.accountEmployeeKPIState.allFinal;
   
   // default state
   const state: IOwnState = {
@@ -75,15 +75,10 @@ const createProps: mapper<AccountEmployeeFinalListProps, IOwnState> = (props: Ac
 
   // fill from previous request if any
   if (request && request.filter) {
-    state.companyUids = request.filter.companyUids,
-    state.positionUids = request.filter.positionUids,
-    state.useAccess = request.filter.useAccess,
-    state.useSuperOrdinate = false,
+    state.companyUid = request.filter.companyUid,
     state.isActive = request.filter.isActive;
   } else {
-    state.useAccess = true,
-    state.isActive = true,
-    state.useSuperOrdinate = false;
+    state.isActive = true;
   }
 
   return state;
@@ -101,15 +96,13 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFinalListProps, IOwnState, IOw
 
 const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeFinalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.employeeKPIState.all;
-    const { loadAllRequest } = props.employeeKPIDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.allFinal;
+    const { loadAllFinalRequest } = props.accountEmployeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IEmployeeAllFilter = {
-        companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        useAccess: props.useAccess,
+      const filter: IEmployeeAllKPIFinalFilter = {
+        companyUid: props.companyUid,
         isActive: props.isActive,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -124,15 +117,15 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
       
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
+        loadAllFinalRequest({
           filter
         });
       }
     }
   },
   handleOnLoadApiSearch: (props: AccountEmployeeFinalListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.employeeKPIState.all;
-    const { loadAllRequest } = props.employeeKPIDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIState.allFinal;
+    const { loadAllFinalRequest } = props.accountEmployeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -148,17 +141,17 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
       
       // only load when request parameter are differents
       if (shouldLoad) {
-        loadAllRequest({
+        loadAllFinalRequest({
           filter
         });
       }
     }
   },
-  handleOnBind: (props: AccountEmployeeFinalListProps) => (item: IEmployeeKPI, index: number) => ({
+  handleOnBind: (props: AccountEmployeeFinalListProps) => (item: IEmployeeKPIFinal, index: number) => ({
     key: index,
     primary: item.company ? item.company.name : 'N/A',
     secondary: item.fullName,
-    tertiary: item.yearFinal && item.yearFinal.toString() || 'N/A',
+    tertiary: item.lastKPIFinal && item.lastKPIFinal.year.toString() || 'N/A',
     quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
@@ -170,9 +163,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: AccountEmployeeFinalListProps) => () => {
-    return props.companyUids !== undefined || 
-      props.positionUids !== undefined || 
-      props.useAccess === true || 
+    return props.companyUid !== undefined || 
       props.isActive === true;
   },
 };
@@ -182,16 +173,12 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFinalListProps, IOwnSta
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
-        companyUids: this.props.companyUids,
-        positionUids: this.props.positionUids,
+        companyUid: this.props.companyUid,
         isActive: this.props.isActive,
-        useAccess: this.props.useAccess,
       },
       {
-        companyUids: prevProps.companyUids,
-        positionUids: prevProps.positionUids,
+        companyUid: prevProps.companyUid,
         isActive: prevProps.isActive,
-        useAccess: prevProps.useAccess,
       }
     );
 
@@ -204,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFinalListProps, IOwnSta
 export const EmployeeFinalList = compose(
   setDisplayName('EmployeeFinalList'),
   withUser,
-  withEmployeeKPI,
+  withAccountEmployeeKPI,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

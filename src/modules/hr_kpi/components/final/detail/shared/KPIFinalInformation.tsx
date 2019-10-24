@@ -1,4 +1,4 @@
-import { IKPIFinalDetail } from '@kpi/classes/response';
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -9,7 +9,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IKPIFinalDetail;
+  data: IKPIFinal;
 }
 type AllProps
   = OwnProps
@@ -42,11 +42,6 @@ const kpiFinalInformation: React.SFC<AllProps> = props => {
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.period)}
           value={props.data.period.toString()}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.template && props.data.template.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

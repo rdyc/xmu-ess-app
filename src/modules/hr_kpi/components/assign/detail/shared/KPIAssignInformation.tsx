@@ -45,6 +45,12 @@ const kpiAssignInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
+          label={props.intl.formatMessage(kpiMessage.employee.field.note)}
+          value={props.data.note || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
           value={props.data.isFinal && 
             props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||

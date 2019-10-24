@@ -61,6 +61,8 @@ export const KPITemplateField = defineMessages({
   name: { id: `${prefix}.field.name`},
   namePlaceholder: { id: `${prefix}.field.name.placeholder`},
   totalWeight: { id: `${prefix}.field.totalWeight`},
+  note: { id: `${prefix}.field.note`},
+  notePlaceholder: { id: `${prefix}.field.note.placeholder`},
 
   // item
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
@@ -90,6 +92,7 @@ export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'positionUid': return KPITemplateField.positionUid;
       case 'name': return KPITemplateField.name;
       case 'totalWeight': return KPITemplateField.totalWeight;
+      case 'note': return KPITemplateField.note;
 
       case 'itemUid': return KPITemplateField.itemUid;
       case 'categoryUid': return KPITemplateField.categoryUid;
@@ -108,6 +111,7 @@ export const KPITemplateFieldHelperFor = (field: string, type: 'fieldName' | 'fi
     switch (field) {
       case 'uid': return KPITemplateField.uidPlaceholder;
       case 'name': return KPITemplateField.name;
+      case 'note': return KPITemplateField.notePlaceholder;
 
       case 'categoryUid': return KPITemplateField.categoryUidPlaceholder;
       case 'measurementUid': return KPITemplateField.measurementUidPlaceholder;
