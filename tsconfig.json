@@ -26,7 +26,8 @@
       "@hr.notification/*": [ "modules/hr.notification/*" ],
       "@hr/*": [ "modules/hr/*" ],
       "@kpi/*": [ "modules/hr_kpi/*" ],
-      "@profile/*": [ "modules/myprofile/*" ]
+      "@profile/*": [ "modules/myprofile/*" ],
+      "@webjob/*": [ "modules/webjob/*" ],
     },
     "outDir": "build/dist",
     "module": "esnext",
