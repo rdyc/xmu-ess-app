@@ -3,6 +3,7 @@ import { ICommonState } from '@common/classes/states';
 import { IExpenseState } from '@expense/classes/states';
 import { IFinanceState } from '@finance/classes/states';
 import { IHomeState } from '@home/classes/states';
+import { IHRNotifState } from '@hr.notification/classes/states';
 import { IHrCompetencyState } from '@hr/classes/states';
 import { IKPIState } from '@kpi/classes/states';
 import { IPageState } from '@layout/classes/states';
@@ -41,6 +42,7 @@ export interface IAppState extends
   IHomeState,
   ISummaryState,
   IInforState,
+  IHRNotifState,
   IMarkdownState,
   IHrCompetencyState,
   IKPIState,

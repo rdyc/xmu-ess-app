@@ -158,11 +158,11 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
       .required(),
 
     projectType: Yup.string()
-      .label(props.intl.formatMessage(projectMessage.registration.field.customerUid))
+      .label(props.intl.formatMessage(projectMessage.registration.field.projectType))
       .required(),
 
     contractNumber: Yup.string()
-      .label(props.intl.formatMessage(projectMessage.registration.field.customerUid))
+      .label(props.intl.formatMessage(projectMessage.registration.field.contractNumber))
       .when('projectType', {
         is: (value: string) => value !== ProjectType.PreSales,
         then: Yup.string()
@@ -175,7 +175,7 @@ const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: Pro
       .required(),
       
     description: Yup.string()
-      .label(props.intl.formatMessage(projectMessage.registration.field.name))      
+      .label(props.intl.formatMessage(projectMessage.registration.field.description))      
       .max(200),
 
     start: Yup.string()

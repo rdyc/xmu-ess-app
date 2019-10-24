@@ -214,6 +214,18 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU80':
+      path = '/hr/notification/periods';
+      break;
+
+    case 'MNU81':
+      path = '/hr/notification/settings';
+      break;
+
+    case 'MNU82':
+      path = '/hr/notification/templates';
+      break;
+      
     case 'MNU66':
       path = '/reports/resourcemapping';
       break;

@@ -4,6 +4,7 @@ import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { homeReducers } from '@home/store/reducers/homeReducers';
+import { hrNotificationReducers } from '@hr.notification/store/reducers/hrNotifReducers';
 import hrCompetencyReducers from '@hr/store/reducers/hrCompetencyReducers';
 import { kpiReducers } from '@kpi/store/reducers/kpiReducers';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer, pageReducer } from '@layout/store/reducers';
@@ -52,6 +53,7 @@ export const rootReducer = combineReducers<IAppState>({
   ...organizationReducers,
   ...homeReducers,
   ...inforReducers,
+  ...hrNotificationReducers,
   ...markdownReducers,
   ...hrCompetencyReducers,
   ...kpiReducers,
