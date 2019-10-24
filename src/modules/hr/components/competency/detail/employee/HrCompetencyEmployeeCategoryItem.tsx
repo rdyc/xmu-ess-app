@@ -1,8 +1,10 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+// import { GlobalFormat } from '@layout/types';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { Done } from '@material-ui/icons';
 import styles from '@styles';
+// import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -20,7 +22,17 @@ type AllProps
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
-    return item && item.note;
+    if (item) {
+      if (item.note) {
+        const notes: string[] = item.note && item.note.split(' - ') || [];
+        // notes[0] = props.intl.formatDate(notes[0], GlobalFormat.DateTime);
+        return notes.join(', ');
+      }
+
+      // return item && item.note;
+    }
+    
+    return null;
   };
   
   const render = (

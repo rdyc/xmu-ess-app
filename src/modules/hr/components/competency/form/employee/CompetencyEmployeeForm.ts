@@ -276,7 +276,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
         const initialValues: ICompetencyEmployeeFormValue = {
           uid: thisResponse.data.uid,
           respondenUid: thisResponse.data.respondenUid,
-          companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
+          companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
           year: thisResponse.data.assessmentYear.toString(),
           levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
@@ -294,12 +294,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
         if (initialVal) {
           thisMapped.data[0].categories.forEach(item => {
             const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-  
+
+            const note: string[] = find && find.note && find.note.split(' - ') || [];
+            
             initialVal.levelRespond.push({
               uid: find && find.uid || '',
               categoryUid: item.category.uid,
               levelUid: find && find.levelUid || '',
-              note: find && find.note
+              note: note[2] || ''
             });  
           });
           this.props.setInitialValues(initialVal);

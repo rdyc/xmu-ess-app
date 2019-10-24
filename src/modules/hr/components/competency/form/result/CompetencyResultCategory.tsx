@@ -157,13 +157,29 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                           <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
                             <Typography>
                               {
-                                `${responder.employee && responder.employee.fullName} - 
-                                ${findNote(responder.items.find(findData => findData.levelUid === level.uid))}`
+                                findNote(responder.items.find(findData => findData.levelUid === level.uid))
                               }
                             </Typography>
                           </TableCell>
                         </TableRow>
                       )
+                    }
+                    {
+                      Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
+                      <TableRow>
+                        <TableCell colSpan={props.responders.length + 1}>
+                          <Field
+                            name={`levelRespond.${index}.noteHistory`}
+                            render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
+                              return (
+                                <Typography>
+                                  {field.value}
+                                </Typography>
+                              );
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
                     }
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&

@@ -116,8 +116,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                         <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
                           <Typography>
                             {
-                              `${responder.employee && responder.employee.fullName} - 
-                              ${findNote(responder.items.find(findData => findData.levelUid === level.uid))}`
+                              findNote(responder.items.find(findData => findData.levelUid === level.uid))
                             }
                           </Typography>
                         </TableCell>
@@ -132,7 +131,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                       <TableCell colSpan={props.responders.length + 1}>
                         <Typography>
                           {
-                            `Hr - ${findNote(props.data.items.find(findData => findData.levelUid === level.uid))}`
+                            findNote(props.data.items.find(findData => findData.levelUid === level.uid))
                           }
                         </Typography>
                       </TableCell>

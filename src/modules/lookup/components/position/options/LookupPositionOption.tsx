@@ -93,7 +93,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
     const { request, response } = this.props.lookupPositionState.list;
 
     // 1st load only when request are empty
-    if (!request) {
+    if (!request || request && !request.filter) {
       if (this.props.companyUid) {
         this.props.handleOnLoadApi(this.props.companyUid);
       }
@@ -122,7 +122,7 @@ const lifeCycle: ReactLifeCycleFunctions<LookupPositionOptionProps, IOwnState> =
     // if no filter(company) before, and next one is exist *this happen for field that need other field data
     if ( !this.props.companyUid && nextProps.companyUid) {
       // when no data then load
-      if (!request) {
+      if (!request || request && !request.filter) {
         this.props.handleOnLoadApi(nextProps.companyUid);
       } else if (request && request.filter) {
         if (request.filter.companyUid && nextProps.companyUid) {
