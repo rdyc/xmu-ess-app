@@ -550,10 +550,10 @@ const styles = (theme: Theme) =>
         width: `calc(100% - (100% / 3))`,
         padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
       },
-      [theme.breakpoints.up('xl')]: {
-        width: `calc(100% / 2)`,
-        padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
-      }
+      // [theme.breakpoints.up('xl')]: {
+      //   width: `calc(100% / 2)`,
+      //   padding: `0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 0`,
+      // }
     },
 
     flexContent: {
@@ -939,6 +939,38 @@ const styles = (theme: Theme) =>
       // display: 'inline',
       // verticalAlign: 'middle',
       marginLeft: '4px'
+    },
+
+    badgeParent: {
+      padding: '0 16px',
+      display: 'inline-flex',
+      position: 'relative',
+      verticalAlign: 'middle'
+    },
+
+    badgeChild: {
+      color: '#fff',
+      backgroundColor: orange[500],
+
+      top: 0,
+      right: 0,
+      height: '20px',
+      display: 'flex',
+      padding: '0 4px',
+      zIndex: 1,
+      position: 'absolute',
+      flexWrap: 'wrap',
+      minWidth: '20px',
+      transform: 'scale(1) translate(50%, -50%)',
+      boxSizing: 'border-box',
+      transition: 'transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+      alignItems: 'center',
+      fontFamily: theme.typography.fontFamily,
+      alignContent: 'center',
+      borderRadius: '10px',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      transformOrigin: '100% 0%'
     }
   });
 

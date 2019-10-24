@@ -6,6 +6,7 @@ import enCommonMessages from '../../modules/common/locales/en-US.json';
 import enExpenseMessages from '../../modules/expense/locales/en_US.json';
 import enFinanceMessages from '../../modules/finance/locales/en_US.json';
 import enHomeMessages from '../../modules/home/locales/en_US.json';
+import enHRNotifMessages from '../../modules/hr.notification/locales/en_US.json';
 import enHr from '../../modules/hr/locales/en_US.json';
 import enKPIMessages from '../../modules/hr_kpi/locales/en_US.json';
 import enLeaveMessages from '../../modules/leave/locales/en_US.json';
@@ -18,6 +19,7 @@ import enPurchaseMessages from '../../modules/purchase/locales/en_US.json';
 import enSummaryMessages from '../../modules/summary/locales/en_US.json';
 import enTimesheetMessages from '../../modules/timesheet/locales/en_US.json';
 import enTravelMessages from '../../modules/travel/locales/en_US.json';
+import enWebJob from '../../modules/webjob/locales/en_US.json';
 import enMessages from '../locales/en_US.json';
 
 const EnLang = {
@@ -39,9 +41,11 @@ const EnLang = {
     ...enCommonMessages,
     ...enLookupMessages,
     ...enAccountMessages,
+    ...enHRNotifMessages,
     ...enKPIMessages,
     ...enHr,
-    ...enProfile
+    ...enProfile,
+    ...enWebJob
   },
   locale: 'en-US',
   data: appLocaleData,

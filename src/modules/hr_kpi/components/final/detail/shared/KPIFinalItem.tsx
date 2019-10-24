@@ -1,5 +1,4 @@
-import { MeasurementType } from '@common/classes/types';
-import { IKPIFinalItem } from '@kpi/classes/response';
+import { IKPIFinalItem } from '@account/classes/response/employeeKPI';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -47,21 +46,10 @@ const kpiFinalItem: React.SFC<AllProps> = props => {
           {`${props.intl.formatNumber(item.weight)} %`}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }}>
-          {
-            item.measurement && 
-            item.measurement.measurementType === MeasurementType.Scoring  &&
-            props.intl.formatNumber(item.threshold || 0) ||
-            '-'
-          }
+          { props.intl.formatNumber(item.threshold || 0) || '-' }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }}>
-          {
-            item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance) &&
-            props.intl.formatNumber(item.amount) ||
-            '-'
-          }
+          { props.intl.formatNumber(item.amount) || '-' }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }}>
           {props.intl.formatNumber(item.achieved)}

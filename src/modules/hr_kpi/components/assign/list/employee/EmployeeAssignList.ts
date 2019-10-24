@@ -2,7 +2,6 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { GlobalFormat } from '@layout/types';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -21,10 +20,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllFilter } from '@account/classes/filters';
+import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPI';
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
 import { AccountEmployeeField } from '@account/classes/types';
-import { IEmployeeKPI } from '@kpi/classes/response';
-import { withEmployeeKPI, WithEmployeeKPI } from '@kpi/hoc/withEmployeeKPI';
+import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { IAccountEmployeeFilterResult } from './EmployeeAssignFilter';
 import { EmployeeAssignListView } from './EmployeeAssignListView';
 
@@ -45,7 +45,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
-  handleOnBind: (item: IEmployeeKPI, index: number) => IDataBindResult;
+  handleOnBind: (item: IEmployeeKPIAssign, index: number) => IDataBindResult;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: IAccountEmployeeFilterResult) => void;
   handleFilterBadge: () => boolean;
@@ -57,12 +57,12 @@ export type AccountEmployeeAssignListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithEmployeeKPI
+  & WithAccountEmployeeKPI
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AccountEmployeeAssignListProps, IOwnState> = (props: AccountEmployeeAssignListProps): IOwnState => {
-  const { request } = props.employeeKPIState.all;
+  const { request } = props.accountEmployeeKPIState.allAssign;
   
   // default state
   const state: IOwnState = {
@@ -75,15 +75,13 @@ const createProps: mapper<AccountEmployeeAssignListProps, IOwnState> = (props: A
 
   // fill from previous request if any
   if (request && request.filter) {
-    state.companyUids = request.filter.companyUids,
-    state.positionUids = request.filter.positionUids,
-    state.useAccess = request.filter.useAccess,
-    state.useSuperOrdinate = false,
+    state.companyUid = request.filter.companyUid,
+    state.isFinal = request.filter.isFinal,
+    state.year = request.filter.year,
+    state.isNotAssigned = request.filter.isNotAssigned,
     state.isActive = request.filter.isActive;
   } else {
-    state.useAccess = true,
-    state.isActive = true,
-    state.useSuperOrdinate = false;
+    state.isActive = true;
   }
 
   return state;
@@ -93,7 +91,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignListProps, IOwnState, IO
   setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
     isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (state: IOwnState) => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
+  setFilterApplied: () => (filter: IAccountEmployeeFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   })
@@ -101,16 +99,17 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignListProps, IOwnState, IO
 
 const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeAssignListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.employeeKPIState.all;
-    const { loadAllRequest } = props.employeeKPIDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.allAssign;
+    const { loadAllAssignRequest } = props.accountEmployeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
-      const filter: IEmployeeAllFilter = {
-        companyUids: props.companyUids,
-        positionUids: props.positionUids,
-        useAccess: props.useAccess,
+      const filter: IEmployeeAllKPIAssignFilter = {
+        companyUid: props.companyUid,
         isActive: props.isActive,
+        isFinal: props.isFinal,
+        isNotAssigned: props.isNotAssigned,
+        year: props.year,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -124,15 +123,15 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
       
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
+        loadAllAssignRequest({
           filter
         });
       }
     }
   },
   handleOnLoadApiSearch: (props: AccountEmployeeAssignListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.employeeKPIState.all;
-    const { loadAllRequest } = props.employeeKPIDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIState.allAssign;
+    const { loadAllAssignRequest } = props.accountEmployeeKPIDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -148,32 +147,35 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
       
       // only load when request parameter are differents
       if (shouldLoad) {
-        loadAllRequest({
+        loadAllAssignRequest({
           filter
         });
       }
     }
   },
-  handleOnBind: (props: AccountEmployeeAssignListProps) => (item: IEmployeeKPI, index: number) => ({
+  handleOnBind: (props: AccountEmployeeAssignListProps) => (item: IEmployeeKPIAssign, index: number) => ({
     key: index,
     primary: item.company ? item.company.name : 'N/A',
     secondary: item.fullName,
-    tertiary: item.yearAssign && item.yearAssign.toString() || 'N/A',
-    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    tertiary: item.lastKPIAssign && item.lastKPIAssign.year.toString() || 'N/A',
+    quaternary: item.lastKPIAssign && (item.lastKPIAssign.isFinal && 
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+      props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)) || 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: AccountEmployeeAssignListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: AccountEmployeeAssignListProps) => () => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AccountEmployeeAssignListProps) => (filter: IAccountEmployeeFilterResult) => {
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: AccountEmployeeAssignListProps) => () => {
-    return props.companyUids !== undefined || 
-      props.positionUids !== undefined || 
-      props.useAccess === true || 
-      props.isActive === true;
+    return props.companyUid !== undefined || 
+      props.isActive === true ||
+      props.isFinal !== undefined ||
+      props.isNotAssigned !== undefined ||
+      props.year !== undefined;
   },
 };
 
@@ -182,16 +184,18 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignListProps, IOwnSt
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
-        companyUids: this.props.companyUids,
-        positionUids: this.props.positionUids,
+        companyUid: this.props.companyUid,
         isActive: this.props.isActive,
-        useAccess: this.props.useAccess,
+        isFinal: this.props.isFinal,
+        isNotAssigned: this.props.isNotAssigned,
+        year: this.props.year,
       },
       {
-        companyUids: prevProps.companyUids,
-        positionUids: prevProps.positionUids,
+        companyUid: prevProps.companyUid,
         isActive: prevProps.isActive,
-        useAccess: prevProps.useAccess,
+        isFinal: prevProps.isFinal,
+        isNotAssigned: prevProps.isNotAssigned,
+        year: prevProps.year,
       }
     );
 
@@ -204,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignListProps, IOwnSt
 export const EmployeeAssignList = compose(
   setDisplayName('EmployeeAssignList'),
   withUser,
-  withEmployeeKPI,
+  withAccountEmployeeKPI,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

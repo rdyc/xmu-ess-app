@@ -18,10 +18,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IKPIFinalGetAllFilter } from '@kpi/classes/filter';
-import { IKPIFinal } from '@kpi/classes/response';
+import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
+import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
 import { KPIFinalField } from '@kpi/classes/types';
-import { WithKPIFinal, withKPIFinal } from '@kpi/hoc/withKPIFinal';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
 import { MyKPIAssignListView } from './MyKPIFinalListView';
 
@@ -51,7 +52,7 @@ export type MyKPIFinalListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithKPIFinal
+  & WithAccountEmployeeKPI
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -72,13 +73,13 @@ const stateUpdaters: StateUpdaters<MyKPIFinalListProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MyKPIFinalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.kpiFinalState.all;
-    const { loadAllRequest } = props.kpiFinalDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
       // predefined filter
-      const filter: IKPIFinalGetAllFilter = {
+      const filter: IEmployeeKPIFinalAllFilter = {
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -100,8 +101,8 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
     }
   },
   handleOnLoadApiSearch: (props: MyKPIFinalListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.kpiFinalState.all;
-    const { loadAllRequest } = props.kpiFinalDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -125,11 +126,11 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: () => (item: IKPIFinal, index: number) => ({
+  handleOnBind: (props: MyKPIFinalListProps) => (item: IKPIFinal, index: number) => ({
     key: index,
     primary: item.employee && item.employee.fullName || '',
     secondary: item.year.toString(),
-    tertiary: `Semester ${item.period.toString()}`,
+    tertiary: item.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear),
     quaternary: `${item.totalScore.toString()} %`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
@@ -145,7 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<MyKPIFinalListProps, IOwnState> = {
 export const MyKPIFinalList = compose(
   setDisplayName('MyKPIFinalList'),
   withUser,
-  withKPIFinal,
+  withAccountEmployeeKPI,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

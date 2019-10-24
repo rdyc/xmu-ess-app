@@ -1,8 +1,10 @@
 import accountEmployeeAccessHistorySagas from '@account/store/sagas/accountEmployeeAccessHistorySagas';
 import accountEmployeeAccessSagas from '@account/store/sagas/accountEmployeeAccessSagas';
+import accountEmployeeContractSagas from '@account/store/sagas/accountEmployeeContractSagas';
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
+import accountEmployeeKPISagas from '@account/store/sagas/accountEmployeeKPISagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeNoteSagas from '@account/store/sagas/accountEmployeeNoteSagas';
@@ -49,6 +51,9 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import notifPeriodSagas from '@hr.notification/store/sagas/notifPeriodSagas';
+import notifSettingSagas from '@hr.notification/store/sagas/notifSettingSagas';
+import notifTemplateSagas from '@hr.notification/store/sagas/notifTemplateSagas';
 import hrCompetencyAssessmentSagas from '@hr/store/sagas/competency/assessment/hrCompetencyAssessmentSagas';
 import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
 import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
@@ -59,12 +64,10 @@ import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
 import hrCornerCategorySagas from '@hr/store/sagas/corner/category/hrCornerCategorySagas';
 import hrCornerPageSagas from '@hr/store/sagas/corner/page/hrCornerPageSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
-import employeeKPISagas from '@kpi/store/sagas/employeeKPISagas';
 import kpiApprovalSagas from '@kpi/store/sagas/kpiApprovalSagas';
 import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
 import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
 import kpiEmployeeSagas from '@kpi/store/sagas/kpiEmployeeSagas';
-import kpiFinalSagas from '@kpi/store/sagas/kpiFinalSagas';
 import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
 import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
@@ -115,6 +118,9 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import webJobDefinitionSagas from '@webjob/store/sagas/definition/webJobDefinitionSagas';
+import webJobMonitoringSagas from '@webjob/store/sagas/monitoring/webJobMonitoringSagas';
+import webJobRecurringSagas from '@webjob/store/sagas/recurring/webJobRecurringSagas';
 import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
 import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
@@ -195,6 +201,8 @@ export function* rootSaga() {
     fork(accountEmployeeRateSagas),
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
+    fork(accountEmployeeContractSagas),
+    fork(accountEmployeeKPISagas),
 
     // project
     fork(projectRegistrationSagas),
@@ -252,6 +260,11 @@ export function* rootSaga() {
     fork(announcementSagas),
     fork(newsFeedSagas),
 
+    // hr notificationSagas
+    fork(notifPeriodSagas),
+    fork(notifSettingSagas),
+    fork(notifTemplateSagas),
+
     // markdown
     fork(markdownSagas),
     fork(markdownCategorySagas),
@@ -271,8 +284,6 @@ export function* rootSaga() {
     fork(kpiEmployeeSagas),
     fork(kpiApprovalSagas),
     fork(kpiAssignSagas),
-    fork(kpiFinalSagas),
-    fork(employeeKPISagas),
 
     // corner
     fork(hrCornerBlogSagas),
@@ -280,6 +291,11 @@ export function* rootSaga() {
     fork(hrCornerPageSagas),
 
     // employee final
-    fork(employeeFinalSagas)
+    fork(employeeFinalSagas),
+
+    // web job
+    fork(webJobMonitoringSagas),
+    fork(webJobRecurringSagas),
+    fork(webJobDefinitionSagas)
   ]);
 }

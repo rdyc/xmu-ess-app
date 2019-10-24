@@ -105,6 +105,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = 
             commonDispatch.expenseListRequest(params);
             break;
 
+          case 'employment':
+            commonDispatch.employmentListRequest(params);
+            break;
+
           case 'leave':
             commonDispatch.leaveListRequest(params);
             break;
@@ -177,6 +181,7 @@ const fnGetContext = (props: LookupSystemDialogProps) => {
     case 'project': return props.commonProjectListState;
     case 'site': return props.commonSiteListState;
     case 'expense': return props.commonExpenseListState;
+    case 'employment': return props.commonEmploymentListState;
     case 'leave': return props.commonLeaveListState;
     case 'status': return props.commonStatusListState;
     case 'destination': return props.commonDestinationListState;

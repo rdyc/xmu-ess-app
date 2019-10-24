@@ -40,7 +40,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/categories?${params}`,
+      path: `/v1/hr/kpi/categories?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetAllSuccess(response.body)),
       ],
@@ -69,7 +69,7 @@ function* watchGetListRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/categories/list?${params}`,
+      path: `/v1/hr/kpi/categories/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetListSuccess(response.body)),
       ],
@@ -93,7 +93,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/kpi/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdSuccess(response.body))
       ],
@@ -114,7 +114,7 @@ function* watchPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/categories`,
+      path: `/v1/hr/kpi/categories`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdDispose()),
@@ -155,7 +155,7 @@ function* watchMeasurementPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/kpi/categories/measurement`,
+      path: `/v1/hr/kpi/categories/measurement`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdDispose()),
@@ -196,7 +196,7 @@ function* watchPutRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'put',
-      path: `/v1/kpi/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdDispose()),

@@ -30,7 +30,7 @@ function* watchGetAllRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/approval/kpi?${params}`,
+      path: `/v1/approval/hr/kpi?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIApprovalGetAllSuccess(response.body)),
       ],
@@ -54,7 +54,7 @@ function* watchGetByIdRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'get',
-      path: `/v1/approval/kpi/${action.payload.kpiUid}`,
+      path: `/v1/approval/hr/kpi/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIApprovalGetByIdSuccess(response.body))
       ],
@@ -75,7 +75,7 @@ function* watchPostRequest() {
     return saiyanSaga.fetch({
       host: newHostAddress,
       method: 'post',
-      path: `/v1/approval/kpi/${action.payload.kpiUid}`,
+      path: `/v1/approval/hr/kpi/${action.payload.kpiUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIApprovalGetByIdDispose()),

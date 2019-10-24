@@ -1,10 +1,10 @@
 import AppMenu from '@constants/AppMenu';
-import { IKPIFinalDetail } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { MyKPIFinalDetailProps } from './MyKPIFinalDetail';
 import { MyKPIFinalInformation } from './shared/MyKPIFinalInformation';
 import { MyKPIFinalItem } from './shared/MyKPIFinalItem';
@@ -18,9 +18,9 @@ export const MyKPIFinalDetailView: React.SFC<MyKPIFinalDetailProps> = props => (
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
-    state={props.kpiFinalState.detail}
+    state={props.accountEmployeeKPIState.detail}
     onLoadApi={props.handleOnLoadApi}
-    primary={(data: IKPIFinalDetail) => ([
+    primary={(data: IKPIFinal) => ([
       <MyKPIFinalInformation data={data} />
     ])}
     appBarComponent={
@@ -34,13 +34,13 @@ export const MyKPIFinalDetailView: React.SFC<MyKPIFinalDetailProps> = props => (
     }
   >
     {
-      !props.kpiFinalState.detail.isLoading &&
+      !props.accountEmployeeKPIState.detail.isLoading &&
       <MyKPIFinalItem 
         items={
-          props.kpiFinalState.detail.response &&
-          props.kpiFinalState.detail.response.data &&
-          props.kpiFinalState.detail.response.data.items &&
-          props.kpiFinalState.detail.response.data.items }
+          props.accountEmployeeKPIState.detail.response &&
+          props.accountEmployeeKPIState.detail.response.data &&
+          props.accountEmployeeKPIState.detail.response.data.items &&
+          props.accountEmployeeKPIState.detail.response.data.items }
       />
     }
   </PreviewPage>

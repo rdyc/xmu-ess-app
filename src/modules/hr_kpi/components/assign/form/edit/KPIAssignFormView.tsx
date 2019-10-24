@@ -80,6 +80,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
               <KPIHRInputItemPartialForm
                 formikBag={formikBag}
                 loadItem={props.loadItem}
+                templateNotes={props.templateNotes}
                 listItem={props.listItem}
                 handleSetLoadItem={props.handleSetLoadItem}
                 formMode={props.formMode}

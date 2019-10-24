@@ -1,4 +1,4 @@
-import { IKPIFinal } from '@kpi/classes/response';
+import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -37,11 +37,6 @@ const kpiFinalSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
         value={props.data.employee && props.data.employee.fullName || 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-        value={props.data.template && props.data.template.name || 'N/A'}
       />
     </Grid>
 

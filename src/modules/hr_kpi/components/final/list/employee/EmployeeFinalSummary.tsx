@@ -1,5 +1,5 @@
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import { IEmployeeKPI } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -10,7 +10,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IEmployeeKPI;
+  data: IEmployeeKPIFinal;
 }
 
 type AllProps
@@ -51,7 +51,7 @@ const employeeFinalSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(kpiMessage.employee.field.latestFinalYear)}
-        value={props.data.yearFinal && props.data.yearFinal.toString() || 'N/A'}
+        value={props.data.lastKPIFinal && props.data.lastKPIFinal.year.toString() || 'N/A'}
       />
       <TextField 
         {...GlobalStyle.TextField.ReadOnly}
