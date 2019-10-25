@@ -5,6 +5,7 @@ import {
   AlarmOnOutlined,
   AssignmentOutlined,
   DepartureBoardOutlined,
+  FindReplaceOutlined,
   FlightTakeoffOutlined,
   HomeOutlined,
   LocalAtmOutlined,
@@ -15,6 +16,7 @@ import {
   ReceiptOutlined,
   SettingsOutlined,
   ShoppingCartOutlined,
+  SupervisedUserCircleOutlined,
   TripOriginOutlined,
   WeekendOutlined,
 } from '@material-ui/icons';
@@ -79,6 +81,12 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
     case AppMenu.HRNotif:
       return <NotificationsOutlined {...props.innerProps} />;
   
+    case AppMenu.HumanResource:
+      return <SupervisedUserCircleOutlined {...props.innerProps} />;
+      
+    case AppMenu.WebJob:
+      return <FindReplaceOutlined {...props.innerProps} />;
+
     default:
       return <TripOriginOutlined {...props.innerProps} />;
   }
