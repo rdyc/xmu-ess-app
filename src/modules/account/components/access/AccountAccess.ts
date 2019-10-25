@@ -117,7 +117,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
         };
 
         const level: IUserLevel = {
-          uid: access.level.uid,
+          uid: access.level.uid || access.levelType || 'N/A',
           seq: access.level.seq,
           value: access.level.value,
           description: access.level.description

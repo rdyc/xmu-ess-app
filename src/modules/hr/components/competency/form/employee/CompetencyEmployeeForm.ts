@@ -151,6 +151,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyEmployeeState.detail;
+      const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
 
       if (user && competencyEmployeeUid && !isLoading) {
@@ -161,6 +162,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
 
       props.hrCompetencyMappedDispatch.loadListRequest({
         filter: {
+          companyUid,
           positionUid
         }
       });
@@ -178,10 +180,11 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
         
         // must have competencyEmployeeUid
         if (competencyEmployeeUid) {
-          const respondenUid = values.respondenUid;
-          const positionUid = values.positionUid;
 
           const payload: IHrCompetencyEmployeePatchPayload = {
+            respondenUid: values.respondenUid,
+            companyUid: values.companyUid,
+            positionUid: values.positionUid,
             items: [],
             isDraft: props.saveType === DraftType.draft ? true : false
           };
@@ -202,8 +205,6 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
           promise = new Promise((resolve, reject) => {
             props.hrCompetencyEmployeeDispatch.patchRequest({
               competencyEmployeeUid,
-              respondenUid,
-              positionUid,
               resolve,
               reject,
               data: payload
@@ -230,7 +231,7 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
         });
 
         // redirect to detail
-        props.history.push(`/hr/assessmentinput/${response.uid}`);
+        props.history.push(`/hr/assessmentinput/${response.uid}`, { companyUid: response.companyUid,  positionUid: response.positionUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -275,7 +276,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
         const initialValues: ICompetencyEmployeeFormValue = {
           uid: thisResponse.data.uid,
           respondenUid: thisResponse.data.respondenUid,
-          companyUid: thisResponse.data.position && thisResponse.data.position.companyUid || 'N/A',
+          companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
           year: thisResponse.data.assessmentYear.toString(),
           levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
@@ -293,12 +294,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
         if (initialVal) {
           thisMapped.data[0].categories.forEach(item => {
             const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-  
+
+            const note: string[] = find && find.note && find.note.split(' - ') || [];
+            
             initialVal.levelRespond.push({
               uid: find && find.uid || '',
               categoryUid: item.category.uid,
               levelUid: find && find.levelUid || '',
-              note: find && find.note
+              note: note[2] || ''
             });  
           });
           this.props.setInitialValues(initialVal);

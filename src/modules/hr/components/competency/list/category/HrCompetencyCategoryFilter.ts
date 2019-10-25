@@ -20,7 +20,7 @@ import {
 } from 'recompose';
 import { HrCompetencyCategoryFilterView } from './HrCompetencyCategoryFilterView';
 
-export type IHrCompetencyCategoryFilterResult = Pick<IHrCompetencyCategoryGetAllFilter, 'competencyUid'>;
+export type IHrCompetencyCategoryFilterResult = Pick<IHrCompetencyCategoryGetAllFilter, 'clusterUid'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFilterProps, IOwnHandl
   handleFilterOnApply: (props: HrCompetencyCategoryFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     if (props.filterCluster) {
       props.onApply({
-        competencyUid: props.filterCluster.uid
+        clusterUid: props.filterCluster.uid
       });
     }
   },
@@ -127,14 +127,14 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFilterProps, IOwnHandl
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyCategoryFilterProps, IOwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
-      const { competencyUid } = this.props.initialProps;
+      const { clusterUid } = this.props.initialProps;
 
       // filter cluster
-      if (competencyUid) {
+      if (clusterUid) {
         const { response } = this.props.hrCompetencyClusterState.list;
 
         if (response && response.data) {
-          const selected = response.data.find(item => item.uid === competencyUid);
+          const selected = response.data.find(item => item.uid === clusterUid);
 
           this.props.setFilterCluster(selected);
         }

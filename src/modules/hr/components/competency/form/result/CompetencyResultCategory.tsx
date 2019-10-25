@@ -59,7 +59,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader
-        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Result'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Result'})}
       />
       <Table>
         <TableBody>
@@ -157,13 +157,29 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                           <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
                             <Typography>
                               {
-                                `${responder.employee && responder.employee.fullName} - 
-                                ${findNote(responder.items.find(findData => findData.levelUid === level.uid))}`
+                                findNote(responder.items.find(findData => findData.levelUid === level.uid))
                               }
                             </Typography>
                           </TableCell>
                         </TableRow>
                       )
+                    }
+                    {
+                      Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
+                      <TableRow>
+                        <TableCell colSpan={props.responders.length + 1}>
+                          <Field
+                            name={`levelRespond.${index}.noteHistory`}
+                            render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
+                              return (
+                                <Typography>
+                                  {field.value}
+                                </Typography>
+                              );
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
                     }
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
@@ -183,8 +199,8 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                                   disabled={form.isSubmitting}
                                   margin="normal"
                                   autoComplete="off"
-                                  label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                                  placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Type any note'})}
+                                  label={props.intl.formatMessage(hrMessage.competency.field.note)}
+                                  placeholder={props.intl.formatMessage(hrMessage.competency.field.notePlaceholder)}
                                   helperText={touch && error}
                                   error={touch && Boolean(error)}
                                 />

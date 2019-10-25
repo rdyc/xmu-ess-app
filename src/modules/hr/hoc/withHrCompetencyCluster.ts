@@ -4,8 +4,7 @@ import {
   IHrCompetencyClusterGetDetailRequest, 
   IHrCompetencyClusterGetListRequest, 
   IHrCompetencyClusterPatchRequest, 
-  IHrCompetencyClusterPostRequest, 
-  IHrCompetencyClusterPutRequest
+  IHrCompetencyClusterPostRequest,
 } from '@hr/classes/queries/';
 import { IHrCompetencyCluster, IHrCompetencyClusterDetail, IHrCompetencyClusterList } from '@hr/classes/response/';
 import { 
@@ -18,9 +17,7 @@ import {
   hrCompetencyClusterPatchDispose, 
   hrCompetencyClusterPatchRequest, 
   hrCompetencyClusterPostDispose, 
-  hrCompetencyClusterPostRequest, 
-  hrCompetencyClusterPutDispose,
-  hrCompetencyClusterPutRequest
+  hrCompetencyClusterPostRequest,
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -38,8 +35,6 @@ interface PropsFromDispatch {
     // command
     createRequest: typeof hrCompetencyClusterPostRequest;
     createDispose: typeof hrCompetencyClusterPostDispose;
-    updateRequest: typeof hrCompetencyClusterPutRequest;
-    updateDispose: typeof hrCompetencyClusterPutDispose;
     patchRequest: typeof hrCompetencyClusterPatchRequest;
     patchDispose: typeof hrCompetencyClusterPatchDispose;
 
@@ -68,8 +63,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // command
     createRequest: (request: IHrCompetencyClusterPostRequest) => dispatch(hrCompetencyClusterPostRequest(request)),
     createDispose: () => dispatch(hrCompetencyClusterPostDispose()),
-    updateRequest: (request: IHrCompetencyClusterPutRequest) => dispatch(hrCompetencyClusterPutRequest(request)),
-    updateDispose: () => dispatch(hrCompetencyClusterPutDispose()),
     patchRequest: (request: IHrCompetencyClusterPatchRequest) => dispatch(hrCompetencyClusterPatchRequest(request)),
     patchDispose: () => dispatch(hrCompetencyClusterPatchDispose()),
 

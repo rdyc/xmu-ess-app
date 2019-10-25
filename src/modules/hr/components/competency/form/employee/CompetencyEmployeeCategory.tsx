@@ -122,8 +122,8 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
                                 disabled={form.isSubmitting}
                                 margin="normal"
                                 autoComplete="off"
-                                label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Note'})}
-                                placeholder={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Type any note'})}
+                                label={props.intl.formatMessage(hrMessage.competency.field.note)}
+                                placeholder={props.intl.formatMessage(hrMessage.competency.field.notePlaceholder)}
                                 helperText={touch && error}
                                 error={touch && Boolean(error)}
                               />

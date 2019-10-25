@@ -1,6 +1,7 @@
 import accountEmployeeReducers from './employee/accountEmployeeReducers';
 import accountEmployeeAccessReducers from './employeeAccess/accountEmployeeAccessReducers';
 import accountEmployeeAccessHistoryReducers from './employeeAccessHistory/accountEmployeeAccessHistoryReducer';
+import accountEmployeeContractReducers from './employeeContract/accountEmployeeContractReducer';
 import accountEmployeeEducationReducers from './employeeEducation/accountEmployeeEducationReducer';
 import accountEmployeeExperienceReducers from './employeeExperience/accountEmployeeExperienceReducer';
 import accountEmployeeFamilyReducers from './employeeFamily/accountEmployeeFamilyReducer';
@@ -23,6 +24,7 @@ const accountReducers = {
   ...accountEmployeeRateReducers,
   ...accountEmployeeNoteReducers,
   ...accountEmployeeAccessReducers,
+  ...accountEmployeeContractReducers,
   ...accountEmployeeKPIReducers,
 };
 

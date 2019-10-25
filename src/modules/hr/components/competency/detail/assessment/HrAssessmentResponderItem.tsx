@@ -14,6 +14,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -39,7 +40,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
           data.responders.length === 0 &&
           <ListItem>
             <ListItemText
-              primary={intl.formatMessage(hrMessage.competency.field.type, {state: 'Responder not found'})}
+              primary={intl.formatMessage(hrMessage.competency.field.notFound, {state: 'Responder'})}
               primaryTypographyProps={{
                 align: 'center'
               }} 
@@ -54,7 +55,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
               key={item.employeeUid}
             >
               <ListItemAvatar>
-                <Avatar className={props.classes.avatarSecondary}>
+                <Avatar className={classNames(!item.isExpired && !item.isRespond ? props.classes.avatarSecondary : (item.isExpired ? props.classes.avatarRed : (item.isRespond && props.classes.avatarPrimary || '')))}>
                   {initialName(item.employee.fullName)}
                 </Avatar>
               </ListItemAvatar>

@@ -6,5 +6,4 @@ export interface IHrCompetencyAssessmentPutPayload {
   positionUid: string;
   assessmentYear: number;
   responders: IAssessmentItemCreate[];
-  isDraft?: boolean;
 }

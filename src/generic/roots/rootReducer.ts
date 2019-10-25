@@ -4,6 +4,7 @@ import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { homeReducers } from '@home/store/reducers/homeReducers';
+import { hrNotificationReducers } from '@hr.notification/store/reducers/hrNotifReducers';
 import hrCompetencyReducers from '@hr/store/reducers/hrCompetencyReducers';
 import { kpiReducers } from '@kpi/store/reducers/kpiReducers';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer, pageReducer } from '@layout/store/reducers';
@@ -18,6 +19,7 @@ import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import summaryReducers from '@summary/store/reducers/summaryReducers';
 import { timesheetReducers } from '@timesheet/store/reducers/timesheetReducers';
 import travelReducers from '@travel/store/reducers/travelReducer';
+import webJobReducers from '@webjob/store/reducers/webJobReducers';
 import { inforReducers } from 'modules/infor/store/reducers/inforReducers';
 import markdownReducers from 'playground/markdown/store/reducers/markdownReducers';
 import { combineReducers } from 'redux';
@@ -51,8 +53,10 @@ export const rootReducer = combineReducers<IAppState>({
   ...organizationReducers,
   ...homeReducers,
   ...inforReducers,
+  ...hrNotificationReducers,
   ...markdownReducers,
   ...hrCompetencyReducers,
   ...kpiReducers,
-  ...myProfileReducers
+  ...myProfileReducers,
+  ...webJobReducers
 });

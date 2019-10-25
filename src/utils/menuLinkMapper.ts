@@ -214,6 +214,18 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/cogsupload';
       break;
 
+    case 'MNU80':
+      path = '/hr/notification/periods';
+      break;
+
+    case 'MNU81':
+      path = '/hr/notification/settings';
+      break;
+
+    case 'MNU82':
+      path = '/hr/notification/templates';
+      break;
+      
     case 'MNU66':
       path = '/reports/resourcemapping';
       break;
@@ -269,10 +281,6 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU83':
       path = '/hr/assessmentinput';
       break;
-
-    case 'MNU83':
-      path = '/hr/assessmentinput';
-      break;
     
     case 'MNU85':
       path = '/account/profile/detail';
@@ -286,6 +294,18 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/kpi/opens';
       break;
 
+    case 'MNU88':
+      path = '/webjob/definitions';
+      break;
+
+    case 'MNU89':
+      path = '/webjob/monitoring';
+      break;
+
+    case 'MNU90':
+      path = '/webjob/recurrings';
+      break;
+      
     default:
       path = '/home/dashboard';
       break;

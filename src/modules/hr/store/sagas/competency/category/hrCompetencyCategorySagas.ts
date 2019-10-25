@@ -18,9 +18,6 @@ import {
   hrCompetencyCategoryPostError,
   hrCompetencyCategoryPostRequest,
   hrCompetencyCategoryPostSuccess,
-  hrCompetencyCategoryPutError,
-  hrCompetencyCategoryPutRequest,
-  hrCompetencyCategoryPutSuccess,
 } from '@hr/store/actions';
 import { handleResponse } from '@layout/helper/handleResponse';
 import { layoutAlertAdd, UserAction } from '@layout/store/actions';
@@ -38,7 +35,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/${action.payload.competencyUid}/categories?${params}`, 
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetAllSuccess(response.body)),
       ]), 
@@ -63,7 +60,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/${action.payload.competencyUid}/categories/list?${params}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetListSuccess(response.body)),
       ]), 
@@ -83,7 +80,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/competency/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetByIdSuccess(response.body)),
       ]), 
@@ -103,7 +100,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/competency/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyCategoryGetByIdDispose()),
@@ -139,51 +136,11 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof hrCompetencyCategoryPutRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'put',
-      path: `/v1/competency/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
-      payload: action.payload.data,
-      successEffects: (response: IApiResponse) => [
-        put(hrCompetencyCategoryGetByIdDispose()),
-        put(hrCompetencyCategoryGetAllDispose()),
-        put(hrCompetencyCategoryPutSuccess(response.body)),
-      ],
-      successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
-      },
-      failureEffects: (response: IApiResponse) => [
-        put(hrCompetencyCategoryPutError(response.statusText))
-      ],
-      failureCallback: (response: IApiResponse) => {
-        const result = handleResponse(response);
-        
-        action.payload.reject(result);
-      },
-      errorEffects: (error: TypeError) => [
-        put(hrCompetencyCategoryPutError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ],
-      errorCallback: (error: any) => {
-        action.payload.reject(error);
-      }
-    });
-  };
-
-  yield takeEvery(Action.PUT_REQUEST, worker);
-}
-
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPatchRequest>) => {
     return saiyanSaga.fetch({
       method: 'patch',
-      path: `/v1/competency/${action.payload.competencyUid}/categories/${action.payload.categoryUid}`,
+      path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyCategoryGetByIdDispose()),
@@ -237,7 +194,6 @@ function* hrCompetencyCategorySagas() {
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
-    fork(watchPutRequest),
     fork(watchPatchRequest),
     fork(watchSwitchAccess)
   ]);

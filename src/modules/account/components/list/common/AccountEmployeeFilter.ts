@@ -20,9 +20,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { AccountEmployeeFilterView } from './AccountEmployeeFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids' | 'isActive'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids' | 'employmentTypes' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -42,6 +44,10 @@ interface OwnState {
   isFilterRoleOpen: boolean;
   filterRole?: ILookupRole;
 
+  // filter employment type
+  isFilterEmploymentTypeOpen: boolean;
+  filterEmploymentType?: ISystemList;
+
   // filter status
   filterStatus?: boolean; 
 }
@@ -57,6 +63,10 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   // filter role
   setFilterRoleVisibility: StateHandler<OwnState>;
   setFilterRole: StateHandler<OwnState>;
+
+  // filter company
+  setFilterEmploymentTypeVisibility: StateHandler<OwnState>;
+  setFilterEmploymentType: StateHandler<OwnState>;
 
   // filter status
   setFilterStatus: StateHandler<OwnState>;
@@ -79,6 +89,12 @@ interface OwnHandler {
   handleFilterRoleOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterRoleOnClose: () => void;
 
+  // filter employment type
+  handleFilterEmploymentTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmploymentTypeOnSelected: (data: ISystemList) => void;
+  handleFilterEmploymentTypeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmploymentTypeOnClose: () => void;
+
   // filter status
   handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
@@ -89,12 +105,14 @@ export type AccountEmployeeFilterFilterProps
   & OwnHandler
   & OwnStateUpdater
   & WithLookupCompany
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeFilterFilterProps, OwnState> = (props: AccountEmployeeFilterFilterProps): OwnState => ({
   isFilterCompanyOpen: false,
   isFilterRoleOpen: false,
+  isFilterEmploymentTypeOpen: false,
 
   filterStatus: props.initialProps && props.initialProps.isActive
 });
@@ -103,6 +121,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
+    filterEmploymentType: undefined,
     filterRole: undefined,
     filterStatus: false
   }),
@@ -128,6 +147,15 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
     filterRole: data
   }),
 
+  // filter employment type
+  setFilterEmploymentTypeVisibility: (prevState: OwnState) => () => ({
+    isFilterEmploymentTypeOpen: !prevState.isFilterEmploymentTypeOpen
+  }),
+  setFilterEmploymentType: () => (data?: ISystemList) => ({
+    isFilterEmploymentTypeOpen: false,
+    filterEmploymentType: data
+  }),
+
   // filter status
   setFilterStatus: () => (checked: boolean) => ({
     filterStatus: checked
@@ -142,6 +170,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   handleFilterOnApply: (props: AccountEmployeeFilterFilterProps) => () => {
     props.onApply({
       companyUids: props.filterCompany && props.filterCompany.uid,
+      employmentTypes: props.filterEmploymentType && props.filterEmploymentType.type,
       roleUids: props.filterRole && props.filterRole.uid,
       isActive: props.filterStatus
     });
@@ -176,6 +205,20 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
     props.setFilterRoleVisibility();
   },
 
+  // filter employment type
+  handleFilterEmploymentTypeVisibility: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterEmploymentTypeVisibility();
+  },
+  handleFilterEmploymentTypeOnSelected: (props: AccountEmployeeFilterFilterProps) => (data: ISystemList) => {
+    props.setFilterEmploymentType(data);
+  },
+  handleFilterEmploymentTypeOnClear: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterEmploymentType();
+  },
+  handleFilterEmploymentTypeOnClose: (props: AccountEmployeeFilterFilterProps) => () => {
+    props.setFilterEmploymentTypeVisibility();
+  },
+
   // filter status
   handleFilterStatusOnChange: (props: AccountEmployeeFilterFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterStatus(checked);
@@ -186,7 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFilterFilterProps, OwnS
   componentDidMount() {
     // handling previous filter after leaving list page
     if (this.props.initialProps) {
-      const { companyUids } = this.props.initialProps;
+      const { companyUids, employmentTypes } = this.props.initialProps;
 
       // filter company
       if (companyUids) {
@@ -198,6 +241,17 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFilterFilterProps, OwnS
           this.props.setFilterCompany(selected);
         }
       }
+
+      // filter employment type
+      if (employmentTypes) {
+        const { response } = this.props.commonEmploymentListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === employmentTypes);
+
+          this.props.setFilterEmploymentType(selected);
+        }
+      }
     }
   }
 };
@@ -206,6 +260,7 @@ export const AccountEmployeeFilter = compose<AccountEmployeeFilterFilterProps, O
   setDisplayName('AccountEmployeeFilter'),
   withLayout,
   withLookupCompany,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

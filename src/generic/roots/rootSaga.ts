@@ -1,5 +1,6 @@
 import accountEmployeeAccessHistorySagas from '@account/store/sagas/accountEmployeeAccessHistorySagas';
 import accountEmployeeAccessSagas from '@account/store/sagas/accountEmployeeAccessSagas';
+import accountEmployeeContractSagas from '@account/store/sagas/accountEmployeeContractSagas';
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
@@ -50,12 +51,13 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import notifPeriodSagas from '@hr.notification/store/sagas/notifPeriodSagas';
+import notifSettingSagas from '@hr.notification/store/sagas/notifSettingSagas';
+import notifTemplateSagas from '@hr.notification/store/sagas/notifTemplateSagas';
 import hrCompetencyAssessmentSagas from '@hr/store/sagas/competency/assessment/hrCompetencyAssessmentSagas';
 import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
 import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
 import hrCompetencyEmployeeSagas from '@hr/store/sagas/competency/employee/hrCompetencyEmployeeSagas';
-import hrCompetencyIndicatorSagas from '@hr/store/sagas/competency/indicator/hrCompetencyIndicatorSagas';
-import hrCompetencyLevelSagas from '@hr/store/sagas/competency/level/hrCompetencyLevelSagas';
 import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
 import hrCompetencyResultSagas from '@hr/store/sagas/competency/result/hrCompetencyResultSagas';
 import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
@@ -117,6 +119,9 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import webJobDefinitionSagas from '@webjob/store/sagas/definition/webJobDefinitionSagas';
+import webJobMonitoringSagas from '@webjob/store/sagas/monitoring/webJobMonitoringSagas';
+import webJobRecurringSagas from '@webjob/store/sagas/recurring/webJobRecurringSagas';
 import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
 import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
@@ -197,6 +202,7 @@ export function* rootSaga() {
     fork(accountEmployeeRateSagas),
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
+    fork(accountEmployeeContractSagas),
     fork(accountEmployeeKPISagas),
 
     // project
@@ -255,6 +261,11 @@ export function* rootSaga() {
     fork(announcementSagas),
     fork(newsFeedSagas),
 
+    // hr notificationSagas
+    fork(notifPeriodSagas),
+    fork(notifSettingSagas),
+    fork(notifTemplateSagas),
+
     // markdown
     fork(markdownSagas),
     fork(markdownCategorySagas),
@@ -262,8 +273,6 @@ export function* rootSaga() {
     // competency
     fork(hrCompetencyCategorySagas),
     fork(hrCompetencyClusterSagas),
-    fork(hrCompetencyIndicatorSagas),
-    fork(hrCompetencyLevelSagas),
     fork(hrCompetencyMappedSagas),
     fork(hrCompetencyAssessmentSagas),
     fork(hrCompetencyEmployeeSagas),
@@ -284,6 +293,11 @@ export function* rootSaga() {
     fork(hrCornerPageSagas),
 
     // employee final
-    fork(employeeFinalSagas)
+    fork(employeeFinalSagas),
+
+    // web job
+    fork(webJobMonitoringSagas),
+    fork(webJobRecurringSagas),
+    fork(webJobDefinitionSagas)
   ]);
 }

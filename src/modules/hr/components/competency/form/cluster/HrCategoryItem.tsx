@@ -53,7 +53,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
       <React.Fragment>
         <Card square>
           <CardHeader 
-            title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Competency Category'})}
+            title={props.intl.formatMessage(hrMessage.competency.field.competency, {state: 'Category'})}
             subheader={
               props.formikBag.submitCount > 0 &&
               typeof props.formikBag.errors.categories === 'string' &&
@@ -145,7 +145,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                         }}
                       >
                         <DeleteForever className={props.classes.marginFarRight} />
-                        {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Category'})}
+                        {props.intl.formatMessage(hrMessage.competency.field.category)}
                       </Button>
                     </CardActions>
                   </Collapse>

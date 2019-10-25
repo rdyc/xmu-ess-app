@@ -52,7 +52,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.company),
                 required: true,
                 helperText: form.touched.companyUid && form.errors.companyUid,
                 error: form.touched.companyUid && Boolean(form.errors.companyUid)
@@ -80,7 +80,7 @@ const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialPr
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}),
+                label: props.intl.formatMessage(hrMessage.competency.field.position),
                 required: true,
                 helperText: form.touched.positionUid && form.errors.positionUid,
                 error: form.touched.positionUid && Boolean(form.errors.positionUid)

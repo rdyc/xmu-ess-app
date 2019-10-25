@@ -31,7 +31,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/assessments?${params}`, 
+      path: `/v1/hr/competency/assessments?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyAssessmentGetAllSuccess(response.body)),
       ]), 
@@ -51,7 +51,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyAssessmentGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/assessments/${action.payload.assessmentUid}`,
+      path: `/v1/hr/competency/assessments/${action.payload.assessmentUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyAssessmentGetByIdSuccess(response.body)),
       ]), 
@@ -71,7 +71,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyAssessmentPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/assessments`,
+      path: `/v1/hr/competency/assessments`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyAssessmentGetByIdDispose()),
@@ -111,7 +111,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyAssessmentPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/assessments/${action.payload.assessmentUid}`,
+      path: `/v1/hr/competency/assessments/${action.payload.assessmentUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyAssessmentGetByIdDispose()),

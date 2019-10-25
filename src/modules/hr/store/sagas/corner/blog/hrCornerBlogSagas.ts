@@ -31,7 +31,6 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5000',
       method: 'get',
       path: `/v1/hr/corner?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -57,7 +56,6 @@ function* watchFetchAllByCategoryRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5000',
       method: 'get',
       path: `/v1/hr/corner/${action.payload.categorySlug}?${params}`,
       successEffects: (response: IApiResponse) => ([
@@ -83,7 +81,6 @@ function* watchFetchLatestByCategoryRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5000',
       method: 'get',
       path: `/v1/hr/corner/${action.payload.categorySlug}?${params}`,
       successEffects: (response: IApiResponse) => ([
@@ -104,7 +101,6 @@ function* watchFetchLatestByCategoryRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCornerBlogGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5000',
       method: 'get',
       path: `/v1/hr/corner/${action.payload.categorySlug}/${action.payload.pageSlug}`,
       successEffects: (response: IApiResponse) => ([

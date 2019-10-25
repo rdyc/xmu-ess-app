@@ -8,7 +8,6 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
-import { IPositionGetListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -62,7 +61,6 @@ interface IOwnState {
   initialValues?: ICompetencyAssessmentFormValue;
 
   filterCompany?: ILookupCompanyGetListFilter;
-  filterPosition?: IPositionGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
 }
@@ -111,30 +109,26 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
     orderBy: 'name',
     direction: 'ascending'
   },
-  filterPosition: {
-    orderBy: 'name',
-    direction: 'ascending'
-  },
 
   // validation props	
   validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({	
     year: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Year'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.year))	
       .required(),	
     companyUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Company'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.company))	
       .required(),	
     positionUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Position'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.position))	
       .required(),	
     employeeUid: Yup.string()	
-      .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+      .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
       .required(),	
     responder: Yup.array()	
       .of(	
         Yup.object().shape({	
           employeeUid: Yup.string()	
-            .label(props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Employee'}))	
+            .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
             .required()	
         })	
       )	
@@ -285,7 +279,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
         // define initial values
         const initialValues: ICompetencyAssessmentFormValue = {
             uid: thisResponse.data.uid,
-            companyUid: thisResponse.data.position.companyUid,
+            companyUid: thisResponse.data.companyUid,
             positionUid: thisResponse.data.positionUid,
             employeeUid: thisResponse.data.employeeUid,
             year: thisResponse.data.assessmentYear.toString(),

@@ -121,14 +121,14 @@ const stateUpdaters: StateUpdaters<HrCompetencyCategoryDetailProps, IOwnState, I
 const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyCategoryDetailProps) => () => { 
     const { user } = props.userState;
-    const competencyUid = props.history.location.state.clusterUid;
+    const clusterUid = props.history.location.state.clusterUid;
     const categoryUid = props.match.params.categoryUid;
     const { isLoading } = props.hrCompetencyCategoryState.detail;
 
-    if (user && competencyUid && categoryUid && !isLoading) {
+    if (user && clusterUid && categoryUid && !isLoading) {
       props.hrCompetencyCategoryDispatch.loadDetailRequest({
         categoryUid,
-        competencyUid
+        clusterUid
       });
     }
   },
