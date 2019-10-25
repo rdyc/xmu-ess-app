@@ -1,6 +1,8 @@
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
+import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { InputSemesterOption } from '@layout/components/input/semester';
+import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -41,41 +43,54 @@ const KPIOpenDetailPartialForm: React.ComponentType<KPIOpenDetailPartialFormProp
       <Field
         name="year"
         render={({ field, form }: FieldProps<IKPIOpenFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth
-            margin="normal"
-            autoComplete="off"
-            disabled={form.isSubmitting}
-            label={props.intl.formatMessage(kpiMessage.open.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(kpiMessage.open.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.year && form.errors.year}
-            error={form.touched.year && Boolean(form.errors.year)}
-            InputProps={{
-              inputComponent: NumberFormatter,
-            }}
-          />
+          <InputYearOption withFuture>
+            <SelectField
+              isSearchable
+              isDisabled={props.formikBag.isSubmitting}
+              isClearable={field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(kpiMessage.employee.field.year),
+                required: true,
+                helperText: form.touched.year && form.errors.year,
+                error: form.touched.year && Boolean(form.errors.year)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+              }}
+            />
+          </InputYearOption>
         )}
       />
 
       <Field
-        name="period"
-        render={({ field, form }: FieldProps<IKPIOpenFormValue>) => (
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            {...field}
-            disabled={props.formikBag.isSubmitting}
-            label={props.intl.formatMessage(kpiMessage.open.field.period)}
-            value={props.formikBag.values.period !== '' &&
-              (parseInt(props.formikBag.values.period, 10) === 1 && 
-                props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || 
-                props.intl.formatMessage(kpiMessage.employee.field.periodFullYear)) ||
-              ''}
-            helperText={form.touched.period && form.errors.period}
-            error={form.touched.period && Boolean(form.errors.period)}
-          />
-        )}
-      />
+          name="period"
+          render={({ field, form }: FieldProps<IKPIOpenFormValue>) => (
+            <InputSemesterOption>
+              <SelectField
+                isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(kpiMessage.employee.field.period),
+                  required: true,
+                  helperText: form.touched.period && form.errors.period,
+                  error: form.touched.period && Boolean(form.errors.period)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                }}
+              />
+            </InputSemesterOption>
+          )}
+        />
 
       <Field
         name="date"
@@ -88,7 +103,7 @@ const KPIOpenDetailPartialForm: React.ComponentType<KPIOpenDetailPartialFormProp
             disabled={form.isSubmitting}
             showTodayButton
             label={props.intl.formatMessage(kpiMessage.open.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(kpiMessage.open.fieldFor(field.name, 'fieldPlaceholder'))}
+            placeholder={props.intl.formatMessage(kpiMessage.open.fieldFor(field.name, 'fieldName'))}
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"

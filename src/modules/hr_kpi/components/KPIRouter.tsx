@@ -69,7 +69,7 @@ const template = (props: RouteComponentProps) => (
 const open = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={KPIOpenForm} /> 
-    <Route path={`${props.match.path}/:categoryUid`} component={KPIOpenDetail} />
+    <Route path={`${props.match.path}/:openUid`} component={KPIOpenDetail} />
     <Route path={`${props.match.path}`} component={KPIOpenList} />
   </Switch>
 );

@@ -201,8 +201,8 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
 
   filterAccountEmployee: ({
     companyUids: props.userState.user && props.userState.user.company.uid,
-    positionUids: props.userState.user && props.userState.user.position.uid,
-    useAccess: true,
+    // positionUids: props.userState.user && props.userState.user.position.uid, until account add superordinate param
+    useAccess: false,
     useSuperOrdinate: true,
   }),
 });
