@@ -28,6 +28,16 @@ import {
   KPIMeasurementSection, 
   KPIMeasurementSubmission
 } from './kpiMeasurementMessage';
+import { 
+  KPIOpenConfirm, 
+  KPIOpenDialog, 
+  KPIOpenField, 
+  KPIOpenFieldHelperFor, 
+  KPIOpenMessage, 
+  KPIOpenPage, 
+  KPIOpenSection, 
+  KPIOpenSubmission 
+} from './kpiOpenMessage';
 import {
   KPITemplateConfirm,
   KPITemplateDialog,
@@ -58,6 +68,16 @@ export const kpiMessage = {
     section: KPICategorySection,
     submission: KPICategorySubmission,
     dialog: KPICategoryDialog
+  },
+  open: {
+    field: KPIOpenField,
+    fieldFor: KPIOpenFieldHelperFor,
+    message: KPIOpenMessage,
+    page: KPIOpenPage,
+    confirm: KPIOpenConfirm,
+    section: KPIOpenSection,
+    submission: KPIOpenSubmission,
+    dialog: KPIOpenDialog
   },
   measurement: {
     field: KPIMeasurementField,

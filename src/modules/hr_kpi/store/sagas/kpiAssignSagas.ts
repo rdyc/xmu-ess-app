@@ -1,4 +1,4 @@
-import { newHostAddress } from '@constants/newHostAddress';
+
 import {
   KPIAssignAction as Action,
   KPIAssignGetAllDispose,
@@ -35,7 +35,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -59,7 +59,7 @@ function* watchGetAllRequest() {
 function* watchGetByYearRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByYearRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
       successEffects: (response: IApiResponse) => [
@@ -80,7 +80,7 @@ function* watchGetByYearRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       successEffects: (response: IApiResponse) => [
@@ -101,7 +101,7 @@ function* watchGetByIdRequest() {
 function* watchPostBulkRequest() {
   const worker = (action: ReturnType<typeof KPIAssignPostBulkRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'post',
       path: `/v1/hr/kpi/assign`,
       payload: action.payload.data,
@@ -143,7 +143,7 @@ function* watchPostBulkRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIAssignPutRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'put',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       payload: action.payload.data,
