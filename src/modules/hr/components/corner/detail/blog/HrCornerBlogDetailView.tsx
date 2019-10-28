@@ -1,7 +1,6 @@
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
-import { Divider, Grid, IconButton, List, Typography } from '@material-ui/core';
-import { Refresh } from '@material-ui/icons';
+import { Divider, Grid, List, Typography } from '@material-ui/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -22,14 +21,14 @@ export const HrCornerBlogDetailView: React.SFC<HrCornerBlogDetailProps> = props 
           {state: `${props.match.params.pageSlug.replace(/-/g, ' ')}`}
         )}
 
-        appBarCustomComponent={
-          <IconButton
-            color="inherit"
-            onClick={() => props.handleOnReload()}
-          >
-            <Refresh/>
-          </IconButton>
-        }
+        // appBarCustomComponent={
+        //   <IconButton
+        //     color="inherit"
+        //     onClick={() => props.handleOnReload()}
+        //   >
+        //     <Refresh/>
+        //   </IconButton>
+        // }
       />
       <div
         className={classNames(props.classes.content, props.classes.shiftCorner)}
