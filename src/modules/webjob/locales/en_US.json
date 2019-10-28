@@ -116,7 +116,9 @@
   "web.job.recurring.field.namespace": "Namespace",
   "web.job.recurring.field.class": "Class",
   "web.job.recurring.field.method": "Method",
-  "web.job.recurring.field.isAutoStart": "Is Auto Start",
+  "web.job.recurring.field.start.type": "Start Type",
+  "web.job.recurring.field.start.auto": "Auto Start",
+  "web.job.recurring.field.start.manual": "Manual Start",
   "web.job.recurring.field.definition": "Definition"
 
 }
