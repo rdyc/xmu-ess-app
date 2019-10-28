@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -45,7 +44,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
-  handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
+  handleOnLoadApi: (resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IWebJobMonitoringServer, index: number) => IDataBindResult;
 }
 
@@ -77,15 +76,15 @@ const stateUpdaters: StateUpdaters<WebJobServerListProps, IOwnState, IOwnStateUp
 };
 
 const handlerCreators: HandleCreators<WebJobServerListProps, IOwnHandler> = {
-  handleOnLoadApi: (props: WebJobServerListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
+  handleOnLoadApi: (props: WebJobServerListProps) => (resetPage?: boolean, isRetry?: boolean) => {
     const { loadAllServerRequest } = props.webJobMonitoringDispatch;
-    const { isLoading } = props.webJobMonitoringState.serverAll;
+    const { isLoading, isExpired } = props.webJobMonitoringState.serverAll;
 
     if (props.userState.user && !isLoading) {
       // only load when request parameter are differents
-      loadAllServerRequest({});
-      // if (isExpired || isRetry) {
-      // }
+      if (isExpired || isRetry) {
+        loadAllServerRequest({});
+      }
     }
   },
   handleOnBind: (props: WebJobServerListProps) => (item: IWebJobMonitoringServer, index: number) => ({
@@ -104,7 +103,7 @@ const lifecycles: ReactLifeCycleFunctions<WebJobServerListProps, IOwnState> = {
     const { response, isLoading } = this.props.webJobMonitoringState.serverAll;
 
     if (!response && !isLoading) {
-      this.props.handleOnLoadApi();
+      this.props.handleOnLoadApi(false, true);
     }
     this.props.masterPage.changePage({
       uid: AppMenu.WebJob,
