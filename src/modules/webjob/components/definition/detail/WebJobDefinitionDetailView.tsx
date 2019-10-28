@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
+import { Delete } from '@lookup/components/shared/Delete';
 import { Card, CardHeader } from '@material-ui/core';
 import { IWebJobDefinitionDetail } from '@webjob/classes/response';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
@@ -39,6 +40,19 @@ export const WebJobDefinitionDetailView: React.SFC<WebJobDefinitionDetailProps> 
       />
     </Card>
     <DefinitionJobList />
-
+    <Delete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
+    />
   </React.Fragment>
 );

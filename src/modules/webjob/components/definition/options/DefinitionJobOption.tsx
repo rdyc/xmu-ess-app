@@ -71,14 +71,14 @@ const stateUpdaters: StateUpdaters<DefintionJobOptionProps, IOwnState, IOwnState
 const handlerCreators: HandleCreators<DefintionJobOptionProps, IOwnHandler> = {
   handleOnLoadApi: (props: DefintionJobOptionProps) => (definitionUid: string) => {
     const { isExpired, isLoading } = props.webJobDefinitionState.jobList;
-    const { jobloadAllRequest } = props.webJobDefinitionDispatch;
+    const { jobloadListRequest } = props.webJobDefinitionDispatch;
     
     const filter: IWebJobDefinitionJobGetListFilter = {
       direction: 'ascending'
     };
 
     if (isExpired || !isLoading) {
-      jobloadAllRequest({ 
+      jobloadListRequest({ 
         definitionUid,
         filter
       });

@@ -8,6 +8,7 @@ import { WebJobDefinitionList } from './definition/list/WebJobDefinitionList';
 import { WebJobMonitoringDetail } from './monitoring/detail/WebJobMonitoringDetail';
 import { WebJobMonitoringList } from './monitoring/list/WebJobMonitoringList';
 import { WebJobRecurringDetail } from './recurring/detail/WebJobRecurringDetail';
+import { WebJobRecurringForm } from './recurring/form/WebJobRecurringForm';
 import { WebJobRecurringList } from './recurring/list/WebJobRecurringList';
 import { WebJobServerList } from './servers/list/WebJobServerList';
 
@@ -35,7 +36,7 @@ const servers = (props: RouteComponentProps) => (
 
 const recurrings = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={WebJobMonitoringList} /> */}
+    <Route path={`${props.match.path}/form`} component={WebJobRecurringForm} />
     <Route path={`${props.match.path}/:recurringUid`} component={WebJobRecurringDetail} />
     <Route path={`${props.match.path}`} component={WebJobRecurringList} />
   </Switch>

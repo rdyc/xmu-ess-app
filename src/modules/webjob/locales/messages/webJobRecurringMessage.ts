@@ -4,7 +4,6 @@ const prefix = 'web.job.recurring';
 
 // field
 export const webJobRecurringField = defineMessages({
-  // succeeded
   uid: {id: `${prefix}.field.uid`},
   name: {id: `${prefix}.field.name`},
   description: {id: `${prefix}.field.description`},
@@ -16,8 +15,8 @@ export const webJobRecurringField = defineMessages({
   class: {id: `${prefix}.field.class`},
   method: {id: `${prefix}.field.method`},
   isAutoStart: {id: `${prefix}.field.isAutoStart`},
+  definition: {id: `${prefix}.field.definition`},
 
   // FREE TYPE
   type: {id: `${prefix}.field.type`},
-
 });

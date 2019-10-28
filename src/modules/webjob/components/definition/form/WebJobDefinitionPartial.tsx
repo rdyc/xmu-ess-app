@@ -27,7 +27,7 @@ const WebJobDefinitionPartial: React.ComponentType<WebJobDefinitionPartialProps>
               id={field.name} 
               name={field.name} 
               type={field.name} 
-              // accept=".zip, .rar ,.7zip"
+              accept=".zip, .rar ,.7zip"
               onChange={(event) => {
                 const files = event.target.files && event.target.files;
 

@@ -2,13 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button, IconButton, Tooltip } from '@material-ui/core';
+import { AddCircle, Cached } from '@material-ui/icons';
 import { IWebJobRecurring } from '@webjob/classes/response';
 import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
 import { WebJobMonitoringTab } from '@webjob/components/tabs/WebJobMonitoringTab';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
+import { RecurringTriggerForm } from '../form/trigger/RecurringTriggerForm';
 import { WebJobRecurringListProps } from './WebJobRecurringList';
 import { WebjobRecurringSummary } from './WebJobRecurringSummary';
 
@@ -64,6 +65,28 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
           <AddCircle/>
         </IconButton>
       }
+      toolbarDataComponent={
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(webJobMessage.recurring.field.type, {state: 'Trigger'})}
+        >
+          <div>
+            <IconButton
+              id="option-filter"
+              disabled={props.webJobRecurringState.all.isLoading || props.webJobRecurringState.all.isError}
+              onClick={() => props.handleTriggerVisibility(true)} 
+            >
+              <Cached/>              
+            </IconButton>
+          </div>
+        </Tooltip>
+      }
+    />
+
+    {/* Trigger Form */}
+    <RecurringTriggerForm 
+      isOpen={props.isTriggerOpen}
+      handleTriggerVisibility={props.handleTriggerVisibility}
     />
   </WebJobMonitoringTab>
 );

@@ -35,10 +35,11 @@ interface IOwnParams {
 
 interface IOwnState {
   fields: ICollectionValue[];
+  isTriggerOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-
+  handleTriggerVisibility: (value: boolean) => IOwnState;
 }
 
 interface IOwnHandler {
@@ -64,12 +65,16 @@ const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
       value: key,
       name: IWebJobRequestField[key]
     })),
+    isTriggerOpen: false
   };
 
   return state;
 };
 
 const stateUpdaters: StateUpdaters<WebJobRecurringListProps, IOwnState, IOwnStateUpdater> = {
+  handleTriggerVisibility: (state: IOwnState) => (value: boolean) => ({
+    isTriggerOpen: value
+  })
 };
 
 const handlerCreators: HandleCreators<WebJobRecurringListProps, IOwnHandler> = {

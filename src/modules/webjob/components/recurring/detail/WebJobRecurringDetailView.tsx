@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import { IWebJobRecurringDetail } from '@webjob/classes/response';
@@ -29,5 +30,16 @@ export const WebJobRecurringDetailView: React.SFC<WebJobRecurringDetailProps> = 
         onSelected={props.handleOnSelectedMenu}
       />
     }
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </PreviewPage>
 );

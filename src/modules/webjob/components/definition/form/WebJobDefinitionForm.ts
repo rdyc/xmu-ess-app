@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<WebJobDefinitionFormProps, IOwnHandler> = 
         });
 
         // redirect to detail
-        props.history.push(`/webjob/definition`);
+        props.history.push(`/webjob/definitions`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -130,12 +130,14 @@ const handlerCreators: HandleCreators<WebJobDefinitionFormProps, IOwnHandler> = 
         // set form status
         actions.setStatus(error);
         
+        console.log('Error');
+
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
-            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
-          );
-        }
+        // if (error.errors) {
+          // error.errors.forEach(item => 
+          //   actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          // );
+        // }
 
         // console.log(error.errors);
 

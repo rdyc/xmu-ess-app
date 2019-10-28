@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { DemoContentMarkdown } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, Typography, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Divider, Grid, IconButton, TextField, Typography, withStyles, WithStyles } from '@material-ui/core';
 import { HelpOutline } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
@@ -139,6 +139,7 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
         onClose={() => props.handleDemoVisbility(false)}
       >
         <DialogTitle>Guide Markdown</DialogTitle>
+        <Divider />
         <DialogContent>
           <Grid container spacing={24}>
             <Grid item xs={6} md={6} xl={6}>
