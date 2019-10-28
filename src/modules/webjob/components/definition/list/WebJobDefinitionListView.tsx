@@ -19,8 +19,8 @@ export const WebJobDefinitionListView: React.SFC<WebJobDefinitionListProps> = pr
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.WebJobDefinition,
-        parentUid: AppMenu.WebJob,
+        uid: AppMenu.WebJob,
+        parentUid: AppMenu.Home,
         title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Definition'}),
       }}
 

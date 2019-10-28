@@ -13,8 +13,8 @@ import WebJobRecurringPartial from './WebJobRecurringPartial';
 export const WebJobRecurringFormView: React.SFC<WebJobRecurringFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.WebJobRecurring,
-      parentUid: AppMenu.WebJob,
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
       parentUrl: '/webjob/recurrings',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? webJobMessage.shared.page.createTitle :  webJobMessage.shared.page.modifyTitle, {state: 'Recurring'}),
     }}

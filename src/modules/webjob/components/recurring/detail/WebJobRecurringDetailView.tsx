@@ -11,8 +11,8 @@ import { WebJobRecurringInformation } from './WebJobRecurringInformation';
 export const WebJobRecurringDetailView: React.SFC<WebJobRecurringDetailProps> = props => (
   <PreviewPage 
     info={{
-      uid: AppMenu.WebJobRecurring,
-      parentUid: AppMenu.WebJob,
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
       parentUrl: `/webjob/recurrings`,
       title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Recurring'}),
     }}

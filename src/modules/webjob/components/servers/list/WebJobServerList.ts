@@ -1,6 +1,8 @@
+import AppMenu from '@constants/AppMenu';
 import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -8,7 +10,7 @@ import styles from '@styles';
 import { IWebJobMonitoringServer } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
 import { withWebJobMonitoring, WithWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
-// import * as moment from 'moment';
+import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -57,6 +59,7 @@ export type WebJobServerListProps
   & WithStyles<typeof styles>
   & WithUser
   & WithWidth 
+  & WithMasterPage
   & WithWebJobMonitoring;
 
 const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
@@ -103,6 +106,11 @@ const lifecycles: ReactLifeCycleFunctions<WebJobServerListProps, IOwnState> = {
     if (!response && !isLoading) {
       this.props.handleOnLoadApi();
     }
+    this.props.masterPage.changePage({
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
+      title: this.props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Server'}),
+    });
   },
 }; 
 
@@ -110,6 +118,7 @@ export const WebJobServerList = compose<WebJobServerListProps, IOwnOption>(
   setDisplayName('WebJobServerList'),
   withUser,
   withRouter,
+  withMasterPage,
   withWebJobMonitoring,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

@@ -68,5 +68,10 @@ export const WebJobRouter: React.SFC<RouteComponentProps> = props => (
       subMenu={AppMenu.WebJobMonitoring} 
       component={servers} 
     />
+    <Route path={`${props.match.path}/monitoring`} component={monitoring} />
+    <Route path={`${props.match.path}/definitions`} component={definitions} />
+    <Route path={`${props.match.path}/recurrings`} component={recurrings} />
+    <Route path={`${props.match.path}/servers`} component={servers} />
+    <Route path={`${props.match.path}`} component={WebJobMonitoringList} />
   </Switch>
 );

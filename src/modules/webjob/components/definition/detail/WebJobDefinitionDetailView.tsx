@@ -14,8 +14,8 @@ export const WebJobDefinitionDetailView: React.SFC<WebJobDefinitionDetailProps> 
   <React.Fragment>
     <PreviewPage 
       info={{
-        uid: AppMenu.WebJobDefinition,
-        parentUid: AppMenu.WebJob,
+        uid: AppMenu.WebJob,
+        parentUid: AppMenu.Home,
         parentUrl: `/webjob/definitions/`,
         title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Definition'}),
       }}
@@ -34,12 +34,17 @@ export const WebJobDefinitionDetailView: React.SFC<WebJobDefinitionDetailProps> 
         />
       }
     />
-    <Card square>
-      <CardHeader 
-        title={props.intl.formatMessage(webJobMessage.shared.page.listTitle, {state: 'Job List'})}
-      />
-    </Card>
-    <DefinitionJobList />
+    {
+      !props.webJobDefinitionState.detail.isLoading &&
+      <React.Fragment>
+        <Card square>
+          <CardHeader 
+            title={props.intl.formatMessage(webJobMessage.shared.page.listTitle, {state: 'Job List'})}
+          />
+        </Card>
+        <DefinitionJobList />
+      </React.Fragment>
+    }
     <Delete
       action={props.action}
       isOpenDialog={props.dialogOpen}

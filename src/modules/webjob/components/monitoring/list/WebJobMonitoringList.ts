@@ -92,8 +92,8 @@ const handlerCreators: HandleCreators<WebJobMonitoringListProps, IOwnHandler> = 
 const lifecycles: ReactLifeCycleFunctions<WebJobMonitoringListProps, IOwnState> = {
   componentDidMount() {
     this.props.masterPage.changePage({
-      uid: AppMenu.WebJobMonitoring,
-      parentUid: AppMenu.WebJob,
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
       title: this.props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Monitoring'}),
     });
   },

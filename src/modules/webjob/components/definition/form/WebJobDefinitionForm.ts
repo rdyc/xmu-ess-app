@@ -153,8 +153,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WebJobDefinitionFormProps, IOw
   componentDidMount() {
     // configure view
     this.props.masterPage.changePage({
-      uid: AppMenu.WebJobDefinition,
-      parentUid: AppMenu.WebJob,
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
       parentUrl: '/webjob/definitions',
       title: this.props.intl.formatMessage(webJobMessage.shared.page.createTitle, {state: 'Definition'}),
     });
