@@ -117,7 +117,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
             <Avatar className={props.classes.avatarSecondary}>
             </Avatar>
               <Typography style={{position: 'absolute', left: '72px', transform: 'translate(10px, 10px)'}}>
-                No Respond
+                Assigned
               </Typography>
             </Grid>
             <Grid item xs={12} style={{display: 'flex'}}>

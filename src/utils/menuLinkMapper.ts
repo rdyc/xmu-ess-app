@@ -297,18 +297,6 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU87':
       path = '/webjob';
       break;
-
-    case 'MNU88':
-      path = '/webjob/definitions';
-      break;
-
-    case 'MNU89':
-      path = '/webjob/monitoring';
-      break;
-
-    case 'MNU90':
-      path = '/webjob/recurrings';
-      break;
       
     default:
       path = '/home/dashboard';

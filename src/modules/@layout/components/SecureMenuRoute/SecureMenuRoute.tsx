@@ -29,8 +29,14 @@ const handlerCreators: HandleCreators<SecureMenuRouteProps, IOwnHandler> = {
     if (user && user.menus) {
       const menu = user.menus.find(item => item.uid === props.menu);
 
-      if (menu && menu.childs) {
-        result = menu.childs.findIndex(item => item.uid === props.subMenu) > -1;
+      if (menu) {
+        if (menu.uid === AppMenu.WebJob) {
+          result = true;
+        } else {
+          if (menu.childs) {
+            result = menu.childs.findIndex(item => item.uid === props.subMenu) > -1;
+          }
+        }
       }
     }
 
