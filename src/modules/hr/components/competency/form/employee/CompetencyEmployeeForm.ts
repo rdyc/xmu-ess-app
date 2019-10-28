@@ -117,10 +117,13 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
       .of(
         Yup.object().shape({
           note: Yup.string()
+            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => 
+              val.split(' ').length >= 5
+            )
             .max(300)
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
             .when('levelUid', ({
-              is: (val) => val !== '',
+              is: (lvl: any) => lvl !== '',
               then: Yup.string().required()
             }))
         })
