@@ -13,7 +13,7 @@ import {
   accountEmployeeKPIFinalGetByIdRequest,
   accountEmployeeKPIFinalGetByIdSuccess,
 } from '@account/store/actions';
-import { newHostAddress } from '@constants/newHostAddress';
+
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
@@ -28,7 +28,7 @@ function* watchAllAssignRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/account/employees/kpis/assign?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -55,7 +55,7 @@ function* watchAllFinalRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/account/employees/kpis/final?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -82,7 +82,7 @@ function* watchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -103,7 +103,7 @@ function* watchAllRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeKPIFinalGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => ([

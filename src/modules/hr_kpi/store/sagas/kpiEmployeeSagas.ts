@@ -1,4 +1,4 @@
-import { newHostAddress } from '@constants/newHostAddress';
+
 import {
   KPIEmployeeAction as Action,
   KPIEmployeeGetAllDispose,
@@ -35,7 +35,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}?${params}`,
       successEffects: (response: IApiResponse) => [
@@ -59,7 +59,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
@@ -80,7 +80,7 @@ function* watchGetByIdRequest() {
 function* watchGetLatestRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeeGetLatestRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'get',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiAssignUid}/latest`,
       successEffects: (response: IApiResponse) => [
@@ -101,7 +101,7 @@ function* watchGetLatestRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePostRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'post',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
@@ -142,7 +142,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePutRequest>) => {
     return saiyanSaga.fetch({
-      host: newHostAddress,
+      
       method: 'put',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       payload: action.payload.data,
