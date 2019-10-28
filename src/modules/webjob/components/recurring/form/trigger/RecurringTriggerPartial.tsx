@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -11,11 +11,7 @@ type RecurringTriggerPartialProps = {
 };
 
 const RecurringTriggerPartial: React.ComponentType<RecurringTriggerPartialProps> = props => (
-  <Card square>
-    <CardHeader 
-      title={props.intl.formatMessage(webJobMessage.shared.section.infoTitle, {state: 'Recurring'})}
-    />
-    <CardContent>
+  <React.Fragment>
     <Field
         name="jobUid"
         render={({ field, form }: FieldProps<IRecurringTriggerFormValue>) => (
@@ -23,6 +19,7 @@ const RecurringTriggerPartial: React.ComponentType<RecurringTriggerPartialProps>
             {...field}
             fullWidth
             required
+            multiline
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
@@ -60,8 +57,7 @@ const RecurringTriggerPartial: React.ComponentType<RecurringTriggerPartialProps>
           </DefintionJobOption>
         )}
       /> */}
-    </CardContent>
-  </Card>
+  </React.Fragment>
 );
 
 export default RecurringTriggerPartial;

@@ -17,6 +17,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -32,6 +33,7 @@ export interface IRecurringTriggerFormValue {
 
 interface IOwnOption {
   isOpen: boolean;
+  jobUid?: string;
   handleTriggerVisibility: (value: boolean) => {};
 }
 
@@ -41,6 +43,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setInitialValues: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -158,8 +161,19 @@ const handlerCreators: HandleCreators<RecurringTriggerFormProps, IOwnHandler> = 
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<RecurringTriggerFormProps, IOwnState> = {
-  componentDidUpdate() {
-    // 
+  componentDidUpdate(prevProps: RecurringTriggerFormProps) {
+    const { jobUid: thisJobUid } = this.props;
+    const { jobUid: prevJobUid } = prevProps;
+
+    if (thisJobUid !== prevJobUid) {
+      if (thisJobUid) {
+        const initialValues: IRecurringTriggerFormValue = {
+          jobUid: thisJobUid
+        };
+
+        this.props.setInitialValues(initialValues);
+      }
+    }
   }
 };
 

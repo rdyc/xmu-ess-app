@@ -20,8 +20,8 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.WebJobRecurring,
-        parentUid: AppMenu.WebJob,
+        uid: AppMenu.WebJob,
+        parentUid: AppMenu.Home,
         title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Recurring'}),
       }}
 
@@ -39,6 +39,21 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
       )}
       actionComponent={(item: IWebJobRecurring) => (
         <React.Fragment>
+          <Button 
+            size="small"
+            color="secondary"
+            onClick={() => props.handleTriggerVisibility(true, item.uid)} 
+          >
+            {props.intl.formatMessage(layoutMessage.action.trigger)}
+          </Button>
+          <Button 
+            size="small"
+            color="secondary"
+            disabled
+            onClick={() => props.history.push(`/webjob/recurrings/form`, {uid: item.uid})} 
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
           <Button 
             size="small"
             color="secondary"
@@ -70,21 +85,20 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
           placement="bottom"
           title={props.intl.formatMessage(webJobMessage.recurring.field.type, {state: 'Trigger'})}
         >
-          <div>
-            <IconButton
-              id="option-filter"
-              disabled={props.webJobRecurringState.all.isLoading || props.webJobRecurringState.all.isError}
-              onClick={() => props.handleTriggerVisibility(true)} 
-            >
-              <Cached/>              
-            </IconButton>
-          </div>
+          <IconButton
+            id="option-filter"
+            disabled={props.webJobRecurringState.all.isLoading || props.webJobRecurringState.all.isError}
+            onClick={() => props.handleTriggerVisibility(true)} 
+          >
+            <Cached/>              
+          </IconButton>
         </Tooltip>
       }
     />
 
     {/* Trigger Form */}
     <RecurringTriggerForm 
+      jobUid={props.jobUid}
       isOpen={props.isTriggerOpen}
       handleTriggerVisibility={props.handleTriggerVisibility}
     />

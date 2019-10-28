@@ -18,6 +18,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -53,6 +54,7 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setInitialValues: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {

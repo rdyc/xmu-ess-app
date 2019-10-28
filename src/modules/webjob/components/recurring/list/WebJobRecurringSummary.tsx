@@ -58,8 +58,8 @@ const webjobRecurringSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(webJobMessage.recurring.field.isAutoStart)}
-        value={props.data.isAutoStart}
+        label={props.intl.formatMessage(webJobMessage.recurring.field.startType)}
+        value={props.intl.formatMessage(props.data.isAutoStart ? webJobMessage.recurring.field.isAutoStart : webJobMessage.recurring.field.isManualStart)}
       />
     </Grid>
   </Grid>

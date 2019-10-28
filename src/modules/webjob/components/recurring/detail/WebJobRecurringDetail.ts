@@ -218,7 +218,7 @@ const lifecycles: ReactLifeCycleFunctions<WebJobRecurringDetailProps, IOwnState>
         {
           id: IWebJobUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: !isLoading,
+          enabled: false,
           visible: true,
         }
       ];
