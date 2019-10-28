@@ -74,9 +74,14 @@ const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
                   primary={intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
                 />
                 <ListItemSecondaryAction>
-                  <span className={props.classes.badgeChild} style={{right: '32px'}}>
-                    {data[item.name]}
-                  </span>
+                  {
+                    data[item.name] !== undefined ?
+                    <span className={props.classes.badgeChild} style={{right: '32px'}}>
+                      {data[item.name]}
+                    </span>
+                    :
+                    ''
+                  }
                 </ListItemSecondaryAction>
               </ListItem>
             </React.Fragment>  
