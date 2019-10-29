@@ -877,7 +877,7 @@ const styles = (theme: Theme) =>
       },
     },
 
-    titleText: {
+    textWithStrikeLine: {
       display: 'grid',
       gridTemplateColumns: '1fr max-content 1fr',
       gridColumnGap: '1.5rem',

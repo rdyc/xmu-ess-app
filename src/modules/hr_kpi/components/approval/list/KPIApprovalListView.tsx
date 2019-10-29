@@ -19,7 +19,7 @@ export const KPIApprvoalListView: React.SFC<KPIApprovalListProps> = props => (
       info={{
         uid: AppMenu.HRKPIInput,
         parentUid: AppMenu.HumanResource,
-        title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: 'Employee'}),
+        title: props.intl.formatMessage(kpiMessage.employee.page.approvalListTitle),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
       }}
 
