@@ -43,7 +43,12 @@ export const employeeLevelField = defineMessages({
 
   seq: {id: `${prefix}.field.seq`},
   seqPlaceholder: {id: `${prefix}.field.seq.placeholder`},
+  seqRequired: {id: `${prefix}.field.seq.required`},
   
+  subSequence: {id: `${prefix}.field.subSequence`},
+  subSequencePlaceholder: {id: `${prefix}.field.subSequence.placeholder`},
+  subSequenceRequired: {id: `${prefix}.field.subSequence.required`},
+
   value: {id: `${prefix}.field.value`},
   valueRequired: {id: `${prefix}.field.value.required`},
   valuePlaceholder: {id: `${prefix}.field.value.placeholder`},
@@ -58,6 +63,7 @@ export const employeeLevelFieldHelperFor = (field: string, type: 'fieldName' | '
     switch (field) {
       case 'uid': return employeeLevelField.uid;
       case 'seq': return employeeLevelField.seq;
+      case 'subSequence': return employeeLevelField.subSequence;
       case 'value': return employeeLevelField.value;
       case 'description': return employeeLevelField.description;
           
@@ -67,8 +73,10 @@ export const employeeLevelFieldHelperFor = (field: string, type: 'fieldName' | '
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'value': return employeeLevelField.value;
-      case 'description': return employeeLevelField.description;
+      case 'seq': return employeeLevelField.seqRequired;
+      case 'subSequence': return employeeLevelField.subSequenceRequired;
+      case 'value': return employeeLevelField.valueRequired;
+      case 'description': return employeeLevelField.descriptionRequired;
 
       default: return {id: field};
     }
@@ -78,6 +86,7 @@ export const employeeLevelFieldHelperFor = (field: string, type: 'fieldName' | '
     switch (field) {
       case 'uid': return employeeLevelField.uidPlaceholder;
       case 'seq': return employeeLevelField.seqPlaceholder;
+      case 'subSequence': return employeeLevelField.subSequencePlaceholder;
       case 'value': return employeeLevelField.valuePlaceholder;
       case 'description': return employeeLevelField.descriptionPlaceholder;
       

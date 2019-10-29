@@ -104,8 +104,8 @@ const handlerCreators: HandleCreators<LookupEmployeeLevelListProps, IOwnHandler>
   handleOnBind: (props: LookupEmployeeLevelListProps) => (item: IEmployeeLevel, index: number) => ({
     key: index,
     primary: item.seq.toString(),
-    secondary: item.value,
-    tertiary: '',
+    secondary: item.subSequence.toString(),
+    tertiary: item.value,
     quaternary: item.description,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
