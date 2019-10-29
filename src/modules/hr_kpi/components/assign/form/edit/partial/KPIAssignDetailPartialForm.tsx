@@ -157,7 +157,7 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
         <Field
           name="year"
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
-            <InputYearOption withFuture>
+            <InputYearOption withFuture withPast>
               <SelectField
                 isSearchable
                 menuPlacement="auto"
