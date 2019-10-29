@@ -648,6 +648,13 @@ const styles = (theme: Theme) =>
     /* text */
     textStrikethrough : { textDecoration: 'line-through' },
 
+    /* padding */
+    ultraDense : {
+      padding: '3px',
+    },
+
+    /* -------- generic classes end ----------*/
+
     /* report */
     reportPaper: {
       overflowX: 'auto',
@@ -666,6 +673,8 @@ const styles = (theme: Theme) =>
     reportContentScrollable: {
       overflowX: 'auto'
     },
+
+    /* ---------  Table  ----------*/
 
     /* report table */
     reportTable: {
@@ -700,10 +709,6 @@ const styles = (theme: Theme) =>
     cellWidthXXXL: {
       width: '40vw'
     },
-
-    /* -------- generic classes end ----------*/
-
-    /* ---------  Table  ----------*/
 
     /* Table */
 

@@ -44,35 +44,34 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
           !props.isAssignLoading &&
           <Table
             className={classNames(props.classes.reportTable)}
-            padding="dense"
           >
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                 </TableCell>
-                <TableCell>
+                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                 </TableCell>
-                <TableCell>
+                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.target)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.weight)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.threshold)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.achieved)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.progress)}
                 </TableCell>
-                <TableCell>
+                <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.score)}
                 </TableCell>
               </TableRow>
@@ -86,26 +85,26 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                       props.formikBag.values.items.length > 0 &&
                       props.formikBag.values.items.map((item, index) =>
                       <TableRow key={index}>
-                        <TableCell style={{ verticalAlign: 'top' }}>
+                        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {item.categoryName}
                         </TableCell>
-                        <TableCell style={{ verticalAlign: 'top' }}>
+                        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {item.measurementDescription}
                         </TableCell>
-                        <TableCell style={{ verticalAlign: 'top' }}>
+                        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {item.target}
                         </TableCell>
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {`${props.intl.formatNumber(item.weight)} %`}
                         </TableCell>
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
                             item.measurementType === MeasurementType.Scoring  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
                           }
                         </TableCell>
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
                             (item.measurementType === MeasurementType.Scoring ||
                               item.measurementType === MeasurementType.Attendance) &&
@@ -113,10 +112,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                             '-'
                           }
                         </TableCell>
-                        {
-
-                        }
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                         {
                           item.measurementType &&
                           item.measurementType !== MeasurementType.Completion &&
@@ -247,10 +243,10 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                             />
                           }
                         </TableCell>
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {`${props.intl.formatNumber(item.progress)} %`}
                         </TableCell>
-                        <TableCell numeric style={{ verticalAlign: 'top' }}>
+                        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {props.intl.formatNumber(item.score)}
                         </TableCell>
                       </TableRow>
