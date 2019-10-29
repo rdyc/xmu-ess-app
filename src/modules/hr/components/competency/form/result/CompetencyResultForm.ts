@@ -119,15 +119,23 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
       .of(
         Yup.object().shape({
           note: Yup.string()
-            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => 
-              val.split(' ').length >= 5
-            )
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
             .max(300)
-            .when('noteHistory', ({
-              is: (val) => val !== '',
-              then: Yup.string().notRequired(),
+            .when('levelUid', ({
+              is: (lvl: any) => lvl !== '',
+              then: Yup.string().required()
             }))
+            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => {
+              if (val !== undefined) {
+                if (val.match(/[\w]+/ig) && val.match(/[\w]+/ig).length >= 5) {
+                  return true;
+                }
+              } else {
+                return true;
+              }
+
+              return false;
+            })
         })
       )
   })

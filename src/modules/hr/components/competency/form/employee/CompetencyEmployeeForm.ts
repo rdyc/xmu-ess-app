@@ -125,16 +125,15 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
             }))
             .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => {
               if (val !== undefined) {
-                if (val.split(' ').length >= 5) {
+                // With symboll
+                // val.replace(/\s{2,}/g, ' ').replace(/^\s/, '').split(' ').length >= 5
+                if (val.match(/[\w]+/ig) && val.match(/[\w]+/ig).length >= 5) {
                   return true;
-                }
-                if (val.split(' ').length < 5) {
-                  return false;
                 }
               } else {
                 return true;
               }
-              
+
               return false;
             })
         })
