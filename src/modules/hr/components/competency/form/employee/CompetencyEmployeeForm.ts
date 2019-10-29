@@ -117,15 +117,26 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
       .of(
         Yup.object().shape({
           note: Yup.string()
-            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => 
-              val.split(' ').length >= 5
-            )
             .max(300)
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
             .when('levelUid', ({
               is: (lvl: any) => lvl !== '',
               then: Yup.string().required()
             }))
+            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => {
+              if (val !== undefined) {
+                if (val.split(' ').length >= 5) {
+                  return true;
+                }
+                if (val.split(' ').length < 5) {
+                  return false;
+                }
+              } else {
+                return true;
+              }
+              
+              return false;
+            })
         })
       )
   })
@@ -298,13 +309,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
           thisMapped.data[0].categories.forEach(item => {
             const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
 
-            const note: string[] = find && find.note && find.note.split(' - ') || [];
+            // const note: string[] = find && find.note && find.note.split(' - ') || [];
             
             initialVal.levelRespond.push({
               uid: find && find.uid || '',
               categoryUid: item.category.uid,
               levelUid: find && find.levelUid || '',
-              note: note[2] || ''
+              note: find && find.note && find.note.split(' - ')[2]
             });  
           });
           this.props.setInitialValues(initialVal);
