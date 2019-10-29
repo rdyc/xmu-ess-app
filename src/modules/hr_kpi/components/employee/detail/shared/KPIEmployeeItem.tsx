@@ -34,19 +34,19 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.kpiAssignItem && item.kpiAssignItem.categoryName}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.kpiAssignItem && item.kpiAssignItem.measurementDescription}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.kpiAssignItem && item.kpiAssignItem.target}
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {`${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %`}
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.kpiAssignItem &&
             item.kpiAssignItem.measurement && 
@@ -55,7 +55,7 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.kpiAssignItem &&
             item.kpiAssignItem.measurement && 
@@ -65,13 +65,13 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
             '-'
           }
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {props.intl.formatNumber(item.achieved)}
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {`${props.intl.formatNumber(item.progress)} %`}
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {`${props.intl.formatNumber(item.score)} %`}
         </TableCell>
       </TableRow>     
@@ -94,35 +94,34 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
           >
             <Table
               className={classNames(props.classes.reportTable)}
-              padding="dense"
             >
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.target)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.weight)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.threshold)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.achieved)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.progress)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.score)}
                   </TableCell>
                 </TableRow>

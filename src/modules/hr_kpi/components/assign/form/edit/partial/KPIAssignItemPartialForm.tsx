@@ -73,35 +73,34 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
         >
           <Table
             className={classNames(props.classes.reportTable)}
-            padding="dense"
           >
             <TableHead>
               <TableRow>
-                <TableCell className={classNames(props.classes.cellWidthMd)}>
+                <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthMd)}>
+                <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthMd)}>
+                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthMd)}>
+                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthMd)}>
+                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.target)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXS)}>
+                <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.weight)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXS)}>
+                <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.threshold)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXS)}>
+                <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXSS)}>
+                <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(layoutMessage.action.delete)}
                 </TableCell>
               </TableRow>
@@ -117,45 +116,45 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                       <Tooltip key={index} title={props.intl.formatMessage(kpiMessage.measurement.field.tooltip)}>
                         <TableRow key={index}>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].categoryValue}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].categoryName}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].measurementValue}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].measurementDescription}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].target}
                           </TableCell>
                           <TableCell 
                             numeric 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
                           </TableCell>
                           <TableCell 
                             numeric 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
@@ -166,7 +165,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                           </TableCell>
                           <TableCell 
                             numeric 
-                            style={{ verticalAlign: 'top' }}
+                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
@@ -187,7 +186,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             itemDialogIndex={index}
                             isDialogFullScreen={props.isDialogFullScreen}
                           />
-                          <TableCell>
+                          <TableCell className={classNames(props.classes.ultraDense)}>
                             <IconButton 
                               disabled={props.formikBag.values.items[index].isAssignItemInUse}
                               onClick={() => {
