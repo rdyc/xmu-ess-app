@@ -24,6 +24,11 @@ const lookupEmployeeLevelSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(lookupMessage.employeeLevel.field.seq)}
         value={props.data.seq}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.employeeLevel.field.subSequence)}
+        value={props.data.subSequence}
+      />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>

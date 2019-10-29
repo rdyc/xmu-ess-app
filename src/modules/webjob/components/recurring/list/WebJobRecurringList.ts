@@ -8,6 +8,7 @@ import { IWebJobRecurringGetAllFilter } from '@webjob/classes/filters';
 import { IWebJobRecurring } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
 import { withWebJobRecurring, WithWebJobRecurring } from '@webjob/hoc/withWebJobRecurring';
+import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 // import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -35,10 +36,12 @@ interface IOwnParams {
 
 interface IOwnState {
   fields: ICollectionValue[];
+  isTriggerOpen: boolean;
+  jobUid?: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-
+  handleTriggerVisibility: (value: boolean, jobUid?: string) => IOwnState;
 }
 
 interface IOwnHandler {
@@ -64,12 +67,18 @@ const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
       value: key,
       name: IWebJobRequestField[key]
     })),
+    isTriggerOpen: false,
+    jobUid: ''
   };
 
   return state;
 };
 
 const stateUpdaters: StateUpdaters<WebJobRecurringListProps, IOwnState, IOwnStateUpdater> = {
+  handleTriggerVisibility: (state: IOwnState) => (value: boolean, jobUid?: string) => ({
+    jobUid,
+    isTriggerOpen: value,
+  })
 };
 
 const handlerCreators: HandleCreators<WebJobRecurringListProps, IOwnHandler> = {
@@ -130,7 +139,7 @@ const handlerCreators: HandleCreators<WebJobRecurringListProps, IOwnHandler> = {
     tertiary: item.description,
     quaternary: '',
     quinary: item.cron.expression,
-    senary: item.isAutoStart.toString()
+    senary: props.intl.formatMessage(item.isAutoStart ? webJobMessage.recurring.field.isAutoStart : webJobMessage.recurring.field.isManualStart)
   }),
 };
 

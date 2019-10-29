@@ -20,7 +20,7 @@ export const KPIEmployeeListView: React.SFC<KPIEmployeeListProps> = props => (
       info={{
         uid: AppMenu.ManagerKPIInput,
         parentUid: AppMenu.HumanResource,
-        title: props.intl.formatMessage(kpiMessage.employee.page.listEmployeeTitle, {employeeName: 'Employee'}),
+        title: props.intl.formatMessage(kpiMessage.employee.page.managerListTitle),
         description: props.intl.formatMessage(kpiMessage.employee.page.listSubHeader),
       }}
 

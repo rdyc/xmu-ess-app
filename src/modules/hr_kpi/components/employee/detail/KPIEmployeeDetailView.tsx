@@ -16,7 +16,7 @@ export const KPIEmployeeDetailView: React.SFC<KPIEmployeeDetailProps> = props =>
       uid: AppMenu.ManagerKPIInput,
       parentUid: AppMenu.HumanResource,
       parentUrl: `/kpi/employees`,
-      title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
+      title: props.intl.formatMessage(kpiMessage.employee.page.managerDetailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
     state={props.kpiEmployeeState.detail}

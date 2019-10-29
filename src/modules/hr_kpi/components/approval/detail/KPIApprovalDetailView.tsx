@@ -22,7 +22,7 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
       uid: AppMenu.HRKPIInput,
       parentUid: AppMenu.HumanResource,
       parentUrl: `/kpi/approvals`,
-      title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
+      title: props.intl.formatMessage(kpiMessage.employee.page.approvalDetailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
     state={props.kpiApprovalState.detail}

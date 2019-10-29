@@ -9,8 +9,8 @@ import {
   withStyles,
 } from '@material-ui/core';
 import styles from '@styles';
-import { IWebJobMonitoringStatistic } from '@webjob/classes/response';
 import { MonitoringJobsItem } from '@webjob/classes/types/monitoring/MonitoringJobsItem';
+import { WithWebJobMonitoring, withWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,7 +22,7 @@ interface IOwnOption {
 }
 
 interface IOwnProps {
-  data: IWebJobMonitoringStatistic;
+  // data: IWebJobMonitoringStatistic;
 }
 
 interface IOwnState {
@@ -36,6 +36,7 @@ type AllProps
   & IOwnState
   & IOwnStateHandler
   & RouteComponentProps<IOwnOption>
+  & WithWebJobMonitoring
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
@@ -46,7 +47,8 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
-  const { intl, data } = props;
+  const { intl } = props;
+  const { response, isLoading } = props.webJobMonitoringState.statisticAll;
 
   const tabs = Object.keys(MonitoringJobsItem).map((key) => ({
     id: key,
@@ -74,9 +76,24 @@ const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
                   primary={intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
                 />
                 <ListItemSecondaryAction>
-                  <span className={props.classes.badgeChild} style={{right: '32px'}}>
-                    {data[item.name]}
-                  </span>
+                  {
+                    isLoading ?
+                    <span className={props.classes.badgeChild} style={{right: '32px'}}>
+                      ...
+                    </span>
+                    :
+                    (
+                      response &&
+                      response.data &&
+                      response.data[item.name] !== undefined ?
+                      <span className={props.classes.badgeChild} style={{right: '32px'}}>
+                        {/* {response.data[item.name] > 99 ? '99+' : response.data[item.name]} */}
+                        {response.data[item.name]}
+                      </span>
+                      :
+                      ''
+                    )
+                  }
                 </ListItemSecondaryAction>
               </ListItem>
             </React.Fragment>  
@@ -92,6 +109,7 @@ const monitoringJobsItemTabs: React.SFC<AllProps> = props => {
 export const MonitoringJobsItemTabs = compose<AllProps, IOwnProps>(
   injectIntl,
   withRouter,
+  withWebJobMonitoring,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters)
 )(monitoringJobsItemTabs);

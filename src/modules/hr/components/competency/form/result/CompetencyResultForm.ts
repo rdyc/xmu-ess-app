@@ -121,21 +121,21 @@ const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: Compet
           note: Yup.string()
             .label(props.intl.formatMessage(hrMessage.competency.field.note))
             .max(300)
-            // .required()
-            // .when(['levelUid', 'noteHistory'], {
-            //   is: val => val[0] !== '' ? (val[1] !== '' ? true : false ) : false ,
-            //   then: Yup.string().notRequired(),
-            //   otherwise: Yup.string().required()
-            // })
-            // .when('levelUid', ({
-            //   is: (val) => val !== '',
-            //   then: Yup.string().required()
-            // }))
-            .when('noteHistory', ({
-              is: (val) => val !== '',
-              then: Yup.string().notRequired(),
-              // otherwise: Yup.string().required()
+            .when('levelUid', ({
+              is: (lvl: any) => lvl !== '',
+              then: Yup.string().required()
             }))
+            .test('5 words minimum', props.intl.formatMessage(hrMessage.competency.field.minNote), (val) => {
+              if (val !== undefined) {
+                if (val.match(/[\w]+/ig) && val.match(/[\w]+/ig).length >= 5) {
+                  return true;
+                }
+              } else {
+                return true;
+              }
+
+              return false;
+            })
         })
       )
   })

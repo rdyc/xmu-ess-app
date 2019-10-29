@@ -3,7 +3,7 @@ import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { LookupUserAction } from '@lookup/classes/types';
+import { IWebJobUserAction } from '@webjob/classes/types';
 import { WithWebJobRecurring, withWebJobRecurring } from '@webjob/hoc/withWebJobRecurring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -39,7 +39,7 @@ interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   shouldLoad: boolean;
   isAdmin: boolean;
-  action?: LookupUserAction;
+  action?: IWebJobUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -98,7 +98,7 @@ const stateUpdaters: StateUpdaters<WebJobRecurringDetailProps, IOwnState, IOwnSt
     menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: WebJobRecurringDetailProps) => (): Partial<IOwnState> => ({
-    action: LookupUserAction.Modify,
+    action: IWebJobUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(webJobMessage.shared.confirm.modifyTitle, {state: 'Recurring'}),
@@ -131,11 +131,11 @@ const handlerCreators: HandleCreators<WebJobRecurringDetailProps, IOwnHandler> =
   },
   handleOnSelectedMenu: (props: WebJobRecurringDetailProps) => (item: IPopupMenuOption) => {
     switch (item.id) {
-      case LookupUserAction.Refresh:
+      case IWebJobUserAction.Refresh:
         props.setShouldLoad();
         break;
 
-      case LookupUserAction.Modify:
+      case IWebJobUserAction.Modify:
         props.setModify();
         break;
 
@@ -164,14 +164,14 @@ const handlerCreators: HandleCreators<WebJobRecurringDetailProps, IOwnHandler> =
 
     // actions with new page
     const actions = [
-      LookupUserAction.Modify
+      IWebJobUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case LookupUserAction.Modify:
+        case IWebJobUserAction.Modify:
           next = '/webjob/recurrings/form';
           break;
 
@@ -210,15 +210,15 @@ const lifecycles: ReactLifeCycleFunctions<WebJobRecurringDetailProps, IOwnState>
 
       const options: IPopupMenuOption[] = [
         {
-          id: LookupUserAction.Refresh,
+          id: IWebJobUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
         },
         {
-          id: LookupUserAction.Modify,
+          id: IWebJobUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: true,
+          enabled: false,
           visible: true,
         }
       ];
