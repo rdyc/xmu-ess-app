@@ -28,6 +28,7 @@ interface IOwnState {
 
 interface IOwnHandlers {
   handleChangeTab: (tabValue: number) => void;
+  handleLoadStatistic: () => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -61,6 +62,15 @@ const handlerCreators: HandleCreators<WebJobMonitoringTabProps, IOwnHandlers> = 
     props.stateUpdate({
       tabValue
     });
+  },
+  handleLoadStatistic: (props: WebJobMonitoringTabProps) => () => {
+    const { loadAllStatisticRequest } = props.webJobMonitoringDispatch;
+
+    const { isLoading } = props.webJobMonitoringState.statisticAll;
+
+    if (!isLoading) {
+      loadAllStatisticRequest({});
+    }
   }
 };
 
@@ -73,13 +83,17 @@ const lifecycles: ReactLifeCycleFunctions<WebJobMonitoringTabProps, IOwnState> =
 
     tabs.map((item, index) => item.name === this.props.tab ? this.props.handleChangeTab(index) : null);
 
-    const { loadAllStatisticRequest } = this.props.webJobMonitoringDispatch;
-    const { isLoading, response } = this.props.webJobMonitoringState.statisticAll;
+    const { response } = this.props.webJobMonitoringState.statisticAll;
 
-    if (!isLoading && !response) {
-      loadAllStatisticRequest({});
+    if (!response) {
+      this.props.handleLoadStatistic();
     }
+
+    setInterval(this.props.handleLoadStatistic, 60 * 1000);
   },
+  componentWillUpdate(nextProps: WebJobMonitoringTabProps) {
+    // 
+  }
 };
 
 export const WebJobMonitoringTab = compose<WebJobMonitoringTabProps, IOwnOption>(
