@@ -51,13 +51,6 @@ const myKPIFinalSummary: React.SFC<AllProps> = props => (
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-          value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
-          helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
-        />
-
         {
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField
