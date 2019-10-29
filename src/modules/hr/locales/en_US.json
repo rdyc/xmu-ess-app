@@ -71,6 +71,7 @@
   "hr.competency.field.year": "Year",
   "hr.competency.field.company": "Company",
   "hr.competency.field.position": "Position",
+  "hr.competency.field.minNote": "Must have at least 5 words",
   "hr.competency.field.minCategories": "Must have at least one category",
   "hr.competency.field.minLevels": "Must have at least one level",
   "hr.competency.field.minIndicators": "Must have at least one indicator",

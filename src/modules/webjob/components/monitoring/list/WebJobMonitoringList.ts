@@ -5,7 +5,6 @@ import { withOidc, WithOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { WithWebJobMonitoring, withWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -39,7 +38,6 @@ export type WebJobMonitoringListProps
   & WithOidc
   & WithLayout
   & WithMasterPage
-  & WithWebJobMonitoring
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
@@ -92,8 +90,8 @@ const handlerCreators: HandleCreators<WebJobMonitoringListProps, IOwnHandler> = 
 const lifecycles: ReactLifeCycleFunctions<WebJobMonitoringListProps, IOwnState> = {
   componentDidMount() {
     this.props.masterPage.changePage({
-      uid: AppMenu.WebJobMonitoring,
-      parentUid: AppMenu.WebJob,
+      uid: AppMenu.WebJob,
+      parentUid: AppMenu.Home,
       title: this.props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Monitoring'}),
     });
   },
@@ -105,7 +103,6 @@ export const WebJobMonitoringList = compose<WebJobMonitoringListProps, {}>(
   withUser,
   withLayout,
   withMasterPage,
-  withWebJobMonitoring,
   injectIntl,
   withStyles(styles),
   withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),

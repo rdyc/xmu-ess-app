@@ -91,10 +91,7 @@ enum AppMenu {
   MyProfile = 'MNU85',
   LookupEmployeeLevel = 'MNU86',
   KPIOpen = 'MNU91',
-  WebJob = 'MNU87',
-  WebJobDefinition = 'MNU88',
-  WebJobMonitoring = 'MNU89',
-  WebJobRecurring = 'MNU90',
+  WebJob = 'MNU87'
 }
 
 export default AppMenu;

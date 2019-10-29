@@ -91,11 +91,16 @@ function* watchFetchByIdRequest() {
 
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionPostRequest>) => {
+    const data = new FormData();
+
+    data.append('package', action.payload.data.package[0]);
+
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
       method: 'post',
       path: `/api/v1/definitions`,
-      payload: action.payload.data,
+      payload: data,
+      isJsonContent: false,
       successEffects: (response: IApiResponse) => [
         put(webJobDefinitionGetByIdDispose()),
         put(webJobDefinitionGetAllDispose()),

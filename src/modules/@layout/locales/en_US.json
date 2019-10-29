@@ -263,6 +263,7 @@
   "layout.action.saveAs": "Save As",
   "layout.action.draft": "Draft",
   "layout.action.final": "Final",
+  "layout.action.trigger": "Trigger",
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",

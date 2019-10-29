@@ -25,6 +25,13 @@ export const KPIEmployeePage = defineMessages({
   
   approvalListTitle: { id: `${prefix}.page.approval.list.title` },
   approvalListSubHeader: { id: `${prefix}.page.approval.list.subHeader` },
+  approvalDetailTitle: { id: `${prefix}.page.approval.detail.title` },
+  approvalDetailSubHeader: { id: `${prefix}.page.approval.detail.subHeader` },
+
+  managerListTitle: { id: `${prefix}.page.manager.list.title` },
+  managerListSubHeader: { id: `${prefix}.page.manager.list.subHeader` },
+  managerDetailTitle: { id: `${prefix}.page.manager.detail.title` },
+  managerDetailSubHeader: { id: `${prefix}.page.manager.detail.subHeader` },
 });
 
 // message

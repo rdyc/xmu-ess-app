@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
+import { Delete } from '@lookup/components/shared/Delete';
 import { Card, CardHeader } from '@material-ui/core';
 import { IWebJobDefinitionDetail } from '@webjob/classes/response';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
@@ -13,8 +14,8 @@ export const WebJobDefinitionDetailView: React.SFC<WebJobDefinitionDetailProps> 
   <React.Fragment>
     <PreviewPage 
       info={{
-        uid: AppMenu.WebJobDefinition,
-        parentUid: AppMenu.WebJob,
+        uid: AppMenu.WebJob,
+        parentUid: AppMenu.Home,
         parentUrl: `/webjob/definitions/`,
         title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Definition'}),
       }}
@@ -33,12 +34,30 @@ export const WebJobDefinitionDetailView: React.SFC<WebJobDefinitionDetailProps> 
         />
       }
     />
-    <Card square>
-      <CardHeader 
-        title={props.intl.formatMessage(webJobMessage.shared.page.listTitle, {state: 'Job List'})}
-      />
-    </Card>
-    <DefinitionJobList />
-
+    {
+      !props.webJobDefinitionState.detail.isLoading &&
+      <React.Fragment>
+        <Card square>
+          <CardHeader 
+            title={props.intl.formatMessage(webJobMessage.shared.page.listTitle, {state: 'Job List'})}
+          />
+        </Card>
+        <DefinitionJobList />
+      </React.Fragment>
+    }
+    <Delete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
+    />
   </React.Fragment>
 );

@@ -60,6 +60,8 @@ export const webJobSharedMessage = defineMessages({
   updateFailure: { id: `${prefix}.message.update.failure` },
   deleteSuccess: { id: `${prefix}.message.delete.success` },
   deleteFailure: { id: `${prefix}.message.delete.failure` },
+  triggerSuccess: { id: `${prefix}.message.trigger.success` },
+  triggerFailure: { id: `${prefix}.message.trigger.failure` },
 });
 
 // helper

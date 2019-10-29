@@ -2,13 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, IconButton } from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { Button, IconButton, Tooltip } from '@material-ui/core';
+import { AddCircle, Cached } from '@material-ui/icons';
 import { IWebJobRecurring } from '@webjob/classes/response';
 import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
 import { WebJobMonitoringTab } from '@webjob/components/tabs/WebJobMonitoringTab';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
+import { RecurringTriggerForm } from '../form/trigger/RecurringTriggerForm';
 import { WebJobRecurringListProps } from './WebJobRecurringList';
 import { WebjobRecurringSummary } from './WebJobRecurringSummary';
 
@@ -19,8 +20,8 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
     <CollectionPage
       // page info
       info={{
-        uid: AppMenu.WebJobRecurring,
-        parentUid: AppMenu.WebJob,
+        uid: AppMenu.WebJob,
+        parentUid: AppMenu.Home,
         title: props.intl.formatMessage(webJobMessage.shared.page.listTitle, { state: 'Web Job Recurring'}),
       }}
 
@@ -38,6 +39,21 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
       )}
       actionComponent={(item: IWebJobRecurring) => (
         <React.Fragment>
+          <Button 
+            size="small"
+            color="secondary"
+            onClick={() => props.handleTriggerVisibility(true, item.uid)} 
+          >
+            {props.intl.formatMessage(layoutMessage.action.trigger)}
+          </Button>
+          <Button 
+            size="small"
+            color="secondary"
+            disabled
+            onClick={() => props.history.push(`/webjob/recurrings/form`, {uid: item.uid})} 
+          >
+            {props.intl.formatMessage(layoutMessage.action.modify)}
+          </Button>
           <Button 
             size="small"
             color="secondary"
@@ -64,6 +80,27 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
           <AddCircle/>
         </IconButton>
       }
+      toolbarDataComponent={
+        <Tooltip
+          placement="bottom"
+          title={props.intl.formatMessage(webJobMessage.recurring.field.type, {state: 'Trigger'})}
+        >
+          <IconButton
+            id="option-filter"
+            disabled={props.webJobRecurringState.all.isLoading || props.webJobRecurringState.all.isError}
+            onClick={() => props.handleTriggerVisibility(true)} 
+          >
+            <Cached/>              
+          </IconButton>
+        </Tooltip>
+      }
+    />
+
+    {/* Trigger Form */}
+    <RecurringTriggerForm 
+      jobUid={props.jobUid}
+      isOpen={props.isTriggerOpen}
+      handleTriggerVisibility={props.handleTriggerVisibility}
     />
   </WebJobMonitoringTab>
 );

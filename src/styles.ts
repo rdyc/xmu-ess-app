@@ -882,7 +882,7 @@ const styles = (theme: Theme) =>
       },
     },
 
-    titleText: {
+    textWithStrikeLine: {
       display: 'grid',
       gridTemplateColumns: '1fr max-content 1fr',
       gridColumnGap: '1.5rem',
@@ -976,7 +976,28 @@ const styles = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'center',
       transformOrigin: '100% 0%'
-    }
+    },
+
+    dialogTitle: {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      margin: 0,
+      padding: theme.spacing.unit * 2,
+    },
+    dialogClose: {
+      position: 'absolute',
+      right: theme.spacing.unit,
+      top: theme.spacing.unit,
+      color: theme.palette.grey[500],
+    },
+    dialogContent: {
+      margin: 0,
+      padding: theme.spacing.unit * 2,
+    },
+    dialogActions: {
+      borderTop: `1px solid ${theme.palette.divider}`,
+      margin: 0,
+      padding: theme.spacing.unit,
+    },
   });
 
 export default styles;

@@ -42,54 +42,77 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
         props.userState.user.menus &&
         props.userState.user.menus.map(header => (
           <React.Fragment key={header.uid}>
-            <ListItem
-              button
-              onClick={() => props.handleOnClickMenuHeader(header.uid)}
-            >
-              <ListItemIcon className={props.classes.drawerPaperMenuItem}>
-                <ModuleIcon module={header.uid} innerProps={{ color: 'action' }} />
-              </ListItemIcon>
-              <ListItemText 
-                primary={header.name}
-                primaryTypographyProps={{
-                  noWrap: true,
-                  // variant: 'body2'
-                }}
-              />
-              <ListItemSecondaryAction>
-                <ExpandMore 
-                  color="action" 
-                  className={classNames(
-                    props.classes.expand,
-                    props.classes.marginThinRight, 
-                    props.headerUid === header.uid ? props.classes.expandOpen : ''
-                  )} 
+            {
+              header.uid === AppMenu.WebJob ?
+              // Web Job
+              <ListItem
+                button
+                selected={props.childUid === AppMenu.WebJob}
+                onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.WebJob, !isWidthUp('md', props.width))}
+              >
+                <ListItemIcon className={props.classes.drawerPaperMenuItem}>
+                  <ModuleIcon module={header.uid} innerProps={{ color: 'action' }} />
+                </ListItemIcon>
+                <ListItemText 
+                  primary={header.name}
+                  primaryTypographyProps={{
+                    // noWrap: true,
+                    // variant: 'body2'
+                  }}
                 />
-              </ListItemSecondaryAction>
-            </ListItem>
-            
-            <Collapse in={props.headerUid === header.uid}>
-              {
-                header.childs &&
-                header.childs.map(child =>
-                  <ListItem 
-                    key={child.uid}
-                    button
-                    selected={props.childUid === child.uid}
-                    onClick={() => props.handleOnClickMenuItem(header.uid, child.uid, !isWidthUp('md', props.width))}
-                  >
-                    <ListItemText
-                      className={props.classes.drawerPaperMenuItemSub}
-                      primary={child.name}
-                      primaryTypographyProps={{
-                        noWrap: true,
-                        // variant: 'body2'
-                      }}
+              </ListItem>
+              :
+              <React.Fragment>
+                <ListItem
+                  button
+                  onClick={() => props.handleOnClickMenuHeader(header.uid)}
+                >
+                  <ListItemIcon className={props.classes.drawerPaperMenuItem}>
+                    <ModuleIcon module={header.uid} innerProps={{ color: 'action' }} />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary={header.name}
+                    primaryTypographyProps={{
+                      noWrap: true,
+                      // variant: 'body2'
+                    }}
+                  />
+                  <ListItemSecondaryAction>
+                    <ExpandMore 
+                      color="action" 
+                      className={classNames(
+                        props.classes.expand,
+                        props.classes.marginThinRight, 
+                        props.headerUid === header.uid ? props.classes.expandOpen : ''
+                      )} 
                     />
-                  </ListItem>
-                )
-              }
-            </Collapse>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                
+                <Collapse in={props.headerUid === header.uid}>
+                  {
+                    header.childs &&
+                    header.childs.map(child =>
+                      <ListItem 
+                        key={child.uid}
+                        button
+                        selected={props.childUid === child.uid}
+                        onClick={() => props.handleOnClickMenuItem(header.uid, child.uid, !isWidthUp('md', props.width))}
+                      >
+                        <ListItemText
+                          className={props.classes.drawerPaperMenuItemSub}
+                          primary={child.name}
+                          primaryTypographyProps={{
+                            noWrap: true,
+                            // variant: 'body2'
+                          }}
+                        />
+                      </ListItem>
+                    )
+                  }
+                </Collapse>
+              </React.Fragment>
+            }
           </React.Fragment>
         ))
       }

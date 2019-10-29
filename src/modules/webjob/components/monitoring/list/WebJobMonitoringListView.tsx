@@ -1,4 +1,3 @@
-import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
 import { MonitoringJobsItem } from '@webjob/classes/types/monitoring/MonitoringJobsItem';
 import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
@@ -16,7 +15,6 @@ import { MonitoringSucceededList } from './succeeded/MonitoringSucceededList';
 import { WebJobMonitoringListProps } from './WebJobMonitoringList';
 
 export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = props => {
-  const { isLoading, response } = props.webJobMonitoringState.statisticAll;
   const { match } = props;
 
   const handlerList = () => {
@@ -62,29 +60,20 @@ export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = pr
 
   const render = (
   <React.Fragment>
-    {
-      isLoading ?
-      <LoadingCircular />
-      :
-      <WebJobMonitoringTab
-        tab={MonitoringTabs.Monitoring}      
-      >
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={3} lg={3}>
-            {
-              response &&
-              response.data &&
-              <MonitoringJobsItemTabs data={response.data} />
-            }
-          </Grid>
-          <Grid item xs={12} md={9} lg={9}>
-            {
-              handlerList()
-            }
-          </Grid>
+    <WebJobMonitoringTab
+      tab={MonitoringTabs.Monitoring}      
+    >
+      <Grid container spacing={16}>
+        <Grid item xs={12} md={3} lg={3}>
+          <MonitoringJobsItemTabs />
         </Grid>
-      </WebJobMonitoringTab>
-    }
+        <Grid item xs={12} md={9} lg={9}>
+          {
+            handlerList()
+          }
+        </Grid>
+      </Grid>
+    </WebJobMonitoringTab>
   </React.Fragment>
   );
 

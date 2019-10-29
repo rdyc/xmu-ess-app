@@ -31,6 +31,8 @@ import { LookupEmployeeLevelFormView } from './LookupEmployeeLevelFormView';
 
 export interface IEmployeeLevelFormValue {
   uid: string;
+  seq: number;
+  subSequence: number;
   value: string;
   description: string;
 }
@@ -78,12 +80,24 @@ const createProps: mapper<EmployeeLevelFormProps, IOwnState> = (props: EmployeeL
   // form values
   initialValues: {
     uid: 'Auto Generated',
+    seq: 0,
+    subSequence: 0,
     value: '',
     description: ''
   },
 
   // validation props
   validationSchema: Yup.object().shape<Partial<IEmployeeLevelFormValue>>({
+    seq: Yup.number()
+      .min(0)
+      .label(props.intl.formatMessage(lookupMessage.employeeLevel.field.seq))
+      .required(),
+
+    subSequence: Yup.number()
+      .min(0)
+      .label(props.intl.formatMessage(lookupMessage.employeeLevel.field.subSequence))
+      .required(),
+
     value: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.employeeLevel.field.value))
       .required(),
@@ -124,6 +138,8 @@ const handlerCreators: HandleCreators<EmployeeLevelFormProps, IOwnHandler> = {
       if (props.formMode === FormMode.New) {
         // fill payload
         const payload: IEmployeeLevelPostPayload = {
+          seq: values.seq,
+          subSequence: values.subSequence,
           value: values.value,
           description: values.description
         };
@@ -145,6 +161,8 @@ const handlerCreators: HandleCreators<EmployeeLevelFormProps, IOwnHandler> = {
         // must have employeeLevelUid
         if (employeeLevelUid) {
           const payload: IEmployeeLevelPutPayload = {
+            seq: values.seq,
+            subSequence: values.subSequence,
             value: values.value,
             description: values.description
           };
@@ -217,6 +235,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<EmployeeLevelFormProps, IOwnSt
         // define initial values
         const initialValues: IEmployeeLevelFormValue = {
           uid: thisResponse.data.uid,
+          seq: thisResponse.data.seq,
+          subSequence: thisResponse.data.subSequence,
           value: thisResponse.data.value,
           description: thisResponse.data.description
         };

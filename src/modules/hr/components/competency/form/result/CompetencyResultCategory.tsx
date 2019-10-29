@@ -79,9 +79,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
               )
             }
             <TableCell className={props.classes.hrTableResponder} style={{padding: '0 15px'}}>
-              <div>
-                {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
-              </div>
+              {props.intl.formatMessage(hrMessage.competency.field.type, {state: 'HR'})}
             </TableCell>
           </TableRow>
           {
@@ -155,7 +153,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                         responder.items.find(findData => findData.levelUid === level.uid) &&
                         <TableRow>
                           <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
-                            <Typography>
+                            <Typography color="primary">
                               {
                                 findNote(responder.items.find(findData => findData.levelUid === level.uid))
                               }

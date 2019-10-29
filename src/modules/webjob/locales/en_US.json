@@ -39,10 +39,12 @@
   "web.job.shared.message.create.failure": "Unable to process your submission",
   "web.job.shared.message.upload.success": "New {state} has been uploaded ",
   "web.job.shared.message.upload.failure": "Unable to process your submission",
-  "web.job.shared.message.update.success": "{state} with ID {uid} has been updated",
+  "web.job.shared.message.update.success": "{state} with {type} {uid} has been updated",
   "web.job.shared.message.update.failure": "Unable to process your submission",
-  "web.job.shared.message.delete.success": "{state} with ID {uid} has been deleted",
+  "web.job.shared.message.delete.success": "{state} with {type} {uid} has been deleted",
   "web.job.shared.message.delete.failure": "Unable to process your submission",
+  "web.job.shared.message.trigger.success": "{state} with {type} {uid} has been triggerd",
+  "web.job.shared.message.trigger.failure": "Unable to process your submission",
 
   "web.job.monitoring.field.id": "ID",
   "web.job.monitoring.field.job": "Job",
@@ -109,10 +111,14 @@
   "web.job.recurring.field.description": "Description",
   "web.job.recurring.field.cron": "Cron",
   "web.job.recurring.field.cronDesc": "Cron Description",
-  "web.job.recurring.field.expression": "Expression",
+  "web.job.recurring.field.expression": "Cron Expression",
   "web.job.recurring.field.job": "Job",
   "web.job.recurring.field.namespace": "Namespace",
   "web.job.recurring.field.class": "Class",
   "web.job.recurring.field.method": "Method",
-  "web.job.recurring.field.isAutoStart": "Is Auto Start"
+  "web.job.recurring.field.start.type": "Start Type",
+  "web.job.recurring.field.start.auto": "Auto Start",
+  "web.job.recurring.field.start.manual": "Manual Start",
+  "web.job.recurring.field.definition": "Definition"
+
 }

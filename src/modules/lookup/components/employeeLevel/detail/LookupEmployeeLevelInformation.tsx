@@ -32,6 +32,12 @@ const employeeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           multiline
+          label={props.intl.formatMessage(lookupMessage.employeeLevel.field.subSequence)}
+          value={props.data.subSequence}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(lookupMessage.employeeLevel.field.value)}
           value={props.data.value}
         />
