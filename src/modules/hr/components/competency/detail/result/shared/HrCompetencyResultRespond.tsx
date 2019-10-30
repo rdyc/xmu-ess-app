@@ -1,6 +1,7 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { Card, CardHeader, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
 import * as React from 'react';
@@ -116,7 +117,6 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                             <CommentOutlined style={{marginTop: '16px'}} />
                             <ul style={{paddingLeft: '24px'}}>
                               {
-                                // NOTE RESPONDER HERE
                                 props.responders.map(responder => 
                                   !responder.isHR &&
                                   responder.items.length > 0 &&
@@ -141,11 +141,14 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                     props.data.items.find(findData => findData.levelUid === level.uid) &&
                     <TableRow>
                       <TableCell colSpan={props.responders.length + 1}>
-                        <Typography>
-                          {
-                            findNote(props.data.items.find(findData => findData.levelUid === level.uid))
-                          }
-                        </Typography>
+                        <TextField
+                          {...GlobalStyle.TextField.ReadOnly}
+                          value={findNote(props.data.items.find(findData => findData.levelUid === level.uid))}
+                          multiline
+                          inputProps={{
+                            className: props.classes.globalSize
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   }

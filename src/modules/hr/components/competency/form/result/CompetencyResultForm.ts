@@ -336,8 +336,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
               uid: find && find.uid || '',
               categoryUid: item.category.uid,
               levelUid: find && find.levelUid || '',
-              noteHistory: find && find.note || ''
-              // note: find && find.note
+              noteHistory: find && find.note || '',
+              note: find && find.latestNote
             });  
           });
           this.props.setInitialValues(initialVal);

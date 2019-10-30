@@ -10,5 +10,6 @@ export interface ICompetencyEmployeeItem {
   levelUid: string;
   level?: IHrCompetencyLevelList;
   note?: string;
+  latestNote?: string;
   changes?: IBaseChanges;
 }

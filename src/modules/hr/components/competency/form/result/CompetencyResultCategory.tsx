@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
@@ -181,20 +182,26 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                     {/* Note HR */}
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
-                      <TableRow>
-                        <TableCell colSpan={props.responders.length + 1}>
-                          <Field
-                            name={`levelRespond.${index}.noteHistory`}
-                            render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
-                              return (
-                                <Typography>
-                                  {field.value}
-                                </Typography>
-                              );
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
+                      <Field
+                        name={`levelRespond.${index}.noteHistory`}
+                        render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
+                          return (
+                            field.value &&
+                            <TableRow>
+                              <TableCell colSpan={props.responders.length + 1}>
+                                <TextField
+                                  {...GlobalStyle.TextField.ReadOnly}
+                                  {...field}
+                                  multiline
+                                  inputProps={{
+                                    className: props.classes.globalSize
+                                  }}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        }}
+                      />
                     }
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
