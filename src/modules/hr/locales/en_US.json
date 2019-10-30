@@ -83,6 +83,12 @@
   "hr.competency.field.notFound": "{state} not found",
   "hr.competency.field.cluster.required": "Cluster is required",
 
+  "hr.competency.field.assigned": "Assigned",
+  "hr.competency.field.respond": "Respond",
+  "hr.competency.field.expired": "Expired",
+  
+  "hr.competency.field.completion": "Responder / Completion",
+
   "hr.corner.field.uid": "{state} ID",
   "hr.corner.field.uid.placeholder": "{state} ID",
   "hr.corner.field.uid.required": "ID is required",
