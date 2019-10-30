@@ -64,6 +64,7 @@ export const hrCompetencyField = defineMessages({
   inactive: { id: `${prefix}.field.inactive`},
 
   completion: { id: `${prefix}.field.completion`},
+  completionItem: { id: `${prefix}.field.completion.item`},
 });
 
 // helper

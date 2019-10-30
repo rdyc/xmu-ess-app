@@ -48,6 +48,11 @@ const hrCompetencySummaryResult: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(hrMessage.competency.field.status)}
         value={props.data.status && props.data.status.value}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(hrMessage.competency.field.completion)}
+        value={props.intl.formatMessage(hrMessage.competency.field.completionItem, {responder: props.data.totalResponder || 0, completion: props.data.totalResponse || 0})}
+      />
     </Grid>
     {
       props.data.changes &&

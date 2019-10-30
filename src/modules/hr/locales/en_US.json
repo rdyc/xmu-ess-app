@@ -89,6 +89,7 @@
   "hr.competency.field.assess": "Assess",
   "hr.competency.field.inactive": "Inactive Only",
   
+  "hr.competency.field.completion.item": "{responder} / {completion} Responders",
   "hr.competency.field.completion": "Responder / Completion",
 
   "hr.corner.field.uid": "{state} ID",
