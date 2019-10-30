@@ -72,7 +72,7 @@ export const HrCompetencyResultListView: React.SFC<HrCompetencyResultListProps> 
         // app bar component
         appBarSearchComponent={
           <SearchBox
-            key="lookup.competency.result"
+            key="hr.competency.result"
             default={props.hrCompetencyResultState.all.request && props.hrCompetencyResultState.all.request.filter && props.hrCompetencyResultState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}

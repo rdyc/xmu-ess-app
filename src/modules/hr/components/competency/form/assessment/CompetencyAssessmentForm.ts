@@ -48,7 +48,7 @@ export interface ICompetencyAssessmentFormValue {
 }
 
 interface IOwnRouteParams {
-  // 
+  employeeUid: string;
 }
 
 interface IOwnOption {
@@ -94,10 +94,10 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
   // form values
   initialValues: {
     uid: 'Auto Generated',
+    employeeUid: '',
     year: '',
     companyUid: '',
     positionUid: '',
-    employeeUid: '',
     responder: []
   },
   filterAccountEmployee: {
@@ -240,7 +240,7 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
         });
 
         // redirect to detail
-        props.history.push(`/hr/assessment/${response.uid}`);
+        props.history.push(`/hr/assessment/${response.employeeUid}/${response.uid}`);
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -273,7 +273,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
   componentDidUpdate(prevProps: CompetencyAssessmentFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyAssessmentState.detail;
     const { response: prevResponse } = prevProps.hrCompetencyAssessmentState.detail;
-    
+
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
         // define initial values

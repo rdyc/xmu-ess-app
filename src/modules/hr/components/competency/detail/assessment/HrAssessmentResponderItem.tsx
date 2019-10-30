@@ -6,20 +6,15 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemSecondaryAction,
   ListItemText,
-  Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { HelpOutline } from '@material-ui/icons';
+import { lightBlue, orange, red } from '@material-ui/core/colors';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -31,11 +26,11 @@ interface IOwnProps {
 }
 
 interface IOwnState {
-  isHelpOpen: boolean;
+  // isHelpOpen: boolean;
 }
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
-  handleToggle: () => IOwnState;
+  // handleToggle: () => IOwnState;
 }
 
 type AllProps 
@@ -46,30 +41,30 @@ type AllProps
   & WithStyles<typeof styles>;
 
 const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
-  isHelpOpen: false,
+  // isHelpOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
-  handleToggle: (state: IOwnState) => () => ({
-    isHelpOpen: !state.isHelpOpen
-  })
+  // handleToggle: (state: IOwnState) => () => ({
+  //   isHelpOpen: !state.isHelpOpen
+  // })
 };
 
 const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
-  const { data, intl, handleToggle } = props;
+  const { data, intl } = props;
 
   const render = (
     <React.Fragment>      
       <Card square>
         <CardHeader
           title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Responder'})}
-          action={
-            <IconButton
-              onClick={() => handleToggle()}
-            >
-              <HelpOutline />
-            </IconButton>
-          }
+          // action={
+          //   <IconButton
+          //     onClick={() => handleToggle()}
+          //   >
+          //     <HelpOutline />
+          //   </IconButton>
+          // }
         />
         <CardContent>
           <List>
@@ -101,13 +96,32 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                   primary={item.employee.fullName} 
                   secondary={item.employee.email}
                 />
+                <ListItemSecondaryAction>
+                  {
+                    !item.isExpired && !item.isRespond ?
+                    <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: orange[500]}}>
+                        {intl.formatMessage(hrMessage.competency.field.assigned)}
+                    </span>
+                    :
+                    (
+                      item.isExpired ?
+                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: red[500]}}>
+                        {intl.formatMessage(hrMessage.competency.field.expired)}
+                      </span>
+                      :
+                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500]}}>
+                        {intl.formatMessage(hrMessage.competency.field.respond)}
+                      </span>
+                    )
+                  }
+                </ListItemSecondaryAction>
               </ListItem>
             )
           }
           </List>
         </CardContent>
       </Card>
-      <Dialog maxWidth="xs" onClose={() => handleToggle()} open={props.isHelpOpen} >
+      {/* <Dialog maxWidth="xs" onClose={() => handleToggle()} open={props.isHelpOpen} >
         <DialogTitle>
           Color description
         </DialogTitle>
@@ -136,7 +150,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
             </Grid>
           </Grid>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </React.Fragment>
   );
 

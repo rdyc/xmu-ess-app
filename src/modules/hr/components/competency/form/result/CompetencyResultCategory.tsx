@@ -1,8 +1,9 @@
 import { FormMode } from '@generic/types';
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
@@ -145,39 +146,62 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                         />
                       </TableCell>
                     </TableRow>
+
+                    {/* Note Responder */}
                     {
-                      // NOTE RESPONDER HERE
-                      props.responders.map(responder => 
-                        !responder.isHR &&
-                        responder.items.length > 0 &&
-                        responder.items.find(findData => findData.levelUid === level.uid) &&
+                      props.responders.find(responder => 
+                        !responder.isHR && 
+                        responder.items.length > 0 && 
+                        responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                         <TableRow>
-                          <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
-                            <Typography color="primary">
-                              {
-                                findNote(responder.items.find(findData => findData.levelUid === level.uid))
-                              }
-                            </Typography>
+                          <TableCell colSpan={props.responders.length + 1}>
+                            <div style={{display: 'flex'}}>
+                              <CommentOutlined style={{marginTop: '16px'}} />
+                              <ul style={{paddingLeft: '24px'}}>
+                                {
+                                  // NOTE RESPONDER HERE
+                                  props.responders.map(responder => 
+                                    !responder.isHR &&
+                                    responder.items.length > 0 &&
+                                    responder.items.find(findData => findData.levelUid === level.uid) &&
+                                      <li>
+                                        <Typography key={responder.uid} color="primary">
+                                          {
+                                            findNote(responder.items.find(findData => findData.levelUid === level.uid))
+                                          }
+                                        </Typography>
+                                      </li>
+                                  )
+                                }
+                              </ul>
+                            </div>
                           </TableCell>
                         </TableRow>
-                      )
                     }
+
+                    {/* Note HR */}
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
-                      <TableRow>
-                        <TableCell colSpan={props.responders.length + 1}>
-                          <Field
-                            name={`levelRespond.${index}.noteHistory`}
-                            render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
-                              return (
-                                <Typography>
-                                  {field.value}
-                                </Typography>
-                              );
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
+                      <Field
+                        name={`levelRespond.${index}.noteHistory`}
+                        render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
+                          return (
+                            field.value &&
+                            <TableRow>
+                              <TableCell colSpan={props.responders.length + 1}>
+                                <TextField
+                                  {...GlobalStyle.TextField.ReadOnly}
+                                  {...field}
+                                  multiline
+                                  inputProps={{
+                                    className: props.classes.globalSize
+                                  }}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        }}
+                      />
                     }
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&

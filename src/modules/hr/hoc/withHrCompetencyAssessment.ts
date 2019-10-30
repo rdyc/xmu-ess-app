@@ -1,18 +1,21 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
-  IHrCompetencyAssessmentGetAllRequest, 
-  IHrCompetencyAssessmentGetDetailRequest,
-  IHrCompetencyAssessmentPostRequest, 
+  IAccountEmployeeCompetencyGetAllRequest, 
+  IHrCompetencyAssessmentGetAllRequest,
+  IHrCompetencyAssessmentGetDetailRequest, 
+  IHrCompetencyAssessmentPostRequest,
   IHrCompetencyAssessmentPutRequest
 } from '@hr/classes/queries/';
-import { IHrCompetencyAssessment, IHrCompetencyAssessmentDetail } from '@hr/classes/response/';
+import { IAccountEmployeeCompetency, IHrCompetencyAssessment, IHrCompetencyAssessmentDetail } from '@hr/classes/response/';
 import { 
+  accountEmployeeCompetencyGetAllDispose, 
+  accountEmployeeCompetencyGetAllRequest, 
   hrCompetencyAssessmentGetAllDispose, 
-  hrCompetencyAssessmentGetAllRequest, 
+  hrCompetencyAssessmentGetAllRequest,
   hrCompetencyAssessmentGetByIdDispose, 
-  hrCompetencyAssessmentGetByIdRequest,
-  hrCompetencyAssessmentPostDispose, 
-  hrCompetencyAssessmentPostRequest, 
+  hrCompetencyAssessmentGetByIdRequest, 
+  hrCompetencyAssessmentPostDispose,
+  hrCompetencyAssessmentPostRequest,
   hrCompetencyAssessmentPutDispose,
   hrCompetencyAssessmentPutRequest
 } from '@hr/store/actions';
@@ -21,6 +24,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   hrCompetencyAssessmentState: {
+    employee: IQueryCollectionState<IAccountEmployeeCompetencyGetAllRequest, IAccountEmployeeCompetency>;
     all: IQueryCollectionState<IHrCompetencyAssessmentGetAllRequest, IHrCompetencyAssessment>;
     detail: IQuerySingleState<IHrCompetencyAssessmentGetDetailRequest, IHrCompetencyAssessmentDetail>;
   };
@@ -37,6 +41,8 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof hrCompetencyAssessmentGetAllRequest;
     loadAllDispose: typeof hrCompetencyAssessmentGetAllDispose;
+    loadEmployeeRequest: typeof accountEmployeeCompetencyGetAllRequest;
+    loadEmployeeDispose: typeof accountEmployeeCompetencyGetAllDispose;
     loadDetailRequest: typeof hrCompetencyAssessmentGetByIdRequest;
     loadDetailDispose: typeof hrCompetencyAssessmentGetByIdDispose;
   };
@@ -44,10 +50,11 @@ interface PropsFromDispatch {
 
 export interface WithHrCompetencyAssessment extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrCompetencyAssessmentGetAll, hrCompetencyAssessmentGetById }: IAppState) => ({
+const mapStateToProps = ({ hrCompetencyAssessmentGetAll, hrCompetencyAssessmentGetById, accountEmployeeCompetencyGetAll }: IAppState) => ({
   hrCompetencyAssessmentState: {
     all: hrCompetencyAssessmentGetAll,
     detail: hrCompetencyAssessmentGetById,
+    employee: accountEmployeeCompetencyGetAll
   }
 });
 
@@ -61,6 +68,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IHrCompetencyAssessmentGetAllRequest) => dispatch(hrCompetencyAssessmentGetAllRequest(request)),
     loadAllDispose: () => dispatch(hrCompetencyAssessmentGetAllDispose()),
+    loadEmployeeRequest: (request: IAccountEmployeeCompetencyGetAllRequest) => dispatch(accountEmployeeCompetencyGetAllRequest(request)),
+    loadEmployeeDispose: () => dispatch(accountEmployeeCompetencyGetAllDispose()),
     loadDetailRequest: (request: IHrCompetencyAssessmentGetDetailRequest) => dispatch(hrCompetencyAssessmentGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(hrCompetencyAssessmentGetByIdDispose()),
   }

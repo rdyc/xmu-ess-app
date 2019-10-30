@@ -14,5 +14,6 @@ export interface IHrCompetencyAssessment {
   assessmentYear: number;
   responders?: IAssessmentItem[];
   isDraft: boolean;
+  totalResponse?: number;
   changes?: IBaseChanges;
 }

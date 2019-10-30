@@ -130,7 +130,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
         <Field
           name="year"
           render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <InputYearOption>
+            <InputYearOption withPast>
               <SelectField
                 isSearchable
                 isDisabled={props.formikBag.isSubmitting}

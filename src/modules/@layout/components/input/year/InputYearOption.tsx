@@ -14,6 +14,7 @@ import {
 } from 'recompose';
 
 interface IOwnOption {
+  withPast?: boolean;
   withFuture?: boolean;
 }
 interface IOwnState {
@@ -54,8 +55,17 @@ const lifeCycle: ReactLifeCycleFunctions<InputYearOptionProps, IOwnState> = {
   componentDidMount() {    
     const getYear: number = Number(moment().format('YYYY'));
   
-    const year: number[] = [getYear - 1, getYear];
+    const year: number[] = [];
 
+    // past
+    if (this.props.withPast) {
+      year.push(getYear - 1);
+    }
+
+    // current
+    year.push(getYear);
+
+    // future
     if (this.props.withFuture) {
       year.push(getYear + 1);
     }

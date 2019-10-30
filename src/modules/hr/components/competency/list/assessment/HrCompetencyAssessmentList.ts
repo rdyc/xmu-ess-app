@@ -19,37 +19,40 @@ import {
   ReactLifeCycleFunctions,
   setDisplayName,
   shallowEqual,
-  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
 
-import { IHrCompetencyAssessmentFilterResult } from './HrCompetencyAssessmentFilter';
+// import { IHrCompetencyAssessmentFilterResult } from './HrCompetencyAssessmentFilter';
 import { HrCompetencyAssessmentListView } from './HrCompetencyAssessmentListView';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IHrCompetencyAssessmentFilterResult {
+interface IOwnRoute {
+  employeeUid: string;
+}
+
+interface IOwnState {
   fields: ICollectionValue[];
-  isFilterOpen: boolean;
+  // isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setFilterVisibility: StateHandler<IOwnState>;
-  setFilterApplied: StateHandler<IOwnState>;
+  // setFilterVisibility: StateHandler<IOwnState>;
+  // setFilterApplied: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IHrCompetencyAssessment, index: number) => IDataBindResult;
-  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IHrCompetencyAssessmentFilterResult) => void;
-  handleFilterBadge: () => boolean;
+  // handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  // handleFilterApplied: (filter: IHrCompetencyAssessmentFilterResult) => void;
+  // handleFilterBadge: () => boolean;
 }
 
 export type HrCompetencyAssessmentListProps
@@ -58,16 +61,16 @@ export type HrCompetencyAssessmentListProps
   & IOwnStateUpdater
   & IOwnHandler
   & InjectedIntlProps
-  & RouteComponentProps
+  & RouteComponentProps<IOwnRoute>
   & WithStyles<typeof styles>
   & WithUser
   & WithHrCompetencyAssessment;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyAssessmentListProps): IOwnState => {
-  const { request } = props.hrCompetencyAssessmentState.all;
+  // const { request } = props.hrCompetencyAssessmentState.all;
 
   const state: IOwnState = {
-    isFilterOpen: false,
+    // isFilterOpen: false,
     fields: Object.keys(IHrCompetencyField).map(key => ({
       value: key,
       name: IHrCompetencyField[key]
@@ -75,23 +78,23 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: HrCompetencyAssessmen
   };
 
   // fill from previous request if any
-  if (request && request.filter) {
-    state.assessmentYear = request.filter.assessmentYear,
-    state.companyUid = request.filter.companyUid,
-    state.positionUid = request.filter.positionUid;
-  }
+  // if (request && request.filter) {
+  //   state.assessmentYear = request.filter.assessmentYear,
+  //   state.companyUid = request.filter.companyUid,
+  //   state.positionUid = request.filter.positionUid;
+  // }
 
   return state;
 };
 
 const stateUpdaters: StateUpdaters<HrCompetencyAssessmentListProps, IOwnState, IOwnStateUpdater> = {
-  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
-    isFilterOpen: !state.isFilterOpen
-  }),
-  setFilterApplied: (state: IOwnState) => (filter: IHrCompetencyAssessmentFilterResult): Partial<IOwnState> => ({
-    ...filter,
-    isFilterOpen: false
-  }),
+  // setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+  //   isFilterOpen: !state.isFilterOpen
+  // }),
+  // setFilterApplied: (state: IOwnState) => (filter: IHrCompetencyAssessmentFilterResult): Partial<IOwnState> => ({
+  //   ...filter,
+  //   isFilterOpen: false
+  // }),
 };
 
 const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandler> = {
@@ -107,9 +110,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
         direction: params && params.direction || request && request.filter && request.filter.direction,
         page: resetPage ? undefined : params && params.page || request && request.filter && request.filter.page,
         size: params && params.size || request && request.filter && request.filter.size,
-        assessmentYear: props.assessmentYear,
-        companyUid: props.companyUid,
-        positionUid: props.companyUid ? props.positionUid : undefined,
+        employeeUid: props.match.params.employeeUid
       };
 
       // when request is defined, then compare the filter props
@@ -134,8 +135,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
         ...request && request.filter,
         find,
         findBy,
-        page: undefined,
-        // status: props.status
+        page: undefined
       };
       
       // compare request
@@ -158,38 +158,38 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-  handleFilterVisibility: (props: HrCompetencyAssessmentListProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterVisibility();
-  },
-  handleFilterApplied: (props: HrCompetencyAssessmentListProps) => (filter: IHrCompetencyAssessmentFilterResult) => {
-    props.setFilterApplied(filter);
-  },
-  handleFilterBadge: (props: HrCompetencyAssessmentListProps) => () => {
-    return props.assessmentYear !== undefined ||
-      props.companyUid !== undefined ||
-      props.positionUid !== undefined;
-  },
+  // handleFilterVisibility: (props: HrCompetencyAssessmentListProps) => (event: React.MouseEvent<HTMLElement>) => {
+  //   props.setFilterVisibility();
+  // },
+  // handleFilterApplied: (props: HrCompetencyAssessmentListProps) => (filter: IHrCompetencyAssessmentFilterResult) => {
+  //   props.setFilterApplied(filter);
+  // },
+  // handleFilterBadge: (props: HrCompetencyAssessmentListProps) => () => {
+  //   return props.assessmentYear !== undefined ||
+  //     props.companyUid !== undefined ||
+  //     props.positionUid !== undefined;
+  // },
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentListProps, IOwnState> = {
   componentDidUpdate(prevProps: HrCompetencyAssessmentListProps) {
     // track any changes in filter props
-    const isFilterChanged = !shallowEqual(
-      {
-        year: this.props.assessmentYear,
-        companyUid: this.props.companyUid,
-        positionUid: this.props.positionUid
-      },
-      {
-        year: prevProps.assessmentYear,
-        companyUid: prevProps.companyUid,
-        positionUid: prevProps.positionUid
-      }
-    );
+    // const isFilterChanged = !shallowEqual(
+    //   {
+    //     year: this.props.assessmentYear,
+    //     companyUid: this.props.companyUid,
+    //     positionUid: this.props.positionUid
+    //   },
+    //   {
+    //     year: prevProps.assessmentYear,
+    //     companyUid: prevProps.companyUid,
+    //     positionUid: prevProps.positionUid
+    //   }
+    // );
 
-    if (isFilterChanged) {
-      this.props.handleOnLoadApi(undefined, true);
-    }
+    // if (isFilterChanged) {
+    //   this.props.handleOnLoadApi(undefined, true);
+    // }
   }
 };
 

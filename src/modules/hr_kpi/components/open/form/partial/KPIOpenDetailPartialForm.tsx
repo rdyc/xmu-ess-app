@@ -43,7 +43,7 @@ const KPIOpenDetailPartialForm: React.ComponentType<KPIOpenDetailPartialFormProp
       <Field
         name="year"
         render={({ field, form }: FieldProps<IKPIOpenFormValue>) => (
-          <InputYearOption withFuture>
+          <InputYearOption withFuture withPast>
             <SelectField
               isSearchable
               isDisabled={props.formikBag.isSubmitting}

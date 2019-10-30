@@ -23,5 +23,7 @@ export interface IHrCompetencyEmployee {
   isExpired: boolean;
   isHR: boolean;
   items: ICompetencyEmployeeItem[];
+  totalResponder?: number;
+  totalResponse?: number;
   changes?: IBaseChanges;
 }

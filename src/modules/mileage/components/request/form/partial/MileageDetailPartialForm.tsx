@@ -23,7 +23,7 @@ const MileageDetailPartialForm: React.ComponentType<MileageDetailPartialFormProp
       <Field
         name="year"
         render={({ field, form }: FieldProps<IMileageFormValue>) => (
-          <InputYearOption>
+          <InputYearOption withPast>
             <SelectField
               isSearchable
               menuPlacement="auto"

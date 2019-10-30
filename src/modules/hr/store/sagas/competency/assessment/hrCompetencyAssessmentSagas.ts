@@ -1,4 +1,8 @@
 import {
+  accountEmployeeCompetencyGetAllDispose,
+  accountEmployeeCompetencyGetAllError,
+  accountEmployeeCompetencyGetAllRequest,
+  accountEmployeeCompetencyGetAllSuccess,
   HrCompetencyAssessmentAction as Action,
   hrCompetencyAssessmentGetAllDispose,
   hrCompetencyAssessmentGetAllError,
@@ -147,11 +151,37 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchFetchAccountEmployeeAllRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeCompetencyGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/account/employees/competency/assessment?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(accountEmployeeCompetencyGetAllSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(accountEmployeeCompetencyGetAllError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(accountEmployeeCompetencyGetAllError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_ALL_EMPLOYEE_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() {
     yield all([
       put(hrCompetencyAssessmentGetAllDispose()),
       put(hrCompetencyAssessmentGetByIdDispose()),
+      put(accountEmployeeCompetencyGetAllDispose()),
     ]);
   }
 
@@ -164,6 +194,7 @@ function* hrCompetencyAssessmentSagas() {
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchFetchAccountEmployeeAllRequest),
     fork(watchSwitchAccess)
   ]);
 }

@@ -998,6 +998,10 @@ const styles = (theme: Theme) =>
       margin: 0,
       padding: theme.spacing.unit,
     },
+
+    globalSize: {
+      fontSize: theme.typography.fontSize
+    }
   });
 
 export default styles;

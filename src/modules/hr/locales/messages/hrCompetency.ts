@@ -55,6 +55,16 @@ export const hrCompetencyField = defineMessages({
   cluster: { id: `${prefix}.field.cluster`},
   category: { id: `${prefix}.field.category`},
   clusterRequired: { id: `${prefix}.field.cluster.required`},
+
+  // status
+  assigned: { id: `${prefix}.field.assigned`},
+  respond: { id: `${prefix}.field.respond`},
+  expired: { id: `${prefix}.field.expired`},
+  assess: { id: `${prefix}.field.assess`},
+  inactive: { id: `${prefix}.field.inactive`},
+
+  completion: { id: `${prefix}.field.completion`},
+  completionItem: { id: `${prefix}.field.completion.item`},
 });
 
 // helper

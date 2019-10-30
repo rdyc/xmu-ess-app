@@ -14,7 +14,7 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
     info={{
       uid: AppMenu.CompetencyAssessment,
       parentUid: AppMenu.HumanResource,
-      parentUrl: '/hr/assessment',
+      parentUrl: `/hr/assessment/${props.match.params.employeeUid}`,
       title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Assessment'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}

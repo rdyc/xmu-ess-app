@@ -25,6 +25,7 @@ import {
 import { HrCompetencyAssessmentDetailView } from './HrCompetencyAssessmentDetailView';
 
 interface IOwnRouteParams {
+  employeeUid: string;
   assessmentUid: string;
 }
 
@@ -172,7 +173,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
 
       switch (props.action) {
         case IHrCompetencyAssessmentUserAction.Modify:
-          next = '/hr/assessment/form';
+          next = `/hr/assessment/form`;
           break;
 
         default:

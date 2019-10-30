@@ -43,7 +43,7 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
       <Field
         name="year"
         render={({ field, form }: FieldProps<ICompetencyAssessmentFormValue>) => (
-          <InputYearOption>
+          <InputYearOption withFuture>
             <SelectField
               isSearchable
               menuPlacement="auto"

@@ -43,7 +43,7 @@ const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => (
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
-      {
+      {/* {
         props.data.responders && props.data.responders.length === 0 ?
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -58,7 +58,12 @@ const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => (
             props.intl.formatMessage(hrMessage.competency.field.oneItem, {total: props.data.responders && props.data.responders.length, state: 'Responder'})  : 
             props.intl.formatMessage(hrMessage.competency.field.manyItem, {total: props.data.responders && props.data.responders.length, state: 'Responders'}) }
         />
-      }
+      } */}
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(hrMessage.competency.field.completion)}
+        value={props.intl.formatMessage(hrMessage.competency.field.completionItem, {responder: props.data.responders && props.data.responders.length || 0, completion: props.data.totalResponse || 0})}
+      />
     </Grid>
     {
       props.data.changes &&
