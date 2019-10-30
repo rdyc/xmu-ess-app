@@ -1,5 +1,6 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  IAccountEmployeeCompetencyGetAllRequest,
   IHrCompetencyAssessmentGetAllRequest,
   IHrCompetencyAssessmentGetDetailRequest,
   IHrCompetencyAssessmentPostRequest,
@@ -40,6 +41,7 @@ import {
   IHrCornerPagePutRequest,
 } from '../queries';
 import {
+  IAccountEmployeeCompetency,
   IHrCompetencyAssessment,
   IHrCompetencyAssessmentDetail,
   IHrCompetencyCategory,
@@ -94,6 +96,7 @@ export interface IHrCompetencyState {
   hrCompetencyAssessmentGetById: IQuerySingleState<IHrCompetencyAssessmentGetDetailRequest, IHrCompetencyAssessmentDetail>;
   hrCompetencyAssessmentPost: IQuerySingleState<IHrCompetencyAssessmentPostRequest, IHrCompetencyAssessment>;
   hrCompetencyAssessmentPut: IQuerySingleState<IHrCompetencyAssessmentPutRequest, IHrCompetencyAssessment>;
+  accountEmployeeCompetencyGetAll: IQueryCollectionState<IAccountEmployeeCompetencyGetAllRequest, IAccountEmployeeCompetency>;
 
   // employee
   hrCompetencyEmployeeGetAll: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;

@@ -14,6 +14,7 @@ import { HrCompetencyClusterForm } from './competency/form/cluster/HrCompetencyC
 import { CompetencyEmployeeForm } from './competency/form/employee/CompetencyEmployeeForm';
 import { HrCompetencyMappedForm } from './competency/form/mapped/HrCompetencyMappedForm';
 import { CompetencyResultForm } from './competency/form/result/CompetencyResultForm';
+import { EmployeeCompetencyList } from './competency/list/assessment/employeeCompetency/EmployeeCompetencyList';
 import { HrCompetencyAssessmentList } from './competency/list/assessment/HrCompetencyAssessmentList';
 import { HrCompetencyCategoryList } from './competency/list/category/HrCompetencyCategoryList';
 import { HrCompetencyClusterList } from './competency/list/cluster/HrCompetencyClusterList';
@@ -26,9 +27,10 @@ import { HrCornerPageList } from './corner/list/page/HrCornerPageList';
 
 const assessment = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/:employeeUid/:assessmentUid`} component={HrCompetencyAssessmentDetail} />
     <Route path={`${props.match.path}/form`} component={CompetencyAssessmentForm} />
-    <Route path={`${props.match.path}/:assessmentUid`} component={HrCompetencyAssessmentDetail} />
-    <Route path={`${props.match.path}`} component={HrCompetencyAssessmentList} />
+    <Route path={`${props.match.path}/:employeeUid`} component={HrCompetencyAssessmentList} />
+    <Route path={`${props.match.path}`} component={EmployeeCompetencyList} />
   </Switch>
 );
 

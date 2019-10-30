@@ -4,11 +4,9 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
-import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
-import { HrCompetencyAssessmentFilter } from './HrCompetencyAssessmentFilter';
 import { HrCompetencyAssessmentListProps } from './HrCompetencyAssessmentList';
 import { HrCompetencySummaryAssessment } from './HrCompetencyAssessmentSummary';
 
@@ -19,6 +17,7 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
       info={{
         uid: AppMenu.CompetencyAssessment,
         parentUid: AppMenu.HumanResource,
+        parentUrl: '/hr/assessment',
         title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: '360 Assessment'}),
         description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
       }}
@@ -48,7 +47,7 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/hr/assessment/${item.uid}`)}
+            onClick={() => props.history.push(`/hr/assessment/${props.match.params.employeeUid}/${item.uid}`)}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -57,47 +56,38 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
       // app bar component
       appBarSearchComponent={
         <SearchBox
-          key="lookup.competency.Assessment"
+          key="hr.competency.assessment"
           default={props.hrCompetencyAssessmentState.all.request && props.hrCompetencyAssessmentState.all.request.filter && props.hrCompetencyAssessmentState.all.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
       }
-      appBarCustomComponent={
-        <IconButton
-          color="inherit"
-          onClick={() => props.history.push('/hr/assessment/form')}
-        >
-          <AddCircle/>
-        </IconButton>
-      }
-
       // data toolbar component
-      toolbarDataComponent={
-        <Tooltip
-          placement="bottom"
-          title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-        >
-          <div>
-            <IconButton
-              id="option-filter"
-              disabled={props.hrCompetencyAssessmentState.all.isLoading || props.hrCompetencyAssessmentState.all.isError}
-              onClick={props.handleFilterVisibility} 
-            >
-              <Badge
-                invisible={!props.handleFilterBadge()}
-                badgeContent={
-                  <CheckCircle color="secondary" fontSize="small" />
-                }
-              >
-                <Tune/>
-              </Badge>
-            </IconButton>
-          </div>
-        </Tooltip>
-      }
+      // toolbarDataComponent={
+      //   <Tooltip
+      //     placement="bottom"
+      //     title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
+      //   >
+      //     <div>
+      //       <IconButton
+      //         id="option-filter"
+      //         disabled={props.hrCompetencyAssessmentState.all.isLoading || props.hrCompetencyAssessmentState.all.isError}
+      //         onClick={props.handleFilterVisibility} 
+      //       >
+      //         <Badge
+      //           invisible={!props.handleFilterBadge()}
+      //           badgeContent={
+      //             <CheckCircle color="secondary" fontSize="small" />
+      //           }
+      //         >
+      //           <Tune/>
+      //         </Badge>
+      //       </IconButton>
+      //     </div>
+      //   </Tooltip>
+      // }
     />
-    <HrCompetencyAssessmentFilter 
+    {/* <HrCompetencyAssessmentFilter 
       isOpen={props.isFilterOpen}
       initialProps={{
         assessmentYear: props.assessmentYear,
@@ -106,6 +96,6 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
-    />
+    /> */}
   </React.Fragment>
 );

@@ -5,4 +5,5 @@ export interface IHrCompetencyAssessmentGetAllFilter extends IBasePagingFilter {
   assessmentYear?: number;
   companyUid?: string;
   positionUid?: string;
+  employeeUid?: string;
 }

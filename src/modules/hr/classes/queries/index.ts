@@ -25,6 +25,7 @@ export * from './competency/assessment/IHrCompetencyAssessmentGetAllRequest';
 export * from './competency/assessment/IHrCompetencyAssessmentGetDetailRequest';
 export * from './competency/assessment/IHrCompetencyAssessmentPostRequest';
 export * from './competency/assessment/IHrCompetencyAssessmentPutRequest';
+export * from './competency/assessment/IAccountEmployeeCompetencyGetAllRequest';
 
 // employee
 export * from './competency/employee/IHrCompetencyEmployeeGetAllRequest';

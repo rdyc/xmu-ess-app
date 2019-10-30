@@ -29,6 +29,7 @@ export * from './competency/mapped/MappedItem';
 export * from './competency/mapped/IHrCompetencyMappedNext';
 
 // assessment
+export * from './competency/assessment/IAccountEmployeeCompetency';
 export * from './competency/assessment/IAssessmentItem';
 export * from './competency/assessment/IHrCompetencyAssessment';
 export * from './competency/assessment/IHrCompetencyAssessmentDetail';

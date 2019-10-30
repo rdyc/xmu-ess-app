@@ -74,7 +74,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         // app bar component
         appBarSearchComponent={
           <SearchBox
-            key="lookup.competency.employee"
+            key="hr.competency.employee"
             default={props.hrCompetencyEmployeeState.all.request && props.hrCompetencyEmployeeState.all.request.filter && props.hrCompetencyEmployeeState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}

@@ -17,7 +17,7 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
     info={{
       uid: AppMenu.CompetencyAssessment,
       parentUid: AppMenu.HumanResource,
-      parentUrl: '/hr/assessment',
+      parentUrl: `/hr/assessment`,
       title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Assessment'}),
       description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Assessment'})
     }}

@@ -1,11 +1,12 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
+  IAccountEmployeeCompetencyGetAllRequest, 
   IHrCompetencyAssessmentGetAllRequest, 
   IHrCompetencyAssessmentGetDetailRequest, 
   IHrCompetencyAssessmentPostRequest, 
-  IHrCompetencyAssessmentPutRequest 
+  IHrCompetencyAssessmentPutRequest
 } from '@hr/classes/queries';
-import { IHrCompetencyAssessment, IHrCompetencyAssessmentDetail } from '@hr/classes/response';
+import { IAccountEmployeeCompetency, IHrCompetencyAssessment, IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum HrCompetencyAssessmentAction {
@@ -25,6 +26,10 @@ export const enum HrCompetencyAssessmentAction {
   PUT_SUCCESS = '@@hr/competency/assessment/PUT_SUCCESS',
   PUT_ERROR = '@@hr/competency/assessment/PUT_ERROR',
   PUT_DISPOSE = '@@hr/competency/assessment/PUT_DISPOSE',
+  GET_ALL_EMPLOYEE_REQUEST = '@@hr/competency/assessment/GET_ALL_EMPLOYEE_REQUEST',
+  GET_ALL_EMPLOYEE_SUCCESS = '@@hr/competency/assessment/GET_ALL_EMPLOYEE_SUCCESS',
+  GET_ALL_EMPLOYEE_ERROR = '@@hr/competency/assessment/GET_ALL_EMPLOYEE_ERROR',
+  GET_ALL_EMPLOYEE_DISPOSE = '@@hr/competency/assessment/GET_ALL_EMPLOYEE_DISPOSE',
 }
 
 // get all
@@ -50,3 +55,9 @@ export const hrCompetencyAssessmentPutRequest = (request: IHrCompetencyAssessmen
 export const hrCompetencyAssessmentPutSuccess = (response: IResponseSingle<IHrCompetencyAssessment>) => action(HrCompetencyAssessmentAction.PUT_SUCCESS, response);
 export const hrCompetencyAssessmentPutError = (error: any) => action(HrCompetencyAssessmentAction.PUT_ERROR, error);
 export const hrCompetencyAssessmentPutDispose = () => action(HrCompetencyAssessmentAction.PUT_DISPOSE);
+
+// get all
+export const accountEmployeeCompetencyGetAllRequest = (request: IAccountEmployeeCompetencyGetAllRequest) => action(HrCompetencyAssessmentAction.GET_ALL_EMPLOYEE_REQUEST, request);
+export const accountEmployeeCompetencyGetAllSuccess = (response: IResponseCollection<IAccountEmployeeCompetency>) => action(HrCompetencyAssessmentAction.GET_ALL_EMPLOYEE_SUCCESS, response);
+export const accountEmployeeCompetencyGetAllError = (error: any) => action(HrCompetencyAssessmentAction.GET_ALL_EMPLOYEE_ERROR, error);
+export const accountEmployeeCompetencyGetAllDispose = () => action(HrCompetencyAssessmentAction.GET_ALL_EMPLOYEE_DISPOSE);

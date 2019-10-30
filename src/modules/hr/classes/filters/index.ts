@@ -13,6 +13,7 @@ export * from './competency/mapped/IHrCompetencyMappedGetNextFilter';
 
 // assessment
 export * from './competency/assessment/IHrCompetencyAssessmentGetAllFilter';
+export * from './competency/assessment/IAccountEmployeeCompetencyGetAllFilter';
 
 // employee
 export * from './competency/employee/IHrCompetencyEmployeeGetAllFilter';
