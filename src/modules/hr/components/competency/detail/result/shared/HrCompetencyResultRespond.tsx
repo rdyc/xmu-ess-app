@@ -1,7 +1,7 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -104,26 +104,40 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                     </TableCell>
                   </TableRow>
 
+                  {/* Note Responder */}                  
                   {
-                    // NOTE RESPONDER HERE
-                    props.responders.map(responder => 
-                      !responder.isHR &&
-                      responder.items.length > 0 &&
-                      responder.items.find(findData => findData.levelUid === level.uid) &&
+                    props.responders.find(responder => 
+                      !responder.isHR && 
+                      responder.items.length > 0 && 
+                      responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                       <TableRow>
-                        <TableCell key={responder.uid} colSpan={props.responders.length + 1}>
-                          <Typography color="primary">
-                            {
-                              findNote(responder.items.find(findData => findData.levelUid === level.uid))
-                            }
-                          </Typography>
+                        <TableCell colSpan={props.responders.length + 1}>
+                          <div style={{display: 'flex'}}>
+                            <CommentOutlined style={{marginTop: '16px'}} />
+                            <ul style={{paddingLeft: '24px'}}>
+                              {
+                                // NOTE RESPONDER HERE
+                                props.responders.map(responder => 
+                                  !responder.isHR &&
+                                  responder.items.length > 0 &&
+                                  responder.items.find(findData => findData.levelUid === level.uid) &&
+                                    <li>
+                                      <Typography key={responder.uid} color="primary">
+                                        {
+                                          findNote(responder.items.find(findData => findData.levelUid === level.uid))
+                                        }
+                                      </Typography>
+                                    </li>
+                                )
+                              }
+                            </ul>
+                          </div>
                         </TableCell>
                       </TableRow>
-                    )
                   }
 
+                  {/* Note HR */}
                   {
-                    // NOTE HR HERE
                     props.data.items.find(findData => findData.levelUid === level.uid) &&
                     <TableRow>
                       <TableCell colSpan={props.responders.length + 1}>
