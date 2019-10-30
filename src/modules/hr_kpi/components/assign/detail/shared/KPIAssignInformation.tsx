@@ -68,13 +68,6 @@ const kpiAssignInformation: React.SFC<AllProps> = props => {
         {
           props.data.changes &&
           <React.Fragment>
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-              value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
-              helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
-            />
-
             {
               (props.data.changes.updated && props.data.changes.updatedAt) &&
               <TextField
@@ -82,6 +75,13 @@ const kpiAssignInformation: React.SFC<AllProps> = props => {
                 label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
                 value={props.data.changes.updated.fullName || 'N/A'}
                 helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+              />
+              ||
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+                value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+                helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
               />
             }
           </React.Fragment>

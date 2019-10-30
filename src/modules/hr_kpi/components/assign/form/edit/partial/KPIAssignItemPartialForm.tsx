@@ -77,13 +77,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
             <TableHead>
               <TableRow>
                 <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
-                  {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
-                </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
-                </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
-                  {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
                 </TableCell>
                 <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
@@ -119,19 +113,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
-                            {props.formikBag.values.items[index].categoryValue}
-                          </TableCell>
-                          <TableCell 
-                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                            onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                          >
                             {props.formikBag.values.items[index].categoryName}
-                          </TableCell>
-                          <TableCell 
-                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                            onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                          >
-                            {props.formikBag.values.items[index].measurementValue}
                           </TableCell>
                           <TableCell 
                             style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
