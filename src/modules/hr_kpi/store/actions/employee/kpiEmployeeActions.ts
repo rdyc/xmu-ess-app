@@ -46,7 +46,7 @@ export const KPIEmployeeGetByIdDispose = () => action(KPIEmployeeAction.GET_BY_I
 
 // get latest
 export const KPIEmployeeGetLatestRequest = (request: IKPIEmployeeGetLatestRequest) => action(KPIEmployeeAction.GET_LATEST_REQUEST, request);
-export const KPIEmployeeGetLatestSuccess = (response: IResponseSingle<IKPIEmployee>) => action(KPIEmployeeAction.GET_LATEST_SUCCESS, response);
+export const KPIEmployeeGetLatestSuccess = (response: IResponseSingle<IKPIEmployeeDetail>) => action(KPIEmployeeAction.GET_LATEST_SUCCESS, response);
 export const KPIEmployeeGetLatestError = (error: any) => action(KPIEmployeeAction.GET_LATEST_ERROR, error);
 export const KPIEmployeeGetLatestDispose = () => action(KPIEmployeeAction.GET_LATEST_DISPOSE);
 

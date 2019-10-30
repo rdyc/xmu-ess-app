@@ -30,7 +30,7 @@ interface PropsFromState {
   kpiEmployeeState: {
     all: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
     detail: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
-    latest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>;
+    latest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail>;
   };
 }
 
