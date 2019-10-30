@@ -47,7 +47,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                     loadAssign={props.loadAssign}
                     loadLatest={props.loadLatest}
                     assignData={props.assignData}
-                    periodData={props.periodData}
+                    latestData={props.latestPartialData}
                   />
                 </div>
               </div>

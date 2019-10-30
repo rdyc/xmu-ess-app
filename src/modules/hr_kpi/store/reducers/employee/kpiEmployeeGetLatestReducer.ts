@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IKPIEmployeeGetLatestRequest } from '@kpi/classes/queries';
-import { IKPIEmployee } from '@kpi/classes/response';
+import { IKPIEmployeeDetail } from '@kpi/classes/response';
 import { KPIEmployeeAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee> = {
+const initialState: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LATEST_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LATEST_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };

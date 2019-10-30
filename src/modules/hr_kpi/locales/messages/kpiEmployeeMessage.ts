@@ -115,6 +115,7 @@ export const KPIEmployeeField = defineMessages({
   sentAt: { id: `${prefix}.field.sentAt`},
   sentBy: { id: `${prefix}.field.sentBy`},
   totalWeight: { id: `${prefix}.field.totalWeight`},
+  weightNot100: { id: `${prefix}.field.weightNot100`},
   completion: { id: `${prefix}.field.completion`},
   note: { id: `${prefix}.field.note`},
   notePlaceholder: { id: `${prefix}.field.note.placeholder`},

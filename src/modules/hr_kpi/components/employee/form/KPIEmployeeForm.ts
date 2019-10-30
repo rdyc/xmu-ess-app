@@ -62,6 +62,18 @@ export interface IKPIEmployeeFormValue {
   items: IKPIEmployeeItemFormValue[];
 }
 
+interface IKPIItemPartialLatestValue {
+  achieved: number;
+  progress: number;
+  score: number;
+}
+
+export interface IKPIPartialLatestValue {
+  period: string;
+  totalScore: number;
+  items?: IKPIItemPartialLatestValue[];
+}
+
 interface IOwnRouteParams {
   employeeUid: string;
 }
@@ -75,7 +87,7 @@ interface IOwnState {
   loadAssign: boolean;
   loadLatest: boolean;
   assignData: IKPIEmployeeFormValue;
-  periodData: number;
+  latestPartialData: IKPIPartialLatestValue;
 
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
@@ -86,7 +98,7 @@ interface IOwnState {
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setAssignValues: StateHandler<IOwnState>;
-  setPeriodValues: StateHandler<IOwnState>;
+  setLatestValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
@@ -134,7 +146,11 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
   },
   
   assignData: props.initialValues,
-  periodData: 1,
+  latestPartialData: {
+    period: '1',
+    totalScore: 0,
+    items: undefined
+  },
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({
     kpiUid: Yup.string(),
@@ -214,8 +230,8 @@ const stateUpdaters: StateUpdaters<KPIEmployeeFormProps, IOwnState, IOwnStateUpd
   setAssignValues: () => (data: IKPIEmployeeFormValue): Partial<IOwnState> => ({
     assignData: data
   }),
-  setPeriodValues: () => (value: number): Partial<IOwnState> => ({
-    periodData: value,
+  setLatestValues: () => (value: any): Partial<IOwnState> => ({
+    latestPartialData: value,
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
@@ -480,14 +496,45 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
     if (thisLatestResponse !== prevLatestResponse) {
       if (thisLatestResponse && thisLatestResponse.data) {
         if (thisLatestResponse.data.period === 1) {
+          // set latest values
+          const latestValues: IKPIPartialLatestValue = {
+            period: '2',
+            totalScore: thisLatestResponse.data.totalScore,
+            items: []
+          };
+          
+          if (thisLatestResponse.data.items) {
+            thisLatestResponse.data.items.forEach((item, index) =>
+              latestValues.items && latestValues.items.push({
+                achieved: item.achieved || 0,
+                progress: item.progress || 0,
+                score: item.score || 0,
+              })
+            );
+          }
+          
           // set initial values
-          this.props.setPeriodValues(2);
+          this.props.setLatestValues(latestValues);
         } else {
-          this.props.setPeriodValues(1);
+          // set latest values
+          const latestValues: IKPIPartialLatestValue = {
+            period: '1',
+            totalScore: 0,
+            items: undefined
+          };
+
+          this.props.setLatestValues(latestValues);
         }
         this.props.handleSetLoadLatest();
       } else {
-        this.props.setPeriodValues(1);
+        // set latest values
+        const latestValues: IKPIPartialLatestValue = {
+          period: '1',
+          totalScore: 0,
+          items: undefined
+        };
+
+        this.props.setLatestValues(latestValues);
         this.props.handleSetLoadLatest();
       }
     }

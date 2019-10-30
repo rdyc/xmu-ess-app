@@ -63,7 +63,7 @@ export interface IKPIState {
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
-  kpiEmployeeGetLatest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployee>;
+  kpiEmployeeGetLatest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail>;
   kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
   

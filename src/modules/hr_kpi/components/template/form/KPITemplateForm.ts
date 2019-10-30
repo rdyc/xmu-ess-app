@@ -131,8 +131,8 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
       .required(),
 
     totalWeight: Yup.number()
-      .min(100)
-      .max(100)
+    .min(100, props.intl.formatMessage(kpiMessage.employee.field.weightNot100))
+    .max(100, props.intl.formatMessage(kpiMessage.employee.field.weightNot100))
       .label(props.intl.formatMessage(kpiMessage.template.field.totalWeight)),
 
     items: Yup.array()

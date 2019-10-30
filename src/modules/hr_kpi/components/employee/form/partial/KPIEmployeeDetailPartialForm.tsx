@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IKPIEmployeeFormValue } from '../KPIEmployeeForm';
+import { IKPIEmployeeFormValue, IKPIPartialLatestValue } from '../KPIEmployeeForm';
 
 type KPIEmployeeDetailPartialFormProps = {
   formMode: FormMode; 
@@ -23,7 +23,7 @@ type KPIEmployeeDetailPartialFormProps = {
   handleLoadLatest: (employeeUid: string) => void;
   handleSetLoadLatest: () => void;
   assignData: IKPIEmployeeFormValue;
-  periodData: number;
+  latestData: IKPIPartialLatestValue;
   filterAccountEmployee: IEmployeeListFilter;
   loadAssign: boolean;
   loadLatest: boolean;
@@ -48,8 +48,17 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
     props.handleSetLoadAssign();
   };
 
-  const setPeriodValue = () => {
-    props.formikBag.setFieldValue('period', props.periodData.toString());
+  const setLatestPartialValue = () => {
+    props.formikBag.setFieldValue('period', props.latestData.period);
+    props.formikBag.setFieldValue('totalScore', props.latestData.totalScore);
+
+    if (props.latestData.items) {
+      props.latestData.items.forEach((item, index) => {
+        props.formikBag.setFieldValue(`items.${index}.achieved`, item.achieved);
+        props.formikBag.setFieldValue(`items.${index}.progress`, item.progress);
+        props.formikBag.setFieldValue(`items.${index}.score`, item.score);
+      });
+    }
 
     props.handleSetLoadLatest();
   };
@@ -235,7 +244,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       }
       {
         props.loadLatest &&
-        setPeriodValue()
+        setLatestPartialValue()
       }
     </Card>
   );

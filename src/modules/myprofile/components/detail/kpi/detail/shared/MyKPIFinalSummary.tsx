@@ -28,7 +28,7 @@ const myKPIFinalSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.period)}
-        value={props.data.period.toString()}
+        value={props.data.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear)}
       />
     </Grid>
 
@@ -58,6 +58,13 @@ const myKPIFinalSummary: React.SFC<AllProps> = props => (
             label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
             value={props.data.changes.updated.fullName || 'N/A'}
             helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+          ||
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
           />
         }
       </Grid>
