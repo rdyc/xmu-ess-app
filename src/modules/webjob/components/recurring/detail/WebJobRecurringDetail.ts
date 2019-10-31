@@ -1,9 +1,12 @@
 import { AppRole } from '@constants/AppRole';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { IWebJobUserAction } from '@webjob/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
+import { DeleteFormData } from '@lookup/components/shared/Delete';
+import { IWebJobRecurringDeletePayload } from '@webjob/classes/request';
 import { WithWebJobRecurring, withWebJobRecurring } from '@webjob/hoc/withWebJobRecurring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -21,6 +24,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
 import { WebJobRecurringDetailView } from './WebJobRecurringDetailView';
 
@@ -33,13 +39,16 @@ interface IOwnHandler {
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleDelete: (payload: DeleteFormData) => void;
+  handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
 }
 
 interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   shouldLoad: boolean;
   isAdmin: boolean;
-  action?: IWebJobUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -52,12 +61,14 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
   setShouldLoad: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
 }
 
 export type WebJobRecurringDetailProps
   = WithOidc
   & WithUser
+  & WithLayout
   & WithWebJobRecurring
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -86,7 +97,9 @@ const createProps: mapper<WebJobRecurringDetailProps, IOwnState> = (props: WebJo
       isAdmin,
       shouldLoad: false,
       dialogFullScreen: false,
-      dialogOpen: false
+      dialogOpen: false,
+      dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+      dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   };
 };
 
@@ -98,13 +111,17 @@ const stateUpdaters: StateUpdaters<WebJobRecurringDetailProps, IOwnState, IOwnSt
     menuOptions: options
   }),
   setModify: (prevState: IOwnState, props: WebJobRecurringDetailProps) => (): Partial<IOwnState> => ({
-    action: IWebJobUserAction.Modify,
+    action: LookupUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(webJobMessage.shared.confirm.modifyTitle, {state: 'Recurring'}),
     dialogContent: props.intl.formatMessage(webJobMessage.shared.confirm.modifyDescription, {state: 'recurring'}),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
+  }),
+  setDelete: (prevState: IOwnState, props: WebJobRecurringDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(webJobMessage.shared.confirm.deleteTitle, {state: 'Monitoring'}),
+    dialogContent: props.intl.formatMessage(webJobMessage.shared.confirm.deleteDescription, { state: 'monitoring'}),
   }),
   setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
@@ -112,8 +129,6 @@ const stateUpdaters: StateUpdaters<WebJobRecurringDetailProps, IOwnState, IOwnSt
     dialogOpen: false,
     dialogTitle: undefined,
     dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
   })
 };
 
@@ -131,12 +146,16 @@ const handlerCreators: HandleCreators<WebJobRecurringDetailProps, IOwnHandler> =
   },
   handleOnSelectedMenu: (props: WebJobRecurringDetailProps) => (item: IPopupMenuOption) => {
     switch (item.id) {
-      case IWebJobUserAction.Refresh:
+      case LookupUserAction.Refresh:
         props.setShouldLoad();
         break;
 
-      case IWebJobUserAction.Modify:
+      case LookupUserAction.Modify:
         props.setModify();
+        break;
+
+      case LookupUserAction.Delete:
+        props.setDelete();
         break;
 
       default:
@@ -164,14 +183,14 @@ const handlerCreators: HandleCreators<WebJobRecurringDetailProps, IOwnHandler> =
 
     // actions with new page
     const actions = [
-      IWebJobUserAction.Modify
+      LookupUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case IWebJobUserAction.Modify:
+        case LookupUserAction.Modify:
           next = '/webjob/recurrings/form';
           break;
 
@@ -186,6 +205,53 @@ const handlerCreators: HandleCreators<WebJobRecurringDetailProps, IOwnHandler> =
       });
     }
   },
+  handleDelete: (props: WebJobRecurringDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.webJobRecurringDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.recurringUid) {
+      const message = intl.formatMessage(webJobMessage.shared.message.emptyProps);
+      return Promise.reject(message);
+    }
+    const payload = {
+      recurringUid: match.params.recurringUid
+    };
+
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as IWebJobRecurringDeletePayload
+      });
+    });
+  },
+  handleDeleteSuccess: (props: WebJobRecurringDetailProps) => (response: boolean) => {
+    props.history.push('/webjob/recurrings');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(webJobMessage.shared.message.deleteSuccess, { state: 'Recurring', type: 'ID', uid : props.match.params.recurringUid })
+    });
+  },
+  handleDeleteFail: (props: WebJobRecurringDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(webJobMessage.shared.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<WebJobRecurringDetailProps, IOwnState> = {
@@ -210,16 +276,22 @@ const lifecycles: ReactLifeCycleFunctions<WebJobRecurringDetailProps, IOwnState>
 
       const options: IPopupMenuOption[] = [
         {
-          id: IWebJobUserAction.Refresh,
+          id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true,
         },
         {
-          id: IWebJobUserAction.Modify,
+          id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: false,
+          enabled: true,
           visible: true,
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true
         }
       ];
 
@@ -232,6 +304,7 @@ export const WebJobRecurringDetail = compose(
   withRouter,
   withOidc,
   withUser,
+  withLayout,
   withWebJobRecurring,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

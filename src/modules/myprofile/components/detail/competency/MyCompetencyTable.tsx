@@ -51,6 +51,23 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
     return undefined;
   };
 
+  const typeIndicator = (indicator: string) => {
+    const splitIndicator = indicator.split('|');
+
+    return (
+      <ul>
+        {
+          splitIndicator.map((item, index) => 
+            item !== '' &&
+            <li key={index}>
+              {item}
+            </li>  
+          )  
+        }
+      </ul>
+    );
+  };
+  
   const findResult = (item: IHrCompetencyMappedNext, currentLevel: number) => {
     if (data) {
       const result: ICompetencyEmployeeItemFinal | undefined = data.items.find(fnd => fnd.categoryUid === item.categoryLevel.categoryUid);
@@ -58,11 +75,11 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
       if (result) {
         return (
           <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw'}}>
-            <Typography className={props.classes.hrTableChild} color={result.level && result.level.level >= currentLevel ? 'primary' : 'error' }>
-              {`Level ${result.level && result.level.level} - ${result.level && result.level.description}`}
+            <Typography className={props.classes.hrTableChild} color={result.level >= currentLevel ? 'primary' : 'error' }>
+              {`Level ${result.level} - ${result.levelDescription}`}
             </Typography>
             <Typography className={props.classes.hrTableChild}>
-              <ul>
+              {/* <ul>
               {
                 result.level &&
                 result.level.indicators.map(indicator =>
@@ -71,7 +88,10 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
                   </li>
                 )
               }    
-              </ul>
+              </ul> */}
+              {
+                typeIndicator(result.indicators)
+              }
             </Typography>
         </TableCell>
         );

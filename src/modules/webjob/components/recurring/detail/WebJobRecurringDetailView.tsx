@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
+import { Delete } from '@lookup/components/shared/Delete';
 import { IWebJobRecurringDetail } from '@webjob/classes/response';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
@@ -31,7 +31,21 @@ export const WebJobRecurringDetailView: React.SFC<WebJobRecurringDetailProps> = 
       />
     }
   >
-    <DialogConfirmation 
+    <Delete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
+    />
+    {/* <DialogConfirmation 
       isOpen={props.dialogOpen}
       fullScreen={props.dialogFullScreen}
       title={props.dialogTitle}
@@ -40,6 +54,6 @@ export const WebJobRecurringDetailView: React.SFC<WebJobRecurringDetailProps> = 
       labelConfirm={props.dialogConfirmLabel}
       onClickCancel={props.handleOnCloseDialog}
       onClickConfirm={props.handleOnConfirm}
-    />
+    /> */}
   </PreviewPage>
 );

@@ -4,7 +4,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { IWebJobRecurringPostPayload } from '@webjob/classes/request';
+import { IWebJobRecurringPostPayload, IWebJobRecurringPutPayload } from '@webjob/classes/request';
 import { IWebJobRecurring } from '@webjob/classes/response';
 import { WithWebJobRecurring, withWebJobRecurring } from '@webjob/hoc/withWebJobRecurring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
@@ -27,7 +27,7 @@ import {
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
-import { WebJobRecurringFormView as WebJobRecurringFormView } from './WebJobRecurringFormView';
+import { WebJobRecurringFormView } from './WebJobRecurringFormView';
 
 export interface IWebJobRecurringFormValue {
   uid: string;
@@ -91,8 +91,7 @@ const createProps: mapper<WebJobRecurringFormProps, IOwnState> = (props: WebJobR
   // validation props
   validationSchema: Yup.object().shape<Partial<IWebJobRecurringFormValue>>({
     definitionUid: Yup.mixed()
-      .label(props.intl.formatMessage(webJobMessage.recurring.field.definition))
-      .required(),
+      .label(props.intl.formatMessage(webJobMessage.recurring.field.definition)),
     jobUid: Yup.mixed()
       .label(props.intl.formatMessage(webJobMessage.recurring.field.job))
       .required(),
@@ -116,14 +115,16 @@ const stateUpdaters: StateUpdaters<WebJobRecurringFormProps, IOwnState, IOwnStat
 
 const handlerCreators: HandleCreators<WebJobRecurringFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: WebJobRecurringFormProps) => () => { 
-    const { user } = props.userState;
-    const recurringUid = props.match.params.recurringUid;
-    const { isLoading } = props.webJobRecurringState.detail;
-
-    if (user && recurringUid && !isLoading) {
-      props.webJobRecurringDispatch.loadDetailRequest({
-        recurringUid
-      });
+    if (!isNullOrUndefined(props.history.location.state)) {
+      const { user } = props.userState;
+      const recurringUid = props.history.location.state.uid;
+      const { isLoading } = props.webJobRecurringState.detail;
+  
+      if (user && recurringUid && !isLoading) {
+        props.webJobRecurringDispatch.loadDetailRequest({
+          recurringUid
+        });
+      }
     }
   },
   handleOnSubmit: (props: WebJobRecurringFormProps) => (values: IWebJobRecurringFormValue, actions: FormikActions<IWebJobRecurringFormValue>) => {
@@ -157,7 +158,7 @@ const handlerCreators: HandleCreators<WebJobRecurringFormProps, IOwnHandler> = {
 
         // must have recurringUid
         if (recurringUid) {
-          const payload: IWebJobRecurringPostPayload = {
+          const payload: IWebJobRecurringPutPayload = {
             jobUid: values.jobUid,
             name: values.name,
             description: values.description,
@@ -230,7 +231,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WebJobRecurringFormProps, IOwn
           uid: thisResponse.data.uid,
           name: thisResponse.data.name,
           description: thisResponse.data.description,
-          definitionUid: thisResponse.data.jobUid,
+          definitionUid: '',
           jobUid: thisResponse.data.jobUid,
           cronExpression: thisResponse.data.cron.expression,
           isAutoStart: thisResponse.data.isAutoStart

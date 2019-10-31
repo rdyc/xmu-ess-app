@@ -57,15 +57,18 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
       </CardActions>
     </Card>
 
-    <DialogConfirmation
-      title={props.confirmationDialogProps.title}
-      content={props.confirmationDialogProps.message}
-      labelCancel={props.confirmationDialogProps.labelCancel}
-      labelConfirm={props.confirmationDialogProps.labelConfirm}
-      isOpen={props.isOpenDialog}
-      fullScreen={props.confirmationDialogProps.fullScreen}
-      onClickCancel={props.handleOnCanceled}
-      onClickConfirm={props.handleOnConfirmed}
-    />
+    {
+      !props.formikProps.isSubmitting &&
+      <DialogConfirmation
+        title={props.confirmationDialogProps.title}
+        content={props.confirmationDialogProps.message}
+        labelCancel={props.confirmationDialogProps.labelCancel}
+        labelConfirm={props.confirmationDialogProps.labelConfirm}
+        isOpen={props.isOpenDialog}
+        fullScreen={props.confirmationDialogProps.fullScreen}
+        onClickCancel={props.handleOnCanceled}
+        onClickConfirm={props.handleOnConfirmed}
+      />
+    }
   </React.Fragment>
 );

@@ -169,26 +169,29 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
         />
         }
 
-        <DialogConfirmation
-          title={props.confirmationDialogProps.title}
-          content={props.confirmationDialogProps.message}
-          labelCancel={props.confirmationDialogProps.labelCancel}
-          labelConfirm={props.confirmationDialogProps.labelConfirm}
-          isOpen={props.isOpenDialog}
-          fullScreen={props.confirmationDialogProps.fullScreen}
-          onClickCancel={() => props.setOpen()}
-          onClickConfirm={() => {
-            props.setOpen();
+        {
+          !formikBag.isSubmitting &&
+          <DialogConfirmation
+            title={props.confirmationDialogProps.title}
+            content={props.confirmationDialogProps.message}
+            labelCancel={props.confirmationDialogProps.labelCancel}
+            labelConfirm={props.confirmationDialogProps.labelConfirm}
+            isOpen={props.isOpenDialog}
+            fullScreen={props.confirmationDialogProps.fullScreen}
+            onClickCancel={() => props.setOpen()}
+            onClickConfirm={() => {
+              props.setOpen();
 
-            if (Object.keys(formikBag.errors).length) {
-              props.masterPage.flashMessage({
-                message: props.intl.formatMessage(layoutMessage.text.invalidFormFields)
-              });
-            }
-        
-            formikBag.submitForm();
-          }}
-        />
+              if (Object.keys(formikBag.errors).length) {
+                props.masterPage.flashMessage({
+                  message: props.intl.formatMessage(layoutMessage.text.invalidFormFields)
+                });
+              }
+          
+              formikBag.submitForm();
+            }}
+          />
+        }
 
         <FormikJsonValues formikBag={formikBag} />
       </Form>

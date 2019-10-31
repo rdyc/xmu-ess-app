@@ -1,14 +1,19 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { IWebJobRecurringGetAllFilter } from '@webjob/classes/filters';
+import { IWebJobRecurringTriggerPayload } from '@webjob/classes/request';
 import { IWebJobRecurring } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
+import { WithWebJobMonitoring, withWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
 import { withWebJobRecurring, WithWebJobRecurring } from '@webjob/hoc/withWebJobRecurring';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
+import { FormikActions } from 'formik';
 // import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -18,6 +23,7 @@ import {
   mapper,
   setDisplayName,
   shallowEqual,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -26,28 +32,35 @@ import {
 
 import { WebJobRecurringListView } from './WebJobRecurringListView';
 
+export interface IRecurringTriggerFormValue {
+  jobUid: string;
+  name: string;
+}
+
 interface IOwnOption {
   
 }
 
 interface IOwnParams {
-  // type: string;
+
 }
 
 interface IOwnState {
   fields: ICollectionValue[];
+  initialValues?: IRecurringTriggerFormValue;
   isTriggerOpen: boolean;
-  jobUid?: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  handleTriggerVisibility: (value: boolean, jobUid?: string) => IOwnState;
+  setInitialValues: StateHandler<IOwnState>;
+  setOpen: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnLoadApiSearch: (find?: string, findBy?: string) => void;
   handleOnBind: (item: IWebJobRecurring, index: number) => IDataBindResult;
+  handleOnSubmit: (values: IRecurringTriggerFormValue, actions: FormikActions<IRecurringTriggerFormValue>) => void;
 }
 
 export type WebJobRecurringListProps
@@ -59,25 +72,32 @@ export type WebJobRecurringListProps
   & RouteComponentProps<IOwnParams>
   & WithStyles<typeof styles>
   & WithUser
+  & WithMasterPage
+  & WithWebJobMonitoring
   & WithWebJobRecurring;
 
-const createProps: mapper<IOwnOption, IOwnState> = (): IOwnState => {
+const createProps: mapper<IOwnOption, IOwnState> = (props: WebJobRecurringListProps): IOwnState => {
   const state: IOwnState = {
     fields: Object.keys(IWebJobRequestField).map(key => ({
       value: key,
       name: IWebJobRequestField[key]
     })),
+    initialValues: {
+      jobUid: '',
+      name: ''
+    },
     isTriggerOpen: false,
-    jobUid: ''
   };
 
   return state;
 };
 
 const stateUpdaters: StateUpdaters<WebJobRecurringListProps, IOwnState, IOwnStateUpdater> = {
-  handleTriggerVisibility: (state: IOwnState) => (value: boolean, jobUid?: string) => ({
-    jobUid,
-    isTriggerOpen: value,
+  setInitialValues: () => (values: IRecurringTriggerFormValue): Partial<IOwnState> => ({
+    initialValues: values
+  }),
+  setOpen: (prevState: IOwnState) => () => ({
+    isTriggerOpen: !prevState.isTriggerOpen,
   })
 };
 
@@ -141,12 +161,77 @@ const handlerCreators: HandleCreators<WebJobRecurringListProps, IOwnHandler> = {
     quinary: item.cron.expression,
     senary: props.intl.formatMessage(item.isAutoStart ? webJobMessage.recurring.field.isAutoStart : webJobMessage.recurring.field.isManualStart)
   }),
+  handleOnSubmit: (props: WebJobRecurringListProps) => (values: IRecurringTriggerFormValue, actions: FormikActions<IRecurringTriggerFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise(() => undefined);
+
+    if (user) {
+      // fill payload
+      const payload: IWebJobRecurringTriggerPayload = {
+        jobUid: values.jobUid
+      };
+
+     // set the promise
+      promise = new Promise((resolve, reject) => {
+        props.webJobRecurringDispatch.triggerRequest({
+          resolve,
+          reject,
+          data: payload
+        });
+      });  
+    }
+
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(webJobMessage.shared.message.triggerSuccess, {state: 'Recurring', type: 'ID', uid: values.jobUid })
+        });
+
+        const { isLoading } = props.webJobMonitoringState.statisticAll;
+
+        if (user && !isLoading) {
+          props.webJobMonitoringDispatch.loadAllStatisticRequest({});
+        }
+        // redirect to detail
+        // props.history.push(`/webjob/recurrings/${response.uid}`);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(webJobMessage.shared.message.triggerFailure)
+        });
+      });
+  }
 };
 
 export const WebJobRecurringList = compose<WebJobRecurringListProps, IOwnOption>(
   setDisplayName('WebJobRecurringList'),
   withUser,
   withRouter,
+  withMasterPage,
+  withWebJobMonitoring,
   withWebJobRecurring,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

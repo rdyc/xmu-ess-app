@@ -5,9 +5,10 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
-  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -37,6 +38,8 @@ interface IOwnProps {
   buttonLabelProps: ISubmissionButtonLabelProps;
   confirmationDialogProps: ISubmissionDialogProps;
   disableButtons?: boolean;
+  isOpenDialog: boolean;
+  setOpen: () => void;
 }
 
 interface IOwnHandler {
@@ -45,11 +48,11 @@ interface IOwnHandler {
 }
 
 interface IOwnState {
-  isOpenDialog: boolean;
+  // isOpenDialog: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setOpen: StateHandler<IOwnState>;
+  // setOpen: StateHandler<IOwnState>;
 }
 
 export type SubmissionTriggerProps
@@ -62,13 +65,13 @@ export type SubmissionTriggerProps
   & InjectedIntlProps; 
 
 const createProps: mapper<SubmissionTriggerProps, IOwnState> = (props: SubmissionTriggerProps): IOwnState => ({
-  isOpenDialog: false
+  // isOpenDialog: false
 });
 
 const stateUpdaters: StateUpdaters<SubmissionTriggerProps, IOwnState, IOwnStateUpdater> = {
-  setOpen: (prevState: IOwnState) => () => ({
-    isOpenDialog: !prevState.isOpenDialog,
-  })
+  // setOpen: (prevState: IOwnState) => () => ({
+  //   isOpenDialog: !prevState.isOpenDialog,
+  // })
 };
 
 const handlerCreators: HandleCreators<SubmissionTriggerProps, IOwnHandler> = {
@@ -88,10 +91,19 @@ const handlerCreators: HandleCreators<SubmissionTriggerProps, IOwnHandler> = {
   },
 };
 
+const lifeCycleFunctions: ReactLifeCycleFunctions<SubmissionTriggerProps, IOwnState> = {
+  componentDidUpdate(prevProps: SubmissionTriggerProps) {
+    // const { isOpenDialog } = this.props;
+
+    // console.log(isOpenDialog, 'dialog is open?');
+  }
+};
+
 export const SubmissionTrigger = compose<SubmissionTriggerProps, IOwnProps>(
   setDisplayName('SubmissionTrigger'),
   withMasterPage,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifeCycleFunctions),
 )(SubmissionTriggerView);

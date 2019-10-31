@@ -29,6 +29,8 @@
   "web.job.shared.confirm.create.subHeader": "You are about to create a new {state} data. Do you want to continue?",
   "web.job.shared.confirm.upload.title": "Upload New {state}",
   "web.job.shared.confirm.upload.subHeader": "You are about to upload a new {state} data. Do you want to continue?",
+  "web.job.shared.confirm.trigger.title": "Trigger Manual {state}",
+  "web.job.shared.confirm.trigger.subHeader": "You are about to manual trigger {state} with ID {uid}. Do you want to continue?",
   "web.job.shared.confirm.modify.title": "Modify {state}",
   "web.job.shared.confirm.modify.subHeader": "You are about to modify this {state} data. Do you want to continue?",
   "web.job.shared.confirm.delete.title": "Delete {state}",
