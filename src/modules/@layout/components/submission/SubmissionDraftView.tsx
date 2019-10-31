@@ -87,15 +87,18 @@ export const SubmissionDraftView: React.ComponentType<SubmissionDraftProps> = pr
       </CardActions>
     </Card>
 
-    <DialogConfirmation
-      title={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.title : props.confirmationDialogFinalProps.title}
-      content={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.message : props.confirmationDialogFinalProps.message}
-      labelCancel={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.labelCancel : props.confirmationDialogFinalProps.labelCancel}
-      labelConfirm={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.labelConfirm : props.confirmationDialogFinalProps.labelConfirm}
-      isOpen={props.isOpenDialog}
-      fullScreen={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.fullScreen : props.confirmationDialogFinalProps.fullScreen}
-      onClickCancel={props.handleOnCanceled}
-      onClickConfirm={props.handleOnConfirmed}
-    />
+    {
+      !props.formikProps.isSubmitting &&
+      <DialogConfirmation
+        title={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.title : props.confirmationDialogFinalProps.title}
+        content={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.message : props.confirmationDialogFinalProps.message}
+        labelCancel={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.labelCancel : props.confirmationDialogFinalProps.labelCancel}
+        labelConfirm={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.labelConfirm : props.confirmationDialogFinalProps.labelConfirm}
+        isOpen={props.isOpenDialog}
+        fullScreen={props.saveType === DraftType.draft ? props.confirmationDialogDraftProps.fullScreen : props.confirmationDialogFinalProps.fullScreen}
+        onClickCancel={props.handleOnCanceled}
+        onClickConfirm={props.handleOnConfirmed}
+      />
+    }
   </React.Fragment>
 );
