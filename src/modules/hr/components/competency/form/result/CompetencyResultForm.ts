@@ -66,11 +66,13 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyResultFormValue>>>;
 
   saveType: DraftType;
+  isLoad: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setLoad: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -95,7 +97,8 @@ export type CompetencyResultFormProps
 const createProps: mapper<CompetencyResultFormProps, IOwnState> = (props: CompetencyResultFormProps): IOwnState => ({
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  
+  isLoad: false,
+
   // form values
   initialValues: {
     uid: '',
@@ -148,7 +151,10 @@ const stateUpdaters: StateUpdaters<CompetencyResultFormProps, IOwnState, IOwnSta
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setLoad: () => (values: any): Partial<IOwnState> => ({
+    isLoad: values
+  }),
 };
 
 const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = {
@@ -303,46 +309,35 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyResultState.detail;
-    const { response: prevResponse } = prevProps.hrCompetencyResultState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
-    const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
+    const { isLoad, setLoad } = this.props;
 
-    if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data && this.props.initialValues) {
-          
-          // define initial values
-          const initialValues: ICompetencyResultFormValue = {
-            uid: thisResponse.data.uid,
-            respondenUid: thisResponse.data.respondenUid,
-            companyUid: thisResponse.data.companyUid,
-            positionUid: thisResponse.data.positionUid,
-            year: thisResponse.data.assessmentYear.toString(),
-            levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
-          };
-          this.props.setInitialValues(initialValues);
-      }
-    }
+    if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
+        
+        // define initial values
+        const initialValues: ICompetencyResultFormValue = {
+          uid: thisResponse.data.uid,
+          respondenUid: thisResponse.data.respondenUid,
+          companyUid: thisResponse.data.companyUid,
+          positionUid: thisResponse.data.positionUid,
+          year: thisResponse.data.assessmentYear.toString(),
+          levelRespond: []
+        };
 
-    // to fill the level respond is here
-    if (thisMapped !== prevMapped) {
-      if (thisMapped && thisMapped.data && thisResponse && thisResponse.data) {
-        const initialVal: ICompetencyResultFormValue | undefined = this.props.initialValues;
+        thisMapped.data[0].categories.forEach(item => {
+          const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
 
-        if (initialVal) {
-          thisMapped.data[0].categories.forEach(item => {
-            const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+          initialValues.levelRespond.push({
+            uid: find && find.uid || '',
+            categoryUid: item.category.uid,
+            levelUid: find && find.levelUid || '',
+            noteHistory: find && find.note || '',
+            note: find && find.latestNote
+          });  
+        });
 
-            initialVal.levelRespond.push({
-              uid: find && find.uid || '',
-              categoryUid: item.category.uid,
-              levelUid: find && find.levelUid || '',
-              noteHistory: find && find.note || '',
-              note: find && find.latestNote
-            });  
-          });
-          this.props.setInitialValues(initialVal);
-        }
-      }
+        setLoad(true);
+        this.props.setInitialValues(initialValues);
     }
   }
 };
