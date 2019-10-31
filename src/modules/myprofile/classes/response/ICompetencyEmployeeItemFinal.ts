@@ -1,13 +1,15 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { IHrCompetencyCategoryList, IHrCompetencyLevelList } from '@hr/classes/response';
 
 export interface ICompetencyEmployeeItemFinal {
   uid: string;
   competencyEmployeeUid: string;
   categoryUid: string;
-  category?: IHrCompetencyCategoryList;
+  categoryName: string;
+  categoryDescription: string;
   levelUid: string;
-  level?: IHrCompetencyLevelList;
+  level: number;
+  levelDescription: string;
+  indicators: string;
   note?: string;
   change?: IBaseChanges;
 }

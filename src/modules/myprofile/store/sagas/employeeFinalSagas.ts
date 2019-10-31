@@ -8,7 +8,7 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof employeeFinalGetDetailRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/finals/${action.payload.employeeUid}/${action.payload.positionUid}`, 
+      path: `/v1/account/employees/${action.payload.employeeUid}/competency/${action.payload.positionUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(employeeFinalGetDetailSuccess(response.body)),
       ]), 

@@ -1,4 +1,3 @@
-import { IBaseChanges } from '@generic/interfaces';
 import { IEmployeeLevel } from '@lookup/classes/response';
 import { IHrCompetencyLevelList } from '../level/IHrCompetencyLevelList';
 
@@ -8,5 +7,4 @@ export interface IHrCompetencyMappedNext {
   employeeLevel: IEmployeeLevel;
   categoryLevelUid: string;
   categoryLevel: IHrCompetencyLevelList;
-  changes?: IBaseChanges;
 }
