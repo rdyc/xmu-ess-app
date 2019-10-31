@@ -1001,6 +1001,28 @@ const styles = (theme: Theme) =>
 
     globalSize: {
       fontSize: theme.typography.fontSize
+    },
+
+    movingText: {
+      overflow: 'hidden',
+      // margin: '0 16px',
+      padding: '0',
+      '& span': {
+        overflow: 'visible',
+        '&:hover': {
+          position: 'relative',
+          animation: 'moveTextHorz 3s infinite'
+        },
+      }
+    },
+
+    '@keyframes moveTextHorz': {
+      '0%': {
+        left: '0px'
+      },
+      '100%': {
+        left: '-50px'
+      }
     }
   });
 

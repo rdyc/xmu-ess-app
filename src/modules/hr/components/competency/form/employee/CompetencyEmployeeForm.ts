@@ -64,11 +64,13 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyEmployeeFormValue>>>;
 
   saveType: DraftType;
+  isLoad: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
+  setLoad: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -94,6 +96,7 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
   // form props
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   
+  isLoad: false,
   // form values
   initialValues: {
     uid: '',
@@ -148,7 +151,10 @@ const stateUpdaters: StateUpdaters<CompetencyEmployeeFormProps, IOwnState, IOwnS
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  setLoad: () => (values: any): Partial<IOwnState> => ({
+    isLoad: values
+  }),
 };
 
 const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> = {
@@ -279,47 +285,33 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
   },
   componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
-    const { response: prevResponse } = prevProps.hrCompetencyEmployeeState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
-    const { response: prevMapped } = prevProps.hrCompetencyMappedState.list;
+    const { isLoad, setLoad } = this.props;
 
-    if (thisResponse !== prevResponse) {
-      if (thisResponse && thisResponse.data && this.props.initialValues) {
-        // define initial values
-        const initialValues: ICompetencyEmployeeFormValue = {
-          uid: thisResponse.data.uid,
-          respondenUid: thisResponse.data.respondenUid,
-          companyUid: thisResponse.data.companyUid,
-          positionUid: thisResponse.data.positionUid,
-          year: thisResponse.data.assessmentYear.toString(),
-          levelRespond: this.props.initialValues.levelRespond.length > 0 ? this.props.initialValues.levelRespond : []
-        };
+    if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
+      // define initial values
+      const initialValues: ICompetencyEmployeeFormValue = {
+        uid: thisResponse.data.uid,
+        respondenUid: thisResponse.data.respondenUid,
+        companyUid: thisResponse.data.companyUid,
+        positionUid: thisResponse.data.positionUid,
+        year: thisResponse.data.assessmentYear.toString(),
+        levelRespond: []
+      };
 
-        this.props.setInitialValues(initialValues);
-      }
-    }
+      thisMapped.data[0].categories.forEach(item => {
+        const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+        
+        initialValues.levelRespond.push({
+          uid: find && find.uid || '',
+          categoryUid: item.category.uid,
+          levelUid: find && find.levelUid || '',
+          note: find && find.note && find.note.split(' - ')[2]
+        });  
+      });
 
-    // to fill the level respond here
-    if (thisMapped !== prevMapped) {
-      if (thisMapped && thisMapped.data && thisResponse && thisResponse.data) {
-        const initialVal: ICompetencyEmployeeFormValue | undefined = this.props.initialValues;
-
-        if (initialVal) {
-          thisMapped.data[0].categories.forEach(item => {
-            const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-
-            // const note: string[] = find && find.note && find.note.split(' - ') || [];
-            
-            initialVal.levelRespond.push({
-              uid: find && find.uid || '',
-              categoryUid: item.category.uid,
-              levelUid: find && find.levelUid || '',
-              note: find && find.note && find.note.split(' - ')[2]
-            });  
-          });
-          this.props.setInitialValues(initialVal);
-        }
-      }
+      setLoad(true);
+      this.props.setInitialValues(initialValues);
     }
   }
 };
