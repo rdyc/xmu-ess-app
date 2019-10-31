@@ -47,6 +47,8 @@ export const webJobConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
   deleteTitle: { id: `${prefix}.confirm.delete.title` },
   deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
+  triggerTitle: { id: `${prefix}.confirm.trigger.title` },
+  triggerDescription: { id: `${prefix}.confirm.trigger.subHeader`}
 });
 
 // messages

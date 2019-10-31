@@ -1,4 +1,4 @@
-import { layoutMessage } from '@layout/locales/messages';
+// import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { 
   Dialog,
@@ -14,7 +14,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { IRecurringTriggerFormValue, RecurringTriggerFormProps } from './RecurringTriggerForm';
 import RecurringTriggerPartial from './RecurringTriggerPartial';
-import { SubmissionTrigger } from './submission/SubmissionTrigger';
+// import { SubmissionTrigger } from './submission/SubmissionTrigger';
 
 export const RecurringTriggerFormView: React.SFC<RecurringTriggerFormProps> = props => (
   <Dialog
@@ -76,7 +76,7 @@ export const RecurringTriggerFormView: React.SFC<RecurringTriggerFormProps> = pr
           </DialogContent>
 
           {/* Submission for trigger */}
-          <SubmissionTrigger
+          {/* <SubmissionTrigger
             className={props.classes.dialogActions}
             buttonLabelProps={{
               reset: props.intl.formatMessage(layoutMessage.action.reset),
@@ -90,7 +90,7 @@ export const RecurringTriggerFormView: React.SFC<RecurringTriggerFormProps> = pr
               labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
               labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
             }} 
-          />             
+          />              */}
         </Form>
       )}
     />
