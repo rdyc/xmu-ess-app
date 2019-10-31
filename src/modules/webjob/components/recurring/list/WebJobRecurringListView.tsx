@@ -49,7 +49,6 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
           <Button 
             size="small"
             color="secondary"
-            disabled
             onClick={() => props.history.push(`/webjob/recurrings/form`, {uid: item.uid})} 
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}

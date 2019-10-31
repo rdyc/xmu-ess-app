@@ -72,60 +72,65 @@ const WebJobRecurringPartial: React.ComponentType<WebJobRecurringPartialProps> =
         )}
       />
 
-      <Field
-        name="definitionUid"
-        render={({ field, form }: FieldProps<IWebJobRecurringFormValue>) => (
-          <DefinitionOption>
-            <SelectField
-              isSearchable
-              menuPlacement="auto"
-              menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(webJobMessage.recurring.field.definition),
-                required: true,
-                helperText: form.touched.definitionUid && form.errors.definitionUid,
-                error: form.touched.definitionUid && Boolean(form.errors.definitionUid)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                props.formikBag.setFieldValue('jobUid', '');
-              }}
-            />
-          </DefinitionOption>
-        )}
-      />
+      {
+        props.formMode !== FormMode.Edit &&
+        <Field
+          name="definitionUid"
+          render={({ field, form }: FieldProps<IWebJobRecurringFormValue>) => (
+            <DefinitionOption>
+              <SelectField
+                isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isDisabled={props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(webJobMessage.recurring.field.definition),
+                  helperText: form.touched.definitionUid && form.errors.definitionUid,
+                  error: form.touched.definitionUid && Boolean(form.errors.definitionUid)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.formikBag.setFieldValue('jobUid', '');
+                }}
+              />
+            </DefinitionOption>
+          )}
+        />
+      }
 
-      <Field
-        name="jobUid"
-        render={({ field, form }: FieldProps<IWebJobRecurringFormValue>) => (
-          <DefintionJobOption definitionUid={props.formikBag.values.definitionUid}>
-            <SelectField
-              isSearchable
-              menuPlacement="auto"
-              menuPosition="fixed"
-              isDisabled={props.formikBag.values.definitionUid === '' || props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(webJobMessage.recurring.field.job),
-                required: true,
-                helperText: form.touched.jobUid && form.errors.jobUid,
-                error: form.touched.jobUid && Boolean(form.errors.jobUid)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-              }}
-            />
-          </DefintionJobOption>
-        )}
-      />
+      {
+        props.formMode !== FormMode.Edit &&
+        <Field
+          name="jobUid"
+          render={({ field, form }: FieldProps<IWebJobRecurringFormValue>) => (
+            <DefintionJobOption definitionUid={props.formikBag.values.definitionUid}>
+              <SelectField
+                isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isDisabled={props.formikBag.values.definitionUid === '' || props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(webJobMessage.recurring.field.job),
+                  required: true,
+                  helperText: form.touched.jobUid && form.errors.jobUid,
+                  error: form.touched.jobUid && Boolean(form.errors.jobUid)
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                }}
+              />
+            </DefintionJobOption>
+          )}
+        />
+      }
 
       <Field
         name="cronExpression"
