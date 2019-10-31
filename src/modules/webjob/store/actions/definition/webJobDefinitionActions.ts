@@ -74,7 +74,7 @@ export const webJobDefinitionPostDispose = () => action(WebJobDefinitionAction.P
 
 // delete
 export const webJobDefinitionDeleteRequest = (request: IWebJobDefinitionDeleteRequest) => action(WebJobDefinitionAction.DELETE_REQUEST, request);
-export const webJobDefinitionDeleteSuccess = (response: boolean) => action(WebJobDefinitionAction.DELETE_SUCCESS, response);
+export const webJobDefinitionDeleteSuccess = () => action(WebJobDefinitionAction.DELETE_SUCCESS);
 export const webJobDefinitionDeleteError = (error: any) => action(WebJobDefinitionAction.DELETE_ERROR, error);
 export const webJobDefinitionDeleteDispose = () => action(WebJobDefinitionAction.DELETE_DISPOSE);
 

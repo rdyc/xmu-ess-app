@@ -20,6 +20,7 @@ const monitoringProcessingSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.id)}
         value={props.data.id}
       />
@@ -28,6 +29,7 @@ const monitoringProcessingSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.job)}
         value={props.data.job}
       />
@@ -36,6 +38,7 @@ const monitoringProcessingSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.serverId)}
         value={props.data.serverId || 'N/A'}
       />
@@ -44,6 +47,7 @@ const monitoringProcessingSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.startedAt)}
         value={props.intl.formatDate(props.data.startedAt, GlobalFormat.DateTime)}
       />

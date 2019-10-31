@@ -66,12 +66,12 @@ export const webJobRecurringPutDispose = () => action(WebJobRecurringAction.PUT_
 
 // delete
 export const webJobRecurringDeleteRequest = (request: IWebJobRecurringDeleteRequest) => action(WebJobRecurringAction.DELETE_REQUEST, request);
-export const webJobRecurringDeleteSuccess = (response: boolean) => action(WebJobRecurringAction.DELETE_SUCCESS, response);
+export const webJobRecurringDeleteSuccess = () => action(WebJobRecurringAction.DELETE_SUCCESS);
 export const webJobRecurringDeleteError = (error: any) => action(WebJobRecurringAction.DELETE_ERROR, error);
 export const webJobRecurringDeleteDispose = () => action(WebJobRecurringAction.DELETE_DISPOSE);
 
 // trigger
 export const webJobRecurringTriggerRequest = (request: IWebJobRecurringTriggerRequest) => action(WebJobRecurringAction.TRIGGER_REQUEST, request);
-export const webJobRecurringTriggerSuccess = (response: boolean) => action(WebJobRecurringAction.TRIGGER_SUCCESS, response);
+export const webJobRecurringTriggerSuccess = () => action(WebJobRecurringAction.TRIGGER_SUCCESS);
 export const webJobRecurringTriggerError = (error: any) => action(WebJobRecurringAction.TRIGGER_ERROR, error);
 export const webJobRecurringTriggerDispose = () => action(WebJobRecurringAction.TRIGGER_DISPOSE);

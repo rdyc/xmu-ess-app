@@ -145,10 +145,10 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(webJobDefinitionGetByIdDispose()),
         put(webJobDefinitionGetAllDispose()),
-        put(webJobDefinitionDeleteSuccess(response.body)),
+        put(webJobDefinitionDeleteSuccess()),
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(webJobDefinitionDeleteError(response.statusText))
