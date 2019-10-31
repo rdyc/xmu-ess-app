@@ -152,12 +152,12 @@ function* watchDeleteRequest() {
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(webJobRecurringDeleteSuccess()),
         put(webJobRecurringGetByIdDispose()),
         put(webJobRecurringGetAllDispose()),
-        put(webJobRecurringDeleteSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(webJobRecurringDeleteError(response.statusText))
@@ -193,12 +193,11 @@ function* watchTriggerRequest() {
       path: `/api/v1/recurrings/trigger`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(webJobRecurringGetByIdDispose()),
+        put(webJobRecurringTriggerSuccess()),
         put(webJobRecurringGetAllDispose()),
-        put(webJobRecurringTriggerSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(webJobRecurringTriggerError(response.statusText))

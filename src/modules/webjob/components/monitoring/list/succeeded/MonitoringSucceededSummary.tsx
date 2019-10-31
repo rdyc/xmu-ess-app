@@ -20,6 +20,7 @@ const monitoringSucceededSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.id)}
         value={props.data.id}
       />
@@ -28,6 +29,7 @@ const monitoringSucceededSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.job)}
         value={props.data.job}
       />
@@ -36,11 +38,13 @@ const monitoringSucceededSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.result)}
         value={props.data.result || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.totalDuration)}
         value={props.data.totalDuration}
       />
@@ -49,6 +53,7 @@ const monitoringSucceededSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.succeededAt)}
         value={props.intl.formatDate(props.data.succeededAt, GlobalFormat.DateTime)}
       />

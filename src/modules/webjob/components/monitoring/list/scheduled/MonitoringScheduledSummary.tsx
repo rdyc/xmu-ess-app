@@ -28,6 +28,7 @@ const monitoringScheduledSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.job)}
         value={props.data.job}
       />
@@ -36,6 +37,7 @@ const monitoringScheduledSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.enqueuedAt)}
         value={props.intl.formatDate(props.data.enqueueAt, GlobalFormat.DateTime)}
       />
@@ -44,6 +46,7 @@ const monitoringScheduledSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.scheduledAt)}
         value={props.intl.formatDate(props.data.scheduledAt, GlobalFormat.DateTime)}
       />

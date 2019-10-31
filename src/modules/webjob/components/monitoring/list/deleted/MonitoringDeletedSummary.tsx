@@ -20,6 +20,7 @@ const monitoringDeletedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.id)}
         value={props.data.id}
       />
@@ -28,6 +29,7 @@ const monitoringDeletedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.job)}
         value={props.data.job}
       />
@@ -36,6 +38,7 @@ const monitoringDeletedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.deletedAt)}
         value={props.intl.formatDate(props.data.deletedAt, GlobalFormat.DateTime)}
       />

@@ -20,11 +20,13 @@ const monitoringFailedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.id)}
         value={props.data.id}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.job)}
         value={props.data.job}
       />
@@ -33,11 +35,13 @@ const monitoringFailedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.reason)}
         value={props.data.reason}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.exceptionType)}
         value={props.data.exceptionType}
       />
@@ -46,11 +50,13 @@ const monitoringFailedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.exceptionMessage)}
         value={props.data.exceptionMessage}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.exceptionDetails)}
         value={props.data.exceptionDetails}
       />
@@ -59,6 +65,7 @@ const monitoringFailedSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.failedAt)}
         value={props.intl.formatDate(props.data.failedAt, GlobalFormat.DateTime)}
       />

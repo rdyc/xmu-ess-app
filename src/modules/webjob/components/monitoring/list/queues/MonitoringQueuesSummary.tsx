@@ -19,6 +19,7 @@ const monitoringQueuesSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.name)}
         value={props.data.name}
       />
@@ -27,6 +28,7 @@ const monitoringQueuesSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.length)}
         value={props.data.length}
       />
@@ -35,6 +37,7 @@ const monitoringQueuesSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(webJobMessage.monitoring.field.fetched)}
         value={props.data.fetched}
       />
