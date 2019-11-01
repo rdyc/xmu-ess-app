@@ -6,7 +6,7 @@ import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { Card, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText,  MenuItem, Select, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
-import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -34,12 +34,12 @@ interface IOwnState {
 }
 
 interface IOwnHandler {
-  handleCheckChild: (uid: string, parentUid: string) => void;
+  handleCheckChild: (uid?: string, parentUid?: string) => void;
 }
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
-  handleToggle: (uid: string) => IOwnState;
-  handleToggleCategory: (uid: string) => IOwnState;
+  handleToggle: (uid?: string) => IOwnState;
+  handleToggleCategory: (uid?: string) => IOwnState;
   stateUpdate: StateHandler<IOwnState>;
 }
 
@@ -96,7 +96,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
   const { active, isExpanded, formikBag, activeCategory, isExpandedCategory } = props;
   const { response } = props.hrCompetencyClusterState.list;
 
-  const handleLevel = (clusterUid: string, categoryUid: string) => {
+  const handleLevel = (clusterUid?: string, categoryUid?: string) => {
     if (response && response.data) {
       const cluster: IHrCompetencyClusterList | undefined = response.data.find(data => data.uid === clusterUid);
       if (cluster) {
@@ -108,6 +108,14 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
     }
     return [];
   };
+
+  // const handleMapped = (values?: MappedLevel[]) => {
+  //   if (values) {
+  //     return values;
+  //   }
+
+  //   return [];
+  // };
 
   const render = (
     <Card square>
@@ -140,6 +148,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           }}
                           selected={parent.uid === active && isExpanded}
                         >
+                          {/* cluster */}
                           <Field 
                             name={`categories.${idxParent}.isAccess`}
                             className={props.classes.marginFarLeft}
@@ -186,6 +195,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                           timeout="auto"
                           unmountOnExit
                         >
+                          {/* CATEGORIES */}
                           {
                             formikBag.values.categories.map((child, idxChild) => 
                               child.parentUid === parent.uid &&
@@ -218,6 +228,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                     unmountOnExit
                                     style={{padding: '10px 0'}}
                                   >
+                                    {/* Mapped level */}
                                     <FieldArray
                                       name={`categories.${idxChild}.mappedLevel`}
                                       render={(fieldsIndicator: FieldArrayRenderProps) => (
@@ -230,18 +241,27 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                                 name={`categories.${idxChild}.mappedLevel.${lvIdx}.categoryLevelUid`}
                                                 render={({field, form}: FieldProps<IMappedFormValue>) => {
 
+                                                  const error = getIn(form.errors, `${field.name}`);
+                                                  const touch = getIn(form.touched, `${field.name}`);
+
                                                   return (
                                                     <ListItem
                                                       key={lvIdx}
-                                                      color="inherit"
                                                       style={{marginLeft: '70px'}}
                                                     >
                                                       <ListItemText 
+                                                        className={error && touch ? props.classes.avatarRed : ''}
                                                         primary={lv.employeeLevelName}
                                                       />
                                                       <ListItemSecondaryAction style={{right: '90px', width: '50px'}}>
                                                         <Select
-                                                          {...field}
+                                                          // {...field}
+                                                          value={field.value}
+                                                          onChange={(e) => {
+                                                            formikBag.setFieldValue(field.name, e.target.value);
+                                                            console.log(e);
+                                                            console.log(field);
+                                                          }}
                                                           disabled={form.isSubmitting}
                                                         >
                                                           {
@@ -296,7 +316,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           item.isAccess &&
           item.parentUid &&
           childList.push({
-            uid: item.uid,
+            uid: item.uid || '',
             parentUid: item.parentUid
           })  
         );
