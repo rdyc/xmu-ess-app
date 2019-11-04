@@ -78,22 +78,16 @@ interface IOwnState {
   filterCompany?: ILookupCompanyGetListFilter;
   filterCluster?: IHrCompetencyClusterGetListFilter;
 
-  levelTouched: boolean;
-  detailTouched: boolean;
   isLoad: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
-  setLevelTouched: StateHandler<IOwnState>;
-  setDetailTouched: StateHandler<IOwnState>;
   setLoad: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
-  handleOnLoadCluster: () => void;
-  handleOnLoadLevel: () => void;
   handleOnSubmit: (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => void;
 }
 
@@ -168,19 +162,11 @@ const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCo
     orderBy: 'name',
     direction: 'ascending'
   },
-  levelTouched: false,
-  detailTouched: false
 });
 
 const stateUpdaters: StateUpdaters<HrCompetencyMappedFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
-  }),
-  setLevelTouched: () => (): Partial<IOwnState> => ({
-    levelTouched: true
-  }),
-  setDetailTouched: () => (): Partial<IOwnState> => ({
-    detailTouched: true
   }),
   setLoad: () => (values: any): Partial<IOwnState> => ({
     isLoad: values
@@ -218,26 +204,6 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
         });
       }
     }
-  },
-  handleOnLoadCluster: (props: HrCompetencyMappedFormProps) => () => {
-    const { loadListRequest: loadCluster } = props.hrCompetencyClusterDispatch;
-
-    loadCluster({
-      filter: {
-        orderBy: 'name',
-        direction: 'ascending'
-      }
-    });
-  },
-  handleOnLoadLevel: (props: HrCompetencyMappedFormProps) => () => {
-    const { loadListRequest: loadLevel } = props.employeeLevelDispatch;
-
-    loadLevel({
-      filter: {
-        orderBy: 'seq',
-        direction: 'descending'
-      }
-    });
   },
   handleOnSubmit: (props: HrCompetencyMappedFormProps) => (values: IMappedFormValue, actions: FormikActions<IMappedFormValue>) => {
     const { user } = props.userState;
@@ -377,15 +343,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
     if (formMode === FormMode.New && !isLoad) {
       if (clusterList && clusterList.data && levelList && levelList.data) {
         const categoriesData: CategoryMenus[] = [];
-        const mappedLevelData: MappedLevel[] = [];
-
-        levelList.data.map(lv => {
-          mappedLevelData.push({
-            employeeLevelUid: lv.uid,
-            employeeLevelName: lv.value,
-            categoryLevelUid: '',
-          });
-        });
 
         clusterList.data.map((item, index) => {
           // Parent
@@ -407,11 +364,23 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
                 name: category.name,
                 isAccess: false,
                 itemUid: '',
-                mappedLevel: mappedLevelData
+                mappedLevel: []
               });
             });
           }
         });
+
+        categoriesData.map(item => 
+          item.parentUid &&
+          levelList.data &&
+          levelList.data.map(lv => 
+            item.mappedLevel.push({
+              employeeLevelUid: lv.uid,
+              employeeLevelName: lv.value,
+              categoryLevelUid: '',
+            })  
+          )
+        );
 
         const initialValues: IMappedFormValue = {
           uid: 'Auto Generated',
@@ -427,26 +396,17 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
   },
   componentDidUpdate(prevProps: HrCompetencyMappedFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyMappedState.detail;
-    const { response: thisCluster } = this.props.hrCompetencyClusterState.list;
-    const { response: thisLevel } = this.props.employeeLevelState.list;
+    const { response: clusterList } = this.props.hrCompetencyClusterState.list;
+    const { response: levelList } = this.props.employeeLevelState.list;
     const { isLoad, setLoad, formMode } = this.props;
 
     if (formMode === FormMode.Edit && !isLoad) {
-      if (thisResponse && thisResponse.data && thisCluster && thisCluster.data && thisLevel && thisLevel.data) {
-        const categoryData: CategoryMenus[] = [];
-        const mappedLevelData: MappedLevel[] = [];
+      if (thisResponse && thisResponse.data && clusterList && clusterList.data && levelList && levelList.data) {
+        const categoriesData: CategoryMenus[] = [];
 
-        thisLevel.data.map(lv => {
-          mappedLevelData.push({
-            employeeLevelUid: lv.uid,
-            employeeLevelName: lv.value,
-            categoryLevelUid: '',
-          });
-        });
-
-        thisCluster.data.map((item, index) => {
+        clusterList.data.map((item, index) => {
           // Parent
-          categoryData.push({
+          categoriesData.push({
             uid: item.uid,
             parentUid: '',
             name: item.name || '',
@@ -458,24 +418,36 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
           if (item.categories.length >= 1) {
             // for child
             item.categories.map(category => {
-              categoryData.push({
+              categoriesData.push({
                 uid: category.uid,
                 parentUid: item.uid,
                 name: category.name,
                 isAccess: false,
                 itemUid: '',
-                mappedLevel: mappedLevelData,
+                mappedLevel: [],
               });
             });
           }
         });
 
-        categoryData.map(item => {
+        categoriesData.map(item => 
+          item.parentUid &&
+          levelList.data &&
+          levelList.data.map(lv => 
+            item.mappedLevel.push({
+              employeeLevelUid: lv.uid,
+              employeeLevelName: lv.value,
+              categoryLevelUid: '',
+            })  
+          )
+        );
+        
+        categoriesData.map(item => {
           if (item.parentUid) {
             const category: MappedItem | undefined = thisResponse.data.categories.find(data => data.category.uid === item.uid);
 
             if (category) {
-              const parent: CategoryMenus | undefined = categoryData.find(find => find.uid === item.parentUid && !find.isAccess);
+              const parent: CategoryMenus | undefined = categoriesData.find(find => find.uid === item.parentUid && !find.isAccess);
 
               if (parent) {
                 parent.isAccess = true;
@@ -505,7 +477,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCompetencyMappedFormProps, I
           uid: thisResponse.data.uid,
           companyUid: thisResponse.data.companyUid,
           positionUid: thisResponse.data.positionUid,
-          categories: categoryData,
+          categories: categoriesData,
         };
 
         setLoad(true);

@@ -109,12 +109,32 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
     return [];
   };
 
-  // const handleMapped = (values?: MappedLevel[]) => {
-  //   if (values) {
-  //     return values;
+  // const handleCategoryError = (index: number) => {
+  //   if (formikBag.errors && formikBag.errors.categories) {
+  //     const category: any[] = [];
+  //     formikBag.errors.categories.map(item => 
+  //       item !== undefined &&
+  //       category.push(item)
+  //     );
+
+  //     if (category.length > 0) {
+  //       // console.log(category);
+  //       category.map(item => {
+  //         if (item.mappedLevel) {
+  //           const findNotNull: any = item.mappedLevel.find((mp: any) => mp !== undefined);
+  //           // console.log(findNotNull);
+  //           const splitFoundData: any = findNotNull.categoryLevelUid.split('.');
+  //           if (splitFoundData.length > 0 && splitFoundData[0] === `categories[${index}]`) {
+  //             // console.log(splitFoundData);
+  //             return true;
+  //           }
+  //         }
+  //         return false;
+  //       });
+  //     }
   //   }
 
-  //   return [];
+  //   return false;
   // };
 
   const render = (
@@ -213,6 +233,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
                                   >
                                     <ListItemText 
                                       primary={child.name} 
+                                      // className={handleCategoryError(idxChild) ? props.classes.textError : ''}
                                       primaryTypographyProps={{
                                         noWrap: true,
                                         color: 'inherit'
@@ -243,25 +264,18 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
 
                                                   const error = getIn(form.errors, `${field.name}`);
                                                   const touch = getIn(form.touched, `${field.name}`);
-
                                                   return (
                                                     <ListItem
                                                       key={lvIdx}
                                                       style={{marginLeft: '70px'}}
                                                     >
                                                       <ListItemText 
-                                                        className={error && touch ? props.classes.avatarRed : ''}
+                                                        className={error && touch ? props.classes.textError : ''}
                                                         primary={lv.employeeLevelName}
                                                       />
-                                                      <ListItemSecondaryAction style={{right: '90px', width: '50px'}}>
+                                                      <ListItemSecondaryAction className={props.classes.mappedItem}>
                                                         <Select
-                                                          // {...field}
-                                                          value={field.value}
-                                                          onChange={(e) => {
-                                                            formikBag.setFieldValue(field.name, e.target.value);
-                                                            console.log(e);
-                                                            console.log(field);
-                                                          }}
+                                                          {...field}
                                                           disabled={form.isSubmitting}
                                                         >
                                                           {

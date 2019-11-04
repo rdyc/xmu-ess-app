@@ -5,5 +5,5 @@ export enum NotificationType {
   Rejected = 'Rejected',
   Settlement = 'Settlement',
   NewOwner = 'New Owner',
-  Assessment = 'Assessment'
+  Assessment = '360 Assessment'
 }
