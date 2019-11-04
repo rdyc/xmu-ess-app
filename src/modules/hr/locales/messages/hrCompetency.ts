@@ -59,6 +59,7 @@ export const hrCompetencyField = defineMessages({
   // status
   assigned: { id: `${prefix}.field.assigned`},
   respond: { id: `${prefix}.field.respond`},
+  complete: { id: `${prefix}.field.complete`},
   expired: { id: `${prefix}.field.expired`},
   assess: { id: `${prefix}.field.assess`},
   inactive: { id: `${prefix}.field.inactive`},

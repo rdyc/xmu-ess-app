@@ -30,7 +30,7 @@ function* watchAllFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(financeApprovalGetAllSuccess(response.body)),
@@ -52,7 +52,7 @@ function* watchAllFetchRequest() {
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof financeApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.financeUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(financeApprovalGetByIdSuccess(response.body)),
@@ -72,7 +72,7 @@ function* watchByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof financeApprovalPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.financeUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -110,7 +110,7 @@ function* watchPostFetchRequest() {
 function* watchBulkPostFetchRequest() {
   const worker = (action: ReturnType<typeof financeApprovalBulkPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

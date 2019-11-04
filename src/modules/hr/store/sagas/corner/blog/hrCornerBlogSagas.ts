@@ -31,7 +31,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCornerBlogGetAllSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchFetchAllByCategoryRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/${action.payload.categorySlug}?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerBlogGetAllByCategorySuccess(response.body)),
@@ -81,7 +81,7 @@ function* watchFetchLatestByCategoryRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/${action.payload.categorySlug}?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerBlogGetLatestByCategorySuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchFetchLatestByCategoryRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCornerBlogGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/${action.payload.categorySlug}/${action.payload.pageSlug}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerBlogGetByIdSuccess(response.body)),

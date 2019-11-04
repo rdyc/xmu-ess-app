@@ -11,7 +11,7 @@ import { IApiResponse } from 'utils';
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/${action.payload.year}/leaves?companyUid=${action.payload.companyUid}`,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeLeaveGetByIdSuccess(response.body)),

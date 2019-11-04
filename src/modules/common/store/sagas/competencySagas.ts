@@ -23,7 +23,7 @@ function* watchFetchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(competencyGetAllSuccess(response.body)),
@@ -48,7 +48,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(competencyGetListSuccess(response.body))
@@ -68,7 +68,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof competencyGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
       successEffects: (response: IApiResponse) => ([
         put(competencyGetByIdSuccess(response.body)),

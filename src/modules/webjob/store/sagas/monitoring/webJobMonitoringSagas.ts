@@ -63,7 +63,7 @@ function* watchFetchAllStatisticRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringStatisticGetAllRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/statistics`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringStatisticGetAllSuccess(response.body)),
@@ -89,7 +89,7 @@ function* watchFetchAllCountRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/counts?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringCountGetAllSuccess(response.body)),
@@ -115,7 +115,7 @@ function* watchFetchAllRecurringRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/recurrings?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringRecurringGetAllSuccess(response.body)),
@@ -136,7 +136,7 @@ function* watchFetchAllServerRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringServerGetAllRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/servers`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringServerGetAllSuccess(response.body)),
@@ -157,7 +157,7 @@ function* watchFetchAllQueueRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringQueueGetAllRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/queues`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringQueueGetAllSuccess(response.body)),
@@ -183,7 +183,7 @@ function* watchFetchJobAllDeletedRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/deleted?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobDeletedGetAllSuccess(response.body)),
@@ -209,7 +209,7 @@ function* watchFetchJobAllEnqueuedRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/enqueued?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobEnqueuedGetAllSuccess(response.body)),
@@ -235,7 +235,7 @@ function* watchFetchJobAllFailedRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/failed?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobFailedGetAllSuccess(response.body)),
@@ -261,7 +261,7 @@ function* watchFetchJobAllFetchedRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/fetched?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobFetchedGetAllSuccess(response.body)),
@@ -287,7 +287,7 @@ function* watchFetchJobAllProcessingRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/processing?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobProcessingGetAllSuccess(response.body)),
@@ -313,7 +313,7 @@ function* watchFetchJobAllSucceededRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/succeeded?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobSucceededGetAllSuccess(response.body)),
@@ -339,7 +339,7 @@ function* watchFetchJobAllScheduledRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/scheduled?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobScheduledGetAllSuccess(response.body)),
@@ -360,7 +360,7 @@ function* watchFetchJobByIdRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringJobGetDetailGetByIdRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/monitoring/jobs/${action.payload.jobId}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobMonitoringJobGetDetailGetByIdSuccess(response.body)),

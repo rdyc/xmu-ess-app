@@ -31,7 +31,7 @@ function* watchGetAllRequest() {
       skipNulls: true
     });
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/structures?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(organizationStructureGetAllSuccess(response.body)),
@@ -53,7 +53,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof organizationStructureGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       successEffects: (response: IApiResponse) => ([
         put(organizationStructureGetByIdSuccess(response.body)),
@@ -73,7 +73,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof organizationStructurePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/organization/structures/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -112,7 +112,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof organizationStructurePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -151,7 +151,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof organizationStructureDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/organization/structures`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

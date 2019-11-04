@@ -39,7 +39,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/categories?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetAllSuccess(response.body)),
@@ -68,7 +68,7 @@ function* watchGetListRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/categories/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetListSuccess(response.body)),
@@ -92,7 +92,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPICategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPICategoryGetByIdSuccess(response.body))
@@ -113,7 +113,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/categories`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -154,7 +154,7 @@ function* watchMeasurementPostRequest() {
   const worker = (action: ReturnType<typeof KPICategoryMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/categories/measurement`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -195,7 +195,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPICategoryPutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -36,7 +36,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetAllSuccess(response.body)),
@@ -60,7 +60,7 @@ function* watchGetByYearRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByYearRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.year}/year`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByYearSuccess(response.body))
@@ -81,7 +81,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdSuccess(response.body))
@@ -102,7 +102,7 @@ function* watchPostBulkRequest() {
   const worker = (action: ReturnType<typeof KPIAssignPostBulkRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/assign`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -144,7 +144,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIAssignPutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/assign/${action.payload.employeeUid}/${action.payload.kpiAssignUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

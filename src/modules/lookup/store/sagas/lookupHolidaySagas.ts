@@ -36,7 +36,7 @@ function* watchFetchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/holidays?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetAllSuccess(response.body)),
@@ -64,7 +64,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/holidays/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetListSuccess(response.body)),
@@ -84,7 +84,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupHolidayGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/holidays/${action.payload.companyUid}/${action.payload.holidayUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetByIdSuccess(response.body)),
@@ -104,7 +104,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupHolidayPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/holidays/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -144,7 +144,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupHolidayPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/holidays/${action.payload.companyUid}/${action.payload.holidayUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -184,7 +184,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupHolidayDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/holidays`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

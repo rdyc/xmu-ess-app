@@ -39,7 +39,7 @@ function* watchGetAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/systemlimits?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupSystemLimitGetAllSuccess(response.body)),
@@ -62,7 +62,7 @@ function* watchGetAllRequest() {
 function* watchGetAmountRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitGetAmountRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/systemlimits/limit/${action.payload.companyUid}/${action.payload.categoryType}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupSystemLimitGetAmountSuccess(response.body)),
@@ -87,7 +87,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/systemlimits/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupSystemLimitGetListSuccess(response.body)),
@@ -107,7 +107,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.systemLimitUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupSystemLimitGetByIdSuccess(response.body)),
@@ -127,7 +127,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/systemlimits/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -167,7 +167,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.systemLimitUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -207,7 +207,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/systemlimits`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

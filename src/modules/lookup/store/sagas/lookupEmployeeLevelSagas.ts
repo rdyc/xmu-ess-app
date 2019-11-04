@@ -37,7 +37,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/levels?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupEmployeeLevelGetAllSuccess(response.body)),
@@ -62,7 +62,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/levels/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupEmployeeLevelGetListSuccess(response.body)),
@@ -82,7 +82,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/levels/${action.payload.employeeLevelUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupEmployeeLevelGetByIdSuccess(response.body)),
@@ -102,7 +102,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/levels`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -141,7 +141,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/levels/${action.payload.employeeLevelUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -181,7 +181,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupEmployeeLevelDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/levels`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

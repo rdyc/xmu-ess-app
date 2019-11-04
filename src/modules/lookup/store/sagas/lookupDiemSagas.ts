@@ -35,7 +35,7 @@ function* watchFetchAllRequest() {
       skipNulls: true
     });
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/diems?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupDiemGetAllSuccess(response.body)),
@@ -59,7 +59,7 @@ function* watchFetchListRequest() {
       skipNulls: true
     });
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/diems/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupDiemGetListSuccess(response.body)),
@@ -79,7 +79,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupDiemGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/diems/${action.payload.companyUid}/${action.payload.diemUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupDiemGetByIdSuccess(response.body)),
@@ -99,7 +99,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupDiemPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/diems/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -138,7 +138,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupDiemPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/diems/${action.payload.companyUid}/${action.payload.diemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -178,7 +178,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupDiemDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/diems`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

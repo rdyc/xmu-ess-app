@@ -37,7 +37,7 @@ function* watchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeContractGetAllSuccess(response.body)),
@@ -62,7 +62,7 @@ function* watchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeContractGetListSuccess(response.body))
@@ -82,7 +82,7 @@ function* watchListRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeContractGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts/${action.payload.contractUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeContractGetByIdSuccess(response.body)),
@@ -102,7 +102,7 @@ function* watchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeContractPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -142,7 +142,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeContractPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -182,7 +182,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeContractDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/account/employees/${action.payload.employeeUid}/contracts`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -33,7 +33,7 @@ function* watchAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/leave/requests?${params}`, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchAllFetchRequest() {
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestGetByIdSuccess(response.body)),
@@ -76,7 +76,7 @@ function* watchByIdFetchRequest() {
 function* watchFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestFetchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/leave/requests/${action.payload.start}/${action.payload.regularType}/${action.payload.companyUid}/end`, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestFetchSuccess(response.body))
@@ -96,7 +96,7 @@ function* watchFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -134,7 +134,7 @@ function* watchPostFetchRequest() {
 function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

@@ -17,7 +17,7 @@ import {
 function* watchAllFetchRequest() {
   const worker = () => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/announcement/slider`,
       successEffects: (response: IApiResponse) => [
         put(announcementGetSuccess(response.body))
@@ -48,7 +48,7 @@ function* watchAllFetchRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof announcementPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/announcement/slider`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

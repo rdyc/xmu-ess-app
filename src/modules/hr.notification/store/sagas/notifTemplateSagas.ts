@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/notification/templates?${params}`,
       successEffects: (response: IApiResponse) => [
         put(notifTemplateGetAllSuccess(response.body)),
@@ -65,7 +65,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/notification/templates/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(notifTemplateGetListSuccess(response.body)),
@@ -88,7 +88,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof notifTemplateGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/notification/templates/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
         put(notifTemplateGetByIdSuccess(response.body))
@@ -108,7 +108,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof notifTemplatePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/notification/templates`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -148,7 +148,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof notifTemplatePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/notification/templates/${action.payload.templateUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -188,7 +188,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof notifTemplateDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/hr/notification/templates`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

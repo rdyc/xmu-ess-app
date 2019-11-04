@@ -23,7 +23,7 @@ function* watchFetchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/menu?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupMenuGetAllSuccess(response.body)),
@@ -48,7 +48,7 @@ function* watchFetchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/menu/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupMenuGetListSuccess(response.body)),
@@ -68,7 +68,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupMenuGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/menu/${action.payload.menuUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupMenuGetByIdSuccess(response.body)),

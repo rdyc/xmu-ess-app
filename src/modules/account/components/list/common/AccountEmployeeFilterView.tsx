@@ -44,7 +44,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterEmploymentType || props.filterStatus) &&
+            (props.filterCompany || props.filterEmploymentType || props.filterStatus === false) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -130,7 +130,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           <ListItemSecondaryAction>
             <Switch
               color="secondary"
-              checked={props.filterStatus || false}
+              checked={props.filterStatus}
               onChange={props.handleFilterStatusOnChange}
             />
           </ListItemSecondaryAction>
@@ -165,7 +165,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         isOpen={props.isFilterEmploymentTypeOpen}
         value={props.filterEmploymentType && props.filterEmploymentType.type}
         onSelected={props.handleFilterEmploymentTypeOnSelected}
-        onClose={props.handleEmploymentTypeOnClose}
+        onClose={props.handleFilterEmploymentTypeOnClose}
       />
     </Dialog>
   </React.Fragment>

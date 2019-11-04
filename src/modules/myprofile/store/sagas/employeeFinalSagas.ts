@@ -7,7 +7,7 @@ import { EmployeeFinalAction as Action, employeeFinalGetDetailDispose, employeeF
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof employeeFinalGetDetailRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/competency/${action.payload.positionUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(employeeFinalGetDetailSuccess(response.body)),

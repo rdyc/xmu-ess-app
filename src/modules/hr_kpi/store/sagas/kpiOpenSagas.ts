@@ -31,7 +31,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/opens?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIOpenGetAllSuccess(response.body)),
@@ -55,7 +55,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIOpenGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/opens/${action.payload.openUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIOpenGetByIdSuccess(response.body))
@@ -76,7 +76,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIOpenPostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/opens`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -117,7 +117,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIOpenPutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/opens/${action.payload.openUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -11,7 +11,6 @@ import {
   LocalAtmOutlined,
   LocalMallOutlined,
   NextWeekOutlined,
-  NotificationsOutlined,
   PersonPinOutlined,
   ReceiptOutlined,
   SettingsOutlined,
@@ -77,9 +76,6 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
 
     case AppMenu.Finance:
       return <LocalAtmOutlined {...props.innerProps} />;
-
-    case AppMenu.HRNotif:
-      return <NotificationsOutlined {...props.innerProps} />;
   
     case AppMenu.HumanResource:
       return <SupervisedUserCircleOutlined {...props.innerProps} />;

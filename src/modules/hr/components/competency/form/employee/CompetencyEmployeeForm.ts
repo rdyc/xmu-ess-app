@@ -169,11 +169,11 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
-      const { isLoading } = props.hrCompetencyEmployeeState.detail;
+      const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
       const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
 
-      if (user && competencyEmployeeUid && !isLoading) {
+      if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
         props.hrCompetencyEmployeeDispatch.loadDetailRequest({
           competencyEmployeeUid
         });
@@ -286,32 +286,36 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
   componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
-    const { isLoad, setLoad } = this.props;
+    const { isLoad, setLoad, history } = this.props;
 
-    if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
-      // define initial values
-      const initialValues: ICompetencyEmployeeFormValue = {
-        uid: thisResponse.data.uid,
-        respondenUid: thisResponse.data.respondenUid,
-        companyUid: thisResponse.data.companyUid,
-        positionUid: thisResponse.data.positionUid,
-        year: thisResponse.data.assessmentYear.toString(),
-        levelRespond: []
-      };
-
-      thisMapped.data[0].categories.forEach(item => {
-        const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-        
-        initialValues.levelRespond.push({
-          uid: find && find.uid || '',
-          categoryUid: item.category.uid,
-          levelUid: find && find.levelUid || '',
-          note: find && find.note && find.note.split(' - ')[2]
-        });  
-      });
-
-      setLoad(true);
-      this.props.setInitialValues(initialValues);
+    if (history.location.state) {
+      if (thisResponse && thisResponse.data.uid === history.location.state.uid) {  
+        if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
+          // define initial values
+          const initialValues: ICompetencyEmployeeFormValue = {
+            uid: thisResponse.data.uid,
+            respondenUid: thisResponse.data.respondenUid,
+            companyUid: thisResponse.data.companyUid,
+            positionUid: thisResponse.data.positionUid,
+            year: thisResponse.data.assessmentYear.toString(),
+            levelRespond: []
+          };
+    
+          thisMapped.data[0].categories.forEach(item => {
+            const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+            
+            initialValues.levelRespond.push({
+              uid: find && find.uid || '',
+              categoryUid: item.category.uid,
+              levelUid: find && find.levelUid || '',
+              note: find && find.note && find.note.split(' - ')[2]
+            });  
+          });
+    
+          setLoad(true);
+          this.props.setInitialValues(initialValues);
+        }
+      }
     }
   }
 };

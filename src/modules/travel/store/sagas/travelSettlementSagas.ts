@@ -29,7 +29,7 @@ function* watchAllFetchRequest() {
       skipNulls: true
     });
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/travel/settlements?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelSettlementGetAllSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchAllFetchRequest() {
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof travelSettlementGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelSettlementUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelSettlementGetByIdSuccess(response.body)),
@@ -80,7 +80,7 @@ function* watchByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof travelSettlementPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -118,7 +118,7 @@ function* watchPostFetchRequest() {
 function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof travelSettlementPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelSettlementUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

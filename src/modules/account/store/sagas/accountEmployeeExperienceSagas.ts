@@ -36,7 +36,7 @@ function* watchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeExperienceGetAllSuccess(response.body)),
@@ -61,7 +61,7 @@ function* watchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeExperienceGetListSuccess(response.body))
@@ -81,7 +81,7 @@ function* watchListRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeExperienceGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences/${action.payload.experienceUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeExperienceGetByIdSuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeExperiencePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -141,7 +141,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeExperiencePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -181,7 +181,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeExperienceDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/account/employees/${action.payload.employeeUid}/experiences`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -71,7 +71,7 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
       value: key, 
       name: AccountEmployeeField[key] 
     })),
-    isActive: false
+    isActive: true
   };
 
   // fill from previous request if any
@@ -79,7 +79,7 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
     state.companyUids = request.filter.companyUids,
     state.employmentTypes = request.filter.employmentTypes;
     state.roleUids = request.filter.roleUids,
-    state.isActive = !request.filter.isActive;
+    state.isActive = request.filter.isActive;
   }
 
   return state;
@@ -106,7 +106,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
         companyUids: props.companyUids,
         employmentTypes: props.employmentTypes,
         useAccess: false,
-        isActive: !props.isActive,
+        isActive: props.isActive,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -170,7 +170,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
     return props.companyUids !== undefined || 
       props.employmentTypes !== undefined ||
       props.roleUids !== undefined ||
-      props.isActive === true;
+      props.isActive !== false;
   },
 };
 

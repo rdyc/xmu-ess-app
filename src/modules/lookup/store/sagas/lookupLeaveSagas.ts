@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/leaves?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetAllSuccess(response.body)),
@@ -65,7 +65,7 @@ function* watchGetListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/leaves/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetListSuccess(response.body)),
@@ -85,7 +85,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof lookupLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetByIdSuccess(response.body)),
@@ -105,7 +105,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupLeavePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/leaves/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -145,7 +145,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupLeavePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -185,7 +185,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupLeaveDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/leaves`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

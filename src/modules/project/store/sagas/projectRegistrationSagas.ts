@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectRegistrationGetAllSuccess(response.body)),
@@ -66,7 +66,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/registrations/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectRegistrationGetListSuccess(response.body))
@@ -86,7 +86,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof projectRegistrationGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectRegistrationGetByIdSuccess(response.body))
@@ -106,7 +106,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof projectRegistrationPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -146,7 +146,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof projectRegistrationPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -186,7 +186,7 @@ function* watchPutRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof projectRegistrationPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

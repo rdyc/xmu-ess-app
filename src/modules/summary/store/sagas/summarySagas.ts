@@ -33,7 +33,7 @@ function* watchBillableFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/billable/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetBillableSuccess(response.body)),
@@ -71,7 +71,7 @@ function* watchEffectivenessFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/effectiveness?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetEffectivenessSuccess(response.body)),
@@ -104,7 +104,7 @@ function* watchEffectivenessFetchRequest() {
 function* watchProfitabilityFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetProfitabilityRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/profitability/${action.payload.customerUid}/${action.payload.projectUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetProfitabilitySuccess(response.body)),
@@ -133,7 +133,7 @@ function* watchProfitabilityFetchRequest() {
 function* watchProgressFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetProgressRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/progress/${action.payload.customerUid}/${action.payload.projectUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetProgressSuccess(response.body)),
@@ -167,7 +167,7 @@ function* watchWinningFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/winning/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetWinningSuccess(response.body)),
@@ -205,7 +205,7 @@ function* watchMappingFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/mapping/${action.payload.companyUid}/${action.payload.year}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetMappingSuccess(response.body)),

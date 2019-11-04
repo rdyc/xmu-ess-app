@@ -238,7 +238,7 @@ const redirectFrom = (module: ModuleDefinitionType, type: NotificationType, uid?
       if (type === NotificationType.Assessment) {      
           
         if (type === NotificationType.Assessment && uid) {
-          path = path.concat('/form');
+          // path = path.concat('/form');
 
           state = {
             uid

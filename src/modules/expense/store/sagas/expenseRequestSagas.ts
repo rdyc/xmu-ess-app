@@ -30,7 +30,7 @@ function* watchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/expense/requests?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseRequestGetAllSuccess(response.body)),
@@ -52,7 +52,7 @@ function* watchAllRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof expenseRequestGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseRequestGetByIdSuccess(response.body)),
@@ -72,7 +72,7 @@ function* watchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof expenseRequestPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -110,7 +110,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof expenseRequestPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

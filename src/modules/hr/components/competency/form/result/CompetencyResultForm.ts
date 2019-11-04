@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyEmployeePatchPayload } from '@hr/classes/request';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
+import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -83,6 +84,7 @@ interface IOwnHandler {
 
 export type CompetencyResultFormProps
   = WithMasterPage
+  & WithHrCompetencyEmployee
   & WithHrCompetencyResult
   & WithHrCompetencyMapped
   & WithUser
@@ -169,10 +171,10 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
-      const { isLoading } = props.hrCompetencyResultState.detail;
+      const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
 
-      if (user && competencyEmployeeUid && !isLoading) {
-        props.hrCompetencyResultDispatch.loadDetailRequest({
+      if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
+        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
           competencyEmployeeUid
         });
       }
@@ -308,42 +310,47 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
     // 
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyResultState.detail;
+    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
-    const { isLoad, setLoad } = this.props;
+    const { isLoad, setLoad, history } = this.props;
 
-    if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
-        
-        // define initial values
-        const initialValues: ICompetencyResultFormValue = {
-          uid: thisResponse.data.uid,
-          respondenUid: thisResponse.data.respondenUid,
-          companyUid: thisResponse.data.companyUid,
-          positionUid: thisResponse.data.positionUid,
-          year: thisResponse.data.assessmentYear.toString(),
-          levelRespond: []
-        };
-
-        thisMapped.data[0].categories.forEach(item => {
-          const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
-
-          initialValues.levelRespond.push({
-            uid: find && find.uid || '',
-            categoryUid: item.category.uid,
-            levelUid: find && find.levelUid || '',
-            noteHistory: find && find.note || '',
-            note: find && find.latestNote
-          });  
-        });
-
-        setLoad(true);
-        this.props.setInitialValues(initialValues);
+    if (history.location.state) {
+      if (thisResponse && thisResponse.data.uid === history.location.state.uid) {
+        if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
+            
+            // define initial values
+            const initialValues: ICompetencyResultFormValue = {
+              uid: thisResponse.data.uid,
+              respondenUid: thisResponse.data.respondenUid,
+              companyUid: thisResponse.data.companyUid,
+              positionUid: thisResponse.data.positionUid,
+              year: thisResponse.data.assessmentYear.toString(),
+              levelRespond: []
+            };
+    
+            thisMapped.data[0].categories.forEach(item => {
+              const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
+    
+              initialValues.levelRespond.push({
+                uid: find && find.uid || '',
+                categoryUid: item.category.uid,
+                levelUid: find && find.levelUid || '',
+                noteHistory: find && find.note || '',
+                note: find && find.latestNote
+              });  
+            });
+    
+            setLoad(true);
+            this.props.setInitialValues(initialValues);
+        }
+      }
     }
   }
 };
 
 export const CompetencyResultForm = compose<CompetencyResultFormProps, IOwnOption>(
   setDisplayName('CompetencyResultForm'),
+  withHrCompetencyEmployee,
   withHrCompetencyResult,
   withHrCompetencyMapped,
   withMasterPage,

@@ -40,7 +40,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/measurements?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetAllSuccess(response.body)),
@@ -69,7 +69,7 @@ function* watchGetByCategoryRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByCategorySuccess(response.body)),
@@ -98,7 +98,7 @@ function* watchGetListRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetListSuccess(response.body)),
@@ -122,7 +122,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdSuccess(response.body))
@@ -143,7 +143,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -184,7 +184,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIMeasurementPutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/measurements/${action.payload.categoryUid}/${action.payload.measurementUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

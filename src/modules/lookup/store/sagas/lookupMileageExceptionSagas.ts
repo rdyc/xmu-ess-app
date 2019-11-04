@@ -34,7 +34,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/mileageexceptions?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupMileageExceptionGetAllSuccess(response.body))
@@ -65,7 +65,7 @@ function* watchGetListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/mileageexceptions/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupMileageExceptionGetListSuccess(response.body))
@@ -88,7 +88,7 @@ function* watchGetByIdRequest() {
     action: ReturnType<typeof lookupMileageExceptionGetByIdRequest>
   ) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/mileageexceptions/${
         action.payload.mileageExceptionUid
       }`,
@@ -110,7 +110,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupMileageExceptionPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/mileageexceptions`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -150,7 +150,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupMileageExceptionPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/mileageexceptions/${action.payload.mileageExceptionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -33,7 +33,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/pages?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCornerPageGetAllSuccess(response.body)),
@@ -53,7 +53,7 @@ function* watchFetchAllRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCornerPageGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/pages/${action.payload.pageUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerPageGetByIdSuccess(response.body)),
@@ -73,7 +73,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCornerPagePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/corner/pages`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -113,7 +113,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCornerPagePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/corner/pages/${action.payload.pageUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -153,7 +153,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof hrCornerPageDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/hr/corner/pages`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

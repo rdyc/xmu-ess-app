@@ -17,7 +17,7 @@ import { IApiResponse } from 'utils';
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof lookupVersionGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/version/${action.payload.clientId}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupVersionGetByIdSuccess(response.body)),
@@ -37,7 +37,7 @@ function* watchGetByIdRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof lookupVersionPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/version/${action.payload.clientId}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -36,7 +36,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetAllSuccess(response.body)),
@@ -60,7 +60,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdSuccess(response.body))
@@ -81,7 +81,7 @@ function* watchGetLatestRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeeGetLatestRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiAssignUid}/latest`,
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetLatestSuccess(response.body))
@@ -102,7 +102,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -143,7 +143,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPIEmployeePutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -69,7 +69,6 @@ enum AppMenu {
   Common = 'MNU53',
   AchievementChart = 'MNU63',
   COGSUpload = 'MNU64',
-  HRNotif = 'MNU71',
   HRNotifPeriod = 'MNU80',
   HRNotifSetting = 'MNU81',
   HRNotifTemplate = 'MNU82',
@@ -91,7 +90,7 @@ enum AppMenu {
   MyProfile = 'MNU85',
   LookupEmployeeLevel = 'MNU86',
   KPIOpen = 'MNU91',
-  WebJob = 'MNU87'
+  WebJob = 'MNU71',
 }
 
 export default AppMenu;

@@ -26,11 +26,9 @@ interface IOwnProps {
 }
 
 interface IOwnState {
-  // isHelpOpen: boolean;
 }
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
-  // handleToggle: () => IOwnState;
 }
 
 type AllProps 
@@ -41,13 +39,9 @@ type AllProps
   & WithStyles<typeof styles>;
 
 const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
-  // isHelpOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
-  // handleToggle: (state: IOwnState) => () => ({
-  //   isHelpOpen: !state.isHelpOpen
-  // })
 };
 
 const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
@@ -58,13 +52,6 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
       <Card square>
         <CardHeader
           title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Responder'})}
-          // action={
-          //   <IconButton
-          //     onClick={() => handleToggle()}
-          //   >
-          //     <HelpOutline />
-          //   </IconButton>
-          // }
         />
         <CardContent>
           <List>
@@ -110,7 +97,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                       </span>
                       :
                       <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500]}}>
-                        {intl.formatMessage(hrMessage.competency.field.respond)}
+                        {intl.formatMessage(item.isComplete ? hrMessage.competency.field.complete : hrMessage.competency.field.respond)}
                       </span>
                     )
                   }
@@ -121,36 +108,6 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
           </List>
         </CardContent>
       </Card>
-      {/* <Dialog maxWidth="xs" onClose={() => handleToggle()} open={props.isHelpOpen} >
-        <DialogTitle>
-          Color description
-        </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={24}>
-            <Grid item xs={12} style={{display: 'flex'}}>
-            <Avatar className={props.classes.avatarSecondary}>
-            </Avatar>
-              <Typography style={{position: 'absolute', left: '72px', transform: 'translate(10px, 10px)'}}>
-                Assigned
-              </Typography>
-            </Grid>
-            <Grid item xs={12} style={{display: 'flex'}}>
-            <Avatar className={props.classes.avatarPrimary}>
-            </Avatar>
-              <Typography style={{position: 'absolute', left: '72px', transform: 'translate(10px, 10px)'}}>
-                Respond
-              </Typography>
-            </Grid>
-            <Grid item xs={12} style={{display: 'flex'}}>
-            <Avatar className={props.classes.avatarRed}>
-            </Avatar>
-              <Typography style={{position: 'absolute', left: '72px', transform: 'translate(10px, 10px)'}}>
-                Expired
-              </Typography>
-            </Grid>
-          </Grid>
-        </DialogContent>
-      </Dialog> */}
     </React.Fragment>
   );
 

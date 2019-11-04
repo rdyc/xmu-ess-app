@@ -32,7 +32,7 @@ function* watchGetAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/purchase/settlements?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementGetAllSuccess(response.body)),
@@ -55,7 +55,7 @@ function* watchGetAllFetchRequest() {
 function* watchGetByIdFetchRequest() {
   const worker = (action: ReturnType<typeof settlementGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementGetByIdSuccess(response.body)),
@@ -75,7 +75,7 @@ function* watchGetByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof settlementPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -111,7 +111,7 @@ function* watchPostFetchRequest() {
 function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof settlementPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([

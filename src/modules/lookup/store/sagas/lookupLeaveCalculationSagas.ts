@@ -19,7 +19,7 @@ function* watchGetAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.companyUid}/${action.payload.year}/leaves?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveCalculationGetAllSuccess(response.body)),

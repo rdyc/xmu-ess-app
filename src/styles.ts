@@ -1023,6 +1023,23 @@ const styles = (theme: Theme) =>
       '100%': {
         left: '-50px'
       }
+    },
+
+    textError: {
+      '& span': {
+        color: red[500]
+      }
+    },
+
+    mappedItem: {
+      width: '50px',
+
+      [theme.breakpoints.up('sm')]: {
+        right: '90px',
+      },
+      [theme.breakpoints.up('md')]: {
+        right: '15px',
+      }
     }
   });
 
