@@ -25,7 +25,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
   const { data, next, level, current } = props;
 
   const findNext = (item: IHrCompetencyMappedNext) => {
-    const nxt: IHrCompetencyMappedNext  | undefined = next.find(fnd => fnd.categoryLevel.categoryUid === item.categoryLevel.categoryUid);
+    const nxt: IHrCompetencyMappedNext | undefined = next.find(fnd => fnd.categoryLevel.categoryUid === item.categoryLevel.categoryUid);
 
     if (nxt) {
       return (
@@ -48,7 +48,11 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
       );
     } 
 
-    return undefined;
+    return (
+      <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw'}}>
+        N/A
+      </TableCell>
+    );
   };
 
   const typeIndicator = (indicator: string) => {
@@ -138,7 +142,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
                 Next
                 <br/>
                 {
-                  next[0].employeeLevel.value
+                  next[0].employeeLevel.value || 'N/A'
                 }
               </Typography>
             </TableCell>
