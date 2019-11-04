@@ -40,7 +40,7 @@ const kpiOpenSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.open.field.date)}
-        value={props.intl.formatDate(props.data.date)}
+        value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
         multiline
       />
     </Grid>

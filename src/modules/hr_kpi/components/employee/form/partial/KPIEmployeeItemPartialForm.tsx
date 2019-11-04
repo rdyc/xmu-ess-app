@@ -247,7 +247,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                           {`${props.intl.formatNumber(item.progress)} %`}
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-                          {props.intl.formatNumber(item.score)}
+                          {`${props.intl.formatNumber(item.score)} %`}
                         </TableCell>
                       </TableRow>
                     )}
