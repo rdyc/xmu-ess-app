@@ -34,7 +34,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetAllSuccess(response.body)),
@@ -59,7 +59,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetListSuccess(response.body)),
@@ -79,7 +79,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyCategoryGetByIdSuccess(response.body)),
@@ -99,7 +99,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -139,7 +139,7 @@ function* watchPostRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyCategoryPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/hr/competency/cluster/${action.payload.clusterUid}/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

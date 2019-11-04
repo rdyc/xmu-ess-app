@@ -165,7 +165,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         isOpen={props.isFilterEmploymentTypeOpen}
         value={props.filterEmploymentType && props.filterEmploymentType.type}
         onSelected={props.handleFilterEmploymentTypeOnSelected}
-        onClose={props.handleEmploymentTypeOnClose}
+        onClose={props.handleFilterEmploymentTypeOnClose}
       />
     </Dialog>
   </React.Fragment>

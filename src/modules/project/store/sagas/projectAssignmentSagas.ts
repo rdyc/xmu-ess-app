@@ -31,7 +31,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/assignments?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetAllSuccess(response.body))
@@ -60,7 +60,7 @@ function* watchGetListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/assignments/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetListSuccess(response.body))
@@ -80,7 +80,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof projectAssignmentGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.assignmentUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetByIdSuccess(response.body))
@@ -100,7 +100,7 @@ function* watchGetByIdRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof projectAssignmentPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

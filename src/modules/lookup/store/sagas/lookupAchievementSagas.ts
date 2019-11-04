@@ -13,7 +13,7 @@ function* watchPatchRequest() {
     data.append('file', action.payload.data.file[0]);
 
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: '/v1/achievements',
       payload: data,
       isJsonContent: false,

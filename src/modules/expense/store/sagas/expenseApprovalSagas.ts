@@ -27,7 +27,7 @@ function* watchApprovalAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/expense?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetAllSuccess(response.body))
@@ -49,7 +49,7 @@ function* watchApprovalAllFetchRequest() {
 function* watchApprovalByIdFetchRequest() {
   const worker = (action: ReturnType<typeof expenseApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetByIdSuccess(response.body)),
@@ -69,7 +69,7 @@ function* watchApprovalByIdFetchRequest() {
 function* watchApprovalPostFetchRequest() {
   const worker = (action: ReturnType<typeof expenseApprovalPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

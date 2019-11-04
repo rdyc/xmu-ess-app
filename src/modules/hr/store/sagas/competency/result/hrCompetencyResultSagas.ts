@@ -31,7 +31,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/employees?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetAllSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchFetchDetailListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/employees/responder?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetDetailListSuccess(response.body)),
@@ -76,7 +76,7 @@ function* watchFetchDetailListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyResultGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/competency/employees/${action.payload.competencyEmployeeUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCompetencyResultGetByIdSuccess(response.body)),
@@ -96,7 +96,7 @@ function* watchFetchByIdRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof hrCompetencyResultPatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/hr/competency/employees/${action.payload.competencyEmployeeUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

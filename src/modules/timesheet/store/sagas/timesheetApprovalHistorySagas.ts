@@ -23,7 +23,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/timesheet?${params}`,
       successEffects: (response: IApiResponse) => [
         put(timesheetApprovalHistoryGetAllSuccess(response.body))
@@ -52,7 +52,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof timesheetApprovalHistoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
       successEffects: (response: IApiResponse) => [
         put(timesheetApprovalHistoryGetByIdSuccess(response.body))

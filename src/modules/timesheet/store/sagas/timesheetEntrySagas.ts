@@ -30,7 +30,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/timesheet/reports?${params}`, 
       successEffects: (response: IApiResponse) => [
         put(timesheetEntryGetAllSuccess(response.body)),
@@ -53,7 +53,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof timesheetEntryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/timesheet/reports/${action.payload.timesheetUid}`, 
       successEffects: (response: IApiResponse) => [
         put(timesheetEntryGetByIdSuccess(response.body)),
@@ -73,7 +73,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof timesheetEntryPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -111,7 +111,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof timesheetEntryPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([

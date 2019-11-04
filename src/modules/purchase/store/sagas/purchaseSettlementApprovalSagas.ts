@@ -27,7 +27,7 @@ function* watchGetAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/purchase/settlement?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllSuccess(response.body)),
@@ -50,7 +50,7 @@ function* watchGetAllFetchRequest() {
 function* watchGetByIdFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetByIdSuccess(response.body)),
@@ -70,7 +70,7 @@ function* watchGetByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([

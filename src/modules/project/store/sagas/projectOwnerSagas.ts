@@ -15,7 +15,7 @@ import { IApiResponse } from 'utils';
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof projectOwnerPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}/owner`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

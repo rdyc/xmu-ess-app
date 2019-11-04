@@ -23,7 +23,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(leaveGetAllSuccess(response.body)),
@@ -43,7 +43,7 @@ function* watchFetchAllRequest() {
 function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof leaveGetListRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(leaveGetListSuccess(response.body))
@@ -63,7 +63,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof leaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
       successEffects: (response: IApiResponse) => ([
         put(leaveGetByIdSuccess(response.body)),

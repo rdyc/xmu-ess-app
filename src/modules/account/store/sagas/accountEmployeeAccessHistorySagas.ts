@@ -23,7 +23,7 @@ function* watchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/all?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessHistoryGetAllSuccess(response.body)),
@@ -48,7 +48,7 @@ function* watchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessHistoryGetListSuccess(response.body))
@@ -68,7 +68,7 @@ function* watchListRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessHistoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/${action.payload.historyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessHistoryGetByIdSuccess(response.body)),

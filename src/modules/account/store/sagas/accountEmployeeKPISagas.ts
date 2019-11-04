@@ -29,7 +29,7 @@ function* watchAllAssignRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/kpis/assign?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeGetAllKPIAssignSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchAllFinalRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/kpis/final?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeGetAllKPIFinalSuccess(response.body)),
@@ -83,7 +83,7 @@ function* watchAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeKPIFinalGetAllSuccess(response.body)),
@@ -104,7 +104,7 @@ function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeKPIFinalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/kpis/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeKPIFinalGetByIdSuccess(response.body)),

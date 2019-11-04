@@ -34,7 +34,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/markdown/category?${params}`,
       successEffects: (response: IApiResponse) => [
         put(markdownCategoryGetAllSuccess(response.body))
@@ -62,7 +62,7 @@ function* watchFetchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/markdown/category?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(markdownCategoryGetListSuccess(response.body))
@@ -83,7 +83,7 @@ function* watchFetchListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof markdownCategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/markdown/category/${action.payload.uid}`,
       successEffects: (response: IApiResponse) => [
         put(markdownCategoryGetByIdSuccess(response.body))
@@ -104,7 +104,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof markdownCategoryPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/markdown/category`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -145,7 +145,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof markdownCategoryPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/markdown/category/${action.payload.uid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

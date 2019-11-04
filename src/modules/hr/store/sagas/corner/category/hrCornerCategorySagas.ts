@@ -37,7 +37,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/categories?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(hrCornerCategoryGetAllSuccess(response.body)),
@@ -62,7 +62,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/categories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerCategoryGetListSuccess(response.body)),
@@ -82,7 +82,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof hrCornerCategoryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/corner/categories/${action.payload.categoryUid}`,
       successEffects: (response: IApiResponse) => ([
         put(hrCornerCategoryGetByIdSuccess(response.body)),
@@ -102,7 +102,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof hrCornerCategoryPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/corner/categories`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -142,7 +142,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof hrCornerCategoryPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/corner/categories/${action.payload.categoryUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -182,7 +182,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof hrCornerCategoryDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/hr/corner/categories`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -36,7 +36,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/currencies?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetAllSuccess(response.body)), 
@@ -63,7 +63,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/currencies/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetListSuccess(response.body)),
@@ -83,7 +83,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetByIdSuccess(response.body)),
@@ -103,7 +103,7 @@ function* watchFetchByIdRequest() {
 function* watchFetchPostRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/currencies`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -145,7 +145,7 @@ function* watchFetchPostRequest() {
 function* watchFetchPutRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -188,7 +188,7 @@ function* watchFetchPutRequest() {
 function* watchFetchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/currencies/`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([

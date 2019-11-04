@@ -36,7 +36,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/templates?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetAllSuccess(response.body)),
@@ -65,7 +65,7 @@ function* watchGetListRequest() {
 
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/templates/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetListSuccess(response.body)),
@@ -89,7 +89,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPITemplateGetByIdRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       successEffects: (response: IApiResponse) => [
         put(KPITemplateGetByIdSuccess(response.body))
@@ -110,7 +110,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePostRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -151,7 +151,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof KPITemplatePutRequest>) => {
     return saiyanSaga.fetch({
       
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/kpi/templates/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.templateUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -12,7 +12,7 @@ import {
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof achievementGetRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/achievements/list`,
       successEffects: (response: IApiResponse) => [
         put(achievementGetSuccess(response.body)),

@@ -24,7 +24,7 @@ function* watchFetchAllRequest() {
 
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/recurrings?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(webJobRecurringGetAllSuccess(response.body)),
@@ -45,7 +45,7 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringGetByIdRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'get',
+      method: 'GET',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       successEffects: (response: IApiResponse) => ([
         put(webJobRecurringGetByIdSuccess(response.body)),
@@ -66,7 +66,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPostRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'post',
+      method: 'POST',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -107,7 +107,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPutRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'put',
+      method: 'PUT',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -148,7 +148,7 @@ function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringDeleteRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'delete',
+      method: 'DELETE',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -189,7 +189,7 @@ function* watchTriggerRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringTriggerRequest>) => {
     return saiyanSaga.fetch({
       host: 'http://10.0.20.150:5002',
-      method: 'post',
+      method: 'POST',
       path: `/api/v1/recurrings/trigger`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

@@ -33,7 +33,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/notification/periods?${params}`,
       successEffects: (response: IApiResponse) => [
         put(notifPeriodGetAllSuccess(response.body)),
@@ -56,7 +56,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof notifPeriodGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/hr/notification/periods/${action.payload.periodUid}`,
       successEffects: (response: IApiResponse) => [
         put(notifPeriodGetByIdSuccess(response.body))
@@ -76,7 +76,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof notifPeriodPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/hr/notification/periods`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -116,7 +116,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof notifPeriodPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/hr/notification/periods/${action.payload.periodUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -156,7 +156,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof notifPeriodDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/hr/notification/periods`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

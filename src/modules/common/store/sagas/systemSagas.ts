@@ -29,7 +29,7 @@ import { IApiResponse } from 'utils';
 function* watchFetchTypeRequest() {
   const worker = () => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types`,
       successEffects: (response: IApiResponse) => ([
         put(systemGetTypeSuccess(response.body))
@@ -54,7 +54,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(systemGetAllSuccess(response.body)),
@@ -79,7 +79,7 @@ function* watchFetchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(systemGetListSuccess(response.body))
@@ -99,7 +99,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof systemGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
       successEffects: (response: IApiResponse) => ([
         put(systemGetByIdSuccess(response.body)),
@@ -119,7 +119,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof systemPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/common/types/${action.payload.category}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -156,7 +156,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof systemPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
