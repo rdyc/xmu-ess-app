@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyEmployeePatchPayload } from '@hr/classes/request';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
+import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -83,6 +84,7 @@ interface IOwnHandler {
 
 export type CompetencyResultFormProps
   = WithMasterPage
+  & WithHrCompetencyEmployee
   & WithHrCompetencyResult
   & WithHrCompetencyMapped
   & WithUser
@@ -169,10 +171,10 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
-      const { isLoading } = props.hrCompetencyResultState.detail;
+      const { isLoading, request } = props.hrCompetencyEmployeeState.detail;
 
-      if (user && competencyEmployeeUid && !isLoading) {
-        props.hrCompetencyResultDispatch.loadDetailRequest({
+      if (user && competencyEmployeeUid && !isLoading && (!request || request && request.competencyEmployeeUid !== competencyEmployeeUid)) {
+        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
           competencyEmployeeUid
         });
       }
@@ -308,10 +310,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
     // 
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyResultState.detail;
+    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
+    // const { response: prevResponse } = prevProps.hrCompetencyResultState.detail;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
     const { isLoad, setLoad } = this.props;
 
+    // if (thisResponse !== prevResponse) {
+      
+    // }
     if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
         
         // define initial values
@@ -344,6 +350,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
 
 export const CompetencyResultForm = compose<CompetencyResultFormProps, IOwnOption>(
   setDisplayName('CompetencyResultForm'),
+  withHrCompetencyEmployee,
   withHrCompetencyResult,
   withHrCompetencyMapped,
   withMasterPage,
