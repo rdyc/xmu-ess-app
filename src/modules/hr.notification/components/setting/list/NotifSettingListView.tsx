@@ -18,7 +18,7 @@ export const NotifSettingListView: React.SFC<NotifSettingListProps> = props => (
       // page info
       info={{
         uid: AppMenu.HRNotifSetting,
-        parentUid: AppMenu.HRNotif,
+        parentUid: AppMenu.Lookup,
         title: props.intl.formatMessage(notifMessage.setting.page.listTitle),
         description: props.intl.formatMessage(notifMessage.setting.page.listSubHeader)
       }}

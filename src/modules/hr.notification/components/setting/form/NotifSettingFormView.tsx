@@ -16,7 +16,7 @@ export const NotifSettingFormView: React.SFC<NotifSettingFormProps> = props => (
   <FormPage
     info={{
       uid: AppMenu.HRNotifSetting,
-      parentUid: AppMenu.HRNotif,
+      parentUid: AppMenu.Lookup,
       parentUrl: '/hr/notification/settings',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.setting.page.newTitle : notifMessage.setting.page.modifyTitle),
       description: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.setting.page.newSubHeader : notifMessage.setting.page.modifySubHeader)

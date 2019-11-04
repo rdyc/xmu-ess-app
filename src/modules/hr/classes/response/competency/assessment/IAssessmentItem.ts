@@ -7,6 +7,7 @@ export interface IAssessmentItem {
   employeeUid: string;
   employee: IAccountEmployee;
   dueDate: string;
+  isComplete: boolean;
   isExpired: boolean;
   isRespond: boolean;
   changes?: IBaseChanges;

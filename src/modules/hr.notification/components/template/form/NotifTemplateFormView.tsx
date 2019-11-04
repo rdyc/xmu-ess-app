@@ -16,7 +16,7 @@ export const NotifTemplateFormView: React.SFC<NotifTemplateFormProps> = props =>
   <FormPage
     info={{
       uid: AppMenu.HRNotifTemplate,
-      parentUid: AppMenu.HRNotif,
+      parentUid: AppMenu.Lookup,
       parentUrl: '/hr/notification/templates',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.template.page.newTitle : notifMessage.template.page.modifyTitle),
       description: props.intl.formatMessage(props.formMode === FormMode.New ? notifMessage.template.page.newSubHeader : notifMessage.template.page.modifySubHeader)
