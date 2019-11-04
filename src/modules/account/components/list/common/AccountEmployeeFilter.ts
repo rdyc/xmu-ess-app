@@ -123,7 +123,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFilterFilterProps, OwnState, O
     filterCompany: undefined,
     filterEmploymentType: undefined,
     filterRole: undefined,
-    filterStatus: false
+    filterStatus: true
   }),
 
   // filter company
