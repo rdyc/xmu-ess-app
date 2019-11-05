@@ -170,7 +170,7 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
     return props.companyUids !== undefined || 
       props.employmentTypes !== undefined ||
       props.roleUids !== undefined ||
-      props.isActive !== false;
+      props.isActive === false;
   },
 };
 

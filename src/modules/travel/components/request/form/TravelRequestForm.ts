@@ -71,7 +71,7 @@ export interface ITravelRequestFormValue {
   customerUid: string;
   projectUid: string;
   projectType: string;
-  siteUid?: string;
+  siteUid: string;
   activityType: string;
   objective?: string;
   target?: string;
@@ -183,7 +183,8 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
     //   .required(),
 
     siteUid: Yup.string()
-      .label(props.intl.formatMessage(travelMessage.request.field.siteUid)),
+      .label(props.intl.formatMessage(travelMessage.request.field.siteUid))
+      .required(),
 
     activityType: Yup.string()
       .label(props.intl.formatMessage(travelMessage.request.field.activityType))
