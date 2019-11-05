@@ -49,7 +49,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
     } 
 
     return (
-      <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw'}}>
+      <TableCell className={props.classes.hrTableVerAlign} style={{width: '40vw', textAlign: 'center'}}>
         N/A
       </TableCell>
     );
@@ -83,16 +83,6 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
               {`Level ${result.level} - ${result.levelDescription}`}
             </Typography>
             <Typography className={props.classes.hrTableChild}>
-              {/* <ul>
-              {
-                result.level &&
-                result.level.indicators.map(indicator =>
-                  <li key={indicator.uid}>
-                    {indicator.description}
-                  </li>
-                )
-              }    
-              </ul> */}
               {
                 typeIndicator(result.indicators)
               }
@@ -142,7 +132,7 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
                 Next
                 <br/>
                 {
-                  next[0].employeeLevel.value || 'N/A'
+                  next.length >= 1 && next[0].employeeLevel.value || 'N/A'
                 }
               </Typography>
             </TableCell>

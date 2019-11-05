@@ -49,7 +49,7 @@ export const HrCompetencyResultFilterView: React.SFC<HrCompetencyResultFilterPro
             }
           </Typography>
           {
-            (props.filterCompletion && props.filterCompletion.value !== 'pending' || 
+            (props.filterCompletion && props.filterCompletion.value !== 'pending' || !props.filterCompletion || 
             props.filterCompany || props.filterPosition || props.filterYear) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
