@@ -79,33 +79,35 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
           </React.Fragment>
         )}
       />
-
-      <Field
-        name="regularType"
-        render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
-          <LookupLeaveOption filter={props.filterLookupLeave}>
-            <SelectField
-              isSearchable
-              isDisabled={props.formikBag.values.leaveType !== LeaveType.CutiKhusus || props.formikBag.isSubmitting}
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
-                required: (props.formikBag.values.leaveType === LeaveType.CutiKhusus),
-                helperText: (props.formikBag.values.leaveType !== LeaveType.CutiKhusus && 
-                  props.intl.formatMessage(leaveMessage.request.field.regularTypeActive) || 
-                  form.touched.regularType && form.errors.regularType),
-                error: (props.formikBag.values.leaveType === LeaveType.CutiKhusus && form.touched.regularType && Boolean(form.errors.regularType))
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-              }}
-            />
-          </LookupLeaveOption>
-        )}
-      />
+      {
+        props.formikBag.values.leaveType === LeaveType.CutiKhusus &&
+        <Field
+          name="regularType"
+          render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
+            <LookupLeaveOption filter={props.filterLookupLeave}>
+              <SelectField
+                isSearchable
+                isDisabled={props.formikBag.values.leaveType !== LeaveType.CutiKhusus || props.formikBag.isSubmitting}
+                isClearable={field.value !== ''}
+                escapeClearsValue={true}
+                valueString={field.value}
+                textFieldProps={{
+                  label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
+                  required: (props.formikBag.values.leaveType === LeaveType.CutiKhusus),
+                  helperText: (props.formikBag.values.leaveType !== LeaveType.CutiKhusus && 
+                    props.intl.formatMessage(leaveMessage.request.field.regularTypeActive) || 
+                    form.touched.regularType && form.errors.regularType),
+                  error: (props.formikBag.values.leaveType === LeaveType.CutiKhusus && form.touched.regularType && Boolean(form.errors.regularType))
+                }}
+                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                onChange={(selected: ISelectFieldOption) => {
+                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                }}
+              />
+            </LookupLeaveOption>
+          )}
+        />
+      }
 
       <Field
         name="start"
@@ -122,8 +124,9 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            helperText={form.touched.start && form.errors.start ||
-              props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+            helperText={props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 ?
+              props.intl.formatMessage(leaveMessage.request.field.isHoliday)
+            : (form.touched.start && form.errors.start ? form.errors.start : '') }
             error={form.touched.start && Boolean(form.errors.start) || 
               props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 }
             onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
@@ -165,8 +168,9 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               leftArrowIcon={<ChevronLeft />}
               rightArrowIcon={<ChevronRight />}
               format="MMMM DD, YYYY"
-              helperText={form.touched.end && form.errors.end ||
-                props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+              helperText={props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 ?
+                props.intl.formatMessage(leaveMessage.request.field.isHoliday)
+              : (form.touched.end && form.errors.end ? form.errors.end : '') }
               error={form.touched.end && Boolean(form.errors.end) || 
                 props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 }
               onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
@@ -186,6 +190,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
         render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             required={true}
@@ -222,6 +227,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
         render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             required={true}
