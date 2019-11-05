@@ -44,7 +44,7 @@ export const EmployeeAssignFilterView: React.SFC<AccountEmployeeAssignFilterProp
           </Typography>
 
           {
-            (props.filterCompany || props.filterStatus) &&
+            (props.filterCompany || props.filterStatus === false || props.filterNotAssign || props.filterFinal || props.filterYear) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
