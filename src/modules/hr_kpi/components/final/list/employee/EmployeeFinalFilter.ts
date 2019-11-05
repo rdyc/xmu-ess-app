@@ -86,7 +86,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
   // main filter
   setFilterReset: () => () => ({
     filterCompany: undefined,
-    filterStatus: false,
+    filterStatus: true,
   }),
 
   // filter company
