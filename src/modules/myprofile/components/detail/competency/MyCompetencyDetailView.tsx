@@ -23,6 +23,7 @@ export const MyCompetencyDetailView: React.SFC<MyCompetencyDetailProps> = props 
           props.userState && props.userState.user && props.userState.user.level &&
           // props.employeeFinalState.detail.response && props.employeeFinalState.detail.response.data &&
           props.hrCompetencyMappedState.current.response && props.hrCompetencyMappedState.current.response.data  &&
+          props.hrCompetencyMappedState.current.response && props.hrCompetencyMappedState.current.response.data.length > 0 &&
           props.hrCompetencyMappedState.next.response && props.hrCompetencyMappedState.next.response.data ?
           <MyCompetencyTable 
             data={props.employeeFinalState.detail.response && props.employeeFinalState.detail.response.data}
