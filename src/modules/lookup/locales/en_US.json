@@ -636,6 +636,6 @@
   "lookup.employeelevel.message.create.failure": "Unable to process your submission",
   "lookup.employeelevel.message.update.success": "Existing Employee Level {uid} has been updated",
   "lookup.employeelevel.message.update.failure": "Unable to process your submission",
-  "lookup.employeelevel.message.delete.success": "Current data with ID {uid} has been deleted",
+  "lookup.employeelevel.message.delete.success": "Level with ID {uid} has been deleted",
   "lookup.employeelevel.message.delete.failure": "Unable to process your submission"
 }
