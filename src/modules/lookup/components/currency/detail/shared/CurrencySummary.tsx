@@ -3,7 +3,7 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICurrency } from '@lookup/classes/response/currency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -18,48 +18,51 @@ type AllProps
 
 const currencySummary: React.SFC<AllProps> = props => (
   <Grid container>
-    <Grid item xs={12} sm={6} md={4}>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.currency.field.uid)}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        multiline={true}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.currency.field.name)}
-        value={props.data.name || 'N/A'}
-      />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.currency.field.symbol)}
-        value={props.data.symbol || 'N/A'}
-        multiline
+        value={props.data.symbol}
       />
+      
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.currency.field.name)}
+        value={props.data.name}
+      />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.currency.field.rate)}
         value={props.intl.formatNumber(props.data.rate || 0)}
-        multiline
       />
-      <FormControlLabel
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.currency.field.status)}
+        value={props.data.isActive ?
+          props.intl.formatMessage(lookupMessage.currency.field.isActive) :
+          props.intl.formatMessage(lookupMessage.currency.field.isNotActive)}
+      />
+      {/* <FormControlLabel
         control={ <Checkbox checked={props.data.isActive} /> }
         label={props.data.isActive ?
           props.intl.formatMessage(lookupMessage.currency.field.isActive) :
           props.intl.formatMessage(lookupMessage.currency.field.isNotActive)}
-        />
+        /> */}
     </Grid>
 
     {
       props.data.changes &&
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
