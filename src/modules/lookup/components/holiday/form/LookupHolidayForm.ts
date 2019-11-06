@@ -120,12 +120,13 @@ const handlerCreators: HandleCreators<HolidayFormProps, IOwnHandler> = {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const holidayUid = props.history.location.state.uid;
+      const companyUid = props.history.location.state.companyUid;
       const { isLoading } = props.lookupHolidayState.detail;
 
       if (user && holidayUid && !isLoading) {
         props.lookupHolidayDispatch.loadDetailRequest({
           holidayUid,
-          companyUid: props.history.location.state.companyUid,
+          companyUid
         });
       }
     }
@@ -197,7 +198,7 @@ const handlerCreators: HandleCreators<HolidayFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/holidays/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/holidays/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

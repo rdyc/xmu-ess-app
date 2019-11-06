@@ -25,7 +25,8 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupDiemDetailView } from './LookupDiemDetailView';
 
 interface IOwnRouteParams {
@@ -128,7 +129,7 @@ const stateUpdaters: StateUpdaters<LookupDiemDetailProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupDiemDetailProps) => () => { 
-    if (props.history.location.state) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
         props.lookupDiemDispatch.loadDetailRequest({
           companyUid: props.history.location.state.companyUid,
