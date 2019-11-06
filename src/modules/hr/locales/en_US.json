@@ -88,7 +88,7 @@
   "hr.competency.field.complete": "Completed",
   "hr.competency.field.expired": "Expired",
   "hr.competency.field.assess": "Assess",
-  "hr.competency.field.inactive": "Inactive Only",
+  "hr.competency.field.active": "Active",
   
   "hr.competency.field.completion.item": "{responder} / {completion} Responders",
   "hr.competency.field.completion": "Responder / Completion",
