@@ -1,4 +1,5 @@
 import { IHrCompetencyClusterList } from '@hr/classes/response';
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -17,7 +18,7 @@ import * as React from 'react';
 import { FilterClusterProps } from './FilterCluster';
 
 export const FilterClusterView: React.SFC<FilterClusterProps> = props => {
-  const { response } = props.hrCompetencyClusterState.list;
+  const { response, isLoading } = props.hrCompetencyClusterState.list;
 
   const renderItem = (item: IHrCompetencyClusterList) => {
     return (
@@ -59,21 +60,28 @@ export const FilterClusterView: React.SFC<FilterClusterProps> = props => {
 
       <Divider/>
 
-      <List>
-        <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="secondary" checked={!props.value} />
-          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
-        </ListItem>
-        <Divider />
+      {
+        isLoading &&
+        <LoadingCircular />
+      }
 
-        {
-          response &&
-          response.data &&
-          response.data.map(item =>
-            renderItem(item)
-          )
-        }
-      </List>
+      {
+        !isLoading &&
+        <List>
+          <ListItem button onClick={() => props.onSelected()}>
+            <Radio color="secondary" checked={!props.value} />
+            <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
+          </ListItem>
+          <Divider />
+          {
+            response &&
+            response.data &&
+            response.data.map(item =>
+              renderItem(item)
+            )
+          }
+        </List>
+      }
     </Dialog>
   );
 };
