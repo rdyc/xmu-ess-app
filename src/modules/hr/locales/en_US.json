@@ -75,6 +75,7 @@
   "hr.competency.field.minCategories": "Must have at least one category",
   "hr.competency.field.minLevels": "Must have at least one level",
   "hr.competency.field.minIndicators": "Must have at least one indicator",
+  "hr.competency.field.minResponder": "Must have at least one responder",
 
   "hr.competency.field.totalItem": "Total {state}",
   "hr.competency.field.zeroItem": "No {item} recorded",

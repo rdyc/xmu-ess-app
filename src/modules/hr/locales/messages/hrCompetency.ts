@@ -37,6 +37,7 @@ export const hrCompetencyField = defineMessages({
 
   minNote: { id: `${prefix}.field.minNote`},
   minCategories: { id: `${prefix}.field.minCategories`},
+  minResponder: { id: `${prefix}.field.minResponder`},
   minLevels: { id: `${prefix}.field.minLevels`},
   minIndicators: { id: `${prefix}.field.minIndicators`},
   totalItem: { id: `${prefix}.field.totalItem`},
