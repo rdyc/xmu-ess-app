@@ -107,7 +107,7 @@
   "organization.hierarchy.message.create.failure": "Unable to process your submission",
   "organization.hierarchy.message.update.success": "Existing Hierarchy {uid} has been updated",
   "organization.hierarchy.message.update.failure": "Unable to process your submission",
-  "organization.hierarchy.message.delete.success": "Current Hierarchy {uid} has been deleted",
+  "organization.hierarchy.message.delete.success": "Hierarchy with ID {uid} has been deleted",
   "organization.hierarchy.message.delete.failure": "Unable to process your submission",
 
   "organization.hierarchy.field.uid": "Hierarchy ID",

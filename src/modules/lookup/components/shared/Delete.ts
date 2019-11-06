@@ -19,7 +19,7 @@ interface OwnProps {
   content?: string;
   labelCancel?: string;
   labelConfirm?: string;
-  handleDialogOpen: (action: LookupUserAction) => void;
+  handleDialogOpen?: (action: LookupUserAction) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }
