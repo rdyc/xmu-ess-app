@@ -40,7 +40,9 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                 <CardHeader 
                   title={`#${index + 1} - ${item.uid || 'Draft'}`}
                   action={
-                    <IconButton 
+                    props.formikBag.values.items.length > 1 &&
+                    <IconButton
+                      disabled={props.formikBag.isSubmitting} 
                       onClick={() => {
                         // remove current
                         fields.remove(index);

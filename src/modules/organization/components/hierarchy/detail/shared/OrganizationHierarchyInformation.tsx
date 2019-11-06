@@ -33,13 +33,13 @@ export const organizationHierarchyInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(organizationMessage.hierarchy.field.name)}
-          value={data.name}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
+          value={data.company && data.company.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
-          value={data.company && data.company.name || 'N/A'}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.name)}
+          value={data.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -130,6 +130,7 @@
   "organization.hierarchy.field.positionUid.required": "Position is Required",
   "organization.hierarchy.field.relationType": "Relation",
   "organization.hierarchy.field.relationType.placeholder": "Select a Relation",
+  "organization.hierarchy.field.itemsMinimum": "Must have atleast one hierarchy",
 
   "organization.hierarchy.text.submitter": "Submitter",
   "organization.hierarchy.text.draft": "Draft",

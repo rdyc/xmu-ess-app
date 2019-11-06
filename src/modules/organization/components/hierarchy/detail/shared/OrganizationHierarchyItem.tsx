@@ -26,7 +26,7 @@ export const organizationHierarchyItem: React.SFC<AllProps> = props => {
         <List>
         {
           data.map(item =>
-            <ListItem>
+            <ListItem key={item.uid}>
               <ListItemIcon>
                 <Typography variant="h5">
                   {`#${item.level}`}
