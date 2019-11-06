@@ -25,9 +25,15 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Employee'})}
+        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Input'})}
       />
       <CardContent>
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Input'})}
+          value={data.uid}
+        />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

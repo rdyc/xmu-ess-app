@@ -28,6 +28,12 @@ const hrCompetencyAssessmentInformation: React.SFC<AllProps> = props => {
         title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Assessment'})}
       />
       <CardContent>
+      <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Assessment'})}
+          value={data.uid}
+        />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

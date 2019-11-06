@@ -31,6 +31,12 @@ const hrCompetencyResultInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
+          label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Result'})}
+          value={data.uid}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.name)}
           value={data.responden && data.responden.fullName}
         />
