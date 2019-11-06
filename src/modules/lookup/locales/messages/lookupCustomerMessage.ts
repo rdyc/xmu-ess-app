@@ -20,7 +20,7 @@ export const lookupCustomerSection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   customerTitle: { id: `${prefix}.section.title` },
   customerSubHeader: { id: `${prefix}.section.subHeader` },
-
+  contactTitle: { id: `${prefix}.section.contact.title` },
 });
 
 // dialog

@@ -19,11 +19,11 @@ type AllProps
 const summaryView: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
-      <TextField
+      {/* <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.customer.field.uid)}
         value={props.data.uid}
-      />
+      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.customer.field.name)}

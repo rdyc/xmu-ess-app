@@ -478,6 +478,7 @@
 
   "lookup.customer.section.info.title": "Customer",
   "lookup.customer.section.info.subHeader": " ",
+  "lookup.customer.section.contact.title": "Contact",
 
   "lookup.customer.field.uid": "Customer ID",
   "lookup.customer.field.isActive": "Is Active? ",
@@ -529,7 +530,7 @@
   "lookup.customer.message.create.failure": "Submission failed",
   "lookup.customer.message.update.success": "Customer has been updated",
   "lookup.customer.message.update.failure": "Update submission failed",
-  "lookup.customer.message.delete.success": "This customer has been deleted from system",
+  "lookup.customer.message.delete.success": "customer with ID {uid} has been deleted",
   "lookup.customer.message.delete.failure": "Delete confirmation failed",
 
   "lookup.gallery.page.list.title": "Image Gallery",
