@@ -4,7 +4,8 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
+import { AddCircle } from '@material-ui/icons';
 import * as React from 'react';
 
 import { HrCompetencyAssessmentListProps } from './HrCompetencyAssessmentList';
@@ -61,6 +62,14 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
+      }
+      appBarCustomComponent={
+        <IconButton
+          color="inherit"
+          onClick={() => props.history.push(`/hr/assessment/form`)}
+        >
+          <AddCircle/>
+        </IconButton>
       }
       // data toolbar component
       // toolbarDataComponent={

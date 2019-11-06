@@ -22,6 +22,12 @@ const hrCornerCategoryInformation: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
+        label={intl.formatMessage(hrMessage.corner.field.uid, {state: 'Category'})}
+        value={data.uid}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
         label={intl.formatMessage(hrMessage.corner.field.name)}
         value={data.name}
       />

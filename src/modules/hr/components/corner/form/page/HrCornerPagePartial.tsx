@@ -2,6 +2,7 @@ import { FormMode } from '@generic/types';
 import { IHrCornerCategoryGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, WithStyles, withStyles } from '@material-ui/core';
 import { AddCircle, ChevronLeft, ChevronRight } from '@material-ui/icons';
 import styles from '@styles';
@@ -71,6 +72,21 @@ const hrCornerPagePartial: React.ComponentType<AllProps> = props => {
 
         <CardContent>
           <List disablePadding>
+
+          <Field 
+            name="uid"
+            render={({ field}: FieldProps<ICornerPageFormValue>) => (
+              <TextField 
+                {...field}
+                fullWidth
+                disabled
+                margin="normal"
+                label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Page'})}
+                helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+              />
+            )}
+          />
+
           <ListItem disableGutters>
             <ListItemText>
               <Field

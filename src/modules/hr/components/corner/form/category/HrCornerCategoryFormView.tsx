@@ -50,6 +50,7 @@ export const HrCornerCategoryFormView: React.SFC<HrCornerCategoryFormProps> = pr
                 <div className={props.classes.flexColumn}>
                   <div className={props.classes.flexContent}>
                     <HrCornerCategoryPartial 
+                      formMode={props.formMode}
                       intl={props.intl}
                       formikBag={formikBag}
                     />

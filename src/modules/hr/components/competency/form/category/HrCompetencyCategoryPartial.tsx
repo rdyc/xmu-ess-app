@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -23,6 +23,19 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
       title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Category'})}
     />
     <CardContent>
+
+      <Field 
+        name="categoryUid"
+        render={({ field}: FieldProps<ICategoryFormValue>) => (
+          <TextField 
+            {...field}
+            fullWidth
+            disabled
+            margin="normal"
+            label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Category'})}
+          />
+        )}
+      />
 
       <Field
         name="clusterUid"
