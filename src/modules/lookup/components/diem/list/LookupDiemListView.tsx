@@ -44,7 +44,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
             <Button
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/lookup/diemvalues/form`, { uid: item.uid, company: item.companyUid })}
+              onClick={() => props.history.push(`/lookup/diemvalues/form`, { uid: item.uid, companyUid: item.companyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -53,7 +53,7 @@ export const LookupDiemListView: React.SFC<LookupDiemListProps> = props => (
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/diemvalues/${item.uid}`, { company: item.companyUid })}
+            onClick={() => props.history.push(`/lookup/diemvalues/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

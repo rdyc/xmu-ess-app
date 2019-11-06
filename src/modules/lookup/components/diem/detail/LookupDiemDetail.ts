@@ -128,11 +128,13 @@ const stateUpdaters: StateUpdaters<LookupDiemDetailProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupDiemDetailProps) => () => { 
-    if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
-      props.lookupDiemDispatch.loadDetailRequest({
-        companyUid: props.history.location.state ? props.history.location.state.companyUid : '',
-        diemUid: props.match.params.diemUid
-      });
+    if (props.history.location.state) {
+      if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
+        props.lookupDiemDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          diemUid: props.match.params.diemUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: LookupDiemDetailProps) => (item: IPopupMenuOption) => { 
@@ -168,10 +170,12 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
 
     // define vars
     let diemUid: string | undefined;
+    let companyUid: string | undefined;
 
     // get diem uid
     if (response.data) {
       diemUid = response.data.uid;
+      companyUid = response.data.companyUid;
     }
 
     // actions with new page
@@ -196,7 +200,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
       });
       
       props.history.push(next, {
-        uid: diemUid
+        companyUid,
+        uid: diemUid,
       });
     }
   },

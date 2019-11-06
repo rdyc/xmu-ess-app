@@ -349,7 +349,7 @@
   "lookup.diem.message.create.failure": "Unable to process your submission",
   "lookup.diem.message.update.success": "Existing Diem ID {uid} has been updated",
   "lookup.diem.message.update.failure": "Unable to process your submission",
-  "lookup.diem.message.delete.success": "This Diem has been deleted from system",
+  "lookup.diem.message.delete.success": "Diem with ID {uid} has been deleted",
   "lookup.diem.message.delete.failure": "Unable to process your submission",
 
   "lookup.holiday.page.list.title": "Holiday",

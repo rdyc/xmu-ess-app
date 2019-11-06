@@ -23,6 +23,11 @@ const lookupDiemInformation: React.SFC<AllProps> = props => (
     <CardContent>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.lookupDiem.field.uid)}
+        value={props.data.uid}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.lookupDiem.field.company)}
         value={props.data.company ? props.data.company.name : props.data.companyUid}
       />

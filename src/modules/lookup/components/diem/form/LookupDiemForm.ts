@@ -146,7 +146,7 @@ const handlerCreators: HandleCreators<DiemFormProps, IOwnHandler> = {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const diemUid = props.history.location.state.uid;
-      const companyUid = props.history.location.state.company;
+      const companyUid = props.history.location.state.companyUid;
       const { isLoading } = props.lookupDiemState.detail;
 
       if (user && companyUid && diemUid && !isLoading) {
@@ -226,7 +226,7 @@ const handlerCreators: HandleCreators<DiemFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/diemvalues/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/diemvalues/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
