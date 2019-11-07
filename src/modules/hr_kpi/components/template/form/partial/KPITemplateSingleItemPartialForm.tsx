@@ -195,7 +195,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                 disabled={form.isSubmitting}
                 margin="normal"
                 autoComplete="off"
-                label={props.intl.formatMessage(kpiMessage.template.field.weight)}
+                label={props.intl.formatMessage(kpiMessage.template.field.weightPercent)}
                 placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
                 helperText={touch && error}
                 error={touch && Boolean(error)}
