@@ -1,13 +1,16 @@
+import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { layoutMessage } from '@layout/locales/messages';
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
+import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader, Checkbox, CircularProgress, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Typography, withStyles, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, withStyles, WithStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+
 import { IRoleFormValue } from '../LookupRoleForm';
 
 interface IOwnProps {
@@ -42,6 +45,7 @@ type AllProps
   & IOwnHandler
   & IOwnState
   & IOwnStateHandler
+  & WithLookupMenu
   & WithStyles<typeof styles>;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
@@ -80,7 +84,8 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const MenuPartialForm: React.ComponentType<AllProps> = props => {
-  const { active, isExpanded, formikBag} = props;
+  const { active, isExpanded, formikBag } = props;
+  const { isLoading } = props.lookupMenuState.list;
 
   const render = (
     <Card square>
@@ -89,21 +94,22 @@ const MenuPartialForm: React.ComponentType<AllProps> = props => {
       />
       <CardContent>
         {
-          formikBag.values.menus.length === 0 &&
-          <div className={props.classes.preloader}>
-            <div className={props.classes.preloaderContent}>
-              <CircularProgress 
-                style={{margin: 'auto'}} 
-                color="secondary"
-              />
+          isLoading &&
+          <LoadingCircular />
+          // <div className={props.classes.preloader}>
+          //   <div className={props.classes.preloaderContent}>
+          //     <CircularProgress 
+          //       style={{margin: 'auto'}} 
+          //       color="secondary"
+          //     />
 
-              <Typography
-                className={props.classes.marginFarTop}
-              >
-                {props.intl.formatMessage(layoutMessage.text.waiting)}
-              </Typography>
-            </div>    
-          </div>
+          //     <Typography
+          //       className={props.classes.marginFarTop}
+          //     >
+          //       {props.intl.formatMessage(layoutMessage.text.waiting)}
+          //     </Typography>
+          //   </div>    
+          // </div>
         }
         {
           formikBag.values.menus.length > 0 && (
@@ -158,9 +164,12 @@ const MenuPartialForm: React.ComponentType<AllProps> = props => {
                           />
                           <div>
                             <ListItemText primary={parent.name}/>
-                            <ListItemSecondaryAction>
-                              {active === parent.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
-                            </ListItemSecondaryAction>
+                            {
+                              parent.uid !== AppMenu.WebJob &&
+                              <ListItemSecondaryAction>
+                                {active === parent.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                              </ListItemSecondaryAction>
+                            }
                           </div>
                         </ListItem>
                         <Divider />            
@@ -259,6 +268,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 };
 
 export const LookupRoleMenuPartialForm = compose<AllProps, IOwnProps>(
+  withLookupMenu,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -145,7 +145,7 @@
   "lookup.role.message.create.failure": "Unable to process your submission",
   "lookup.role.message.update.success": "Existing Role ID {uid} has been updated",
   "lookup.role.message.update.failure": "Unable to process your submission",
-  "lookup.role.message.delete.success": "Current {uid} has been deleted",
+  "lookup.role.message.delete.success": "Role with ID {uid} has been deleted",
   "lookup.role.message.delete.failure": "Unable to process your submission",
   
   "lookup.company.page.list.title": "Company",
