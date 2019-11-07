@@ -34,34 +34,47 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
     return(
       templates.map((item, index) => 
       <TableRow key={index}>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.category && item.category.name}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.categoryName}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }}>
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.measurement && item.measurement.description}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }}> 
+        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}> 
           {item.target}
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
-          {`${props.intl.formatNumber(item.weight)} %`}
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
+          {
+            item.category &&
+            item.category.group === 'KPI' &&
+            `${props.intl.formatNumber(item.weight)} %` ||
+            '-'
+          }
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            item.measurement.measurementType === MeasurementType.Scoring  &&
+
+            (item.category &&
+            item.category.group === 'KPI') &&
+
+            (item.measurement.measurementType === MeasurementType.Scoring)  &&
             props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
         </TableCell>
-        <TableCell numeric style={{ verticalAlign: 'top' }}>
+        <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance) &&
+
+            (item.category &&
+            item.category.group === 'KPI') &&
+
+            ((item.measurement.measurementType === MeasurementType.Scoring ||
+            item.measurement.measurementType === MeasurementType.Attendance)) &&
             props.intl.formatNumber(item.amount) ||
             '-'
           }
@@ -90,25 +103,25 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.categoryUid)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.categoryName)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.measurementUid)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.target)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.weight)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.threshold)}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell numeric className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.template.field.amount)}
                   </TableCell>
                 </TableRow>

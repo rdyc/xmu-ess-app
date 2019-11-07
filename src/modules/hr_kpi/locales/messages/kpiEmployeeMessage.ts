@@ -119,6 +119,8 @@ export const KPIEmployeeField = defineMessages({
   completion: { id: `${prefix}.field.completion`},
   note: { id: `${prefix}.field.note`},
   notePlaceholder: { id: `${prefix}.field.note.placeholder`},
+  kpiNotes: { id: `${prefix}.field.kpiNotes`},
+  kpiNotesPlaceholder: { id: `${prefix}.field.kpiNotes.placeholder`},
 
   // item
   itemsMinimum: { id: `${prefix}.field.itemsMinimum`},
@@ -134,6 +136,7 @@ export const KPIEmployeeField = defineMessages({
   target: { id: `${prefix}.field.target`},
   targetPlaceholder: { id: `${prefix}.field.target.placeholder`},
   weight: { id: `${prefix}.field.weight`},
+  weightPercent: { id: `${prefix}.field.weightPercent`},
   weightPlaceholder: { id: `${prefix}.field.weight.placeholder`},
   threshold: { id: `${prefix}.field.threshold`},
   thresholdPlaceholder: { id: `${prefix}.field.threshold.placeholder`},
@@ -158,6 +161,7 @@ export const KPIEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'revision': return KPIEmployeeField.revision;
       case 'totalWeight': return KPIEmployeeField.totalWeight;
       case 'note': return KPIEmployeeField.note;
+      case 'kpiNotes': return KPIEmployeeField.kpiNotes;
 
       case 'itemUid': return KPIEmployeeField.itemUid;
       case 'categoryUid': return KPIEmployeeField.categoryUid;
@@ -183,6 +187,7 @@ export const KPIEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'period': return KPIEmployeeField.periodPlaceholder;
       case 'revision': return KPIEmployeeField.revisionPlaceholder;
       case 'note': return KPIEmployeeField.notePlaceholder;
+      case 'kpiNotes': return KPIEmployeeField.kpiNotesPlaceholder;
 
       case 'categoryUid': return KPIEmployeeField.categoryUidPlaceholder;
       case 'measurementUid': return KPIEmployeeField.measurementUidPlaceholder;

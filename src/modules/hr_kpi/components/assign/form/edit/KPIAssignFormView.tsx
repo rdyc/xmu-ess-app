@@ -58,7 +58,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                     formikProps={formikBag}
                     buttonLabelProps={{
                       reset: props.intl.formatMessage(layoutMessage.action.reset),
-                      submit: props.intl.formatMessage(layoutMessage.action.submit),
+                      submit: props.intl.formatMessage(formikBag.values.isFinal ? layoutMessage.action.submit : layoutMessage.action.draft),
                       processing: props.intl.formatMessage(layoutMessage.text.processing)
                     }}
                     confirmationDialogProps={{

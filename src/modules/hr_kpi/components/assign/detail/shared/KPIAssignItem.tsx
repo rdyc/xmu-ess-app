@@ -45,12 +45,20 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
           {item.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {`${props.intl.formatNumber(item.weight)} %`}
+          {
+            item.category &&
+            item.category.group === 'KPI' &&
+            `${props.intl.formatNumber(item.weight)} %` ||
+            '-'}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            item.measurement.measurementType === MeasurementType.Scoring  &&
+
+            (item.category &&
+            item.category.group === 'KPI') &&
+
+            (item.measurement.measurementType === MeasurementType.Scoring) &&
             props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
@@ -58,8 +66,12 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance) &&
+
+            (item.category &&
+            item.category.group === 'KPI') &&
+
+            ((item.measurement.measurementType === MeasurementType.Scoring ||
+            item.measurement.measurementType === MeasurementType.Attendance)) &&
             props.intl.formatNumber(item.amount) ||
             '-'
           }

@@ -34,6 +34,7 @@ import { KPIApprovalDetailView } from './KPIApprovalDetailView';
 interface IKPIApprovalItemFormValue {
   uid: string;
   categoryName: string;
+  categoryGroup: string;
   measurementType: string;
   measurementDescription: string;
   target: string;
@@ -164,6 +165,8 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
             categoryUid: Yup.string(),
               
             categoryName: Yup.string(),
+              
+            categoryGroup: Yup.string(),
   
             measurementType: Yup.string(),
               
@@ -391,6 +394,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
             initialValues.items.push({
               uid: item.uid,
               categoryName: item.kpiAssignItem && item.kpiAssignItem.categoryName || '',
+              categoryGroup: item.kpiAssignItem && item.kpiAssignItem.category && item.kpiAssignItem.category.group || '',
               measurementType: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.measurementType || '',
               measurementDescription: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.description || '',
               target: item.kpiAssignItem && item.kpiAssignItem.target || '',

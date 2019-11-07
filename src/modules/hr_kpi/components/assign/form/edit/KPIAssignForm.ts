@@ -44,6 +44,7 @@ export interface IKPIAssignItemFormValue {
   categoryUid: string;
   categoryValue: string;
   categoryName: string;
+  categoryGroup: string;
   measurementUid: string;
   measurementValue: string;
   measurementType?: string;
@@ -68,6 +69,7 @@ export interface IKPIAssignFormValue {
   note: string;
   year: string;
   totalWeight: number;
+  finalDate?: string;
   items: IKPIAssignItemFormValue[];
 }
 
@@ -176,12 +178,8 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
 
     revision: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
-      .when('isFinal', ({
-        is: false,
-        then: Yup.string().required(),
-      }))
-      .when('isFirst', ({
-        is: false,
+      .when('finalDate', ({
+        is: undefined,
         then: Yup.string().required(),
       })),
 
@@ -202,6 +200,8 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
           .max(100)
           .label(props.intl.formatMessage(kpiMessage.employee.field.categoryName))
           .required(),
+
+          categoryGroup: Yup.string(),
 
           measurementUid: Yup.string()
             .label(props.intl.formatMessage(kpiMessage.employee.field.measurementUid))
@@ -427,6 +427,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           isFirst: thisResponse.data.changes && !thisResponse.data.changes.updated || false,
           revision: '',
           note: thisResponse.data.note || '',
+          finalDate: thisResponse.data.finalDate,
           items: []
         };
 
@@ -440,6 +441,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
               categoryUid: item.categoryUid,
               categoryValue: item.category && item.category.name || '',
               categoryName: item.categoryName,
+              categoryGroup: item.category && item.category.group || '',
               measurementUid: item.measurementUid,
               measurementValue: item.measurement && item.measurement.description || '',
               measurementType: item.measurement && item.measurement.measurementType || '',
@@ -474,6 +476,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
               categoryUid: item.categoryUid,
               categoryValue: item.category && item.category.name || '',
               categoryName: item.categoryName,
+              categoryGroup: item.category && item.category.group || '',
               measurementUid: item.measurementUid,
               measurementValue: item.measurement && item.measurement.description || '',
               measurementType: item.measurement && item.measurement.measurementType || '',

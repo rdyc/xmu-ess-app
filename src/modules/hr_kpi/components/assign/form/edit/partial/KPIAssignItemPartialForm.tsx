@@ -132,7 +132,11 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
-                            {`${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %`}
+                            {
+                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
+                              `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
+                              '-'
+                            }
                           </TableCell>
                           <TableCell 
                             numeric 
@@ -140,6 +144,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
+                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
                               props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
                               props.intl.formatNumber(item.threshold || 0) ||
                               '-'
@@ -151,6 +156,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
+                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
                               (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
                                 props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
                               props.intl.formatNumber(item.amount) ||
