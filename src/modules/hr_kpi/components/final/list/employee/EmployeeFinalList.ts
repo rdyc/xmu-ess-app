@@ -164,7 +164,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
   },
   handleFilterBadge: (props: AccountEmployeeFinalListProps) => () => {
     return props.companyUid !== undefined || 
-      props.isActive === true;
+      props.isActive === false;
   },
 };
 

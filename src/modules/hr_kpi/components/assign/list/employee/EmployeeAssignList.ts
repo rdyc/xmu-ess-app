@@ -172,9 +172,9 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
   },
   handleFilterBadge: (props: AccountEmployeeAssignListProps) => () => {
     return props.companyUid !== undefined || 
-      props.isActive === true ||
+      props.isActive === false ||
       props.isFinal !== undefined ||
-      props.isNotAssigned !== undefined ||
+      props.isNotAssigned === true ||
       props.year !== undefined;
   },
 };

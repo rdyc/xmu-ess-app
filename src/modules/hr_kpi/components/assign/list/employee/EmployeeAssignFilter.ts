@@ -151,7 +151,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignFilterProps, OwnState, O
     filterYear: undefined,
     filterFinal: undefined,
     filterCompany: undefined,
-    filterStatus: false,
+    filterStatus: true,
     filterNotAssign: false,
   }),
 

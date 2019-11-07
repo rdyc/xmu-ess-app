@@ -13,7 +13,7 @@ export const AccountEmployeeNoteDetailView: React.SFC<AccountEmployeeNoteDetailP
   const render = (
     <PreviewPage
       info={{
-        uid: AppMenu.Account,
+        uid: AppMenu.LookupEmployee,
         parentUid: AppMenu.Lookup,
         parentUrl: `/account/employee/${props.match.params.employeeUid}/note`,
         title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
