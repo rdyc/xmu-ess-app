@@ -18,23 +18,16 @@ type AllProps
 
 const structureSummary: React.SFC<AllProps> = props => (
   <Grid container>
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(organizationMessage.structure.field.uid)}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        multiline={true}
         margin="dense"
         label={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
         value={props.data.company && props.data.company.name || 'N/A'}
       />
     </Grid>
 
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
@@ -46,20 +39,28 @@ const structureSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(organizationMessage.structure.field.description)}
-        value={props.data.description || '-'}
+        value={props.data.description || 'N/A'}
         multiline
       />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(organizationMessage.structure.field.inactiveDate)}
+        value={props.data.inactiveDate && props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) || 'N/A'}
+      />
+      
       <FormControlLabel
-        control={<Checkbox checked={!props.data.isExpired} /> }
-        label={!props.data.isExpired ?
-          props.intl.formatMessage(organizationMessage.structure.field.isExpired) :
-          props.intl.formatMessage(organizationMessage.structure.field.isNotExpired)}
+        control={<Checkbox checked={props.data.isExpired} /> }
+        label={props.intl.formatMessage(organizationMessage.structure.field.isExpired)}
         />
     </Grid>
 
     {
       props.data.changes &&
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

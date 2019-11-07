@@ -1,20 +1,20 @@
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+// import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { IPositionGetListFilter } from '@lookup/classes/filters';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
+import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { Field, FieldProps, FormikProps } from 'formik';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
-import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { IPositionGetListFilter } from '@lookup/classes/filters';
-import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
-import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { IOrganizationStructureFormValue } from '../OrganizationStructureForm';
 
 type PurchaseDetailPartialFormProps = {
@@ -30,13 +30,13 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
   <Card square>
     <CardHeader title={props.intl.formatMessage(organizationMessage.structure.section.infoTitle)} />
     <CardContent>
-      <Field
+      <Field 
         name="uid"
-        render={({ field }: FieldProps<IOrganizationStructureFormValue>) => (
-          <TextField
+        render={({ field}: FieldProps<IOrganizationStructureFormValue>) => (
+          <TextField 
             {...field}
-            {...GlobalStyle.TextField.ReadOnly}
             fullWidth
+            disabled
             margin="normal"
             label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
@@ -50,7 +50,7 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
           <LookupCompanyOption filter={props.filterLookupCompany}>
             <SelectField
               isSearchable
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}

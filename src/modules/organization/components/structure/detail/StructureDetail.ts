@@ -1,5 +1,14 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { LookupUserAction } from '@lookup/classes/types';
+import { DeleteFormData } from '@lookup/components/shared/Delete';
+import { IOrganizationStructureDeletePayload } from '@organization/classes/request/structure';
+import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -15,13 +24,10 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
-import { AppRole } from '@constants/AppRole';
-import { IPopupMenuOption } from '@layout/components/PopupMenu';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
-import { StructureUserAction } from '@organization/classes/types';
-import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { StructureDetailView } from './StructureDetailView';
 
 interface IOwnRouteParams {
@@ -33,13 +39,16 @@ interface IOwnHandler {
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleDelete: (payload: DeleteFormData) => void;
+  handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
 }
 
 interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
   shouldLoad: boolean;
-  action?: StructureUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -53,11 +62,13 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type OrganizationStructureDetailProps
   = WithUser
   & WithOidc
+  & WithLayout
   & WithOrganizationStructure
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -85,7 +96,9 @@ const createProps: mapper<OrganizationStructureDetailProps, IOwnState> = (props:
     isAdmin,
     shouldLoad: false,
     dialogFullScreen: false,
-    dialogOpen: false
+    dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   };
 };
 
@@ -97,45 +110,48 @@ const stateUpdaters: StateUpdaters<OrganizationStructureDetailProps, IOwnState, 
     shouldLoad: !state.shouldLoad
   }),
   setModify: (prevState: IOwnState, props: OrganizationStructureDetailProps) => (): Partial<IOwnState> => ({
-    action: StructureUserAction.Modify,
+    action: LookupUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(organizationMessage.structure.dialog.modifyTitle),
     dialogContent: props.intl.formatMessage(organizationMessage.structure.dialog.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
+  }),
+  setDelete: (prevState: IOwnState, props: OrganizationStructureDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(organizationMessage.structure.dialog.deleteTitle),
+    dialogContent: props.intl.formatMessage(organizationMessage.structure.dialog.deleteDescription),
   }),
   setDefault: () => (): Partial<IOwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
     dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
   })
 };
 
 const handlerCreators: HandleCreators<OrganizationStructureDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: OrganizationStructureDetailProps) => () => {
     if (props.userState.user && props.match.params.structureUid && !props.organizationStructureState.detail.isLoading) {
-       if (props.history.location.state.companyUid) {
-      props.organizationStructureDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        structureUid: props.match.params.structureUid
-      });
-      } else {
-         props.history.push('/organization/structure');
+       if (props.history.location.state) {
+        props.organizationStructureDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          structureUid: props.match.params.structureUid
+        });
       }
     }
   },
   
   handleOnSelectedMenu: (props: OrganizationStructureDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
-      case StructureUserAction.Refresh:
+      case LookupUserAction.Refresh:
         props.setShouldLoad();
         break;
-      case StructureUserAction.Modify:
+      case LookupUserAction.Modify:
         props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
         break;
 
       default:
@@ -165,14 +181,14 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, IOwnHand
 
     // actions with new page
     const actions = [
-      StructureUserAction.Modify,
+      LookupUserAction.Modify,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case StructureUserAction.Modify:
+        case LookupUserAction.Modify:
           next = `/organization/structure/form`;
           break;
 
@@ -187,6 +203,55 @@ const handlerCreators: HandleCreators<OrganizationStructureDetailProps, IOwnHand
       });
     }
   },
+  handleDelete: (props: OrganizationStructureDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.organizationStructureDispatch;
+
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.structureUid) {
+      const message = intl.formatMessage(organizationMessage.structure.message.emptyProps);
+      return Promise.reject(message);
+    }
+
+    const payload: IOrganizationStructureDeletePayload = {
+      companyUid: props.history.location.state.companyUid,
+      structureUid: match.params.structureUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload
+      });
+    });
+  },
+  handleDeleteSuccess: (props: OrganizationStructureDetailProps) => (response: boolean) => {
+    props.history.push('/organization/structure');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(organizationMessage.structure.message.deleteSuccess, { uid : props.match.params.structureUid })
+    });
+  },
+  handleDeleteFail: (props: OrganizationStructureDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(organizationMessage.structure.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, IOwnState> = {
@@ -209,17 +274,23 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureDetailProps, IOwn
       // generate option menus
       const options: IPopupMenuOption[] = [
         {
-          id: StructureUserAction.Refresh,
+          id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true
         },
         {
-          id: StructureUserAction.Modify,
+          id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: !isLoading,
           visible: true
         },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true
+        }
       ];
 
       this.props.setOptions(options);
@@ -232,6 +303,7 @@ export const StructureDetail = compose(
   withRouter,
   withOidc,
   withUser,
+  withLayout,
   withOrganizationStructure,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

@@ -241,6 +241,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
   
         // fill items
         values.items.forEach(item => payload.items && payload.items.push({
+          itemUid: item.uid,
           sequence: item.sequence,
           positionUid: item.positionUid,
           relationType: item.relationType,

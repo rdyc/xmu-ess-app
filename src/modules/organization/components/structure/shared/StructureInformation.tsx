@@ -28,19 +28,20 @@ export const structureInformation: React.SFC<AllProps> = props => {
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(organizationMessage.structure.field.uid)}
+          value={data.uid}
+        />
+         <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
-          value={data.company && data.company.name || ''}
+          value={data.company && data.company.name || 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(organizationMessage.structure.field.positionUid)}
           value={data.position && data.position.name || ''}
         />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
-          value={data.company && data.company.name || 'N/A'}
-        />
+       
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(organizationMessage.structure.field.description)}
@@ -52,10 +53,8 @@ export const structureInformation: React.SFC<AllProps> = props => {
           value={props.data.inactiveDate && props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) || 'N/A'}
         />
         <FormControlLabel
-          control={<Checkbox checked={!props.data.isExpired} />}
-          label={!props.data.isExpired ?
-            props.intl.formatMessage(organizationMessage.structure.field.isExpired) :
-            props.intl.formatMessage(organizationMessage.structure.field.isNotExpired)}
+          control={<Checkbox checked={props.data.isExpired} />}
+          label={props.intl.formatMessage(organizationMessage.structure.field.isExpired)}
         />
         {
           data.changes &&

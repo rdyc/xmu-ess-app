@@ -38,7 +38,9 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                 <CardHeader 
                   title={`#${index + 1} - ${item.structureItemUid || 'Draft'}`}
                   action={
-                    <IconButton 
+                    props.formikBag.values.reportTo.length > 1 &&
+                    <IconButton
+                      disabled={props.formikBag.isSubmitting}
                       onClick={() => {
                         // remove current
                         fields.remove(index);
@@ -66,7 +68,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                             escapeClearsValue={true}
                             valueString={props.formikBag.values.reportTo[index].positionUid}
                             textFieldProps={{
-                              label: props.intl.formatMessage(organizationMessage.structure.field.positionUid),
+                              label: props.intl.formatMessage(organizationMessage.structure.field.reportTo),
                               required: true,
                               helperText: touch && error,
                               error: touch && Boolean(error)
