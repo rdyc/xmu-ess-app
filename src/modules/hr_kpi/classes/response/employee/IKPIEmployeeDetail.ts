@@ -14,9 +14,7 @@ export interface IKPIEmployeeDetail {
   revision?: string;
   statusType: string;
   status?: ICommonSystem;
+  notes?: string;
   items?: IKPIEmployeeItem[] | null;
-  // sentBy?: string | null;
-  // sent?: IEmployee | null;
-  // sentAt?: string | null;
   changes: IBaseChanges | null;
 }

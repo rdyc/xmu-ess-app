@@ -69,7 +69,12 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.categoryUid`, selected && selected.value || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.categoryName`, selected && selected.label || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.categoryValue`, selected && selected.label || '');
+                  props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.categoryGroup`, selected && selected.data && selected.data.group || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementUid`, '');
+                  
+                  if (selected && selected.data && selected.data.data && selected.data.group === 'Personal') {
+                    props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.amount`, 1);
+                  }
                 }}
               />
             </KPICategoryOption>
@@ -174,61 +179,65 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
         }}
       />
     
-      <Field
-        name={`items.${props.itemDialogIndex}.weight`}
-        render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
-          const error = getIn(form.errors, `items.${props.itemDialogIndex}.weight`);
-          const touch = getIn(form.touched, `items.${props.itemDialogIndex}.weight`);
+      {
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
+        <Field
+          name={`items.${props.itemDialogIndex}.weight`}
+          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+            const error = getIn(form.errors, `items.${props.itemDialogIndex}.weight`);
+            const touch = getIn(form.touched, `items.${props.itemDialogIndex}.weight`);
 
-          return (
-            <TextField
-              {...field}
-              fullWidth
-              required
-              disabled={form.isSubmitting}
-              margin="normal"
-              autoComplete="off"
-              label={props.intl.formatMessage(kpiMessage.template.field.weight)}
-              placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
-              helperText={touch && error}
-              error={touch && Boolean(error)}
-              InputProps={{
-                inputComponent: NumberFormatter,
-              }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                let totalValue = 0;
-                let value = 0;
+            return (
+              <TextField
+                {...field}
+                fullWidth
+                required
+                disabled={form.isSubmitting}
+                margin="normal"
+                autoComplete="off"
+                label={props.intl.formatMessage(kpiMessage.template.field.weight)}
+                placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
+                helperText={touch && error}
+                error={touch && Boolean(error)}
+                InputProps={{
+                  inputComponent: NumberFormatter,
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  let totalValue = 0;
+                  let value = 0;
 
-                if (e.target.value === '') {
-                  // set current field to 0
-                  props.formikBag.setFieldValue(field.name, 0);
-                  value = 0;
-                } else {
-                  value = parseFloat(e.target.value);
-                  // set current field
-                  props.formikBag.setFieldValue(field.name, value);
-                }
-                
-                // set actual field
-                props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.weight`, value);
+                  if (e.target.value === '') {
+                    // set current field to 0
+                    props.formikBag.setFieldValue(field.name, 0);
+                    value = 0;
+                  } else {
+                    value = parseFloat(e.target.value);
+                    // set current field
+                    props.formikBag.setFieldValue(field.name, value);
+                  }
+                  
+                  // set actual field
+                  props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.weight`, value);
 
-                // calculate total requested
-                totalValue = value;
-                props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                  if (props.itemDialogIndex !== indexItem) {
-                    totalValue = totalValue + requestItem.weight;
-                  }                              
-                });
+                  // calculate total requested
+                  totalValue = value;
+                  props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                    if (props.itemDialogIndex !== indexItem) {
+                      totalValue = totalValue + requestItem.weight;
+                    }                              
+                  });
 
-                // set weight
-                props.formikBag.setFieldValue('totalWeight', totalValue);
-              }}
-            />
-          );
-        }}
-      />
+                  // set weight
+                  props.formikBag.setFieldValue('totalWeight', totalValue);
+                }}
+              />
+            );
+          }}
+        />
+      }      
     
       {
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Scoring &&
         <Field
           name={`items.${props.itemDialogIndex}.threshold`}
@@ -273,6 +282,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
       }
     
       {
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
         (props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Scoring || 
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Attendance) &&
         <Field

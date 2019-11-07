@@ -89,10 +89,15 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                         {item.target}
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-                        {`${props.intl.formatNumber(item.weight)} %`}
+                        {
+                          item.categoryGroup === 'KPI' &&
+                          `${props.intl.formatNumber(item.weight)} %` ||
+                          '-'
+                        }
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                         {
+                          item.categoryGroup === 'KPI' &&
                           item.measurementType === MeasurementType.Scoring  &&
                           props.intl.formatNumber(item.threshold || 0) ||
                           '-'
@@ -100,6 +105,7 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                         {
+                          item.categoryGroup === 'KPI' &&
                           (item.measurementType === MeasurementType.Scoring ||
                             item.measurementType === MeasurementType.Attendance) &&
                           props.intl.formatNumber(item.amount) ||

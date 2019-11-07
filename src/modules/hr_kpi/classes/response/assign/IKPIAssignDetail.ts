@@ -14,6 +14,7 @@ export interface IKPIAssignDetail {
   isFinal: boolean;
   revision?: string;
   note?: string;
+  finalDate?: string;
   items?: IKPIAssignItem[] | null;
   changes: IBaseChanges | null;
 }
