@@ -442,7 +442,7 @@
   "lookup.leave.message.create.failure": "Unable to process your submission",
   "lookup.leave.message.update.success": "Existing PID {uid} has been updated",
   "lookup.leave.message.update.failure": "Unable to process your submission",
-  "lookup.leave.message.delete.success": "Current {uid} has been deleted",
+  "lookup.leave.message.delete.success": "Leave with ID {uid} has been deleted",
   "lookup.leave.message.delete.failure": "Unable to process your submission",
   "lookup.leave.confirm.modify.title": "Modify Confirmation",
   "lookup.leave.confirm.modify.description": " ",

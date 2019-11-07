@@ -145,9 +145,9 @@ const handlerCreators: HandleCreators<LookupLeaveListProps, IOwnHandler> = {
   },
   handleOnBind: (props: LookupLeaveListProps) => (item: ILookupLeave, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.name,
-    tertiary: item.company ? item.company.name : 'N/A',
+    primary: item.year.toString(),
+    secondary: item.category && item.category.value || 'N/A',
+    tertiary: item.name,
     quaternary: item.allocation.toString(),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

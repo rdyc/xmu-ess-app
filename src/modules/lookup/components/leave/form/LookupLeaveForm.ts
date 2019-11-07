@@ -149,12 +149,13 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const leaveUid = props.history.location.state.uid;
+      const companyUid = props.history.location.state.companyUid;
       const { isLoading } = props.lookupLeaveState.detail;
 
       if (user && leaveUid && !isLoading) {
         props.lookupLeaveDispatch.loadDetailRequest({
           leaveUid,
-          companyUid: props.history.location.state.companyUid,
+          companyUid,
         });
       }
     }
@@ -232,7 +233,7 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/leaves/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/leaves/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
