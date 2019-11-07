@@ -135,7 +135,8 @@ const LookupPositionDetailPartialForm: React.ComponentType<LookupPositionDetailP
             control={
               <Checkbox 
                 {...field} 
-                value={field.value}
+                value={field.name}
+                disabled={props.formikBag.isSubmitting} 
                 checked={props.formikBag.values.isAllowMultiple}
               />
             }

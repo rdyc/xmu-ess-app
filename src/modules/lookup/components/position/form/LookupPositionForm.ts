@@ -254,7 +254,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<PositionFormProps, IOwnState> 
           name: thisResponse.data.name,
           companyUid: thisResponse.data.companyUid,
           description: thisResponse.data.description || '',
-          inactiveDate: thisResponse.data.inactiveDate,
+          inactiveDate: thisResponse.data.inactiveDate || '',
           isAllowMultiple: thisResponse.data.isAllowMultiple
         };
 
