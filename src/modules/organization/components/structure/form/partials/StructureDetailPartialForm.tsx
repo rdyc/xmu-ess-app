@@ -130,7 +130,6 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
             margin="normal"
             clearable
             disabled={form.isSubmitting}
-            showTodayButton
             label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}

@@ -126,7 +126,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           fullWidth
                           margin="normal"
                           disabled={form.isSubmitting}
-                          showTodayButton
+                          clearable
                           label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
                           placeholder={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldPlaceholder'))}
                           value={props.formikBag.values.reportTo[index].end}

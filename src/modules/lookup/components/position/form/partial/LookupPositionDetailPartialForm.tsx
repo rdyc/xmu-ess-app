@@ -48,7 +48,7 @@ const LookupPositionDetailPartialForm: React.ComponentType<LookupPositionDetailP
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -108,18 +108,20 @@ const LookupPositionDetailPartialForm: React.ComponentType<LookupPositionDetailP
           <DatePicker
             {...field}
             fullWidth
-            required={true}
             margin="normal"
+            clearable
             disabled={form.isSubmitting}
-            showTodayButton
             label={props.intl.formatMessage(lookupMessage.position.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(lookupMessage.position.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
+            disablePast
             helperText={form.touched.inactiveDate && form.errors.inactiveDate}
             error={form.touched.inactiveDate && Boolean(form.errors.inactiveDate)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('inactiveDate', moment.toDate())}
+            onChange={(moment: Moment) => 
+              moment ? props.formikBag.setFieldValue('inactiveDate', moment.format('YYYY-MM-DD'))
+              : props.formikBag.setFieldValue('inactiveDate', '')}
             invalidLabel=""
           />
         )}

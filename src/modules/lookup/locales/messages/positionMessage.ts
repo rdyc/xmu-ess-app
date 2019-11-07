@@ -108,7 +108,7 @@ export const positionFieldHelperFor = (field: string, type: 'fieldName' | 'field
     switch (field) {
       case 'name': return positionField.namePlaceholder;
       case 'companyUid': return positionField.companyUidPlaceholder;
-      case 'description': return positionField.description;
+      case 'description': return positionField.descriptionPlaceholder;
       case 'inactiveDate': return positionField.inactiveDatePlaceholder;
       
       default: return { id: field };

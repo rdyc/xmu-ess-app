@@ -30,7 +30,6 @@ import { isObject } from 'util';
 
 interface IOwnRouteParams {
   positionUid: string;
-  companyUid: string;
 }
 
 interface IOwnHandler {
@@ -137,17 +136,14 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<PositionDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: PositionDetailProps) => () => {
-    if (props.userState.user && props.match.params.companyUid && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
-      // if (props.history.location.state.companyUid) {
+    if (props.userState.user && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
+      if (props.history.location.state) {
         props.lookupPositionDispatch.loadDetailRequest({
-          companyUid: props.match.params.companyUid,
+          companyUid: props.history.location.state.companyUid,
           positionUid: props.match.params.positionUid
         });
       } 
-      // else {
-      //   props.history.push('/lookup/positions');
-      // }
-    // }
+    }
   },
   handleOnSelectedMenu: (props: PositionDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {

@@ -104,6 +104,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"
@@ -121,6 +122,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"
@@ -206,6 +208,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"
