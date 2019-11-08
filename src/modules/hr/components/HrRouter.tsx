@@ -121,7 +121,7 @@ export const HrRoutingComponents: React.SFC<RouteComponentProps> = props => (
       component={cluster} 
     />
     <SecureMenuRoute 
-      path={`${props.match.path}/competency/category`}
+      path={`${props.match.path}/competency/level`}
       menu={AppMenu.Lookup} 
       subMenu={AppMenu.CompetencyCategory} 
       component={category} 

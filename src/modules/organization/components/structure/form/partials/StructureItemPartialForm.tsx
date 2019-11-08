@@ -106,7 +106,11 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           onChange={(moment: Moment) => 
-                            moment ? props.formikBag.setFieldValue(`reportTo.${index}.start`, moment.format('YYYY-MM-DD'))
+                            moment ? 
+                            (
+                              props.formikBag.setFieldValue(`reportTo.${index}.start`, moment.format('YYYY-MM-DD')),
+                              props.formikBag.setFieldValue(`reportTo.${index}.end`, '')
+                            )
                             : props.formikBag.setFieldValue(`reportTo.${index}.start`, '')}
                           invalidLabel=""
                         />

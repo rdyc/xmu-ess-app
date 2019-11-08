@@ -102,8 +102,8 @@ const stateUpdaters: StateUpdaters<HrCompetencyCategoryDetailProps, IOwnState, I
     action: IHrCompetencyCategoryUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Category'}),
-    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'category'}),
+    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Level'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'level'}),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),
@@ -177,7 +177,7 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryDetailProps, IOwnHandl
 
       switch (props.action) {
         case IHrCompetencyCategoryUserAction.Modify:
-          next = '/hr/competency/category/form';
+          next = '/hr/competency/level/form';
           break;
 
         default:
