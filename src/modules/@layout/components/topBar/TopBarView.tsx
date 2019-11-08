@@ -1,11 +1,12 @@
 import { AppBar, Badge, Divider, IconButton, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import Book from '@material-ui/icons/Book';
+// import Book from '@material-ui/icons/Book';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
 import * as classNames from 'classnames';
 import * as React from 'react';
+import logoHrCorner from './hr_corner.png';
 
 import { TopBarProps } from './TopBar';
 
@@ -49,7 +50,8 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           color="inherit"
           onClick={() => props.history.push('/corner/blog')}
         >
-          <Book />
+          {/* <Book /> */}
+          <img src={logoHrCorner} alt="Logo" style={{width: '32px', height: '32px'}} />
         </IconButton>
       </Tooltip>
 
