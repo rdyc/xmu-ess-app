@@ -54,6 +54,7 @@ export interface IKPIApprovalFormValue {
   isFirst: boolean;
   // revision?: string;
   totalScore: number;
+  notes: string;
   items: IKPIApprovalItemFormValue[];
 }
 interface IOwnRouteParams {
@@ -133,6 +134,7 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
       isFinal: false,
       isFirst: true,
       // revision: '',
+      notes: '',
       totalScore: 0,
       items: []
     },
@@ -185,6 +187,8 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
               .integer()
               .min(0)
               .required(),
+
+            notes: Yup.string(),
             
             progress: Yup.number(),
             
@@ -248,6 +252,7 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
         const payload: IKPIApprovalPostPayload = {
           // isApproved: true,
           isFinal: values.isFinal,
+          notes: values.notes,
           // revision: values.revision || '',
           items: []
         };
@@ -383,6 +388,7 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
           // isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.isFirst,
+          notes: thisResponse.data.notes || '',
           // revision: '',
           totalScore: thisResponse.data.totalScore,
           items: [],

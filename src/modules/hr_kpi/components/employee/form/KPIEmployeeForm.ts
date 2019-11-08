@@ -271,10 +271,14 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
     });
   },
   handleLoadAssign: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
-    props.kpiAssignDispatch.loadByYearRequest({
-      employeeUid,
-      year: parseInt(year, 10),
-    });
+    if (props.userState.user) {
+      props.kpiAssignDispatch.loadByYearRequest({
+        employeeUid,
+        companyUid: props.userState.user.company.uid,
+        positionUid: props.userState.user.position.uid,
+        year: parseInt(year, 10),
+      });
+    }
   },
   handleLoadLatest: (props: KPIEmployeeFormProps) => (kpiAssignUid: string) => {
     if (props.userState.user) {
