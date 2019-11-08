@@ -249,7 +249,6 @@ const handlerCreators: HandleCreators<OrganizationStructureFormProps, IOwnHandle
     // handling promise
     promise
       .then((response: IStructure) => {
-        console.log(response);
         
         // set submitting status
         actions.setSubmitting(false);

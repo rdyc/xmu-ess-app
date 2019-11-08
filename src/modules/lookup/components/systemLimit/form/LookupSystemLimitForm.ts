@@ -206,7 +206,7 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/systemlimits/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/systemlimits/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

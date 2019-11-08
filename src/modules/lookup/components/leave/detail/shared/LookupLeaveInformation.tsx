@@ -36,18 +36,18 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.leave.field.name)}
-          value={props.data.name}
+          label={props.intl.formatMessage(lookupMessage.leave.field.year)}
+          value={props.data.year}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.leave.field.description)}
+          label={props.intl.formatMessage(lookupMessage.leave.field.category)}
           value={props.data.category && props.data.category.value}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.leave.field.year)}
-          value={props.intl.formatNumber(props.data.year)}
+          label={props.intl.formatMessage(lookupMessage.leave.field.name)}
+          value={props.data.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

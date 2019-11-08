@@ -1,3 +1,4 @@
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { layoutMessage } from '@layout/locales/messages';
 import { IPositionList } from '@lookup/classes/response';
 import {
@@ -17,7 +18,7 @@ import * as React from 'react';
 import { FilterPositionProps } from './FilterPosition';
 
 export const FilterPositionView: React.SFC<FilterPositionProps> = props => {
-  const { response } = props.lookupPositionState.list;
+  const { response, isLoading } = props.lookupPositionState.list;
 
   const renderItem = (item: IPositionList) => {
     return (
@@ -59,21 +60,28 @@ export const FilterPositionView: React.SFC<FilterPositionProps> = props => {
 
       <Divider/>
 
-      <List>
-        <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="secondary" checked={!props.value} />
-          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
-        </ListItem>
-        <Divider />
+      {
+        isLoading &&
+        <LoadingCircular />
+      }
+      {
+        !isLoading &&
+        <List>
+          <ListItem button onClick={() => props.onSelected()}>
+            <Radio color="secondary" checked={!props.value} />
+            <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
+          </ListItem>
+          <Divider />
 
-        {
-          response &&
-          response.data &&
-          response.data.map(item =>
-            renderItem(item)
-          )
-        }
-      </List>
+          {
+            response &&
+            response.data &&
+            response.data.map(item =>
+              renderItem(item)
+            )
+          }
+        </List>
+      }
     </Dialog>
   );
 };

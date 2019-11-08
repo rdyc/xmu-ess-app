@@ -37,8 +37,8 @@ export const PreviewPageView: React.SFC<PreviewPageProps> = props => (
                 props
                   .secondary(props.state.response.data)
                   .map((children, index) => (
-                    <div className={props.classes.flexColumn}>
-                      <div key={index} className={props.classes.flexContent}>
+                    <div key={index} className={props.classes.flexColumn}>
+                      <div className={props.classes.flexContent}>
                         {children}
                       </div>
                     </div>
@@ -49,8 +49,8 @@ export const PreviewPageView: React.SFC<PreviewPageProps> = props => (
                   .tertiary(props.state.response.data)
                   .map((children, index) => (
                     <div className={props.classes.flexColumn}>
-                      <div className={props.classes.flexContent}>
-                        <div key={index} className={props.classes.flexContent}>
+                      <div key={index} className={props.classes.flexContent}>
+                        <div className={props.classes.flexContent}>
                           {children}
                         </div>
                       </div>
@@ -61,8 +61,8 @@ export const PreviewPageView: React.SFC<PreviewPageProps> = props => (
                 props
                   .fortiary(props.state.response.data)
                   .map((children, index) => (
-                    <div className={props.classes.flex2Column}>
-                      <div key={index} className={props.classes.flexContent}>
+                    <div key={index} className={props.classes.flex2Column}>
+                      <div className={props.classes.flexContent}>
                         {children}
                       </div>
                     </div>

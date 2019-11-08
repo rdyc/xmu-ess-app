@@ -240,12 +240,12 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
 
         // show flash message
         props.masterPage.flashMessage({
-          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Category', type: 'name', uid: response.name })
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Level', type: 'category name', uid: response.name })
         });
         const clusterUid = props.history.location.state.clusterUid;
 
         // redirect to detail
-        props.history.push(`/hr/competency/category/${response.uid}`, {clusterUid});
+        props.history.push(`/hr/competency/level/${response.uid}`, {clusterUid});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status

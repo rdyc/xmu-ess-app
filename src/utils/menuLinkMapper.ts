@@ -235,7 +235,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU78':
-      path = '/hr/competency/category';
+      path = '/hr/competency/level';
       break;
 
     case 'MNU79':

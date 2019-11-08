@@ -38,7 +38,9 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                 <CardHeader 
                   title={`#${index + 1} - ${item.structureItemUid || 'Draft'}`}
                   action={
-                    <IconButton 
+                    props.formikBag.values.reportTo.length > 1 &&
+                    <IconButton
+                      disabled={props.formikBag.isSubmitting}
                       onClick={() => {
                         // remove current
                         fields.remove(index);
@@ -66,7 +68,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                             escapeClearsValue={true}
                             valueString={props.formikBag.values.reportTo[index].positionUid}
                             textFieldProps={{
-                              label: props.intl.formatMessage(organizationMessage.structure.field.positionUid),
+                              label: props.intl.formatMessage(organizationMessage.structure.field.reportTo),
                               required: true,
                               helperText: touch && error,
                               error: touch && Boolean(error)
@@ -104,7 +106,11 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                           onChange={(moment: Moment) => 
-                            moment ? props.formikBag.setFieldValue(`reportTo.${index}.start`, moment.format('YYYY-MM-DD'))
+                            moment ? 
+                            (
+                              props.formikBag.setFieldValue(`reportTo.${index}.start`, moment.format('YYYY-MM-DD')),
+                              props.formikBag.setFieldValue(`reportTo.${index}.end`, '')
+                            )
                             : props.formikBag.setFieldValue(`reportTo.${index}.start`, '')}
                           invalidLabel=""
                         />
@@ -124,7 +130,7 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                           fullWidth
                           margin="normal"
                           disabled={form.isSubmitting}
-                          showTodayButton
+                          clearable
                           label={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldName'))}
                           placeholder={props.intl.formatMessage(organizationMessage.structure.fieldFor(field.name, 'fieldPlaceholder'))}
                           value={props.formikBag.values.reportTo[index].end}

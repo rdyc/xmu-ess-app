@@ -1,3 +1,4 @@
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { layoutMessage } from '@layout/locales/messages';
 import { IRoleList } from '@lookup/classes/response';
 import {
@@ -17,7 +18,7 @@ import * as React from 'react';
 import { FilterRoleProps } from './FilterRole';
 
 export const FilterRoleView: React.SFC<FilterRoleProps> = props => {
-  const { response } = props.lookupRoleState.list;
+  const { response, isLoading } = props.lookupRoleState.list;
 
   const renderItem = (item: IRoleList) => {
     return (
@@ -58,22 +59,28 @@ export const FilterRoleView: React.SFC<FilterRoleProps> = props => {
       </AppBar>
 
       <Divider/>
+      {
+        isLoading &&
+        <LoadingCircular />
+      }
+      {
+        !isLoading &&
+        <List>
+          <ListItem button onClick={() => props.onSelected()}>
+            <Radio color="secondary" checked={!props.value} />
+            <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
+          </ListItem>
+          <Divider />
 
-      <List>
-        <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="secondary" checked={!props.value} />
-          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
-        </ListItem>
-        <Divider />
-
-        {
-          response &&
-          response.data &&
-          response.data.map(item =>
-            renderItem(item)
-          )
-        }
-      </List>
+          {
+            response &&
+            response.data &&
+            response.data.map(item =>
+              renderItem(item)
+            )
+          }
+        </List>
+      }
     </Dialog>
   );
 };

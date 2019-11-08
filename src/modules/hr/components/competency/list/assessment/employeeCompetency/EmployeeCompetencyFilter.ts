@@ -126,7 +126,7 @@ const stateUpdaters: StateUpdaters<EmployeeCompetencyFilterProps, OwnState, OwnS
     filterYear: undefined,
     filterCompany: undefined,
     filterAssess: undefined,
-    filterActive: undefined
+    filterActive: true
   }),
 
   // filter year

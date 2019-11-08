@@ -1005,23 +1005,23 @@ const styles = (theme: Theme) =>
 
     movingText: {
       overflow: 'hidden',
-      // margin: '0 16px',
       padding: '0',
       '& span': {
-        overflow: 'visible',
+        // overflow: 'visible',
+        display: 'inline-flex',
         '&:hover': {
           position: 'relative',
-          animation: 'moveTextHorz 3s infinite'
+          animation: 'moveTextHorz 3s linear infinite'
         },
       }
     },
 
     '@keyframes moveTextHorz': {
       '0%': {
-        left: '0px'
+        transform: 'translate(0, 0)'
       },
       '100%': {
-        left: '-50px'
+        transform: 'translate(-70%, 0)'
       }
     },
 

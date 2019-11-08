@@ -6,6 +6,7 @@ import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { LookupCustomerDetailProps } from './LookupCustomerDetail';
+import { LookupCustomerContact } from './shared/LookupCustomerContact';
 import { LookupCustomerInformation } from './shared/LookupCustomerInformation';
 
 export const LookupCustomerDetailView: React.SFC<LookupCustomerDetailProps> = props => (
@@ -21,6 +22,9 @@ export const LookupCustomerDetailView: React.SFC<LookupCustomerDetailProps> = pr
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ICustomerDetail) => ([
       <LookupCustomerInformation data={data} />
+    ])}
+    secondary={(data: ICustomerDetail) => ([
+      <LookupCustomerContact data={data} />
     ])}
     appBarComponent={
       props.menuOptions &&

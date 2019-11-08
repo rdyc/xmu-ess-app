@@ -45,7 +45,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -104,6 +104,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"
@@ -121,6 +122,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"
@@ -206,6 +208,7 @@ const LookupCustomerDetailPartialForm: React.ComponentType<LookupCustomerDetailP
         render={({ field, form }: FieldProps<ICustomerFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             margin="normal"

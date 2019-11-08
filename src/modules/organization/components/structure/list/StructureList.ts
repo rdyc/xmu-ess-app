@@ -148,9 +148,9 @@ const handlerCreators: HandleCreators<StructureListProps, IOwnHandler> = {
   },
   handleOnBind: (props: StructureListProps) => (item: IStructure, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.description || '-',
-    tertiary: item.company && item.company.name || 'N/A',
+    primary: item.company && item.company.name || 'N/A',
+    secondary: item.position && item.position.name || 'N/A',
+    tertiary: item.description || 'N/A',
     quaternary: item.inactiveDate && props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
     quinary: item.changes && (item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName) || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

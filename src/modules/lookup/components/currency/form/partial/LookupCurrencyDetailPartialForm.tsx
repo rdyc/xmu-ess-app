@@ -35,24 +35,6 @@ const LookupCurrencyDetailPartialForm: React.ComponentType<LookupCurrencyDetailP
       />
 
       <Field
-        name="name"
-        render={({ field, form }: FieldProps<ICurrencyFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth={true}
-            disabled={form.isSubmitting}
-            required={true}
-            margin="normal"
-            autoComplete="off"
-            label={props.intl.formatMessage(lookupMessage.currency.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(lookupMessage.currency.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.name && form.errors.name}
-            error={form.touched.name && Boolean(form.errors.name)}
-          />
-        )}
-      />
-
-      <Field
         name="symbol"
         render={({ field, form }: FieldProps<ICurrencyFormValue>) => (
           <TextField
@@ -66,6 +48,24 @@ const LookupCurrencyDetailPartialForm: React.ComponentType<LookupCurrencyDetailP
             placeholder={props.intl.formatMessage(lookupMessage.currency.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.symbol && form.errors.symbol}
             error={form.touched.symbol && Boolean(form.errors.symbol)}
+          />
+        )}
+      />
+      
+      <Field
+        name="name"
+        render={({ field, form }: FieldProps<ICurrencyFormValue>) => (
+          <TextField
+            {...field}
+            fullWidth={true}
+            disabled={form.isSubmitting}
+            required={true}
+            margin="normal"
+            autoComplete="off"
+            label={props.intl.formatMessage(lookupMessage.currency.fieldFor(field.name, 'fieldName'))}
+            placeholder={props.intl.formatMessage(lookupMessage.currency.fieldFor(field.name, 'fieldPlaceholder'))}
+            helperText={form.touched.name && form.errors.name}
+            error={form.touched.name && Boolean(form.errors.name)}
           />
         )}
       />

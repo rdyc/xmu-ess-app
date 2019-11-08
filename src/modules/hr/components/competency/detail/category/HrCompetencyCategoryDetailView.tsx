@@ -15,8 +15,8 @@ export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetai
     info={{
       uid: AppMenu.CompetencyCategory,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/hr/competency/category',
-      title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Category'}),
+      parentUrl: '/hr/competency/level',
+      title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Level'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
     state={props.hrCompetencyCategoryState.detail}
@@ -30,7 +30,7 @@ export const HrCompetencyCategoryDetailView: React.SFC<HrCompetencyCategoryDetai
     appBarComponent={
       props.menuOptions &&
       <PopupMenu
-        id="hr-competency-category-option"
+        id="hr-competency-level-option"
         selectable={false}
         menuOptions={props.menuOptions}
         onSelected={props.handleOnSelectedMenu}

@@ -131,6 +131,9 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
         isOpen={props.isFilterOpen}
         onClose={props.handleFilterVisibility}
         onApply={props.handleFilterApplied}
+        initialProps={{
+          companyUid: props.companyUid
+        }}
       />
     </React.Fragment>
   );

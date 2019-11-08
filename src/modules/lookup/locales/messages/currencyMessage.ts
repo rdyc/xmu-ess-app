@@ -63,7 +63,8 @@ export const currencyField = defineMessages({
   rate: { id: `${prefix}.field.rate` },
   rateRequired: { id: `${prefix}.field.rate.required` },
   ratePlaceholder: { id: `${prefix}.field.rate.placeholder` },
-  ActiveStatus: { id: `${prefix}.field.status` },
+  ActiveStatus: { id: `${prefix}.field.activeStatus` },
+  status: { id: `${prefix}.field.status` },
   isActive: { id: `${prefix}.field.isActive` },
   isNotActive: { id: `${prefix}.field.isNotActive` },
  });

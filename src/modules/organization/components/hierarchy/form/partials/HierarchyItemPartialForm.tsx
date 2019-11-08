@@ -40,7 +40,9 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                 <CardHeader 
                   title={`#${index + 1} - ${item.uid || 'Draft'}`}
                   action={
-                    <IconButton 
+                    props.formikBag.values.items.length > 1 &&
+                    <IconButton
+                      disabled={props.formikBag.isSubmitting} 
                       onClick={() => {
                         // remove current
                         fields.remove(index);
@@ -119,7 +121,17 @@ const HierarchyItemPartialForm: React.ComponentType<HierarchyItemPartialFormProp
                             }}
                             onMenuClose={() => props.formikBag.setFieldTouched(`items.${index}.positionUid`)}
                             onChange={(selected: ISelectFieldOption) => {
-                              props.formikBag.setFieldValue(`items.${index}.positionUid`, selected && selected.value || '');
+                              const value = selected && selected.value || '';
+
+                              if (value !== '') {
+                                const isExist = props.formikBag.values.items.findIndex(val => val.positionUid === value);
+
+                                if (isExist === -1) {
+                                  props.formikBag.setFieldValue(`items.${index}.positionUid`, value);
+                                }
+                              } else {
+                                props.formikBag.setFieldValue(`items.${index}.positionUid`, value);
+                              }
                             }}
                           />
                         </LookupPositionOption>

@@ -31,6 +31,7 @@ import * as Yup from 'yup';
 import { HrCornerPageFormView } from './HrCornerPageFormView';
 
 export interface ICornerPageFormValue {
+  uid: string;
   title: string;
   headline: string;
   category: string;
@@ -84,6 +85,7 @@ const createProps: mapper<HrCornerPageFormProps, IOwnState> = (props: HrCornerPa
   
   // form values
   initialValues: {
+    uid: 'Auto Generated',
     title: '',
     category: '',
     headline: '',
@@ -252,6 +254,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCornerPageFormProps, IOwnSta
       if (thisResponse && thisResponse.data) {
         // define initial values
         const initialValues: ICornerPageFormValue = {
+          uid: thisResponse.data.uid,
           title: thisResponse.data.title,
           category: thisResponse.data.categoryUid,
           headline: thisResponse.data.headline,

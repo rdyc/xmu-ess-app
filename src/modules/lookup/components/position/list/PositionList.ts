@@ -2,6 +2,7 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { GlobalFormat } from '@layout/types';
 import { IPositionGetAllFilter } from '@lookup/classes/filters';
 import { IPosition } from '@lookup/classes/response';
 import { PositionField } from '@lookup/classes/types';
@@ -133,16 +134,16 @@ const handlerCreators: HandleCreators<PositionListProps, IOwnHandler> = {
   },
   handleOnBind: (props: PositionListProps) => (item: IPosition, index: number) => ({
     key: index,
-    primary: `${item.uid}` || '',
-    secondary: `${item.name}` || '',
-    tertiary: `${item.company && item.company.name}` || '',
-    quaternary: item.isAllowMultiple ?
+    primary: item.company && item.company.name || 'N/A',
+    secondary: item.name,
+    tertiary: item.isAllowMultiple ?
       props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
       props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
     ,
+    quaternary: item.inactiveDate && props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
-      }),
+  }),
   handleFilterVisibility: (props: PositionListProps) => () => {
     props.setFilterVisibility();
   },

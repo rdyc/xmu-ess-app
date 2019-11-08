@@ -1,4 +1,5 @@
 import { IBasePagingFilter } from '@generic/interfaces';
+import { FormMode } from '@generic/types';
 import { IHrCornerCategoryPostPayload, IHrCornerCategoryPutPayload } from '@hr/classes/request';
 import { IHrCornerCategory } from '@hr/classes/response';
 import { WithHrCornerCategory, withHrCornerCategory } from '@hr/hoc/withHrCornerCategory';
@@ -30,6 +31,7 @@ import * as Yup from 'yup';
 import { HrCornerCategoryFormView } from './HrCornerCategoryFormView';
 
 export interface ICornerCategoryFormValue {
+  uid: string;
   name: string;
   description: string;
 }
@@ -46,9 +48,10 @@ interface IOwnOption {
 }
 
 interface IOwnState {
+  formMode: FormMode;
   initialValues?: ICornerCategoryFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICornerCategoryFormValue>>>;
-
+  
   dialogTitle: string;
   dialogMessage: string;
 }
@@ -76,8 +79,11 @@ export type HrCornerCategoryFormProps
   & IOwnHandler;
 
 const createProps: mapper<HrCornerCategoryFormProps, IOwnState> = (props: HrCornerCategoryFormProps): IOwnState => ({
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  
 // form values
   initialValues: {
+    uid: 'Auto Generated',
     name: '',
     description: '',
   },
@@ -225,6 +231,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<HrCornerCategoryFormProps, IOw
     if (thisCategory !== prevCategory) {
       if (thisCategory) {
         const initialValues: ICornerCategoryFormValue = {
+          uid: thisCategory.uid,
           name: thisCategory.name,
           description: thisCategory.description,
         };

@@ -1,3 +1,4 @@
+import AppMenu from '@constants/AppMenu';
 import { IRoleMenu } from '@lookup/classes/response/role/IRoleMenu';
 import { Card, CardContent, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -72,9 +73,12 @@ const roleMenu: React.SFC<AllProps> = props => {
                       color: 'inherit'
                     }}
                   />
-                  <ListItemSecondaryAction>
-                    {active === parent.menuUid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
-                  </ListItemSecondaryAction>
+                  {
+                    parent.menuUid !== AppMenu.WebJob &&
+                    <ListItemSecondaryAction>
+                      {active === parent.menuUid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemSecondaryAction>
+                  }
                 </ListItem>
                 <Divider />
                 <Collapse

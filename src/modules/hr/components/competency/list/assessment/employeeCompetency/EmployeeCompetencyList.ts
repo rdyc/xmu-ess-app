@@ -73,7 +73,7 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: EmployeeCompetencyLis
       value: key,
       name: IHrCompetencyField[key]
     })),
-    isActive: false
+    isActive: true
   };
 
   // fill from previous request if any
@@ -81,7 +81,7 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: EmployeeCompetencyLis
     state.year = request.filter.year,
     state.companyUid = request.filter.companyUid,
     state.isAssess = request.filter.isAssess,
-    state.isActive = !request.filter.isActive;
+    state.isActive = request.filter.isActive;
   }
 
   return state;
@@ -113,7 +113,7 @@ const handlerCreators: HandleCreators<EmployeeCompetencyListProps, IOwnHandler> 
         year: props.year,
         companyUid: props.companyUid,
         isAssess: props.isAssess,
-        isActive: !props.isActive
+        isActive: props.isActive
       };
 
       // when request is defined, then compare the filter props
@@ -171,7 +171,7 @@ const handlerCreators: HandleCreators<EmployeeCompetencyListProps, IOwnHandler> 
     return props.year !== undefined ||
       props.companyUid !== undefined ||
       props.isAssess === true ||
-      props.isActive === true;
+      props.isActive === false;
   },
 };
 

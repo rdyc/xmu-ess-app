@@ -48,7 +48,7 @@ const LookupRoleDetailPartialForm: React.ComponentType<LookupRoleDetailPartialFo
               isSearchable
               // menuPlacement="auto"
               // menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}

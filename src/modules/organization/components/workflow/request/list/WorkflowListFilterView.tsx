@@ -12,12 +12,16 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
+
 import { WorkflowListFilterProps } from './WorkflowListFilter';
 
 export const WorkflowListFilterView: React.SFC<WorkflowListFilterProps> = props => (
@@ -54,6 +58,7 @@ export const WorkflowListFilterView: React.SFC<WorkflowListFilterProps> = props 
           <Button 
             color="inherit" 
             onClick={props.handleFilterOnApply}
+            disabled={!props.filterCompany}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
@@ -66,7 +71,7 @@ export const WorkflowListFilterView: React.SFC<WorkflowListFilterProps> = props 
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
+            primary={props.intl.formatMessage(organizationMessage.workflow.field.company)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -76,7 +81,14 @@ export const WorkflowListFilterView: React.SFC<WorkflowListFilterProps> = props 
                 <ClearIcon />
               </IconButton>
             }
-
+            {
+              !props.filterCompany &&
+              <Tooltip title={props.intl.formatMessage(organizationMessage.workflow.field.company)}>
+                <IconButton onClick={props.handleFilterCompanyVisibility}>
+                  <Info/>
+                </IconButton>
+              </Tooltip>
+            }
             <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton>

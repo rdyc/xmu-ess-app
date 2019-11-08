@@ -18,7 +18,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
         info={{
           uid: AppMenu.CompetencyCategory,
           parentUid: AppMenu.Lookup,
-          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Category'}),
+          title: props.intl.formatMessage(hrMessage.shared.page.listTitle, { state: 'HR Competency Level'}),
           description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader),
         }}
   
@@ -39,7 +39,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
             <Button 
               size="small"
               color="secondary"
-              onClick={() => props.history.push(`/hr/competency/category/form`, { uid: item.uid, clusterUid: item.competencyUid })}
+              onClick={() => props.history.push(`/hr/competency/level/form`, { uid: item.uid, clusterUid: item.competencyUid })}
             >
               {props.intl.formatMessage(layoutMessage.action.modify)}
             </Button>
@@ -48,7 +48,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
               size="small"
               // disabled
               color="secondary"
-              onClick={() => props.history.push(`/hr/competency/category/${item.uid}`, {clusterUid: item.competencyUid})}
+              onClick={() => props.history.push(`/hr/competency/level/${item.uid}`, {clusterUid: item.competencyUid})}
             >
               {props.intl.formatMessage(layoutMessage.action.details)}
             </Button>
@@ -57,7 +57,7 @@ export const HrCompetencyCategoryListView: React.SFC<HrCompetencyCategoryListPro
         // app bar component
         appBarSearchComponent={
           <SearchBox
-            key="hr.competency.category"
+            key="hr.competency.level"
             default={props.hrCompetencyCategoryState.all.request && props.hrCompetencyCategoryState.all.request.filter && props.hrCompetencyCategoryState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}

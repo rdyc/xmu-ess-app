@@ -21,11 +21,6 @@ const lookupRoleSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.role.field.uid)}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(lookupMessage.role.field.companyUid)}
         value={props.data.company ? props.data.company.name : 'N/A'}
       />
@@ -34,19 +29,20 @@ const lookupRoleSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.role.field.gradeType)}
-        value={props.data.grade ? props.data.grade.value : 'N/A'}
+        label={props.intl.formatMessage(lookupMessage.role.field.name)}
+        value={props.data.name}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.role.field.name)}
-        value={props.data.name}
+        label={props.intl.formatMessage(lookupMessage.role.field.gradeType)}
+        value={props.data.grade ? props.data.grade.value : 'N/A'}
       />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         label={props.intl.formatMessage(lookupMessage.role.field.description)}
         value={props.data.description || 'N/A'}
       />

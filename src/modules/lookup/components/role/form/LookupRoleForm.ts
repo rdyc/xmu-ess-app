@@ -346,17 +346,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<RoleFormProps, IOwnState> = {
               });
             });
           }
-          // if (thisResponse.data.menus) {
-          //   thisResponse.data.menus.map(item => 
-          //     menuList.push({
-          //       uid: item.menuUid,
-          //       parentUid: item.menu && item.menu.parentUid,
-          //       name: item.menu && item.menu.name || '',
-          //       isAccess: item.isAccess
-          //     })  
-          //   );
-          // }
-          // define initial values
           const initialValues: IRoleFormValue = {
             uid: thisResponse.data.uid,
             companyUid: thisResponse.data.companyUid,

@@ -1,3 +1,17 @@
+import AppMenu from '@constants/AppMenu';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
+import { ILookupCompany } from '@lookup/classes';
+import { ICompany } from '@lookup/classes/response';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
+import { WithStyles, withStyles } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
+import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -11,19 +25,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import AppMenu from '@constants/AppMenu';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
-import { ILookupCompany } from '@lookup/classes';
-import { ICompany } from '@lookup/classes/response';
-import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
-import { WithStyles, withStyles } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
-import { WithOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import styles from '@styles';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
 import { WorkflowMenuListView } from './WorkflowMenuListView';
 
 interface OwnOption {
@@ -53,6 +54,7 @@ export type WorkflowMenuListProps
   = OwnOption
   & WithOrganizationWorkflow
   & WithLookupMenu
+  & WithLookupCompany
   & WithMasterPage
   & OwnState
   & OwnStateUpdater
@@ -64,8 +66,36 @@ export type WorkflowMenuListProps
   & WithWidth;
 
 const createProps: mapper<WorkflowMenuListProps, OwnState> = (props: WorkflowMenuListProps): OwnState => {
+  const { request } = props.organizationWorkflowState.all;
+  const { response: companyList } = props.lookupCompanyState.list;
+
+  let companyUid: string = '';
+  let dataCompany: ICompany = {
+    uid: '',
+    code: '',
+    name: ''
+  };
+
+  if (request && request.filter) {
+    companyUid = request.filter.companyUid || '';
+
+    if (companyList && companyList.data) {
+      const company = companyList.data.find(item => item.uid === (request.filter && request.filter.companyUid));
+
+      if (company) {
+        dataCompany = {
+          uid: company.uid,
+          code: company.code,
+          name: company.name
+        };
+      }
+    }
+  }
+
   return {
-    isFilterOpen: false,
+    companyUid,
+    dataCompany,
+    isFilterOpen: companyUid === '' ? true : false,
     forceReload: false
   };
 };
@@ -125,6 +155,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnStat
     if ((!response && !isLoading) || forceReload) {
       loadData(this.props);
     }
+
+    const { response: companyList } = this.props.lookupCompanyState.list;
+    const { loadListRequest: loadCompany } = this.props.lookupCompanyDispatch;
+
+    if (!companyList) {
+      loadCompany({});
+    }
   },
   componentWillUnmount() {
     this.props.masterPage.resetPage();
@@ -145,8 +182,10 @@ const loadData = (props: WorkflowMenuListProps): void => {
 export const workflowMenuList = compose<WorkflowMenuListProps, {}>(
   withLayout,
   withLookupMenu,
+  withLookupCompany,
   withMasterPage,
   injectIntl,
+  withOrganizationWorkflow,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

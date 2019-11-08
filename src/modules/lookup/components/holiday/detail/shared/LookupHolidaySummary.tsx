@@ -22,12 +22,6 @@ const lookupHolidaySummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.holiday.field.uid)}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
         label={props.intl.formatMessage(lookupMessage.holiday.field.company)}
         value={props.data.company ? props.data.company.name : 'N/A'}
       />
@@ -40,6 +34,9 @@ const lookupHolidaySummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(lookupMessage.holiday.field.description)}
         value={props.data.description || 'N/A'}
       />
+    </Grid>
+    
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"

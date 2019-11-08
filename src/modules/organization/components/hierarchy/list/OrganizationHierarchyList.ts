@@ -146,10 +146,10 @@ const handlerCreators: HandleCreators<OrganizationHierarchyListProps, IOwnHandle
   },
   handleOnBind: (props: OrganizationHierarchyListProps) => (item: IHierarchy) => ({
     key: item.uid,
-    primary: item.uid,
+    primary: item.company && item.company.name || 'N/A',
     secondary: item.name,
-    tertiary: item.company && item.company.name || 'N/A',
-    quaternary: item.inactiveDate && props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
+    tertiary: item.inactiveDate && props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
+    quaternary: item.description || 'N/A',
     quinary: item.changes && (item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName) || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
