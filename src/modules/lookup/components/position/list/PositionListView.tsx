@@ -52,7 +52,7 @@ export const PositionListView: React.SFC<PositionListProps> = props => (
           <Button
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
+            onClick={() => props.history.push(`/lookup/positions/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>

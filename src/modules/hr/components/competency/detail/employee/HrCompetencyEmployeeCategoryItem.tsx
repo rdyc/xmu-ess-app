@@ -57,20 +57,20 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
               <React.Fragment key={level.uid}>         
                 <TableRow>
                   <TableCell className={props.classes.hrTableVerAlign}>
-                      <Typography className={props.classes.hrTableChild}>
-                        {`Level ${level.level} - ${level.description}`}
-                      </Typography>
-                      <Typography className={props.classes.hrTableChild}>
-                        <ul>
-                        {
-                          level.indicators.map(indicator =>
-                            <li key={indicator.uid}>
-                              {indicator.description}
-                            </li>
-                          )
-                        }    
-                        </ul>
-                      </Typography>
+                    <Typography className={props.classes.hrTableChild}>
+                      {`Level ${level.level} - ${level.description}`}
+                    </Typography>
+                    <ul className={props.classes.hrTableChild} style={{paddingLeft: '66px'}}>
+                    {
+                      level.indicators.map(indicator =>
+                        <li key={indicator.uid}>
+                          <Typography>
+                            {indicator.description}
+                          </Typography>
+                        </li>
+                      )
+                    }    
+                    </ul>
                   </TableCell>
                   <TableCell style={{padding: '0 15px', textAlign: 'center'}}>
                     {

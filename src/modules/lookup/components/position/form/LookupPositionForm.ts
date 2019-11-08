@@ -212,7 +212,7 @@ const handlerCreators: HandleCreators<PositionFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/positions/${response.uid}`, { companyuid: response.companyUid });
+        props.history.push(`/lookup/positions/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -254,7 +254,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<PositionFormProps, IOwnState> 
           name: thisResponse.data.name,
           companyUid: thisResponse.data.companyUid,
           description: thisResponse.data.description || '',
-          inactiveDate: thisResponse.data.inactiveDate,
+          inactiveDate: thisResponse.data.inactiveDate || '',
           isAllowMultiple: thisResponse.data.isAllowMultiple
         };
 

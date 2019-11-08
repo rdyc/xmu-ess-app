@@ -25,6 +25,9 @@ export const organizationWorkflowField = defineMessages({
   remarkRequired: { id: `${prefix}.field.remark.required`},
   remarkPlaceholder: { id: `${prefix}.field.remark.placeholder`},
 
+  company: { id: `${prefix}.field.company`},
+  companyRequired: { id: `${prefix}.field.company.required`},
+
   itemRequired: { id: `${prefix}.field.item.required`},
 });
 

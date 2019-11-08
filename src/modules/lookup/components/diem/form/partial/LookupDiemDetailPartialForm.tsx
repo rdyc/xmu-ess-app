@@ -52,7 +52,7 @@ const LookupDiemDetailPartialForm: React.ComponentType<LookupDiemDetailPartialFo
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -105,6 +105,8 @@ const LookupDiemDetailPartialForm: React.ComponentType<LookupDiemDetailPartialFo
             <CommonSystemOption category="project" filter={props.filterCommonSystem}>
               <SelectField
                 isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
                 isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
@@ -130,6 +132,8 @@ const LookupDiemDetailPartialForm: React.ComponentType<LookupDiemDetailPartialFo
             <CommonSystemOption category="destination" filter={props.filterCommonSystem}>
               <SelectField
                 isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
                 isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}

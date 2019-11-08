@@ -20,21 +20,6 @@ const lookupSystemLimitSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.systemLimit.field.uid)}
-        value={props.data.uid}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.systemLimit.field.days)}
-        value={props.data.days}
-      />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
-      <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(lookupMessage.systemLimit.field.company)}
@@ -50,6 +35,14 @@ const lookupSystemLimitSummary: React.SFC<AllProps> = props => (
         />
     </Grid>
     
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.systemLimit.field.days)}
+        value={props.data.days}
+      />
+    </Grid>
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>

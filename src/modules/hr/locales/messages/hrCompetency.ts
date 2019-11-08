@@ -37,6 +37,7 @@ export const hrCompetencyField = defineMessages({
 
   minNote: { id: `${prefix}.field.minNote`},
   minCategories: { id: `${prefix}.field.minCategories`},
+  minResponder: { id: `${prefix}.field.minResponder`},
   minLevels: { id: `${prefix}.field.minLevels`},
   minIndicators: { id: `${prefix}.field.minIndicators`},
   totalItem: { id: `${prefix}.field.totalItem`},
@@ -62,7 +63,7 @@ export const hrCompetencyField = defineMessages({
   complete: { id: `${prefix}.field.complete`},
   expired: { id: `${prefix}.field.expired`},
   assess: { id: `${prefix}.field.assess`},
-  inactive: { id: `${prefix}.field.inactive`},
+  active: { id: `${prefix}.field.active`},
 
   completion: { id: `${prefix}.field.completion`},
   completionItem: { id: `${prefix}.field.completion.item`},

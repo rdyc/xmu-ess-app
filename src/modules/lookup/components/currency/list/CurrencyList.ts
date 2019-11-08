@@ -120,9 +120,9 @@ const handlerCreators: HandleCreators<CurrencyListProps, IOwnHandler> = {
   },
   handleOnBind: (props: CurrencyListProps) => (item: ICurrency, index: number) => ({
     key: index,
-    primary: item.symbol || '-',
-    secondary: props.intl.formatNumber(item.rate, GlobalFormat.CurrencyDefault) || '-',
-    tertiary: item.name || '-',
+    primary: item.symbol,
+    secondary: item.name,
+    tertiary: props.intl.formatNumber(item.rate, GlobalFormat.CurrencyDefault),
     quaternary: item.isActive
       ? props.intl.formatMessage(lookupMessage.currency.field.isActive)
       : props.intl.formatMessage(lookupMessage.currency.field.isNotActive),

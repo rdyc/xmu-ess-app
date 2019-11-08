@@ -25,6 +25,11 @@ const employeeInformation: React.SFC<AllProps> = props => {
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.employeeLevel.field.uid)}
+          value={props.data.uid}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           multiline
           label={props.intl.formatMessage(lookupMessage.employeeLevel.field.seq)}
           value={props.data.seq}

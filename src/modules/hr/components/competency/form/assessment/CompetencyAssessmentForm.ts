@@ -132,7 +132,7 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
             .required()	
         })	
       )	
-      .min(1, props.intl.formatMessage(hrMessage.competency.field.minCategories)),	
+      .min(1, props.intl.formatMessage(hrMessage.competency.field.minResponder)),	
   }),
 });
 

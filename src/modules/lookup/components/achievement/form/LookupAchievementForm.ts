@@ -149,7 +149,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AchievementFormProps, IOwnStat
   componentDidMount() {
     // configure view
     this.props.masterPage.changePage({
-      uid: AppMenu.Account,
+      uid: AppMenu.AchievementChart,
       parentUid: AppMenu.Lookup,
       parentUrl: '/lookup/achievementchart',
       title: this.props.intl.formatMessage(lookupMessage.achievement.page.newTitle),

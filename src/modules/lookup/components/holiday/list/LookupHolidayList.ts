@@ -146,10 +146,10 @@ const handlerCreators: HandleCreators<LookupHolidayListProps, IOwnHandler> = {
   },
   handleOnBind: (props: LookupHolidayListProps) => (item: ILookupHoliday, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.company ? item.company.name : 'N/A',
-    tertiary: item.description ? item.description : 'N/A',
-    quaternary: item.date && props.intl.formatDate(item.date, GlobalFormat.Date) || 'N/A',
+    primary: item.company ? item.company.name : 'N/A',
+    secondary: item.description ? item.description : 'N/A',
+    tertiary: item.date && props.intl.formatDate(item.date, GlobalFormat.Date) || 'N/A',
+    quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

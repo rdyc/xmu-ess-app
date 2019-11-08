@@ -147,12 +147,12 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
   },
   handleOnBind: (props: LookupCustomerListProps) => (item: ICustomer, index: number) => ({
     key: index,
-        primary: item.name,
-        secondary: item.email ? item.email : 'N/A',
-        tertiary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
-        quaternary: item.company && item.company.name || item.companyUid,
-        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
-        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+    primary: item.name,
+    secondary: item.company && item.company.name || item.companyUid,
+    tertiary: item.email ? item.email : 'N/A',
+    quaternary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
   handleFilterVisibility: (props: LookupCustomerListProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();

@@ -1,6 +1,6 @@
 import { IBasePayload } from '@generic/interfaces';
 
 export interface IOrganizationStructureDeletePayload extends IBasePayload {
-  strctureUid: string;
+  structureUid: string;
   companyUid: string;
 }

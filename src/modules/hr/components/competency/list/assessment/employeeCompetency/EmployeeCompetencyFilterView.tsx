@@ -48,7 +48,7 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterYear || props.filterAssess || props.filterActive) &&
+            (props.filterCompany || props.filterYear || props.filterAssess || !props.filterActive) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -125,13 +125,13 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
 
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(hrMessage.competency.field.inactive)}
+            primary={props.intl.formatMessage(hrMessage.competency.field.active)}
             secondary={props.intl.formatMessage(props.filterActive ? layoutMessage.action.yes : layoutMessage.action.no) }
           />
           <ListItemSecondaryAction>
             <Switch
               color="secondary"
-              checked={props.filterActive || false}
+              checked={props.filterActive}
               onChange={props.handleFilterActiveOnChange}
             />
           </ListItemSecondaryAction>

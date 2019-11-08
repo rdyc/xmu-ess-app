@@ -94,7 +94,7 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
               className={props.classes.contentHover}
             >
               {
-                !props.formikBag.values.content &&
+                props.formikBag.values.content === '' &&
                 <Typography variant="title">
                   Click here to edit
                 </Typography>
@@ -119,7 +119,12 @@ const hrCornerPageContentForm: React.ComponentType<AllProps> = props => {
                   helperText={form.touched.content && form.errors.content}
                   error={form.touched.content && Boolean(form.errors.content)}
                   autoFocus={!props.isMarkdown}
-                  onBlur={() => props.handleOnMarkdown()}
+                  onBlur={() => {
+                    props.handleOnMarkdown();
+                    // if (props.formikBag.values.content === '') {
+                    //   props.formikBag.setFieldValue(field.name, 'Click here to edit');
+                    // }
+                  }}
                   rows="10"
                   rowsMax="99"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

@@ -25,7 +25,8 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupCustomerDetailView } from './LookupCustomerDetailView';
 
 interface IOwnRouteParams {
@@ -128,11 +129,13 @@ const stateUpdaters: StateUpdaters<LookupCustomerDetailProps, IOwnState, IOwnSta
 
 const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupCustomerDetailProps) => () => { 
-    if (props.userState.user && props.match.params.customerUid && !props.lookupCustomerState.detail.isLoading ) {
-      props.lookupCustomerDispatch.loadDetailRequest({
-        companyUid: props.history.location.state ? props.history.location.state.companyUid : '',
-        customerUid: props.match.params.customerUid
-      });
+    if (!isNullOrUndefined(props.history.location.state)) {
+      if (props.userState.user && props.match.params.customerUid && !props.lookupCustomerState.detail.isLoading ) {
+        props.lookupCustomerDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          customerUid: props.match.params.customerUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: LookupCustomerDetailProps) => (item: IPopupMenuOption) => { 

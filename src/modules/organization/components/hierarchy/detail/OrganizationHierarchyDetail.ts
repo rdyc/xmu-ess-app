@@ -1,5 +1,15 @@
+import { AppRole } from '@constants/AppRole';
+import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { LookupUserAction } from '@lookup/classes/types';
+import { DeleteFormData } from '@lookup/components/shared/Delete';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { IOrganizationHierarchyDeletePayload } from '@organization/classes/request/hierarchy';
+import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -14,13 +24,10 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
-import { AppRole } from '@constants/AppRole';
-import { IPopupMenuOption } from '@layout/components/PopupMenu';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
-import { HierarchyUserAction } from '@organization/classes/types';
-import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { OrganizationHierarchyDetailView } from './OrganizationHierarchyDetailView';
 
 interface IOwnRouteParams {
@@ -33,11 +40,14 @@ interface IOwnHandler {
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleDelete: (payload: DeleteFormData) => void;
+  handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
 }
 
 interface IOwnState {
   isAdmin: boolean;
-  action?: HierarchyUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -53,11 +63,13 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
+  setDelete: StateHandler<IOwnState>;
 }
 
 export type OrganizationHierarchyDetailProps 
   = WithOidc
   & WithUser
+  & WithLayout
   & WithOrganizationHierarchy
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -86,6 +98,8 @@ const createProps: mapper<OrganizationHierarchyDetailProps, IOwnState> = (props:
     shouldLoad: false,
     dialogFullScreen: false,
     dialogOpen: false,
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   });
 };
 
@@ -94,21 +108,24 @@ const stateUpdaters: StateUpdaters<OrganizationHierarchyDetailProps, IOwnState, 
     shouldLoad: !state.shouldLoad
   }),
   setModify: (prevState: IOwnState, props: OrganizationHierarchyDetailProps) => (): Partial<IOwnState> => ({
-    action: HierarchyUserAction.Modify,
+    action: LookupUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(organizationMessage.hierarchy.dialog.modifyTitle), 
-    dialogContent: props.intl.formatMessage(organizationMessage.hierarchy.dialog.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
+    dialogContent: props.intl.formatMessage(organizationMessage.hierarchy.dialog.modifyDescription)
+  }),
+  setDelete: (prevState: IOwnState, props: OrganizationHierarchyDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Delete,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle), 
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'hierarchy'}),
   }),
   setDefault: () => (): Partial<IOwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
     dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
   }),
   setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
@@ -130,11 +147,14 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, IOwnHand
   },
   handleOnSelectedMenu: (props: OrganizationHierarchyDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
-      case HierarchyUserAction.Refresh:
+      case LookupUserAction.Refresh:
         props.setShouldLoad();
         break;
-      case HierarchyUserAction.Modify:
-        props.setModify();
+      case LookupUserAction.Modify:
+        props.setModify();        
+        break;
+      case LookupUserAction.Delete:
+        props.setDelete();
         break;
     
       default:
@@ -167,14 +187,14 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, IOwnHand
 
     // actions with new page
     const actions = [
-      HierarchyUserAction.Modify,
+      LookupUserAction.Modify,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case HierarchyUserAction.Modify:
+        case LookupUserAction.Modify:
           next = `/organization/hierarchy/form`;
           break;
 
@@ -189,6 +209,59 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, IOwnHand
       });
     }
   },
+  handleDelete: (props: OrganizationHierarchyDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.organizationHierarchyDispatch;
+    const { response } = props.organizationHierarchyState.detail;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.hierarchyUid) {
+      const message = intl.formatMessage(lookupMessage.company.message.emptyProps);
+      return Promise.reject(message);
+    }
+    if (response) {
+      const payload: IOrganizationHierarchyDeletePayload = {
+        hierarchyUid: match.params.hierarchyUid,
+        companyUid: response.data.companyUid
+      };
+
+      return new Promise((resolve, reject) => {
+        deleteRequest({
+          resolve,
+          reject,
+          data: payload
+        });
+      });
+    }
+    
+    return undefined;
+  },
+  handleDeleteSuccess: (props: OrganizationHierarchyDetailProps) => (response: boolean) => {
+    props.history.push('/organization/hierarchy');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(organizationMessage.hierarchy.message.deleteSuccess, { uid : props.match.params.hierarchyUid })
+    });
+  },
+  handleDeleteFail: (props: OrganizationHierarchyDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(organizationMessage.hierarchy.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyDetailProps, IOwnState> = {
@@ -207,16 +280,22 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyDetailProps, IOwn
 
       const options: IPopupMenuOption[] = [
         {
-          id: HierarchyUserAction.Refresh,
+          id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
-          visible: true,
+          visible: true
         },
         {
-          id: HierarchyUserAction.Modify,
+          id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
-          enabled: !isLoading,
-          visible: true,
+          enabled: true,
+          visible: true
+        },
+        {
+          id: LookupUserAction.Delete,
+          name: this.props.intl.formatMessage(layoutMessage.action.delete),
+          enabled: true,
+          visible: true
         }
       ];
 
@@ -229,6 +308,7 @@ export const OrganizationHierarchyDetail = compose(
   withRouter,
   withOidc,
   withUser,
+  withLayout,
   withOrganizationHierarchy,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 

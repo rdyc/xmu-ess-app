@@ -33,17 +33,17 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
           <Typography className={props.classes.hrTableChild}>
             {`Level ${nxt.categoryLevel.level} - ${nxt.categoryLevel.description}`}
           </Typography>
-          <Typography className={props.classes.hrTableChild}>
-            <ul>
-            {
-              nxt.categoryLevel.indicators.map(indicator =>
-                <li key={indicator.uid}>
+          <ul className={props.classes.hrTableChild} style={{paddingLeft: '66px'}}>
+          {
+            nxt.categoryLevel.indicators.map(indicator =>
+              <li key={indicator.uid}>
+                <Typography>
                   {indicator.description}
-                </li>
-              )
-            }    
-            </ul>
-          </Typography>
+                </Typography>
+              </li>
+            )
+          }    
+          </ul>
       </TableCell>
       );
     } 
@@ -155,17 +155,17 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
                   <Typography className={props.classes.hrTableChild}>
                     {`Level ${item.categoryLevel.level} - ${item.categoryLevel.description}`}
                   </Typography>
-                  <Typography className={props.classes.hrTableChild}>
-                    <ul>
+                  <ul className={props.classes.hrTableChild} style={{paddingLeft: '66px'}} >
                     {
                       item.categoryLevel.indicators.map(indicator =>
                         <li key={indicator.uid}>
-                          {indicator.description}
+                          <Typography>
+                            {indicator.description}
+                          </Typography>
                         </li>
                       )
                     }    
-                    </ul>
-                  </Typography>
+                  </ul>
                 </TableCell>
 
                 {/* Result */}
