@@ -4,7 +4,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
-import { FormikProps } from 'formik';
+import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -67,6 +67,23 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
           value={props.data.isFinal && 
             props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
             props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
+        />
+        <Field
+          name="notes"
+          render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
+            <TextField
+              {...field}
+              fullWidth
+              required={true}
+              margin="normal"
+              autoComplete="off"
+              disabled={form.isSubmitting}
+              label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+              placeholder={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+              helperText={(form.touched.notes) && (form.errors.notes)}
+              error={(form.touched.notes) && Boolean(form.errors.notes)}
+            />
+          )}
         />
         {
           props.data.revision && 

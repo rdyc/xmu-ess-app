@@ -65,6 +65,12 @@ const kpiEmployeeInformation: React.SFC<AllProps> = props => {
             props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
             props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
         />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline
+          label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+          value={props.data.notes || 'N/A'}
+        />
         {
           props.data.revision && 
           <TextField
