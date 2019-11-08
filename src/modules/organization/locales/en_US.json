@@ -12,6 +12,8 @@
   "workflow.approval.field.remark": "Rejected reason",
   "workflow.approval.field.remark.placeholder": "Type any reason",
   "workflow.approval.field.remark.required": "Rejected reason is required",
+  "workflow.approval.field.company": "Company",
+  "workflow.approval.field.company.required": "Company is required",
   "workflow.approval.field.item.required":"Item is required",
 
   "workflow.approval.history.empty": "History not found",
