@@ -37,6 +37,7 @@ interface IKPIEmployeeItemFormValue {
   uid?: string;
   kpiAssignItemUid: string;
   categoryName: string;
+  categoryGroup: string;
   measurementType: string;
   measurementDescription: string;
   target: string;
@@ -59,6 +60,7 @@ export interface IKPIEmployeeFormValue {
   statusType: string;
   revision: string;
   totalScore: number;
+  notes: string;
   items: IKPIEmployeeItemFormValue[];
 }
 
@@ -142,6 +144,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     statusType: '',
     revision: '',
     totalScore: 0,
+    notes: '',
     items: []
   },
   
@@ -188,6 +191,8 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
             .required(),
             
           categoryName: Yup.string(),
+            
+          categoryGroup: Yup.string(),
 
           measurementType: Yup.string(),
             
@@ -291,6 +296,7 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
         const payload: IKPIEmployeePostPayload = {
           kpiAssignUid: values.kpiAssignUid,
           period: parseInt(values.period, 10),
+          notes: values.notes,
           items: []
         };
 
@@ -323,6 +329,7 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
             kpiAssignUid: values.kpiAssignUid,
             period: parseInt(values.period, 10),
             revision: values.revision,
+            notes: values.notes,
             items: []
           };
 
@@ -413,6 +420,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
           statusType: thisResponse.data.statusType,
           revision: '',
           totalScore: thisResponse.data.totalScore,
+          notes: thisResponse.data.notes || '',
           items: []
         };
 
@@ -423,6 +431,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
               uid: item.uid,
               kpiAssignItemUid: item.kpiAssignItemUid || '',
               categoryName: item.kpiAssignItem && item.kpiAssignItem.categoryName || '',
+              categoryGroup: item.kpiAssignItem && item.kpiAssignItem.category && item.kpiAssignItem.category.group || '',
               measurementType: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.measurementType || '',
               measurementDescription: item.kpiAssignItem && item.kpiAssignItem.measurement && item.kpiAssignItem.measurement.description || '',
               target: item.kpiAssignItem && item.kpiAssignItem.target || '',
@@ -455,6 +464,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
           statusType: '',
           revision: '',
           totalScore: this.props.initialValues.totalScore,
+          notes: this.props.initialValues.notes,
           items: []
         };
 
@@ -465,6 +475,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
               uid: '',
               kpiAssignItemUid: item.uid,
               categoryName: item.categoryName,
+              categoryGroup: item.category && item.category.group || '',
               measurementType: item.measurement && item.measurement.measurementType || '',
               measurementDescription: item.measurement && item.measurement.description || '',
               target: item.target,
@@ -503,7 +514,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
             items: []
           };
           
-          if (thisLatestResponse.data.items) {
+          if ((thisAssignResponse && thisAssignResponse.data.uid === thisLatestResponse.data.kpiAssignUid) && 
+            thisLatestResponse.data.items) {
             thisLatestResponse.data.items.forEach((item, index) =>
               latestValues.items && latestValues.items.push({
                 achieved: item.achieved || 0,

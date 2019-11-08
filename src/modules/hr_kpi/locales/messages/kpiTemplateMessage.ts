@@ -76,6 +76,7 @@ export const KPITemplateField = defineMessages({
   target: { id: `${prefix}.field.target`},
   targetPlaceholder: { id: `${prefix}.field.target.placeholder`},
   weight: { id: `${prefix}.field.weight`},
+  weightPercent: { id: `${prefix}.field.weightPercent`},
   weightPlaceholder: { id: `${prefix}.field.weight.placeholder`},
   threshold: { id: `${prefix}.field.threshold`},
   thresholdPlaceholder: { id: `${prefix}.field.threshold.placeholder`},

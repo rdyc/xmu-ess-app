@@ -44,13 +44,22 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
           {item.kpiAssignItem && item.kpiAssignItem.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {`${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %`}
+          {
+            item.kpiAssignItem &&
+            item.kpiAssignItem.category &&
+            item.kpiAssignItem.category.group === 'KPI' &&
+            `${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %` ||
+            '-'}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.kpiAssignItem &&
-            item.kpiAssignItem.measurement && 
-            item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring  &&
+
+            (item.kpiAssignItem.category &&
+            item.kpiAssignItem.category.group === 'KPI') &&
+
+            (item.kpiAssignItem.measurement && 
+            item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring)  &&
             props.intl.formatNumber(item.kpiAssignItem.threshold || 0) ||
             '-'
           }
@@ -58,9 +67,13 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.kpiAssignItem &&
-            item.kpiAssignItem.measurement && 
+
+            (item.kpiAssignItem.category &&
+            item.kpiAssignItem.category.group === 'KPI') &&
+
+            (item.kpiAssignItem.measurement && 
             (item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring ||
-            item.kpiAssignItem.measurement.measurementType === MeasurementType.Attendance) &&
+            item.kpiAssignItem.measurement.measurementType === MeasurementType.Attendance)) &&
             props.intl.formatNumber(item.kpiAssignItem.amount) ||
             '-'
           }

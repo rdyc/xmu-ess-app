@@ -42,6 +42,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       period: props.assignData.period,
       revision: props.formikBag.values.revision,
       totalScore: props.formikBag.values.totalScore,
+      notes: props.formikBag.values.notes,
       items: props.assignData.items,
     });
 
@@ -52,7 +53,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
     props.formikBag.setFieldValue('period', props.latestData.period);
     props.formikBag.setFieldValue('totalScore', props.latestData.totalScore);
 
-    if (props.latestData.items) {
+    if (props.latestData.items && props.latestData.items.length > 0) {
       props.latestData.items.forEach((item, index) => {
         props.formikBag.setFieldValue(`items.${index}.achieved`, item.achieved);
         props.formikBag.setFieldValue(`items.${index}.progress`, item.progress);
@@ -234,6 +235,24 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
               value={props.intl.formatNumber(field.value)}
               helperText={form.touched.totalScore && form.errors.totalScore}
               error={form.touched.totalScore && Boolean(form.errors.totalScore)}
+            />
+          )}
+        />
+
+        <Field
+          name="notes"
+          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+            <TextField
+              {...field}
+              fullWidth
+              required={true}
+              margin="normal"
+              autoComplete="off"
+              disabled={form.isSubmitting}
+              label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+              placeholder={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+              helperText={(form.touched.notes) && (form.errors.notes)}
+              error={(form.touched.notes) && Boolean(form.errors.notes)}
             />
           )}
         />
