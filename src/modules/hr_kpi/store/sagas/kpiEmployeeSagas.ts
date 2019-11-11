@@ -9,10 +9,10 @@ import {
   KPIEmployeeGetByIdError,
   KPIEmployeeGetByIdRequest,
   KPIEmployeeGetByIdSuccess,
-  KPIEmployeeGetLatestDispose,
-  KPIEmployeeGetLatestError,
-  KPIEmployeeGetLatestRequest,
-  KPIEmployeeGetLatestSuccess,
+  KPIEmployeeGetByYearDispose,
+  KPIEmployeeGetByYearError,
+  KPIEmployeeGetByYearRequest,
+  KPIEmployeeGetByYearSuccess,
   KPIEmployeePostError,
   KPIEmployeePostRequest,
   KPIEmployeePostSuccess,
@@ -77,25 +77,25 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchGetLatestRequest() {
-  const worker = (action: ReturnType<typeof KPIEmployeeGetLatestRequest>) => {
+function* watchGetByYearRequest() {
+  const worker = (action: ReturnType<typeof KPIEmployeeGetByYearRequest>) => {
     return saiyanSaga.fetch({
       
       method: 'GET',
-      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.kpiAssignUid}/latest`,
+      path: `/v1/hr/kpi/employees/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.employeeUid}/${action.payload.year}`,
       successEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetLatestSuccess(response.body))
+        put(KPIEmployeeGetByYearSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
-        put(KPIEmployeeGetLatestError(response))
+        put(KPIEmployeeGetByYearError(response))
       ],
       errorEffects: (error: TypeError) => [
-        put(KPIEmployeeGetLatestError(error.message))
+        put(KPIEmployeeGetByYearError(error.message))
       ]
     });
   };
 
-  yield takeEvery(Action.GET_LATEST_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_YEAR_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -108,6 +108,7 @@ function* watchPostRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),
         put(KPIEmployeeGetAllDispose()),
+        put(KPIEmployeeGetByYearDispose()),
         put(KPIEmployeePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -149,6 +150,7 @@ function* watchPutRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIEmployeeGetByIdDispose()),
         put(KPIEmployeeGetAllDispose()),
+        put(KPIEmployeeGetByYearDispose()),
         put(KPIEmployeePutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -185,7 +187,7 @@ function* watchSwitchAccess() {
     yield all([
       put(KPIEmployeeGetAllDispose()),
       put(KPIEmployeeGetByIdDispose()),
-      put(KPIEmployeeGetLatestDispose()),
+      put(KPIEmployeeGetByYearDispose()),
     ]);
   }
 
@@ -196,7 +198,7 @@ function* kpiEmployeeSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
-    fork(watchGetLatestRequest),
+    fork(watchGetByYearRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess),

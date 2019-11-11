@@ -2,10 +2,10 @@ import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
   IKPIEmployeeGetAllRequest, 
   IKPIEmployeeGetByIdRequest, 
-  IKPIEmployeeGetLatestRequest, 
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
 } from '@kpi/classes/queries/employee';
+import { IKPIEmployeeGetByYearRequest } from '@kpi/classes/queries/employee/IKPIEmployeeGetByYearRequest';
 import { IKPIEmployee, IKPIEmployeeDetail } from '@kpi/classes/response/employee';
 import { action } from 'typesafe-actions';
 
@@ -18,10 +18,10 @@ export const enum KPIEmployeeAction {
   GET_BY_ID_SUCCESS = '@@kpi/employee/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@kpi/employee/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@kpi/employee/GET_BY_ID_DISPOSE',
-  GET_LATEST_REQUEST = '@@kpi/employee/GET_LATEST_REQUEST',
-  GET_LATEST_SUCCESS = '@@kpi/employee/GET_LATEST_SUCCESS',
-  GET_LATEST_ERROR = '@@kpi/employee/GET_LATEST_ERROR',
-  GET_LATEST_DISPOSE = '@@kpi/employee/GET_LATEST_DISPOSE',
+  GET_BY_YEAR_REQUEST = '@@kpi/employee/GET_BY_YEAR_REQUEST',
+  GET_BY_YEAR_SUCCESS = '@@kpi/employee/GET_BY_YEAR_SUCCESS',
+  GET_BY_YEAR_ERROR = '@@kpi/employee/GET_BY_YEAR_ERROR',
+  GET_BY_YEAR_DISPOSE = '@@kpi/employee/GET_BY_YEAR_DISPOSE',
   POST_REQUEST = '@@kpi/employee/POST_REQUEST',
   POST_SUCCESS = '@@kpi/employee/POST_SUCCESS',
   POST_ERROR = '@@kpi/employee/POST_ERROR',
@@ -44,11 +44,11 @@ export const KPIEmployeeGetByIdSuccess = (response: IResponseSingle<IKPIEmployee
 export const KPIEmployeeGetByIdError = (error: any) => action(KPIEmployeeAction.GET_BY_ID_ERROR, error);
 export const KPIEmployeeGetByIdDispose = () => action(KPIEmployeeAction.GET_BY_ID_DISPOSE);
 
-// get latest
-export const KPIEmployeeGetLatestRequest = (request: IKPIEmployeeGetLatestRequest) => action(KPIEmployeeAction.GET_LATEST_REQUEST, request);
-export const KPIEmployeeGetLatestSuccess = (response: IResponseSingle<IKPIEmployeeDetail>) => action(KPIEmployeeAction.GET_LATEST_SUCCESS, response);
-export const KPIEmployeeGetLatestError = (error: any) => action(KPIEmployeeAction.GET_LATEST_ERROR, error);
-export const KPIEmployeeGetLatestDispose = () => action(KPIEmployeeAction.GET_LATEST_DISPOSE);
+// get by year
+export const KPIEmployeeGetByYearRequest = (request: IKPIEmployeeGetByYearRequest) => action(KPIEmployeeAction.GET_BY_YEAR_REQUEST, request);
+export const KPIEmployeeGetByYearSuccess = (response: IResponseSingle<IKPIEmployeeDetail>) => action(KPIEmployeeAction.GET_BY_YEAR_SUCCESS, response);
+export const KPIEmployeeGetByYearError = (error: any) => action(KPIEmployeeAction.GET_BY_YEAR_ERROR, error);
+export const KPIEmployeeGetByYearDispose = () => action(KPIEmployeeAction.GET_BY_YEAR_DISPOSE);
 
 // post
 export const KPIEmployeePostRequest = (request: IKPIEmployeePostRequest) => action(KPIEmployeeAction.POST_REQUEST, request);

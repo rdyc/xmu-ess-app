@@ -5,12 +5,11 @@ import {
   IKPIApprovalPostRequest, 
   IKPIAssignGetAllRequest,
   IKPIAssignGetByIdRequest,
-  IKPIAssignGetByYearRequest,
   IKPIAssignPostBulkRequest,
   IKPIAssignPutRequest,
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
-  IKPIEmployeeGetLatestRequest,
+  IKPIEmployeeGetByYearRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
   IKPITemplateGetAllRequest,
@@ -63,7 +62,7 @@ export interface IKPIState {
   // employee
   kpiEmployeeGetAll: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
   kpiEmployeeGetById: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
-  kpiEmployeeGetLatest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail>;
+  kpiEmployeeGetByYear: IQuerySingleState<IKPIEmployeeGetByYearRequest, IKPIEmployeeDetail>;
   kpiEmployeePost: IQueryCollectionState<IKPIEmployeePostRequest, IKPIEmployee>;
   kpiEmployeePut: IQuerySingleState<IKPIEmployeePutRequest, IKPIEmployee>;
   
@@ -75,7 +74,6 @@ export interface IKPIState {
   // assign
   kpiAssignGetAll: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
   kpiAssignGetById: IQuerySingleState<IKPIAssignGetByIdRequest, IKPIAssignDetail>;
-  kpiAssignGetByYear: IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssign>;
   kpiAssignPostBulk: IQueryCollectionState<IKPIAssignPostBulkRequest, IKPIAssign>;
   kpiAssignPut: IQuerySingleState<IKPIAssignPutRequest, IKPIAssign>;
 

@@ -6,7 +6,7 @@ import {
 import {
   IKPIEmployeeGetAllRequest,
   IKPIEmployeeGetByIdRequest,
-  IKPIEmployeeGetLatestRequest,
+  IKPIEmployeeGetByYearRequest,
   IKPIEmployeePostRequest,
   IKPIEmployeePutRequest,
 } from '@kpi/classes/queries';
@@ -16,8 +16,8 @@ import {
   KPIEmployeeGetAllRequest,
   KPIEmployeeGetByIdDispose,
   KPIEmployeeGetByIdRequest,
-  KPIEmployeeGetLatestDispose,
-  KPIEmployeeGetLatestRequest,
+  KPIEmployeeGetByYearDispose,
+  KPIEmployeeGetByYearRequest,
   KPIEmployeePostDispose,
   KPIEmployeePostRequest,
   KPIEmployeePutDispose,
@@ -30,7 +30,7 @@ interface PropsFromState {
   kpiEmployeeState: {
     all: IQueryCollectionState<IKPIEmployeeGetAllRequest, IKPIEmployee>;
     detail: IQuerySingleState<IKPIEmployeeGetByIdRequest, IKPIEmployeeDetail>;
-    latest: IQuerySingleState<IKPIEmployeeGetLatestRequest, IKPIEmployeeDetail>;
+    byYear: IQuerySingleState<IKPIEmployeeGetByYearRequest, IKPIEmployeeDetail>;
   };
 }
 
@@ -47,18 +47,18 @@ interface PropsFromDispatch {
     loadAllDispose: typeof KPIEmployeeGetAllDispose;
     loadDetailRequest: typeof KPIEmployeeGetByIdRequest;
     loadDetailDispose: typeof KPIEmployeeGetByIdDispose;
-    loadLatestRequest: typeof KPIEmployeeGetLatestRequest;
-    loadLatestDispose: typeof KPIEmployeeGetLatestDispose;
+    loadByYearRequest: typeof KPIEmployeeGetByYearRequest;
+    loadByYearDispose: typeof KPIEmployeeGetByYearDispose;
   };
 }
 
 export interface WithKPIEmployee extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ kpiEmployeeGetAll, kpiEmployeeGetById, kpiEmployeeGetLatest }: IAppState) => ({
+const mapStateToProps = ({ kpiEmployeeGetAll, kpiEmployeeGetById, kpiEmployeeGetByYear }: IAppState) => ({
   kpiEmployeeState: {
     all: kpiEmployeeGetAll,
     detail: kpiEmployeeGetById,
-    latest: kpiEmployeeGetLatest
+    byYear: kpiEmployeeGetByYear
   }
 });
 
@@ -75,8 +75,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(KPIEmployeeGetAllDispose()),
     loadDetailRequest: (request: IKPIEmployeeGetByIdRequest) => dispatch(KPIEmployeeGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(KPIEmployeeGetByIdDispose()),
-    loadLatestRequest: (request: IKPIEmployeeGetLatestRequest) => dispatch(KPIEmployeeGetLatestRequest(request)),
-    loadLatestDispose: () => dispatch(KPIEmployeeGetLatestDispose()),
+    loadByYearRequest: (request: IKPIEmployeeGetByYearRequest) => dispatch(KPIEmployeeGetByYearRequest(request)),
+    loadByYearDispose: () => dispatch(KPIEmployeeGetByYearDispose()),
   }
 });
 
