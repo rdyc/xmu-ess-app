@@ -36,7 +36,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
       year: props.formikBag.values.year,
       period: props.latestData.period,
       revision: props.formikBag.values.revision,
-      totalScore: props.formikBag.values.totalScore,
+      totalScore: props.latestData.totalScore,
       notes: props.formikBag.values.notes,
       items: props.latestData.items,
     });

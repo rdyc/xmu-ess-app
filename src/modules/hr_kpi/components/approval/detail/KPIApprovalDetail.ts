@@ -385,11 +385,9 @@ const lifecycles: ReactLifeCycleFunctions<KPIApprovalDetailProps, IOwnState> = {
         const initialValues: IKPIApprovalFormValue = {
           uid: thisResponse.data.uid,
           statusType: thisResponse.data.statusType,
-          // isApproved: thisResponse.data.statusType === WorkflowStatusType.Approved ? true : thisResponse.data.statusType === WorkflowStatusType.AdjustmentNeeded ? false : undefined,
           isFinal: thisResponse.data.isFinal,
           isFirst: thisResponse.data.isFirst,
           notes: thisResponse.data.notes || '',
-          // revision: '',
           totalScore: thisResponse.data.totalScore,
           items: [],
         };
