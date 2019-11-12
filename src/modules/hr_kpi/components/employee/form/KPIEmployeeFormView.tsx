@@ -39,14 +39,10 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                     formMode={props.formMode}
                     formikBag={formikBag}
                     intl={props.intl}
-                    handleLoadAssign={props.handleLoadAssign}
-                    handleSetLoadAssign={props.handleSetLoadAssign}
                     handleLoadLatest={props.handleLoadLatest}
                     handleSetLoadLatest={props.handleSetLoadLatest}
                     filterAccountEmployee={props.filterAccountEmployee}
-                    loadAssign={props.loadAssign}
                     loadLatest={props.loadLatest}
-                    assignData={props.assignData}
                     latestData={props.latestData}
                   />
                 </div>
@@ -69,7 +65,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                       labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                       labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                     }}
-                    disableButtons={((!props.assignData || (props.assignData && props.assignData.kpiAssignUid === '')) && props.formMode === FormMode.New)}
+                    disableButtons={((!props.latestData || (props.latestData && props.latestData.kpiAssignUid === '')) && props.formMode === FormMode.New)}
                   />
                 </div>
 
@@ -85,7 +81,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                 formMode={props.formMode}
                 intl={props.intl}
                 classes={props.classes}
-                isAssignLoading={props.kpiAssignState.byYear.isLoading}
+                isAssignLoading={props.kpiEmployeeState.byYear.isLoading}
               />
             </div>
           </Form>

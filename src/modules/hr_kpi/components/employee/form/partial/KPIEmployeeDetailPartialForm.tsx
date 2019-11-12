@@ -22,7 +22,6 @@ type KPIEmployeeDetailPartialFormProps = {
   handleSetLoadLatest: () => void;
   latestData: IKPIEmployeeFormValue;
   filterAccountEmployee: IEmployeeListFilter;
-  loadAssign: boolean;
   loadLatest: boolean;
 };
 
