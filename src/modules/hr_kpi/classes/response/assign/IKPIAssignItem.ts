@@ -5,7 +5,6 @@ import { IKPIMeasurement } from '../measurement';
 export interface IKPIAssignItem {
   uid: string;
   kpiUid: string;
-  isAssignItemInUse: boolean;
   categoryUid: string;
   category?: IKPICategory | null;
   categoryName: string;

@@ -4,7 +4,6 @@ import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem
 import { FormMode } from '@generic/types';
 import { IKPIEmployeePostPayload, IKPIEmployeePutPayload } from '@kpi/classes/request';
 import { IKPIEmployee } from '@kpi/classes/response';
-import { withKPIAssign, WithKPIAssign } from '@kpi/hoc/withKPIAssign';
 import { WithKPIEmployee, withKPIEmployee } from '@kpi/hoc/withKPIEmployee';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
@@ -54,7 +53,6 @@ export interface IKPIEmployeeFormValue {
   employeeUid: string;
   employeeName?: string;
   kpiAssignUid: string;
-  templateName: string;
   year: string;
   period: string;
   statusType: string;
@@ -62,18 +60,6 @@ export interface IKPIEmployeeFormValue {
   totalScore: number;
   notes: string;
   items: IKPIEmployeeItemFormValue[];
-}
-
-interface IKPIItemPartialLatestValue {
-  achieved: number;
-  progress: number;
-  score: number;
-}
-
-export interface IKPIPartialLatestValue {
-  period: string;
-  totalScore: number;
-  items?: IKPIItemPartialLatestValue[];
 }
 
 interface IOwnRouteParams {
@@ -86,10 +72,8 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  loadAssign: boolean;
   loadLatest: boolean;
-  assignData: IKPIEmployeeFormValue;
-  latestPartialData: IKPIPartialLatestValue;
+  latestData: IKPIEmployeeFormValue;
 
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
@@ -99,23 +83,19 @@ interface IOwnState {
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
-  setAssignValues: StateHandler<IOwnState>;
   setLatestValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
-  handleSetLoadAssign: () => void;
-  handleLoadAssign: (employeeUid: string, year: string) => void;
   handleSetLoadLatest: () => void;
-  handleLoadLatest: (kpiAssignUid: string) => void;
+  handleLoadLatest: (employeeUid: string, year: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPIEmployeeFormValue, action: FormikActions<IKPIEmployeeFormValue>) => void;
 }
 
 export type KPIEmployeeFormProps
   = WithKPIEmployee
-  & WithKPIAssign
   & WithCommonSystem
   & WithUser
   & WithMasterPage
@@ -130,7 +110,6 @@ export type KPIEmployeeFormProps
 const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployeeFormProps): IOwnState => ({
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
-  loadAssign: false,
   loadLatest: false,
 
   initialValues: {
@@ -138,7 +117,6 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     employeeUid: props.match.params.employeeUid,
     employeeName: props.history.location.state && props.history.location.state.employeeName && props.history.location.state.employeeName || '',
     kpiAssignUid: '',
-    templateName: '',
     year: moment().year().toString(),
     period: '',
     statusType: '',
@@ -148,12 +126,7 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
     items: []
   },
   
-  assignData: props.initialValues,
-  latestPartialData: {
-    period: '1',
-    totalScore: 0,
-    items: undefined
-  },
+  latestData: props.initialValues,
 
   validationSchema: Yup.object().shape<Partial<IKPIEmployeeFormValue>>({
     kpiUid: Yup.string(),
@@ -162,8 +135,6 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
 
     kpiAssignUid: Yup.string()
       .required(),
-
-    templateName: Yup.string(),
 
     year: Yup.string()
       .min(4)
@@ -232,11 +203,8 @@ const stateUpdaters: StateUpdaters<KPIEmployeeFormProps, IOwnState, IOwnStateUpd
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setAssignValues: () => (data: IKPIEmployeeFormValue): Partial<IOwnState> => ({
-    assignData: data
-  }),
-  setLatestValues: () => (value: any): Partial<IOwnState> => ({
-    latestPartialData: value,
+  setLatestValues: () => (value: IKPIEmployeeFormValue): Partial<IOwnState> => ({
+    latestData: value,
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
@@ -260,32 +228,18 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
       }
     }
   },
-  handleSetLoadAssign: (props: KPIEmployeeFormProps) => () => {
-    props.stateUpdate({
-      loadAssign: !props.loadAssign,
-    });
-  },
   handleSetLoadLatest: (props: KPIEmployeeFormProps) => () => {
     props.stateUpdate({
       loadLatest: !props.loadLatest,
     });
   },
-  handleLoadAssign: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
+  handleLoadLatest: (props: KPIEmployeeFormProps) => (employeeUid: string, year: string) => {
     if (props.userState.user) {
-      props.kpiAssignDispatch.loadByYearRequest({
+      props.kpiEmployeeDispatch.loadByYearRequest({
         employeeUid,
         companyUid: props.userState.user.company.uid,
         positionUid: props.userState.user.position.uid,
         year: parseInt(year, 10),
-      });
-    }
-  },
-  handleLoadLatest: (props: KPIEmployeeFormProps) => (kpiAssignUid: string) => {
-    if (props.userState.user) {
-      props.kpiEmployeeDispatch.loadLatestRequest({
-        kpiAssignUid,
-        companyUid: props.userState.user.company.uid,
-        positionUid: props.userState.user.position.uid,
       });
     }
   },
@@ -330,8 +284,6 @@ const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
 
           // fill payload 
           const payload: IKPIEmployeePutPayload = {
-            kpiAssignUid: values.kpiAssignUid,
-            period: parseInt(values.period, 10),
             revision: values.revision,
             notes: values.notes,
             items: []
@@ -403,12 +355,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
     // handle template detail response
     const { response: thisResponse } = this.props.kpiEmployeeState.detail;
     const { response: prevResponse } = prevProps.kpiEmployeeState.detail;
-    
-    const { response: thisAssignResponse } = this.props.kpiAssignState.byYear;
-    const { response: prevAssignResponse } = prevProps.kpiAssignState.byYear;
 
-    const { response: thisLatestResponse } = this.props.kpiEmployeeState.latest;
-    const { response: prevLatestResponse } = prevProps.kpiEmployeeState.latest;
+    const { response: thisLatestResponse } = this.props.kpiEmployeeState.byYear;
+    const { response: prevLatestResponse } = prevProps.kpiEmployeeState.byYear;
 
     if (thisResponse !== prevResponse) {
       if (thisResponse && thisResponse.data) {
@@ -418,7 +367,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
           employeeUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employeeUid || '',
           employeeName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.employee && thisResponse.data.kpiAssign.employee.fullName || '',
           kpiAssignUid: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.uid || '',
-          templateName: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.template && thisResponse.data.kpiAssign.template.name || '',
           year: thisResponse.data.kpiAssign && thisResponse.data.kpiAssign.year.toString() || '0',
           period: thisResponse.data.period.toString() || '0',
           statusType: thisResponse.data.statusType,
@@ -454,104 +402,55 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIEmployeeFormProps, IOwnStat
       }
     }
 
-    if (thisAssignResponse !== prevAssignResponse) {
-      if (thisAssignResponse && thisAssignResponse.data) {
+    if (thisLatestResponse !== prevLatestResponse) {
+      if (thisLatestResponse && thisLatestResponse.data) {
         // define initial values 
-        const initialValues: IKPIEmployeeFormValue = {
+        const latestValues: IKPIEmployeeFormValue = {
           kpiUid: this.props.initialValues.kpiUid,
-          employeeUid: thisAssignResponse.data.employeeUid || '',
-          employeeName: thisAssignResponse.data.employee && thisAssignResponse.data.employee.fullName || '',
-          kpiAssignUid: thisAssignResponse.data.uid || '',
-          templateName: thisAssignResponse.data.template && thisAssignResponse.data.template.name || '',
-          year: thisAssignResponse.data.year.toString() || '0',
-          period: this.props.initialValues.period,
+          employeeUid: thisLatestResponse.data.employeeUid || '',
+          employeeName: thisLatestResponse.data.employee && thisLatestResponse.data.employee.fullName || '',
+          kpiAssignUid: thisLatestResponse.data.kpiAssignUid || '',
+          year: thisLatestResponse.data.year.toString() || '0',
+          period: thisLatestResponse.data.period.toString() || '1',
           statusType: '',
           revision: '',
-          totalScore: this.props.initialValues.totalScore,
-          notes: this.props.initialValues.notes,
+          totalScore: thisLatestResponse.data.totalScore,
+          notes: thisLatestResponse.data.notes || '',
           items: []
         };
 
-        if (thisAssignResponse.data.items) {
+        if (thisLatestResponse.data.items) {
           // fill template items
-          thisAssignResponse.data.items.forEach((item, index) =>
-            initialValues.items.push({
+          thisLatestResponse.data.items.forEach((item, index) =>
+            latestValues.items.push({
               uid: '',
-              kpiAssignItemUid: item.uid,
+              kpiAssignItemUid: item.kpiAssignItemUid,
               categoryName: item.categoryName,
               categoryGroup: item.category && item.category.group || '',
               measurementType: item.measurement && item.measurement.measurementType || '',
-              measurementDescription: item.measurement && item.measurement.description || '',
+              measurementDescription: item.measurementDescription || '',
               target: item.target,
               weight: item.weight,
               threshold: item.threshold || 0,
               amount: item.amount,
-              achieved: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].achieved || 0,
-              progress: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].progress || 0,
-              score: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].score || 0,
+              achieved: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].achieved || item.achieved,
+              progress: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].progress || item.progress,
+              score: this.props.formMode === FormMode.Edit && this.props.initialValues.items[index].score || item.score,
             })
           );
         }
 
         // set initial values
-        this.props.handleLoadLatest(thisAssignResponse.data.uid);
-        this.props.setAssignValues(initialValues);
-        this.props.handleSetLoadAssign();
+        this.props.setLatestValues(latestValues);
+        this.props.handleSetLoadLatest();
       } else {
-        this.props.setAssignValues(this.props.initialValues);
-        this.props.handleSetLoadAssign();
+        this.props.setLatestValues(this.props.initialValues);
+        this.props.handleSetLoadLatest();
 
         // show flash message
         this.props.masterPage.flashMessage({
           message: this.props.intl.formatMessage(kpiMessage.employee.message.noAssign)
         });
-      }
-    }
-
-    if (thisLatestResponse !== prevLatestResponse) {
-      if (thisLatestResponse && thisLatestResponse.data) {
-        if (thisLatestResponse.data.period === 1) {
-          // set latest values
-          const latestValues: IKPIPartialLatestValue = {
-            period: '2',
-            totalScore: thisLatestResponse.data.totalScore,
-            items: []
-          };
-          
-          if ((thisAssignResponse && thisAssignResponse.data.uid === thisLatestResponse.data.kpiAssignUid) && 
-            thisLatestResponse.data.items) {
-            thisLatestResponse.data.items.forEach((item, index) =>
-              latestValues.items && latestValues.items.push({
-                achieved: item.achieved || 0,
-                progress: item.progress || 0,
-                score: item.score || 0,
-              })
-            );
-          }
-          
-          // set initial values
-          this.props.setLatestValues(latestValues);
-        } else {
-          // set latest values
-          const latestValues: IKPIPartialLatestValue = {
-            period: '1',
-            totalScore: 0,
-            items: undefined
-          };
-
-          this.props.setLatestValues(latestValues);
-        }
-        this.props.handleSetLoadLatest();
-      } else {
-        // set latest values
-        const latestValues: IKPIPartialLatestValue = {
-          period: '1',
-          totalScore: 0,
-          items: undefined
-        };
-
-        this.props.setLatestValues(latestValues);
-        this.props.handleSetLoadLatest();
       }
     }
   }
@@ -562,7 +461,6 @@ export const KPIEmployeeForm = compose<KPIEmployeeFormProps, IOwnOption>(
   withUser,
   withRouter,
   withKPIEmployee,
-  withKPIAssign,
   withCommonSystem,
   withMasterPage,
   injectIntl,

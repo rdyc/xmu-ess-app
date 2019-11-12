@@ -3,7 +3,6 @@ import { IBaseChanges } from '@generic/interfaces';
 import { IKPITemplate } from '../template/IKPITemplate';
 export interface IKPIAssign {
   uid: string;
-  isAssignInUse: boolean;
   employeeUid: string;
   employee?: IEmployee | null;
   templateUid: string;

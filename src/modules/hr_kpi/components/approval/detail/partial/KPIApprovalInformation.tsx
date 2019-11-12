@@ -74,6 +74,7 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
             <TextField
               {...field}
               fullWidth
+              multiline
               required={true}
               margin="normal"
               autoComplete="off"
