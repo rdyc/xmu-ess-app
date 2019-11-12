@@ -9,10 +9,6 @@ import {
   KPIAssignGetByIdError,
   KPIAssignGetByIdRequest,
   KPIAssignGetByIdSuccess,
-  KPIAssignGetByYearDispose,
-  KPIAssignGetByYearError,
-  KPIAssignGetByYearRequest,
-  KPIAssignGetByYearSuccess,
   KPIAssignPostBulkError,
   KPIAssignPostBulkRequest,
   KPIAssignPostBulkSuccess,
@@ -56,27 +52,6 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchGetByYearRequest() {
-  const worker = (action: ReturnType<typeof KPIAssignGetByYearRequest>) => {
-    return saiyanSaga.fetch({
-      
-      method: 'GET',
-      path: `/v1/hr/kpi/assign/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.employeeUid}/${action.payload.year}`,
-      successEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByYearSuccess(response.body))
-      ],
-      failureEffects: (response: IApiResponse) => [
-        put(KPIAssignGetByYearError(response))
-      ],
-      errorEffects: (error: TypeError) => [
-        put(KPIAssignGetByYearError(error.message))
-      ]
-    });
-  };
-
-  yield takeEvery(Action.GET_BY_YEAR_REQUEST, worker);
-}
-
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof KPIAssignGetByIdRequest>) => {
     return saiyanSaga.fetch({
@@ -107,7 +82,6 @@ function* watchPostBulkRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(KPIAssignGetByIdDispose()),
-        put(KPIAssignGetByYearDispose()),
         put(KPIAssignGetAllDispose()),
         put(KPIAssignPostBulkSuccess(response.body))
       ],
@@ -185,7 +159,6 @@ function* watchSwitchAccess() {
     yield all([
       put(KPIAssignGetAllDispose()),
       put(KPIAssignGetByIdDispose()),
-      put(KPIAssignGetByYearDispose()),
     ]);
   }
 
@@ -196,7 +169,6 @@ function* kpiAssignSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetByIdRequest),
-    fork(watchGetByYearRequest),
     fork(watchPostBulkRequest),
     fork(watchPutRequest),
     fork(watchSwitchAccess),

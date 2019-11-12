@@ -2,7 +2,6 @@ import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
   IKPIAssignGetAllRequest, 
   IKPIAssignGetByIdRequest, 
-  IKPIAssignGetByYearRequest, 
   IKPIAssignPostBulkRequest,
   IKPIAssignPutRequest,
 } from '@kpi/classes/queries/assign';
@@ -14,10 +13,6 @@ export const enum KPIAssignAction {
   GET_ALL_SUCCESS = '@@kpi/assign/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@kpi/assign/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@kpi/assign/GET_ALL_DISPOSE',
-  GET_BY_YEAR_REQUEST = '@@kpi/assign/GET_BY_YEAR_REQUEST',
-  GET_BY_YEAR_SUCCESS = '@@kpi/assign/GET_BY_YEAR_SUCCESS',
-  GET_BY_YEAR_ERROR = '@@kpi/assign/GET_BY_YEAR_ERROR',
-  GET_BY_YEAR_DISPOSE = '@@kpi/assign/GET_BY_YEAR_DISPOSE',
   GET_BY_ID_REQUEST = '@@kpi/assign/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@kpi/assign/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@kpi/assign/GET_BY_ID_ERROR',
@@ -37,12 +32,6 @@ export const KPIAssignGetAllRequest = (request: IKPIAssignGetAllRequest) => acti
 export const KPIAssignGetAllSuccess = (response: IResponseCollection<IKPIAssign>) => action(KPIAssignAction.GET_ALL_SUCCESS, response);
 export const KPIAssignGetAllError = (error: any) => action(KPIAssignAction.GET_ALL_ERROR, error);
 export const KPIAssignGetAllDispose = () => action(KPIAssignAction.GET_ALL_DISPOSE);
-
-// get by year
-export const KPIAssignGetByYearRequest = (request: IKPIAssignGetByYearRequest) => action(KPIAssignAction.GET_BY_YEAR_REQUEST, request);
-export const KPIAssignGetByYearSuccess = (response: IResponseSingle<IKPIAssign>) => action(KPIAssignAction.GET_BY_YEAR_SUCCESS, response);
-export const KPIAssignGetByYearError = (error: any) => action(KPIAssignAction.GET_BY_YEAR_ERROR, error);
-export const KPIAssignGetByYearDispose = () => action(KPIAssignAction.GET_BY_YEAR_DISPOSE);
 
 // get by id
 export const KPIAssignGetByIdRequest = (request: IKPIAssignGetByIdRequest) => action(KPIAssignAction.GET_BY_ID_REQUEST, request);

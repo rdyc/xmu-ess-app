@@ -148,9 +148,9 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                       const amount = props.formikBag.values.items[index].amount || 0;
 
                                       let value = 0;
-                                      let progress = 0;
-                                      let score = 0;
-                                      let totalScore = 0;
+                                      let progress: number = 0;
+                                      let score: number = 0;
+                                      let totalScore: number = 0;
 
                                       if (e.target.value === '') {
                                         // set current field to 0
@@ -176,8 +176,8 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                       }
 
                                       score = (progress / 100) * (weight / 100) * 100;
-                                      props.formikBag.setFieldValue(`items.${index}.progress`, progress);
-                                      props.formikBag.setFieldValue(`items.${index}.score`, score);
+                                      props.formikBag.setFieldValue(`items.${index}.progress`, Number((progress).toFixed(2)));
+                                      props.formikBag.setFieldValue(`items.${index}.score`, Number((score).toFixed(2)));
                                       
                                       // set total score
                                       totalScore = score;
@@ -188,7 +188,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                       });
 
                                       // set weight
-                                      props.formikBag.setFieldValue('totalScore', totalScore);
+                                      props.formikBag.setFieldValue('totalScore', Number((totalScore).toFixed(2)));
 
                                     }}
                                   />
@@ -205,9 +205,9 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                 const amount = item.amount || 0;
 
                                 let value = 0;
-                                let progress = 0;
-                                let score = 0;
-                                let totalScore = 0;
+                                let progress: number = 0;
+                                let score: number = 0;
+                                let totalScore: number = 0;
 
                                 if (!e.target.checked) {
                                   props.formikBag.setFieldValue(`items.${index}.achieved`, 0);
@@ -231,8 +231,8 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                 }
 
                                 score = (progress / 100) * (weight / 100) * 100;
-                                props.formikBag.setFieldValue(`items.${index}.progress`, progress);
-                                props.formikBag.setFieldValue(`items.${index}.score`, score);
+                                props.formikBag.setFieldValue(`items.${index}.progress`, Number((progress).toFixed(2)));
+                                props.formikBag.setFieldValue(`items.${index}.score`, Number((score).toFixed(2)));
                                 
                                 // set total score
                                 totalScore = score;
@@ -243,7 +243,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                                 });
 
                                 // set weight
-                                props.formikBag.setFieldValue('totalScore', totalScore);
+                                props.formikBag.setFieldValue('totalScore', Number((totalScore).toFixed(2)));
 
                               }}
                             />

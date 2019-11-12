@@ -1,7 +1,7 @@
 import {
   kpiEmployeeGetAllReducer,
   kpiEmployeeGetByIdReducer,
-  kpiEmployeeGetLatestReducer,
+  kpiEmployeeGetByYearReducer,
   kpiEmployeePostReducer,
   kpiEmployeePutReducer,
 } from '@kpi/store/reducers/employee';
@@ -9,7 +9,7 @@ import {
 const kpiEmployeeReducers = {
   kpiEmployeeGetAll: kpiEmployeeGetAllReducer,
   kpiEmployeeGetById: kpiEmployeeGetByIdReducer,
-  kpiEmployeeGetLatest: kpiEmployeeGetLatestReducer,
+  kpiEmployeeGetByYear: kpiEmployeeGetByYearReducer,
   kpiEmployeePost: kpiEmployeePostReducer,
   kpiEmployeePut: kpiEmployeePutReducer,
 };

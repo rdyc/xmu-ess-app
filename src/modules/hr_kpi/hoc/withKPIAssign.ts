@@ -6,7 +6,6 @@ import {
 import {
   IKPIAssignGetAllRequest,
   IKPIAssignGetByIdRequest,
-  IKPIAssignGetByYearRequest,
   IKPIAssignPostBulkRequest,
   IKPIAssignPutRequest,
 } from '@kpi/classes/queries';
@@ -16,8 +15,6 @@ import {
   KPIAssignGetAllRequest,
   KPIAssignGetByIdDispose,
   KPIAssignGetByIdRequest,
-  KPIAssignGetByYearDispose,
-  KPIAssignGetByYearRequest,
   KPIAssignPostBulkDispose,
   KPIAssignPostBulkRequest,
   KPIAssignPutDispose,
@@ -29,7 +26,6 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   kpiAssignState: {
     all: IQueryCollectionState<IKPIAssignGetAllRequest, IKPIAssign>;
-    byYear: IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssignDetail>;
     detail: IQuerySingleState<IKPIAssignGetByIdRequest, IKPIAssignDetail>;
   };
 }
@@ -45,8 +41,6 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof KPIAssignGetAllRequest;
     loadAllDispose: typeof KPIAssignGetAllDispose;
-    loadByYearRequest: typeof KPIAssignGetByYearRequest;
-    loadByYearDispose: typeof KPIAssignGetByYearDispose;
     loadDetailRequest: typeof KPIAssignGetByIdRequest;
     loadDetailDispose: typeof KPIAssignGetByIdDispose;
   };
@@ -54,10 +48,9 @@ interface PropsFromDispatch {
 
 export interface WithKPIAssign extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ kpiAssignGetAll, kpiAssignGetByYear, kpiAssignGetById }: IAppState) => ({
+const mapStateToProps = ({ kpiAssignGetAll, kpiAssignGetById }: IAppState) => ({
   kpiAssignState: {
     all: kpiAssignGetAll,
-    byYear: kpiAssignGetByYear,
     detail: kpiAssignGetById
   }
 });
@@ -73,8 +66,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IKPIAssignGetAllRequest) => dispatch(KPIAssignGetAllRequest(request)),
     loadAllDispose: () => dispatch(KPIAssignGetAllDispose()),
-    loadByYearRequest: (request: IKPIAssignGetByYearRequest) => dispatch(KPIAssignGetByYearRequest(request)),
-    loadByYearDispose: () => dispatch(KPIAssignGetByYearDispose()),
     loadDetailRequest: (request: IKPIAssignGetByIdRequest) => dispatch(KPIAssignGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(KPIAssignGetByIdDispose()),
   }

@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IKPIAssignGetByYearRequest } from '@kpi/classes/queries';
-import { IKPIAssignDetail } from '@kpi/classes/response';
-import { KPIAssignAction as Action } from '@kpi/store/actions';
+import { IKPIEmployeeGetByYearRequest } from '@kpi/classes/queries';
+import { IKPIEmployeeDetail } from '@kpi/classes/response';
+import { KPIEmployeeAction as Action } from '@kpi/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssignDetail> = {
+const initialState: IQuerySingleState<IKPIEmployeeGetByYearRequest, IKPIEmployeeDetail> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssignDeta
   errors: undefined
 };
 
-const reducer: Reducer<IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssignDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IKPIEmployeeGetByYearRequest, IKPIEmployeeDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_YEAR_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_BY_YEAR_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQuerySingleState<IKPIAssignGetByYearRequest, IKPIAssignD
   }
 };
 
-export { reducer as kpiAssignGetByYearReducer };
+export { reducer as kpiEmployeeGetByYearReducer };

@@ -35,7 +35,6 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
   const setItemValue = () => {
     props.formikBag.setValues({
       uid: props.formikBag.values.uid,
-      isAssignInUse: props.formikBag.values.isAssignInUse,
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
       companyUid: props.formikBag.values.companyUid,
@@ -176,7 +175,6 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                           />
                           <TableCell className={classNames(props.classes.ultraDense)}>
                             <IconButton 
-                              disabled={props.formikBag.values.items[index].isAssignItemInUse}
                               onClick={() => {
                                 // remove current
                                 fields.remove(index);

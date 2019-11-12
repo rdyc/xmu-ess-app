@@ -11,55 +11,35 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IKPIEmployeeFormValue, IKPIPartialLatestValue } from '../KPIEmployeeForm';
+import { IKPIEmployeeFormValue } from '../KPIEmployeeForm';
 
 type KPIEmployeeDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IKPIEmployeeFormValue>;
   intl: InjectedIntl;
   
-  handleLoadAssign: (employeeUid: string, year: string) => void;
-  handleSetLoadAssign: () => void;
-  handleLoadLatest: (employeeUid: string) => void;
+  handleLoadLatest: (employeeUid: string, year: string) => void;
   handleSetLoadLatest: () => void;
-  assignData: IKPIEmployeeFormValue;
-  latestData: IKPIPartialLatestValue;
+  latestData: IKPIEmployeeFormValue;
   filterAccountEmployee: IEmployeeListFilter;
-  loadAssign: boolean;
   loadLatest: boolean;
 };
 
 const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartialFormProps> = props => {
-  const setAssignValue = () => {
+  const setLatestValue = () => {
     props.formikBag.setValues({
       kpiUid: props.formikBag.values.kpiUid,
-      kpiAssignUid: props.assignData.kpiAssignUid,
+      kpiAssignUid: props.latestData.kpiAssignUid,
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
-      templateName: props.assignData.templateName,
       statusType: props.formikBag.values.statusType,
       year: props.formikBag.values.year,
-      period: props.assignData.period,
+      period: props.latestData.period,
       revision: props.formikBag.values.revision,
-      totalScore: props.formikBag.values.totalScore,
+      totalScore: props.latestData.totalScore,
       notes: props.formikBag.values.notes,
-      items: props.assignData.items,
+      items: props.latestData.items,
     });
-
-    props.handleSetLoadAssign();
-  };
-
-  const setLatestPartialValue = () => {
-    props.formikBag.setFieldValue('period', props.latestData.period);
-    props.formikBag.setFieldValue('totalScore', props.latestData.totalScore);
-
-    if (props.latestData.items && props.latestData.items.length > 0) {
-      props.latestData.items.forEach((item, index) => {
-        props.formikBag.setFieldValue(`items.${index}.achieved`, item.achieved);
-        props.formikBag.setFieldValue(`items.${index}.progress`, item.progress);
-        props.formikBag.setFieldValue(`items.${index}.score`, item.score);
-      });
-    }
 
     props.handleSetLoadLatest();
   };
@@ -107,7 +87,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
                     props.formikBag.setFieldValue('employeeName', selected && selected.data && selected.data.fullName || '');
 
                     if ((selected && selected.value !== '') && (props.formikBag.values.year !== '' && props.formikBag.values.year !== '0')) {
-                      props.handleLoadAssign(selected && selected.value, props.formikBag.values.year);
+                      props.handleLoadLatest(selected && selected.value, props.formikBag.values.year);
                     }
                   }}
                 />
@@ -149,7 +129,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
 
                   if (props.formikBag.values.employeeUid !== '' && ((selected && selected.value !== '') && (selected && selected.value !== '0'))) {
-                    props.handleLoadAssign(props.formikBag.values.employeeUid, selected && selected.value);
+                    props.handleLoadLatest(props.formikBag.values.employeeUid, selected && selected.value);
                   }
                 }}
               />
@@ -245,6 +225,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             <TextField
               {...field}
               fullWidth
+              multiline
               required={true}
               margin="normal"
               autoComplete="off"
@@ -258,12 +239,8 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
         />
       </CardContent>
       {
-        props.loadAssign &&
-        setAssignValue()
-      }
-      {
         props.loadLatest &&
-        setLatestPartialValue()
+        setLatestValue()
       }
     </Card>
   );

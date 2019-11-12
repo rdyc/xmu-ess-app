@@ -68,11 +68,11 @@
   "kpi.employee.page.modify.title": "Modify Employee KPI",
   "kpi.employee.page.modify.subHeader": "Lorem Something something",
   
-  "kpi.employee.page.approval.list.title": "HR KPI Approval",
+  "kpi.employee.page.approval.list.title": "HR KPI Input",
   "kpi.employee.page.approval.list.subHeader": "Lorem Something something",
-  "kpi.employee.page.approval.detail.title": "KPI Approval Detail",
+  "kpi.employee.page.approval.detail.title": "KPI Input Detail",
   "kpi.employee.page.approval.detail.subHeader": "Lorem Something something",
-  "kpi.employee.page.approval.approve.title": "Employee KPI Approval",
+  "kpi.employee.page.approval.approve.title": "Employee KPI Input",
   "kpi.employee.page.approval.approve.subHeader": "Lorem Something something",
 
   "kpi.employee.page.manager.list.title": "Manager KPI Input",
