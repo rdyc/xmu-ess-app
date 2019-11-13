@@ -63,12 +63,16 @@
   "hr.competency.field.status": "Status",
 
   "hr.competency.field.employee": "Employee",
-  "hr.competency.field.responden": "Responden",
+  "hr.competency.field.responden": "Assesse",
+  "hr.competency.field.responder": "Assessor",
   
   "hr.competency.field.assessment": "Assessment {state}",
   "hr.competency.field.competency": "Competency {state}",
+  "hr.competency.field.competencyid": "Competency",
+  "hr.competency.field.competencies": "Competencies",
 
   "hr.competency.field.year": "Year",
+  "hr.competency.field.year.required": "Year is required",
   "hr.competency.field.company": "Company",
   "hr.competency.field.position": "Position",
   "hr.competency.field.minNote": "Must have at least 5 words",
@@ -91,8 +95,8 @@
   "hr.competency.field.assess": "Assess",
   "hr.competency.field.active": "Active",
   
-  "hr.competency.field.completion.item": "{responder} / {completion} Responders",
-  "hr.competency.field.completion": "Responder / Completion",
+  "hr.competency.field.completion.item": "{responder} / {completion} Assessor",
+  "hr.competency.field.completion": "Assessor / Completion",
 
   "hr.corner.field.uid": "{state} ID",
   "hr.corner.field.uid.placeholder": "{state} ID",

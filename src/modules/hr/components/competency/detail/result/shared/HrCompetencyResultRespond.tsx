@@ -28,7 +28,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Result'})}
+        // title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Result'})}
       />
       <Table>
         <TableBody>

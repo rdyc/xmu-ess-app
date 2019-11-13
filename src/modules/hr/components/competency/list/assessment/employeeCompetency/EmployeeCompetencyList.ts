@@ -9,7 +9,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -73,7 +73,8 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: EmployeeCompetencyLis
       value: key,
       name: IHrCompetencyField[key]
     })),
-    isActive: true
+    isActive: true,
+    year: Number(moment().format('YYYY'))
   };
 
   // fill from previous request if any
@@ -168,7 +169,7 @@ const handlerCreators: HandleCreators<EmployeeCompetencyListProps, IOwnHandler> 
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: EmployeeCompetencyListProps) => () => {
-    return props.year !== undefined ||
+    return props.year !== Number(moment().format('YYYY')) ||
       props.companyUid !== undefined ||
       props.isAssess === true ||
       props.isActive === false;

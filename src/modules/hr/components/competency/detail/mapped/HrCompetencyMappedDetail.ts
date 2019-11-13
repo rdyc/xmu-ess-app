@@ -101,8 +101,8 @@ const stateUpdaters: StateUpdaters<HrCompetencyMappedDetailProps, IOwnState, IOw
     action: IHrCompetencyMappedUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Mapped'}),
-    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'Mapped'}),
+    dialogTitle: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Mapping'}),
+    dialogContent: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'mapping'}),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
   }),

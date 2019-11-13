@@ -33,14 +33,14 @@ const yearList: ICollectionValue[] = [
   {value: getYear + 1, name: (getYear + 1).toString() },
 ];
 
-interface OwnOption {
+interface IOwnOption {
   isOpen: boolean;
   initialProps?: IEmployeeCompetencyFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IEmployeeCompetencyFilterResult) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   yearList: ICollectionValue[];
   
   // filter year
@@ -56,28 +56,29 @@ interface OwnState {
 
   // filter is active
   filterActive?: boolean;
+  currentYear: ICollectionValue;
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // main filter
-  setFilterReset: StateHandler<OwnState>;
+  setFilterReset: StateHandler<IOwnState>;
 
   // filter year
-  setFilterYearVisibility: StateHandler<OwnState>;
-  setFilterYear: StateHandler<OwnState>;
+  setFilterYearVisibility: StateHandler<IOwnState>;
+  setFilterYear: StateHandler<IOwnState>;
 
   // filter company
-  setFilterCompanyVisibility: StateHandler<OwnState>;
-  setFilterCompany: StateHandler<OwnState>;
+  setFilterCompanyVisibility: StateHandler<IOwnState>;
+  setFilterCompany: StateHandler<IOwnState>;
 
   // filter asses
-  setFilterAssess: StateHandler<OwnState>;
+  setFilterAssess: StateHandler<IOwnState>;
 
   // filter active
-  setFilterActive: StateHandler<OwnState>;
+  setFilterActive: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
@@ -102,16 +103,20 @@ interface OwnHandler {
 }
 
 export type EmployeeCompetencyFilterProps
-  = OwnOption
-  & OwnState
-  & OwnHandler
-  & OwnStateUpdater
+  = IOwnOption
+  & IOwnState
+  & IOwnHandler
+  & IOwnStateUpdater
   & WithStyles<typeof styles>
   & WithLookupCompany
   & InjectedIntlProps;
 
-const createProps: mapper<EmployeeCompetencyFilterProps, OwnState> = (props: EmployeeCompetencyFilterProps): OwnState => ({
+const createProps: mapper<EmployeeCompetencyFilterProps, IOwnState> = (props: EmployeeCompetencyFilterProps): IOwnState => ({
   yearList,
+  currentYear: {
+    name: Number(moment().format('YYYY')).toString(),
+    value: Number(moment().format('YYYY'))
+  },
   isFilterYearOpen: false,
   isFilterCompanyOpen: false,
 
@@ -120,26 +125,26 @@ const createProps: mapper<EmployeeCompetencyFilterProps, OwnState> = (props: Emp
   filterActive: props.initialProps && props.initialProps.isActive,
 });
 
-const stateUpdaters: StateUpdaters<EmployeeCompetencyFilterProps, OwnState, OwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<EmployeeCompetencyFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
-  setFilterReset: () => () => ({
-    filterYear: undefined,
+  setFilterReset: (prevState: IOwnState) => () => ({
+    filterYear: prevState.currentYear,
     filterCompany: undefined,
     filterAssess: undefined,
     filterActive: true
   }),
 
   // filter year
-  setFilterYearVisibility: (prevState: OwnState) => () => ({
+  setFilterYearVisibility: (prevState: IOwnState) => () => ({
     isFilterYearOpen: !prevState.isFilterYearOpen
   }),
-  setFilterYear: () => (data?: ICollectionValue) => ({
+  setFilterYear: (prevState: IOwnState) => (data?: ICollectionValue) => ({
     isFilterYearOpen: false,
     filterYear: data
   }),
 
   // filter company
-  setFilterCompanyVisibility: (prevState: OwnState) => () => ({
+  setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
   setFilterCompany: () => (data?: ILookupCompany) => ({
@@ -158,7 +163,7 @@ const stateUpdaters: StateUpdaters<EmployeeCompetencyFilterProps, OwnState, OwnS
   }),
 };
 
-const handlerCreators: HandleCreators<EmployeeCompetencyFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<EmployeeCompetencyFilterProps, IOwnHandler> = {
   // main filter
   handleFilterOnReset: (props: EmployeeCompetencyFilterProps) => () => {
     props.setFilterReset();
@@ -180,7 +185,7 @@ const handlerCreators: HandleCreators<EmployeeCompetencyFilterProps, OwnHandler>
     props.setFilterYear(data);
   },
   handleFilterYearOnClear: (props: EmployeeCompetencyFilterProps) => () => {
-    props.setFilterYear();
+    props.setFilterYear(props.currentYear);
   },
   handleFilterYearOnClose: (props: EmployeeCompetencyFilterProps) => () => {
     props.setFilterYearVisibility();
@@ -212,7 +217,7 @@ const handlerCreators: HandleCreators<EmployeeCompetencyFilterProps, OwnHandler>
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<EmployeeCompetencyFilterProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<EmployeeCompetencyFilterProps, IOwnState> = {
   componentDidMount() {
     if (this.props.initialProps) {
       const { companyUid, year } = this.props.initialProps;
@@ -237,7 +242,7 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeCompetencyFilterProps, OwnStat
   }
 };
 
-export const EmployeeCompetencyFilter = compose<EmployeeCompetencyFilterProps, OwnOption>(
+export const EmployeeCompetencyFilter = compose<EmployeeCompetencyFilterProps, IOwnOption>(
   setDisplayName('EmployeeCompetencyFilter'),
   withLookupCompany,
   injectIntl,

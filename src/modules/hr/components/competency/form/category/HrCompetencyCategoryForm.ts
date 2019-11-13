@@ -105,7 +105,7 @@ const createProps: mapper<HrCompetencyCategoryFormProps, IOwnState> = (props: Hr
       .label(props.intl.formatMessage(hrMessage.competency.field.cluster))
       .required(),
     categoryUid: Yup.string()
-      .label(props.intl.formatMessage(hrMessage.competency.field.category))
+      .label(props.intl.formatMessage(hrMessage.competency.field.competencyid))
       .required(),
     levels: Yup.array()
       .of(

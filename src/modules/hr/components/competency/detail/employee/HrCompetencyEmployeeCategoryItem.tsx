@@ -1,6 +1,5 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
-import { hrMessage } from '@hr/locales/messages/hrMessage';
-// import { GlobalFormat } from '@layout/types';
+// import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { Done } from '@material-ui/icons';
 import styles from '@styles';
@@ -38,7 +37,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+        // title={props.intl.formatMessage(hrMessage.competency.field.responder)}
       />
       <Table>
         <TableBody>

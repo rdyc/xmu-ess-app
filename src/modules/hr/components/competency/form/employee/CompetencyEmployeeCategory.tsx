@@ -51,7 +51,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
   <Card square className={props.classes.hrTable}>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+      // title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
     />
     <Table>
     <TableBody>

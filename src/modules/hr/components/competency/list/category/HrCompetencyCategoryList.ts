@@ -162,10 +162,10 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryListProps, IOwnHandler
   },
   handleOnBind: () => (item: IHrCompetencyCategory, index: number) => ({
     key: index,
-    primary: item.competency.name,
-    secondary: item.name,
-    tertiary: `${item.levels.length === 0 ? 'No level recorded' : `${item.levels.length} ${item.levels.length < 2 ? 'level' : 'levels'}`}`,
-    quaternary: '',
+    primary: item.name,
+    secondary: item.competency.name,
+    tertiary: '',
+    quaternary: `${item.levels.length === 0 ? 'No level recorded' : `${item.levels.length} ${item.levels.length < 2 ? 'level' : 'levels'}`}`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

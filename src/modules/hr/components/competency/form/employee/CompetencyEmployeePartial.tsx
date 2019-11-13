@@ -25,7 +25,7 @@ const CompetencyEmployeePartial: React.ComponentType<CompetencyEmployeePartialPr
       title={props.intl.formatMessage(hrMessage.competency.field.responden)}
     />
     <CardContent>
-      <Field 
+      {/* <Field 
         name="uid"
         render={({ field}: FieldProps<ICompetencyEmployeeFormValue>) => (
           <TextField 
@@ -36,7 +36,7 @@ const CompetencyEmployeePartial: React.ComponentType<CompetencyEmployeePartialPr
             label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Assessment'})}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="respondenUid"

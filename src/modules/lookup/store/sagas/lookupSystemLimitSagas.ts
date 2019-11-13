@@ -108,7 +108,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'GET',
-      path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.systemLimitUid}`,
+      path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.limitUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupSystemLimitGetByIdSuccess(response.body)),
       ]), 
@@ -168,7 +168,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupSystemLimitPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'PUT',
-      path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.systemLimitUid}`,
+      path: `/v1/lookup/systemlimits/${action.payload.companyUid}/${action.payload.limitUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupSystemLimitGetByIdDispose()),

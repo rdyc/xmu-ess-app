@@ -55,7 +55,7 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
           <React.Fragment>
           <Card square>
             <CardHeader 
-              title={props.intl.formatMessage(hrMessage.competency.field.competency, {state: 'Level'})} 
+              title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Level'})} 
               subheader={
                 props.formikBag.submitCount > 0 &&
                 typeof props.formikBag.errors.levels === 'string' &&

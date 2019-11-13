@@ -51,7 +51,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
     <React.Fragment>      
       <Card square>
         <CardHeader
-          title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Responder'})}
+          title={intl.formatMessage(hrMessage.competency.field.responder)}
         />
         <CardContent>
           <List>
@@ -75,7 +75,8 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 key={item.employeeUid}
               >
                 <ListItemAvatar>
-                  <Avatar className={classNames(!item.isExpired && !item.isRespond ? props.classes.avatarSecondary : (item.isExpired ? props.classes.avatarRed : (item.isRespond && props.classes.avatarPrimary || '')))}>
+                  <Avatar className={classNames(!item.isExpired && !item.isRespond && !item.isComplete ? props.classes.avatarSecondary 
+                    : (!item.isRespond && !item.isComplete && item.isExpired ? props.classes.avatarRed : (item.isRespond || item.isComplete) && props.classes.avatarPrimary))}>
                     {initialName(item.employee.fullName)}
                   </Avatar>
                 </ListItemAvatar>
@@ -85,17 +86,18 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 />
                 <ListItemSecondaryAction>
                   {
-                    !item.isExpired && !item.isRespond ?
+                    !item.isExpired && !item.isRespond && !item.isComplete ?
                     <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: orange[500]}}>
                         {intl.formatMessage(hrMessage.competency.field.assigned)}
                     </span>
                     :
                     (
-                      item.isExpired ?
+                      !item.isRespond && !item.isComplete && item.isExpired ?
                       <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: red[500]}}>
                         {intl.formatMessage(hrMessage.competency.field.expired)}
                       </span>
                       :
+                      (item.isRespond || item.isComplete) &&
                       <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500]}}>
                         {intl.formatMessage(item.isComplete ? hrMessage.competency.field.complete : hrMessage.competency.field.respond)}
                       </span>

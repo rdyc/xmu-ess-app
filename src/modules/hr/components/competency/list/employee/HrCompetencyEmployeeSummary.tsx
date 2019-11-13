@@ -1,4 +1,5 @@
 import { IHrCompetencyEmployee } from '@hr/classes/response';
+import { IHrCompetencyStatus } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -49,7 +50,7 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(hrMessage.competency.field.status)}
-        value={props.data.status && props.data.status.value}
+        value={IHrCompetencyStatus[props.data.statusType]}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
