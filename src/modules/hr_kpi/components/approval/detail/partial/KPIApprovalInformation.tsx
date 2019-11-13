@@ -93,6 +93,7 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
           ||
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
+            multiline
             label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
             value={props.formikBag.values.notes}
           /> 
