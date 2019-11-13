@@ -27,11 +27,11 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
         // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
           value={props.data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
