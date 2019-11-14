@@ -107,35 +107,50 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             )}
           />
         }
+        
+        {
+          props.formMode === FormMode.New && 
+          <Field
+            name="year"
+            render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+              <InputYearOption withPast>
+                <SelectField
+                  isSearchable
+                  isDisabled={props.formikBag.isSubmitting}
+                  isClearable={field.value !== ''}
+                  escapeClearsValue={true}
+                  valueString={field.value}
+                  textFieldProps={{
+                    label: props.intl.formatMessage(kpiMessage.employee.field.year),
+                    required: true,
+                    helperText: form.touched.year && form.errors.year,
+                    error: form.touched.year && Boolean(form.errors.year)
+                  }}
+                  onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                  onChange={(selected: ISelectFieldOption) => {
+                    props.formikBag.setFieldValue(field.name, selected && selected.value || '');
 
-        <Field
-          name="year"
-          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <InputYearOption withPast>
-              <SelectField
-                isSearchable
-                isDisabled={props.formikBag.isSubmitting}
-                isClearable={field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                textFieldProps={{
-                  label: props.intl.formatMessage(kpiMessage.employee.field.year),
-                  required: true,
-                  helperText: form.touched.year && form.errors.year,
-                  error: form.touched.year && Boolean(form.errors.year)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => {
-                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-
-                  if (props.formikBag.values.employeeUid !== '' && ((selected && selected.value !== '') && (selected && selected.value !== '0'))) {
-                    props.handleLoadLatest(props.formikBag.values.employeeUid, selected && selected.value);
-                  }
-                }}
+                    if (props.formikBag.values.employeeUid !== '' && ((selected && selected.value !== '') && (selected && selected.value !== '0'))) {
+                      props.handleLoadLatest(props.formikBag.values.employeeUid, selected && selected.value);
+                    }
+                  }}
+                />
+              </InputYearOption>
+            )}
+          />
+          ||
+          <Field 
+            name="year"
+            render={({ field}: FieldProps<IKPIEmployeeFormValue>) => (
+              <TextField 
+                {...field}
+                {...GlobalStyle.TextField.ReadOnly}
+                disabled={props.formikBag.isSubmitting}
+                label={props.intl.formatMessage(kpiMessage.employee.field.year)}
               />
-            </InputYearOption>
-          )}
-        />
+            )}
+          />
+        }
         
         {/* <Field
           name="period"
