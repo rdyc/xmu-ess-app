@@ -77,8 +77,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IOrganizationStructureAllRequest) => dispatch(organizationStructureGetAllRequest(request)),
     loadAllDispose: () => dispatch(organizationStructureGetAllDispose()),
-    loadSubORdinateListRequest: (request: IOrganizationStructureSubOrdinateListRequest) => dispatch(organizationStructureGetSubOrdinateListRequest(request)),
-    loadSubORdinateListDispose: () => dispatch(organizationStructureGetSubOrdinateListDispose()),
+    loadSubOrdinateListRequest: (request: IOrganizationStructureSubOrdinateListRequest) => dispatch(organizationStructureGetSubOrdinateListRequest(request)),
+    loadSubOrdinateListDispose: () => dispatch(organizationStructureGetSubOrdinateListDispose()),
     loadDetailRequest: (request: IOrganizationStructureByIdRequest) => dispatch(organizationStructureGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(organizationStructureGetByIdDispose()),
   }
