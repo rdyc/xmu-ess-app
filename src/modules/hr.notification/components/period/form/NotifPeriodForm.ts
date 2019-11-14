@@ -34,6 +34,7 @@ export interface INotifPeriodFormValue {
   uid: string;
   type: string;
   name: string;
+  range: string;
   from: number;
   to: number;
 }
@@ -79,6 +80,7 @@ const createProps: mapper<NotifPeriodFormProps, IOwnState> = (props: NotifPeriod
     uid: 'Auto Generated',
     name: '',
     type: '',
+    range: '',
     from: 0,
     to: 0
   },
@@ -93,7 +95,11 @@ const createProps: mapper<NotifPeriodFormProps, IOwnState> = (props: NotifPeriod
       .label(props.intl.formatMessage(notifMessage.period.field.name))      
       .max(150)
       .required(props.intl.formatMessage(notifMessage.period.field.nameRequired)),
-      
+    
+    range: Yup.string()
+      .label(props.intl.formatMessage(notifMessage.period.field.range))
+      .required(props.intl.formatMessage(notifMessage.period.field.rangeRequired)),
+
     from: Yup.number()
       .label(props.intl.formatMessage(notifMessage.period.field.from))
       .min(0)
@@ -137,6 +143,7 @@ const handlerCreators: HandleCreators<NotifPeriodFormProps, IOwnHandler> = {
         // fill payload
         const payload: INotifPeriodPostPayload = {
           type: values.type,
+          range: values.range,
           name: values.name,
           from: values.from,
           to: values.to
@@ -162,6 +169,7 @@ const handlerCreators: HandleCreators<NotifPeriodFormProps, IOwnHandler> = {
           // fill payload
           const payload: INotifPeriodPutPayload = {
             type: values.type,
+            range: values.range,
             name: values.name,
             from: values.from,
             to: values.to
@@ -230,6 +238,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<NotifPeriodFormProps, IOwnStat
         const initialValues: INotifPeriodFormValue = {
           uid: response.data.uid,
           type: response.data.type,
+          range: response.data.range,
           name: response.data.name,
           from: response.data.from,
           to: response.data.to
