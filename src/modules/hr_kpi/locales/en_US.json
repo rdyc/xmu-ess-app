@@ -105,7 +105,7 @@
   "kpi.employee.approval.form": "KPI Employee Approval Submission",
 
   "kpi.employee.message.emptyProps": "Some props are empty",
-  "kpi.employee.message.noAssign": "No Assigned KPI Found",
+  "kpi.employee.message.noAssign": "No Assigned KPI Found or KPI for both period in this Year is already exist",
   "kpi.employee.message.approval.success": "Employee KPI approval successful",
   "kpi.employee.message.approval.failure": "Employee KPI approval failed",
   "kpi.employee.message.create.success": "A new Employee KPI has been created",

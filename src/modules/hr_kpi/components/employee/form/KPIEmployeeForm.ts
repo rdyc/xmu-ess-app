@@ -1,4 +1,3 @@
-import { IEmployeeListFilter } from '@account/classes/filters';
 import { WorkflowStatusType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
@@ -10,6 +9,7 @@ import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IOrganizationStructureSubOrdinateListFilter } from '@organization/classes/filters/structure';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import * as moment from 'moment';
@@ -78,7 +78,7 @@ interface IOwnState {
   initialValues: IKPIEmployeeFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIEmployeeFormValue>>>;
 
-  filterAccountEmployee: IEmployeeListFilter;
+  filterSubOrdinateEmployee: IOrganizationStructureSubOrdinateListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -191,11 +191,9 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
       .min(1, props.intl.formatMessage(kpiMessage.employee.field.itemsMinimum))
   }),
 
-  filterAccountEmployee: ({
-    companyUids: props.userState.user && props.userState.user.company.uid,
-    // positionUids: props.userState.user && props.userState.user.position.uid, until account add superordinate param
-    useAccess: false,
-    useSuperOrdinate: true,
+  filterSubOrdinateEmployee: ({
+    companyUid: props.userState.user && props.userState.user.company.uid || '',
+    positionUid: props.userState.user && props.userState.user.position.uid || '',
   }),
 });
 

@@ -1,3 +1,4 @@
+import { IEmployee } from '@account/classes/response';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
   IOrganizationStructureAllRequest,
@@ -5,6 +6,7 @@ import {
   IOrganizationStructureDeleteRequest,
   IOrganizationStructurePostRequest,
   IOrganizationStructurePutRequest,
+  IOrganizationStructureSubOrdinateListRequest,
 } from '@organization/classes/queries/structure';
 import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import {
@@ -14,6 +16,8 @@ import {
   organizationStructureGetAllRequest,
   organizationStructureGetByIdDispose,
   organizationStructureGetByIdRequest,
+  organizationStructureGetSubOrdinateListDispose,
+  organizationStructureGetSubOrdinateListRequest,
   organizationStructurePostDispose,
   organizationStructurePostRequest,
   organizationStructurePutDispose,
@@ -25,6 +29,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   organizationStructureState: {
     all: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
+    subOrdinateList: IQueryCollectionState<IOrganizationStructureSubOrdinateListRequest, IEmployee>;
     detail: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>;
   };
 }
@@ -42,6 +47,8 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof organizationStructureGetAllRequest;
     loadAllDispose: typeof organizationStructureGetAllDispose;
+    loadSubOrdinateListRequest: typeof organizationStructureGetSubOrdinateListRequest;
+    loadSubOrdinateListDispose: typeof organizationStructureGetSubOrdinateListDispose;
     loadDetailRequest: typeof organizationStructureGetByIdRequest;
     loadDetailDispose: typeof organizationStructureGetByIdDispose;
   };
@@ -49,9 +56,10 @@ interface PropsFromDispatch {
 
 export interface WithOrganizationStructure extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ organizationStructureGetAll, organizationStructureGetById }: IAppState) => ({
+const mapStateToProps = ({ organizationStructureGetAll, organizationStructureGetSubOrdinateList, organizationStructureGetById }: IAppState) => ({
   organizationStructureState: {
     all: organizationStructureGetAll,
+    subOrdinateList: organizationStructureGetSubOrdinateList,
     detail: organizationStructureGetById,
   }
 });
@@ -69,6 +77,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: IOrganizationStructureAllRequest) => dispatch(organizationStructureGetAllRequest(request)),
     loadAllDispose: () => dispatch(organizationStructureGetAllDispose()),
+    loadSubOrdinateListRequest: (request: IOrganizationStructureSubOrdinateListRequest) => dispatch(organizationStructureGetSubOrdinateListRequest(request)),
+    loadSubOrdinateListDispose: () => dispatch(organizationStructureGetSubOrdinateListDispose()),
     loadDetailRequest: (request: IOrganizationStructureByIdRequest) => dispatch(organizationStructureGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(organizationStructureGetByIdDispose()),
   }

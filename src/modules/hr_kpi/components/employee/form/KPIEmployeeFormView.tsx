@@ -41,7 +41,7 @@ export const KPIEmployeeFormView: React.SFC<KPIEmployeeFormProps> = props => {
                     intl={props.intl}
                     handleLoadLatest={props.handleLoadLatest}
                     handleSetLoadLatest={props.handleSetLoadLatest}
-                    filterAccountEmployee={props.filterAccountEmployee}
+                    filterSubOrdinateEmployee={props.filterSubOrdinateEmployee}
                     loadLatest={props.loadLatest}
                     latestData={props.latestData}
                   />
