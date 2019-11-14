@@ -1,10 +1,11 @@
 import AppMenu from '@constants/AppMenu';
 import { INotifSettingDetail } from '@hr.notification/classes/response';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
+import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
+
 import { NotifSettingInformation } from '../shared/NotifSettingInformation';
 import { NotifSettingMail } from '../shared/NotifSettingMail';
 import { NotifSettingDetailProps } from './NotifSettingDetail';
@@ -47,15 +48,19 @@ export const NotifSettingDetailView: React.SFC<NotifSettingDetailProps> = props 
       />
     }
   >
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
+    <Delete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
       title={props.dialogTitle}
       content={props.dialogContent}
       labelCancel={props.dialogCancelLabel}
       labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
     />
   </PreviewPage>
 );

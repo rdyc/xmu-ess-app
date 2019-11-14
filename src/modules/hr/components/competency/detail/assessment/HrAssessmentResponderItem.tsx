@@ -87,18 +87,18 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 <ListItemSecondaryAction>
                   {
                     !item.isExpired && !item.isRespond && !item.isComplete ?
-                    <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: orange[500]}}>
+                    <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: orange[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(hrMessage.competency.field.assigned)}
                     </span>
                     :
                     (
                       !item.isRespond && !item.isComplete && item.isExpired ?
-                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: red[500]}}>
+                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: red[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(hrMessage.competency.field.expired)}
                       </span>
                       :
                       (item.isRespond || item.isComplete) &&
-                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500]}}>
+                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(item.isComplete ? hrMessage.competency.field.complete : hrMessage.competency.field.respond)}
                       </span>
                     )

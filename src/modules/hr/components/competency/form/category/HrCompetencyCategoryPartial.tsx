@@ -39,33 +39,6 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
       /> */}
 
       <Field
-        name="categoryUid"
-        render={({ field, form }: FieldProps<ICategoryFormValue>) => (
-          <HrCompetencyCategoryOption clusterUid={props.formikBag.values.clusterUid}>
-            <SelectField
-              isSearchable
-              menuPlacement="auto"
-              menuPosition="fixed"
-              isDisabled
-              isClearable={field.value !== ''}
-              escapeClearsValue={true}
-              valueString={field.value}
-              textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.competencyid),
-                required: true,
-                helperText: form.touched.categoryUid && form.errors.categoryUid,
-                error: form.touched.categoryUid && Boolean(form.errors.categoryUid)
-              }}
-              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-              }}
-            />
-          </HrCompetencyCategoryOption>
-        )}
-      />
-
-      <Field
         name="clusterUid"
         render={({ field, form }: FieldProps<ICategoryFormValue>) => (
           <HrCompetencyClusterOption filter={props.filterCluster}>
@@ -89,6 +62,33 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               }}
             />
           </HrCompetencyClusterOption>
+        )}
+      />
+      
+      <Field
+        name="categoryUid"
+        render={({ field, form }: FieldProps<ICategoryFormValue>) => (
+          <HrCompetencyCategoryOption clusterUid={props.formikBag.values.clusterUid}>
+            <SelectField
+              isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
+              isDisabled
+              isClearable={field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(hrMessage.competency.field.competencyid),
+                required: true,
+                helperText: form.touched.categoryUid && form.errors.categoryUid,
+                error: form.touched.categoryUid && Boolean(form.errors.categoryUid)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+              }}
+            />
+          </HrCompetencyCategoryOption>
         )}
       />
       

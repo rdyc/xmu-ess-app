@@ -1040,6 +1040,17 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         right: '15px',
       }
+    },
+
+    tableCategory: {
+      cursor: 'pointer',
+      '&:hover': {
+        background: theme.palette.type === 'light' ? lightBlue[700] : theme.palette.grey[600],
+      }
+    },
+    expandCategory: {
+      verticalAlign: 'middle',
+      marginLeft: '10px'
     }
   });
 

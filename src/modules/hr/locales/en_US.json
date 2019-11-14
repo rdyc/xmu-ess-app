@@ -89,10 +89,10 @@
   "hr.competency.field.cluster.required": "Cluster is required",
 
   "hr.competency.field.assigned": "Assigned",
-  "hr.competency.field.respond": "Responded",
+  "hr.competency.field.respond": "In Progress",
   "hr.competency.field.complete": "Completed",
   "hr.competency.field.expired": "Expired",
-  "hr.competency.field.assess": "Assess",
+  "hr.competency.field.assess": "Assessment Completed",
   "hr.competency.field.active": "Active",
   
   "hr.competency.field.completion.item": "{responder} / {completion} Assessor",

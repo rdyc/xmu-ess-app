@@ -45,15 +45,5 @@ export const WebJobRecurringDetailView: React.SFC<WebJobRecurringDetailProps> = 
       onSubmitSuccess={props.handleDeleteSuccess}
       onSubmitFail={props.handleDeleteFail}
     />
-    {/* <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    /> */}
   </PreviewPage>
 );

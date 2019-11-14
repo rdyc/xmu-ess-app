@@ -4,6 +4,7 @@ export * from './competency/cluster/IHrCompetencyClusterGetDetailRequest';
 export * from './competency/cluster/IHrCompetencyClusterGetListRequest';
 export * from './competency/cluster/IHrCompetencyClusterPostRequest';
 export * from './competency/cluster/IHrCompetencyClusterPatchRequest';
+export * from './competency/cluster/IHrCompetencyClusterDeleteRequest';
 
 // category
 export * from './competency/category/IHrCompetencyCategoryGetAllRequest';

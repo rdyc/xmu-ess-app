@@ -200,7 +200,6 @@ const handlerCreators: HandleCreators<EmployeeCompetencyFilterProps, IOwnHandler
   },
   handleFilterCompanyOnClear: (props: EmployeeCompetencyFilterProps) => () => {
     props.setFilterCompany();
-    props.setFilterPosition();
   },
   handleFilterCompanyOnClose: (props: EmployeeCompetencyFilterProps) => () => {
     props.setFilterCompanyVisibility();

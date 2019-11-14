@@ -103,14 +103,16 @@ const CompetencyAssessmentResponder: React.ComponentType<CompetencyAssessmentRes
 
                                         // prevent duplicate
                                         if (value !== '') {
-                                          const isExist = props.formikBag.values.responder.findIndex(responder => responder.employeeUid === value);
-                                          const isCreator = Boolean(props.creator && props.creator === value);
+                                          // const isExist = props.formikBag.values.responder.findIndex(responder => responder.employeeUid === value);
+                                          // const isCreator = Boolean(props.creator && props.creator === value);
                                           // const isExpired = props.formikBag.values.responder.findIndex(responder => responder.employeeUid === value);
                                           // const isAssessment = Boolean(props.formikBag.values.employeeUid === value);
 
-                                          if (isExist === -1 && !isCreator) {
-                                            props.formikBag.setFieldValue(field.name, value);
-                                          }
+                                          // if (isExist === -1 && !isCreator) {
+                                          //   props.formikBag.setFieldValue(field.name, value);
+                                          // }
+                                          props.formikBag.setFieldValue(field.name, value);
+
                                         } else {
                                           props.formikBag.setFieldValue(field.name, value);
                                         }

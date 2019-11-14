@@ -1,13 +1,16 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  IHrCompetencyClusterDeleteRequest, 
   IHrCompetencyClusterGetAllRequest, 
   IHrCompetencyClusterGetDetailRequest, 
   IHrCompetencyClusterGetListRequest, 
-  IHrCompetencyClusterPatchRequest, 
+  IHrCompetencyClusterPatchRequest,
   IHrCompetencyClusterPostRequest,
 } from '@hr/classes/queries/';
 import { IHrCompetencyCluster, IHrCompetencyClusterDetail, IHrCompetencyClusterList } from '@hr/classes/response/';
 import { 
+  hrCompetencyClusterDeleteDispose, 
+  hrCompetencyClusterDeleteRequest, 
   hrCompetencyClusterGetAllDispose, 
   hrCompetencyClusterGetAllRequest, 
   hrCompetencyClusterGetByIdDispose, 
@@ -15,8 +18,8 @@ import {
   hrCompetencyClusterGetListDispose, 
   hrCompetencyClusterGetListRequest, 
   hrCompetencyClusterPatchDispose, 
-  hrCompetencyClusterPatchRequest, 
-  hrCompetencyClusterPostDispose, 
+  hrCompetencyClusterPatchRequest,
+  hrCompetencyClusterPostDispose,
   hrCompetencyClusterPostRequest,
 } from '@hr/store/actions';
 import { connect } from 'react-redux';
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof hrCompetencyClusterPostDispose;
     patchRequest: typeof hrCompetencyClusterPatchRequest;
     patchDispose: typeof hrCompetencyClusterPatchDispose;
+    deleteRequest: typeof hrCompetencyClusterDeleteRequest;
+    deleteDispose: typeof hrCompetencyClusterDeleteDispose;
 
     // query
     loadAllRequest: typeof hrCompetencyClusterGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(hrCompetencyClusterPostDispose()),
     patchRequest: (request: IHrCompetencyClusterPatchRequest) => dispatch(hrCompetencyClusterPatchRequest(request)),
     patchDispose: () => dispatch(hrCompetencyClusterPatchDispose()),
+    deleteRequest: (request: IHrCompetencyClusterDeleteRequest) => dispatch(hrCompetencyClusterDeleteRequest(request)),
+    deleteDispose: () => dispatch(hrCompetencyClusterDeleteDispose()),
 
     // query
     loadAllRequest: (request: IHrCompetencyClusterGetAllRequest) => dispatch(hrCompetencyClusterGetAllRequest(request)),

@@ -14,3 +14,4 @@ export type CommonCategoryType =
   'tax' | 'training' | 'transportation' |
   'profession' | 'competency' |
   'tax' | 'training' | 'transportation' | 'kPI' | 'measurement';
+  // | 'assessor';

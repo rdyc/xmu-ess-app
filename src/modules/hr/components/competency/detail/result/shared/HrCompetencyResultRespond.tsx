@@ -1,25 +1,51 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardHeader, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { CommentOutlined, Done } from '@material-ui/icons';
+import { Card, CardHeader, Collapse, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { CommentOutlined, Done, ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: IHrCompetencyEmployeeDetail;
   mapped: IHrCompetencyMappedList;
   responders: IHrCompetencyEmployeeDetailList[];
 }
 
+interface IOwnState {
+  active: string | undefined;
+  isExpanded: boolean;
+}
+
+interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
+  handleToggle: (uid: string) => IOwnState;
+}
+
 type AllProps
-  = OwnProps
+  = IOwnProps
+  & IOwnState
+  & IOwnStateHandler
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
+const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
+  active: undefined,
+  isExpanded: false
+});
+
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
+  })
+};
+
 const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
+  const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     return item && item.note;
@@ -28,7 +54,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader 
-        // title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Result'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Form'})}
       />
       <Table>
         <TableBody>
@@ -55,10 +81,22 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
             props.mapped.categories.map((item, index) => 
             <React.Fragment key={item.uid}>
               <TableRow>
-                <TableCell colSpan={props.responders.length + 1} className={props.classes.toolbar} >
-                  <Typography variant="body1" color="inherit">
+                {/* Category */}
+                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => handleToggle(item.category.uid)} >
+                  <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >
                     {item.category.name}
-                  </Typography> 
+                  </Typography>
+                  {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
+                  <Collapse
+                    in={active === item.category.uid && isExpanded}
+                    // className={props.classes.marginFar}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <Typography variant="body1" color="inherit">
+                      {item.category.description}
+                    </Typography>
+                  </Collapse>
                 </TableCell>
               </TableRow>
               {
@@ -81,12 +119,15 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                       }    
                       </ul>
                     </TableCell>
+
+                    {/* Check from responder */}
                     {
                       props.responders.map(responder => 
                         !responder.isHR &&
                         <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                           {
                             responder.items.length > 0 &&
+                            (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                             responder.items.find(findData => findData.levelUid === level.uid) &&
                             <Typography>
                               <Done />
@@ -109,6 +150,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                   {
                     props.responders.find(responder => 
                       !responder.isHR && 
+                      (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                       responder.items.length > 0 && 
                       responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                       <TableRow>
@@ -119,6 +161,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                               {
                                 props.responders.map(responder => 
                                   !responder.isHR &&
+                                  (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                                   responder.items.length > 0 &&
                                   responder.items.find(findData => findData.levelUid === level.uid) &&
                                     <li key={responder.uid}>
@@ -166,7 +209,8 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HrCompetencyResultRespond = compose<AllProps, OwnProps>(
+export const HrCompetencyResultRespond = compose<AllProps, IOwnProps>(
+  injectIntl,
   withStyles(styles),
-  injectIntl
-)(hrCompetencyResultRespond);
+  withStateHandlers(createProps, stateUpdaters)
+  )(hrCompetencyResultRespond);

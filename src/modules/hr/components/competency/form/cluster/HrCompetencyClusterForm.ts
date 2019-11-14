@@ -211,6 +211,13 @@ const handlerCreators: HandleCreators<HrCompetencyClusterFormProps, IOwnHandler>
           message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Cluster', type: 'name', uid: response.name })
         });
 
+        props.hrCompetencyClusterDispatch.loadListRequest({
+          filter: {
+            orderBy: 'name',
+            direction: 'ascending'
+          }
+        });
+        
         // redirect to detail
         props.history.push(`/hr/competency/cluster/${response.uid}`);
       })

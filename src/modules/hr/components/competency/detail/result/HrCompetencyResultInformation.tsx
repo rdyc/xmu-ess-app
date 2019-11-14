@@ -1,4 +1,5 @@
 import {  IHrCompetencyEmployeeDetail } from '@hr/classes/response';
+import { IHrCompetencyStatus } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -53,6 +54,12 @@ const hrCompetencyResultInformation: React.SFC<AllProps> = props => {
           multiline
           label={intl.formatMessage(hrMessage.competency.field.position)}
           value={data.position && data.position.name || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={props.intl.formatMessage(hrMessage.competency.field.status)}
+          value={IHrCompetencyStatus[data.statusType]}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -69,6 +69,6 @@ export const notifTemplatePutDispose = () => action(NotifTemplateAction.PUT_DISP
 
 // delete
 export const notifTemplateDeleteRequest = (request: INotifTemplateDeleteRequest) => action(NotifTemplateAction.DELETE_REQUEST, request);
-export const notifTemplateDeleteSuccess = (response: IResponseSingle<undefined>) => action(NotifTemplateAction.DELETE_SUCCESS, response);
+export const notifTemplateDeleteSuccess = () => action(NotifTemplateAction.DELETE_SUCCESS);
 export const notifTemplateDeleteError = (error: any) => action(NotifTemplateAction.DELETE_ERROR, error);
 export const notifTemplateDeleteDispose = () => action(NotifTemplateAction.DELETE_DISPOSE);
