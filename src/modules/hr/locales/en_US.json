@@ -52,6 +52,9 @@
   "hr.competency.field.note": "Note",
   "hr.competency.field.note.placeholder": "Type any note",
   "hr.competency.field.note.required": "Note is required",
+  "hr.competency.field.note.content": "Berikan penilaian terhadap kompetensi berikut sesuai dengan kondisi orang yang dinilai yaitu dengan memilih level yang sesuai:",
+  "hr.competency.field.note.content.one": "Jika memililih level 2, maka level 1 sudah harus terpenuhi (berlaku untuk level selanjutnya)",
+  "hr.competency.field.note.content.two": "Untuk level yang dipilih wajib menuliskan bukti perilaku",
 
   "hr.competency.field.indicator": "Indicator",
   "hr.competency.field.indicatorNum": "Indicator - {num}",

@@ -1048,10 +1048,11 @@ const styles = (theme: Theme) =>
         background: theme.palette.type === 'light' ? lightBlue[700] : theme.palette.grey[600],
       }
     },
+
     expandCategory: {
       verticalAlign: 'middle',
       marginLeft: '10px'
-    }
+    },
   });
 
 export default styles;

@@ -70,6 +70,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
           props.mapped.categories.map((item, index) => 
           <React.Fragment key={item.uid}>
             <TableRow>
+              
               {/* Category */}
               <TableCell colSpan={2} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => handleToggle(item.category.uid)} >
                 <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >

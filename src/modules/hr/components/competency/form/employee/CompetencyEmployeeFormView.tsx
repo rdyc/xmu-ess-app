@@ -7,6 +7,7 @@ import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { HrInputInformation } from '../../shared/HrInputInformation';
 import { CompetencyEmployeeCategory } from './CompetencyEmployeeCategory';
 import { CompetencyEmployeeFormProps, ICompetencyEmployeeFormValue } from './CompetencyEmployeeForm';
 import CompetencyEmployeePartial from './CompetencyEmployeePartial';
@@ -39,6 +40,12 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
                   formikBag={formikBag}
                   filterCompany={props.filterCompany}
                 />
+              </div>
+            </div>
+
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrInputInformation />
               </div>
             </div>
 

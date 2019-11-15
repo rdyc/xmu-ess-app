@@ -30,6 +30,9 @@ export const hrCompetencyField = defineMessages({
   note: { id: `${prefix}.field.note`},
   noteRequired: { id: `${prefix}.field.note.required`},
   notePlaceholder: { id: `${prefix}.field.note.placeholder`},
+  noteContent: { id: `${prefix}.field.note.content`},
+  noteContentOne: { id: `${prefix}.field.note.content.one`},
+  noteContentTwo: { id: `${prefix}.field.note.content.two`},
 
   year: { id: `${prefix}.field.year`},
   yearRequired: { id: `${prefix}.field.year.required`},
@@ -71,6 +74,7 @@ export const hrCompetencyField = defineMessages({
 
   completion: { id: `${prefix}.field.completion`},
   completionItem: { id: `${prefix}.field.completion.item`},
+
 });
 
 // helper
