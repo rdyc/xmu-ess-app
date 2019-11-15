@@ -1,25 +1,48 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-// import { GlobalFormat } from '@layout/types';
-import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { Card, CardHeader, Collapse, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Done, ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
-// import * as moment from 'moment';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: IHrCompetencyEmployeeDetail;
   mapped: IHrCompetencyMappedList;
 }
 
+interface IOwnState {
+  active: string | undefined;
+  isExpanded: boolean;
+}
+
+interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
+  handleToggle: (uid: string) => IOwnState;
+}
+
 type AllProps
-  = OwnProps
+  = IOwnProps
+  & IOwnState
+  & IOwnStateHandler
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
+const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
+  active: undefined,
+  isExpanded: false
+});
+
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
+  })
+};
+
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
+  const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     if (item) {
@@ -38,7 +61,8 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Form'})}
+      // title={props.intl.formatMessage(hrMessage.competency.field.responder)}
       />
       <Table>
         <TableBody>
@@ -46,10 +70,22 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
           props.mapped.categories.map((item, index) => 
           <React.Fragment key={item.uid}>
             <TableRow>
-              <TableCell colSpan={2} className={props.classes.toolbar}>
-                <Typography variant="body1" color="inherit">
-                  {item.category && item.category.name}
+              
+              {/* Category */}
+              <TableCell colSpan={2} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => handleToggle(item.category.uid)} >
+                <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >
+                  {item.category.name}
                 </Typography>
+                {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
+                <Collapse
+                  in={active === item.category.uid && isExpanded}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <Typography variant="body1" color="inherit">
+                    {item.category.description}
+                  </Typography>
+                </Collapse>
               </TableCell>
             </TableRow>
             {
@@ -109,7 +145,8 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const HrCompetencyEmployeeCategoryItem = compose<AllProps, OwnProps>(
+export const HrCompetencyEmployeeCategoryItem = compose<AllProps, IOwnProps>(
+  injectIntl,
   withStyles(styles),
-  injectIntl
+  withStateHandlers(createProps, stateUpdaters)
 )(hrCompetencyEmployeeCategoryItem);

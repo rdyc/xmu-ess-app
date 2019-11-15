@@ -6,6 +6,7 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
+import { HrInputInformation } from '../../shared/HrInputInformation';
 import { HrCompetencyEmployeeCategoryItem } from './HrCompetencyEmployeeCategoryItem';
 import { HrCompetencyEmployeeDetailProps } from './HrCompetencyEmployeeDetail';
 import { HrCompetencyEmployeeInformation } from './HrCompetencyEmployeeInformation';
@@ -24,6 +25,9 @@ export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetai
       onLoadApi={props.handleOnLoadApi}
       primary={(data: IHrCompetencyEmployeeDetail) => ([
         <HrCompetencyEmployeeInformation data={data} />
+      ])}
+      secondary={() => ([
+        <HrInputInformation />
       ])}
       appBarComponent={
         props.menuOptions &&

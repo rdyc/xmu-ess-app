@@ -1,9 +1,10 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
+  IHrCompetencyClusterDeleteRequest, 
   IHrCompetencyClusterGetAllRequest, 
-  IHrCompetencyClusterGetDetailRequest, 
-  IHrCompetencyClusterGetListRequest,
-  IHrCompetencyClusterPatchRequest, 
+  IHrCompetencyClusterGetDetailRequest,
+  IHrCompetencyClusterGetListRequest, 
+  IHrCompetencyClusterPatchRequest,
   IHrCompetencyClusterPostRequest,
 } from 'modules/hr/classes/queries';
 import { IHrCompetencyCluster, IHrCompetencyClusterDetail, IHrCompetencyClusterList } from 'modules/hr/classes/response';
@@ -30,6 +31,10 @@ export const enum HrCompetencyClusterAction {
   PATCH_SUCCESS = '@@hr/competency/cluster/PATCH_SUCCESS',
   PATCH_ERROR = '@@hr/competency/cluster/PATCH_ERROR',
   PATCH_DISPOSE = '@@hr/competency/cluster/PATCH_DISPOSE',
+  DELETE_REQUEST = '@@hr/competency/cluster/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@hr/competency/cluster/DELETE_SUCCESS',
+  DELETE_ERROR = '@@hr/competency/cluster/DELETE_ERROR',
+  DELETE_DISPOSE = '@@hr/competency/cluster/DELETE_DISPOSE',
 }
 
 // get all
@@ -61,3 +66,9 @@ export const hrCompetencyClusterPatchRequest = (request: IHrCompetencyClusterPat
 export const hrCompetencyClusterPatchSuccess = (response: IResponseSingle<IHrCompetencyCluster>) => action(HrCompetencyClusterAction.PATCH_SUCCESS, response);
 export const hrCompetencyClusterPatchError = (error: any) => action(HrCompetencyClusterAction.PATCH_ERROR, error);
 export const hrCompetencyClusterPatchDispose = () => action(HrCompetencyClusterAction.PATCH_DISPOSE);
+
+// post
+export const hrCompetencyClusterDeleteRequest = (request: IHrCompetencyClusterDeleteRequest) => action(HrCompetencyClusterAction.DELETE_REQUEST, request);
+export const hrCompetencyClusterDeleteSuccess = (response: boolean) => action(HrCompetencyClusterAction.DELETE_SUCCESS, response);
+export const hrCompetencyClusterDeleteError = (error: any) => action(HrCompetencyClusterAction.DELETE_ERROR, error);
+export const hrCompetencyClusterDeleteDispose = () => action(HrCompetencyClusterAction.DELETE_DISPOSE);

@@ -133,7 +133,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
     if (props.userState.user && props.match.params.systemLimitUid && !props.systemLimitState.detail.isLoading) {
       props.systemLimitDispatch.loadDetailRequest({
         companyUid: props.history.location.state.companyUid,
-        systemLimitUid: props.match.params.systemLimitUid
+        limitUid: props.match.params.systemLimitUid
       });
     }
   },

@@ -1,8 +1,10 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardHeader, Collapse, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -17,7 +19,8 @@ interface IOwnProps {
 }
 
 interface IOwnState {
-
+  active: string | undefined;
+  isExpanded: boolean;
 }
 
 interface IOwnHandler {
@@ -26,6 +29,7 @@ interface IOwnHandler {
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
+  handleToggle: (uid: string) => IOwnState;
 }
 
 type AllProps
@@ -36,6 +40,8 @@ type AllProps
   & WithStyles<typeof styles>;
   
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
+  active: undefined,
+  isExpanded: false
 });
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
@@ -45,13 +51,17 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
   stateUpdate: (prevState: IOwnState) => (newState: IOwnState) => ({
     ...prevState,
     ...newState
+  }),
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
   })
 };
 
 const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
   <Card square className={props.classes.hrTable}>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Respond'})}
+      title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Form'})}
     />
     <Table>
     <TableBody>
@@ -60,10 +70,21 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
       props.data.categories.map((item, index) => 
       <React.Fragment key={item.uid}>
         <TableRow>
-          <TableCell colSpan={2} className={props.classes.toolbar}>
-            <Typography variant="body1" color="inherit">
+          {/* Category */}
+          <TableCell colSpan={2} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => props.handleToggle(item.category.uid)} >
+            <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >
               {item.category.name}
             </Typography>
+            {props.active === item.category.uid && props.isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
+            <Collapse
+              in={props.active === item.category.uid && props.isExpanded}
+              timeout="auto"
+              unmountOnExit
+            >
+              <Typography variant="body1" color="inherit">
+                {item.category.description}
+              </Typography>
+            </Collapse>
           </TableCell>
         </TableRow>
         <FieldArray 

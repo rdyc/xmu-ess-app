@@ -2,7 +2,6 @@ import {
   NotifSettingAction as Action,
   notifSettingDeleteError,
   notifSettingDeleteRequest,
-  notifSettingDeleteSuccess,
   notifSettingGetAllDispose,
   notifSettingGetAllError,
   notifSettingGetAllRequest,
@@ -162,10 +161,9 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(notifSettingGetByIdDispose()),
         put(notifSettingGetAllDispose()),
-        put(notifSettingDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(notifSettingDeleteError(response.statusText))

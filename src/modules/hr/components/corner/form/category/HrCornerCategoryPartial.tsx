@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { layoutMessage } from '@layout/locales/messages';
+// import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -19,19 +19,20 @@ const HrCornerCategoryPartial: React.ComponentType<HrCornerCategoryPartialProps>
       title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Corner Category'})}
     />
     <CardContent>
-      <Field 
+      {/* <Field 
         name="uid"
         render={({ field}: FieldProps<ICornerCategoryFormValue>) => (
           <TextField 
             {...field}
             fullWidth
             disabled
+            multiline
             margin="normal"
             label={props.intl.formatMessage(hrMessage.competency.fieldFor(field.name, 'fieldName'), {state: 'Category'})}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="name"

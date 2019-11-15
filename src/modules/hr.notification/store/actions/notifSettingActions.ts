@@ -58,6 +58,6 @@ export const notifSettingPutDispose = () => action(NotifSettingAction.PUT_DISPOS
 
 // delete
 export const notifSettingDeleteRequest = (request: INotifSettingDeleteRequest) => action(NotifSettingAction.DELETE_REQUEST, request);
-export const notifSettingDeleteSuccess = (response: IResponseSingle<undefined>) => action(NotifSettingAction.DELETE_SUCCESS, response);
+export const notifSettingDeleteSuccess = () => action(NotifSettingAction.DELETE_SUCCESS);
 export const notifSettingDeleteError = (error: any) => action(NotifSettingAction.DELETE_ERROR, error);
 export const notifSettingDeleteDispose = () => action(NotifSettingAction.DELETE_DISPOSE);

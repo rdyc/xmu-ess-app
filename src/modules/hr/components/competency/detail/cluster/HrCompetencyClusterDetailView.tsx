@@ -1,10 +1,11 @@
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyClusterDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
+import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
+
 import { HrCompetencyClusterCategory } from './HrCompetencyClusterCategory';
 import { HrCompetencyClusterDetailProps } from './HrCompetencyClusterDetail';
 import { HrCompetencyClusterInformation } from './HrCompetencyClusterInformation';
@@ -36,15 +37,19 @@ export const HrCompetencyClusterDetailView: React.SFC<HrCompetencyClusterDetailP
       />
     }
   >
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
+    <Delete 
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
       title={props.dialogTitle}
       content={props.dialogContent}
       labelCancel={props.dialogCancelLabel}
       labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleSubmit} 
+      onSubmitSuccess={props.handleSubmitSuccess}
+      onSubmitFail={props.handleSubmitFail}
     />
   </PreviewPage>
 );

@@ -148,9 +148,10 @@ const handlerCreators: HandleCreators<HrCompetencyMappedListProps, IOwnHandler> 
   },
   handleOnBind: () => (item: IHrCompetencyMapped, index: number) => ({
     key: index,
-    primary: item.company && item.company.name || 'N/A',
-    secondary: item.position && item.position.name || 'N/A',
-    tertiary: `${item.categories.length} categories`,
+    primary: item.position && item.position.name || 'N/A',
+    secondary: item.company && item.company.name || 'N/A',
+    // tertiary: `${item.categories.length} categories`,
+    tertiary: '',
     quaternary: '',
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

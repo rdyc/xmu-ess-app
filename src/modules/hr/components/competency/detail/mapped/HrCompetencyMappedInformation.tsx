@@ -25,16 +25,16 @@ const hrCompetencyMappedInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Mapped'})}
+        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Mapping'})}
         // subheader={intl.formatMessage(hrMessage.request.field.subHeader)}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Mapped'})}
           value={data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

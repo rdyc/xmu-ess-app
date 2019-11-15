@@ -53,7 +53,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
       <React.Fragment>
         <Card square>
           <CardHeader 
-            title={props.intl.formatMessage(hrMessage.competency.field.competency, {state: 'Category'})}
+            title={props.intl.formatMessage(hrMessage.competency.field.competencies)}
             subheader={
               props.formikBag.submitCount > 0 &&
               typeof props.formikBag.errors.categories === 'string' &&
@@ -76,7 +76,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                     onClick={() => handleToggle(index)}
                   >
                     <ListItemText
-                      primary={`Category ${index + 1} - ${item.name}`}
+                      primary={`Competency ${index + 1} - ${item.name}`}
                     />
                     <ListItemSecondaryAction>
                       {active === index && isExpanded ? <ExpandLess /> : <ExpandMore />}
@@ -145,7 +145,7 @@ const hrCategoryItem: React.ComponentType<AllProps> = props => {
                         }}
                       >
                         <DeleteForever className={props.classes.marginFarRight} />
-                        {props.intl.formatMessage(hrMessage.competency.field.category)}
+                        {props.intl.formatMessage(hrMessage.competency.field.competencyid)}
                       </Button>
                     </CardActions>
                   </Collapse>

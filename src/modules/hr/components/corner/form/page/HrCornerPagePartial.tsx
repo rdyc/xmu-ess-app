@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { IHrCornerCategoryGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
+// import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, WithStyles, withStyles } from '@material-ui/core';
 import { AddCircle, ChevronLeft, ChevronRight } from '@material-ui/icons';
 import styles from '@styles';
@@ -73,19 +73,20 @@ const hrCornerPagePartial: React.ComponentType<AllProps> = props => {
         <CardContent>
           <List disablePadding>
 
-          <Field 
+          {/* <Field 
             name="uid"
             render={({ field}: FieldProps<ICornerPageFormValue>) => (
               <TextField 
                 {...field}
                 fullWidth
                 disabled
+                multiline
                 margin="normal"
                 label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Page'})}
                 helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
               />
             )}
-          />
+          /> */}
 
           <ListItem disableGutters>
             <ListItemText>
@@ -193,7 +194,7 @@ const hrCornerPagePartial: React.ComponentType<AllProps> = props => {
               <DatePicker
                 {...field}
                 fullWidth
-                showTodayButton
+                clearable
                 margin="normal"
                 disabled={props.formikBag.values.start === '' || form.isSubmitting}
                 label={props.intl.formatMessage(hrMessage.corner.fieldFor(field.name, 'fieldName'))}
@@ -203,7 +204,9 @@ const hrCornerPagePartial: React.ComponentType<AllProps> = props => {
                 format="MMMM DD, YYYY"
                 helperText={form.touched.end && form.errors.end}
                 error={form.touched.end && Boolean(form.errors.end)}
-                onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
+                onChange={(moment: Moment) => 
+                  moment ? props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))
+                  : props.formikBag.setFieldValue(field.name, '')}
                 invalidLabel=""
                 minDate={props.formikBag.values.start}
               />

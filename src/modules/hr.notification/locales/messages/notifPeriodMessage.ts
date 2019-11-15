@@ -63,6 +63,10 @@ export const notifPeriodField = defineMessages({
   typeRequired: { id: `${prefix}.field.type.required` },
   typePlaceholder: { id: `${prefix}.field.type.placeholder` },
   
+  range: { id: `${prefix}.field.range` },
+  rangeRequired: { id: `${prefix}.field.range.required` },
+  rangePlaceholder: { id: `${prefix}.field.range.placeholder` },
+
   from: { id: `${prefix}.field.from` },
   fromRequired: { id: `${prefix}.field.from.required` },
   fromPlaceholder: { id: `${prefix}.field.from.placeholder` },
@@ -78,6 +82,7 @@ export const notifPeriodFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'uid': return notifPeriodField.uid;
       case 'name': return notifPeriodField.name;
       case 'type': return notifPeriodField.type;
+      case 'range': return notifPeriodField.range;
       case 'from': return notifPeriodField.from;
       case 'to': return notifPeriodField.to;
     
@@ -89,6 +94,7 @@ export const notifPeriodFieldHelperFor = (field: string, type: 'fieldName' | 'fi
     switch (field) {
       case 'name': return notifPeriodField.nameRequired;
       case 'type': return notifPeriodField.typeRequired;
+      case 'range': return notifPeriodField.rangeRequired;
       case 'from': return notifPeriodField.fromRequired;
       case 'to': return notifPeriodField.toRequired;
 
@@ -101,6 +107,7 @@ export const notifPeriodFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'uid': return notifPeriodField.uidPlaceholder;
       case 'name': return notifPeriodField.namePlaceholder;
       case 'type': return notifPeriodField.typePlaceholder;
+      case 'range': return notifPeriodField.rangePlaceholder;
       case 'from': return notifPeriodField.fromPlaceholder;
       case 'to': return notifPeriodField.toPlaceholder;
     

@@ -1,7 +1,7 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 import { IHrCompetencyAssessmentGetAllFilter } from '@hr/classes/filters';
 import { IHrCompetencyAssessment } from '@hr/classes/response';
-import { IHrCompetencyField } from '@hr/classes/types';
+import { IHrCompetencyField, IHrCompetencyStatus } from '@hr/classes/types';
 import { WithHrCompetencyAssessment, withHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
@@ -154,7 +154,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentListProps, IOwnHandl
     primary: item.employee.fullName,
     secondary: item.company && item.company.name || 'N/A',
     tertiary: item.position && item.position.name || 'N/A',
-    quaternary: item.assessmentYear.toString(),
+    quaternary: IHrCompetencyStatus[item.statusType],
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

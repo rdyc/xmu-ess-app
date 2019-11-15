@@ -3,26 +3,50 @@ import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IUserLevel } from '@layout/interfaces';
 import { Card, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ICompetencyEmployeeItemFinal, IEmployeeFinalDetail } from '@profile/classes/response';
+import { myMessage } from '@profile/locales/messages/myMessage';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data?: IEmployeeFinalDetail;
   next: IHrCompetencyMappedNext[];
   current: IHrCompetencyMappedNext[];
   level: IUserLevel | undefined;
 }
 
+interface IOwnState {
+  active: string | undefined;
+  isExpanded: boolean;
+}
+
+interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
+  handleToggle: (uid: string) => IOwnState;
+}
+
 type AllProps
-  = OwnProps
+  = IOwnProps
+  & IOwnState
+  & IOwnStateHandler
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
+const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
+  active: undefined,
+  isExpanded: false
+});
+
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
+  })
+};
+
 const myCompetencyTable: React.SFC<AllProps> = props => {
-  const { data, next, level, current } = props;
+  const { data, next, level, current, intl } = props;
 
   const findNext = (item: IHrCompetencyMappedNext) => {
     const nxt: IHrCompetencyMappedNext | undefined = next.find(fnd => fnd.categoryLevel.categoryUid === item.categoryLevel.categoryUid);
@@ -103,14 +127,14 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
             {/* Category */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
               <Typography variant="subheading">
-                Category
+                {intl.formatMessage(myMessage.competency.field.category)}
               </Typography>
             </TableCell>
 
             {/* Current */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
               <Typography variant="subheading">
-                Current
+                {intl.formatMessage(myMessage.competency.field.current)}
                 <br/>
                 {
                   level && 
@@ -120,16 +144,32 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
             </TableCell>
             
             {/* Result */}
-            <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)} >
+            <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)}>
               <Typography variant="subheading">
-                Result
+                {intl.formatMessage(myMessage.competency.field.result)}
               </Typography>
+              {
+                data &&
+                data.items.length > 0 &&
+                <ul style={{paddingLeft: '16px', listStyle: 'none '}} >
+                  <li>
+                  <Typography variant="body1" color="error" >
+                    {intl.formatMessage(myMessage.competency.field.colorCodeRed)}
+                  </Typography>
+                  </li>
+                  <li>
+                  <Typography variant="body1" color="primary" >
+                    {intl.formatMessage(myMessage.competency.field.colorCodeBlue)}
+                  </Typography>
+                  </li>
+                </ul>
+              }
             </TableCell>
 
             {/* Next */}
             <TableCell className={classNames(props.classes.stickyHeader, props.classes.hrTableTitle)}>
               <Typography variant="subheading">
-                Next
+                {intl.formatMessage(myMessage.competency.field.next)}
                 <br/>
                 {
                   next.length >= 1 && next[0].employeeLevel.value || 'N/A'
@@ -197,7 +237,8 @@ const myCompetencyTable: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const MyCompetencyTable = compose<AllProps, OwnProps>(
+export const MyCompetencyTable = compose<AllProps, IOwnProps>(
+  injectIntl,
   withStyles(styles),
-  injectIntl
+  withStateHandlers(createProps, stateUpdaters)
 )(myCompetencyTable);

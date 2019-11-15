@@ -140,7 +140,7 @@ const hrCompetencyMappedCategoriesForm: React.ComponentType<AllProps> = props =>
   const render = (
     <Card square>
       <CardHeader 
-        title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Categories'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
       />
         {
           props.isLoading &&

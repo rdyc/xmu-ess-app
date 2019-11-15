@@ -1,3 +1,3 @@
 export interface INotifTemplateDeletePayload {
-  templateUid: string;
+  uid: string;
 }

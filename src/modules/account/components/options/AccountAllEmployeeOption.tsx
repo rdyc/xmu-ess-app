@@ -59,7 +59,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAllOptionProps, IOwnState, IOw
   }),
   setOptions: (state: IOwnState, props: AccountEmployeeAllOptionProps) => (values: IEmployee[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: '', value: ''}
+      { label: '', value: '', secondLabel: ''}
     ];
         
     // inject default when doesn't exist in values
@@ -80,7 +80,7 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAllOptionProps, IOwnState, IOw
     values.forEach(item => options.push({ 
       value: item.uid, 
       label: item.fullName,
-      // data: item 
+      secondLabel: item.company && item.company.name 
     }));
 
     return {

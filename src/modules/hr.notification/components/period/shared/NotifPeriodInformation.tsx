@@ -1,4 +1,5 @@
 import { INotifPeriod } from '@hr.notification/classes/response';
+import { NotifPeriodRangeType } from '@hr.notification/classes/types';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -37,6 +38,11 @@ const notifPeriodInformation: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(notifMessage.period.field.name)}
         value={props.data.name}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(notifMessage.period.field.range)}
+        value={NotifPeriodRangeType[props.data.range]}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}

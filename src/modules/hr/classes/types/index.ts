@@ -10,6 +10,7 @@ export * from './competency/mapped/IHrCompetencyMappedRequestField';
 export * from './competency/mapped/IHrCompetencyMappedUserAction';
 export * from './competency/IHrCompetencyPart';
 export * from './competency/IHrCompetencyField';
+export * from './competency/IHrCompetencyStatus';
 export * from './competency/assessment/IHrCompetencyAssessmentRequestField';
 export * from './competency/assessment/IHrCompetencyAssessmentUserAction';
 export * from './competency/employee/IHrCompetencyEmployeeRequestField';

@@ -37,12 +37,12 @@ const createProps: mapper<InputYearOptionProps, IOwnState> = (): IOwnState => ({
 const stateUpdaters: StateUpdaters<InputYearOptionProps, IOwnState, IOwnStateUpdater> = {
   setOptions: () => (values: number[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: '', value: ''}
+      { label: '', value: '' }
     ];
         
     values.forEach(item => options.push({ 
       value: item.toString(), 
-      label: item.toString() 
+      label: item.toString()
     }));
 
     return {
@@ -83,7 +83,7 @@ const component: React.SFC<InputYearOptionProps> = props => {
         {
           React.cloneElement(children, { 
             options: props.options,
-            value: props.options.find(option => option.value === children.props.valueString)
+            value: props.options.find(option => option.value === children.props.valueString),
           })
         }
       </React.Fragment>
