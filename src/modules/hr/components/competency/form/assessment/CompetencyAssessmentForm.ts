@@ -1,5 +1,6 @@
-import { IAccountEmployee } from '@account/classes';
 import { IEmployeeListFilter } from '@account/classes/filters';
+// import { ICommonSystem } from '@common/classes';
+import { ISystemListFilter } from '@common/classes/filters';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyAssessmentPostPayload, IHrCompetencyAssessmentPutPayload } from '@hr/classes/request';
 import { IHrCompetencyAssessment } from '@hr/classes/response';
@@ -34,8 +35,10 @@ import { CompetencyAssessmentFormView } from './CompetencyAssessmentFormView';
 
 export interface IResponderEmployee {
   uid?: string;
+  assessorType: string;
+  assessorName?: string;
   employeeUid: string;
-  employee?: IAccountEmployee;
+  employeeName?: string;
 }
 
 export interface ICompetencyAssessmentFormValue {
@@ -44,6 +47,7 @@ export interface ICompetencyAssessmentFormValue {
   companyUid: string;
   positionUid: string;
   employeeUid: string;
+  employeeName?: string;
   responder: IResponderEmployee[];
 }
 
@@ -63,6 +67,8 @@ interface IOwnState {
   filterCompany?: ILookupCompanyGetListFilter;
   filterAccountEmployee?: IEmployeeListFilter;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
+  
+  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -129,11 +135,19 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
         Yup.object().shape({	
           employeeUid: Yup.string()	
             .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
+            .required(),
+            assessorType: Yup.string()	
+            .label(props.intl.formatMessage(hrMessage.competency.field.assessorType))	
             .required()	
         })	
       )	
       .min(1, props.intl.formatMessage(hrMessage.competency.field.minResponder)),	
   }),
+
+  filterCommonSystem: {
+    orderBy: 'value',
+    direction: 'ascending'
+  }
 });
 
 const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOwnStateUpdater> = {
@@ -178,7 +192,8 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
 
         // fill responder
         values.responder.forEach(item => payload.responders.push({
-          employeeUid: item.employeeUid
+          employeeUid: item.employeeUid,
+          assessorType: item.assessorType
         }));
 
         // set the promise
@@ -208,7 +223,8 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
           // fill responder
           values.responder.forEach(item => payload.responders.push({
             uid: item.uid,
-            employeeUid: item.employeeUid
+            employeeUid: item.employeeUid,
+            assessorType: item.assessorType
           }));
 
           // set the promise
@@ -282,6 +298,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
             companyUid: thisResponse.data.companyUid,
             positionUid: thisResponse.data.positionUid,
             employeeUid: thisResponse.data.employeeUid,
+            employeeName: thisResponse.data.employee.fullName,
             year: thisResponse.data.assessmentYear.toString(),
             responder: [],
         };
@@ -290,7 +307,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
         thisResponse.data.responders.forEach(item => initialValues.responder.push({
           uid: item.uid,
           employeeUid: item.employeeUid,
-          employee: item.employee
+          employeeName: item.employee.fullName,
+          assessorType: item.assessorType,
+          assessorName: item.assessor && item.assessor.value || ''
         }));
 
         this.props.setInitialValues(initialValues);

@@ -13,5 +13,4 @@ export type CommonCategoryType =
   'status' | 'site' | 
   'tax' | 'training' | 'transportation' |
   'profession' | 'competency' |
-  'tax' | 'training' | 'transportation' | 'kPI' | 'measurement';
-  // | 'assessor';
+  'tax' | 'training' | 'transportation' | 'kPI' | 'measurement' | 'assessor';

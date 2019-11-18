@@ -10,7 +10,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { CompetencyAssessmentFormProps, ICompetencyAssessmentFormValue } from './CompetencyAssessmentForm';
 import CompetencyAssessmentPartial from './CompetencyAssessmentPartial';
-import CompetencyAssessmentResponder from './CompetencyAssessmentResponder';
+import { CompetencyAssessmentResponder } from './CompetencyAssessmentResponder';
 
 export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormProps> = props => (
   <FormPage
@@ -49,13 +49,10 @@ export const CompetencyAssessmentFormView: React.SFC<CompetencyAssessmentFormPro
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  classes={{
-                    marginFarRight: props.classes.marginFarRight,
-                    marginWideTop: props.classes.marginWideTop
-                  }}
                   filterAccountEmployee={props.filterAccountEmployee}
                   data={props.hrCompetencyAssessmentState.detail.response && props.hrCompetencyAssessmentState.detail.response.data}
                   creator={props.userState && props.userState.user && props.userState.user.uid}
+                  filterCommonSystem={props.filterCommonSystem}
                 />
               </div>
             </div>

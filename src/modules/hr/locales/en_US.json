@@ -66,6 +66,7 @@
   "hr.competency.field.status": "Status",
 
   "hr.competency.field.employee": "Employee",
+  "hr.competency.field.assessorType": "Assessor Category",
   "hr.competency.field.responden": "Assesse",
   "hr.competency.field.responder": "Assessor",
   

@@ -1,4 +1,5 @@
 import { AccountEmployeeMultipleOption } from '@account/components/options/AccountEmployeeMultipleOption';
+import { AssessorType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -26,20 +27,6 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
       title={props.intl.formatMessage(hrMessage.competency.field.responden)}
     />
     <CardContent>
-      {/* <Field 
-        name="uid"
-        render={({ field}: FieldProps<ICompetencyAssessmentFormValue>) => (
-          <TextField 
-            {...field}
-            fullWidth
-            disabled
-            multiline
-            margin="normal"
-            label={props.intl.formatMessage(hrMessage.competency.fieldFor(field.name, 'fieldName'), {state: 'Assessment'})}
-            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
-          />
-        )}
-      /> */}
 
       <Field
         name="year"
@@ -146,7 +133,17 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
               }}
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => {
-                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                if (selected) {
+                  props.formikBag.setFieldValue(field.name, selected.value || '');
+                  props.formikBag.setFieldValue('employeeName', selected.label || '');
+                  if (props.formikBag.values.responder.length > 0) {
+                    props.formikBag.values.responder.map((item, index) => 
+                      item.assessorType === AssessorType.Self &&
+                      item.employeeUid !== selected.value &&
+                      props.formikBag.setFieldValue(`responder.${index}.employeeUid`, selected.value)
+                    );
+                  }
+                }
               }}
             />
           </AccountEmployeeMultipleOption>

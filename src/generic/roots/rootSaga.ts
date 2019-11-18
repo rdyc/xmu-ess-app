@@ -12,6 +12,7 @@ import accountEmployeeRateSagas from '@account/store/sagas/accountEmployeeRateSa
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import accountEmployeeTrainingSagas from '@account/store/sagas/accountEmployeeTrainingSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
+import commonAssessorSagas from '@common/store/sagas/assessorSagas';
 import commonBloodSagas from '@common/store/sagas/bloodSagas';
 import commonCertificationSagas from '@common/store/sagas/certificationSagas';
 import commonCompetencySagas from '@common/store/sagas/competencySagas';
@@ -165,6 +166,7 @@ export function* rootSaga() {
     fork(commonProfessionSagas),
     fork(commonKpiSagas),
     fork(commonMeasurementSagas),
+    fork(commonAssessorSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),

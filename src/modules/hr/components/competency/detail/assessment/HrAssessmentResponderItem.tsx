@@ -82,7 +82,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={item.employee.fullName} 
-                  secondary={item.employee.email}
+                  secondary={item.assessor && item.assessor.value || item.employee.email}
                 />
                 <ListItemSecondaryAction>
                   {

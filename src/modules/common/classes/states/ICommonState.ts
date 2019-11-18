@@ -140,4 +140,8 @@ export interface ICommonState {
   commonMeasurementAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonMeasurementList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonMeasurementDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonAssessorAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonAssessorList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonAssessorDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

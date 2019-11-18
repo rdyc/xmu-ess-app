@@ -56,6 +56,7 @@ export const hrCompetencyField = defineMessages({
   competencies: { id: `${prefix}.field.competencies`},
 
   employee: { id: `${prefix}.field.employee`},
+  assessorType: { id: `${prefix}.field.assessorType`},
   responden: { id: `${prefix}.field.responden`},
   responder: { id: `${prefix}.field.responder`},
 

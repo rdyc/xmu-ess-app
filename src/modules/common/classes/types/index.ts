@@ -13,3 +13,4 @@ export * from './CommonField';
 export * from './CommonUserAction';
 export * from './LimiterStatusType';
 export * from './MeasurementType';
+export * from './AssessorType';

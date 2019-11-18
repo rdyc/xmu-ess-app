@@ -3,8 +3,8 @@ import { FormMode } from '@generic/types';
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardHeader, Collapse, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { CommentOutlined, Done, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
@@ -62,7 +62,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const competencyResultCategory: React.ComponentType<AllProps> = props => {
-  const { active, isExpanded, handleToggle } = props;
+  // const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     return item && item.note;
@@ -100,11 +100,14 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
             <React.Fragment key={item.uid}>
               <TableRow>
                 {/* Category */}
-                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => handleToggle(item.category.uid)} >
-                  <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >
+                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar)} >
+                  <Typography variant="body1" color="inherit" >
                     {item.category.name}
                   </Typography>
-                  {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
+                  <Typography color="inherit">
+                    {item.category.description}
+                  </Typography>
+                  {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
                   <Collapse
                     in={active === item.category.uid && isExpanded}
                     // className={props.classes.marginFar}
@@ -114,7 +117,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                     <Typography variant="body1" color="inherit">
                       {item.category.description}
                     </Typography>
-                  </Collapse>
+                  </Collapse> */}
                 </TableCell>
               </TableRow>
               <FieldArray 
