@@ -36,13 +36,7 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
       items.map((item, index) => 
       <TableRow key={index}>
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {item.category && item.category.name}
-        </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.categoryName}
-        </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {item.measurement && item.measurement.description}
         </TableCell>
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.measurementDescription}
@@ -93,21 +87,9 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
             >
               <TableHead>
                 <TableRow>
-                  {
-                    props.useSelect &&
-                    <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
-                      {props.intl.formatMessage(kpiMessage.employee.field.categoryUid)}
-                    </TableCell>
-                  }
                   <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.categoryName)}
                   </TableCell>
-                  {
-                    props.useSelect &&
-                    <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
-                      {props.intl.formatMessage(kpiMessage.employee.field.measurementUid)}
-                    </TableCell>
-                  }
                   <TableCell className={classNames(props.classes.cellWidthMd, props.classes.ultraDense)}>
                     {props.intl.formatMessage(kpiMessage.employee.field.measurementDescription)}
                   </TableCell>
