@@ -51,7 +51,7 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
 
   return (
   <React.Fragment>
-    <Card square>
+    <Card square style={{ marginBottom: '100px' }}>
       <CardHeader 
         title={props.intl.formatMessage(kpiMessage.measurement.section.infoTitle)}
         // subheader={}
