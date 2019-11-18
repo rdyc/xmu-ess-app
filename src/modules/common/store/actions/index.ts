@@ -32,3 +32,4 @@ export * from './competencyActions';
 export * from './professionActions';
 export * from './kpiActions';
 export * from './measurementActions';
+export * from './assessorActions';

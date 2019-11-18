@@ -1,7 +1,7 @@
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
-import { Card, CardHeader, Collapse, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { Done, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Done } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -42,7 +42,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
-  const { active, isExpanded, handleToggle } = props;
+  // const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     if (item) {
@@ -67,17 +67,20 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
       <Table>
         <TableBody>
         {
-          props.mapped.categories.map((item, index) => 
+          props.mapped.categories.map((item) => 
           <React.Fragment key={item.uid}>
             <TableRow>
               
               {/* Category */}
-              <TableCell colSpan={2} className={classNames(props.classes.toolbar, props.classes.tableCategory)} onClick={() => handleToggle(item.category.uid)} >
-                <Typography variant="body1" color="inherit" style={{display: 'inline-block'}} >
+              <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
+                <Typography variant="body1" color="inherit" >
                   {item.category.name}
                 </Typography>
-                {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
-                <Collapse
+                <Typography color="inherit">
+                  {item.category.description}
+                </Typography>
+                {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>} */}
+                {/* <Collapse
                   in={active === item.category.uid && isExpanded}
                   timeout="auto"
                   unmountOnExit
@@ -85,7 +88,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
                   <Typography variant="body1" color="inherit">
                     {item.category.description}
                   </Typography>
-                </Collapse>
+                </Collapse> */}
               </TableCell>
             </TableRow>
             {
