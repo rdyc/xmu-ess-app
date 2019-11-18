@@ -1,5 +1,3 @@
-import { IEmployeeListFilter } from '@account/classes/filters';
-import { AccountEmployeeOption } from '@account/components/options/AccountEmployeeOption';
 import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
@@ -8,58 +6,40 @@ import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { IOrganizationStructureSubOrdinateListFilter } from '@organization/classes/filters/structure';
+import { OrganizationStructureSubOrdinateOption } from '@organization/components/structure/option/OrganizationStructureSubOrdinateOption';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { IKPIEmployeeFormValue, IKPIPartialLatestValue } from '../KPIEmployeeForm';
+import { IKPIEmployeeFormValue } from '../KPIEmployeeForm';
 
 type KPIEmployeeDetailPartialFormProps = {
   formMode: FormMode; 
   formikBag: FormikProps<IKPIEmployeeFormValue>;
   intl: InjectedIntl;
   
-  handleLoadAssign: (employeeUid: string, year: string) => void;
-  handleSetLoadAssign: () => void;
-  handleLoadLatest: (employeeUid: string) => void;
+  handleLoadLatest: (employeeUid: string, year: string) => void;
   handleSetLoadLatest: () => void;
-  assignData: IKPIEmployeeFormValue;
-  latestData: IKPIPartialLatestValue;
-  filterAccountEmployee: IEmployeeListFilter;
-  loadAssign: boolean;
+  latestData: IKPIEmployeeFormValue;
+  filterSubOrdinateEmployee: IOrganizationStructureSubOrdinateListFilter;
   loadLatest: boolean;
 };
 
 const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartialFormProps> = props => {
-  const setAssignValue = () => {
+  const setLatestValue = () => {
     props.formikBag.setValues({
       kpiUid: props.formikBag.values.kpiUid,
-      kpiAssignUid: props.assignData.kpiAssignUid,
+      kpiAssignUid: props.latestData.kpiAssignUid,
       employeeUid: props.formikBag.values.employeeUid,
       employeeName: props.formikBag.values.employeeName,
-      templateName: props.assignData.templateName,
       statusType: props.formikBag.values.statusType,
       year: props.formikBag.values.year,
-      period: props.assignData.period,
+      period: props.latestData.period,
       revision: props.formikBag.values.revision,
-      totalScore: props.formikBag.values.totalScore,
+      totalScore: props.latestData.totalScore,
       notes: props.formikBag.values.notes,
-      items: props.assignData.items,
+      items: props.latestData.items,
     });
-
-    props.handleSetLoadAssign();
-  };
-
-  const setLatestPartialValue = () => {
-    props.formikBag.setFieldValue('period', props.latestData.period);
-    props.formikBag.setFieldValue('totalScore', props.latestData.totalScore);
-
-    if (props.latestData.items && props.latestData.items.length > 0) {
-      props.latestData.items.forEach((item, index) => {
-        props.formikBag.setFieldValue(`items.${index}.achieved`, item.achieved);
-        props.formikBag.setFieldValue(`items.${index}.progress`, item.progress);
-        props.formikBag.setFieldValue(`items.${index}.score`, item.score);
-      });
-    }
 
     props.handleSetLoadLatest();
   };
@@ -88,7 +68,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
           <Field
             name="employeeUid"
             render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-              <AccountEmployeeOption filter={props.filterAccountEmployee}>
+              <OrganizationStructureSubOrdinateOption filter={props.filterSubOrdinateEmployee}>
                 <SelectField
                   isSearchable
                   isDisabled={props.formikBag.isSubmitting}
@@ -107,11 +87,11 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
                     props.formikBag.setFieldValue('employeeName', selected && selected.data && selected.data.fullName || '');
 
                     if ((selected && selected.value !== '') && (props.formikBag.values.year !== '' && props.formikBag.values.year !== '0')) {
-                      props.handleLoadAssign(selected && selected.value, props.formikBag.values.year);
+                      props.handleLoadLatest(selected && selected.value, props.formikBag.values.year);
                     }
                   }}
                 />
-              </AccountEmployeeOption>
+              </OrganizationStructureSubOrdinateOption>
             )}
           /> 
           ||
@@ -127,35 +107,50 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             )}
           />
         }
+        
+        {
+          props.formMode === FormMode.New && 
+          <Field
+            name="year"
+            render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
+              <InputYearOption withPast>
+                <SelectField
+                  isSearchable
+                  isDisabled={props.formikBag.isSubmitting}
+                  isClearable={field.value !== ''}
+                  escapeClearsValue={true}
+                  valueString={field.value}
+                  textFieldProps={{
+                    label: props.intl.formatMessage(kpiMessage.employee.field.year),
+                    required: true,
+                    helperText: form.touched.year && form.errors.year,
+                    error: form.touched.year && Boolean(form.errors.year)
+                  }}
+                  onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                  onChange={(selected: ISelectFieldOption) => {
+                    props.formikBag.setFieldValue(field.name, selected && selected.value || '');
 
-        <Field
-          name="year"
-          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <InputYearOption withPast>
-              <SelectField
-                isSearchable
-                isDisabled={props.formikBag.isSubmitting}
-                isClearable={field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                textFieldProps={{
-                  label: props.intl.formatMessage(kpiMessage.employee.field.year),
-                  required: true,
-                  helperText: form.touched.year && form.errors.year,
-                  error: form.touched.year && Boolean(form.errors.year)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => {
-                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-
-                  if (props.formikBag.values.employeeUid !== '' && ((selected && selected.value !== '') && (selected && selected.value !== '0'))) {
-                    props.handleLoadAssign(props.formikBag.values.employeeUid, selected && selected.value);
-                  }
-                }}
+                    if (props.formikBag.values.employeeUid !== '' && ((selected && selected.value !== '') && (selected && selected.value !== '0'))) {
+                      props.handleLoadLatest(props.formikBag.values.employeeUid, selected && selected.value);
+                    }
+                  }}
+                />
+              </InputYearOption>
+            )}
+          />
+          ||
+          <Field 
+            name="year"
+            render={({ field}: FieldProps<IKPIEmployeeFormValue>) => (
+              <TextField 
+                {...field}
+                {...GlobalStyle.TextField.ReadOnly}
+                disabled={props.formikBag.isSubmitting}
+                label={props.intl.formatMessage(kpiMessage.employee.field.year)}
               />
-            </InputYearOption>
-          )}
-        />
+            )}
+          />
+        }
         
         {/* <Field
           name="period"
@@ -245,6 +240,7 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             <TextField
               {...field}
               fullWidth
+              multiline
               required={true}
               margin="normal"
               autoComplete="off"
@@ -258,12 +254,8 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
         />
       </CardContent>
       {
-        props.loadAssign &&
-        setAssignValue()
-      }
-      {
         props.loadLatest &&
-        setLatestPartialValue()
+        setLatestValue()
       }
     </Card>
   );

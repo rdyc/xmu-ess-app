@@ -1,3 +1,4 @@
+import { IEmployee } from '@account/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
   IOrganizationHierarchyAllRequest,
@@ -13,6 +14,7 @@ import {
   IOrganizationStructureDeleteRequest,
   IOrganizationStructurePostRequest,
   IOrganizationStructurePutRequest,
+  IOrganizationStructureSubOrdinateListRequest,
 } from '@organization/classes/queries/structure';
 import { 
   IOrganizationWorkflowAllRequest, 
@@ -31,6 +33,7 @@ import { IWorkflowMenu } from '../response/workflow/IWorkflowMenu';
 export interface IOrganizationState {
   organizationStructureGetAll: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
   organizationStructureGetById: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>;
+  organizationStructureGetSubOrdinateList: IQueryCollectionState<IOrganizationStructureSubOrdinateListRequest, IEmployee>;
   organizationStructurePost: IQuerySingleState<IOrganizationStructurePostRequest, IStructure>;
   organizationStructurePut: IQuerySingleState<IOrganizationStructurePutRequest, IStructure>;
   organizationStructureDelete: IQuerySingleState<IOrganizationStructureDeleteRequest, boolean>;

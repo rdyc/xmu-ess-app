@@ -12,6 +12,9 @@ import {
   organizationStructureGetByIdError,
   organizationStructureGetByIdRequest,
   organizationStructureGetByIdSuccess,
+  organizationStructureGetSubOrdinateListError,
+  organizationStructureGetSubOrdinateListRequest,
+  organizationStructureGetSubOrdinateListSuccess,
   organizationStructurePostError,
   organizationStructurePostRequest,
   organizationStructurePostSuccess,
@@ -68,6 +71,32 @@ function* watchGetByIdRequest() {
   };
   
   yield takeEvery(Action.GET_BY_ID_STRUCTURE_REQUEST, worker);
+}
+
+function* watchGetSubOrdinateListRequest() {
+  const worker = (action: ReturnType<typeof organizationStructureGetSubOrdinateListRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/organization/structures/subordinatelist?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateListSuccess(response.body)),
+        put(listBarMetadata(response.body.metadata))
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateListError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationStructureGetSubOrdinateListError(error.message)),
+      ]),
+      finallyEffects: [put(listBarLoading(false))]
+    });
+  };
+  
+  yield takeEvery(Action.GET_SUBORDINATE_LIST_STRUCTURE_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -190,6 +219,7 @@ function* watchDeleteRequest() {
 function* organizationStructureSagas() {
   yield all([
     fork(watchGetAllRequest),
+    fork(watchGetSubOrdinateListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

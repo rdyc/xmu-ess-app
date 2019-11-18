@@ -35,46 +35,41 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
       templates.map((item, index) => 
       <TableRow key={index}>
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {item.kpiAssignItem && item.kpiAssignItem.categoryName}
+          {item && item.categoryName}
         </TableCell>
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {item.kpiAssignItem && item.kpiAssignItem.measurementDescription}
+          {item && item.measurementDescription}
         </TableCell>
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {item.kpiAssignItem && item.kpiAssignItem.target}
+          {item && item.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
-            item.kpiAssignItem &&
-            item.kpiAssignItem.category &&
-            item.kpiAssignItem.category.group === 'KPI' &&
-            `${props.intl.formatNumber(item.kpiAssignItem && item.kpiAssignItem.weight || 0)} %` ||
+            item.category &&
+            item.category.group === 'KPI' &&
+            `${props.intl.formatNumber(item && item.weight || 0)} %` ||
             '-'}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
-            item.kpiAssignItem &&
+            (item.category &&
+            item.category.group === 'KPI') &&
 
-            (item.kpiAssignItem.category &&
-            item.kpiAssignItem.category.group === 'KPI') &&
-
-            (item.kpiAssignItem.measurement && 
-            item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring)  &&
-            props.intl.formatNumber(item.kpiAssignItem.threshold || 0) ||
+            (item.measurement && 
+            item.measurement.measurementType === MeasurementType.Scoring)  &&
+            props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
-            item.kpiAssignItem &&
+            (item.category &&
+            item.category.group === 'KPI') &&
 
-            (item.kpiAssignItem.category &&
-            item.kpiAssignItem.category.group === 'KPI') &&
-
-            (item.kpiAssignItem.measurement && 
-            (item.kpiAssignItem.measurement.measurementType === MeasurementType.Scoring ||
-            item.kpiAssignItem.measurement.measurementType === MeasurementType.Attendance)) &&
-            props.intl.formatNumber(item.kpiAssignItem.amount) ||
+            (item.measurement && 
+            (item.measurement.measurementType === MeasurementType.Scoring ||
+            item.measurement.measurementType === MeasurementType.Attendance)) &&
+            props.intl.formatNumber(item.amount) ||
             '-'
           }
         </TableCell>

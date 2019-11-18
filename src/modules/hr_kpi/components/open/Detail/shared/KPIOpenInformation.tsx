@@ -24,11 +24,11 @@ const kpiOpenInformation: React.SFC<AllProps> = props => {
       // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.open.field.uid)}
           value={props.data.uid}
-        />
+        /> */}
 
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

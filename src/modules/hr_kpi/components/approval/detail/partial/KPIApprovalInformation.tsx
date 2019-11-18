@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { IKPIEmployeeDetail } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
@@ -26,11 +27,11 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
         // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
           value={props.data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
@@ -68,23 +69,35 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
             props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
             props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
         />
-        <Field
-          name="notes"
-          render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
-            <TextField
-              {...field}
-              fullWidth
-              required={true}
-              margin="normal"
-              autoComplete="off"
-              disabled={form.isSubmitting}
-              label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
-              placeholder={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
-              helperText={(form.touched.notes) && (form.errors.notes)}
-              error={(form.touched.notes) && Boolean(form.errors.notes)}
-            />
-          )}
-        />
+        {
+          !props.formikBag.values.isFinal && 
+          props.formikBag.values.statusType === WorkflowStatusType.Accepted &&
+          <Field
+            name="notes"
+            render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
+              <TextField
+                {...field}
+                fullWidth
+                multiline
+                required={true}
+                margin="normal"
+                autoComplete="off"
+                disabled={form.isSubmitting}
+                label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+                placeholder={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+                helperText={(form.touched.notes) && (form.errors.notes)}
+                error={(form.touched.notes) && Boolean(form.errors.notes)}
+              />
+            )}
+          />
+          ||
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+            value={props.formikBag.values.notes}
+          /> 
+        }
         {
           props.data.revision && 
           <TextField

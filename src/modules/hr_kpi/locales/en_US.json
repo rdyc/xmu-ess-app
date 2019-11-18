@@ -68,11 +68,11 @@
   "kpi.employee.page.modify.title": "Modify Employee KPI",
   "kpi.employee.page.modify.subHeader": "Lorem Something something",
   
-  "kpi.employee.page.approval.list.title": "HR KPI Approval",
+  "kpi.employee.page.approval.list.title": "HR KPI Input",
   "kpi.employee.page.approval.list.subHeader": "Lorem Something something",
-  "kpi.employee.page.approval.detail.title": "KPI Approval Detail",
+  "kpi.employee.page.approval.detail.title": "KPI Input Detail",
   "kpi.employee.page.approval.detail.subHeader": "Lorem Something something",
-  "kpi.employee.page.approval.approve.title": "Employee KPI Approval",
+  "kpi.employee.page.approval.approve.title": "Employee KPI Input",
   "kpi.employee.page.approval.approve.subHeader": "Lorem Something something",
 
   "kpi.employee.page.manager.list.title": "Manager KPI Input",
@@ -105,7 +105,7 @@
   "kpi.employee.approval.form": "KPI Employee Approval Submission",
 
   "kpi.employee.message.emptyProps": "Some props are empty",
-  "kpi.employee.message.noAssign": "No Assigned KPI Found",
+  "kpi.employee.message.noAssign": "No Assigned KPI Found or KPI for both period in this Year is already exist",
   "kpi.employee.message.approval.success": "Employee KPI approval successful",
   "kpi.employee.message.approval.failure": "Employee KPI approval failed",
   "kpi.employee.message.create.success": "A new Employee KPI has been created",

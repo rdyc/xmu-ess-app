@@ -4,11 +4,8 @@ import { KPITemplateOption } from '@kpi/components/template/options/KPITemplateO
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { InputYearOption } from '@layout/components/input/year/InputYearOption';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
-import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -41,7 +38,6 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
               disabled={props.formikBag.isSubmitting}
               margin="normal"
               label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-              helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
             />
           )}
         />
@@ -50,17 +46,16 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
           name="employeeName"
           render={({ field}: FieldProps<IKPIAssignFormValue>) => (
             <TextField 
-              {...field}
               {...GlobalStyle.TextField.ReadOnly}
+              {...field}
               disabled={props.formikBag.isSubmitting}
               margin="normal"
               label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
-              helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
             />
           )}
         />
         
-        <Field
+        {/* <Field
           name="companyUid"
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
             <LookupCompanyOption filter={props.filterLookupCompany}>
@@ -68,7 +63,7 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
                 isSearchable
                 menuPlacement="auto"
                 menuPosition="fixed"
-                isDisabled={props.formikBag.isSubmitting || props.formikBag.values.isAssignInUse}
+                isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}
@@ -83,14 +78,28 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                   props.formikBag.setFieldValue('positionUid', '');
                   props.formikBag.setFieldValue('templateUid', '');
+                  props.formikBag.setFieldValue('items', []);
                   props.handleSetTemplateFilter(selected && selected.value || '', props.formikBag.values.positionUid || '');
                 }}
               />
             </LookupCompanyOption>
           )}
+        /> */}
+        
+        <Field 
+          name="companyName"
+          render={({ field}: FieldProps<IKPIAssignFormValue>) => (
+            <TextField 
+              {...GlobalStyle.TextField.ReadOnly}
+              {...field}
+              disabled={props.formikBag.isSubmitting}
+              margin="normal"
+              label={props.intl.formatMessage(kpiMessage.template.field.companyUid)}
+            />
+          )}
         />
 
-        <Field
+        {/* <Field
           name="positionUid"
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
             return (
@@ -99,7 +108,7 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
                   isSearchable
                   menuPlacement="auto"
                   menuPosition="fixed"
-                  isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting || props.formikBag.values.isAssignInUse}
+                  isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
                   isClearable={field.value !== ''}
                   escapeClearsValue={true}
                   valueString={field.value}
@@ -112,12 +121,26 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
                   onChange={(selected: ISelectFieldOption) => {
                     props.formikBag.setFieldValue(field.name, selected && selected.value || '');
                     props.formikBag.setFieldValue('templateUid', '');
+                    props.formikBag.setFieldValue('items', []);
                     props.handleSetTemplateFilter(props.formikBag.values.companyUid || '', selected && selected.value || '');
                   }}
                 />
               </LookupPositionOption>
             );
           }}
+        /> */}
+        
+        <Field 
+          name="positionName"
+          render={({ field}: FieldProps<IKPIAssignFormValue>) => (
+            <TextField 
+              {...GlobalStyle.TextField.ReadOnly}
+              {...field}
+              disabled={props.formikBag.isSubmitting}
+              margin="normal"
+              label={props.intl.formatMessage(kpiMessage.template.field.positionUid)}
+            />
+          )}
         />
 
         <Field
@@ -129,7 +152,7 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
                   isSearchable
                   menuPlacement="auto"
                   menuPosition="fixed"
-                  isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.values.positionUid === '' || props.formikBag.isSubmitting || props.formikBag.values.isAssignInUse}
+                  isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.values.positionUid === '' || props.formikBag.isSubmitting}
                   isClearable={field.value !== ''}
                   escapeClearsValue={true}
                   valueString={field.value}

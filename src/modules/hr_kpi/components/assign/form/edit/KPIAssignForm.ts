@@ -40,7 +40,6 @@ import { KPIAssignFormView } from './KPIAssignFormView';
 export interface IKPIAssignItemFormValue {
   uid?: string;
   isOpen: boolean;
-  isAssignItemInUse: boolean;
   categoryUid: string;
   categoryValue: string;
   categoryName: string;
@@ -57,11 +56,12 @@ export interface IKPIAssignItemFormValue {
 
 export interface IKPIAssignFormValue {
   uid: string;
-  isAssignInUse: boolean;
   employeeUid: string;
   employeeName?: string;
-  companyUid?: string;
-  positionUid?: string;
+  companyUid: string;
+  companyName?: string;
+  positionUid: string;
+  positionName?: string;
   templateUid: string;
   isFinal: boolean;
   isFirst: boolean;
@@ -135,11 +135,12 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
 
   initialValues: {
     uid: 'Auto Generated',
-    isAssignInUse: false,
     employeeUid: props.match.params.employeeUid,
     employeeName: props.history.location.state && props.history.location.state.employeeName && props.history.location.state.employeeName || '',
     companyUid: '',
+    companyName: '',
     positionUid: '',
+    positionName: '',
     templateUid: '',
     year: moment().year().toString(),
     totalWeight: 0,
@@ -151,8 +152,6 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
   },
 
   validationSchema: Yup.object().shape<Partial<IKPIAssignFormValue>>({
-    isAssignInUse: Yup.boolean(),
-
     employeeUid: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.employee.field.employeeUid)),
 
@@ -415,11 +414,12 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
         // define initial values 
         const initialValues: IKPIAssignFormValue = {
           uid: thisResponse.data.uid,
-          isAssignInUse: thisResponse.data.isAssignInUse,
           employeeUid: thisResponse.data.employeeUid,
           employeeName: thisResponse.data.employee && thisResponse.data.employee.fullName || '',
           companyUid: thisResponse.data.template && thisResponse.data.template.companyUid || '',
+          companyName: thisResponse.data.template && thisResponse.data.template.company && thisResponse.data.template.company.name || '',
           positionUid: thisResponse.data.template && thisResponse.data.template.positionUid || '',
+          positionName: thisResponse.data.template && thisResponse.data.template.position && thisResponse.data.template.position.name || '',
           templateUid: thisResponse.data.templateUid,
           year: thisResponse.data.year.toString(),
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
@@ -436,7 +436,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           thisResponse.data.items.forEach(item =>
             initialValues.items.push({
               uid: item.uid,
-              isAssignItemInUse: item.isAssignItemInUse,
               isOpen: false,
               categoryUid: item.categoryUid,
               categoryValue: item.category && item.category.name || '',
@@ -471,7 +470,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           thisTemplate.data.items.forEach(item =>
             items.push({
               uid: '',
-              isAssignItemInUse: false,
               isOpen: false,
               categoryUid: item.categoryUid,
               categoryValue: item.category && item.category.name || '',
