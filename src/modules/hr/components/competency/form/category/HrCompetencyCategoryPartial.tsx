@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -20,22 +20,23 @@ type HrCompetencyCategoryPartialProps = {
 const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryPartialProps> = props => (
   <Card square>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Category'})}
+      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Cluster'})}
     />
     <CardContent>
 
-      <Field 
+      {/* <Field 
         name="categoryUid"
         render={({ field}: FieldProps<ICategoryFormValue>) => (
           <TextField 
             {...field}
             fullWidth
             disabled
+            multiline
             margin="normal"
             label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Category'})}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="clusterUid"
@@ -77,7 +78,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
               escapeClearsValue={true}
               valueString={field.value}
               textFieldProps={{
-                label: props.intl.formatMessage(hrMessage.competency.field.category),
+                label: props.intl.formatMessage(hrMessage.competency.field.competencyid),
                 required: true,
                 helperText: form.touched.categoryUid && form.errors.categoryUid,
                 error: form.touched.categoryUid && Boolean(form.errors.categoryUid)
@@ -90,6 +91,7 @@ const HrCompetencyCategoryPartial: React.ComponentType<HrCompetencyCategoryParti
           </HrCompetencyCategoryOption>
         )}
       />
+      
     </CardContent>
   </Card>
 );

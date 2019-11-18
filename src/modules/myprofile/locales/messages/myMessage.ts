@@ -1,3 +1,4 @@
+import { accountCompetencyField } from './myCompetencyMessage';
 import { mySharedHelperFor, mySharedPage } from './mySharedMessage';
 
 export const myMessage = {
@@ -5,7 +6,7 @@ export const myMessage = {
     // 
   },
   competency: {
-    // 
+    field: accountCompetencyField
   },
   kpi: {
     // 

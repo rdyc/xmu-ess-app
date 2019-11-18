@@ -1,5 +1,8 @@
 import {
   HrCompetencyClusterAction as Action,
+  hrCompetencyClusterDeleteError,
+  hrCompetencyClusterDeleteRequest,
+  hrCompetencyClusterDeleteSuccess,
   hrCompetencyClusterGetAllDispose,
   hrCompetencyClusterGetAllError,
   hrCompetencyClusterGetAllRequest,
@@ -105,6 +108,7 @@ function* watchPostRequest() {
       successEffects: (response: IApiResponse) => [
         put(hrCompetencyClusterGetByIdDispose()),
         put(hrCompetencyClusterGetAllDispose()),
+        put(hrCompetencyClusterGetListDispose()),
         put(hrCompetencyClusterPostSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
@@ -176,6 +180,46 @@ function* watchPatchRequest() {
   yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyClusterDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'DELETE',
+      path: `/v1/hr/competency/cluster`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(hrCompetencyClusterGetByIdDispose()),
+        put(hrCompetencyClusterGetAllDispose()),
+        put(hrCompetencyClusterDeleteSuccess(response.body)),
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(hrCompetencyClusterDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(hrCompetencyClusterDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() {
     yield all([
@@ -196,6 +240,7 @@ function* hrCompetencyClusterSagas() {
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPatchRequest),
+    fork(watchDeleteRequest),
     fork(watchSwitchAccess)
   ]);
 }

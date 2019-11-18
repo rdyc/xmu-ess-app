@@ -1,3 +1,4 @@
+import { hrCompetencyClusterDeleteReducer } from './hrCompetencyClusterDeleteReducer';
 import { hrCompetencyClusterGetAllReducer } from './hrCompetencyClusterGetAllReducer';
 import { hrCompetencyClusterGetDetailReducer } from './hrCompetencyClusterGetDetailReducer';
 import { hrCompetencyClusterGetListReducer } from './hrCompetencyClusterGetListReducer';
@@ -10,4 +11,5 @@ export const hrCompetencyClusterReducers = {
   hrCompetencyClusterGetById: hrCompetencyClusterGetDetailReducer,
   hrCompetencyClusterPost: hrCompetencyClusterPostReducer,
   hrCompetencyClusterPatch: hrCompetencyClusterPatchReducer,
+  hrCompetencyClusterDelete: hrCompetencyClusterDeleteReducer
 };

@@ -1,6 +1,6 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 import { INotifPeriodGetAllFilter } from '@hr.notification/classes/filters/period';
-import { NotifPeriodField } from '@hr.notification/classes/types';
+import { NotifPeriodField, NotifPeriodRangeType } from '@hr.notification/classes/types';
 import { WithNotifPeriod, withNotifPeriod } from '@hr.notification/hoc/withNotifPeriod';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
@@ -155,10 +155,10 @@ const handlerCreators: HandleCreators<NotifPeriodListProps, IOwnHandler> = {
   handleOnBind: (props: NotifPeriodListProps) => (item: INotifPeriod, index: number) => ({
     key: index,
     primary: item.name,
-    secondary: '',
-    tertiary: item.type,
-    quaternary: props.intl.formatNumber(item.from),
-    quinary: props.intl.formatNumber(item.to),
+    secondary: item.type,
+    tertiary: NotifPeriodRangeType[item.range],
+    quaternary: `${props.intl.formatNumber(item.from)} - ${props.intl.formatNumber(item.to)}`,
+    quinary: '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
   handleFilterVisibility: (props: NotifPeriodListProps) => () => {

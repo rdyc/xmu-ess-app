@@ -1,6 +1,7 @@
 import {
   Chip,
   createStyles,
+  ListItemText,
   MenuItem,
   Paper,
   TextField,
@@ -120,7 +121,17 @@ const Option = (props: any) => (
     }} 
     {...props.innerProps}
   >
-    {props.children}
+    {
+      props.data ?
+      (
+        props.data.secondLabel ?
+        <ListItemText primary={props.children} secondary={props.data.secondLabel} />
+        :
+        props.children
+      )
+      :
+      props.children
+    }
   </MenuItem>
 );
 
@@ -187,6 +198,7 @@ export interface ISelectFieldOption {
   value: string;
   label: string;
   data?: any;
+  secondLabel?: string;
 }
 
 export interface SelectFieldProps extends Props<ISelectFieldOption> {

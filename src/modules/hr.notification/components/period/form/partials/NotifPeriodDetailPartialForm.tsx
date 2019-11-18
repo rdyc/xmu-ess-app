@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { PeriodOption } from '@hr.notification/components/period/options';
+import { PeriodOption, RangeOption } from '@hr.notification/components/period/options';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
@@ -74,7 +74,29 @@ const NotifPeriodDetailPartialForm: React.ComponentType<NotifPeriodPartialFormPr
         )}
       />
 
-    <Field
+      <Field
+        name="range"
+        render={({ field, form }: FieldProps<INotifPeriodFormValue>) => (
+          <RangeOption>
+            <SelectField  
+              isSearchable
+              isDisabled={form.isSubmitting}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(notifMessage.period.fieldFor(field.name, 'fieldName')),
+                required: true,
+                helperText: form.touched.range && form.errors.range,
+                error: form.touched.range && Boolean(form.errors.range)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+            />
+          </RangeOption>
+        )}
+      />
+
+      <Field
         name="from"
         render={({ field, form }: FieldProps<INotifPeriodFormValue>) => (
           <TextField

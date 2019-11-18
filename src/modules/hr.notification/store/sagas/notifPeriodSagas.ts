@@ -2,7 +2,6 @@ import {
   NotifPeriodAction as Action,
   notifPeriodDeleteError,
   notifPeriodDeleteRequest,
-  notifPeriodDeleteSuccess,
   notifPeriodGetAllDispose,
   notifPeriodGetAllError,
   notifPeriodGetAllRequest,
@@ -162,10 +161,9 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(notifPeriodGetByIdDispose()),
         put(notifPeriodGetAllDispose()),
-        put(notifPeriodDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(notifPeriodDeleteError(response.statusText))

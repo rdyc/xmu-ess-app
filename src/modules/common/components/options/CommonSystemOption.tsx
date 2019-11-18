@@ -52,6 +52,7 @@ const fnGetContext = (props: CommonSystemOptionProps) => {
     case 'profession': return props.commonProfessionListState;
     case 'kPI': return props.commonKpiListState;
     case 'measurement': return props.commonMeasurementListState;
+    case 'assessor': return props.commonAssessorListState;
 
     default: return props.commonActivityListState;
   }
@@ -231,6 +232,10 @@ const handlerCreators: HandleCreators<CommonSystemOptionProps, IOwnHandler> = {
 
         case 'measurement':
           commonDispatch.measurementListRequest(request);
+          break;
+        
+        case 'assessor':
+          commonDispatch.assessorListRequest(request);
           break;
 
         default:

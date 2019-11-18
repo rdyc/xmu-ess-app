@@ -2,6 +2,7 @@
 export * from './competency/cluster/IHrCompetencyClusterPostPayload';
 export * from './competency/cluster/IHrCompetencyClusterPutPayload';
 export * from './competency/cluster/IHrCompetencyClusterPatchPayload';
+export * from './competency/cluster/IHrCompetencyClusterDeletePayload';
 export * from './competency/cluster/IClusterCategoryItemPayload';
 
 // category

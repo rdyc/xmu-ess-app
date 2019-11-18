@@ -1,4 +1,5 @@
 import { IAccountEmployee } from '@account/classes';
+import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCompany, ILookupPosition } from '@lookup/classes';
 import { IAssessmentItem } from './IAssessmentItem';
@@ -15,5 +16,7 @@ export interface IHrCompetencyAssessment {
   responders?: IAssessmentItem[];
   isDraft: boolean;
   totalResponse?: number;
+  statusType: string;
+  status?: ICommonSystem;
   changes?: IBaseChanges;
 }

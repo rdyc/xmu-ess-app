@@ -3,6 +3,8 @@ import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classe
 import {
   activityGetListDispose,
   activityGetListRequest,
+  assessorGetListDispose,
+  assessorGetListRequest,
   bloodGetListDispose,
   bloodGetListRequest,
   certificationGetListDispose,
@@ -124,6 +126,7 @@ interface PropsFromState {
   commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProfessionListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonCompetencyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonAssessorListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   
   commonKpiListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonMeasurementListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
@@ -171,6 +174,7 @@ interface PropsFromDispatch {
     competencyListRequest: typeof competencyGetListRequest;
     kpiListRequest: typeof kpiGetListRequest;
     measurementListRequest: typeof measurementGetListRequest;
+    assessorListRequest: typeof assessorGetListRequest;
 
     unitListDispose: typeof unitGetListDispose;
     activityListDispose: typeof activityGetListDispose;
@@ -203,6 +207,7 @@ interface PropsFromDispatch {
     familyListDispose: typeof familyGetListDispose;
     professionListDispose: typeof professionGetListDispose;
     competencyListDispose: typeof competencyGetListDispose;
+    assessorListDispose: typeof assessorGetListDispose;
 
     kpiListDispose: typeof kpiGetListDispose;
     measurementListDispose: typeof measurementGetListDispose;
@@ -262,8 +267,8 @@ const mapStateToProps = ({
   commonCompetencyList,
   commonProfessionList,
   commonKpiList,
-  commonMeasurementList
-
+  commonMeasurementList,
+  commonAssessorList,
 }: IAppState) => ({
   // system
   commonSystemState: {
@@ -309,6 +314,7 @@ const mapStateToProps = ({
   commonProfessionListState: commonProfessionList,
   commonKpiListState: commonKpiList,
   commonMeasurementListState: commonMeasurementList,
+  commonAssessorListState: commonAssessorList,
 
   // detail
  
@@ -354,6 +360,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     professionListRequest: (request: ISystemListRequest) => dispatch(professionGetListRequest(request)),
     kpiListRequest: (request: ISystemListRequest) => dispatch(kpiGetListRequest(request)),
     measurementListRequest: (request: ISystemListRequest) => dispatch(measurementGetListRequest(request)),
+    assessorListRequest: (request: ISystemListRequest) => dispatch(assessorGetListRequest(request)),
 
     unitListDispose: () => dispatch(unitGetListDispose()),
     activityListDispose: () => dispatch(activityGetListDispose()),
@@ -388,6 +395,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     professionListDispose: () => dispatch(professionGetListDispose()),
     kpiListDispose: () => dispatch(kpiGetListDispose()),
     measurementListDispose: () => dispatch(measurementGetListDispose()),
+    assessorListDispose: () => dispatch(assessorGetListDispose()),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

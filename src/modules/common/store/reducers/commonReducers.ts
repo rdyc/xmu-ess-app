@@ -7,6 +7,7 @@ import expenseReducers from '@common/store/reducers/expense/expenseReducers';
 import leaveReducers from '@common/store/reducers/leave/leaveReducers';
 import siteReducers from '@common/store/reducers/site/siteReducers';
 import systemReducers from '@common/store/reducers/system/systemReducers';
+import assessorReducers from './assessor/assessorReducers';
 import bloodReducers from './blood/bloodReducers';
 import certificationReducers from './certification/certificationReducers';
 import competencyReducers from './competency/competencyReducers';
@@ -67,7 +68,8 @@ const commonReducers = {
   ...competencyReducers,
   ...professionReducers,
   ...kpiReducers,
-  ...measurementReducers
+  ...measurementReducers,
+  ...assessorReducers,
 };
 
 export default commonReducers;

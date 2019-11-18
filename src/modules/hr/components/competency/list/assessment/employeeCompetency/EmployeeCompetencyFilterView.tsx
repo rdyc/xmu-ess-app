@@ -14,8 +14,10 @@ import {
   ListItemText,
   Switch,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
@@ -48,7 +50,7 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterYear || props.filterAssess || !props.filterActive) &&
+            (props.filterCompany || !props.filterYear || (props.filterYear && props.filterYear.value !== props.currentYear.value) || props.filterAssess || !props.filterActive) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -57,6 +59,7 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
           <Button 
             color="inherit" 
             onClick={props.handleFilterOnApply}
+            disabled={!props.filterYear}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
@@ -75,12 +78,21 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
           />
           <ListItemSecondaryAction>
             {
+              (!props.filterYear ||
               props.filterYear &&
+              props.filterYear.value !== props.currentYear.value) &&
               <IconButton onClick={props.handleFilterYearOnClear}>
                 <ClearIcon />
               </IconButton>
             }
-
+            {
+              !props.filterYear &&
+              <Tooltip title={props.intl.formatMessage(hrMessage.competency.field.yearRequired)}>
+                <IconButton onClick={props.handleFilterYearVisibility}>
+                  <Info/>
+                </IconButton>
+              </Tooltip>
+            }
             <IconButton onClick={props.handleFilterYearVisibility}>
               <ChevronRightIcon />
             </IconButton>

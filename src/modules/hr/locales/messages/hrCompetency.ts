@@ -30,8 +30,12 @@ export const hrCompetencyField = defineMessages({
   note: { id: `${prefix}.field.note`},
   noteRequired: { id: `${prefix}.field.note.required`},
   notePlaceholder: { id: `${prefix}.field.note.placeholder`},
+  noteContent: { id: `${prefix}.field.note.content`},
+  noteContentOne: { id: `${prefix}.field.note.content.one`},
+  noteContentTwo: { id: `${prefix}.field.note.content.two`},
 
   year: { id: `${prefix}.field.year`},
+  yearRequired: { id: `${prefix}.field.year.required`},
   company: { id: `${prefix}.field.company`},
   position: { id: `${prefix}.field.position`},
 
@@ -46,11 +50,15 @@ export const hrCompetencyField = defineMessages({
   manyItem: { id: `${prefix}.field.manyItem`},
   notFound: { id: `${prefix}.field.notFound`},
   
+  competencyid: { id: `${prefix}.field.competencyid`},
   assessment: { id: `${prefix}.field.assessment`},
   competency: { id: `${prefix}.field.competency`},
+  competencies: { id: `${prefix}.field.competencies`},
 
   employee: { id: `${prefix}.field.employee`},
+  assessorType: { id: `${prefix}.field.assessorType`},
   responden: { id: `${prefix}.field.responden`},
+  responder: { id: `${prefix}.field.responder`},
 
   status: { id: `${prefix}.field.status`},
   cluster: { id: `${prefix}.field.cluster`},
@@ -67,6 +75,7 @@ export const hrCompetencyField = defineMessages({
 
   completion: { id: `${prefix}.field.completion`},
   completionItem: { id: `${prefix}.field.completion.item`},
+
 });
 
 // helper

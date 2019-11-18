@@ -41,6 +41,8 @@ const NotifSettingDetailPartialForm: React.ComponentType<NotifSettingPartialForm
           <LookupCompanyOption filter={{orderBy: 'name', direction: 'ascending'}}>
             <SelectField  
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={form.isSubmitting}
               escapeClearsValue={true}
               valueString={field.value}
@@ -63,6 +65,8 @@ const NotifSettingDetailPartialForm: React.ComponentType<NotifSettingPartialForm
           <NotifSettingOption>
             <SelectField  
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={form.isSubmitting}
               escapeClearsValue={true}
               valueString={field.value}
@@ -85,6 +89,8 @@ const NotifSettingDetailPartialForm: React.ComponentType<NotifSettingPartialForm
           <NotifTemplateOption filter={{orderBy: 'name', direction: 'ascending'}}>
             <SelectField  
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={form.isSubmitting}
               escapeClearsValue={true}
               valueString={field.value}

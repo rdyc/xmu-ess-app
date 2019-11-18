@@ -25,7 +25,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
       title={props.intl.formatMessage(hrMessage.competency.field.responden)}
     />
     <CardContent>
-      <Field 
+      {/* <Field 
         name="uid"
         render={({ field}: FieldProps<ICompetencyResultFormValue>) => (
           <TextField 
@@ -36,7 +36,7 @@ const CompetencyResultPartial: React.ComponentType<CompetencyResultPartialProps>
             label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Result'})}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="respondenUid"

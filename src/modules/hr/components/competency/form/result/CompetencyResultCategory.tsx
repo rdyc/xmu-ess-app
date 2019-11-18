@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -5,6 +6,7 @@ import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { CommentOutlined, Done } from '@material-ui/icons';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -20,7 +22,8 @@ interface IOwnProps {
 }
 
 interface IOwnState {
-
+  active: string | undefined;
+  isExpanded: boolean;
 }
 
 interface IOwnHandler {
@@ -29,6 +32,7 @@ interface IOwnHandler {
 
 interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
+  handleToggle: (uid: string) => IOwnState;
 }
 
 type AllProps
@@ -39,6 +43,8 @@ type AllProps
   & WithStyles<typeof styles>;
   
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
+  active: undefined,
+  isExpanded: false
 });
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
@@ -48,10 +54,15 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
   stateUpdate: (prevState: IOwnState) => (newState: IOwnState) => ({
     ...prevState,
     ...newState
+  }),
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
   })
 };
 
 const competencyResultCategory: React.ComponentType<AllProps> = props => {
+  // const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     return item && item.note;
@@ -60,7 +71,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
   const render = (
     <Card square className={props.classes.hrTable}>
       <CardHeader
-        title={props.intl.formatMessage(hrMessage.competency.field.assessment, {state: 'Result'})}
+        title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Form'})}
       />
       <Table>
         <TableBody>
@@ -88,10 +99,25 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
             props.mapped.categories.map((item, index) => 
             <React.Fragment key={item.uid}>
               <TableRow>
-                <TableCell colSpan={props.responders.length + 1} className={props.classes.toolbar} >
-                  <Typography variant="body1" color="inherit">
+                {/* Category */}
+                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar)} >
+                  <Typography variant="body1" color="inherit" >
                     {item.category.name}
                   </Typography>
+                  <Typography color="inherit">
+                    {item.category.description}
+                  </Typography>
+                  {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
+                  <Collapse
+                    in={active === item.category.uid && isExpanded}
+                    // className={props.classes.marginFar}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <Typography variant="body1" color="inherit">
+                      {item.category.description}
+                    </Typography>
+                  </Collapse> */}
                 </TableCell>
               </TableRow>
               <FieldArray 
@@ -116,12 +142,15 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                         }    
                         </ul>
                       </TableCell>
+
+                      {/* Check from responder */}
                       {
                         props.responders.map(responder => 
                           !responder.isHR &&
                           <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                             {
                               responder.items.length > 0 &&
+                              (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                               responder.items.find(findData => findData.levelUid === level.uid) &&
                               <Typography>
                                 <Done />
@@ -151,6 +180,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                     {
                       props.responders.find(responder => 
                         !responder.isHR && 
+                        (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                         responder.items.length > 0 && 
                         responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                         <TableRow>
@@ -162,6 +192,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                                   // NOTE RESPONDER HERE
                                   props.responders.map(responder => 
                                     !responder.isHR &&
+                                    (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                                     responder.items.length > 0 &&
                                     responder.items.find(findData => findData.levelUid === level.uid) &&
                                       <li>

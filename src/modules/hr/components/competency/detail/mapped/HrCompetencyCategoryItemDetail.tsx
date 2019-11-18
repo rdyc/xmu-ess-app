@@ -78,7 +78,7 @@ const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Categories'})}
+        title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
       />
       <List>
         {

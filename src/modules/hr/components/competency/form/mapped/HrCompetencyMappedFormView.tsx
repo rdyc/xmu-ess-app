@@ -18,8 +18,8 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
       uid: AppMenu.CompetencyMapped,
       parentUid: AppMenu.Lookup,
       parentUrl: '/hr/competency/mapped',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Mapped'}),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Mapped'})
+      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: 'Mapping'}),
+      description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: 'Mapping'})
     }}
     state={props.hrCompetencyMappedState.detail}
     onLoadApi={props.handleOnLoadDetail}
@@ -43,7 +43,7 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
               </div>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 
-                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Mapped'})}
+                  title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: 'Mapping'})}
                   className={props.classes.flexContent}
                   formikProps={formikBag}
                   buttonLabelProps={{
@@ -52,8 +52,8 @@ export const HrCompetencyMappedFormView: React.SFC<HrCompetencyMappedFormProps> 
                     processing: props.intl.formatMessage(layoutMessage.text.processing)
                   }}
                   confirmationDialogProps={{
-                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Mapped'}),
-                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'Mapped'}),
+                    title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createTitle : hrMessage.shared.confirm.modifyTitle, {state: 'Mapping'}),
+                    message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.confirm.createDescription : hrMessage.shared.confirm.modifyDescription, {state: 'mapping'}),
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }} 

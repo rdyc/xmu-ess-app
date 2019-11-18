@@ -7,7 +7,7 @@ import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-// import { HrCompetencyResponderItem } from '../../detail/result/shared/HrCompetencyResponderItem';
+import { HrInputInformation } from '../../shared/HrInputInformation';
 import { CompetencyResultCategory } from './CompetencyResultCategory';
 import { CompetencyResultFormProps, ICompetencyResultFormValue } from './CompetencyResultForm';
 import CompetencyResultPartial from './CompetencyResultPartial';
@@ -43,6 +43,12 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
               </div>
             </div>
 
+            <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrInputInformation />
+              </div>
+            </div>
+            
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
               <SubmissionDraft 

@@ -2,7 +2,6 @@ import {
   NotifTemplateAction as Action,
   notifTemplateDeleteError,
   notifTemplateDeleteRequest,
-  notifTemplateDeleteSuccess,
   notifTemplateGetAllDispose,
   notifTemplateGetAllError,
   notifTemplateGetAllRequest,
@@ -194,10 +193,9 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(notifTemplateGetByIdDispose()),
         put(notifTemplateGetAllDispose()),
-        put(notifTemplateDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve(response.body.data);
+        action.payload.resolve();
       },
       failureEffects: (response: IApiResponse) => [
         put(notifTemplateDeleteError(response.statusText))

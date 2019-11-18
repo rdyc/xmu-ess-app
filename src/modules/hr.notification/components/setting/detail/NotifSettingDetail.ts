@@ -1,5 +1,4 @@
 import { INotifSettingDeletePayload } from '@hr.notification/classes/request/setting';
-import { NotifUserAction } from '@hr.notification/classes/types';
 import { WithNotifSetting, withNotifSetting } from '@hr.notification/hoc/withNotifSetting';
 import { notifMessage } from '@hr.notification/locales/messages/notifMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
@@ -7,6 +6,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { LookupUserAction } from '@lookup/classes/types';
 import { DeleteFormData } from '@lookup/components/currency/editor/DeleteForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -23,7 +23,7 @@ interface IOwnRouteParams {
 interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   shouldLoad: boolean;
-  action?: NotifUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -81,13 +81,13 @@ const stateUpdaters: StateUpdaters<NotifSettingDetailProps, IOwnState, IOwnState
     shouldLoad: !state.shouldLoad
   }),
   setModify: (prevState: IOwnState, props: NotifSettingDetailProps) => (): Partial<IOwnState> => ({
-    action: NotifUserAction.Modify,
+    action: LookupUserAction.Modify,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(notifMessage.setting.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(notifMessage.setting.confirm.modifyDescription),
   }),
   setDelete: (prevState: IOwnState, props: NotifSettingDetailProps) => (): Partial<IOwnState> => ({
-    action: NotifUserAction.Delete,
+    action: LookupUserAction.Delete,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(notifMessage.setting.confirm.deleteTitle),
     dialogContent: props.intl.formatMessage(notifMessage.setting.confirm.deleteDescription),
@@ -104,13 +104,13 @@ const handlerCreators: HandleCreators<NotifSettingDetailProps, IOwnHandler> = {
   },
   handleOnSelectedMenu: (props: NotifSettingDetailProps) => (item: IPopupMenuOption) => { 
     switch (item.id) {
-      case NotifUserAction.Refresh:
+      case LookupUserAction.Refresh:
         props.setShouldLoad();
         break;
-      case NotifUserAction.Modify:
+      case LookupUserAction.Modify:
         props.setModify();        
         break;
-      case NotifUserAction.Delete:
+      case LookupUserAction.Delete:
         props.setDelete();
         break;
 
@@ -141,14 +141,14 @@ const handlerCreators: HandleCreators<NotifSettingDetailProps, IOwnHandler> = {
 
     // actions with new page
     const actions = [
-      NotifUserAction.Modify
+      LookupUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case NotifUserAction.Modify:
+        case LookupUserAction.Modify:
           next = '/hr/notification/settings/form';
           break;
 
@@ -233,19 +233,19 @@ const lifecycles: ReactLifeCycleFunctions<NotifSettingDetailProps, IOwnState> = 
       // generate option menus
       const options: IPopupMenuOption[] = [
         {
-          id: NotifUserAction.Refresh,
+          id: LookupUserAction.Refresh,
           name: this.props.intl.formatMessage(layoutMessage.action.refresh),
           enabled: !isLoading,
           visible: true
         },
         {
-          id: NotifUserAction.Modify,
+          id: LookupUserAction.Modify,
           name: this.props.intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true
         },
         {
-          id: NotifUserAction.Delete,
+          id: LookupUserAction.Delete,
           name: this.props.intl.formatMessage(layoutMessage.action.delete),
           enabled: true,
           visible: true

@@ -1,4 +1,5 @@
 import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
+import { IHrCompetencyStatus } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -25,15 +26,15 @@ const hrCompetencyAssessmentInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Assessment'})}
+        title={intl.formatMessage(hrMessage.competency.field.responden)}
       />
       <CardContent>
-      <TextField
+      {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.uid, {state: 'Assessment'})}
           value={data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
@@ -59,6 +60,12 @@ const hrCompetencyAssessmentInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(hrMessage.competency.field.name)}
           value={data.employee.fullName}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={props.intl.formatMessage(hrMessage.competency.field.status)}
+          value={IHrCompetencyStatus[data.statusType]}
         />
         {
           props.data.changes &&

@@ -15,7 +15,7 @@ export const HrCompetencyMappedDetailView: React.SFC<HrCompetencyMappedDetailPro
       uid: AppMenu.CompetencyMapped,
       parentUid: AppMenu.Lookup,
       parentUrl: '/hr/competency/mapped',
-      title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Mapped'}),
+      title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Mapping'}),
       description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
     }}
     state={props.hrCompetencyMappedState.detail}

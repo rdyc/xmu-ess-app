@@ -28,13 +28,13 @@ const hrCornerPageInformation: React.SFC<AllProps> = props => {
         title={intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Corner Page'})}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           multiline
           label={intl.formatMessage(hrMessage.corner.field.uid, {state: 'Page'})}
           value={data.uid}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

@@ -2,11 +2,11 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
+// import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -23,22 +23,23 @@ type HrCompetencyMappedPartialProps = {
 const HrCompetencyMappedPartial: React.ComponentType<HrCompetencyMappedPartialProps> = props => (
   <Card square>
     <CardHeader 
-      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Mapped'})}
+      title={props.intl.formatMessage(hrMessage.shared.section.infoTitle, {state: 'Mapping'})}
     />
     <CardContent>
-      <Field 
+      {/* <Field 
         name="uid"
         render={({ field}: FieldProps<IMappedFormValue>) => (
           <TextField 
             {...field}
             fullWidth
             disabled
+            multiline
             margin="normal"
             label={props.intl.formatMessage(hrMessage.competency.fieldFor(field.name, 'fieldName'), {state: 'Mapped'})}
             helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
           />
         )}
-      />
+      /> */}
 
       <Field
         name="companyUid"

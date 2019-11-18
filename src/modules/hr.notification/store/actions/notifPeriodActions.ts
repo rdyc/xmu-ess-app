@@ -59,6 +59,6 @@ export const notifPeriodPutDispose = () => action(NotifPeriodAction.PUT_DISPOSE)
 
 // delete
 export const notifPeriodDeleteRequest = (request: INotifPeriodDeleteRequest) => action(NotifPeriodAction.DELETE_REQUEST, request);
-export const notifPeriodDeleteSuccess = (response: IResponseSingle<undefined>) => action(NotifPeriodAction.DELETE_SUCCESS, response);
+export const notifPeriodDeleteSuccess = () => action(NotifPeriodAction.DELETE_SUCCESS);
 export const notifPeriodDeleteError = (error: any) => action(NotifPeriodAction.DELETE_ERROR, error);
 export const notifPeriodDeleteDispose = () => action(NotifPeriodAction.DELETE_DISPOSE);
