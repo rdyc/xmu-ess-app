@@ -49,7 +49,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.category &&
-            item.category.group === 'KPI' &&
+            item.category.group === 'kpi' &&
             `${props.intl.formatNumber(item.weight)} %` ||
             '-'
           }
@@ -59,7 +59,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             item.measurement && 
 
             (item.category &&
-            item.category.group === 'KPI') &&
+            item.category.group === 'kpi') &&
 
             (item.measurement.measurementType === MeasurementType.Minimum)  &&
             props.intl.formatNumber(item.threshold || 0) ||
@@ -71,7 +71,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             item.measurement && 
 
             (item.category &&
-            item.category.group === 'KPI') &&
+            item.category.group === 'kpi') &&
 
             ((item.measurement.measurementType === MeasurementType.Minimum ||
             item.measurement.measurementType === MeasurementType.Proporsional)) &&
