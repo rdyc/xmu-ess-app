@@ -132,7 +132,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
+                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
                               `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
                               '-'
                             }
@@ -143,7 +143,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
+                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
                               props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
                               props.intl.formatNumber(item.threshold || 0) ||
                               '-'
@@ -155,7 +155,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'KPI' &&
+                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
                               (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
                                 props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
                               props.intl.formatNumber(item.amount) ||

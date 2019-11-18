@@ -96,14 +96,14 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
+                            item.categoryGroup === 'kpi' &&
                             `${props.intl.formatNumber(item.weight)} %` ||
                             '-'
                           }
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
+                            item.categoryGroup === 'kpi' &&
                             item.measurementType === MeasurementType.Minimum  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
@@ -111,7 +111,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
+                            item.categoryGroup === 'kpi' &&
                             (item.measurementType === MeasurementType.Minimum ||
                               item.measurementType === MeasurementType.Proporsional) &&
                             props.intl.formatNumber(item.amount) ||

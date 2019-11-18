@@ -205,7 +205,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       />
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
         <Field
           name={`items.${props.itemDialogIndex}.weight`}
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
@@ -262,7 +262,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       }
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum &&
         <Field
           name={`items.${props.itemDialogIndex}.threshold`}
@@ -307,7 +307,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       }
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
         (props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum || 
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Proporsional) &&
         <Field
