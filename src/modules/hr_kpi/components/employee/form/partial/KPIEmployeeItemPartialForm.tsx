@@ -96,24 +96,24 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
+                            item.categoryGroup === 'kpi' &&
                             `${props.intl.formatNumber(item.weight)} %` ||
                             '-'
                           }
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
-                            item.measurementType === MeasurementType.Scoring  &&
+                            item.categoryGroup === 'kpi' &&
+                            item.measurementType === MeasurementType.Minimum  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
                           }
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'KPI' &&
-                            (item.measurementType === MeasurementType.Scoring ||
-                              item.measurementType === MeasurementType.Attendance) &&
+                            item.categoryGroup === 'kpi' &&
+                            (item.measurementType === MeasurementType.Minimum ||
+                              item.measurementType === MeasurementType.Proporsional) &&
                             props.intl.formatNumber(item.amount) ||
                             '-'
                           }
@@ -121,7 +121,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                         {
                           item.measurementType &&
-                          item.measurementType !== MeasurementType.Completion &&
+                          item.measurementType !== MeasurementType.Mutlak &&
                             <Field
                               name={`items.${index}.achieved`}
                               render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => {

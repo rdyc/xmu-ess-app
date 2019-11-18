@@ -46,17 +46,17 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.category &&
-            item.category.group === 'KPI' &&
+            item.category.group === 'kpi' &&
             `${props.intl.formatNumber(item && item.weight || 0)} %` ||
             '-'}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             (item.category &&
-            item.category.group === 'KPI') &&
+            item.category.group === 'kpi') &&
 
             (item.measurement && 
-            item.measurement.measurementType === MeasurementType.Scoring)  &&
+            item.measurement.measurementType === MeasurementType.Minimum)  &&
             props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
@@ -64,11 +64,11 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             (item.category &&
-            item.category.group === 'KPI') &&
+            item.category.group === 'kpi') &&
 
             (item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance)) &&
+            (item.measurement.measurementType === MeasurementType.Minimum ||
+            item.measurement.measurementType === MeasurementType.Proporsional)) &&
             props.intl.formatNumber(item.amount) ||
             '-'
           }

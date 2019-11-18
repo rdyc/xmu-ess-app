@@ -3,6 +3,6 @@ import { IKPIMeasurementPostPayload } from '../measurement';
 
 export interface IKPICategoryMeasurementPostPayload extends IBasePayload {
   name: string;
-  group: 'KPI' | 'Personal';
+  group: 'kpi' | 'personal';
   items: IKPIMeasurementPostPayload[];
 }

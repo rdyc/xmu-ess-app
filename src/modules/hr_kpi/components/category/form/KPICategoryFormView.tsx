@@ -58,7 +58,7 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
                     labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                     labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                   }}
-                  disableButtons={props.isItemEditing || props.initialValues.items.length === 0}
+                  disableButtons={props.isItemEditing || (props.formMode === FormMode.New && props.initialValues.items.length === 0)}
                 />
               </div>
               <div className={props.classes.flexContent}>

@@ -135,7 +135,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementValue`, selected && selected.label || '');
                   props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.measurementType`, selected && selected.data && selected.data.measurementType || '');
 
-                  if (selected && selected.data && selected.data.measurementType === MeasurementType.Completion) {
+                  if (selected && selected.data && selected.data.measurementType === MeasurementType.Mutlak) {
                     props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.amount`, 1);
                   }
 
@@ -180,7 +180,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
       />
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
         <Field
           name={`items.${props.itemDialogIndex}.weight`}
           render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
@@ -237,8 +237,8 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
       }      
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
-        props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Scoring &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
+        props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum &&
         <Field
           name={`items.${props.itemDialogIndex}.threshold`}
           render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
@@ -282,9 +282,9 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
       }
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'KPI' &&
-        (props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Scoring || 
-        props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Attendance) &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
+        (props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum || 
+        props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Proporsional) &&
         <Field
           name={`items.${props.itemDialogIndex}.amount`}
           render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
