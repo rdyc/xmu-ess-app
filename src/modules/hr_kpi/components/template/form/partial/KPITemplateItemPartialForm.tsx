@@ -129,7 +129,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                         >
                           {
                             props.formikBag.values.items[index].categoryGroup === 'KPI' &&
-                            props.formikBag.values.items[index].measurementType === MeasurementType.Scoring  &&
+                            props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
                           }
@@ -141,8 +141,8 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                         >
                           {
                             props.formikBag.values.items[index].categoryGroup === 'KPI' &&
-                            (props.formikBag.values.items[index].measurementType === MeasurementType.Scoring ||
-                              props.formikBag.values.items[index].measurementType === MeasurementType.Attendance) &&
+                            (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
+                              props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
                             props.intl.formatNumber(item.amount) ||
                             '-'
                           }

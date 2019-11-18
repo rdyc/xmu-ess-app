@@ -58,7 +58,7 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
             (item.category &&
             item.category.group === 'KPI') &&
 
-            (item.measurement.measurementType === MeasurementType.Scoring) &&
+            (item.measurement.measurementType === MeasurementType.Minimum) &&
             props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
@@ -70,8 +70,8 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
             (item.category &&
             item.category.group === 'KPI') &&
 
-            ((item.measurement.measurementType === MeasurementType.Scoring ||
-            item.measurement.measurementType === MeasurementType.Attendance)) &&
+            ((item.measurement.measurementType === MeasurementType.Minimum ||
+            item.measurement.measurementType === MeasurementType.Proporsional)) &&
             props.intl.formatNumber(item.amount) ||
             '-'
           }

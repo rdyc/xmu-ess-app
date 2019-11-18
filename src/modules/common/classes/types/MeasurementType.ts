@@ -1,5 +1,5 @@
 export enum MeasurementType {
-  Completion = 'MST01',
-  Attendance = 'MST02',
-  Scoring = 'MST03',
+  Mutlak = 'MST01',
+  Proporsional = 'MST02',
+  Minimum = 'MST03',
 }
