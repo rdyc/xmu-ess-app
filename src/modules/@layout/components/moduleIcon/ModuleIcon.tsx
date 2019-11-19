@@ -78,6 +78,7 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
       return <LocalAtmOutlined {...props.innerProps} />;
   
     case AppMenu.HumanResource:
+    case ModuleDefinitionType.Assessment:
       return <SupervisedUserCircleOutlined {...props.innerProps} />;
       
     case AppMenu.WebJob:

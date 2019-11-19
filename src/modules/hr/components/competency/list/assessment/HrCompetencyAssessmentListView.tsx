@@ -48,7 +48,7 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/hr/assessment/${props.match.params.employeeUid}/${item.uid}`)}
+            onClick={() => props.history.push(`/hr/assessment/${props.match.params.employeeUid}/${item.uid}`, { companyUid: item.companyUid, positionUid: item.positionUid, assessmentYear: item.assessmentYear })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -71,40 +71,6 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           <AddCircle/>
         </IconButton>
       }
-      // data toolbar component
-      // toolbarDataComponent={
-      //   <Tooltip
-      //     placement="bottom"
-      //     title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-      //   >
-      //     <div>
-      //       <IconButton
-      //         id="option-filter"
-      //         disabled={props.hrCompetencyAssessmentState.all.isLoading || props.hrCompetencyAssessmentState.all.isError}
-      //         onClick={props.handleFilterVisibility} 
-      //       >
-      //         <Badge
-      //           invisible={!props.handleFilterBadge()}
-      //           badgeContent={
-      //             <CheckCircle color="secondary" fontSize="small" />
-      //           }
-      //         >
-      //           <Tune/>
-      //         </Badge>
-      //       </IconButton>
-      //     </div>
-      //   </Tooltip>
-      // }
     />
-    {/* <HrCompetencyAssessmentFilter 
-      isOpen={props.isFilterOpen}
-      initialProps={{
-        assessmentYear: props.assessmentYear,
-        companyUid: props.companyUid,
-        positionUid: props.positionUid
-      }}
-      onClose={props.handleFilterVisibility}
-      onApply={props.handleFilterApplied}
-    /> */}
   </React.Fragment>
 );

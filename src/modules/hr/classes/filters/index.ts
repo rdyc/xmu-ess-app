@@ -18,6 +18,7 @@ export * from './competency/assessment/IAccountEmployeeCompetencyGetAllFilter';
 // employee
 export * from './competency/employee/IHrCompetencyEmployeeGetAllFilter';
 export * from './competency/employee/IHrCompetencyEmployeeGetDetailListFilter';
+export * from './competency/employee/IHrCompetencyEmployeeGetResultFilter';
 
 // corner blog
 export * from './corner/blog/IHrCornerBlogGetAllFilter';

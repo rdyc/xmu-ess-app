@@ -142,9 +142,8 @@ const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler
       const positionUid = props.history.location.state.positionUid;
       const respondenUid = props.history.location.state.respondenUid;
       const assessmentYear = props.history.location.state.assessmentYear;
-      const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
     
-      if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
+      if (user && positionUid && respondenUid && assessmentYear) {
         props.hrCompetencyResultDispatch.loadDetailListRequest({
           filter: {
             companyUid,

@@ -19,6 +19,7 @@ import {
   IHrCompetencyEmployeeGetAllRequest,
   IHrCompetencyEmployeeGetDetailListRequest,
   IHrCompetencyEmployeeGetDetailRequest,
+  IHrCompetencyEmployeeGetResultRequest,
   IHrCompetencyEmployeePatchRequest,
   IHrCompetencyMappedGetAllRequest,
   IHrCompetencyMappedGetDetailRequest,
@@ -105,6 +106,7 @@ export interface IHrCompetencyState {
   hrCompetencyEmployeeGetDetailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
   hrCompetencyEmployeeGetById: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
   hrCompetencyEmployeePatch: IQuerySingleState<IHrCompetencyEmployeePatchRequest, IHrCompetencyEmployee>;
+  hrCompetencyEmployeeGetResult: IQuerySingleState<IHrCompetencyEmployeeGetResultRequest, IHrCompetencyEmployeeDetail>;
   
   // result
   hrCompetencyResultGetAll: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;

@@ -12,6 +12,9 @@ import {
   hrCompetencyEmployeeGetDetailListError,
   hrCompetencyEmployeeGetDetailListRequest,
   hrCompetencyEmployeeGetDetailListSuccess,
+  hrCompetencyEmployeeGetResultError,
+  hrCompetencyEmployeeGetResultRequest,
+  hrCompetencyEmployeeGetResultSuccess,
   hrCompetencyEmployeePatchError,
   hrCompetencyEmployeePatchRequest,
   hrCompetencyEmployeePatchSuccess,
@@ -134,6 +137,31 @@ function* watchPatchRequest() {
   yield takeEvery(Action.PATCH_REQUEST, worker);
 }
 
+function* watchFetchResultRequest() {
+  const worker = (action: ReturnType<typeof hrCompetencyEmployeeGetResultRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/hr/competency/employees/result?${params}`,
+      successEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetResultSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(hrCompetencyEmployeeGetResultError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(hrCompetencyEmployeeGetResultError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.RESULT_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() {
     yield all([
@@ -151,6 +179,7 @@ function* hrCompetencyEmployeeSagas() {
     fork(watchFetchDetailListRequest),
     fork(watchFetchByIdRequest),
     fork(watchPatchRequest),
+    fork(watchFetchResultRequest),
     fork(watchSwitchAccess)
   ]);
 }
