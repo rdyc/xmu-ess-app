@@ -1,11 +1,25 @@
+import { IEmployeeListFilter } from '@account/classes/filters';
+import { ISystemListFilter } from '@common/classes/filters';
 import { AppRole } from '@constants/AppRole';
+import { FormMode } from '@generic/types';
+import { IHrCompetencyAssessmentPutPayload } from '@hr/classes/request';
+import { IHrCompetencyAssessment } from '@hr/classes/response';
 import { IHrCompetencyAssessmentUserAction } from '@hr/classes/types';
 import { WithHrCompetencyAssessment, withHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
+import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
+import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
+import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
+import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { withStyles, WithStyles } from '@material-ui/core';
+import styles from '@styles';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -21,7 +35,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import * as Yup from 'yup';
 
+import { ICompetencyAssessmentFormValue } from '../../form/assessment/CompetencyAssessmentForm';
 import { HrCompetencyAssessmentDetailView } from './HrCompetencyAssessmentDetailView';
 
 interface IOwnRouteParams {
@@ -34,6 +50,8 @@ interface IOwnHandler {
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleOnModify: (value: FormMode) => void;
+  handleOnSubmit: (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => void;
 }
 
 interface IOwnState {
@@ -47,6 +65,17 @@ interface IOwnState {
   dialogContent?: string;
   dialogCancelLabel?: string;
   dialogConfirmLabel?: string;
+
+  // Form
+  formMode: FormMode;
+
+  initialValues?: ICompetencyAssessmentFormValue;
+
+  filterCompany?: ILookupCompanyGetListFilter;
+  filterAccountEmployee?: IEmployeeListFilter;
+  validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICompetencyAssessmentFormValue>>>;
+  
+  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -54,12 +83,19 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setShouldLoad: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
   setDefault: StateHandler<IOwnState>;
+  setInitialValues: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type HrCompetencyAssessmentDetailProps
   = WithOidc
   & WithUser
+  & WithMasterPage
+  & WithHrCompetencyEmployee
   & WithHrCompetencyAssessment
+  & WithHrCompetencyResult
+  & WithHrCompetencyMapped
+  & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -87,7 +123,61 @@ const createProps: mapper<HrCompetencyAssessmentDetailProps, IOwnState> = (props
       isAdmin,
       shouldLoad: false,
       dialogFullScreen: false,
-      dialogOpen: false
+      dialogOpen: false,
+
+      formMode: FormMode.View,
+
+      // Form
+      initialValues: {
+        uid: 'Auto Generated',
+        employeeUid: '',
+        year: '',
+        companyUid: '',
+        positionUid: '',
+        responder: []
+      },
+      filterAccountEmployee: {
+        useAccess: true,
+        orderBy: 'fullName',
+        direction: 'ascending'
+      },
+      filterCompany: {
+        orderBy: 'name',
+        direction: 'ascending'
+      },
+    
+      // validation props	
+      validationSchema: Yup.object().shape<Partial<ICompetencyAssessmentFormValue>>({	
+        year: Yup.string()	
+          .label(props.intl.formatMessage(hrMessage.competency.field.year))	
+          .required(),	
+        companyUid: Yup.string()	
+          .label(props.intl.formatMessage(hrMessage.competency.field.company))	
+          .required(),	
+        positionUid: Yup.string()	
+          .label(props.intl.formatMessage(hrMessage.competency.field.position))	
+          .required(),	
+        employeeUid: Yup.string()	
+          .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
+          .required(),	
+        responder: Yup.array()	
+          .of(	
+            Yup.object().shape({	
+              employeeUid: Yup.string()	
+                .label(props.intl.formatMessage(hrMessage.competency.field.employee))	
+                .required(),
+                assessorType: Yup.string()	
+                .label(props.intl.formatMessage(hrMessage.competency.field.assessorType))	
+                .required()	
+            })	
+          )	
+          .min(1, props.intl.formatMessage(hrMessage.competency.field.minResponder)),	
+      }),
+    
+      filterCommonSystem: {
+        orderBy: 'value',
+        direction: 'ascending'
+      }
   };
 };
 
@@ -115,6 +205,15 @@ const stateUpdaters: StateUpdaters<HrCompetencyAssessmentDetailProps, IOwnState,
     dialogContent: undefined,
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
+  }),
+
+  // Form
+  setInitialValues: () => (values: any): Partial<IOwnState> => ({
+    initialValues: values
+  }),
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -127,6 +226,36 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
     if (user && assessmentUid && !isLoading) {
       props.hrCompetencyAssessmentDispatch.loadDetailRequest({
         assessmentUid
+      });
+
+      props.hrCompetencyEmployeeDispatch.loadResultRequest({
+        filter: {
+          assessmentUid,
+          isHr: true
+        }
+      });
+
+      const respondenUid = props.match.params.employeeUid;
+      const companyUid = props.history.location.state.companyUid;
+      const positionUid = props.history.location.state.positionUid;
+      const assessmentYear = props.history.location.state.assessmentYear;
+    
+      if (user && positionUid && respondenUid && assessmentYear) {
+        props.hrCompetencyResultDispatch.loadDetailListRequest({
+          filter: {
+            companyUid,
+            positionUid,
+            respondenUid,
+            assessmentYear
+          }
+        });
+      }
+
+      props.hrCompetencyMappedDispatch.loadListRequest({
+        filter: {
+          companyUid,
+          positionUid
+        }
       });
     }
   },
@@ -187,6 +316,98 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
       });
     }
   },
+  handleOnSubmit: (props: HrCompetencyAssessmentDetailProps) => (values: ICompetencyAssessmentFormValue, actions: FormikActions<ICompetencyAssessmentFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise((resolve, reject) => undefined);
+
+    if (user) {
+
+      // Edit
+      if (props.formMode === FormMode.Edit) {
+        const assessmentUid = props.match.params.assessmentUid;
+
+        // must have assessmentUid
+        if (assessmentUid) {
+          const payload: IHrCompetencyAssessmentPutPayload = {
+            companyUid: values.companyUid,
+            positionUid: values.positionUid,
+            employeeUid: values.employeeUid,
+            assessmentYear: Number(values.year),
+            responders: []
+          };
+
+          // fill responder
+          values.responder.forEach(item => payload.responders.push({
+            uid: item.uid,
+            employeeUid: item.employeeUid,
+            assessorType: item.assessorType
+          }));
+
+          // set the promise
+          promise = new Promise((resolve, reject) => {
+            props.hrCompetencyAssessmentDispatch.updateRequest({
+              assessmentUid,
+              resolve,
+              reject,
+              data: payload
+            });
+          });
+        }
+      }
+    }
+
+    // handling promise
+    promise
+      .then((response: IHrCompetencyAssessment) => {
+        
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Assessment', type: 'responden', uid: response.employee.fullName })
+        });
+
+        props.stateUpdate({
+          formMode: FormMode.View
+        });
+        
+        // Reload
+        props.setShouldLoad();
+
+        // redirect to detail
+        // props.history.push(`/hr/assessment/${response.employeeUid}/${response.uid}`);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
+
+        // console.log(error.errors);
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createFailure : hrMessage.shared.message.updateFailure)
+        });
+      });
+  },
+  handleOnModify: (props: HrCompetencyAssessmentDetailProps) => (value: FormMode) => {
+    props.stateUpdate({
+      formMode: value
+    });
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOwnState> = {
@@ -223,6 +444,36 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
 
       this.props.setOptions(options);
     }
+
+    // Form
+    const { response: thisResponse } = this.props.hrCompetencyAssessmentState.detail;
+    const { response: prevResponse } = prevProps.hrCompetencyAssessmentState.detail;
+
+    if (thisResponse !== prevResponse) {
+      if (thisResponse && thisResponse.data) {
+        // define initial values
+        const initialValues: ICompetencyAssessmentFormValue = {
+            uid: thisResponse.data.uid,
+            companyUid: thisResponse.data.companyUid,
+            positionUid: thisResponse.data.positionUid,
+            employeeUid: thisResponse.data.employeeUid,
+            employeeName: thisResponse.data.employee.fullName,
+            year: thisResponse.data.assessmentYear.toString(),
+            responder: [],
+        };
+
+        // fill categories
+        thisResponse.data.responders.forEach(item => initialValues.responder.push({
+          uid: item.uid,
+          employeeUid: item.employeeUid,
+          employeeName: item.employee.fullName,
+          assessorType: item.assessorType,
+          assessorName: item.assessor && item.assessor.value || ''
+        }));
+
+        this.props.setInitialValues(initialValues);
+      }
+    }
   }
 }; 
 
@@ -230,10 +481,15 @@ export const HrCompetencyAssessmentDetail = compose(
   withRouter,
   withOidc,
   withUser,
+  withMasterPage,
+  withHrCompetencyEmployee,
   withHrCompetencyAssessment,
+  withHrCompetencyResult,
+  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  withStyles(styles),
   lifecycle(lifecycles),
   setDisplayName('HrCompetencyAssessmentDetail')
 )(HrCompetencyAssessmentDetailView);

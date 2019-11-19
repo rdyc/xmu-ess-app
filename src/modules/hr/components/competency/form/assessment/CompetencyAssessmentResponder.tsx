@@ -8,8 +8,8 @@ import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardActions, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
-import { DeleteForever, ExpandLess, ExpandMore, GroupAdd } from '@material-ui/icons';
+import { Button, Card, CardActions, CardHeader, Collapse, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
+import { Clear, DeleteForever, ExpandLess, ExpandMore, GroupAdd } from '@material-ui/icons';
 import styles from '@styles';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
@@ -26,6 +26,7 @@ interface IOwnProps {
   data?: IHrCompetencyAssessmentDetail;
   creator: string | undefined;
   filterCommonSystem?: ISystemListFilter;
+  handleOnModify?: (value: FormMode) => void;
 }
 
 interface IOwnState {
@@ -56,12 +57,12 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
-  const { active, isExpanded, handleToggle, formMode } = props;
+  const { active, isExpanded, handleToggle, formMode, handleOnModify } = props;
 
-  const isDeleteAble = (employeeUid: string) => {
+  const isDeleteAble = (itemUid?: string) => {
     if (formMode === FormMode.Edit) {
       if (props.data) {
-        const employeeData = props.data.responders.find(item => item.employeeUid === employeeUid);
+        const employeeData = props.data.responders.find(item => item.uid === itemUid);
   
         if (employeeData) {
           if (employeeData.isExpired) {
@@ -94,6 +95,12 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                   color: 'error',
                   variant: 'body1'
                 }}
+                action={
+                  handleOnModify &&
+                  <IconButton onClick={() => handleOnModify(FormMode.View)} >
+                    <Clear />
+                  </IconButton>
+                }
               />
               <List>
                 {
@@ -128,8 +135,8 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                 <SelectField
                                   autoFocus
                                   isSearchable
-                                  isClearable={field.value !== ''}
-                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.employeeUid) || props.formikBag.values.employeeUid === ''}
+                                  // isClearable={field.value !== ''}
+                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.uid) || props.formikBag.values.employeeUid === ''}
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
                                   menuPosition="fixed"
@@ -146,20 +153,23 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                       const value = selected && selected.value || '';
 
                                       if (value !== '') {
-                                      const isSelfExist = props.formikBag.values.responder.findIndex(self => self.assessorType === AssessorType.Self);
-
-                                      if (isSelfExist === -1 || isSelfExist !== -1 && value !== AssessorType.Self) {
-                                        props.formikBag.setFieldValue(field.name, value || '');
+                                        // Change assessor
+                                        props.formikBag.setFieldValue(field.name, value);
                                         props.formikBag.setFieldValue(`responder.${index}.assessorName`, selected && selected.label || '');
 
+                                        // Change employee
                                         if (value === AssessorType.Self) {
                                           props.formikBag.setFieldValue(`responder.${index}.employeeUid`, props.formikBag.values.employeeUid);
                                           props.formikBag.setFieldValue(`responder.${index}.employeeName`, props.formikBag.values.employeeName);
+                                        } else {
+                                          if (item.employeeUid === props.formikBag.values.employeeUid) {
+                                            props.formikBag.setFieldValue(`responder.${index}.employeeUid`, '');
+                                            props.formikBag.setFieldValue(`responder.${index}.employeeName`, '');
+                                          }
                                         }
+                                      } else {
+                                        props.formikBag.setFieldValue(field.name, value);
                                       }
-                                    } else {
-                                      props.formikBag.setFieldValue(field.name, value);
-                                    }
                                   }}
                                 />
                               </CommonSystemOption>
@@ -177,13 +187,13 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                               <AccountEmployeeAllOption filter={props.filterAccountEmployee}>
                                 <SelectField
                                   isSearchable
-                                  isClearable={field.value !== ''}
+                                  // isClearable={field.value !== ''}
                                   isDisabled={
                                     props.formikBag.isSubmitting || 
                                     props.formikBag.values.employeeUid === '' || 
                                     props.formikBag.values.responder[index].assessorType === '' || 
                                     props.formikBag.values.responder[index].assessorType === AssessorType.Self || 
-                                    isDeleteAble(item.employeeUid)}
+                                    isDeleteAble(item.uid)}
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
                                   menuPosition="fixed"
@@ -197,8 +207,16 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                   }}
                                   onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
                                   onChange={(selected: ISelectFieldOption) => {
-                                    props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                                    props.formikBag.setFieldValue(`responder.${index}.employeeName`, selected && selected.label || '');
+                                    const value = selected && selected.value || '';
+
+                                    if (value !== '') {
+                                      if (props.formikBag.values.responder[index].assessorType !== AssessorType.Self && value !== props.formikBag.values.employeeUid) {
+                                        props.formikBag.setFieldValue(field.name, value || '');
+                                        props.formikBag.setFieldValue(`responder.${index}.employeeName`, selected && selected.label || '');
+                                      }
+                                    } else {
+                                      props.formikBag.setFieldValue(field.name, value);
+                                    }                                    
                                   }}
                                 />
                               </AccountEmployeeAllOption>
@@ -207,7 +225,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                         />
 
                         {
-                          !isDeleteAble(item.employeeUid) &&
+                          !isDeleteAble(item.uid) &&
                           <CardActions>
                             <Button
                               fullWidth
