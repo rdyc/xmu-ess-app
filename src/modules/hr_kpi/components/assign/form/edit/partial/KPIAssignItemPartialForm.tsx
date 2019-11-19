@@ -41,7 +41,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
       positionUid: props.formikBag.values.positionUid,
       templateUid: props.formikBag.values.templateUid,
       year: props.formikBag.values.year,
-      totalWeight: props.formikBag.values.totalWeight,
+      totalWeight: props.listItem.map(i => i.weight).reduce((a, b) => a + b, 0),
       isFinal: props.formikBag.values.isFinal,
       isFirst: props.formikBag.values.isFirst,
       revision: props.formikBag.values.revision,
