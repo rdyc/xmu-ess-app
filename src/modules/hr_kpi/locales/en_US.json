@@ -188,9 +188,9 @@
   "kpi.measurement.message.update.failure": "Unable to process your submission",
 
   "kpi.measurement.field.uid": "Measurement ID",
-  "kpi.measurement.field.description": "Description",
-  "kpi.measurement.field.measurementType": "Measurement Type",
-  "kpi.measurement.field.weight": "Weight",
+  "kpi.measurement.field.description": "Pengukuran",
+  "kpi.measurement.field.measurementType": "Tipe Pengukuran",
+  "kpi.measurement.field.weight": "Bobot (dalam persen (%))",
   "kpi.measurement.field.tooltip": "Click to Edit Item",
 
   "kpi.measurement.page.list.title": "KPI measurements",
