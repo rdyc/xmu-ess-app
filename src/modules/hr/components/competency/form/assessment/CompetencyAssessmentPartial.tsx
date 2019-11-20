@@ -140,7 +140,10 @@ const CompetencyAssessmentPartial: React.ComponentType<CompetencyAssessmentParti
                     props.formikBag.values.responder.map((item, index) => 
                       item.assessorType === AssessorType.Self &&
                       item.employeeUid !== selected.value &&
-                      props.formikBag.setFieldValue(`responder.${index}.employeeUid`, selected.value)
+                      (
+                        props.formikBag.setFieldValue(`responder.${index}.employeeUid`, selected.value),
+                        props.formikBag.setFieldValue(`responder.${index}.employeeName`, selected.label)
+                      )
                     );
                   }
                 }

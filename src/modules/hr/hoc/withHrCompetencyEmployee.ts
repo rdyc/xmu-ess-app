@@ -3,9 +3,10 @@ import {
   IHrCompetencyEmployeeGetAllRequest, 
   IHrCompetencyEmployeeGetDetailListRequest,
   IHrCompetencyEmployeeGetDetailRequest, 
+  IHrCompetencyEmployeeGetResultRequest,
   IHrCompetencyEmployeePatchRequest,
 } from '@hr/classes/queries/';
-import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail } from '@hr/classes/response/';
+import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList } from '@hr/classes/response/';
 import { 
   hrCompetencyEmployeeGetAllDispose, 
   hrCompetencyEmployeeGetAllRequest, 
@@ -13,6 +14,8 @@ import {
   hrCompetencyEmployeeGetByIdRequest,
   hrCompetencyEmployeeGetDetailListDispose, 
   hrCompetencyEmployeeGetDetailListRequest,
+  hrCompetencyEmployeeGetResultDispose,
+  hrCompetencyEmployeeGetResultRequest,
   hrCompetencyEmployeePatchDispose,
   hrCompetencyEmployeePatchRequest,
 } from '@hr/store/actions';
@@ -23,6 +26,8 @@ interface PropsFromState {
   hrCompetencyEmployeeState: {
     all: IQueryCollectionState<IHrCompetencyEmployeeGetAllRequest, IHrCompetencyEmployee>;
     detail: IQuerySingleState<IHrCompetencyEmployeeGetDetailRequest, IHrCompetencyEmployeeDetail>;
+    detailList: IQueryCollectionState<IHrCompetencyEmployeeGetDetailListRequest, IHrCompetencyEmployeeDetailList>;
+    result: IQuerySingleState<IHrCompetencyEmployeeGetResultRequest, IHrCompetencyEmployeeDetail>;
   };
 }
 
@@ -39,16 +44,19 @@ interface PropsFromDispatch {
     loadDetailListDispose: typeof hrCompetencyEmployeeGetDetailListDispose;
     loadDetailRequest: typeof hrCompetencyEmployeeGetByIdRequest;
     loadDetailDispose: typeof hrCompetencyEmployeeGetByIdDispose;
+    loadResultRequest: typeof hrCompetencyEmployeeGetResultRequest;
+    loadResultDispose: typeof hrCompetencyEmployeeGetResultDispose;
   };
 }
 
 export interface WithHrCompetencyEmployee extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ hrCompetencyEmployeeGetAll, hrCompetencyEmployeeGetById, hrCompetencyEmployeeGetDetailList }: IAppState) => ({
+const mapStateToProps = ({ hrCompetencyEmployeeGetAll, hrCompetencyEmployeeGetById, hrCompetencyEmployeeGetDetailList, hrCompetencyEmployeeGetResult }: IAppState) => ({
   hrCompetencyEmployeeState: {
     all: hrCompetencyEmployeeGetAll,
     detail: hrCompetencyEmployeeGetById,
-    detailList: hrCompetencyEmployeeGetDetailList
+    detailList: hrCompetencyEmployeeGetDetailList,
+    result: hrCompetencyEmployeeGetResult
   }
 });
 
@@ -65,6 +73,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadDetailListDispose: () => dispatch(hrCompetencyEmployeeGetDetailListDispose()),
     loadDetailRequest: (request: IHrCompetencyEmployeeGetDetailRequest) => dispatch(hrCompetencyEmployeeGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(hrCompetencyEmployeeGetByIdDispose()),
+    loadResultRequest: (request: IHrCompetencyEmployeeGetResultRequest) => dispatch(hrCompetencyEmployeeGetResultRequest(request)),
+    loadResultDispose: () => dispatch(hrCompetencyEmployeeGetResultDispose()),
   }
 });
 

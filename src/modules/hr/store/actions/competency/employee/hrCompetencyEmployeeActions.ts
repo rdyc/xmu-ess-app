@@ -3,6 +3,7 @@ import {
   IHrCompetencyEmployeeGetAllRequest, 
   IHrCompetencyEmployeeGetDetailListRequest, 
   IHrCompetencyEmployeeGetDetailRequest,
+  IHrCompetencyEmployeeGetResultRequest,
   IHrCompetencyEmployeePatchRequest,
 } from '@hr/classes/queries';
 import { IHrCompetencyEmployee, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList } from '@hr/classes/response';
@@ -25,6 +26,10 @@ export const enum HrCompetencyEmployeeAction {
   PATCH_SUCCESS = '@@hr/competency/employee/PATCH_SUCCESS',
   PATCH_ERROR = '@@hr/competency/employee/PATCH_ERROR',
   PATCH_DISPOSE = '@@hr/competency/employee/PATCH_DISPOSE',
+  RESULT_REQUEST = '@@hr/competency/employee/RESULT_REQUEST',
+  RESULT_SUCCESS = '@@hr/competency/employee/RESULT_SUCCESS',
+  RESULT_ERROR = '@@hr/competency/employee/RESULT_ERROR',
+  RESULT_DISPOSE = '@@hr/competency/employee/RESULT_DISPOSE',
 }
 
 // get all
@@ -50,3 +55,9 @@ export const hrCompetencyEmployeePatchRequest = (request: IHrCompetencyEmployeeP
 export const hrCompetencyEmployeePatchSuccess = (response: IResponseSingle<IHrCompetencyEmployee>) => action(HrCompetencyEmployeeAction.PATCH_SUCCESS, response);
 export const hrCompetencyEmployeePatchError = (error: any) => action(HrCompetencyEmployeeAction.PATCH_ERROR, error);
 export const hrCompetencyEmployeePatchDispose = () => action(HrCompetencyEmployeeAction.PATCH_DISPOSE);
+
+// get result
+export const hrCompetencyEmployeeGetResultRequest = (request: IHrCompetencyEmployeeGetResultRequest) => action(HrCompetencyEmployeeAction.RESULT_REQUEST, request);
+export const hrCompetencyEmployeeGetResultSuccess = (response: IResponseSingle<IHrCompetencyEmployeeDetail>) => action(HrCompetencyEmployeeAction.RESULT_SUCCESS, response);
+export const hrCompetencyEmployeeGetResultError = (error: any) => action(HrCompetencyEmployeeAction.RESULT_ERROR, error);
+export const hrCompetencyEmployeeGetResultDispose = () => action(HrCompetencyEmployeeAction.RESULT_DISPOSE);

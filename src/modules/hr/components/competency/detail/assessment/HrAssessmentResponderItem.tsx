@@ -1,3 +1,4 @@
+import { FormMode } from '@generic/types';
 import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { initialName } from '@layout/helper/initialName';
@@ -6,6 +7,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -15,6 +17,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { lightBlue, orange, red } from '@material-ui/core/colors';
+import { Create } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -23,6 +26,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface IOwnProps {
   data: IHrCompetencyAssessmentDetail;
+  handleOnModify: (value: FormMode) => void;
 }
 
 interface IOwnState {
@@ -45,13 +49,18 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { data, intl, handleOnModify } = props;
 
   const render = (
     <React.Fragment>      
       <Card square>
         <CardHeader
           title={intl.formatMessage(hrMessage.competency.field.responder)}
+          action={
+            <IconButton onClick={() => handleOnModify(FormMode.Edit)} >
+              <Create />
+            </IconButton>
+          }
         />
         <CardContent>
           <List>

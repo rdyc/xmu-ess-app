@@ -33,6 +33,7 @@ export * from './competency/employee/IHrCompetencyEmployeeGetAllRequest';
 export * from './competency/employee/IHrCompetencyEmployeeGetDetailRequest';
 export * from './competency/employee/IHrCompetencyEmployeePatchRequest';
 export * from './competency/employee/IHrCompetencyEmployeeGetDetailListRequest';
+export * from './competency/employee/IHrCompetencyEmployeeGetResultRequest';
 
 // corner blog
 export * from './corner/blog/IHrCornerBlogGetAllByCategoryRequest';
