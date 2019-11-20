@@ -23,7 +23,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/recurrings?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -44,7 +44,7 @@ function* watchFetchAllRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       successEffects: (response: IApiResponse) => ([
@@ -65,7 +65,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPostRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'POST',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
@@ -106,7 +106,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPutRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'PUT',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       payload: action.payload.data,
@@ -147,7 +147,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringDeleteRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'DELETE',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
@@ -188,7 +188,7 @@ function* watchDeleteRequest() {
 function* watchTriggerRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringTriggerRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'POST',
       path: `/api/v1/recurrings/trigger`,
       payload: action.payload.data,

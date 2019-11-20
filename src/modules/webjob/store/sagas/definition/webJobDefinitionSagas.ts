@@ -24,7 +24,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/definitions?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -50,7 +50,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/definitions/list?${params}`,
       successEffects: (response: IApiResponse) => ([
@@ -71,7 +71,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}`,
       successEffects: (response: IApiResponse) => ([
@@ -96,7 +96,7 @@ function* watchPostRequest() {
     data.append('package', action.payload.data.package[0]);
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'POST',
       path: `/api/v1/definitions`,
       payload: data,
@@ -138,7 +138,7 @@ function* watchPostRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionDeleteRequest>) => {
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'DELETE',
       path: `/api/v1/definitions`,
       payload: action.payload.data,
@@ -184,7 +184,7 @@ function* watchFetchAllJobRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}/jobs?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -210,7 +210,7 @@ function* watchFetchListJobRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: 'http://10.0.20.150:5002',
+      host: process.env.REACT_APP_WEBJOB_API_URL,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}/jobs/list?${params}`,
       successEffects: (response: IApiResponse) => ([
