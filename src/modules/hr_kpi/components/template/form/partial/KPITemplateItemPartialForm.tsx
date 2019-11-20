@@ -9,6 +9,7 @@ import { InjectedIntl } from 'react-intl';
 import { MeasurementType } from '@common/classes/types';
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import * as classNames from 'classnames';
 import { IKPITemplateFormValue } from '../KPITemplateForm';
@@ -117,7 +118,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                         >
                           {
-                            props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                             `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
                             '-'
                           }
@@ -128,7 +129,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                         >
                           {
-                            props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                             props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
@@ -140,7 +141,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                         >
                           {
-                            props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                             (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
                               props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
                             props.intl.formatNumber(item.amount) ||

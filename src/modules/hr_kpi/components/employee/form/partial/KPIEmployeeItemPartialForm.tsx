@@ -5,6 +5,7 @@ import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
 import { MeasurementType } from '@common/classes/types';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { layoutMessage } from '@layout/locales/messages';
@@ -96,14 +97,14 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'kpi' &&
+                            item.categoryGroup === KPICategoryGroupType.KPI &&
                             `${props.intl.formatNumber(item.weight)} %` ||
                             '-'
                           }
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'kpi' &&
+                            item.categoryGroup === KPICategoryGroupType.KPI &&
                             item.measurementType === MeasurementType.Minimum  &&
                             props.intl.formatNumber(item.threshold || 0) ||
                             '-'
@@ -111,7 +112,7 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
                         </TableCell>
                         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                           {
-                            item.categoryGroup === 'kpi' &&
+                            item.categoryGroup === KPICategoryGroupType.KPI &&
                             (item.measurementType === MeasurementType.Minimum ||
                               item.measurementType === MeasurementType.Proporsional) &&
                             props.intl.formatNumber(item.amount) ||
