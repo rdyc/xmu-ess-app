@@ -8,5 +8,6 @@ export interface IKPIMeasurementList {
   description: string;
   measurementType: string;
   measurement?: ICommonSystem;
+  isInUse: boolean;
   weight: number;
 }
