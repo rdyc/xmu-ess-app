@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
@@ -7,6 +6,7 @@ import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { HrAssessmentResponderItem } from '../../detail/assessment/HrAssessmentResponderItem';
 import { HrInputInformation } from '../../shared/HrInputInformation';
 import { CompetencyResultCategory } from './CompetencyResultCategory';
 import { CompetencyResultFormProps, ICompetencyResultFormValue } from './CompetencyResultForm';
@@ -15,11 +15,11 @@ import CompetencyResultPartial from './CompetencyResultPartial';
 export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = props => (
   <FormPage
     info={{
-      uid: AppMenu.CompetencyAssessmentResult,
+      uid: AppMenu.CompetencyAssessment,
       parentUid: AppMenu.HumanResource,
-      parentUrl: '/hr/assessmentresult',
-      title: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.page.newTitle :  hrMessage.shared.page.modifyTitle, {state: '360 Assessment Result'}),
-      description: props.intl.formatMessage(props.formMode === FormMode.New ?  hrMessage.shared.page.newSubHeader :  hrMessage.shared.page.modifySubHeader, {state: '360 Assessment Result'})
+      parentUrl: props.history.location.state && `/hr/assessment/${props.history.location.state.respondenUid}` || '/hr/assessment',
+      title: props.intl.formatMessage(hrMessage.shared.page.modifyTitle, {state: '360 Assessment Result'}),
+      description: props.intl.formatMessage(hrMessage.shared.page.modifySubHeader, {state: '360 Assessment Result'})
     }}
     state={props.hrCompetencyResultState.detail}
     onLoadApi={props.handleOnLoadDetail}
@@ -45,11 +45,17 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <HrInputInformation />
+                {
+                  props.hrCompetencyAssessmentState.detail.response &&
+                  <HrAssessmentResponderItem data={props.hrCompetencyAssessmentState.detail.response.data} />
+                }
               </div>
             </div>
             
             <div className={props.classes.flexColumn}>
+              <div className={props.classes.flexContent}>
+                <HrInputInformation />
+              </div>
               <div className={props.classes.flexContent}>
               <SubmissionDraft 
                   title={props.intl.formatMessage(hrMessage.shared.section.submission, {state: '360 Assessment Result'})}

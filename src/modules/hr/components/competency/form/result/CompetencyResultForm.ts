@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { IHrCompetencyEmployeePatchPayload } from '@hr/classes/request';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
+import { WithHrCompetencyAssessment, withHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
 import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
 import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
@@ -85,6 +86,7 @@ interface IOwnHandler {
 export type CompetencyResultFormProps
   = WithMasterPage
   & WithHrCompetencyEmployee
+  & WithHrCompetencyAssessment
   & WithHrCompetencyResult
   & WithHrCompetencyMapped
   & WithUser
@@ -170,47 +172,64 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
   handleOnLoadDetail: (props: CompetencyResultFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const competencyEmployeeUid = props.history.location.state.uid;
-      const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
+      // const competencyEmployeeUid = props.history.location.state.uid;
+      const assessmentUid = props.history.location.state.assessmentUid;
+      // const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
 
-      if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
-        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
-          competencyEmployeeUid
+      // if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
+      //   props.hrCompetencyEmployeeDispatch.loadDetailRequest({
+      //     competencyEmployeeUid
+      //   });
+      // }
+
+      if (user) {
+        props.hrCompetencyAssessmentDispatch.loadDetailRequest({
+          assessmentUid
         });
-      }
-      const companyUid = props.history.location.state.companyUid;
-      const positionUid = props.history.location.state.positionUid;
-      const respondenUid = props.history.location.state.respondenUid;
-      const assessmentYear = props.history.location.state.assessmentYear;
-      const { isLoading: resultLoading } = props.hrCompetencyResultState.detailList;
-    
-      if (user && positionUid && respondenUid && assessmentYear && !resultLoading) {
-        props.hrCompetencyResultDispatch.loadDetailListRequest({
+  
+        props.hrCompetencyEmployeeDispatch.loadResultRequest({
           filter: {
-            companyUid,
-            positionUid,
-            respondenUid,
-            assessmentYear
+            assessmentUid,
+            isHr: true
           }
         });
-      }
-
-      props.hrCompetencyMappedDispatch.loadListRequest({
-        filter: {
-          companyUid,
-          positionUid
+  
+        const companyUid = props.history.location.state.companyUid;
+        const positionUid = props.history.location.state.positionUid;
+        const respondenUid = props.history.location.state.respondenUid;
+        const assessmentYear = props.history.location.state.assessmentYear;
+      
+        if (positionUid && respondenUid && assessmentYear) {
+          props.hrCompetencyResultDispatch.loadDetailListRequest({
+            filter: {
+              companyUid,
+              positionUid,
+              respondenUid,
+              assessmentYear
+            }
+          });
+       
+          props.hrCompetencyMappedDispatch.loadListRequest({
+            filter: {
+              companyUid,
+              positionUid
+            }
+          });
         }
-      });
+  
+      }
     }
   },
   handleOnSubmit: (props: CompetencyResultFormProps) => (values: ICompetencyResultFormValue, actions: FormikActions<ICompetencyResultFormValue>) => {
     const { user } = props.userState;
+    const { response: resultResponse } = props.hrCompetencyEmployeeState.result;
+
     let promise = new Promise((resolve, reject) => undefined);
 
     if (user) {
       // Edit
-      if (props.formMode === FormMode.Edit) {
-        const competencyEmployeeUid = props.history.location.state.uid;
+      if (props.formMode === FormMode.Edit && resultResponse) {
+        const competencyEmployeeUid = resultResponse.data.uid;
         
         // must have competencyEmployeeUid
         if (competencyEmployeeUid) {
@@ -265,18 +284,18 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
         let companyUid: string | undefined;
         let positionUid: string | undefined;
-        let respondenUid: string | undefined;
         let assessmentYear: string | undefined;
+        let assessmentUid: string | undefined;
 
         if (props.history.location.state) {
           companyUid = props.history.location.state.companyUid;
           positionUid = props.history.location.state.positionUid;
-          respondenUid = props.history.location.state.respondenUid;
           assessmentYear = props.history.location.state.assessmentYear;
+          assessmentUid = props.history.location.state.assessmentUid;
         }
 
         // redirect to detail
-        props.history.push(`/hr/assessmentresult/${response.uid}`, {companyUid, positionUid, respondenUid, assessmentYear});
+        props.history.push(`/hr/assessment/${response.respondenUid}/${assessmentUid}`, {companyUid, positionUid, assessmentYear});
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
@@ -304,18 +323,18 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOwnState> = {
   componentDidMount() {
-    // 
+    //
   },
   componentWillUpdate(nextProps: CompetencyResultFormProps) {
     // 
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
-    const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
+    const { response: thisResponse, } = this.props.hrCompetencyEmployeeState.result;
     const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
     const { isLoad, setLoad, history } = this.props;
 
     if (history.location.state) {
-      if (thisResponse && thisResponse.data.uid === history.location.state.uid) {
+      if (thisResponse && thisResponse.data.assessmentUid === history.location.state.assessmentUid) {
         if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
             
             // define initial values
@@ -352,6 +371,7 @@ export const CompetencyResultForm = compose<CompetencyResultFormProps, IOwnOptio
   setDisplayName('CompetencyResultForm'),
   withHrCompetencyEmployee,
   withHrCompetencyResult,
+  withHrCompetencyAssessment,
   withHrCompetencyMapped,
   withMasterPage,
   withRouter,

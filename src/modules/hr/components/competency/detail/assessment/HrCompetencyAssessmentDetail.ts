@@ -35,6 +35,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ICompetencyAssessmentFormValue } from '../../form/assessment/CompetencyAssessmentForm';
@@ -223,40 +224,43 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
     const assessmentUid = props.match.params.assessmentUid;
     const { isLoading } = props.hrCompetencyAssessmentState.detail;
 
-    if (user && assessmentUid && !isLoading) {
-      props.hrCompetencyAssessmentDispatch.loadDetailRequest({
-        assessmentUid
-      });
-
-      props.hrCompetencyEmployeeDispatch.loadResultRequest({
-        filter: {
-          assessmentUid,
-          isHr: true
-        }
-      });
-
-      const respondenUid = props.match.params.employeeUid;
-      const companyUid = props.history.location.state.companyUid;
-      const positionUid = props.history.location.state.positionUid;
-      const assessmentYear = props.history.location.state.assessmentYear;
-    
-      if (user && positionUid && respondenUid && assessmentYear) {
-        props.hrCompetencyResultDispatch.loadDetailListRequest({
+    if (user && !isNullOrUndefined(props.history.location.state)) {
+      if (assessmentUid && !isLoading) {
+        props.hrCompetencyAssessmentDispatch.loadDetailRequest({
+          assessmentUid
+        });
+  
+        props.hrCompetencyEmployeeDispatch.loadResultRequest({
           filter: {
-            companyUid,
-            positionUid,
-            respondenUid,
-            assessmentYear
+            assessmentUid,
+            isHr: true
           }
         });
-      }
-
-      props.hrCompetencyMappedDispatch.loadListRequest({
-        filter: {
-          companyUid,
-          positionUid
+  
+        const respondenUid = props.match.params.employeeUid;
+        const companyUid = props.history.location.state.companyUid;
+        const positionUid = props.history.location.state.positionUid;
+        const assessmentYear = props.history.location.state.assessmentYear;
+      
+        if (positionUid && respondenUid && assessmentYear) {
+          props.hrCompetencyResultDispatch.loadDetailListRequest({
+            filter: {
+              companyUid,
+              positionUid,
+              respondenUid,
+              assessmentYear
+            }
+          });
+          
+          props.hrCompetencyMappedDispatch.loadListRequest({
+            filter: {
+              companyUid,
+              positionUid
+            }
+          });
         }
-      });
+  
+      }
     }
   },
   handleOnSelectedMenu: (props: HrCompetencyAssessmentDetailProps) => (item: IPopupMenuOption) => {
@@ -297,12 +301,12 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
       IHrCompetencyAssessmentUserAction.Modify
     ];
 
-    if (actions.indexOf(props.action) !== -1) {
+    if (actions.indexOf(props.action) !== -1 && props.history.location.state) {
       let next: string = '404';
 
       switch (props.action) {
         case IHrCompetencyAssessmentUserAction.Modify:
-          next = `/hr/assessment/form`;
+          next = `/hr/assessment/result`;
           break;
 
         default:
@@ -311,8 +315,17 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
 
       props.setDefault();
 
+      const respondenUid = props.match.params.employeeUid;
+      const companyUid = props.history.location.state.companyUid;
+      const positionUid = props.history.location.state.positionUid;
+      const assessmentYear = props.history.location.state.assessmentYear;
+
       props.history.push(next, { 
-        uid: assessmentUid
+        assessmentUid,
+        respondenUid,
+        companyUid,
+        positionUid,
+        assessmentYear,
       });
     }
   },

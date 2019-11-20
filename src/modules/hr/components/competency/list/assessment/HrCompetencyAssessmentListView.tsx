@@ -40,7 +40,7 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/hr/assessment/form`, { uid: item.uid })}
+            onClick={() => props.history.push(`/hr/assessment/result`, { assessmentUid: item.uid, respondenUid: props.match.params.employeeUid, companyUid: item.companyUid, positionUid: item.positionUid, assessmentYear: item.assessmentYear })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}
           </Button>

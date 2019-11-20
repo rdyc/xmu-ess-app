@@ -26,7 +26,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface IOwnProps {
   data: IHrCompetencyAssessmentDetail;
-  handleOnModify: (value: FormMode) => void;
+  handleOnModify?: (value: FormMode) => void;
 }
 
 interface IOwnState {
@@ -57,6 +57,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
         <CardHeader
           title={intl.formatMessage(hrMessage.competency.field.responder)}
           action={
+            handleOnModify &&
             <IconButton onClick={() => handleOnModify(FormMode.Edit)} >
               <Create />
             </IconButton>
