@@ -1,5 +1,6 @@
 import { MeasurementType } from '@common/classes/types';
 import { IKPITemplateItem } from '@kpi/classes/response';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -49,7 +50,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.category &&
-            item.category.group === 'kpi' &&
+            item.category.group === KPICategoryGroupType.KPI &&
             `${props.intl.formatNumber(item.weight)} %` ||
             '-'
           }
@@ -59,7 +60,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             item.measurement && 
 
             (item.category &&
-            item.category.group === 'kpi') &&
+            item.category.group === KPICategoryGroupType.KPI) &&
 
             (item.measurement.measurementType === MeasurementType.Minimum)  &&
             props.intl.formatNumber(item.threshold || 0) ||
@@ -71,7 +72,7 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             item.measurement && 
 
             (item.category &&
-            item.category.group === 'kpi') &&
+            item.category.group === KPICategoryGroupType.KPI) &&
 
             ((item.measurement.measurementType === MeasurementType.Minimum ||
             item.measurement.measurementType === MeasurementType.Proporsional)) &&

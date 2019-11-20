@@ -195,21 +195,21 @@
 
   "kpi.measurement.page.list.title": "KPI measurements",
   "kpi.measurement.page.list.subHeader": "Lorem LOREM",
-  "kpi.measurement.page.detail.title": "Detail KPI measurement",
+  "kpi.measurement.page.detail.title": "Detail KPI Measurement",
   "kpi.measurement.page.detail.subHeader": "Lorem LOREM",
-  "kpi.measurement.page.new.title": "New KPI measurement",
+  "kpi.measurement.page.new.title": "New KPI Measurement",
   "kpi.measurement.page.new.subHeader": "Lorem LOREM",
-  "kpi.measurement.page.modify.title": "Modify KPI measurement",
+  "kpi.measurement.page.modify.title": "Modify KPI Measurement",
   "kpi.measurement.page.modify.subHeader": "Lorem LOREM",
 
   "kpi.measurement.submission.form": "KPI measurement Submission",
 
-  "kpi.measurement.section.info.title": "KPI measurement",
+  "kpi.measurement.section.info.title": "KPI Measurement",
   "kpi.measurement.section.info.subHeader": "LOREM LOREM",
 
-  "kpi.measurement.confirm.new.title": "New KPI measurement",
+  "kpi.measurement.confirm.new.title": "New KPI Measurement",
   "kpi.measurement.confirm.new.description": "You are about creating a new KPI measurement. Do you want to continue?",
-  "kpi.measurement.confirm.modify.title": "Modify KPI measurement",
+  "kpi.measurement.confirm.modify.title": "Modify KPI Measurement",
   "kpi.measurement.confirm.modify.description": "You are about to modify current KPI measurement. Do you want to continue?",
 
   "kpi.category.message.create.success": "A new Category has been created",

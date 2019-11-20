@@ -2,6 +2,7 @@ import { MeasurementType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { KPICategoryOption } from '@kpi/components/category/options/KPICategoryOption';
 import { KPIMeasurementOption } from '@kpi/components/measurement/options/KPIMeasurementOption';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
@@ -205,7 +206,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       />
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === KPICategoryGroupType.KPI &&
         <Field
           name={`items.${props.itemDialogIndex}.weight`}
           render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
@@ -262,7 +263,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       }
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === KPICategoryGroupType.KPI &&
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum &&
         <Field
           name={`items.${props.itemDialogIndex}.threshold`}
@@ -307,7 +308,7 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
       }
     
       {
-        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === 'kpi' &&
+        props.formikBag.values.items[props.itemDialogIndex].categoryGroup === KPICategoryGroupType.KPI &&
         (props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Minimum || 
         props.formikBag.values.items[props.itemDialogIndex].measurementType === MeasurementType.Proporsional) &&
         <Field

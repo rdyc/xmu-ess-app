@@ -49,6 +49,22 @@ const myKPIFinalInformation: React.SFC<AllProps> = props => {
           value={`${props.data.totalScore.toString()} %`}
         />
         {
+          props.data.note &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(kpiMessage.employee.field.note)}
+            value={props.data.note}
+          />
+        }
+        {
+          props.data.notes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(kpiMessage.employee.field.kpiNotes)}
+            value={props.data.notes}
+          />
+        }
+        {
           props.data.changes &&
           <React.Fragment>
 

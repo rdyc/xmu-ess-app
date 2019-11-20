@@ -1,5 +1,6 @@
 import { MeasurementType } from '@common/classes/types';
 import { IKPIEmployeeItem } from '@kpi/classes/response';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -46,14 +47,14 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.category &&
-            item.category.group === 'kpi' &&
+            item.category.group === KPICategoryGroupType.KPI &&
             `${props.intl.formatNumber(item && item.weight || 0)} %` ||
             '-'}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             (item.category &&
-            item.category.group === 'kpi') &&
+            item.category.group === KPICategoryGroupType.KPI) &&
 
             (item.measurement && 
             item.measurement.measurementType === MeasurementType.Minimum)  &&
@@ -64,7 +65,7 @@ const kpiEmployeeItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             (item.category &&
-            item.category.group === 'kpi') &&
+            item.category.group === KPICategoryGroupType.KPI) &&
 
             (item.measurement && 
             (item.measurement.measurementType === MeasurementType.Minimum ||

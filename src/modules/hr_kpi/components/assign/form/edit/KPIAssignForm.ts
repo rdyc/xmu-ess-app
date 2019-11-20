@@ -444,7 +444,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
               measurementUid: item.measurementUid,
               measurementValue: item.measurement && item.measurement.description || '',
               measurementType: item.measurement && item.measurement.measurementType || '',
-              measurementDescription: item.measurement && item.measurement.description || '',
+              measurementDescription: item.measurementDescription || '',
               target: item.target,
               weight: item.weight,
               threshold: item.threshold || 0,
