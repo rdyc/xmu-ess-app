@@ -861,7 +861,8 @@ const styles = (theme: Theme) =>
       textAlign: 'center',
       backgroundColor: theme.palette.background.paper,
       position: 'sticky',
-      top: 0
+      top: 0,
+      overflow: 'hidden'
     },
 
     writingVertical: {

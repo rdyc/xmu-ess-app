@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
@@ -31,7 +32,7 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
               uid: AppMenu.CompetencyAssessment,
               parentUid: AppMenu.HumanResource,
               parentUrl: `/hr/assessment/${props.match.params.employeeUid}`,
-              title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: 'Assessment'}),
+              title: props.intl.formatMessage(hrMessage.shared.page.detailTitle, {state: '360 Assessment'}),
               description: props.intl.formatMessage(hrMessage.shared.page.detailSubHeader)
             }}
             state={props.hrCompetencyAssessmentState.detail}
@@ -41,7 +42,7 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
             ])}
             secondary={(data: IHrCompetencyAssessmentDetail) => ([
               props.formMode === FormMode.View ?
-              <HrAssessmentResponderItem data={data} handleOnModify={props.handleOnModify} />
+              <HrAssessmentResponderItem data={data} handleOnModify={data.statusType !== WorkflowStatusType.Closed ? props.handleOnModify : undefined} />
               :
               <CompetencyAssessmentResponder
                 formMode={props.formMode}
@@ -69,8 +70,8 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
                       processing: props.intl.formatMessage(layoutMessage.text.processing)
                     }}
                     confirmationDialogProps={{
-                      title: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Assessment'}),
-                      message: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'Assessment'}),
+                      title: props.intl.formatMessage(hrMessage.shared.confirm.modifyTitle, {state: 'Assessment Result'}),
+                      message: props.intl.formatMessage(hrMessage.shared.confirm.modifyDescription, {state: 'assessment result'}),
                       labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
                       labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
                     }} 

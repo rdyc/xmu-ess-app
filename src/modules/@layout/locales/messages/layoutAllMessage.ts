@@ -84,6 +84,7 @@ export const layoutAction = defineMessages({
   draft: { id: `${prefix}.action.draft`},
   final: { id: `${prefix}.action.final`},
   trigger: { id: `${prefix}.action.trigger`},
+  result: { id: `${prefix}.action.result`},
 });
 
 // field

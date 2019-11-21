@@ -33,12 +33,18 @@ import * as Yup from 'yup';
 
 import { CompetencyAssessmentFormView } from './CompetencyAssessmentFormView';
 
+export interface StatusProps {
+  type: string;
+  color: string;
+}
+
 export interface IResponderEmployee {
   uid?: string;
   assessorType: string;
   assessorName?: string;
   employeeUid: string;
   employeeName?: string;
+  status?: StatusProps;
 }
 
 export interface ICompetencyAssessmentFormValue {
