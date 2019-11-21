@@ -1,5 +1,6 @@
 import { IEmployeeListFilter } from '@account/classes/filters';
 import { ISystemListFilter } from '@common/classes/filters';
+import { WorkflowStatusType } from '@common/classes/types';
 import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
 import { IHrCompetencyAssessmentPutPayload } from '@hr/classes/request';
@@ -18,6 +19,7 @@ import { IValidationErrorResponse } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { withStyles, WithStyles } from '@material-ui/core';
+import { lightBlue, orange, red } from '@material-ui/core/colors';
 import styles from '@styles';
 import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -38,7 +40,7 @@ import {
 import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
-import { ICompetencyAssessmentFormValue } from '../../form/assessment/CompetencyAssessmentForm';
+import { ICompetencyAssessmentFormValue, StatusProps } from '../../form/assessment/CompetencyAssessmentForm';
 import { HrCompetencyAssessmentDetailView } from './HrCompetencyAssessmentDetailView';
 
 interface IOwnRouteParams {
@@ -438,8 +440,13 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
 
       // handle updated response state
     if (this.props.hrCompetencyAssessmentState.detail.response !== prevProps.hrCompetencyAssessmentState.detail.response) {
-      const { isLoading } = this.props.hrCompetencyAssessmentState.detail;
+      const { isLoading, response } = this.props.hrCompetencyAssessmentState.detail;
 
+      let isClosed: boolean = false;
+
+      if (response && response.data) {
+        isClosed = response.data.statusType === WorkflowStatusType.Closed;
+      }
       const options: IPopupMenuOption[] = [
         {
           id: IHrCompetencyAssessmentUserAction.Refresh,
@@ -449,9 +456,9 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
         },
         {
           id: IHrCompetencyAssessmentUserAction.Modify,
-          name: this.props.intl.formatMessage(layoutMessage.action.modify),
+          name: this.props.intl.formatMessage(layoutMessage.action.result),
           enabled: true,
-          visible: true,
+          visible: !isClosed
         }
       ];
 
@@ -474,6 +481,39 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
             year: thisResponse.data.assessmentYear.toString(),
             responder: [],
         };
+        
+        const getStatus = (isRespond: boolean, isComplete: boolean, isExpired: boolean) => {
+          let status: StatusProps | undefined = undefined;
+
+          if (!isExpired && !isRespond && !isComplete) {
+            return status = {
+              color: orange[500],
+              type: this.props.intl.formatMessage(hrMessage.competency.field.assigned)
+            };
+          }
+
+          if (isExpired && !isRespond && !isComplete) {
+            return status = {
+              color: red[500],
+              type: this.props.intl.formatMessage(hrMessage.competency.field.expired)
+            };
+          }
+
+          if (isComplete || isRespond) {
+            if (isComplete) {
+              return status = {
+                color: lightBlue[500],
+                type: this.props.intl.formatMessage(hrMessage.competency.field.complete)
+              };
+            }
+
+            return status = {
+              color: lightBlue[500],
+              type: this.props.intl.formatMessage(hrMessage.competency.field.respond)
+            };
+          }
+          return status;
+        };
 
         // fill categories
         thisResponse.data.responders.forEach(item => initialValues.responder.push({
@@ -481,7 +521,8 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
           employeeUid: item.employeeUid,
           employeeName: item.employee.fullName,
           assessorType: item.assessorType,
-          assessorName: item.assessor && item.assessor.value || ''
+          assessorName: item.assessor && item.assessor.value || '',
+          status: getStatus(item.isRespond, item.isComplete, item.isExpired)
         }));
 
         this.props.setInitialValues(initialValues);

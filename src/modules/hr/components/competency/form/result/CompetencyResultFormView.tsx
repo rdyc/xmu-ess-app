@@ -18,8 +18,8 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
       uid: AppMenu.CompetencyAssessment,
       parentUid: AppMenu.HumanResource,
       parentUrl: props.history.location.state && `/hr/assessment/${props.history.location.state.respondenUid}` || '/hr/assessment',
-      title: props.intl.formatMessage(hrMessage.shared.page.modifyTitle, {state: '360 Assessment Result'}),
-      description: props.intl.formatMessage(hrMessage.shared.page.modifySubHeader, {state: '360 Assessment Result'})
+      title: props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: '360 Assessment Result'}),
+      description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader, {state: '360 Assessment Result'})
     }}
     state={props.hrCompetencyResultState.detail}
     onLoadApi={props.handleOnLoadDetail}

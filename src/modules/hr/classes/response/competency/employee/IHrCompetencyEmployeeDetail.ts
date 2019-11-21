@@ -6,7 +6,7 @@ import { ICompetencyEmployeeItem } from './ICompetencyEmployeeItem';
 
 export interface IHrCompetencyEmployeeDetail {
   uid: string;
-  assessmentUid?: string;
+  assessmentUid: string;
   employeeUid: string;
   employee?: IAccountEmployee;
   respondenUid: string;

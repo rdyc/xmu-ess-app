@@ -264,6 +264,7 @@
   "layout.action.draft": "Draft",
   "layout.action.final": "Final",
   "layout.action.trigger": "Trigger",
+  "layout.action.result": "Result",
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
