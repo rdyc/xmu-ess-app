@@ -16,7 +16,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { lightBlue, orange, red } from '@material-ui/core/colors';
+import { lightBlue, red } from '@material-ui/core/colors';
 import { Create } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
@@ -26,7 +26,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface IOwnProps {
   data: IHrCompetencyAssessmentDetail;
-  handleOnModify: (value: FormMode) => void;
+  handleOnModify?: (value: FormMode) => void;
 }
 
 interface IOwnState {
@@ -57,6 +57,7 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
         <CardHeader
           title={intl.formatMessage(hrMessage.competency.field.responder)}
           action={
+            handleOnModify &&
             <IconButton onClick={() => handleOnModify(FormMode.Edit)} >
               <Create />
             </IconButton>
@@ -96,18 +97,18 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 <ListItemSecondaryAction>
                   {
                     !item.isExpired && !item.isRespond && !item.isComplete ?
-                    <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: orange[500], whiteSpace: 'nowrap'}}>
+                    <span className={classNames(props.classes.badgeChild)} style={{transform: 'translate(10px, -15px)', whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(hrMessage.competency.field.assigned)}
                     </span>
                     :
                     (
                       !item.isRespond && !item.isComplete && item.isExpired ?
-                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: red[500], whiteSpace: 'nowrap'}}>
+                      <span className={classNames(props.classes.badgeChild)} style={{transform: 'translate(10px, -15px)', backgroundColor: red[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(hrMessage.competency.field.expired)}
                       </span>
                       :
                       (item.isRespond || item.isComplete) &&
-                      <span className={classNames(props.classes.badgeChild)} style={{right: '24px', backgroundColor: lightBlue[500], whiteSpace: 'nowrap'}}>
+                      <span className={classNames(props.classes.badgeChild)} style={{transform: 'translate(10px, -15px)', backgroundColor: lightBlue[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(item.isComplete ? hrMessage.competency.field.complete : hrMessage.competency.field.respond)}
                       </span>
                     )

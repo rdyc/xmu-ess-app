@@ -93,7 +93,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
         />
       }
     </TableCell>
-    <TableCell className={classNames(props.classes.cellWidthMd)}>
+    <TableCell className={classNames(props.classes.cellWidthMdV2)}>
       <Field
         name="weight"
         render={({ field, form }: FieldProps<IKPIMeasurementFormValue>) => (
@@ -122,7 +122,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
         )}
       />
     </TableCell>
-    <TableCell className={classNames(props.classes.cellWidthMd)}>
+    <TableCell className={classNames(props.classes.cellWidthMdV2)}>
     {
         !props.isEditing && 
         !props.isItemEditing &&

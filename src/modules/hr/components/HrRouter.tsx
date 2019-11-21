@@ -29,6 +29,7 @@ const assessment = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:employeeUid/:assessmentUid`} component={HrCompetencyAssessmentDetail} />
     <Route path={`${props.match.path}/form`} component={CompetencyAssessmentForm} />
+    <Route path={`${props.match.path}/result`} component={CompetencyResultForm} />
     <Route path={`${props.match.path}/:employeeUid`} component={HrCompetencyAssessmentList} />
     <Route path={`${props.match.path}`} component={EmployeeCompetencyList} />
   </Switch>

@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IHrCompetencyAssessment } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
@@ -37,13 +38,16 @@ export const HrCompetencyAssessmentListView: React.SFC<HrCompetencyAssessmentLis
       )}
       actionComponent={(item: IHrCompetencyAssessment) => (
         <React.Fragment>
-          <Button 
-            size="small"
-            color="secondary"
-            onClick={() => props.history.push(`/hr/assessment/form`, { uid: item.uid })}
-          >
-            {props.intl.formatMessage(layoutMessage.action.modify)}
-          </Button>
+          {
+            item.statusType !== WorkflowStatusType.Closed &&
+            <Button 
+              size="small"
+              color="secondary"
+              onClick={() => props.history.push(`/hr/assessment/result`, { assessmentUid: item.uid, respondenUid: props.match.params.employeeUid, companyUid: item.companyUid, positionUid: item.positionUid, assessmentYear: item.assessmentYear })}
+            >
+              {props.intl.formatMessage(layoutMessage.action.result)}
+            </Button>
+          }
           
           <Button 
             size="small"

@@ -95,10 +95,10 @@ export type CollectionPageProps
   & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  orderBy: props.state.request && props.state.request.filter.orderBy,
-  direction: props.state.request && props.state.request.filter.direction,
-  page: props.state.request && props.state.request.filter.page,
-  size: props.state.request && props.state.request.filter.size,  
+  orderBy: props.state.request && props.state.request.filter && props.state.request.filter.orderBy || '',
+  direction: props.state.request && props.state.request.filter && props.state.request.filter.direction || '',
+  page: props.state.request && props.state.request.filter && props.state.request.filter.page || '',
+  size: props.state.request && props.state.request.filter && props.state.request.filter.size || '',  
   selected: []
 });
 

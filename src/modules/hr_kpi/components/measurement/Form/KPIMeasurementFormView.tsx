@@ -1,6 +1,6 @@
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardContent, CardHeader, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardHeader, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import * as classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
@@ -19,9 +19,6 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
         onSubmit={(values, formikActions) => props.handleOnSubmit(values, formikActions, index, item.isNew)}
         render={(formikBag: FormikProps<IKPIMeasurementFormValue>) => (
           <Form>
-            <div
-              className={classNames(props.classes.reportContentScrollable)}
-            >
               <Table
                 className={classNames(props.classes.reportTable)}
                 padding="dense"
@@ -42,7 +39,6 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
                   />
                 </TableBody>
               </Table>
-            </div>
           </Form>
         )}
       />
@@ -56,7 +52,6 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
         title={props.intl.formatMessage(kpiMessage.measurement.section.infoTitle)}
         // subheader={}
       />
-      <CardContent>
         {
           props.kpiMeasurementState.list.isLoading &&
           <div className={props.classes.preloader}>
@@ -75,9 +70,6 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
             </div>    
           </div>
         }
-          <div
-            className={classNames(props.classes.reportContentScrollable)}
-          >
             <Table
               className={classNames(props.classes.reportTable)}
               padding="dense"
@@ -90,35 +82,35 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
                   <TableCell className={classNames(props.classes.cellWidthLg)}>
                     {props.intl.formatMessage(kpiMessage.measurement.field.measurementType)}
                   </TableCell>
-                  <TableCell className={classNames(props.classes.cellWidthMd)}>
+                  <TableCell className={classNames(props.classes.cellWidthMdV2)}>
                     {props.intl.formatMessage(kpiMessage.measurement.field.weight)}
                   </TableCell>
-                  <TableCell className={classNames(props.classes.cellWidthMd)}>
+                  <TableCell className={classNames(props.classes.cellWidthMdV2)}>
                     {props.intl.formatMessage(layoutMessage.action.modify)}
                   </TableCell>
                 </TableRow>
               </TableHead>
             </Table>
-          </div>
         {
           !props.kpiMeasurementState.list.isLoading &&
           MeasurementList(props.measurementValueList)
         }
         {
           !props.isItemEditing &&
-          <Button 
-            fullWidth
-            color="primary"
-            onClick={() => {
-              props.handleCreateFormValueList();
-              props.handleSetIsItemEditing();
-            }}
-          >
-            <Add className={props.classes.marginFarRight} />
-            {props.intl.formatMessage(layoutMessage.action.add)}
-          </Button>
+          <CardActions>
+            <Button 
+              fullWidth
+              color="primary"
+              onClick={() => {
+                props.handleCreateFormValueList();
+                props.handleSetIsItemEditing();
+              }}
+            >
+              <Add className={props.classes.marginFarRight} />
+              {props.intl.formatMessage(layoutMessage.action.add)}
+            </Button>
+          </CardActions>
         }
-      </CardContent>
     </Card>
   </React.Fragment>
   );

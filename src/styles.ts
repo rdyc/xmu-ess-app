@@ -697,8 +697,21 @@ const styles = (theme: Theme) =>
     cellWidthMd: {
       width: '15vw'
     },
+    cellWidthMdV2: {
+      minWidth: `15vw`,
+      maxWidth: `15vw`,
+      [theme.breakpoints.up('md')]: {
+        minWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.15)`,
+        maxWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.15)`,
+      },
+    },
     cellWidthLg: {
-      width: '20vw'
+      minWidth: `25vw`,
+      maxWidth: `25vw`,
+      [theme.breakpoints.up('md')]: {
+        minWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.25)`,
+        maxWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.25)`,
+      },
     },
     cellWidthXL: {
       width: '25vw'
@@ -707,7 +720,12 @@ const styles = (theme: Theme) =>
       width: '30vw'
     },
     cellWidthXXXL: {
-      width: '40vw'
+      minWidth: `45vw`,
+      maxWidth: `45vw`,
+      [theme.breakpoints.up('md')]: {
+        minWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.45)`,
+        maxWidth: `calc((100vw - ${drawerWidth}px - 48px) * 0.45)`,
+      },
     },
 
     /* Table */
@@ -843,7 +861,8 @@ const styles = (theme: Theme) =>
       textAlign: 'center',
       backgroundColor: theme.palette.background.paper,
       position: 'sticky',
-      top: 0
+      top: 0,
+      overflow: 'hidden'
     },
 
     writingVertical: {
