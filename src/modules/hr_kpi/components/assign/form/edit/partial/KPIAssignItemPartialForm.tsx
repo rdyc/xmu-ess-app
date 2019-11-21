@@ -117,13 +117,13 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             {props.formikBag.values.items[index].categoryName}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
+                            style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].measurementDescription}
                           </TableCell>
                           <TableCell 
-                            style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
+                            style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {props.formikBag.values.items[index].target}

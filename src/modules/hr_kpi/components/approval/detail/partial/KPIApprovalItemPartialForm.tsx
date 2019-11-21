@@ -83,10 +83,10 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
                       <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
                         {item.categoryName}
                       </TableCell>
-                      <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
+                      <TableCell style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}>
                         {item.measurementDescription}
                       </TableCell>
-                      <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
+                      <TableCell style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}>
                         {item.target}
                       </TableCell>
                       <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
