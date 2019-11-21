@@ -8,7 +8,8 @@ export interface IKPIFinal {
   employee?: IEmployee;
   period: number;
   year: number;
-  templateUid: string;
+  note?: string;
+  notes?: string;
   totalScore: number;
   items: IKPIFinalItem[];
   changes?: IBaseChanges;

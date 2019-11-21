@@ -9,6 +9,7 @@ export interface IKPIMeasurement {
   description: string;
   measurementType: string;
   measurement?: ICommonSystem;
+  isInUse: boolean;
   weight: number;
   changes?: IBaseChanges;
 }

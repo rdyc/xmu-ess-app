@@ -9,6 +9,7 @@ import { InjectedIntl } from 'react-intl';
 import { MeasurementType } from '@common/classes/types';
 import { IKPICategoryGetListFilter } from '@kpi/classes/filter/category';
 import { IKPIMeasurementGetListFilter } from '@kpi/classes/filter/measurement';
+import { KPICategoryGroupType } from '@kpi/classes/types/category/KPICategoryGroupType';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import * as classNames from 'classnames';
 import { IKPIAssignFormValue, IKPIAssignItemFormValue } from '../KPIAssignForm';
@@ -39,6 +40,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
       employeeName: props.formikBag.values.employeeName,
       companyUid: props.formikBag.values.companyUid,
       positionUid: props.formikBag.values.positionUid,
+      positionName: props.formikBag.values.positionName,
       templateUid: props.formikBag.values.templateUid,
       year: props.formikBag.values.year,
       totalWeight: props.listItem.map(i => i.weight).reduce((a, b) => a + b, 0),
@@ -132,7 +134,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                              props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                               `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
                               '-'
                             }
@@ -143,7 +145,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                              props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                               props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
                               props.intl.formatNumber(item.threshold || 0) ||
                               '-'
@@ -155,7 +157,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
                           >
                             {
-                              props.formikBag.values.items[index].categoryGroup === 'kpi' &&
+                              props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
                               (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
                                 props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
                               props.intl.formatNumber(item.amount) ||
