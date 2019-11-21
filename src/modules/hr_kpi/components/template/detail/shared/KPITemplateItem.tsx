@@ -41,10 +41,10 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
         <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {item.categoryName}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
+        <TableCell style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}>
           {item.measurement && item.measurement.description}
         </TableCell>
-        <TableCell style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}> 
+        <TableCell style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}> 
           {item.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
