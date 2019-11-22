@@ -72,7 +72,7 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
           {/* Category */}
           <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
             <Typography variant="body1" color="inherit" >
-              {item.category.name}
+              {item.category.competency.name} - {item.category.name}
             </Typography>
             <Typography color="inherit">
               {item.category.description}
