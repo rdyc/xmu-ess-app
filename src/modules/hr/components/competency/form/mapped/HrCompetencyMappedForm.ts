@@ -1,6 +1,6 @@
 import { WithCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IHrCompetencyClusterGetListFilter } from '@hr/classes/filters';
+import { IHrCompetencyClusterGetListFilter, IHrCompetencyMappedGetListFilter } from '@hr/classes/filters';
 import { IHrCompetencyMappedPostPayload, IHrCompetencyMappedPutPayload } from '@hr/classes/request';
 import { IMappedLevelItemPayload } from '@hr/classes/request/competency/mapped/IMappedLevelItemPayload';
 import { IHrCompetencyMapped, MappedItem } from '@hr/classes/response';
@@ -304,6 +304,23 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
           message: props.intl.formatMessage(props.formMode === FormMode.New ? hrMessage.shared.message.createSuccess : hrMessage.shared.message.updateSuccess, {state: 'Mapping', type: 'position', uid: response.position && response.position.name })
         });
 
+        // Reload mappedlist if the list is exist and companyuid is the same
+        const { isLoading, request } = props.hrCompetencyMappedState.list;
+        const { loadListRequest } = props.hrCompetencyMappedDispatch;
+        const companyUid: string = response.companyUid;
+        
+        const filter: IHrCompetencyMappedGetListFilter = {
+          companyUid,
+          orderBy: 'uid',
+          direction: 'ascending'
+        };
+
+        if (!isLoading || request && request.filter && request.filter.companyUid === companyUid) {
+          loadListRequest({ 
+            filter
+          });
+        }
+        
         // redirect to detail
         props.history.push(`/hr/competency/mapped/${response.uid}`);
       })
