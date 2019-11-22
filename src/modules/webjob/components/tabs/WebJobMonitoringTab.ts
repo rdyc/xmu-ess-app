@@ -1,5 +1,7 @@
+// import AppMenu from '@constants/AppMenu';  
 import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
+// import { menuLinkMapper } from '@utils/index';
 import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
 import { WithWebJobMonitoring, withWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,6 +18,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { WebJobMonitoringTabView } from './WebJobMonitoringTabView';
 
 interface IOwnRouteParams {
@@ -24,11 +27,13 @@ interface IOwnRouteParams {
 
 interface IOwnState {
   tabValue?: number;
+  intervalId?: NodeJS.Timeout;
 }
 
 interface IOwnHandlers {
   handleChangeTab: (tabValue: number) => void;
   handleLoadStatistic: () => void;
+  handleIntervalId: (intervalId: NodeJS.Timeout) => void;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -71,6 +76,11 @@ const handlerCreators: HandleCreators<WebJobMonitoringTabProps, IOwnHandlers> = 
     if (!isLoading) {
       loadAllStatisticRequest({});
     }
+  },
+  handleIntervalId: (props: WebJobMonitoringTabProps) => (intervalId: NodeJS.Timeout) => {
+    props.stateUpdate({
+      intervalId
+    });
   }
 };
 
@@ -89,10 +99,17 @@ const lifecycles: ReactLifeCycleFunctions<WebJobMonitoringTabProps, IOwnState> =
       this.props.handleLoadStatistic();
     }
 
-    setInterval(this.props.handleLoadStatistic, 60 * 1000);
+    // Per 60 sec
+    const interval = setInterval(this.props.handleLoadStatistic, 60 * 1000);
+
+    this.props.handleIntervalId(interval);
   },
-  componentWillUpdate(nextProps: WebJobMonitoringTabProps) {
-    // 
+  componentWillUnmount() {
+    // const pathname: string = this.props.history.location.pathname;
+    // pathname.startsWith(menuLinkMapper(AppMenu.WebJob)) &&
+    if (this.props.intervalId) {
+      clearInterval(this.props.intervalId);
+    }
   }
 };
 
@@ -102,7 +119,7 @@ export const WebJobMonitoringTab = compose<WebJobMonitoringTabProps, IOwnOption>
   withWebJobMonitoring,
   withStyles(styles, { withTheme: true }),
   injectIntl,
-  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>({}, stateUpdaters),
-  withHandlers<WebJobMonitoringTabProps, IOwnHandlers>(handlerCreators),
-  lifecycle<WebJobMonitoringTabProps, IOwnState>(lifecycles)
+  withStateHandlers({}, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(WebJobMonitoringTabView);

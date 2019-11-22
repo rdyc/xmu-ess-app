@@ -5,12 +5,12 @@ const prefix = 'account.profile';
 // page
 export const mySharedPage = defineMessages({
   detailTitle: {id: `${prefix}.page.detail.title`},
-  detailSubheader: {id: `${prefix}.page.detail.subheader`},
+  detailSubheader: {id: `${prefix}.page.detail.subHeader`},
 });
 
 // tabs
 export const myProfileTabs = defineMessages({
-  profile: {id: `${prefix}.tab.profile`},
+  detail: {id: `${prefix}.tab.detail`},
   competency: {id: `${prefix}.tab.competency`},
   kpi: {id: `${prefix}.tab.kpi`},
   kpiAssign: {id: `${prefix}.tab.kpiAssign`},
@@ -20,8 +20,8 @@ export const myProfileTabs = defineMessages({
 export const mySharedHelperFor = (field: string, type: 'fieldTab') => {
   if (type === 'fieldTab') {
     switch (field) {
-      case 'profile': return myProfileTabs.profile;
-      case 'competency': return myProfileTabs.competency;
+      case 'Detail': return myProfileTabs.detail;
+      case 'Competency': return myProfileTabs.competency;
       case 'KPI': return myProfileTabs.kpi;
       case 'KPIAssign': return myProfileTabs.kpiAssign;
 
