@@ -177,6 +177,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           filterKPICategory={props.filterKPICategory}
                           filterKPIMeasurement={props.filterKPIMeasurement}
                           itemDialogIndex={index}
+                          fieldArray={fields}
                           isDialogFullScreen={props.isDialogFullScreen}
                         />
                       </TableRow>
