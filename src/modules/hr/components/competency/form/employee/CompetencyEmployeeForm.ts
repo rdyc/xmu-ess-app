@@ -65,12 +65,14 @@ interface IOwnState {
 
   saveType: DraftType;
   isLoad: boolean;
+  isMappedLoad: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
   setLoad: StateHandler<IOwnState>;
+  setMappedLoad: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -97,6 +99,7 @@ const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: Comp
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   
   isLoad: false,
+  isMappedLoad: false,
   // form values
   initialValues: {
     uid: '',
@@ -155,6 +158,9 @@ const stateUpdaters: StateUpdaters<CompetencyEmployeeFormProps, IOwnState, IOwnS
   setLoad: () => (values: any): Partial<IOwnState> => ({
     isLoad: values
   }),
+  setMappedLoad: () => (values: any): Partial<IOwnState> => ({
+    isMappedLoad: values
+  }),
 };
 
 const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> = {
@@ -169,22 +175,24 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
-      const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
+      const { isLoading } = props.hrCompetencyEmployeeState.detail;
       const companyUid = props.history.location.state.companyUid;
       const positionUid = props.history.location.state.positionUid;
 
-      if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
+      if (user && competencyEmployeeUid && !isLoading) {
         props.hrCompetencyEmployeeDispatch.loadDetailRequest({
           competencyEmployeeUid
         });
       }
 
-      props.hrCompetencyMappedDispatch.loadListRequest({
-        filter: {
-          companyUid,
-          positionUid
-        }
-      });
+      if (companyUid && positionUid) {
+        props.hrCompetencyMappedDispatch.loadListRequest({
+          filter: {
+            companyUid,
+            positionUid
+          }
+        });
+      }
     }
   },
   handleOnSubmit: (props: CompetencyEmployeeFormProps) => (values: ICompetencyEmployeeFormValue, actions: FormikActions<ICompetencyEmployeeFormValue>) => {
@@ -281,7 +289,25 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyEmployeeFormProps, I
     // 
   },
   componentWillUpdate(nextProps: CompetencyEmployeeFormProps) {
-    //
+    const { response: empResponse } = nextProps.hrCompetencyEmployeeState.detail;
+    // const { response: mapResponse } = nextProps.hrCompetencyMappedState.list; 
+    const { setMappedLoad, history } = this.props;
+
+    if (this.props.history.location.state && !nextProps.isMappedLoad) {
+      if (
+        !history.location.state.companyUid && !history.location.state.positionUid &&
+        empResponse && empResponse.data && empResponse.data.uid === history.location.state.uid
+        // (!mapResponse || mapResponse.data && mapResponse.data[0].companyUid !== empResponse.data.companyUid && mapResponse.data[0].positionUid !== empResponse.data.positionUid)
+        ) {
+        this.props.hrCompetencyMappedDispatch.loadListRequest({
+          filter: {
+            companyUid: empResponse.data.companyUid,
+            positionUid: empResponse.data.positionUid
+          }
+        });
+        setMappedLoad(true);
+      }
+    }
   },
   componentDidUpdate(prevProps: CompetencyEmployeeFormProps) {
     const { response: thisResponse } = this.props.hrCompetencyEmployeeState.detail;
