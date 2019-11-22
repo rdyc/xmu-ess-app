@@ -10,7 +10,7 @@ import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, WithStyles } from '@material-ui/core';
-import { Field, FieldProps, FormikProps, getIn } from 'formik';
+import { Field, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { IKPIAssignFormValue } from '../KPIAssignForm';
@@ -22,6 +22,7 @@ interface KPIAssignSingleItemPartialFormProps {
   filterKPICategory: IKPICategoryGetListFilter;
   filterKPIMeasurement: IKPIMeasurementGetListFilter;
   itemDialogIndex: number;
+  fieldArray: FieldArrayRenderProps;
   isDialogFullScreen: boolean;
 }
 
@@ -355,7 +356,19 @@ const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
         }
     </DialogContent>
     <DialogActions>
-      <Button onClick={() => props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.isOpen`, false)} color="primary">
+      <Button onClick={() => {
+        props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.isOpen`, false);
+        if (
+          props.formikBag.values.items[props.itemDialogIndex].categoryUid === '' && 
+          props.formikBag.values.items[props.itemDialogIndex].categoryName === '' && 
+          props.formikBag.values.items[props.itemDialogIndex].measurementUid === '' && 
+          props.formikBag.values.items[props.itemDialogIndex].measurementDescription === '' && 
+          props.formikBag.values.items[props.itemDialogIndex].target === '' && 
+          props.formikBag.values.items[props.itemDialogIndex].amount === 0
+        ) {
+          props.fieldArray.remove(props.itemDialogIndex);
+        }
+      }} color="primary">
         {props.intl.formatMessage(layoutMessage.action.close)}
       </Button>
     </DialogActions>

@@ -173,6 +173,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             filterKPICategory={props.filterKPICategory}
                             filterKPIMeasurement={props.filterKPIMeasurement}
                             itemDialogIndex={index}
+                            fieldArray={fields}
                             isDialogFullScreen={props.isDialogFullScreen}
                           />
                           <TableCell className={classNames(props.classes.ultraDense)}>
@@ -212,6 +213,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             categoryUid: '',
                             categoryName: '',
                             measurementUid: '',
+                            measurementDescription: '',
                             target: '',
                             weight: 0,
                             threshold: 0,
