@@ -5,8 +5,6 @@ import { isWidthDown } from '@material-ui/core/withWidth';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SyncIcon from '@material-ui/icons/Sync';
 import { IWebJobMonitoringServer } from '@webjob/classes/response';
-import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
-import { WebJobMonitoringTab } from '@webjob/components/tabs/WebJobMonitoringTab';
 import * as React from 'react';
 import { WebJobServerListProps } from './WebJobServerList';
 import { WebJobServerSummary } from './WebJobServerSummary';
@@ -18,9 +16,7 @@ export const WebJobServerListView: React.SFC<WebJobServerListProps> = props => {
   };
 
   const render = (
-    <WebJobMonitoringTab
-      tab={MonitoringTabs.Servers}      
-    >
+    <React.Fragment>
       {/* Toolbar */}
       <Paper square>
         <Toolbar style={{direction: 'rtl'}}>
@@ -142,7 +138,7 @@ export const WebJobServerListView: React.SFC<WebJobServerListProps> = props => {
         </PreloaderWithError>
 
       }
-    </WebJobMonitoringTab>
+    </React.Fragment>
   );
 
   return render;
