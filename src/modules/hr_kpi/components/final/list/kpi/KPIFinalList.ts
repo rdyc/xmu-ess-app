@@ -22,6 +22,7 @@ import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPI
 import { IKPIFinal } from '@account/classes/response/employeeKPI';
 import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
 import { KPIFinalField } from '@kpi/classes/types';
+import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
 import { KPIAssignListView } from './KPIFinalListView';
 
@@ -127,11 +128,11 @@ const handlerCreators: HandleCreators<KPIFinalListProps, IOwnHandler> = {
       }
     }
   },
-  handleOnBind: () => (item: IKPIFinal, index: number) => ({
+  handleOnBind: (props: KPIFinalListProps) => (item: IKPIFinal, index: number) => ({
     key: index,
     primary: item.employee && item.employee.fullName || '',
     secondary: item.year.toString(),
-    tertiary: `Semester ${item.period.toString()}`,
+    tertiary: item.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear),
     quaternary: `${item.totalScore.toString()} %`,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    

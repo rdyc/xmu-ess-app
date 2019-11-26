@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { Card, CardContent, CardHeader, Checkbox, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography, WithStyles } from '@material-ui/core';
 import { Field, FieldArray, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -37,7 +37,6 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
         variant: 'body1'
       }}
     />
-    <CardContent>
       <div
         className={classNames(props.classes.reportContentScrollable)}
       >
@@ -282,7 +281,6 @@ const KPIEmployeeItemPartialForm: React.ComponentType<AllProps> = props => (
           </div>
         }
       </div>
-    </CardContent>
   </Card>
 );
 

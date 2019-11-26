@@ -4,7 +4,6 @@ import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
-  CardContent,
   CardHeader,
   Table,
   TableBody,
@@ -92,7 +91,6 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
           title={props.intl.formatMessage(kpiMessage.template.section.itemTitle)}
           // subheader={}
         />
-        <CardContent>
         {
           props.items &&
           <div
@@ -144,7 +142,6 @@ const kpiTemplateItem: React.SFC<AllProps> = props => {
             {'(No Data)'}
           </Typography>
         }
-        </CardContent>
       </Card>
     </React.Fragment>
   );

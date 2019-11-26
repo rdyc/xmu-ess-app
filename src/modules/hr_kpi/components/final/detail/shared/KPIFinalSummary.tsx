@@ -28,7 +28,7 @@ const kpiFinalSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.period)}
-        value={props.data.period.toString()}
+        value={props.data.period === 1 && props.intl.formatMessage(kpiMessage.employee.field.periodMidYear) || props.intl.formatMessage(kpiMessage.employee.field.periodFullYear)}
       />
     </Grid>
 

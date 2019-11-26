@@ -179,7 +179,7 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
           amount: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.template.field.amount))
             .integer()
-            .min(0)
+            .min(1)
             .required(),
         })
       )
