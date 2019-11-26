@@ -48,7 +48,7 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
                   response.data[item.name] !== undefined ?
                   <span className={props.classes.badgeParent}>
                   {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
-                    <span className={props.classes.badgeChild}>
+                    <span className={props.classes.badgeChild} style={{transform: 'translate(50%, -50%)'}} >
                       {response.data[item.name] > 99 ? '99+' : response.data[item.name]}
                     </span>
                   </span>

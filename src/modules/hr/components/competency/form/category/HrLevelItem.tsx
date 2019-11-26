@@ -112,10 +112,17 @@ const hrLevelItem: React.ComponentType<AllProps> = props => {
                                 inputComponent: NumberFormatter,
                               }}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                if (e.target.value === '') {
+                                const value = e.target.value;
+
+                                if (value === '') {
                                   props.formikBag.setFieldValue(field.name, 0);
                                 } else {
-                                  props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+
+                                  const isExist = props.formikBag.values.levels.findIndex(lv => lv.level === Number(value));
+
+                                  if (isExist === -1) {
+                                    props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+                                  }
                                 }
                               }}
                             />

@@ -9,7 +9,7 @@ import { IWebJobMonitoringJobScheduledGetAllFilter } from '@webjob/classes/filte
 import { IWebJobMonitoringJobScheduled } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
 import { withWebJobMonitoring, WithWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -124,8 +124,8 @@ const handlerCreators: HandleCreators<MonitoringScheduledListProps, IOwnHandler>
     secondary: item.job,
     tertiary: props.intl.formatDate(item.enqueueAt, GlobalFormat.Date),
     quaternary: '',
-    quinary: props.intl.formatDate(item.scheduledAt, GlobalFormat.Date),
-    senary: ''
+    quinary: '',
+    senary: moment(item.scheduledAt).fromNow() || '-'
   }),
 };
 

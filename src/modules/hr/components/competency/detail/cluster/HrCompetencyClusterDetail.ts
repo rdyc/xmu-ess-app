@@ -239,6 +239,13 @@ const handlerCreators: HandleCreators<HrCompetencyClusterDetailProps, IOwnHandle
       }
     });
 
+    props.hrCompetencyClusterDispatch.loadListRequest({
+      filter: {
+        orderBy: 'name',
+        direction: 'ascending'
+      }
+    });
+    
     props.history.push(`/hr/competency/cluster`);
     const { response: dataDetail } = props.hrCompetencyClusterState.detail;
 

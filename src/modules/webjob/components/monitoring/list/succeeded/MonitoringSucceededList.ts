@@ -2,14 +2,14 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { GlobalFormat } from '@layout/types';
+// import { GlobalFormat } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { IWebJobMonitoringJobSucceededGetAllFilter } from '@webjob/classes/filters';
 import { IWebJobMonitoringJobSucceeded } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
 import { withWebJobMonitoring, WithWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<MonitoringSucceededListProps, IOwnHandler>
     tertiary: item.result,
     quaternary: item.totalDuration.toString(),
     quinary: '',
-    senary: props.intl.formatDate(item.succeededAt, GlobalFormat.Date)
+    senary: moment(item.succeededAt).fromNow() || '-'
   }),
 };
 
