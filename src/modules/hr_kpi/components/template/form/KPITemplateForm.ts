@@ -168,17 +168,14 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
 
           weight: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.template.field.weight))
-            .integer()
             .min(0)
             .required(),
 
           threshold: Yup.number()
-            .label(props.intl.formatMessage(kpiMessage.template.field.threshold))
-            .integer(),
+            .label(props.intl.formatMessage(kpiMessage.template.field.threshold)),
 
           amount: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.template.field.amount))
-            .integer()
             .min(1)
             .required(),
         })

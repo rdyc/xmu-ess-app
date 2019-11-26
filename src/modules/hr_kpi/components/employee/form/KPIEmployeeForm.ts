@@ -179,7 +179,6 @@ const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployee
 
           achieved: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.employee.field.achieved))
-            .integer()
             .min(0)
             .required(),
           
