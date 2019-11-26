@@ -73,10 +73,10 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
               
               {/* Category */}
               <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
-                <Typography variant="body1" color="inherit" >
+                <Typography variant="subheading" color="inherit" >
                   {item.category.competency.name} - {item.category.name}
                 </Typography>
-                <Typography color="inherit">
+                <Typography variant="body1" color="inherit">
                   {item.category.description}
                 </Typography>
                 {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>} */}

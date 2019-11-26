@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
@@ -93,6 +94,13 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexContent}>
               {
+                (props.hrCompetencyMappedState.list.isLoading ||
+                props.hrCompetencyResultState.detailList.isLoading) && 
+                <LoadingCircular />
+              }
+              {
+                !props.hrCompetencyResultState.detailList.isLoading &&
+                !props.hrCompetencyMappedState.list.isLoading &&
                 props.hrCompetencyResultState.detailList.response &&
                 props.hrCompetencyResultState.detailList.response.data &&
                 props.hrCompetencyMappedState.list.response &&
