@@ -218,17 +218,14 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
 
           weight: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.employee.field.weight))
-            .integer()
             .min(0)
             .required(),
 
           threshold: Yup.number()
-            .label(props.intl.formatMessage(kpiMessage.employee.field.threshold))
-            .integer(),
+            .label(props.intl.formatMessage(kpiMessage.employee.field.threshold)),
 
           amount: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.employee.field.amount))
-            .integer()
             .min(1)
             .required(),
         })
