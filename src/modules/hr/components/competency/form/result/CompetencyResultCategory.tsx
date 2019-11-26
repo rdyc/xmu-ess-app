@@ -102,7 +102,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                 {/* Category */}
                 <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar)} >
                   <Typography variant="body1" color="inherit" >
-                    {item.category.name}
+                    {item.category.competency.name} - {item.category.name}
                   </Typography>
                   <Typography color="inherit">
                     {item.category.description}

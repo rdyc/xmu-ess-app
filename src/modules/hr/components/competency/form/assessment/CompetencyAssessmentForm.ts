@@ -262,7 +262,7 @@ const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler
         });
 
         // redirect to detail
-        props.history.push(`/hr/assessment/${response.employeeUid}/${response.uid}`);
+        props.history.push(`/hr/assessment/${response.employeeUid}/${response.uid}`, { companyUid: response.companyUid, positionUid: response.positionUid, assessmentYear: response.assessmentYear });
       })
       .catch((error: IValidationErrorResponse) => {
         // set submitting status
