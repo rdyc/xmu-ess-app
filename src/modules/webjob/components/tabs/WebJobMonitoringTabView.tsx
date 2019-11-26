@@ -11,11 +11,22 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
     id: key,
     name: MonitoringTabs[key]
   }));
+
+  const findIdx = (page?: MonitoringTabs) => {
+    if (page) {
+      const value = tabs.findIndex(idx => idx.name === page);
+  
+      if (value !== -1) {
+        return value;
+      }
+    }
+    return undefined;
+  };
   
   const render = (
     <React.Fragment>
       <AppBar position="static">
-        <Tabs centered value={props.tabValue} style={{
+        <Tabs centered value={findIdx(props.webJobPageState.page.webJobPage) || 0} style={{
           color: '#fff',
           background: props.theme.palette.type === 'light' ? '#03a9f4' : '#212121'
         }}>
@@ -37,7 +48,7 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
                   response.data[item.name] !== undefined ?
                   <span className={props.classes.badgeParent}>
                   {props.intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))}
-                    <span className={props.classes.badgeChild}>
+                    <span className={props.classes.badgeChild} style={{transform: 'translate(50%, -50%)'}} >
                       {response.data[item.name] > 99 ? '99+' : response.data[item.name]}
                     </span>
                   </span>
@@ -45,7 +56,10 @@ export const WebJobMonitoringTabView: React.SFC<WebJobMonitoringTabProps> = prop
                   props.intl.formatMessage(webJobMessage.shared.fieldFor(item.name, 'fieldTab'))
                 )
               }
-              onClick={() => props.history.push(`/webjob/${item.name}`)}
+              onClick={() => {
+                props.history.push(`/webjob/${item.name}`);
+                props.webJobPage.changePage(item.name);
+              }}
             />
           ))}
         </Tabs>

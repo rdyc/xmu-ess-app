@@ -2,14 +2,14 @@ import { IBasePagingFilter } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
 import { IDataBindResult } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { GlobalFormat } from '@layout/types';
+// import { GlobalFormat } from '@layout/types';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { IWebJobMonitoringJobDeletedGetAllFilter } from '@webjob/classes/filters';
 import { IWebJobMonitoringJobDeleted } from '@webjob/classes/response';
 import { IWebJobRequestField } from '@webjob/classes/types';
 import { withWebJobMonitoring, WithWebJobMonitoring } from '@webjob/hoc/withWebJobMonitoring';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -123,9 +123,9 @@ const handlerCreators: HandleCreators<MonitoringDeletedListProps, IOwnHandler> =
     primary: item.id,
     secondary: item.job,
     tertiary: '',
-    quaternary: props.intl.formatDate(item.deletedAt, GlobalFormat.Date),
+    quaternary: '',
     quinary: '',
-    senary: ''
+    senary: moment(item.deletedAt).fromNow() || '-',
   }),
 };
 

@@ -17,7 +17,6 @@ interface IOwnRouteParams {
 }
 
 interface IOwnState {
-  // jobsType: string;
 }
 
 interface IOwnHandler {
@@ -26,7 +25,6 @@ interface IOwnHandler {
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateUpdate: StateHandler<IOwnState>;
-  // handleJobsItem: (type: string) => IOwnState;
 }
 
 export type WebJobMonitoringListProps
@@ -42,7 +40,7 @@ export type WebJobMonitoringListProps
   & InjectedIntlProps;
 
 const createProps: mapper<WebJobMonitoringListProps, IOwnState> = (): IOwnState => ({
-  // jobsType: ''
+
 });
 
 const stateUpdaters: StateUpdaters<WebJobMonitoringListProps, IOwnState, IOwnStateUpdaters> = {
@@ -50,40 +48,11 @@ const stateUpdaters: StateUpdaters<WebJobMonitoringListProps, IOwnState, IOwnSta
     ...prevState,
     ...newState
   }),
-  // handleJobsItem: (props: WebJobMonitoringListProps) => (type: string) => ({
-  //   jobsType: type
-  // })
 };
 
 const handlerCreators: HandleCreators<WebJobMonitoringListProps, IOwnHandler> = {
   handleOnLoadApi: (props: WebJobMonitoringListProps) => () => { 
-    // const { loadDetailRequest } = props.employeeFinalDispatch;
-    // const { isLoading } = props.employeeFinalState.detail;
-    // const { user } = props.userState;
-
-    // const { loadNextRequest, loadCurrentRequest } = props.hrCompetencyMappedDispatch;
-    // const { isLoading: nextLoading } = props.hrCompetencyMappedState.next;
-    // const { isLoading: currentLoading } = props.hrCompetencyMappedState.current;
-
-    // if (user && !isLoading && !nextLoading && !currentLoading) {
-    //   loadDetailRequest({
-    //     employeeUid: user.uid,
-    //     positionUid: user.position.uid
-    //   });
-
-    //   loadNextRequest({
-    //     positionUid: user.position.uid,
-    //     employeeLevel: user.level.uid
-    //   });
-
-    //   loadCurrentRequest({
-    //     positionUid: user.position.uid,
-    //     employeeLevel: user.level.uid,
-    //     filter: {
-    //       isCurrent: true
-    //     }
-    //   });
-    // }
+    // 
   },
 };
 

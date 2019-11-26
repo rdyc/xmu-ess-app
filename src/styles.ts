@@ -985,7 +985,7 @@ const styles = (theme: Theme) =>
       position: 'absolute',
       flexWrap: 'wrap',
       minWidth: '20px',
-      transform: 'scale(1) translate(50%, -50%)',
+      transform: 'translate(20px, -50%)',
       boxSizing: 'border-box',
       transition: 'transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
       alignItems: 'center',

@@ -13,6 +13,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
@@ -20,6 +21,7 @@ import { lightBlue, red } from '@material-ui/core/colors';
 import { Create } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -92,7 +94,18 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={item.employee.fullName} 
-                  secondary={item.assessor && item.assessor.value || item.employee.email}
+                  secondary={
+                    item.assessor && 
+                    <React.Fragment>
+                      <Typography component="span" style={{display: 'inline'}}>
+                        {item.assessor.value}
+                      </Typography>
+                      {
+                        ` — ${moment(item.dueDate).utc().format('MMMM D YYYY, HH:mm')}`
+                      }
+                    </React.Fragment>
+                    || item.employee.email
+                  }
                 />
                 <ListItemSecondaryAction>
                   {

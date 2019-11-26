@@ -75,7 +75,8 @@ const LookupHolidayDetailPartialForm: React.ComponentType<LookupHolidayDetailPar
         render={({ field, form }: FieldProps<IHolidayFormValue>) => (
           <TextField
           {...field}
-          fullWidth={true}
+          fullWidth
+          multiline
           disabled={form.isSubmitting}
           margin="normal"
           autoComplete="off"

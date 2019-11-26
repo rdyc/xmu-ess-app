@@ -95,6 +95,7 @@ const createProps: mapper<HolidayFormProps, IOwnState> = (props: HolidayFormProp
 
     description: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.holiday.field.description))
+      .max(200)
       .required(),
 
    date: Yup.string()

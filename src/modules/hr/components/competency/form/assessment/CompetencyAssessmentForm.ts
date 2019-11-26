@@ -45,6 +45,7 @@ export interface IResponderEmployee {
   employeeUid: string;
   employeeName?: string;
   status?: StatusProps;
+  dueDate?: string;
 }
 
 export interface ICompetencyAssessmentFormValue {
@@ -315,7 +316,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyAssessmentFormProps,
           employeeUid: item.employeeUid,
           employeeName: item.employee.fullName,
           assessorType: item.assessorType,
-          assessorName: item.assessor && item.assessor.value || ''
+          assessorName: item.assessor && item.assessor.value || '',
+          dueDate: item.dueDate
         }));
 
         this.props.setInitialValues(initialValues);

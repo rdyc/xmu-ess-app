@@ -8,11 +8,13 @@ import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardActions, CardHeader, Collapse, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { Button, Card, CardActions, CardHeader, Collapse, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, WithStyles, withStyles } from '@material-ui/core';
 import { Clear, DeleteForever, ExpandLess, ExpandMore, GroupAdd } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -148,7 +150,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                   autoFocus
                                   isSearchable
                                   // isClearable={field.value !== ''}
-                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.uid) || props.formikBag.values.employeeUid === ''}
+                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.uid) || props.formikBag.values.employeeUid === '' || props.formikBag.values.uid !== '' }
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
                                   menuPosition="fixed"
@@ -205,6 +207,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                     props.formikBag.values.employeeUid === '' || 
                                     props.formikBag.values.responder[index].assessorType === '' || 
                                     props.formikBag.values.responder[index].assessorType === AssessorType.Self || 
+                                    props.formikBag.values.uid !== '' ||
                                     isDeleteAble(item.uid)}
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
@@ -235,6 +238,23 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                             );
                           }}
                         />
+
+                        {
+                          props.formikBag.values.responder[index].dueDate &&
+                          <Field 
+                            name={`responder.${index}.dueDate`}
+                            render={({field, form}: FieldProps<ICompetencyAssessmentFormValue>) => {        
+                              return (
+                                <TextField
+                                  {...GlobalStyle.TextField.ReadOnly}
+                                  margin="normal"
+                                  label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
+                                  value={moment(field.value).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+                                />
+                              );
+                            }}
+                          />
+                        }
 
                         {
                           !isDeleteAble(item.uid) &&

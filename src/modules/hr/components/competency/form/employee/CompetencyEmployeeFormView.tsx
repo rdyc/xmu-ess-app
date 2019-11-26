@@ -2,6 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
@@ -87,7 +88,12 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexContent}>
               {
+                props.hrCompetencyMappedState.list.isLoading &&
+                <LoadingCircular />
+              }
+              {
                 !props.hrCompetencyEmployeeState.detail.isLoading &&
+                !props.hrCompetencyMappedState.list.isLoading &&
                 props.hrCompetencyMappedState.list.response &&
                 props.hrCompetencyMappedState.list.response.data &&
                 props.hrCompetencyMappedState.list.response.data[0] &&

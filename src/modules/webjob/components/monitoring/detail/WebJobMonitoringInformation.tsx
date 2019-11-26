@@ -45,7 +45,7 @@ const webJobMonitoringInformation: React.SFC<AllProps> = props => {
           margin="dense"
           multiline
           label={intl.formatMessage(webJobMessage.monitoring.field.expireAt)}
-          value={props.intl.formatDate(props.data.expireAt, GlobalFormat.DateTime) || 'N/A'}
+          value={props.data.expireAt && props.intl.formatDate(props.data.expireAt, GlobalFormat.DateTime) || 'N/A'}
         />
       </CardContent>
     </Card>

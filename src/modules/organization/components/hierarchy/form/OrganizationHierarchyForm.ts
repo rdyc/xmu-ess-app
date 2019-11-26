@@ -133,6 +133,7 @@ const createProps: mapper<OrganizationHierarchyFormProps, IOwnState> = (props: O
         Yup.object().shape({
           sequence: Yup.number()
             .min(1)
+            .max(99)
             .label(props.intl.formatMessage(organizationMessage.hierarchy.field.sequence))
             .required(),
 

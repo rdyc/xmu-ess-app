@@ -522,7 +522,8 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
           employeeName: item.employee.fullName,
           assessorType: item.assessorType,
           assessorName: item.assessor && item.assessor.value || '',
-          status: getStatus(item.isRespond, item.isComplete, item.isExpired)
+          status: getStatus(item.isRespond, item.isComplete, item.isExpired),
+          dueDate: item.dueDate
         }));
 
         this.props.setInitialValues(initialValues);
