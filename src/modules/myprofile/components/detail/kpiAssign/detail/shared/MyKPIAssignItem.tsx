@@ -3,7 +3,6 @@ import { IKPIAssignItem } from '@kpi/classes/response';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
-  CardContent,
   CardHeader,
   Table,
   TableBody,
@@ -76,7 +75,6 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
           title={props.intl.formatMessage(kpiMessage.employee.section.itemTitle)}
           // subheader={}
         />
-        <CardContent>
         {
           props.items &&
           <div
@@ -124,7 +122,6 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
             {'(No Data)'}
           </Typography>
         }
-        </CardContent>
       </Card>
     </React.Fragment>
   );

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, TextField, WithStyles } from '@material-ui/core';
+import { Card, CardHeader, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, TextField, WithStyles } from '@material-ui/core';
 import { Field, FieldArray, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -33,7 +33,6 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
         variant: 'body1'
       }}
     />
-    <CardContent>
       <div
         className={classNames(props.classes.reportContentScrollable)}
       >
@@ -266,7 +265,6 @@ const KPIApprovalItemPartialForm: React.ComponentType<AllProps> = props => (
           </TableBody>
         </Table>
       </div>
-    </CardContent>
   </Card>
 );
 

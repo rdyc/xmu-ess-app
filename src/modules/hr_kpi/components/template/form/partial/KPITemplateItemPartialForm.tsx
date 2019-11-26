@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardContent, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
+import { Button, Card, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
 import { DeleteForever, GroupAdd } from '@material-ui/icons';
 import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -42,7 +42,6 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
         variant: 'body1'
       }}
     />
-    <CardContent>
       <div
         className={classNames(props.classes.reportContentScrollable)}
       >
@@ -213,7 +212,6 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
           </TableBody>
         </Table>
       </div>
-    </CardContent>
   </Card>
 );
 

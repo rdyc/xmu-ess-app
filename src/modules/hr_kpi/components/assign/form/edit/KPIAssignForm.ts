@@ -209,7 +209,6 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
           measurementValue: Yup.string(),
             
           measurementDescription: Yup.string()
-            .max(300)
             .label(props.intl.formatMessage(kpiMessage.employee.field.categoryName))
             .required(),
 
@@ -230,7 +229,7 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
           amount: Yup.number()
             .label(props.intl.formatMessage(kpiMessage.employee.field.amount))
             .integer()
-            .min(0)
+            .min(1)
             .required(),
         })
       )
