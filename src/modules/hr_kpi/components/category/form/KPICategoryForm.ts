@@ -138,6 +138,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
       uid: '',
       measurementName: '',
       description: '',
+      isInUse: false,
       measurementType: '',
       weight: 0
     });
@@ -162,6 +163,7 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
     formValues.items[index] = ({
       uid: '',
       measurementName: values.measurementName,
+      isInUse: values.isInUse,
       description: values.description,
       measurementType: values.measurementType,
       weight: values.weight

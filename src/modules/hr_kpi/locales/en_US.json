@@ -186,6 +186,8 @@
   "kpi.measurement.message.create.failure": "Unable to process your submission",
   "kpi.measurement.message.update.success": "Existing Measurement has been updated",
   "kpi.measurement.message.update.failure": "Unable to process your submission",
+  "kpi.measurement.message.delete.success": "Existing Measurement has been deleted",
+  "kpi.measurement.message.delete.failure": "Unable to delete your Measurement",
 
   "kpi.measurement.field.uid": "Measurement ID",
   "kpi.measurement.field.description": "Pengukuran",
@@ -211,6 +213,8 @@
   "kpi.measurement.confirm.new.description": "You are about creating a new KPI measurement. Do you want to continue?",
   "kpi.measurement.confirm.modify.title": "Modify KPI Measurement",
   "kpi.measurement.confirm.modify.description": "You are about to modify current KPI measurement. Do you want to continue?",
+  "kpi.measurement.confirm.delete.title": "Delete KPI Measurement",
+  "kpi.measurement.confirm.delete.description": "You are about to delete current KPI measurement. Are you sure?",
 
   "kpi.category.message.create.success": "A new Category has been created",
   "kpi.category.message.create.failure": "Unable to process your submission",
