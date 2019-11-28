@@ -38,25 +38,14 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
         actionComponent={(item: IHrCompetencyEmployee) => (
           <React.Fragment>
             {
-              item.statusType === WorkflowStatusType.New &&
+              (item.statusType === WorkflowStatusType.Draft || item.statusType === WorkflowStatusType.New) &&
               !item.isExpired && 
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid })}
+                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid })}
               >
-                {props.intl.formatMessage(layoutMessage.action.process)}
-              </Button>
-            }
-            {
-              item.statusType === WorkflowStatusType.Draft &&
-              !item.isExpired && 
-              <Button 
-                size="small"
-                color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/form`, { uid: item.uid, companyUid: item.companyUid, positionUid: item.positionUid })}
-              >
-                {props.intl.formatMessage(layoutMessage.action.modify)}
+                {props.intl.formatMessage(item.statusType === WorkflowStatusType.New ? layoutMessage.action.process : layoutMessage.action.modify)}
               </Button>
             }
             {
@@ -64,7 +53,7 @@ export const HrCompetencyEmployeeListView: React.SFC<HrCompetencyEmployeeListPro
               <Button 
                 size="small"
                 color="secondary"
-                onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`, { companyUid: item.companyUid,  positionUid: item.positionUid })}
+                onClick={() => props.history.push(`/hr/assessmentinput/${item.uid}`)}
               >
                 {props.intl.formatMessage(layoutMessage.action.details)}
               </Button>

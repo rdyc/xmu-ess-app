@@ -1,7 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
-import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { FormPage } from '@layout/components/pages/formPage/FormPage';
 import { SubmissionDraft } from '@layout/components/submission/SubmissionDraft';
 import { layoutMessage } from '@layout/locales/messages';
@@ -22,7 +21,7 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
       title: props.intl.formatMessage(hrMessage.shared.page.listTitle, {state: '360 Assessment Result'}),
       description: props.intl.formatMessage(hrMessage.shared.page.listSubHeader, {state: '360 Assessment Result'})
     }}
-    state={props.hrCompetencyResultState.detail}
+    state={props.hrCompetencyAssessmentState.detail}
     onLoadApi={props.handleOnLoadDetail}
   >
     <Formik
@@ -94,23 +93,16 @@ export const CompetencyResultFormView: React.SFC<CompetencyResultFormProps> = pr
           <div className={props.classes.flexRow}>
             <div className={props.classes.flexContent}>
               {
-                (props.hrCompetencyMappedState.list.isLoading ||
-                props.hrCompetencyResultState.detailList.isLoading) && 
-                <LoadingCircular />
-              }
-              {
-                !props.hrCompetencyResultState.detailList.isLoading &&
-                !props.hrCompetencyMappedState.list.isLoading &&
+                !props.hrCompetencyEmployeeState.result.isLoading &&
+                props.hrCompetencyEmployeeState.result.response &&
+                props.hrCompetencyEmployeeState.result.response.data &&
                 props.hrCompetencyResultState.detailList.response &&
                 props.hrCompetencyResultState.detailList.response.data &&
-                props.hrCompetencyMappedState.list.response &&
-                props.hrCompetencyMappedState.list.response.data &&
-                props.hrCompetencyMappedState.list.response.data[0] &&
                 <CompetencyResultCategory 
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  mapped={props.hrCompetencyMappedState.list.response.data[0]}
+                  data={props.hrCompetencyEmployeeState.result.response.data}
                   responders={props.hrCompetencyResultState.detailList.response.data}
                 />
               }

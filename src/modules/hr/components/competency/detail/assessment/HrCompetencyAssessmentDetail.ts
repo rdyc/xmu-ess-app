@@ -8,7 +8,6 @@ import { IHrCompetencyAssessment } from '@hr/classes/response';
 import { IHrCompetencyAssessmentUserAction } from '@hr/classes/types';
 import { WithHrCompetencyAssessment, withHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
 import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
-import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
@@ -97,7 +96,6 @@ export type HrCompetencyAssessmentDetailProps
   & WithHrCompetencyEmployee
   & WithHrCompetencyAssessment
   & WithHrCompetencyResult
-  & WithHrCompetencyMapped
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -251,13 +249,6 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
               positionUid,
               respondenUid,
               assessmentYear
-            }
-          });
-          
-          props.hrCompetencyMappedDispatch.loadListRequest({
-            filter: {
-              companyUid,
-              positionUid
             }
           });
         }
@@ -492,7 +483,7 @@ const lifecycles: ReactLifeCycleFunctions<HrCompetencyAssessmentDetailProps, IOw
             };
           }
 
-          if (isExpired && !isRespond && !isComplete) {
+          if (isExpired && !isComplete) {
             return status = {
               color: red[500],
               type: this.props.intl.formatMessage(hrMessage.competency.field.expired)
@@ -540,7 +531,6 @@ export const HrCompetencyAssessmentDetail = compose(
   withHrCompetencyEmployee,
   withHrCompetencyAssessment,
   withHrCompetencyResult,
-  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

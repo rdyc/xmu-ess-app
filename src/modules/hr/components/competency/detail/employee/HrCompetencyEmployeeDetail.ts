@@ -1,7 +1,6 @@
 import { AppRole } from '@constants/AppRole';
 import { IHrCompetencyEmployeeUserAction } from '@hr/classes/types';
 import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
-import { withHrCompetencyMapped, WithHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { IPopupMenuOption } from '@layout/components/PopupMenu';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -24,7 +23,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 import { HrCompetencyEmployeeDetailView } from './HrCompetencyEmployeeDetailView';
 
@@ -63,7 +61,6 @@ export type HrCompetencyEmployeeDetailProps
   = WithOidc
   & WithUser
   & WithHrCompetencyEmployee
-  & WithHrCompetencyMapped
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
@@ -125,25 +122,13 @@ const stateUpdaters: StateUpdaters<HrCompetencyEmployeeDetailProps, IOwnState, I
 
 const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyEmployeeDetailProps) => () => { 
-    if (!isNullOrUndefined(props.history.location.state)) {
-      const { user } = props.userState;
-      const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
-      const { isLoading } = props.hrCompetencyEmployeeState.detail;
-  
-      if (user && competencyEmployeeUid && !isLoading) {
-        props.hrCompetencyEmployeeDispatch.loadDetailRequest({
-          competencyEmployeeUid
-        });
-      }
+    const { user } = props.userState;
+    const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
+    const { isLoading } = props.hrCompetencyEmployeeState.detail;
 
-      const companyUid = props.history.location.state.companyUid;
-      const positionUid = props.history.location.state.positionUid;
-
-      props.hrCompetencyMappedDispatch.loadListRequest({
-        filter: {
-          companyUid,
-          positionUid
-        }
+    if (user && competencyEmployeeUid && !isLoading) {
+      props.hrCompetencyEmployeeDispatch.loadDetailRequest({
+        competencyEmployeeUid
       });
     }
   },
@@ -174,14 +159,10 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
     // define vars
     let competencyEmployeeUid: string | undefined;
-    let companyUid: string | undefined;
-    let positionUid: string | undefined;
 
     // get project uid
     if (response.data) {
       competencyEmployeeUid = response.data.uid;
-      companyUid = response.data.companyUid;
-      positionUid = response.data.positionUid;
     }
 
     // actions with new page
@@ -203,9 +184,7 @@ const handlerCreators: HandleCreators<HrCompetencyEmployeeDetailProps, IOwnHandl
 
       props.setDefault();
 
-      props.history.push(next, { 
-        companyUid,
-        positionUid,
+      props.history.push(next, {
         uid: competencyEmployeeUid
       });
     }
@@ -263,7 +242,6 @@ export const HrCompetencyEmployeeDetail = compose(
   withOidc,
   withUser,
   withHrCompetencyEmployee,
-  withHrCompetencyMapped,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

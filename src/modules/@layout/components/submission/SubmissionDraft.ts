@@ -78,7 +78,7 @@ export type SubmissionDraftProps
 const createProps: mapper<SubmissionDraftProps, IOwnState> = (props: SubmissionDraftProps): IOwnState => ({
   isOpenDialog: false,
   saveOptionOpen: false,
-  anchor: '',
+  anchor: props.defaultAnchor,
   saveType: DraftType.draft
 });
 

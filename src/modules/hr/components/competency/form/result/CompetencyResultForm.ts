@@ -3,7 +3,7 @@ import { IHrCompetencyEmployeePatchPayload } from '@hr/classes/request';
 import { IHrCompetencyEmployee } from '@hr/classes/response';
 import { WithHrCompetencyAssessment, withHrCompetencyAssessment } from '@hr/hoc/withHrCompetencyAssessment';
 import { WithHrCompetencyEmployee, withHrCompetencyEmployee } from '@hr/hoc/withHrCompetencyEmployee';
-import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
+// import { WithHrCompetencyMapped, withHrCompetencyMapped } from '@hr/hoc/withHrCompetencyMapped';
 import { WithHrCompetencyResult, withHrCompetencyResult } from '@hr/hoc/withHrCompetencyResult';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { DraftType } from '@layout/components/submission/DraftType';
@@ -88,7 +88,7 @@ export type CompetencyResultFormProps
   & WithHrCompetencyEmployee
   & WithHrCompetencyAssessment
   & WithHrCompetencyResult
-  & WithHrCompetencyMapped
+  // & WithHrCompetencyMapped
   & WithUser
   & WithStyles<typeof styles>
   & RouteComponentProps<IOwnRouteParams>
@@ -172,15 +172,7 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
   handleOnLoadDetail: (props: CompetencyResultFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      // const competencyEmployeeUid = props.history.location.state.uid;
       const assessmentUid = props.history.location.state.assessmentUid;
-      // const { isLoading, response } = props.hrCompetencyEmployeeState.detail;
-
-      // if (user && competencyEmployeeUid && !isLoading && (!response || response && response.data.uid !== competencyEmployeeUid)) {
-      //   props.hrCompetencyEmployeeDispatch.loadDetailRequest({
-      //     competencyEmployeeUid
-      //   });
-      // }
 
       if (user) {
         props.hrCompetencyAssessmentDispatch.loadDetailRequest({
@@ -209,12 +201,12 @@ const handlerCreators: HandleCreators<CompetencyResultFormProps, IOwnHandler> = 
             }
           });
        
-          props.hrCompetencyMappedDispatch.loadListRequest({
-            filter: {
-              companyUid,
-              positionUid
-            }
-          });
+          // props.hrCompetencyMappedDispatch.loadListRequest({
+          //   filter: {
+          //     companyUid,
+          //     positionUid
+          //   }
+          // });
         }
   
       }
@@ -330,12 +322,12 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
   },
   componentDidUpdate(prevProps: CompetencyResultFormProps) {
     const { response: thisResponse, } = this.props.hrCompetencyEmployeeState.result;
-    const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
+    // const { response: thisMapped } = this.props.hrCompetencyMappedState.list;
     const { isLoad, setLoad, history } = this.props;
 
     if (history.location.state) {
       if (thisResponse && thisResponse.data.assessmentUid === history.location.state.assessmentUid) {
-        if (thisResponse && thisResponse.data && thisMapped && thisMapped.data && !isLoad) {
+        if (thisResponse && thisResponse.data && !isLoad) {
             
             // define initial values
             const initialValues: ICompetencyResultFormValue = {
@@ -347,7 +339,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CompetencyResultFormProps, IOw
               levelRespond: []
             };
     
-            thisMapped.data[0].categories.forEach(item => {
+            thisResponse.data.mappings.categories.forEach(item => {
               const find = thisResponse.data.items.find(findData => findData.categoryUid === item.category.uid);
     
               initialValues.levelRespond.push({
@@ -372,7 +364,7 @@ export const CompetencyResultForm = compose<CompetencyResultFormProps, IOwnOptio
   withHrCompetencyEmployee,
   withHrCompetencyResult,
   withHrCompetencyAssessment,
-  withHrCompetencyMapped,
+  // withHrCompetencyMapped,
   withMasterPage,
   withRouter,
   withUser,
