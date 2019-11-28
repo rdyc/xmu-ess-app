@@ -5,6 +5,7 @@ import { IWebJobMonitoringJobDetail } from '@webjob/classes/response';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import * as React from 'react';
 import { WebJobMonitoringDetailProps } from './WebJobMonitoringDetail';
+import { WebJobMonitoringHistory } from './WebJobMonitoringHistory';
 import { WebJobMonitoringInformation } from './WebJobMonitoringInformation';
 
 export const WebJobMonitoringDetailView: React.SFC<WebJobMonitoringDetailProps> = props => (
@@ -19,6 +20,9 @@ export const WebJobMonitoringDetailView: React.SFC<WebJobMonitoringDetailProps> 
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IWebJobMonitoringJobDetail) => ([
       <WebJobMonitoringInformation data={data} />
+    ])}
+    quaternary={(data: IWebJobMonitoringJobDetail) => ([
+      <WebJobMonitoringHistory data={data} />
     ])}
     appBarComponent={
       props.menuOptions &&

@@ -23,7 +23,7 @@ export const HrCornerPageDetailView: React.SFC<HrCornerPageDetailProps> = props 
     primary={(data: IHrCornerPageDetail) => ([
       <HrCornerPageInformation data={data} />
     ])}
-    fortiary={(data: IHrCornerPageDetail) => ([
+    quaternary={(data: IHrCornerPageDetail) => ([
       <HrCornerPageContent data={data} />
     ])}
     appBarComponent={

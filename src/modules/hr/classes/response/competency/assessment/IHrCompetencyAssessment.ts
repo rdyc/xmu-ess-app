@@ -15,6 +15,7 @@ export interface IHrCompetencyAssessment {
   assessmentYear: number;
   responders?: IAssessmentItem[];
   isDraft: boolean;
+  totalResponder?: number;
   totalResponse?: number;
   statusType: string;
   status?: ICommonSystem;

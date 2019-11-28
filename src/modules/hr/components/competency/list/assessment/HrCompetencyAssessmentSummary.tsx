@@ -1,4 +1,4 @@
-import { IAssessmentItem, IHrCompetencyAssessment } from '@hr/classes/response';
+import { IHrCompetencyAssessment } from '@hr/classes/response';
 import { IHrCompetencyStatus } from '@hr/classes/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { layoutMessage } from '@layout/locales/messages';
@@ -18,18 +18,6 @@ type AllProps
   & InjectedIntlProps;
 
 const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => {
-
-  const countResponder = (item?: IAssessmentItem[]): number => {
-    if (item && item.length > 0) {
-      const array = item;
-
-      array.filter(arr => arr.isExpired && !arr.isComplete);
-
-      return array.length;
-    }
-
-    return 0;
-  };
 
   return (
     <Grid container>
@@ -82,7 +70,7 @@ const hrCompetencySummaryAssessment: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(hrMessage.competency.field.completion)}
-          value={props.intl.formatMessage(hrMessage.competency.field.completionItem, {responder: countResponder(props.data.responders) || 0, completion: props.data.totalResponse || 0})}
+          value={props.intl.formatMessage(hrMessage.competency.field.completionItem, {responder: props.data.totalResponder || 0, completion: props.data.totalResponse || 0})}
         />
       </Grid>
       {

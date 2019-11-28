@@ -16,7 +16,7 @@ interface IOwnOption {
   primary: (data: any) => JSX.Element[];
   secondary?: (data: any) => JSX.Element[];
   tertiary?: (data: any) => JSX.Element[];
-  fortiary?: (data: any) => JSX.Element[];
+  quaternary?: (data: any) => JSX.Element[];
   appBarComponent?: React.ReactNode;
   onLoadApi: () => void;
   onLoadedApi?: () => void;
