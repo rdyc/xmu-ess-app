@@ -5,7 +5,6 @@ import { IHrCompetencyAssessmentDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
-import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import { SubmissionForm } from '@layout/components/submission/SubmissionForm';
@@ -107,25 +106,14 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
       onClickConfirm={props.handleOnConfirm}
     />  
     {
-      (props.hrCompetencyMappedState.list.isLoading ||
-      props.hrCompetencyResultState.detailList.isLoading) && 
-      <LoadingCircular />
-    }
-    {
       !props.hrCompetencyEmployeeState.result.isLoading &&
-      !props.hrCompetencyResultState.detailList.isLoading &&
-      !props.hrCompetencyMappedState.detail.isLoading &&
       props.hrCompetencyEmployeeState.result.response &&
       props.hrCompetencyEmployeeState.result.response.data &&
       props.hrCompetencyResultState.detailList.response &&
       props.hrCompetencyResultState.detailList.response.data &&
-      props.hrCompetencyMappedState.list.response &&
-      props.hrCompetencyMappedState.list.response.data &&
-      props.hrCompetencyMappedState.list.response.data[0] &&
       <HrCompetencyResultRespond 
         data={props.hrCompetencyEmployeeState.result.response.data}
         responders={props.hrCompetencyResultState.detailList.response.data}
-        mapped={props.hrCompetencyMappedState.list.response.data[0]}
       />
     }
   </React.Fragment>

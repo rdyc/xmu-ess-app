@@ -57,9 +57,9 @@ export const PreviewPageView: React.SFC<PreviewPageProps> = props => (
                     </div>
                   ))}
 
-              {props.fortiary &&
+              {props.quaternary &&
                 props
-                  .fortiary(props.state.response.data)
+                  .quaternary(props.state.response.data)
                   .map((children, index) => (
                     <div key={index} className={props.classes.flex2Column}>
                       <div className={props.classes.flexContent}>

@@ -68,6 +68,12 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
+          label={props.intl.formatMessage(hrMessage.competency.field.assessorType)}
+          value={data.assessor && data.assessor.value || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
           multiline
           label={intl.formatMessage(hrMessage.competency.field.status)}
           value={data.status && data.status.value || 'N/A'}
@@ -78,7 +84,7 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
             className: props.data.isExpired ? props.classes.colorRed : ''
           }}
           label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
-          value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+          value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D, YYYY') || 'N/A'}
         />
         {
           props.data.changes &&

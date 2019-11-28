@@ -33,6 +33,11 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(hrMessage.competency.field.year)}
         value={props.data.assessmentYear}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(hrMessage.competency.field.assessorType)}
+        value={props.data.assessor && props.data.assessor.value || 'N/A'}
+      />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
@@ -58,7 +63,7 @@ const hrCompetencySummaryEmployee: React.SFC<AllProps> = props => (
           className: props.data.isExpired ? props.classes.colorRed : ''
         }}
         label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
-        value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+        value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D, YYYY') || 'N/A'}
       />
 
     </Grid>

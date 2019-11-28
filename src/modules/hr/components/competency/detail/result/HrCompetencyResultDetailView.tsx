@@ -8,7 +8,7 @@ import * as React from 'react';
 import { HrInputInformation } from '../../shared/HrInputInformation';
 import { HrCompetencyResultDetailProps } from './HrCompetencyResultDetail';
 import { HrCompetencyResultInformation } from './HrCompetencyResultInformation';
-import { HrCompetencyResultRespond } from './shared/HrCompetencyResultRespond';
+// import { HrCompetencyResultRespond } from './shared/HrCompetencyResultRespond';
 
 export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailProps> = props => (
   <React.Fragment>
@@ -49,7 +49,7 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
         onClickConfirm={props.handleOnConfirm}
       />  
     </PreviewPage>
-    {
+    {/* {
       !props.hrCompetencyEmployeeState.detail.isLoading &&
       props.hrCompetencyEmployeeState.detail.response &&
       props.hrCompetencyEmployeeState.detail.response.data &&
@@ -63,6 +63,6 @@ export const HrCompetencyResultDetailView: React.SFC<HrCompetencyResultDetailPro
         responders={props.hrCompetencyResultState.detailList.response.data}
         mapped={props.hrCompetencyMappedState.list.response.data[0]}
       />
-    }
+    } */}
   </React.Fragment>
 );

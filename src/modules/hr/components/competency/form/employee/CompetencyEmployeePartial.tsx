@@ -2,7 +2,6 @@ import { AccountEmployeeMultipleOption } from '@account/components/options/Accou
 import { FormMode } from '@generic/types';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
@@ -25,19 +24,6 @@ const CompetencyEmployeePartial: React.ComponentType<CompetencyEmployeePartialPr
       title={props.intl.formatMessage(hrMessage.competency.field.responden)}
     />
     <CardContent>
-      {/* <Field 
-        name="uid"
-        render={({ field}: FieldProps<ICompetencyEmployeeFormValue>) => (
-          <TextField 
-            {...field}
-            fullWidth
-            disabled
-            margin="normal"
-            label={props.intl.formatMessage(hrMessage.competency.field.uid, {state: 'Assessment'})}
-          />
-        )}
-      /> */}
-
       <Field
         name="respondenUid"
         render={({ field, form }: FieldProps<ICompetencyEmployeeFormValue>) => (
@@ -123,7 +109,19 @@ const CompetencyEmployeePartial: React.ComponentType<CompetencyEmployeePartialPr
             disabled
             margin="normal"
             label={props.intl.formatMessage(hrMessage.competency.field.year)}
-            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
+          />
+        )}
+      />
+
+      <Field
+        name="assessorType"
+        render={({ field, form }: FieldProps<ICompetencyEmployeeFormValue>) => (
+          <TextField 
+            {...field}
+            fullWidth
+            disabled
+            margin="normal"
+            label={props.intl.formatMessage(hrMessage.competency.field.assessorType)}
           />
         )}
       />

@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { IHrCompetencyMappedList } from '@hr/classes/response';
+import { IHrCompetencyEmployeeDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -14,7 +14,7 @@ interface IOwnProps {
   formMode: FormMode; 
   formikBag: FormikProps<ICompetencyEmployeeFormValue>;
   intl: InjectedIntl;
-  data: IHrCompetencyMappedList;
+  data: IHrCompetencyEmployeeDetail;
 }
 
 interface IOwnState {
@@ -66,7 +66,7 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
     <TableBody>
     {
       props.data &&
-      props.data.categories.map((item, index) => 
+      props.data.mappings.categories.map((item, index) => 
       <React.Fragment key={item.uid}>
         <TableRow>
           {/* Category */}

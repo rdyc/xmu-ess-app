@@ -150,7 +150,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                   autoFocus
                                   isSearchable
                                   // isClearable={field.value !== ''}
-                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.uid) || props.formikBag.values.employeeUid === '' || props.formikBag.values.uid !== '' }
+                                  isDisabled={props.formikBag.isSubmitting || isDeleteAble(item.uid) || props.formikBag.values.employeeUid === '' || props.formikBag.values.responder[index].uid !== '' }
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
                                   menuPosition="fixed"
@@ -207,7 +207,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                     props.formikBag.values.employeeUid === '' || 
                                     props.formikBag.values.responder[index].assessorType === '' || 
                                     props.formikBag.values.responder[index].assessorType === AssessorType.Self || 
-                                    props.formikBag.values.uid !== '' ||
+                                    props.formikBag.values.responder[index].uid !== '' ||
                                     isDeleteAble(item.uid)}
                                   escapeClearsValue={true} 
                                   menuPlacement="auto"
@@ -249,7 +249,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                                   {...GlobalStyle.TextField.ReadOnly}
                                   margin="normal"
                                   label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
-                                  value={moment(field.value).utc().format('MMMM D YYYY, HH:mm') || 'N/A'}
+                                  value={moment(field.value).utc().format('MMMM D, YYYY') || 'N/A'}
                                 />
                               );
                             }}
@@ -288,6 +288,7 @@ const competencyAssessmentResponder: React.ComponentType<AllProps> = props => {
                     disabled={props.formikBag.isSubmitting || props.formikBag.values.employeeUid === ''}
                     onClick={() => {
                       fields.push({
+                        uid: '',
                         employeeUid: '',
                         assessorType: ''
                       });

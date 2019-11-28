@@ -1,6 +1,6 @@
 export enum IWebJobStatename {
   Succeeded = 'Succeeded',
   Processing = 'Processing',
-  Enqueued = 'Enqueed',
+  Enqueued = 'Enqueued',
   Failed = 'Failed'
 }
