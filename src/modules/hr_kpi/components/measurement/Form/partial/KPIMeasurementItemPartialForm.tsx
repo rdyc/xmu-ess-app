@@ -10,7 +10,7 @@ import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IconButton, TableCell, TableRow, TextField, WithStyles } from '@material-ui/core';
 import { Cancel, Delete, Edit, Save } from '@material-ui/icons';
 import * as classNames from 'classnames';
-import { Field, FieldProps, FormikProps } from 'formik';
+import { Field, FieldProps, Formik, FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { IKPIMeasurementFormValue } from '../KPIMeasurementForm';
@@ -26,7 +26,7 @@ interface KPIcategoryDetailPartialFormProps {
   parentFormMode: FormMode;
   handleSetEditMode(index: number): void;
   handleSetDialogOpen(index: number): void;
-  handleOnSubmitDelete(measurementUid: string, index: number): void;
+  handleOnSubmitDelete(values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number): void;
   handleRemoveFormValueList(): void;
   handleSetIsItemEditing(): void;
 }
@@ -196,15 +196,23 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
           <Cancel />
         </IconButton>
       }
-      <DialogConfirmation 
-        isOpen={props.isDialogOpen}
-        fullScreen={false}
-        title={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteTitle)}
-        content={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteDescription)}
-        labelCancel={props.intl.formatMessage(layoutMessage.action.cancel)}
-        labelConfirm={props.intl.formatMessage(layoutMessage.action.yes)}
-        onClickCancel={() => props.handleSetDialogOpen(props.index)}
-        onClickConfirm={() => props.handleOnSubmitDelete(props.formikBag.values.uid, props.index)}
+       <Formik
+        key={`measurementDelete.${props.index}`}
+        enableReinitialize
+        initialValues={props.formikBag.initialValues}
+        onSubmit={(values, formikActions) => props.handleOnSubmitDelete(values, formikActions, props.formikBag.values.uid, props.index)}
+        render={(formikBag: FormikProps<IKPIMeasurementFormValue>) => (
+          <DialogConfirmation 
+            isOpen={props.isDialogOpen}
+            fullScreen={false}
+            title={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteTitle)}
+            content={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteDescription)}
+            labelCancel={props.intl.formatMessage(layoutMessage.action.cancel)}
+            labelConfirm={props.intl.formatMessage(layoutMessage.action.yes)}
+            onClickCancel={() => props.handleSetDialogOpen(props.index)}
+            onClickConfirm={() => formikBag.submitForm()}
+          />
+        )}
       />
     </TableCell>
   </TableRow>

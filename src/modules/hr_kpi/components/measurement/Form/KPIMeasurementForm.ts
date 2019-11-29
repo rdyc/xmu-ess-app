@@ -52,8 +52,8 @@ interface IOwnHandler {
   handleSetDialogOpen: (index: number) => void;
   handleCreateFormValueList: () => void;
   handleRemoveFormValueList: () => void;
-  handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
-  handleOnSubmitDelete: (measurementUid: string, index: number) => void;
+  handleOnSubmit: (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
+  handleOnSubmitDelete: (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number) => void;
 }
 
 interface IOwnState {
@@ -320,9 +320,9 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         });
       });
   },
-  handleOnSubmitDelete: (props: KPIMeasurementFormProps) => (measurementUid: string, index: number) => {
+  handleOnSubmitDelete: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number) => {
     const { user } = props.userState;
-    let promise = new Promise(() => undefined);
+    let promise = new Promise((resolve, reject) => undefined);
 
     if (user) {
       const payload: IKPIMeasurementDeletePayload = {             
@@ -341,28 +341,47 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
     // handling promise 
     promise
-    .then(() => {
-      const measurementValueList = props.measurementValueList;
-      
-      if (measurementValueList[index].isDialogOpen) {
-        props.handleSetDialogOpen(index);
-      }
+      .then((response: boolean) => {
+        // set submitting status 
+        actions.setSubmitting(false);
 
-      // show flash message
-      props.masterPage.flashMessage({
-        message: props.intl.formatMessage(kpiMessage.measurement.message.deleteSuccess)
+        // clear form status
+        actions.setStatus();
+
+        const measurementValueList = props.measurementValueList;
+        
+        if (measurementValueList[index].isDialogOpen) {
+          props.handleSetDialogOpen(index);
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(kpiMessage.measurement.message.deleteSuccess)
+        });
+
+        measurementValueList.splice(index, 1);
+
+        props.setFormValueList(measurementValueList);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // set form status
+        actions.setStatus(error);
+
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item =>
+            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
+          );
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(kpiMessage.measurement.message.deleteFailure)
+        });
       });
-
-      measurementValueList.splice(index, 1);
-
-      props.setFormValueList(measurementValueList);
-    })
-    .catch((error: IValidationErrorResponse) => {
-      // show flash message
-      props.masterPage.flashMessage({
-        message: props.intl.formatMessage(kpiMessage.measurement.message.deleteFailure)
-      });
-    });
   }
 };
 
