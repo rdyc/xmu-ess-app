@@ -348,17 +348,14 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
-        const measurementValueList = props.measurementValueList;
-        
-        if (measurementValueList[index].isDialogOpen) {
-          props.handleSetDialogOpen(index);
-        }
-
         // show flash message
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(kpiMessage.measurement.message.deleteSuccess)
         });
 
+        const measurementValueList = props.measurementValueList;
+        
+        measurementValueList[index].isDialogOpen = false;
         measurementValueList.splice(index, 1);
 
         props.setFormValueList(measurementValueList);

@@ -235,7 +235,6 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),
         put(KPIMeasurementGetAllDispose()),
-        put(KPIMeasurementGetListDispose()),
         put(KPIMeasurementDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
