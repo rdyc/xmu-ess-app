@@ -1,7 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { FormMode } from '@generic/types';
-import { IKPIMeasurementPostPayload, IKPIMeasurementPutPayload } from '@kpi/classes/request';
+import { IKPIMeasurementDeletePayload, IKPIMeasurementPostPayload, IKPIMeasurementPutPayload } from '@kpi/classes/request';
 import { IKPIMeasurement, IKPIMeasurementList } from '@kpi/classes/response';
 import { WithKPIMeasurement, withKPIMeasurement } from '@kpi/hoc/withKPIMeasurement';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
@@ -21,6 +21,7 @@ import { KPIMeasurementFormView as KPIMeasurementFormView } from './KPIMeasureme
 
 export interface IKPIMeasurementFormValue {
   uid: string;
+  isInUse: boolean;
   description: string;
   measurementName: string;
   measurementType: string;
@@ -31,6 +32,7 @@ export interface IKPIMeasurementFormValueList {
   measurementFormValue: IKPIMeasurementFormValue;
   isNew: boolean;
   isEditing: boolean;
+  isDialogOpen: boolean;
 }
 
 interface OwnProps {
@@ -47,9 +49,11 @@ interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleMapItem: (measurements: IKPIMeasurementList[]) => void;
   handleSetEditMode: (index: number) => void;
+  handleSetDialogOpen: (index: number) => void;
   handleCreateFormValueList: () => void;
   handleRemoveFormValueList: () => void;
-  handleOnSubmit: (values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
+  handleOnSubmit: (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, index: number, isNew: boolean) => void;
+  handleOnSubmitDelete: (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number) => void;
 }
 
 interface IOwnState {
@@ -87,6 +91,7 @@ const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasu
 
     initialValues: {
       uid: 'Auto Generated',
+      isInUse: false,
       description: '',
       measurementName: '',
       measurementType: '',
@@ -97,6 +102,7 @@ const createProps: mapper<KPIMeasurementFormProps, IOwnState> = (props: KPIMeasu
       description: Yup.string()
         .label(props.intl.formatMessage(kpiMessage.measurement.field.description))
         .required(),
+      isInUse: Yup.boolean(),
       measurementType: Yup.string()
         .label(props.intl.formatMessage(kpiMessage.measurement.field.measurementType))
         .required(),
@@ -139,12 +145,14 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
       measurementFormValue: {
         uid: item.uid,
         description: item.description,
+        isInUse: item.isInUse,
         measurementName: item.measurement && item.measurement.value || '',
         measurementType: item.measurementType,
         weight: item.weight,
       },
       isNew: false,
-      isEditing: false
+      isEditing: false,
+      isDialogOpen: false,
     }));
 
     props.setFormValueList(measurementValueList);
@@ -156,6 +164,13 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
 
     props.setFormValueList(measurementValueList);
   },
+  handleSetDialogOpen: (props: KPIMeasurementFormProps) =>  (index: number) => {
+    const measurementValueList = props.measurementValueList;
+
+    measurementValueList[index].isDialogOpen = !measurementValueList[index].isDialogOpen;
+
+    props.setFormValueList(measurementValueList);
+  },
   handleCreateFormValueList: (props: KPIMeasurementFormProps) => () => {
     const measurementValueList = props.measurementValueList;
 
@@ -163,12 +178,14 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
       measurementFormValue: {
         uid: 'Auto Generated',
         description: '',
+        isInUse: false,
         measurementName: '',
         measurementType: '',
         weight: 0,
       },
       isNew: true,
       isEditing: true,
+      isDialogOpen: false,
     });
 
     props.setFormValueList(measurementValueList);
@@ -196,12 +213,14 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         measurementValueList[index].measurementFormValue = {
           uid: values.uid,
           description: values.description,
+          isInUse: values.isInUse,
           measurementName: values.measurementName,
           measurementType: values.measurementType,
           weight: values.weight
         };
         measurementValueList[index].isNew = false;
         measurementValueList[index].isEditing = false;
+        measurementValueList[index].isDialogOpen = false;
 
         props.setFormValueList(measurementValueList);
       } else {
@@ -269,12 +288,14 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         measurementValueList[index].measurementFormValue = {
           uid: response.uid,
           description: response.description,
+          isInUse: response.isInUse,
           measurementName: response.measurement && response.measurement.value || '',
           measurementType: response.measurementType,
           weight: response.weight
         };
         measurementValueList[index].isNew = false;
         measurementValueList[index].isEditing = false;
+        measurementValueList[index].isDialogOpen = false;
 
         props.setFormValueList(measurementValueList);
         props.handleSetIsItemEditing();
@@ -296,6 +317,66 @@ const handlerCreators: HandleCreators<KPIMeasurementFormProps, IOwnHandler> = {
         // show flash message
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(isNew ? kpiMessage.measurement.message.createFailure : kpiMessage.measurement.message.updateFailure)
+        });
+      });
+  },
+  handleOnSubmitDelete: (props: KPIMeasurementFormProps) => (values: IKPIMeasurementFormValue, actions: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number) => {
+    const { user } = props.userState;
+    let promise = new Promise((resolve, reject) => undefined);
+
+    if (user) {
+      const payload: IKPIMeasurementDeletePayload = {             
+        measurementUid,
+        categoryUid: props.categoryUid, 
+      };
+
+      promise = new Promise((resolve, reject) => {
+        props.kpiMeasurementDispatch.deleteRequest({ 
+          resolve,
+          reject,       
+          data: payload as IKPIMeasurementDeletePayload,
+        });
+      });
+    }
+
+    // handling promise 
+    promise
+      .then((response: boolean) => {
+        // set submitting status 
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(kpiMessage.measurement.message.deleteSuccess)
+        });
+
+        const measurementValueList = props.measurementValueList;
+        
+        measurementValueList[index].isDialogOpen = false;
+        measurementValueList.splice(index, 1);
+
+        props.setFormValueList(measurementValueList);
+      })
+      .catch((error: IValidationErrorResponse) => {
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // set form status
+        actions.setStatus(error);
+
+        // error on form fields
+        if (error.errors) {
+          error.errors.forEach(item =>
+            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
+          );
+        }
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(kpiMessage.measurement.message.deleteFailure)
         });
       });
   }

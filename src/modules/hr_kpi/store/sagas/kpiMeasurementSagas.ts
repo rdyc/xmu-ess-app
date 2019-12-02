@@ -1,6 +1,9 @@
 
 import {
   KPIMeasurementAction as Action,
+  KPIMeasurementDeleteError,
+  KPIMeasurementDeleteRequest,
+  KPIMeasurementDeleteSuccess,
   KPIMeasurementGetAllDispose,
   KPIMeasurementGetAllError,
   KPIMeasurementGetAllRequest,
@@ -149,6 +152,7 @@ function* watchPostRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),
         put(KPIMeasurementGetAllDispose()),
+        put(KPIMeasurementGetListDispose()),
         put(KPIMeasurementPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -190,6 +194,7 @@ function* watchPutRequest() {
       successEffects: (response: IApiResponse) => [
         put(KPIMeasurementGetByIdDispose()),
         put(KPIMeasurementGetAllDispose()),
+        put(KPIMeasurementGetListDispose()),
         put(KPIMeasurementPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -221,6 +226,46 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof KPIMeasurementDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'DELETE',
+      path: `/v1/hr/kpi/measurements`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(KPIMeasurementGetByIdDispose()),
+        put(KPIMeasurementGetAllDispose()),
+        put(KPIMeasurementDeleteSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(KPIMeasurementDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        const result = handleResponse(response);
+        
+        action.payload.reject(result);
+      },
+      errorEffects: (error: TypeError) => [
+        put(KPIMeasurementDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
@@ -242,6 +287,7 @@ function* kpiMeasurementSagas() {
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchDeleteRequest),
     fork(watchSwitchAccess)
   ]);
 }

@@ -2,13 +2,15 @@ import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IconButton, TableCell, TableRow, TextField, WithStyles } from '@material-ui/core';
-import { Cancel, Edit, Save } from '@material-ui/icons';
+import { Cancel, Delete, Edit, Save } from '@material-ui/icons';
 import * as classNames from 'classnames';
-import { Field, FieldProps, FormikProps } from 'formik';
+import { Field, FieldProps, Formik, FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { IKPIMeasurementFormValue } from '../KPIMeasurementForm';
@@ -18,10 +20,13 @@ interface KPIcategoryDetailPartialFormProps {
   intl: InjectedIntl;
   filterCommonSystem: ISystemListFilter;
   isEditing: boolean;
+  isDialogOpen: boolean;
   isItemEditing: boolean;
   index: number;
   parentFormMode: FormMode;
   handleSetEditMode(index: number): void;
+  handleSetDialogOpen(index: number): void;
+  handleOnSubmitDelete(values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number): void;
   handleRemoveFormValueList(): void;
   handleSetIsItemEditing(): void;
 }
@@ -124,20 +129,36 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
     </TableCell>
     <TableCell className={classNames(props.classes.cellWidthMdV2)}>
     {
+      !props.isEditing && 
+      !props.isItemEditing &&
+      <IconButton 
+        type="button"
+        color="secondary"
+        disabled={props.formikBag.isSubmitting}
+        onClick={() => {
+          if (!props.isEditing) {
+            props.handleSetEditMode(props.index);
+            props.handleSetIsItemEditing();
+          }                             
+        }}
+      >
+        <Edit />
+      </IconButton>
+    }
+    {
         !props.isEditing && 
         !props.isItemEditing &&
         <IconButton 
           type="button"
-          color="secondary"
-          disabled={props.formikBag.isSubmitting}
+          color="default"
+          disabled={props.formikBag.isSubmitting || props.formikBag.values.isInUse}
           onClick={() => {
             if (!props.isEditing) {
-              props.handleSetEditMode(props.index);
-              props.handleSetIsItemEditing();
+              props.handleSetDialogOpen(props.index);
             }                             
           }}
         >
-          <Edit />
+          <Delete />
         </IconButton>
       }
       {
@@ -175,6 +196,24 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
           <Cancel />
         </IconButton>
       }
+       <Formik
+        key={`measurementDelete.${props.index}`}
+        enableReinitialize
+        initialValues={props.formikBag.initialValues}
+        onSubmit={(values, formikActions) => props.handleOnSubmitDelete(values, formikActions, props.formikBag.values.uid, props.index)}
+        render={(formikBag: FormikProps<IKPIMeasurementFormValue>) => (
+          <DialogConfirmation 
+            isOpen={props.isDialogOpen}
+            fullScreen={false}
+            title={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteTitle)}
+            content={props.intl.formatMessage(kpiMessage.measurement.confirm.deleteDescription)}
+            labelCancel={props.intl.formatMessage(layoutMessage.action.cancel)}
+            labelConfirm={props.intl.formatMessage(layoutMessage.action.yes)}
+            onClickCancel={() => props.handleSetDialogOpen(props.index)}
+            onClickConfirm={() => formikBag.submitForm()}
+          />
+        )}
+      />
     </TableCell>
   </TableRow>
 );

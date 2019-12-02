@@ -241,7 +241,6 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
               {...field}
               fullWidth
               multiline
-              required={true}
               margin="normal"
               autoComplete="off"
               disabled={form.isSubmitting}
