@@ -1,7 +1,5 @@
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
 import { MonitoringJobsItem } from '@webjob/classes/types/monitoring/MonitoringJobsItem';
-import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
-import { WebJobMonitoringTab } from '@webjob/components/tabs/WebJobMonitoringTab';
 import * as React from 'react';
 import { MonitoringJobsItemTabs } from '../shared/MonitoringJobsitemTabs';
 import { MonitoringDeletedList } from './deleted/MonitoringDeletedList';
@@ -59,22 +57,16 @@ export const WebJobMonitoringListView: React.SFC<WebJobMonitoringListProps> = pr
   };
 
   const render = (
-  <React.Fragment>
-    <WebJobMonitoringTab
-      tab={MonitoringTabs.Monitoring}      
-    >
-      <Grid container spacing={16}>
-        <Grid item xs={12} md={3} lg={3}>
-          <MonitoringJobsItemTabs />
-        </Grid>
-        <Grid item xs={12} md={9} lg={9}>
-          {
-            handlerList()
-          }
-        </Grid>
+    <Grid container spacing={16}>
+      <Grid item xs={12} md={3} lg={3}>
+        <MonitoringJobsItemTabs />
       </Grid>
-    </WebJobMonitoringTab>
-  </React.Fragment>
+      <Grid item xs={12} md={9} lg={9}>
+        {
+          handlerList()
+        }
+      </Grid>
+    </Grid>
   );
 
   return render;

@@ -8,7 +8,11 @@ import {
   CardContent,
   CardHeader,
   TextField,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core';
+import styles from '@styles';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -17,7 +21,7 @@ interface OwnProps {
   data: IHrCompetencyEmployeeDetail;
 }
 
-type AllProps = OwnProps & InjectedIntlProps;
+type AllProps = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
 
 const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
@@ -64,9 +68,23 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
+          label={props.intl.formatMessage(hrMessage.competency.field.assessorType)}
+          value={data.assessor && data.assessor.value || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
           multiline
           label={intl.formatMessage(hrMessage.competency.field.status)}
           value={data.status && data.status.value || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          inputProps={{
+            className: props.data.isExpired ? props.classes.colorRed : ''
+          }}
+          label={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Expire Date'})}
+          value={props.data.dueDate && moment(props.data.dueDate).utc().format('MMMM D, YYYY') || 'N/A'}
         />
         {
           props.data.changes &&
@@ -97,5 +115,6 @@ const hrCompetencyEmployeeInformation: React.SFC<AllProps> = props => {
 };
 
 export const HrCompetencyEmployeeInformation = compose<AllProps,  OwnProps>(
-  injectIntl
+  injectIntl,
+  withStyles(styles)
 )(hrCompetencyEmployeeInformation);

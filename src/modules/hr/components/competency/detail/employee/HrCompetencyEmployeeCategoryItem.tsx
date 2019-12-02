@@ -1,4 +1,4 @@
-import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyMappedList } from '@hr/classes/response';
+import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { Done } from '@material-ui/icons';
@@ -10,7 +10,6 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface IOwnProps {
   data: IHrCompetencyEmployeeDetail;
-  mapped: IHrCompetencyMappedList;
 }
 
 interface IOwnState {
@@ -42,17 +41,15 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
 };
 
 const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
-  // const { active, isExpanded, handleToggle } = props;
 
   const findNote = (item?: ICompetencyEmployeeItem) => {
     if (item) {
       if (item.note) {
         const notes: string[] = item.note && item.note.split(' - ') || [];
-        // notes[0] = props.intl.formatDate(notes[0], GlobalFormat.DateTime);
+        
         return notes.join(', ');
       }
 
-      // return item && item.note;
     }
     
     return null;
@@ -62,33 +59,23 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
     <Card square className={props.classes.hrTable}>
       <CardHeader 
         title={props.intl.formatMessage(hrMessage.competency.field.type, {state: 'Assessment Form'})}
-      // title={props.intl.formatMessage(hrMessage.competency.field.responder)}
+        
       />
       <Table>
         <TableBody>
         {
-          props.mapped.categories.map((item) => 
+          props.data.mappings.categories.map((item) => 
           <React.Fragment key={item.uid}>
             <TableRow>
               
               {/* Category */}
               <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
-                <Typography variant="body1" color="inherit" >
+                <Typography variant="subheading" color="inherit" >
                   {item.category.competency.name} - {item.category.name}
                 </Typography>
-                <Typography color="inherit">
+                <Typography variant="body1" color="inherit">
                   {item.category.description}
                 </Typography>
-                {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>} */}
-                {/* <Collapse
-                  in={active === item.category.uid && isExpanded}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <Typography variant="body1" color="inherit">
-                    {item.category.description}
-                  </Typography>
-                </Collapse> */}
               </TableCell>
             </TableRow>
             {

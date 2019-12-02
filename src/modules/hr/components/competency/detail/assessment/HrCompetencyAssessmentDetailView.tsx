@@ -106,18 +106,14 @@ export const HrCompetencyAssessmentDetailView: React.SFC<HrCompetencyAssessmentD
       onClickConfirm={props.handleOnConfirm}
     />  
     {
-      !props.hrCompetencyAssessmentState.detail.isLoading &&
+      !props.hrCompetencyEmployeeState.result.isLoading &&
       props.hrCompetencyEmployeeState.result.response &&
       props.hrCompetencyEmployeeState.result.response.data &&
       props.hrCompetencyResultState.detailList.response &&
       props.hrCompetencyResultState.detailList.response.data &&
-      props.hrCompetencyMappedState.list.response &&
-      props.hrCompetencyMappedState.list.response.data &&
-      props.hrCompetencyMappedState.list.response.data[0] &&
       <HrCompetencyResultRespond 
         data={props.hrCompetencyEmployeeState.result.response.data}
         responders={props.hrCompetencyResultState.detailList.response.data}
-        mapped={props.hrCompetencyMappedState.list.response.data[0]}
       />
     }
   </React.Fragment>

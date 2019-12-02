@@ -30,6 +30,7 @@ const lookupHolidaySummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        multiline
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.holiday.field.description)}
         value={props.data.description || 'N/A'}

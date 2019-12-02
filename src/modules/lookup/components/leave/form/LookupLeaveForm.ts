@@ -114,6 +114,7 @@ const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): 
 
     name: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.leave.field.name))
+      .max(50)
       .required(),
 
     allocation: Yup.number()

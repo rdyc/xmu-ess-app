@@ -152,6 +152,7 @@ export const EmployeeCompetencyFilterView: React.SFC<EmployeeCompetencyFilterPro
       </List>
 
       <DialogValue
+        withoutNone
         title={props.intl.formatMessage(hrMessage.competency.field.year)}
         isOpen={props.isFilterYearOpen}
         hideBackdrop={true}

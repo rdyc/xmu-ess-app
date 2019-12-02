@@ -1,5 +1,5 @@
-import { WorkflowStatusType } from '@common/classes/types';
-import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
+// import { WorkflowStatusType } from '@common/classes/types';
+import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardHeader, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
@@ -12,7 +12,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface IOwnProps {
   data: IHrCompetencyEmployeeDetail;
-  mapped: IHrCompetencyMappedList;
+  // mapped: IHrCompetencyMappedList;
   responders: IHrCompetencyEmployeeDetailList[];
 }
 
@@ -63,8 +63,8 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
               
             </TableCell>
             {
+              props.responders.length >= 1 &&
               props.responders.map(responder => 
-                !responder.isHR &&
                 <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
                   <div className={props.classes.writingVertical} >
                     {responder.employee && responder.employee.fullName}
@@ -77,27 +77,18 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
             </TableCell>
           </TableRow>
           {
-            props.mapped &&
-            props.mapped.categories.map((item) => 
+            props.data &&
+            props.data.mappings.categories.map((item) => 
             <React.Fragment key={item.uid}>
               <TableRow>
                 {/* Category */}
-                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar)} >
-                  <Typography variant="body1" color="inherit" >
+                <TableCell colSpan={props.responders.length + 2} className={classNames(props.classes.toolbar)} >
+                  <Typography variant="h6" color="inherit" >
                     {item.category.competency.name} - {item.category.name}
                   </Typography>
-                  <Typography color="inherit">
+                  <Typography variant="body1" color="inherit">
                     {item.category.description}
                   </Typography>
-                  {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
-                  <Collapse
-                    in={active === item.category.uid && isExpanded}
-                    // className={props.classes.marginFar}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    
-                  </Collapse> */}
                 </TableCell>
               </TableRow>
               {
@@ -123,12 +114,10 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
 
                     {/* Check from responder */}
                     {
+                      props.responders.length >= 1 &&
                       props.responders.map(responder => 
-                        !responder.isHR &&
                         <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                           {
-                            responder.items.length > 0 &&
-                            (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                             responder.items.find(findData => findData.levelUid === level.uid) &&
                             <Typography>
                               <Done />
@@ -149,21 +138,17 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
 
                   {/* Note Responder */}                  
                   {
+                    props.responders.length >= 1 &&
                     props.responders.find(responder => 
-                      !responder.isHR && 
-                      (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
-                      responder.items.length > 0 && 
                       responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                       <TableRow>
-                        <TableCell colSpan={props.responders.length + 1}>
+                        <TableCell colSpan={props.responders.length + 2}>
                           <div style={{display: 'flex'}}>
                             <CommentOutlined style={{marginTop: '16px'}} />
                             <ul style={{paddingLeft: '24px'}}>
                               {
+                                props.responders.length >= 1 &&
                                 props.responders.map(responder => 
-                                  !responder.isHR &&
-                                  (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
-                                  responder.items.length > 0 &&
                                   responder.items.find(findData => findData.levelUid === level.uid) &&
                                     <li key={responder.uid}>
                                       <Typography color="primary">
@@ -184,7 +169,7 @@ const hrCompetencyResultRespond: React.SFC<AllProps> = props => {
                   {
                     props.data.items.find(findData => findData.levelUid === level.uid) &&
                     <TableRow>
-                      <TableCell colSpan={props.responders.length + 1}>
+                      <TableCell colSpan={props.responders.length + 2}>
                         <TextField
                           {...GlobalStyle.TextField.ReadOnly}
                           value={findNote(props.data.items.find(findData => findData.levelUid === level.uid))}

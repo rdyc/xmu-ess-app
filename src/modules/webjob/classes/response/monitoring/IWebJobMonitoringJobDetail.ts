@@ -4,6 +4,6 @@ export interface IWebJobMonitoringJobDetail {
   job: string;
   createdAt: string;
   properties: any;
-  history: IWebJobMonitoringJobHistory;
+  history: IWebJobMonitoringJobHistory[];
   expireAt: string;
 }

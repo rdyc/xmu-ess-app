@@ -1,6 +1,6 @@
-import { WorkflowStatusType } from '@common/classes/types';
+// import { WorkflowStatusType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
-import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetailList, IHrCompetencyMappedList } from '@hr/classes/response';
+import { ICompetencyEmployeeItem, IHrCompetencyEmployeeDetail, IHrCompetencyEmployeeDetailList } from '@hr/classes/response';
 import { hrMessage } from '@hr/locales/messages/hrMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardHeader, Radio, Table, TableBody, TableCell, TableRow, TextField, Typography, WithStyles, withStyles } from '@material-ui/core';
@@ -17,7 +17,7 @@ interface IOwnProps {
   formMode: FormMode; 
   formikBag: FormikProps<ICompetencyResultFormValue>;
   intl: InjectedIntl;
-  mapped: IHrCompetencyMappedList;
+  data: IHrCompetencyEmployeeDetail;
   responders: IHrCompetencyEmployeeDetailList[];
 }
 
@@ -81,8 +81,8 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
               
             </TableCell>
             {
+              props.responders.length >= 1 &&
               props.responders.map(responder => 
-                !responder.isHR &&
                 <TableCell key={responder.uid} className={props.classes.hrTableResponder}>
                   <div className={props.classes.writingVertical} >
                     {responder.employee && responder.employee.fullName}
@@ -95,29 +95,18 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
             </TableCell>
           </TableRow>
           {
-            props.mapped &&
-            props.mapped.categories.map((item, index) => 
+            props.data &&
+            props.data.mappings.categories.map((item, index) => 
             <React.Fragment key={item.uid}>
               <TableRow>
                 {/* Category */}
-                <TableCell colSpan={props.responders.length + 1} className={classNames(props.classes.toolbar)} >
-                  <Typography variant="body1" color="inherit" >
+                <TableCell colSpan={props.responders.length + 2} className={classNames(props.classes.toolbar)} >
+                  <Typography variant="h6" color="inherit" >
                     {item.category.competency.name} - {item.category.name}
                   </Typography>
-                  <Typography color="inherit">
+                  <Typography variant="body1" color="inherit">
                     {item.category.description}
                   </Typography>
-                  {/* {active === item.category.uid && isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
-                  <Collapse
-                    in={active === item.category.uid && isExpanded}
-                    // className={props.classes.marginFar}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <Typography variant="body1" color="inherit">
-                      {item.category.description}
-                    </Typography>
-                  </Collapse> */}
                 </TableCell>
               </TableRow>
               <FieldArray 
@@ -145,12 +134,10 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
 
                       {/* Check from responder */}
                       {
-                        props.responders.map(responder => 
-                          !responder.isHR &&
+                        props.responders.length >= 1 &&
+                        props.responders.map(responder =>
                           <TableCell key={responder.uid} style={{padding: 0, textAlign: 'center'}}>
                             {
-                              responder.items.length > 0 &&
-                              (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
                               responder.items.find(findData => findData.levelUid === level.uid) &&
                               <Typography>
                                 <Done />
@@ -178,24 +165,19 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
 
                     {/* Note Responder */}
                     {
+                      props.responders.length >= 1 &&
                       props.responders.find(responder => 
-                        !responder.isHR && 
-                        (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
-                        responder.items.length > 0 && 
                         responder.items.findIndex(findData => findData.levelUid === level.uid) !== -1) &&
                         <TableRow>
-                          <TableCell colSpan={props.responders.length + 1}>
+                          <TableCell colSpan={props.responders.length + 2}>
                             <div style={{display: 'flex'}}>
                               <CommentOutlined style={{marginTop: '16px'}} />
                               <ul style={{paddingLeft: '24px'}}>
                                 {
-                                  // NOTE RESPONDER HERE
+                                  props.responders.length >= 1 &&
                                   props.responders.map(responder => 
-                                    !responder.isHR &&
-                                    (responder.statusType === WorkflowStatusType.Submitted || responder.statusType === WorkflowStatusType.Closed) &&
-                                    responder.items.length > 0 &&
                                     responder.items.find(findData => findData.levelUid === level.uid) &&
-                                      <li>
+                                      <li key={responder.uid}>
                                         <Typography key={responder.uid} color="primary">
                                           {
                                             findNote(responder.items.find(findData => findData.levelUid === level.uid))
@@ -219,7 +201,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                           return (
                             field.value &&
                             <TableRow>
-                              <TableCell colSpan={props.responders.length + 1}>
+                              <TableCell colSpan={props.responders.length + 2}>
                                 <TextField
                                   {...GlobalStyle.TextField.ReadOnly}
                                   {...field}
@@ -237,7 +219,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                     {
                       Boolean(props.formikBag.values.levelRespond.find(findLevel => findLevel.levelUid === level.uid)) &&
                       <TableRow>
-                        <TableCell colSpan={props.responders.length + 1}>
+                        <TableCell colSpan={props.responders.length + 2}>
                           <Field
                             name={`levelRespond.${index}.note`}
                             render={({ field, form }: FieldProps<ICompetencyResultFormValue>) => {
@@ -249,6 +231,7 @@ const competencyResultCategory: React.ComponentType<AllProps> = props => {
                                   {...field}
                                   fullWidth
                                   required
+                                  multiline
                                   disabled={form.isSubmitting}
                                   margin="normal"
                                   autoComplete="off"

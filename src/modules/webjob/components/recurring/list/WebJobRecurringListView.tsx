@@ -5,8 +5,6 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button, IconButton } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 import { IWebJobRecurring } from '@webjob/classes/response';
-import { MonitoringTabs } from '@webjob/classes/types/monitoring/MonitoringTabs';
-import { WebJobMonitoringTab } from '@webjob/components/tabs/WebJobMonitoringTab';
 import { webJobMessage } from '@webjob/locales/messages/webJobMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
@@ -16,9 +14,7 @@ import { IRecurringTriggerFormValue, WebJobRecurringListProps } from './WebJobRe
 import { WebjobRecurringSummary } from './WebJobRecurringSummary';
 
 export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = props => (
-  <WebJobMonitoringTab
-    tab={MonitoringTabs.Recurrings}      
-  >
+  <React.Fragment>
     <CollectionPage
       // page info
       info={{
@@ -119,5 +115,5 @@ export const WebJobRecurringListView: React.SFC<WebJobRecurringListProps> = prop
         </Form>
       )}
     />
-  </WebJobMonitoringTab>
+  </React.Fragment>
 );

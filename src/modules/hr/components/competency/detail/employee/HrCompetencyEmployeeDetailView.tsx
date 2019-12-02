@@ -54,12 +54,8 @@ export const HrCompetencyEmployeeDetailView: React.SFC<HrCompetencyEmployeeDetai
       !props.hrCompetencyEmployeeState.detail.isLoading &&
       props.hrCompetencyEmployeeState.detail.response &&
       props.hrCompetencyEmployeeState.detail.response.data &&
-      props.hrCompetencyMappedState.list.response &&
-      props.hrCompetencyMappedState.list.response.data &&
-      props.hrCompetencyMappedState.list.response.data[0] &&
       <HrCompetencyEmployeeCategoryItem 
-        data={props.hrCompetencyEmployeeState.detail.response.data}
-        mapped={props.hrCompetencyMappedState.list.response.data[0]}        
+        data={props.hrCompetencyEmployeeState.detail.response.data}   
       />
     }
   </React.Fragment>

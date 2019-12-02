@@ -258,8 +258,8 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
             {...field}
             fullWidth
             margin="normal"
+            clearable
             disabled={!props.formikBag.values.start || form.isSubmitting}
-            showTodayButton
             label={props.intl.formatMessage(accountMessage.access.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(accountMessage.access.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}
@@ -267,7 +267,10 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
             format="MMMM DD, YYYY"
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('end', moment.format('YYYY-MM-DD'))}
+            onChange={(moment: Moment) => {
+              moment ? props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD')) : 
+              props.formikBag.setFieldValue(field.name, '');
+            }}
             invalidLabel=""
             disablePast
             // minDate={props.formikBag.values.start}

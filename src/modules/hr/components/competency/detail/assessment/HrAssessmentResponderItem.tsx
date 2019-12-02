@@ -13,6 +13,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
@@ -20,6 +21,7 @@ import { lightBlue, red } from '@material-ui/core/colors';
 import { Create } from '@material-ui/icons';
 import styles from '@styles';
 import * as classNames from 'classnames';
+import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -82,17 +84,28 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
             data.responders.map(item =>
               <ListItem 
                 disableGutters 
-                key={item.employeeUid}
+                key={item.uid}
               >
                 <ListItemAvatar>
                   <Avatar className={classNames(!item.isExpired && !item.isRespond && !item.isComplete ? props.classes.avatarSecondary 
-                    : (!item.isRespond && !item.isComplete && item.isExpired ? props.classes.avatarRed : (item.isRespond || item.isComplete) && props.classes.avatarPrimary))}>
+                    : (!item.isComplete && item.isExpired ? props.classes.avatarRed : props.classes.avatarPrimary))}>
                     {initialName(item.employee.fullName)}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={item.employee.fullName} 
-                  secondary={item.assessor && item.assessor.value || item.employee.email}
+                  secondary={
+                    item.assessor && 
+                    <React.Fragment>
+                      <Typography component="span" style={{display: 'inline'}}>
+                        {item.assessor.value}
+                      </Typography>
+                      {
+                        ` — ${moment(item.dueDate).utc().format('MMMM D, YYYY')}`
+                      }
+                    </React.Fragment>
+                    || item.employee.email
+                  }
                 />
                 <ListItemSecondaryAction>
                   {
@@ -102,12 +115,12 @@ const hrAssessmentResponderItem: React.SFC<AllProps> = props => {
                     </span>
                     :
                     (
-                      !item.isRespond && !item.isComplete && item.isExpired ?
+                      !item.isComplete && item.isExpired ?
                       <span className={classNames(props.classes.badgeChild)} style={{transform: 'translate(10px, -15px)', backgroundColor: red[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(hrMessage.competency.field.expired)}
                       </span>
                       :
-                      (item.isRespond || item.isComplete) &&
+                      // (item.isRespond || item.isComplete) &&
                       <span className={classNames(props.classes.badgeChild)} style={{transform: 'translate(10px, -15px)', backgroundColor: lightBlue[500], whiteSpace: 'nowrap'}}>
                         {intl.formatMessage(item.isComplete ? hrMessage.competency.field.complete : hrMessage.competency.field.respond)}
                       </span>

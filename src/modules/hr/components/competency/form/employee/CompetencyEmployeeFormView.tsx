@@ -88,14 +88,12 @@ export const CompetencyEmployeeFormView: React.SFC<CompetencyEmployeeFormProps> 
             <div className={props.classes.flexContent}>
               {
                 !props.hrCompetencyEmployeeState.detail.isLoading &&
-                props.hrCompetencyMappedState.list.response &&
-                props.hrCompetencyMappedState.list.response.data &&
-                props.hrCompetencyMappedState.list.response.data[0] &&
+                props.hrCompetencyEmployeeState.detail.response &&
                 <CompetencyEmployeeCategory 
                   formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  data={props.hrCompetencyMappedState.list.response.data[0]}
+                  data={props.hrCompetencyEmployeeState.detail.response.data}
                 />
               }
             </div>

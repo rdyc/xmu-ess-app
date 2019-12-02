@@ -11,6 +11,7 @@ import { WebJobRecurringDetail } from './recurring/detail/WebJobRecurringDetail'
 import { WebJobRecurringForm } from './recurring/form/WebJobRecurringForm';
 import { WebJobRecurringList } from './recurring/list/WebJobRecurringList';
 import { WebJobServerList } from './servers/list/WebJobServerList';
+import { WebJobMonitoringTab } from './tabs/WebJobMonitoringTab';
 
 const monitoring = (props: RouteComponentProps) => (
   <Switch>
@@ -43,45 +44,24 @@ const recurrings = (props: RouteComponentProps) => (
 );
 
 const webJob = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}/monitoring`} component={monitoring} />
-    <Route path={`${props.match.path}/definitions`} component={definitions} />
-    <Route path={`${props.match.path}/recurrings`} component={recurrings} />
-    <Route path={`${props.match.path}/servers`} component={servers} />
-    <Route path={`${props.match.path}`} component={WebJobMonitoringList} />
-  </Switch>
+  <WebJobMonitoringTab>
+    <Switch>
+      <Route path={`${props.match.path}/monitoring`} component={monitoring} />
+      <Route path={`${props.match.path}/definitions`} component={definitions} />
+      <Route path={`${props.match.path}/recurrings`} component={recurrings} />
+      <Route path={`${props.match.path}/servers`} component={servers} />
+      <Route path={`${props.match.path}`} component={WebJobMonitoringList} />
+    </Switch>
+  </WebJobMonitoringTab>
 );
 
 export const WebJobRouter: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    {/* <SecureMenuRoute 
-      path={`${props.match.path}/monitoring`}
-      menu={AppMenu.Home} 
-      subMenu={AppMenu.WebJob} 
-      component={monitoring} 
-    />
-    <SecureMenuRoute 
-      path={`${props.match.path}/definitions`}
-      menu={AppMenu.Home} 
-      subMenu={AppMenu.WebJob} 
-      component={definitions} 
-    />
-    <SecureMenuRoute 
-      path={`${props.match.path}/recurrings`}
-      menu={AppMenu.Home} 
-      subMenu={AppMenu.WebJob} 
-      component={recurrings} 
-    /> */}
     <SecureMenuRoute 
       path={`${props.match.path}`}
       menu={AppMenu.WebJob}
       subMenu={AppMenu.WebJob} 
       component={webJob} 
     />
-    {/* <Route path={`${props.match.path}/monitoring`} component={monitoring} />
-    <Route path={`${props.match.path}/definitions`} component={definitions} />
-    <Route path={`${props.match.path}/recurrings`} component={recurrings} />
-    <Route path={`${props.match.path}/servers`} component={servers} /> */}
-    {/* <Route path={`${props.match.path}`} component={WebJobMonitoringList} /> */}
   </Switch>
 );
