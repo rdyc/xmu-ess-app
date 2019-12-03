@@ -236,17 +236,22 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/lookup/leaves/${response.uid}`, { companyUid: response.companyUid });
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
-
+        
         // set form status
         actions.setStatus(error);
-
+        
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item =>
-            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
+        if (err && err.errors) {
+          err.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
 

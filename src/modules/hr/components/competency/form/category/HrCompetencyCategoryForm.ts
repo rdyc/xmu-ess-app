@@ -247,7 +247,12 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         // redirect to detail
         props.history.push(`/hr/competency/level/${response.uid}`, {clusterUid});
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -255,8 +260,8 @@ const handlerCreators: HandleCreators<HrCompetencyCategoryFormProps, IOwnHandler
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }

@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IValidationErrorResponse } from '@layout/interfaces';
+// import { IValidationErrorResponse } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { IWebJobDefinitionPostPayload } from '@webjob/classes/request';
@@ -123,20 +123,23 @@ const handlerCreators: HandleCreators<WebJobDefinitionFormProps, IOwnHandler> = 
         // redirect to detail
         props.history.push(`/webjob/definitions`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        // let err: IValidationErrorResponse | undefined = undefined;
+        
+        // if (error.id) {
+        //   err = error;
+        // }
         // set submitting status
         actions.setSubmitting(false);
         
         // set form status
         actions.setStatus(error);
         
-        console.log('Error');
-
         // error on form fields
-        // if (error.errors) {
-          // error.errors.forEach(item => 
-          //   actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
-          // );
+        // if (err && err.errors) {
+        //   err.errors.forEach(item => 
+        //     actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+        //   );
         // }
 
         // console.log(error.errors);

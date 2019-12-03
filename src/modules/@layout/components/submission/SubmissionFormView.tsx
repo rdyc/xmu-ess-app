@@ -20,17 +20,25 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
             value={props.formikProps.status.date || 'N/A'}
           />
 
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            label="Correlation ID"
-            value={props.formikProps.status.id || 'N/A'}
-          />
+          {
+            !props.formikProps.status.Code ?
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label="Correlation ID"
+              value={props.formikProps.status.id || 'N/A'}
+            /> :
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label="Code"
+              value={props.formikProps.status.Code || 'N/A'}
+            /> 
+          }
 
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             multiline
             label="Status"
-            value={props.intl.formatMessage({id: props.formikProps.status.message})}
+            value={props.intl.formatMessage({id: !props.formikProps.status.Code ? props.formikProps.status.message : props.formikProps.status.Message})}
           />
         </CardContent>
       }
