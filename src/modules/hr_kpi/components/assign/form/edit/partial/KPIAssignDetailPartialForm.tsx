@@ -6,7 +6,7 @@ import { ISelectFieldOption, SelectField } from '@layout/components/fields/Selec
 import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -206,17 +206,29 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
 
         <Field
           name="isFinal"
-          render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
-            <FormControlLabel
+          render={({ form }: FieldProps<IKPIAssignFormValue>) => (
+            // <FormControlLabel
+            //   label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
+            //   disabled={form.isSubmitting}
+            //   control={
+            //     <Checkbox 
+            //       {...field} 
+            //       checked={props.formikBag.values.isFinal}
+            //     />
+            //   }
+            //   style={{width: '100%'}}
+            // />
+            <TextField 
+              {...GlobalStyle.TextField.ReadOnly}
+              // {...field}
+              disabled={props.formikBag.isSubmitting}
+              margin="normal"
               label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
-              disabled={form.isSubmitting}
-              control={
-                <Checkbox 
-                  {...field} 
-                  checked={props.formikBag.values.isFinal}
-                />
-              }
-              style={{width: '100%'}}
+              value={props.formikBag.values.isFinal && 
+                props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
+                props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
+              helperText={(form.touched.isFinal) && (form.errors.isFinal)}
+              error={(form.touched.isFinal) && Boolean(form.errors.isFinal)}
             />
           )}
         />  

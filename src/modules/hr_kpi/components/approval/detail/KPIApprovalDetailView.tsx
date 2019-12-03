@@ -14,7 +14,6 @@ import { Form, Formik, FormikProps } from 'formik';
 import { IKPIApprovalFormValue, KPIApprovalDetailProps } from './KPIApprovalDetail';
 import { KPIApprovalInformation } from './partial/KPIApprovalInformation';
 import KPIApprovalItemPartialForm from './partial/KPIApprovalItemPartialForm';
-import KPIApprovalPartialForm from './partial/KPIApprovalPartialForm';
 
 export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props => (
   <PreviewPage
@@ -63,13 +62,13 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
 
               <div className={props.classes.flexColumn}>
                 <div className={props.classes.flexContent}>
-                  {
+                  {/* {
                     !props.initialValues.isFinal &&
                     <KPIApprovalPartialForm
                       formikBag={formikBag}
                       intl={props.intl}
                     />
-                  }
+                  } */}
                 </div>
                 <div className={props.classes.flexContent}>
                   {

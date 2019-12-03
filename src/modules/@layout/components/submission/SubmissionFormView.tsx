@@ -50,7 +50,11 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           type="button"
           color="primary"
           disabled={props.formikProps.isSubmitting || props.disableButtons}
-          onClick={() => props.setOpen()}
+          onClick={() => props.confirmationDialogProps ? 
+            props.setOpen() : 
+            props.handleSubmitAction ?
+              props.handleSubmitAction() : 
+              props.formikProps.submitForm()}
         >
           {props.formikProps.isSubmitting ? props.buttonLabelProps.processing : props.buttonLabelProps.submit}
         </Button>
@@ -58,6 +62,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
     </Card>
 
     {
+      props.confirmationDialogProps &&
       !props.formikProps.isSubmitting &&
       <DialogConfirmation
         title={props.confirmationDialogProps.title}

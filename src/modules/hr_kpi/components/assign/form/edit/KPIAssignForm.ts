@@ -84,6 +84,7 @@ interface IOwnOption {
 interface IOwnState {
   formMode: FormMode;
   loadItem: boolean;
+  isDialogOpen: boolean;
   templateNotes: string;
   listItem: IKPIAssignItemFormValue[];
 
@@ -109,6 +110,7 @@ interface IOwnHandler {
   handleLoadTemplate: (companyUid: string, positionUid: string, templateUid: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: IKPIAssignFormValue, action: FormikActions<IKPIAssignFormValue>) => void;
+  handleSetDialogOpen: () => void;
 }
 
 export type KPIAssignFormProps
@@ -130,6 +132,7 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
   // form props 
   formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   loadItem: false,
+  isDialogOpen: false,
   templateNotes: '',
   listItem: [],
 
@@ -364,6 +367,10 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
+        props.stateUpdate({
+          isDialogOpen: false,
+        });
+
         // show flash message
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess)
@@ -378,6 +385,10 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
         // set form status
         actions.setStatus(error);
 
+        props.stateUpdate({
+          isDialogOpen: false,
+        });
+
         // error on form fields
         if (error.errors) {
           error.errors.forEach(item =>
@@ -390,7 +401,12 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createFailure : kpiMessage.employee.message.updateFailure)
         });
       });
-  }
+  },
+  handleSetDialogOpen: (props: KPIAssignFormProps) => () => {
+    props.stateUpdate({
+      isDialogOpen: !props.isDialogOpen,
+    });
+  },
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState> = {
