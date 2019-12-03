@@ -128,6 +128,8 @@
   "kpi.employee.confirm.new.description": "You are about creating a new Employee KPI. Do you want to continue?",
   "kpi.employee.confirm.modify.title": "Modify Employee KPI",
   "kpi.employee.confirm.modify.description": "You are about to modify current Employee KPI. Do you want to continue?",
+  "kpi.employee.confirm.final.description": "You are about to modify current Employee KPI. Select Final Status of this KPI:",
+  "kpi.employee.confirm.final.isFinal": "You mark this KPI as Final. This KPI will be send to the Employee",
 
   "kpi.employee.field.uid": "KPI ID",
   "kpi.employee.field.employeeUid": "Employee",

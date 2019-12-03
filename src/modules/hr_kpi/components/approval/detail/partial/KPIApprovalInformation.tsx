@@ -27,11 +27,6 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
         // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
-        {/* <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-          value={props.data.uid}
-        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
@@ -107,18 +102,6 @@ const kpiApprovalInformation: React.SFC<AllProps> = props => {
           value={props.data.revision}
         />
         }
-        {/* {
-          props.data.sent &&
-          props.data.sentAt &&
-          <React.Fragment>
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-              value={props.data.sent && props.data.sent.fullName || 'N/A'}
-              helperText={props.intl.formatDate(props.data.sentAt, GlobalFormat.DateTime) || 'N/A'}
-            />
-          </React.Fragment>
-        } */}
         {
           props.data.changes &&
           <React.Fragment>

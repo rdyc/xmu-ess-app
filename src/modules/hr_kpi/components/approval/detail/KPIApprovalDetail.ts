@@ -65,13 +65,8 @@ interface IOwnState {
   menuOptions?: IPopupMenuOption[];
   isAdmin: boolean;
   shouldLoad: boolean;
+  isDialogOpen: boolean;
   action?: KPIEmployeeUserAction;
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string;
-  dialogContent?: string;
-  dialogCancelLabel?: string;
-  dialogConfirmLabel?: string;
 
   initialValues: IKPIApprovalFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<IKPIApprovalFormValue>>>;
@@ -81,16 +76,14 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
   setShouldLoad: StateHandler<IOwnState>;
   setOptions: StateHandler<IOwnState>;
-  setModify: StateHandler<IOwnState>;
-  setDefault: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadApi: () => void;
   handleOnSubmit: (values: IKPIApprovalFormValue, action: FormikActions<IKPIApprovalFormValue>) => void;
   handleOnSelectedMenu: (item: IPopupMenuOption) => void;
-  handleOnCloseDialog: () => void;
-  handleOnConfirm: () => void;
+  handleSetDialogOpen: () => void;
 }
 
 export type KPIApprovalDetailProps
@@ -124,16 +117,13 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
   return {
     isAdmin,
     shouldLoad: false,
-    dialogFullScreen: false,
-    dialogOpen: false,
+    isDialogOpen: false,
 
     initialValues: {
       uid: props.match.params.kpiUid,
       statusType: '',
-      // isApproved: false,
       isFinal: false,
       isFirst: true,
-      // revision: '',
       notes: '',
       totalScore: 0,
       items: []
@@ -141,21 +131,10 @@ const createProps: mapper<KPIApprovalDetailProps, IOwnState> = (props: KPIApprov
     validationSchema: Yup.object().shape<Partial<IKPIApprovalFormValue>>({
       uid: Yup.string(),
   
-      // isApproved: Yup.boolean()
-      //   .required(),
-  
       isFinal: Yup.boolean()
         .required(),
   
       isFirst: Yup.boolean(),
-  
-      // revision: Yup.string()
-      //   .label(props.intl.formatMessage(kpiMessage.employee.field.revision))
-      //   .when(['isFinal', 'isFirst'] , ({
-      //     is: false,
-      //     then: Yup.string().required(),
-      //   }))
-      //   .max(300),
   
       totalScore: Yup.number(),
   
@@ -208,23 +187,9 @@ const stateUpdaters: StateUpdaters<KPIApprovalDetailProps, IOwnState, IOwnStateU
   setOptions: () => (options?: IPopupMenuOption[]): Partial<IOwnState> => ({
     menuOptions: options
   }),
-  setModify: (prevState: IOwnState, props: KPIApprovalDetailProps) => (): Partial<IOwnState> => ({
-    action: KPIEmployeeUserAction.Modify,
-    dialogFullScreen: false,
-    dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(kpiMessage.employee.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(kpiMessage.employee.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disagree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.agree)
-  }),
-  setDefault: () => (): Partial<IOwnState> => ({
-    action: undefined,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -249,10 +214,8 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
 
         // fill payload 
         const payload: IKPIApprovalPostPayload = {
-          // isApproved: true,
           isFinal: values.isFinal,
           notes: values.notes,
-          // revision: values.revision || '',
           items: []
         };
 
@@ -282,6 +245,10 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
+        props.stateUpdate({
+          isDialogOpen: false,
+        });
+
         // show flash message
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(kpiMessage.employee.message.approvalSuccess)
@@ -300,6 +267,10 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
         
         // set form status
         actions.setStatus(error);
+
+        props.stateUpdate({
+          isDialogOpen: false,
+        });
         
         // error on form fields
         if (err && err.errors) {
@@ -324,31 +295,10 @@ const handlerCreators: HandleCreators<KPIApprovalDetailProps, IOwnHandler> = {
         break;
     }
   },
-  handleOnCloseDialog: (props: KPIApprovalDetailProps) => () => {
-    props.setDefault();
-  },
-  handleOnConfirm: (props: KPIApprovalDetailProps) => () => {
-    const { response } = props.kpiApprovalState.detail;
-
-    // skipp untracked action or empty response
-    if (!props.action || !response) {
-      return;
-    }
-
-    // actions with new page
-    const actions = [
-      KPIEmployeeUserAction.Modify
-    ];
-
-    if (actions.indexOf(props.action) !== -1) {
-
-      switch (props.action) {
-        default:
-          break;
-      }
-
-      props.setDefault();
-    }
+  handleSetDialogOpen: (props: KPIApprovalDetailProps) => () => {
+    props.stateUpdate({
+      isDialogOpen: !props.isDialogOpen,
+    });
   },
 };
 

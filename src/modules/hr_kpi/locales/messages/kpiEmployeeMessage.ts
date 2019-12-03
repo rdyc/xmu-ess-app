@@ -86,7 +86,9 @@ export const KPIEmployeeConfirm = defineMessages({
   newTitle: { id: `${prefix}.confirm.new.title` },
   newDescription: { id: `${prefix}.confirm.new.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyDescription: { id: `${prefix}.confirm.modify.description` }
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  finalDescription: { id: `${prefix}.confirm.final.description` },
+  finalIsFinal: { id: `${prefix}.confirm.final.isFinal` }
 });
 
 // fields
