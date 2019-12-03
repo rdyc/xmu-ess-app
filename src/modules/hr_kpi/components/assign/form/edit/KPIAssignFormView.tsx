@@ -142,10 +142,10 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                     </DialogContent>
                     
                     <DialogActions>
-                      <Button fullWidth color="secondary" onClick={() => props.handleSetDialogOpen()}>
+                      <Button fullWidth color="secondary" onClick={() => props.handleSetDialogOpen()} disabled={formikBag.isSubmitting}>
                         {props.intl.formatMessage(layoutMessage.action.discard)}
                       </Button>
-                      <Button fullWidth color={formikBag.values.isFinal ? 'primary' : 'default'} onClick={() => formikBag.submitForm()} autoFocus>
+                      <Button fullWidth color={formikBag.values.isFinal ? 'primary' : 'default'} onClick={() => formikBag.submitForm()} autoFocus disabled={formikBag.isSubmitting}>
                         {props.intl.formatMessage(formikBag.values.isFinal ? layoutMessage.action.submit : layoutMessage.action.draft)}
                       </Button>
                     </DialogActions>

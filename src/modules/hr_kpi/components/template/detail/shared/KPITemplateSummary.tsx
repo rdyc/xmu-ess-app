@@ -19,12 +19,6 @@ type AllProps
 const kpiTemplateSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
-      {/* <TextField
-        multiline
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.template.field.uid)}
-        value={props.data.uid}
-      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.template.field.companyUid)}

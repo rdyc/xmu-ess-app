@@ -19,12 +19,6 @@ type AllProps
 const kpiEmployeeSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
-      {/* <TextField
-        multiline
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-        value={props.data.uid}
-      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
@@ -81,16 +75,6 @@ const kpiEmployeeSummary: React.SFC<AllProps> = props => (
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
-        {/* {
-          (props.data.sent && props.data.sentAt) &&
-            <TextField
-              {...GlobalStyle.TextField.ReadOnly}
-              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-              value={props.data.sent && props.data.sent.fullName || 'N/A'}
-              helperText={props.intl.formatDate(props.data.sentAt, GlobalFormat.DateTime) || 'N/A'}
-            />
-        } */}
-
         {
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField

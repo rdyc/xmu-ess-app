@@ -55,37 +55,6 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
           )}
         />
         
-        {/* <Field
-          name="companyUid"
-          render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
-            <LookupCompanyOption filter={props.filterLookupCompany}>
-              <SelectField
-                isSearchable
-                menuPlacement="auto"
-                menuPosition="fixed"
-                isDisabled={props.formikBag.isSubmitting}
-                isClearable={field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                textFieldProps={{
-                  label: props.intl.formatMessage(kpiMessage.template.field.companyUid),
-                  required: true,
-                  helperText: form.touched.companyUid && form.errors.companyUid,
-                  error: form.touched.companyUid && Boolean(form.errors.companyUid)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => {
-                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                  props.formikBag.setFieldValue('positionUid', '');
-                  props.formikBag.setFieldValue('templateUid', '');
-                  props.formikBag.setFieldValue('items', []);
-                  props.handleSetTemplateFilter(selected && selected.value || '', props.formikBag.values.positionUid || '');
-                }}
-              />
-            </LookupCompanyOption>
-          )}
-        /> */}
-        
         <Field 
           name="companyName"
           render={({ field}: FieldProps<IKPIAssignFormValue>) => (
@@ -98,37 +67,6 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
             />
           )}
         />
-
-        {/* <Field
-          name="positionUid"
-          render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
-            return (
-              <LookupPositionOption companyUid={props.formikBag.values.companyUid}>
-                <SelectField
-                  isSearchable
-                  menuPlacement="auto"
-                  menuPosition="fixed"
-                  isDisabled={props.formikBag.values.companyUid === '' || props.formikBag.isSubmitting}
-                  isClearable={field.value !== ''}
-                  escapeClearsValue={true}
-                  valueString={field.value}
-                  textFieldProps={{
-                    label: props.intl.formatMessage(kpiMessage.template.field.positionUid),
-                    required: true,
-                    helperText: form.touched.positionUid && form.errors.positionUid,
-                    error: form.touched.positionUid && Boolean(form.errors.positionUid)
-                  }}
-                  onChange={(selected: ISelectFieldOption) => {
-                    props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                    props.formikBag.setFieldValue('templateUid', '');
-                    props.formikBag.setFieldValue('items', []);
-                    props.handleSetTemplateFilter(props.formikBag.values.companyUid || '', selected && selected.value || '');
-                  }}
-                />
-              </LookupPositionOption>
-            );
-          }}
-        /> */}
         
         <Field 
           name="positionName"

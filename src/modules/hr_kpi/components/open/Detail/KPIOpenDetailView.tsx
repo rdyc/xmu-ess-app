@@ -4,7 +4,6 @@ import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-// import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
 import { KPIOpenDetailProps } from './KPIOpenDetail';
 import { KPIOpenInformation } from './shared/KPIOpenInformation';

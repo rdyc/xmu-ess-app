@@ -17,42 +17,6 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
         title={props.intl.formatMessage(kpiMessage.employee.section.approvalTitle)}
       />
       <CardContent>
-        {/* <Field
-          name="isApproved"
-          render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
-            <RadioGroup>
-              <FormControlLabel
-                label={props.intl.formatMessage(organizationMessage.workflow.option.approve)}
-                control={
-                  <Radio 
-                    disabled={form.isSubmitting}
-                    checked={props.formikBag.values.isApproved !== undefined && props.formikBag.values.isApproved} 
-                    onChange={(event: React.ChangeEvent, checked: boolean) => {
-                      if (checked) {
-                        props.formikBag.setFieldValue('isApproved', true);
-                      }
-                    }}
-                  /> 
-                } 
-              />
-              <FormControlLabel
-                label={props.intl.formatMessage(organizationMessage.workflow.option.reject)}
-                control={
-                  <Radio 
-                    disabled={form.isSubmitting}
-                    checked={props.formikBag.values.isApproved !== undefined && !props.formikBag.values.isApproved} 
-                    onChange={(event: React.ChangeEvent, checked: boolean) => {
-                      if (checked) {
-                        props.formikBag.setFieldValue('isApproved', false);
-                      }
-                    }}
-                  /> 
-                } 
-              />
-            </RadioGroup>
-          )}
-        />   */}
-
         <Field
           name="isFinal"
           render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
@@ -68,28 +32,7 @@ const KPIApprovalPartialForm: React.ComponentType<KPIApprovalPartialFormProps> =
               style={{width: '100%'}}
             />
           )}
-        />  
-
-        {/* {
-          (!props.formikBag.values.isFirst && !props.formikBag.values.isFinal) &&
-          <Field
-            name="revision"
-            render={({ field, form }: FieldProps<IKPIApprovalFormValue>) => (
-              <TextField
-                {...field}
-                fullWidth
-                required={true}
-                margin="normal"
-                autoComplete="off"
-                disabled={form.isSubmitting}
-                label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
-                placeholder={props.intl.formatMessage(kpiMessage.employee.field.revision)}
-                helperText={(form.touched.revision) && (form.errors.revision)}
-                error={(form.touched.revision) && Boolean(form.errors.revision)}
-              />
-            )}
-          />
-        } */}
+        />
       </CardContent>
     </Card>
   );

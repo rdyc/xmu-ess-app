@@ -21,15 +21,8 @@ const kpiOpenInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(kpiMessage.open.section.infoTitle)}
-      // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
       />
       <CardContent>
-        {/* <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.open.field.uid)}
-          value={props.data.uid}
-        /> */}
-
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.open.field.year)}

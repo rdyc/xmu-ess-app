@@ -151,33 +151,6 @@ const KPIEmployeeDetailPartialForm: React.ComponentType<KPIEmployeeDetailPartial
             )}
           />
         }
-        
-        {/* <Field
-          name="period"
-          render={({ field, form }: FieldProps<IKPIEmployeeFormValue>) => (
-            <InputSemesterOption>
-              <SelectField
-                isSearchable
-                menuPlacement="auto"
-                menuPosition="fixed"
-                isDisabled={props.formikBag.isSubmitting}
-                isClearable={field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                textFieldProps={{
-                  label: props.intl.formatMessage(kpiMessage.employee.field.period),
-                  required: true,
-                  helperText: form.touched.period && form.errors.period,
-                  error: form.touched.period && Boolean(form.errors.period)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => {
-                  props.formikBag.setFieldValue(field.name, selected && selected.value || '');
-                }}
-              />
-            </InputSemesterOption>
-          )}
-        /> */}
 
         <Field
           name="period"
