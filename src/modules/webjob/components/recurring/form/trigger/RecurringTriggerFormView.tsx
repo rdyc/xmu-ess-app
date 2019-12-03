@@ -58,17 +58,25 @@ export const RecurringTriggerFormView: React.SFC<RecurringTriggerFormProps> = pr
                   value={formikBag.status.date || 'N/A'}
                 />
 
-                <TextField
-                  {...GlobalStyle.TextField.ReadOnly}
-                  label="Correlation ID"
-                  value={formikBag.status.id || 'N/A'}
-                />
+                {
+                  !formikBag.status.Code ?
+                  <TextField
+                    {...GlobalStyle.TextField.ReadOnly}
+                    label="Correlation ID"
+                    value={formikBag.status.id || 'N/A'}
+                  /> :
+                  <TextField
+                    {...GlobalStyle.TextField.ReadOnly}
+                    label="Code"
+                    value={formikBag.status.Code || 'N/A'}
+                  /> 
+                }
 
                 <TextField
                   {...GlobalStyle.TextField.ReadOnly}
                   multiline
                   label="Status"
-                  value={props.intl.formatMessage({id: formikBag.status.message})}
+                  value={props.intl.formatMessage({id: !formikBag.status.Code ? formikBag.status.message : formikBag.status.Message})}
                 />
               </React.Fragment>
             }

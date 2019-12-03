@@ -258,17 +258,22 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
 
         props.history.push(`/kpi/categories/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
-
+        
         // set form status
         actions.setStatus(error);
-
+        
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item =>
-            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
+        if (err && err.errors) {
+          err.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
 

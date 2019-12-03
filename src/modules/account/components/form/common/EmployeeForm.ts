@@ -161,6 +161,7 @@ const createProps: mapper<EmployeeFormProps, IOwnState> = (props: EmployeeFormPr
 
     employmentNumber: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.nik))
+      .max(30)
       .required(),
       
     employmentType: Yup.string()
@@ -169,6 +170,7 @@ const createProps: mapper<EmployeeFormProps, IOwnState> = (props: EmployeeFormPr
 
     fullName: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.name))
+      .max(100)
       .required(),
 
     joinDate: Yup.string()
@@ -184,6 +186,7 @@ const createProps: mapper<EmployeeFormProps, IOwnState> = (props: EmployeeFormPr
 
     birthPlace: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.birthPlace))
+      .max(50)
       .required(),
 
     genderType: Yup.string()
@@ -204,68 +207,86 @@ const createProps: mapper<EmployeeFormProps, IOwnState> = (props: EmployeeFormPr
     // Bank
     familyCardNumber: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.kartuKeluarga))
+      .max(50)
       .required(),
 
     citizenNumber: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.ktp))
+      .max(20)
       .required(),
 
     taxNumber: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.npwp))
+      .max(20)
       .required(),
 
     bpjsEmploymentNumber: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.bpjsKetenagakerjaan)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.bpjsKetenagakerjaan))
+      .max(20),
 
     bpjsHealthCareNumber: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.bpjsKesehatan)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.bpjsKesehatan))
+      .max(20),
 
     bankAccount: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.bcaNumber))
+      .max(30)
       .required(),
 
     bankAccountName: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.bcaName))
+      .max(100)
       .required(),
 
     bankAccountBranch: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.bcaBranch)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.bcaBranch))
+      .max(100),
 
     // contact
     address: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.addressKtp))
+      .max(200)
       .required(),
 
     addressAdditional: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.addressNpwp)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.addressNpwp))
+      .max(200),
 
     email: Yup.string()
       .email()
+      .max(200)
       .label(props.intl.formatMessage(accountMessage.employee.field.companyEmail))
       .required(),
 
     emailPersonal: Yup.string()
       .email()
+      .max(200)
       .label(props.intl.formatMessage(accountMessage.employee.field.email))
       .required(),
 
     phone: Yup.string()
-      .label(props.intl.formatMessage(accountMessage.employee.field.phone)),
+      .label(props.intl.formatMessage(accountMessage.employee.field.phone))
+      .max(20),
 
     mobilePhone: Yup.string()
       .label(props.intl.formatMessage(accountMessage.employee.field.mobile))
+      .max(20)
       .required(),
 
     emergencyContactName: Yup.string()
+      .max(100)
       .label(props.intl.formatMessage(accountMessage.employee.field.emergencyName)),
 
     emergencyContactRelation: Yup.string()
+      .max(50)
       .label(props.intl.formatMessage(accountMessage.employee.field.emergencyRelation)),
 
     emergencyContactPhone: Yup.string()
+      .max(20)
       .label(props.intl.formatMessage(accountMessage.employee.field.emergencyPhone1)),
 
     emergencyContactPhoneAdditional: Yup.string()
+      .max(20)
       .label(props.intl.formatMessage(accountMessage.employee.field.emergencyPhone2)),
   }),
 
@@ -434,17 +455,21 @@ const handlerCreators: HandleCreators<EmployeeFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/account/employee/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
-        // console.log(error);
-
+        
         // set form status
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
