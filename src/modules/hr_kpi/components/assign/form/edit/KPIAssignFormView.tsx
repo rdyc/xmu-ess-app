@@ -8,7 +8,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { IKPIAssignFormValue, KPIAssignFormProps } from './KPIAssignForm';
 import KPIAssignDetailPartialForm from './partial/KPIAssignDetailPartialForm';
@@ -60,7 +60,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                     handleSubmitAction={props.handleSetDialogOpen}
                     buttonLabelProps={{
                       reset: props.intl.formatMessage(layoutMessage.action.reset),
-                      submit: props.intl.formatMessage(formikBag.values.isFinal ? layoutMessage.action.submit : layoutMessage.action.draft),
+                      submit: props.intl.formatMessage(layoutMessage.action.submit),
                       processing: props.intl.formatMessage(layoutMessage.text.processing)
                     }}
                   />
@@ -92,7 +92,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                               <FormControlLabel
                                 key={'isFinal.true'}
                                 value={'true'} 
-                                label={props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue)}
+                                label={props.intl.formatMessage(kpiMessage.employee.field.isFinalSetTrue)}
                                 control={
                                   <Radio 
                                     disabled={form.isSubmitting}
@@ -109,7 +109,7 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                               <FormControlLabel
                                 key={'isFinal.false'}
                                 value={'false'} 
-                                label={props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
+                                label={props.intl.formatMessage(kpiMessage.employee.field.isFinalSetFalse)}
                                 control={
                                   <Radio 
                                     disabled={form.isSubmitting}
@@ -131,13 +131,28 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
                             </FormHelperText>
                           </FormControl>
                         )}
-                      />
+                      /> 
 
                       {
-                        formikBag.values.isFinal &&
-                        <DialogContentText id="dialog-confirm-is-final">
-                          {props.intl.formatMessage(kpiMessage.employee.confirm.finalIsFinal)}
-                        </DialogContentText>
+                        (formikBag.values.isFinal &&
+                          !formikBag.values.isFirst) &&
+                        <Field
+                          name="revision"
+                          render={({ field, form }: FieldProps<IKPIAssignFormValue>) => (
+                            <TextField
+                              {...field}
+                              fullWidth
+                              required={true}
+                              margin="normal"
+                              autoComplete="off"
+                              disabled={form.isSubmitting}
+                              label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+                              placeholder={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+                              helperText={(form.touched.revision) && (form.errors.revision)}
+                              error={(form.touched.revision) && Boolean(form.errors.revision)}
+                            />
+                          )}
+                        />
                       }
                     </DialogContent>
                     

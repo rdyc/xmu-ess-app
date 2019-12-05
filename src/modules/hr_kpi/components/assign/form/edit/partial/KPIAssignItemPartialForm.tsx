@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
-import { DeleteForever, GroupAdd } from '@material-ui/icons';
+import { ArrowDownward, ArrowUpward, DeleteForever, GroupAdd } from '@material-ui/icons';
 import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -94,8 +94,8 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                 <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
-                  {props.intl.formatMessage(layoutMessage.action.delete)}
+                <TableCell className={classNames(props.classes.cellWidthXSS, props.classes.ultraDense)}>
+                  {props.intl.formatMessage(kpiMessage.template.action.actions)}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -195,12 +195,38 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             >
                               <DeleteForever />
                             </IconButton>
+                            <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveUp)}>
+                              <IconButton 
+                                disabled={index <= 0} 
+                                onClick={() => {
+                                  const currentRow = props.formikBag.values.items[index];
+
+                                  props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index - 1]);
+                                  props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
+                                }}
+                              >
+                                <ArrowUpward />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveDown)}>
+                              <IconButton 
+                                disabled={index >= (props.formikBag.values.items.length - 1)} 
+                                onClick={() => {                                
+                                  const currentRow = props.formikBag.values.items[index];
+
+                                  props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index + 1]);
+                                  props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
+                                }}
+                              >
+                                <ArrowDownward />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       </Tooltip>
                     )}
                     <TableRow>
-                      <TableCell colSpan={12}>
+                      <TableCell colSpan={13}>
                         <Button
                           fullWidth
                           color="primary" 

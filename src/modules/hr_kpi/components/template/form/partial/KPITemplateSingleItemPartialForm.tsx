@@ -173,7 +173,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
               margin="normal"
               autoComplete="off"
               label={props.intl.formatMessage(kpiMessage.template.field.target)}
-              placeholder={props.intl.formatMessage(kpiMessage.template.field.targetPlaceholder)}
+              placeholder={props.intl.formatMessage(kpiMessage.template.field.target)}
               helperText={touch && error}
               error={touch && Boolean(error)}
             />
@@ -198,7 +198,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                 margin="normal"
                 autoComplete="off"
                 label={props.intl.formatMessage(kpiMessage.template.field.weightPercent)}
-                placeholder={props.intl.formatMessage(kpiMessage.template.field.weightPlaceholder)}
+                placeholder={props.intl.formatMessage(kpiMessage.template.field.weight)}
                 helperText={touch && error}
                 error={touch && Boolean(error)}
                 InputProps={{
@@ -255,7 +255,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                 margin="normal"
                 autoComplete="off"
                 label={props.intl.formatMessage(kpiMessage.template.field.threshold)}
-                placeholder={props.intl.formatMessage(kpiMessage.template.field.thresholdPlaceholder)}
+                placeholder={props.intl.formatMessage(kpiMessage.template.field.threshold)}
                 helperText={touch && error}
                 error={touch && Boolean(error)}
                 InputProps={{
@@ -302,7 +302,7 @@ const KPITemplateSingleItemPartialForm: React.ComponentType<AllProps> = props =>
                 margin="normal"
                 autoComplete="off"
                 label={props.intl.formatMessage(kpiMessage.template.field.amount)}
-                placeholder={props.intl.formatMessage(kpiMessage.template.field.amountPlaceholder)}
+                placeholder={props.intl.formatMessage(kpiMessage.template.field.amount)}
                 helperText={touch && error}
                 error={touch && Boolean(error)}
                 InputProps={{

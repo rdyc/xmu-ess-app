@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
-import { DeleteForever, GroupAdd } from '@material-ui/icons';
+import { ArrowDownward, ArrowUpward, DeleteForever, GroupAdd } from '@material-ui/icons';
 import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -73,7 +73,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                 {props.intl.formatMessage(kpiMessage.template.field.amount)}
               </TableCell>
               <TableCell className={classNames(props.classes.cellWidthXSS, props.classes.ultraDense)}>
-                {props.intl.formatMessage(layoutMessage.action.delete)}
+                {props.intl.formatMessage(kpiMessage.template.action.actions)}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -148,26 +148,54 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           }
                         </TableCell>
                         <TableCell>
-                          <IconButton 
-                            onClick={() => {
-                              // remove current
-                              fields.remove(index);
+                          <Tooltip title={props.intl.formatMessage(layoutMessage.action.delete)}>
+                            <IconButton 
+                              onClick={() => {
+                                // remove current
+                                fields.remove(index);
 
-                              // calculate total requested
-                              let totalRequest = 0;
-                              props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                                if (index !== indexItem) {
-                                  totalRequest = totalRequest + requestItem.weight;
-                                } 
-                              });
+                                // calculate total requested
+                                let totalRequest = 0;
+                                props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                                  if (index !== indexItem) {
+                                    totalRequest = totalRequest + requestItem.weight;
+                                  } 
+                                });
 
-                              // set request
-                              props.formikBag.setFieldValue('totalWeight', totalRequest);
-                            }}
-                          >
-                            <DeleteForever />
-                        </IconButton>
-                      </TableCell>
+                                // set request
+                                props.formikBag.setFieldValue('totalWeight', totalRequest);
+                              }}
+                            >
+                              <DeleteForever />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title={props.intl.formatMessage(kpiMessage.template.action.moveUp)}>
+                            <IconButton 
+                              disabled={index <= 0} 
+                              onClick={() => {
+                                const currentRow = props.formikBag.values.items[index];
+
+                                props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index - 1]);
+                                props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
+                              }}
+                            >
+                              <ArrowUpward />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title={props.intl.formatMessage(kpiMessage.template.action.moveDown)}>
+                            <IconButton 
+                              disabled={index >= (props.formikBag.values.items.length - 1)} 
+                              onClick={() => {                                
+                                const currentRow = props.formikBag.values.items[index];
+
+                                props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index + 1]);
+                                props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
+                              }}
+                            >
+                              <ArrowDownward />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
                         <KPITemplateSingleItemPartialForm
                           formikBag={props.formikBag}
                           formMode={props.formMode}
@@ -183,7 +211,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                     </Tooltip>
                   )}
                   <TableRow>
-                    <TableCell colSpan={8}>
+                    <TableCell colSpan={9}>
                       <Button
                         fullWidth
                         color="primary" 

@@ -69,6 +69,13 @@ export const KPIEmployeeDialog = defineMessages({
   assignCreateDescription: { id: `${prefix}.dialog.assign.newDescription`},
 });
 
+// action
+export const KPIEmployeeAction = defineMessages({
+  actions: { id: `${prefix}.action.actions`},
+  moveUp: { id: `${prefix}.action.moveUp`},
+  moveDown: { id: `${prefix}.action.moveDown`},
+});
+
 // section
 export const KPIEmployeeSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
@@ -111,7 +118,9 @@ export const KPIEmployeeField = defineMessages({
   isFinal: { id: `${prefix}.field.isFinal`},
   isNotAssigned: { id: `${prefix}.field.isNotAssigned`},
   isFinalTrue: { id: `${prefix}.field.isFinal.final`},
+  isFinalSetTrue: { id: `${prefix}.field.isFinal.setFinal`},
   isFinalFalse: { id: `${prefix}.field.isFinal.pending`},
+  isFinalSetFalse: { id: `${prefix}.field.isFinal.setPending`},
   revision: { id: `${prefix}.field.revision`},
   revisionPlaceholder: { id: `${prefix}.field.revision.placeholder`},
   sentAt: { id: `${prefix}.field.sentAt`},

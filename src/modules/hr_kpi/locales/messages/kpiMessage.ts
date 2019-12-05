@@ -9,6 +9,7 @@ import {
   KPICategorySubmission
 } from './kpiCategoryMessage';
 import { 
+  KPIEmployeeAction, 
   KPIEmployeeConfirm, 
   KPIEmployeeDialog, 
   KPIEmployeeField, 
@@ -16,7 +17,7 @@ import {
   KPIEmployeeMessage, 
   KPIEmployeePage, 
   KPIEmployeeSection, 
-  KPIEmployeeSubmission 
+  KPIEmployeeSubmission
 } from './kpiEmployeeMessage';
 import { 
   KPIMeasurementConfirm, 
@@ -39,6 +40,7 @@ import {
   KPIOpenSubmission 
 } from './kpiOpenMessage';
 import {
+  KPITemplateAction,
   KPITemplateConfirm,
   KPITemplateDialog,
   KPITemplateField,
@@ -57,7 +59,8 @@ export const kpiMessage = {
     confirm: KPITemplateConfirm,
     section: KPITemplateSection,
     submission: KPITemplateSubmission,
-    dialog: KPITemplateDialog
+    dialog: KPITemplateDialog,
+    action: KPITemplateAction,
   },
   category: {
     field: KPICategoryField,
@@ -97,6 +100,7 @@ export const kpiMessage = {
     confirm: KPIEmployeeConfirm,
     section: KPIEmployeeSection,
     submission: KPIEmployeeSubmission,
-    dialog: KPIEmployeeDialog
+    dialog: KPIEmployeeDialog,
+    action: KPIEmployeeAction,
   },
 };

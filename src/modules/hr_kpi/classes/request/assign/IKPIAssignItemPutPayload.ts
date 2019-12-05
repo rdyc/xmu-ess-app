@@ -8,4 +8,5 @@ export interface IKPIAssignItemPostPayload {
   weight: number;
   threshold?: number;
   amount: number;
+  sequence: number;
 }
