@@ -1,6 +1,6 @@
-import { IEmployeeAllKPIFinalRequest } from '@account/classes/queries/employeeKPI';
-import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
-import { AccountEmployeeKPIAction as Action } from '@account/store/actions';
+import { IEmployeeAllKPIFinalRequest } from '@account/classes/queries/employeeKPIFinal';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
+import { AccountEmployeeKPIFinalAction as Action } from '@account/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 

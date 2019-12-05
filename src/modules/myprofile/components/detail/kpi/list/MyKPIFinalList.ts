@@ -18,9 +18,9 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPI';
-import { IKPIFinal } from '@account/classes/response/employeeKPI';
-import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
+import { IEmployeeKPIFinalAllFilter } from '@account/classes/filters/employeeKPIFinal';
+import { IKPIFinal } from '@account/classes/response/employeeKPIFinal';
+import { WithAccountEmployeeKPIFinal, withAccountEmployeeKPIFinal } from '@account/hoc/withAccountEmployeeKPIFinal';
 import { KPIFinalField } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ICollectionValue } from '@layout/classes/core';
@@ -52,7 +52,7 @@ export type MyKPIFinalListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithAccountEmployeeKPI
+  & WithAccountEmployeeKPIFinal
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -73,8 +73,8 @@ const stateUpdaters: StateUpdaters<MyKPIFinalListProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: MyKPIFinalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.all;
-    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIFinalState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIFinalDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -101,8 +101,8 @@ const handlerCreators: HandleCreators<MyKPIFinalListProps, IOwnHandler> = {
     }
   },
   handleOnLoadApiSearch: (props: MyKPIFinalListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.accountEmployeeKPIState.all;
-    const { loadAllRequest } = props.accountEmployeeKPIDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIFinalState.all;
+    const { loadAllRequest } = props.accountEmployeeKPIFinalDispatch;
     const { user } = props.userState;
 
     if (user && !isLoading) {
@@ -146,7 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<MyKPIFinalListProps, IOwnState> = {
 export const MyKPIFinalList = compose(
   setDisplayName('MyKPIFinalList'),
   withUser,
-  withAccountEmployeeKPI,
+  withAccountEmployeeKPIFinal,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

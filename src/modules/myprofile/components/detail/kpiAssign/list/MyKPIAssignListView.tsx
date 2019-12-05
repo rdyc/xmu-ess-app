@@ -2,16 +2,14 @@ import AppMenu from '@constants/AppMenu';
 import { CollectionPage } from '@layout/components/pages';
 import { SearchBox } from '@layout/components/search';
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
-import { IKPIAssign } from '@kpi/classes/response';
+import { IKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
-import { CheckCircle, Tune } from '@material-ui/icons';
 import { MyProfileTabs } from '@profile/classes/types/MyProfileTabs';
 import { DetailProfile } from '../../DetailProfile';
 import { MyKPIAssignSummary } from '../detail/shared/MyKPIAssignSummary';
-import { MyKPIAssignFilter } from './MyKPIAssignFilter';
 import { MyKPIAssignListProps } from './MyKPIAssignList';
 
 export const MyKPIAssignListView: React.SFC<MyKPIAssignListProps> = props => (
@@ -30,7 +28,7 @@ export const MyKPIAssignListView: React.SFC<MyKPIAssignListProps> = props => (
         }}
 
         // state & fields
-        state={props.kpiAssignState.all}
+        state={props.accountEmployeeKPIAssignState.all}
         fields={props.fields}
 
         // callback
@@ -57,45 +55,11 @@ export const MyKPIAssignListView: React.SFC<MyKPIAssignListProps> = props => (
         appBarSearchComponent={
           <SearchBox
             key="my.kpi.assign"
-            default={props.kpiAssignState.all.request && props.kpiAssignState.all.request.filter && props.kpiAssignState.all.request.filter.find}
+            default={props.accountEmployeeKPIAssignState.all.request && props.accountEmployeeKPIAssignState.all.request.filter && props.accountEmployeeKPIAssignState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}
           />
         }
-
-        // data toolbar component
-        toolbarDataComponent={
-          <Tooltip
-            placement="bottom"
-            title={props.intl.formatMessage(layoutMessage.tooltip.filter)}
-          >
-            <div>
-              <IconButton
-                id="option-filter"
-                disabled={props.kpiAssignState.all.isLoading || props.kpiAssignState.all.isError}
-                onClick={props.handleFilterVisibility} 
-              >
-                <Badge
-                  invisible={!props.handleFilterBadge()}
-                  badgeContent={
-                    <CheckCircle color="secondary" fontSize="small" />
-                  }
-                >
-                  <Tune/>
-                </Badge>
-              </IconButton>
-            </div>
-          </Tooltip>
-        }
-      />
-
-      <MyKPIAssignFilter
-        isOpen={props.isFilterOpen}
-        initialProps={{
-          isFinal: props.isFinal,
-        }}
-        onClose={props.handleFilterVisibility}
-        onApply={props.handleFilterApplied}
       />
     </DetailProfile>
   </React.Fragment>

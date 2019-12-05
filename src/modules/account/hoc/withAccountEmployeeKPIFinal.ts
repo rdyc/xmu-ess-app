@@ -1,17 +1,13 @@
 import { 
-  IEmployeeAllKPIAssignRequest, 
   IEmployeeAllKPIFinalRequest, 
   IEmployeeKPIFinalAllRequest, 
   IEmployeeKPIFinalByIdRequest 
-} from '@account/classes/queries/employeeKPI';
+} from '@account/classes/queries/employeeKPIFinal';
 import { 
-  IEmployeeKPIAssign, 
   IEmployeeKPIFinal, 
   IKPIFinal 
-} from '@account/classes/response/employeeKPI';
+} from '@account/classes/response/employeeKPIFinal';
 import {
-  accountEmployeeGetAllKPIAssignDispose,
-  accountEmployeeGetAllKPIAssignRequest,
   accountEmployeeGetAllKPIFinalDispose,
   accountEmployeeGetAllKPIFinalRequest,
   accountEmployeeKPIFinalGetAllDispose,
@@ -24,8 +20,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  accountEmployeeKPIState: {
-    allAssign: IQueryCollectionState<IEmployeeAllKPIAssignRequest, IEmployeeKPIAssign>;
+  accountEmployeeKPIFinalState: {
     allFinal: IQueryCollectionState<IEmployeeAllKPIFinalRequest, IEmployeeKPIFinal>;
     all: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal>;
     detail: IQuerySingleState<IEmployeeKPIFinalByIdRequest, IKPIFinal>;
@@ -33,11 +28,8 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-  accountEmployeeKPIDispatch: {
+  accountEmployeeKPIFinalDispatch: {
     // query
-    loadAllAssignRequest: typeof accountEmployeeGetAllKPIAssignRequest;
-    loadAllAssignDispose: typeof accountEmployeeGetAllKPIAssignDispose;
-
     loadAllFinalRequest: typeof accountEmployeeGetAllKPIFinalRequest;
     loadAllFinalDispose: typeof accountEmployeeGetAllKPIFinalDispose;
 
@@ -49,11 +41,10 @@ interface PropsFromDispatch {
   };
 }
 
-export interface WithAccountEmployeeKPI extends PropsFromState, PropsFromDispatch {}
+export interface WithAccountEmployeeKPIFinal extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ accountEmployeeGetAllKPIAssign, accountEmployeeGetAllKPIFinal, accountEmployeeKPIFinalGetAll, accountEmployeeKPIFinalGetById }: IAppState) => ({
-  accountEmployeeKPIState: {
-    allAssign: accountEmployeeGetAllKPIAssign,
+const mapStateToProps = ({ accountEmployeeGetAllKPIFinal, accountEmployeeKPIFinalGetAll, accountEmployeeKPIFinalGetById }: IAppState) => ({
+  accountEmployeeKPIFinalState: {
     allFinal: accountEmployeeGetAllKPIFinal,
     all: accountEmployeeKPIFinalGetAll,
     detail: accountEmployeeKPIFinalGetById,
@@ -61,11 +52,8 @@ const mapStateToProps = ({ accountEmployeeGetAllKPIAssign, accountEmployeeGetAll
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  accountEmployeeKPIDispatch: {
+  accountEmployeeKPIFinalDispatch: {
     // query
-    loadAllAssignRequest: (request: IEmployeeAllKPIAssignRequest) => dispatch(accountEmployeeGetAllKPIAssignRequest(request)),
-    loadAllAssignDispose: () => dispatch(accountEmployeeGetAllKPIAssignDispose()),
-
     loadAllFinalRequest: (request: IEmployeeAllKPIFinalRequest) => dispatch(accountEmployeeGetAllKPIFinalRequest(request)),
     loadAllFinalDispose: () => dispatch(accountEmployeeGetAllKPIFinalDispose()),
 
@@ -77,5 +65,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export const withAccountEmployeeKPI = (component: React.ComponentType) =>
+export const withAccountEmployeeKPIFinal = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

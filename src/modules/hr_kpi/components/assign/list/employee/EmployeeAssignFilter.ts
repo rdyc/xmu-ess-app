@@ -18,7 +18,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPI';
+import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPIAssign';
 import { ICollectionValue } from '@layout/classes/core';
 import * as moment from 'moment';
 import { EmployeeAssignFilterView } from './EmployeeAssignFilterView';

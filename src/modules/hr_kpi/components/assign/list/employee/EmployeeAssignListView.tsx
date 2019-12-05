@@ -6,7 +6,7 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { AddCircle, CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeAssignFilter } from './EmployeeAssignFilter';
 import { AccountEmployeeAssignListProps } from './EmployeeAssignList';
@@ -25,7 +25,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       }}
 
       // state & fields
-      state={props.accountEmployeeKPIState.allAssign}
+      state={props.accountEmployeeKPIAssignState.allAssign}
       fields={props.fields}
 
       // callback
@@ -52,7 +52,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
       appBarSearchComponent={
         <SearchBox
           key="employee.kpi.assign"
-          default={props.accountEmployeeKPIState.allAssign.request && props.accountEmployeeKPIState.allAssign.request.filter && props.accountEmployeeKPIState.allAssign.request.filter.find}
+          default={props.accountEmployeeKPIAssignState.allAssign.request && props.accountEmployeeKPIAssignState.allAssign.request.filter && props.accountEmployeeKPIAssignState.allAssign.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
@@ -75,7 +75,7 @@ export const EmployeeAssignListView: React.SFC<AccountEmployeeAssignListProps> =
           <div>
             <IconButton
               id="option-filter-employee-assign"
-              disabled={props.accountEmployeeKPIState.allAssign.isLoading || props.accountEmployeeKPIState.allAssign.isError}
+              disabled={props.accountEmployeeKPIAssignState.allAssign.isLoading || props.accountEmployeeKPIAssignState.allAssign.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge

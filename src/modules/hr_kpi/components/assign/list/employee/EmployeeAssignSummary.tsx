@@ -1,4 +1,4 @@
-import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';

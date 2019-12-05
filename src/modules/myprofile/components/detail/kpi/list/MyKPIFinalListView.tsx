@@ -5,7 +5,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import * as React from 'react';
 
-import { IKPIFinal } from '@account/classes/response/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { MyProfileTabs } from '@profile/classes/types/MyProfileTabs';
 import { DetailProfile } from '../../DetailProfile';
@@ -27,7 +27,7 @@ export const MyKPIAssignListView: React.SFC<MyKPIFinalListProps> = props => (
         }}
 
         // state & fields
-        state={props.accountEmployeeKPIState.all}
+        state={props.accountEmployeeKPIFinalState.all}
         fields={props.fields}
 
         // callback
@@ -54,7 +54,7 @@ export const MyKPIAssignListView: React.SFC<MyKPIFinalListProps> = props => (
         appBarSearchComponent={
           <SearchBox
             key="my.kpi.final.search"
-            default={props.accountEmployeeKPIState.all.request && props.accountEmployeeKPIState.all.request.filter && props.accountEmployeeKPIState.all.request.filter.find}
+            default={props.accountEmployeeKPIFinalState.all.request && props.accountEmployeeKPIFinalState.all.request.filter && props.accountEmployeeKPIFinalState.all.request.filter.find}
             fields={props.fields}
             onApply={props.handleOnLoadApiSearch}
           />

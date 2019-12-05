@@ -4,7 +4,7 @@ import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
 import * as React from 'react';
 
-import { IKPIFinal } from '@account/classes/response/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { KPIFinalDetailProps } from './KPIFinalDetail';
 import { KPIFinalInformation } from './shared/KPIFinalInformation';
 import { KPIFinalItem } from './shared/KPIFinalItem';
@@ -18,7 +18,7 @@ export const KPIFinalDetailView: React.SFC<KPIFinalDetailProps> = props => (
       title: props.intl.formatMessage(kpiMessage.employee.page.detailTitle),
       description: props.intl.formatMessage(kpiMessage.employee.page.detailSubHeader),
     }}
-    state={props.accountEmployeeKPIState.detail}
+    state={props.accountEmployeeKPIFinalState.detail}
     onLoadApi={props.handleOnLoadApi}
     primary={(data: IKPIFinal) => ([
       <KPIFinalInformation data={data} />
@@ -34,13 +34,13 @@ export const KPIFinalDetailView: React.SFC<KPIFinalDetailProps> = props => (
     }
   >
     {
-      !props.accountEmployeeKPIState.detail.isLoading &&
+      !props.accountEmployeeKPIFinalState.detail.isLoading &&
       <KPIFinalItem 
         items={
-          props.accountEmployeeKPIState.detail.response &&
-          props.accountEmployeeKPIState.detail.response.data &&
-          props.accountEmployeeKPIState.detail.response.data.items &&
-          props.accountEmployeeKPIState.detail.response.data.items }
+          props.accountEmployeeKPIFinalState.detail.response &&
+          props.accountEmployeeKPIFinalState.detail.response.data &&
+          props.accountEmployeeKPIFinalState.detail.response.data.items &&
+          props.accountEmployeeKPIFinalState.detail.response.data.items }
       />
     }
   </PreviewPage>

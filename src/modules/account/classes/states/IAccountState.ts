@@ -112,10 +112,21 @@ import {
   IEmployeeContractPostRequest, 
   IEmployeeContractPutRequest 
 } from '../queries/employeeContract';
-import { IEmployeeAllKPIAssignRequest, IEmployeeAllKPIFinalRequest, IEmployeeKPIFinalAllRequest, IEmployeeKPIFinalByIdRequest } from '../queries/employeeKPI';
+import { 
+  IEmployeeAllKPIAssignRequest, 
+  IEmployeeKPIAssignAllRequest,
+  IEmployeeKPIAssignByIdRequest
+} from '../queries/employeeKPIAssign';
+import {  } from '../queries/employeeKPIAssign/IEmployeeKPIAssignByIdRequest';
+import { 
+  IEmployeeAllKPIFinalRequest, 
+  IEmployeeKPIFinalAllRequest, 
+  IEmployeeKPIFinalByIdRequest 
+} from '../queries/employeeKPIFinal';
 import { IEmployeeAccess, IEmployeeAccessList } from '../response/employeeAccess';
 import { IEmployeeContractDetail, IEmployeeContractList } from '../response/employeeContract';
-import { IEmployeeKPIAssign, IEmployeeKPIFinal, IKPIFinal } from '../response/employeeKPI';
+import { IEmployeeKPIAssign, IKPIAssign } from '../response/employeeKPIAssign';
+import { IEmployeeKPIFinal, IKPIFinal } from '../response/employeeKPIFinal';
 
 export interface IAccountState {
   // account employee
@@ -198,8 +209,13 @@ export interface IAccountState {
   accountEmployeeContractPost: IQuerySingleState<IEmployeeContractPostRequest, IEmployeeContract>;
   accountEmployeeContractPut: IQuerySingleState<IEmployeeContractPutRequest, IEmployeeContract>;
   accountEmployeeContractDelete: IQuerySingleState<IEmployeeContractDeleteRequest, boolean>;
-  // account employee KPI
+
+  // account employee KPI Assign
   accountEmployeeGetAllKPIAssign: IQueryCollectionState<IEmployeeAllKPIAssignRequest, IEmployeeKPIAssign>;
+  accountEmployeeKPIAssignGetAll: IQueryCollectionState<IEmployeeKPIAssignAllRequest, IKPIAssign>;
+  accountEmployeeKPIAssignGetById: IQuerySingleState<IEmployeeKPIAssignByIdRequest, IKPIAssign>;
+
+  // account employee KPI Final
   accountEmployeeGetAllKPIFinal: IQueryCollectionState<IEmployeeAllKPIFinalRequest, IEmployeeKPIFinal>;
   accountEmployeeKPIFinalGetAll: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal>;
   accountEmployeeKPIFinalGetById: IQuerySingleState<IEmployeeKPIFinalByIdRequest, IKPIFinal>;

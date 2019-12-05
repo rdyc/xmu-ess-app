@@ -49,7 +49,8 @@ const kpiAssignItem: React.SFC<AllProps> = props => {
             item.category &&
             item.category.group === KPICategoryGroupType.KPI &&
             `${props.intl.formatNumber(item.weight)} %` ||
-            '-'}
+            '-'
+          }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {

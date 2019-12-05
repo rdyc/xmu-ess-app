@@ -1,4 +1,4 @@
-import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';

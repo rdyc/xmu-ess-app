@@ -18,7 +18,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPI';
+import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPIFinal';
 import { EmployeeAssignFilterView } from './EmployeeFinalFilterView';
 
 export type IAccountEmployeeFilterResult = Pick<IEmployeeAllKPIFinalFilter, 'companyUid' | 'isActive'>;

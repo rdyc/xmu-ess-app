@@ -1,4 +1,4 @@
-import { IKPIAssign } from '@kpi/classes/response';
+import { IKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -29,32 +29,6 @@ const myKPIAssignSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
         value={props.data.employee && props.data.employee.fullName || 'N/A'}
       />
-    </Grid>
-    <Grid item xs={12} sm={6} md={3}>
-    <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.template && props.data.template.name || 'N/A'}
-        />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
-        value={props.data.isFinal && 
-          props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
-          props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
-      />
-      {
-        props.data.revision && 
-        <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        multiline
-        label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
-        value={props.data.revision}
-      />
-      }
     </Grid>
 
     {

@@ -1,11 +1,8 @@
 import {
-  accountEmployeeGetAllKPIAssignError,
-  accountEmployeeGetAllKPIAssignRequest,
-  accountEmployeeGetAllKPIAssignSuccess,
   accountEmployeeGetAllKPIFinalError,
   accountEmployeeGetAllKPIFinalRequest,
   accountEmployeeGetAllKPIFinalSuccess,
-  AccountEmployeeKPIAction as Action,
+  AccountEmployeeKPIFinalAction as Action,
   accountEmployeeKPIFinalGetAllError,
   accountEmployeeKPIFinalGetAllRequest,
   accountEmployeeKPIFinalGetAllSuccess,
@@ -18,33 +15,6 @@ import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
-
-function* watchAllAssignRequest() {
-  const worker = (action: ReturnType<typeof accountEmployeeGetAllKPIAssignRequest>) => {
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true,
-      indices: false
-    });
-
-    return saiyanSaga.fetch({
-      
-      method: 'GET',
-      path: `/v1/account/employees/kpis/assign?${params}`, 
-      successEffects: (response: IApiResponse) => ([
-        put(accountEmployeeGetAllKPIAssignSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(accountEmployeeGetAllKPIAssignError(response)),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(accountEmployeeGetAllKPIAssignError(error.message)),
-      ])
-    });
-  };
-  
-  yield takeEvery(Action.GET_ALL_ASSIGN_REQUEST, worker);
-}
 
 function* watchAllFinalRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeGetAllKPIFinalRequest>) => {
@@ -84,7 +54,7 @@ function* watchAllRequest() {
     return saiyanSaga.fetch({
       
       method: 'GET',
-      path: `/v1/account/employees/${action.payload.employeeUid}/kpis?${params}`, 
+      path: `/v1/account/employees/${action.payload.employeeUid}/kpifinals?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeKPIFinalGetAllSuccess(response.body)),
       ]), 
@@ -105,7 +75,7 @@ function* watchByIdRequest() {
     return saiyanSaga.fetch({
       
       method: 'GET',
-      path: `/v1/account/employees/${action.payload.employeeUid}/kpis/${action.payload.kpiUid}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/kpifinals/${action.payload.kpiUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeKPIFinalGetByIdSuccess(response.body)),
       ]), 
@@ -121,13 +91,12 @@ function* watchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* accountEmployeeKPISagas() {
+function* accountEmployeeKPIFinalSagas() {
   yield all([
-    fork(watchAllAssignRequest),
     fork(watchAllFinalRequest),
     fork(watchAllRequest),
     fork(watchByIdRequest),
   ]);
 }
 
-export default accountEmployeeKPISagas;
+export default accountEmployeeKPIFinalSagas;

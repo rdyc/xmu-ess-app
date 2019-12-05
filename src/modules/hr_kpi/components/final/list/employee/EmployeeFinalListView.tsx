@@ -6,7 +6,7 @@ import { Badge, Button, IconButton, Tooltip } from '@material-ui/core';
 import { CheckCircle, Tune } from '@material-ui/icons';
 import * as React from 'react';
 
-import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { EmployeeAssignFilter } from './EmployeeFinalFilter';
 import { AccountEmployeeFinalListProps } from './EmployeeFinalList';
@@ -25,7 +25,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       }}
 
       // state & fields
-      state={props.accountEmployeeKPIState.allFinal}
+      state={props.accountEmployeeKPIFinalState.allFinal}
       fields={props.fields}
 
       // callback
@@ -52,7 +52,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
       appBarSearchComponent={
         <SearchBox
           key="employee.kpi.final"
-          default={props.accountEmployeeKPIState.allFinal.request && props.accountEmployeeKPIState.allFinal.request.filter && props.accountEmployeeKPIState.allFinal.request.filter.find}
+          default={props.accountEmployeeKPIFinalState.allFinal.request && props.accountEmployeeKPIFinalState.allFinal.request.filter && props.accountEmployeeKPIFinalState.allFinal.request.filter.find}
           fields={props.fields}
           onApply={props.handleOnLoadApiSearch}
         />
@@ -67,7 +67,7 @@ export const EmployeeFinalListView: React.SFC<AccountEmployeeFinalListProps> = p
           <div>
             <IconButton
               id="option-filter-employee-final"
-              disabled={props.accountEmployeeKPIState.allFinal.isLoading || props.accountEmployeeKPIState.allFinal.isError}
+              disabled={props.accountEmployeeKPIFinalState.allFinal.isLoading || props.accountEmployeeKPIFinalState.allFinal.isError}
               onClick={props.handleFilterVisibility} 
             >
               <Badge

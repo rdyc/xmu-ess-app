@@ -1,10 +1,10 @@
-import { IEmployeeKPIFinalAllRequest } from '@account/classes/queries/employeeKPI';
-import { IKPIFinal } from '@account/classes/response/employeeKPI';
-import { AccountEmployeeKPIAction as Action } from '@account/store/actions';
+import { IEmployeeKPIAssignAllRequest } from '@account/classes/queries/employeeKPIAssign';
+import { IKPIAssign } from '@account/classes/response/employeeKPIAssign';
+import { AccountEmployeeKPIAssignAction as Action } from '@account/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal> = {
+const initialState: IQueryCollectionState<IEmployeeKPIAssignAllRequest, IKPIAssign> = {
   isExpired: false,
   isError: false,
   isLoading: false,
@@ -13,7 +13,7 @@ const initialState: IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal
   errors: undefined
 };
 
-const reducer: Reducer<IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFinal>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IEmployeeKPIAssignAllRequest, IKPIAssign>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isExpired: false, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isExpired: false, isLoading: false, isError: false, response: action.payload };
@@ -24,4 +24,4 @@ const reducer: Reducer<IQueryCollectionState<IEmployeeKPIFinalAllRequest, IKPIFi
   }
 };
 
-export { reducer as accountEmployeeKPIFinalGetAllReducer };
+export { reducer as accountEmployeeKPIAssignGetAllReducer };

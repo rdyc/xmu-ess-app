@@ -20,10 +20,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPI';
-import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
+import { IEmployeeAllKPIAssignFilter } from '@account/classes/filters/employeeKPIAssign';
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { AccountEmployeeField } from '@account/classes/types';
-import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
+import { WithAccountEmployeeKPIAssign, withAccountEmployeeKPIAssign } from '@account/hoc/withAccountEmployeeKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { IAccountEmployeeFilterResult } from './EmployeeAssignFilter';
 import { EmployeeAssignListView } from './EmployeeAssignListView';
@@ -57,12 +57,12 @@ export type AccountEmployeeAssignListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithAccountEmployeeKPI
+  & WithAccountEmployeeKPIAssign
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AccountEmployeeAssignListProps, IOwnState> = (props: AccountEmployeeAssignListProps): IOwnState => {
-  const { request } = props.accountEmployeeKPIState.allAssign;
+  const { request } = props.accountEmployeeKPIAssignState.allAssign;
   
   // default state
   const state: IOwnState = {
@@ -99,8 +99,8 @@ const stateUpdaters: StateUpdaters<AccountEmployeeAssignListProps, IOwnState, IO
 
 const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeAssignListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.allAssign;
-    const { loadAllAssignRequest } = props.accountEmployeeKPIDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIAssignState.allAssign;
+    const { loadAllAssignRequest } = props.accountEmployeeKPIAssignDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -130,8 +130,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAssignListProps, IOwnHandle
     }
   },
   handleOnLoadApiSearch: (props: AccountEmployeeAssignListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.accountEmployeeKPIState.allAssign;
-    const { loadAllAssignRequest } = props.accountEmployeeKPIDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIAssignState.allAssign;
+    const { loadAllAssignRequest } = props.accountEmployeeKPIAssignDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -208,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAssignListProps, IOwnSt
 export const EmployeeAssignList = compose(
   setDisplayName('EmployeeAssignList'),
   withUser,
-  withAccountEmployeeKPI,
+  withAccountEmployeeKPIAssign,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

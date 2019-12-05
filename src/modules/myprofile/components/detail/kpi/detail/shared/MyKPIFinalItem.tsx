@@ -1,4 +1,6 @@
-import { IKPIFinalItem } from '@account/classes/response/employeeKPI';
+import { IKPIFinalItem } from '@account/classes/response/employeeKPIFinal';
+import { MeasurementType } from '@common/classes/types';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -42,13 +44,30 @@ const myKPIFinalItem: React.SFC<AllProps> = props => {
           {item.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {`${props.intl.formatNumber(item.weight)} %`}
+        {
+            item.group === KPICategoryGroupType.KPI &&
+            `${props.intl.formatNumber(item.weight)} %` ||
+            '-'
+          }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          { props.intl.formatNumber(item.threshold || 0) || '-' }
+        {
+            item.measurement && 
+            item.group === KPICategoryGroupType.KPI &&
+            item.measurementType === MeasurementType.Minimum  &&
+            props.intl.formatNumber(item.threshold || 0) ||
+            '-'
+          }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          { props.intl.formatNumber(item.amount) || '-' }
+        {
+            item.measurement && 
+            item.group === KPICategoryGroupType.KPI &&
+            (item.measurementType === MeasurementType.Minimum ||
+            item.measurementType === MeasurementType.Proporsional) &&
+            props.intl.formatNumber(item.amount) ||
+            '-'
+          }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {props.intl.formatNumber(item.achieved)}
