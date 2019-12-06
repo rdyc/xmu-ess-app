@@ -81,7 +81,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         
         return (
           <ExpansionPanel key={`EPS${index}`} tabIndex={index}>
-            <ExpansionPanelSummary className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.background : ''} expandIcon={<ExpandMoreIcon/>}>
+            <ExpansionPanelSummary classes={{content: props.classes.maxWidth}} className={props.listHasColor && props.listHasColor(item) ? props.listColor && props.listColor.background : ''} expandIcon={<ExpandMoreIcon/>}>
               {
                 props.onSelection &&
                 <Checkbox

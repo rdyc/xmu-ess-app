@@ -3,7 +3,7 @@ import { CommonSystemOption } from '@common/components/options/CommonSystemOptio
 import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { InputYearOption } from '@layout/components/input/year/InputYearOption';
+// import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
@@ -95,7 +95,7 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
         )}
       />
 
-      {/* <Field
+      <Field
         name="year"
         render={({ field, form }: FieldProps<ILeaveFormValue>) => (
           <TextField
@@ -118,9 +118,9 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
             }}
           />
         )}
-      /> */}
+      />
 
-      <Field
+      {/* <Field
         name="year"
         render={({ field, form }: FieldProps<ILeaveFormValue>) => (
           <InputYearOption withFuture>
@@ -145,7 +145,7 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
             />
           </InputYearOption>
         )}
-      />
+      /> */}
 
       <Field
         name="name"

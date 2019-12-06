@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -67,7 +68,7 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
+            primary={props.intl.formatMessage(lookupMessage.customer.field.companyUid)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -81,6 +82,21 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
             <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(lookupMessage.customer.field.active)}
+            secondary={props.intl.formatMessage(props.filterStatus ? layoutMessage.action.yes : layoutMessage.action.no) }
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="secondary"
+              checked={props.filterStatus}
+              onChange={props.handleFilterStatusOnChange}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />

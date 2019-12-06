@@ -1069,6 +1069,9 @@ const styles = (theme: Theme) =>
       verticalAlign: 'middle',
       marginLeft: '10px'
     },
+    maxWidth: {
+      width: '100%'
+    }
   });
 
 export default styles;
