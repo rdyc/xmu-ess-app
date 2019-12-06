@@ -21,8 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithAccountEmployeeKPIAssign, withAccountEmployeeKPIAssign } from '@account/hoc/withAccountEmployeeKPIAssign';
 import { KPIAssignUserAction } from '@kpi/classes/types/assign/KPIAssignUserAction';
-import { WithKPIAssign, withKPIAssign } from '@kpi/hoc/withKPIAssign';
 import { MyKPIAssignDetailView } from './MyKPIAssignDetailView';
 
 interface IOwnRouteParams {
@@ -59,7 +59,7 @@ interface IOwnHandler {
 export type MyKPIAssignDetailProps
   = WithUser
   & WithOidc
-  & WithKPIAssign
+  & WithAccountEmployeeKPIAssign
   & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
   & IOwnState
@@ -119,8 +119,8 @@ const stateUpdaters: StateUpdaters<MyKPIAssignDetailProps, IOwnState, IOwnStateU
 
 const handlerCreators: HandleCreators<MyKPIAssignDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: MyKPIAssignDetailProps) => () => { 
-    if (props.userState.user && props.match.params.kpiAssignUid && props.match.params.kpiAssignUid && !props.kpiAssignState.detail.isLoading) {
-      props.kpiAssignDispatch.loadDetailRequest({
+    if (props.userState.user && props.match.params.kpiAssignUid && props.match.params.kpiAssignUid && !props.accountEmployeeKPIAssignState.detail.isLoading) {
+      props.accountEmployeeKPIAssignDispatch.loadDetailRequest({
         employeeUid: props.userState.user && props.userState.user.uid,
         kpiAssignUid: props.match.params.kpiAssignUid
       });
@@ -143,7 +143,7 @@ const handlerCreators: HandleCreators<MyKPIAssignDetailProps, IOwnHandler> = {
     props.setDefault();
   },
   handleOnConfirm: (props: MyKPIAssignDetailProps) => () => {
-    const { response } = props.kpiAssignState.detail;
+    const { response } = props.accountEmployeeKPIAssignState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -166,8 +166,8 @@ const lifecycles: ReactLifeCycleFunctions<MyKPIAssignDetailProps, IOwnState> = {
     }
 
     // handle updated response state
-    if (this.props.kpiAssignState.detail.response !== prevProps.kpiAssignState.detail.response) {
-      const { isLoading } = this.props.kpiAssignState.detail;
+    if (this.props.accountEmployeeKPIAssignState.detail.response !== prevProps.accountEmployeeKPIAssignState.detail.response) {
+      const { isLoading } = this.props.accountEmployeeKPIAssignState.detail;
 
       // generate option menus
       const options: IPopupMenuOption[] = [
@@ -188,7 +188,7 @@ export const MyKPIAssignDetail = compose(
   withRouter,
   withOidc,
   withUser,
-  withKPIAssign,
+  withAccountEmployeeKPIAssign,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

@@ -1,6 +1,6 @@
-import { IEmployeeAllKPIAssignRequest } from '@account/classes/queries/employeeKPI';
-import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPI';
-import { AccountEmployeeKPIAction as Action } from '@account/store/actions';
+import { IEmployeeAllKPIAssignRequest } from '@account/classes/queries/employeeKPIAssign';
+import { IEmployeeKPIAssign } from '@account/classes/response/employeeKPIAssign';
+import { AccountEmployeeKPIAssignAction as Action } from '@account/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 

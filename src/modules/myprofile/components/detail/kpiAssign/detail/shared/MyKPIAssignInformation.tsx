@@ -1,4 +1,4 @@
-import { IKPIAssignDetail } from '@kpi/classes/response';
+import { IKPIAssign } from '@account/classes/response/employeeKPIAssign';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -9,7 +9,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IKPIAssignDetail;
+  data: IKPIAssign;
 }
 type AllProps
   = OwnProps
@@ -20,14 +20,8 @@ const myKPIAssignInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(kpiMessage.employee.section.infoTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
-        {/* <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-          value={props.data.uid}
-        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(kpiMessage.employee.field.employeeUid)}
@@ -38,26 +32,14 @@ const myKPIAssignInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(kpiMessage.employee.field.year)}
           value={props.data.year.toString()}
         />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.templateUid)}
-          value={props.data.template && props.data.template.name || 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(kpiMessage.employee.field.isFinal)}
-          value={props.data.isFinal && 
-            props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue) ||
-            props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
-        />
         {
           props.data.revision && 
           <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          multiline
-          label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
-          value={props.data.revision}
-        />
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
+            value={props.data.revision}
+          />
         }
         {
           props.data.changes &&

@@ -7,4 +7,5 @@ export interface IKPITemplatePostItemPayload {
   weight: number;
   threshold?: number;
   amount: number;
+  sequence: number;
 }

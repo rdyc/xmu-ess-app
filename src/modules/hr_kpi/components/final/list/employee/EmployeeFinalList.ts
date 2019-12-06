@@ -21,10 +21,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPI';
-import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPI';
+import { IEmployeeAllKPIFinalFilter } from '@account/classes/filters/employeeKPIFinal';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { AccountEmployeeField } from '@account/classes/types';
-import { WithAccountEmployeeKPI, withAccountEmployeeKPI } from '@account/hoc/withAccountEmployeeKPI';
+import { WithAccountEmployeeKPIFinal, withAccountEmployeeKPIFinal } from '@account/hoc/withAccountEmployeeKPIFinal';
 import { IAccountEmployeeFilterResult } from './EmployeeFinalFilter';
 import { EmployeeFinalListView } from './EmployeeFinalListView';
 
@@ -57,12 +57,12 @@ export type AccountEmployeeFinalListProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithAccountEmployeeKPI
+  & WithAccountEmployeeKPIFinal
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AccountEmployeeFinalListProps, IOwnState> = (props: AccountEmployeeFinalListProps): IOwnState => {
-  const { request } = props.accountEmployeeKPIState.allFinal;
+  const { request } = props.accountEmployeeKPIFinalState.allFinal;
   
   // default state
   const state: IOwnState = {
@@ -96,8 +96,8 @@ const stateUpdaters: StateUpdaters<AccountEmployeeFinalListProps, IOwnState, IOw
 
 const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler> = {
   handleOnLoadApi: (props: AccountEmployeeFinalListProps) => (params?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => {
-    const { isExpired, isLoading, request } = props.accountEmployeeKPIState.allFinal;
-    const { loadAllFinalRequest } = props.accountEmployeeKPIDispatch;
+    const { isExpired, isLoading, request } = props.accountEmployeeKPIFinalState.allFinal;
+    const { loadAllFinalRequest } = props.accountEmployeeKPIFinalDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -124,8 +124,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFinalListProps, IOwnHandler
     }
   },
   handleOnLoadApiSearch: (props: AccountEmployeeFinalListProps) => (find?: string, findBy?: string) => {
-    const { isLoading, request } = props.accountEmployeeKPIState.allFinal;
-    const { loadAllFinalRequest } = props.accountEmployeeKPIDispatch;
+    const { isLoading, request } = props.accountEmployeeKPIFinalState.allFinal;
+    const { loadAllFinalRequest } = props.accountEmployeeKPIFinalDispatch;
 
     if (props.userState.user && !isLoading) {
       // predefined filter
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFinalListProps, IOwnSta
 export const EmployeeFinalList = compose(
   setDisplayName('EmployeeFinalList'),
   withUser,
-  withAccountEmployeeKPI,
+  withAccountEmployeeKPIFinal,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

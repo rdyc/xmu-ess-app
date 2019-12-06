@@ -66,6 +66,7 @@ export interface IKPIAssignFormValue {
   isFinal: boolean;
   isFirst: boolean;
   revision: string;
+  pastRevision?: string;
   note: string;
   year: string;
   totalWeight: number;
@@ -199,7 +200,6 @@ const createProps: mapper<KPIAssignFormProps, IOwnState> = (props: KPIAssignForm
           categoryValue: Yup.string(),
             
           categoryName: Yup.string()
-          .max(100)
           .label(props.intl.formatMessage(kpiMessage.employee.field.categoryName))
           .required(),
 
@@ -333,7 +333,7 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
           };
 
           // fill payload items
-          values.items.forEach(item => payload.items.push({
+          values.items.forEach((item, index) => payload.items.push({
             uid: item.uid,
             categoryUid: item.categoryUid,
             categoryName: item.categoryName,
@@ -343,6 +343,7 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
             weight: item.weight,
             threshold: item.threshold,
             amount: item.amount,
+            sequence: index + 1,
           }));
 
           promise = new Promise((resolve, reject) => {
@@ -441,8 +442,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPIAssignFormProps, IOwnState>
           year: thisResponse.data.year.toString(),
           totalWeight: thisResponse.data.items && thisResponse.data.items.reduce((a, b) => a + b.weight, 0) || 0,
           isFinal: thisResponse.data.isFinal,
-          isFirst: thisResponse.data.changes && !thisResponse.data.changes.updated || false,
+          isFirst: thisResponse.data.finalDate !== null ? false : true,
           revision: '',
+          pastRevision: thisResponse.data.revision,
           note: thisResponse.data.note || '',
           finalDate: thisResponse.data.finalDate,
           items: []

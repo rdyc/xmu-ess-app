@@ -148,7 +148,6 @@ const createProps: mapper<KPITemplateFormProps, IOwnState> = (props: KPITemplate
           categoryValue: Yup.string(),
             
           categoryName: Yup.string()
-          .max(100)
           .label(props.intl.formatMessage(kpiMessage.template.field.categoryName))
           .required(),
 
@@ -242,7 +241,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
         };
 
         // fill payload items
-        values.items.forEach(item => payload.items.push({
+        values.items.forEach((item, index) => payload.items.push({
           uid: item.uid,
           categoryUid: item.categoryUid,
           categoryName: item.categoryName,
@@ -251,6 +250,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
           weight: item.weight,
           threshold: item.threshold,
           amount: item.amount,
+          sequence: index + 1,
         }));
 
         promise = new Promise((resolve, reject) => {
@@ -281,7 +281,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
           };
 
           // fill payload items
-          values.items.forEach(item => payload.items.push({
+          values.items.forEach((item, index) => payload.items.push({
             uid: item.uid,
             categoryUid: item.categoryUid,
             categoryName: item.categoryName,
@@ -290,6 +290,7 @@ const handleCreators: HandleCreators<KPITemplateFormProps, IOwnHandler> = {
             weight: item.weight,
             threshold: item.threshold,
             amount: item.amount,
+            sequence: index + 1,
           }));
 
           promise = new Promise((resolve, reject) => {
@@ -373,7 +374,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<KPITemplateFormProps, IOwnStat
 
         if (thisResponse.data.items) {
           // fill template items
-          thisResponse.data.items.forEach(item =>
+          thisResponse.data.items.forEach((item, index) =>
             initialValues.items.push({
               uid: item.uid,
               isOpen: false,

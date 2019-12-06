@@ -116,7 +116,7 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
                                   <FormControlLabel
                                     key={'isFinal.true'}
                                     value={'true'} 
-                                    label={props.intl.formatMessage(kpiMessage.employee.field.isFinalTrue)}
+                                    label={props.intl.formatMessage(kpiMessage.employee.field.isFinalSetTrue)}
                                     control={
                                       <Radio 
                                         disabled={form.isSubmitting}
@@ -133,7 +133,7 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
                                   <FormControlLabel
                                     key={'isFinal.false'}
                                     value={'false'} 
-                                    label={props.intl.formatMessage(kpiMessage.employee.field.isFinalFalse)}
+                                    label={props.intl.formatMessage(kpiMessage.employee.field.isFinalSetFalse)}
                                     control={
                                       <Radio 
                                         disabled={form.isSubmitting}
@@ -156,13 +156,6 @@ export const KPIApprovalDetailView: React.SFC<KPIApprovalDetailProps> = props =>
                               </FormControl>
                             )}
                           />
-    
-                          {
-                            formikBag.values.isFinal &&
-                            <DialogContentText id="dialog-confirm-is-final">
-                              {props.intl.formatMessage(kpiMessage.employee.confirm.finalIsFinal)}
-                            </DialogContentText>
-                          }
                         </DialogContent>
                         
                         <DialogActions>

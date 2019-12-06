@@ -1,4 +1,4 @@
-import { IKPIFinal } from '@account/classes/response/employeeKPI';
+import { IKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';

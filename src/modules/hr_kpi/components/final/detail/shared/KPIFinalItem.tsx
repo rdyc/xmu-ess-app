@@ -1,4 +1,4 @@
-import { IKPIFinalItem } from '@account/classes/response/employeeKPI';
+import { IKPIFinalItem } from '@account/classes/response/employeeKPIFinal';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,

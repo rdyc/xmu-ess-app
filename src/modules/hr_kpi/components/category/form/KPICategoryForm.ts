@@ -99,7 +99,6 @@ const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategory
   validationSchema: Yup.object().shape<Partial<IKPICategoryFormValue>>({
     name: Yup.string()
       .label(props.intl.formatMessage(kpiMessage.category.field.name))
-      .max(100)
       .required(),
 
     group: Yup.mixed()

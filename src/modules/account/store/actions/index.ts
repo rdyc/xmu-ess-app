@@ -11,4 +11,5 @@ export * from './accountEmployeeRateAction';
 export * from './accountEmployeeNoteAction';
 export * from './accountEmployeeAccessActions';
 export * from './accountEmployeeContractActions';
-export * from './accountEmployeeKPIActions';
+export * from './accountEmployeeKPIFinalActions';
+export * from './accountEmployeeKPIAssignActions';

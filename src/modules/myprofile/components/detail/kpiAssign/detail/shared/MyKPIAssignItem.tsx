@@ -1,5 +1,6 @@
+import { IKPIAssignItem } from '@account/classes/response/employeeKPIAssign';
 import { MeasurementType } from '@common/classes/types';
-import { IKPIAssignItem } from '@kpi/classes/response';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import {
   Card,
@@ -44,12 +45,17 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
           {item.target}
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
-          {`${props.intl.formatNumber(item.weight)} %`}
+          {
+            item.group === KPICategoryGroupType.KPI &&
+            `${props.intl.formatNumber(item.weight)} %` ||
+            '-'
+          }
         </TableCell>
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            item.measurement.measurementType === MeasurementType.Minimum  &&
+            item.group === KPICategoryGroupType.KPI &&
+            item.measurementType === MeasurementType.Minimum  &&
             props.intl.formatNumber(item.threshold || 0) ||
             '-'
           }
@@ -57,8 +63,9 @@ const myKPIAssignItem: React.SFC<AllProps> = props => {
         <TableCell numeric style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}>
           {
             item.measurement && 
-            (item.measurement.measurementType === MeasurementType.Minimum ||
-            item.measurement.measurementType === MeasurementType.Proporsional) &&
+            item.group === KPICategoryGroupType.KPI &&
+            (item.measurementType === MeasurementType.Minimum ||
+            item.measurementType === MeasurementType.Proporsional) &&
             props.intl.formatNumber(item.amount) ||
             '-'
           }

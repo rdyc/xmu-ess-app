@@ -36,6 +36,13 @@ export const KPITemplateDialog = defineMessages({
   createDescription: { id: `${prefix}.dialog.newDescription`},
 });
 
+// action
+export const KPITemplateAction = defineMessages({
+  actions: { id: `${prefix}.action.actions`},
+  moveUp: { id: `${prefix}.action.moveUp`},
+  moveDown: { id: `${prefix}.action.moveDown`},
+});
+
 // section
 export const KPITemplateSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },

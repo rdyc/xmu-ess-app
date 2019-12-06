@@ -4,7 +4,8 @@ import accountEmployeeContractSagas from '@account/store/sagas/accountEmployeeCo
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
-import accountEmployeeKPISagas from '@account/store/sagas/accountEmployeeKPISagas';
+import accountEmployeeKPIAssignSagas from '@account/store/sagas/accountEmployeeKPIAssignSagas';
+import accountEmployeeKPIFinalSagas from '@account/store/sagas/accountEmployeeKPIFinalSagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeNoteSagas from '@account/store/sagas/accountEmployeeNoteSagas';
@@ -205,7 +206,8 @@ export function* rootSaga() {
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
     fork(accountEmployeeContractSagas),
-    fork(accountEmployeeKPISagas),
+    fork(accountEmployeeKPIAssignSagas),
+    fork(accountEmployeeKPIFinalSagas),
 
     // project
     fork(projectRegistrationSagas),

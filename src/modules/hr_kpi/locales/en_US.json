@@ -13,6 +13,11 @@
   "kpi.template.dialog.modifyTitle": "Modify template",
   "kpi.template.dialog.modifyDescription": "You are about to modify current template. Do you want to continue ?",
 
+  "kpi.template.action.actions": "Actions",
+  "kpi.template.action.moveUp": "Move Up",
+  "kpi.template.action.moveDown": "Move Down",
+
+
   "kpi.template.submission.form": "KPI Template Submission",
 
   "kpi.template.message.emptyProps": "Some props are empty",
@@ -128,7 +133,7 @@
   "kpi.employee.confirm.new.description": "You are about creating a new Employee KPI. Do you want to continue?",
   "kpi.employee.confirm.modify.title": "Modify Employee KPI",
   "kpi.employee.confirm.modify.description": "You are about to modify current Employee KPI. Do you want to continue?",
-  "kpi.employee.confirm.final.description": "You are about to modify current Employee KPI. Select Final Status of this KPI:",
+  "kpi.employee.confirm.final.description": "Will you set this KPI as Final?",
   "kpi.employee.confirm.final.isFinal": "You mark this KPI as Final. This KPI will be send to the Employee",
 
   "kpi.employee.field.uid": "KPI ID",
@@ -148,7 +153,9 @@
   "kpi.employee.field.status": "KPI Status",
   "kpi.employee.field.isNotAssigned": "Unassigned KPI",
   "kpi.employee.field.isFinal.final": "Final",
+  "kpi.employee.field.isFinal.setFinal": "Set as Final, KPI will be sent to employee as PDF",
   "kpi.employee.field.isFinal.pending": "Not Final",
+  "kpi.employee.field.isFinal.setPending": "Set as Not Final, KPI will only be saved as draft and will not be sent to employee",
   "kpi.employee.field.revision": "Revision Note",
   "kpi.employee.field.revision.placeholder": "Type The Revision",
   "kpi.employee.field.sentAt": "Sent Date",
@@ -157,11 +164,11 @@
   "kpi.employee.field.weightNot100": "Total Weight Must be Equal to 100",
   "kpi.employee.field.itemsMinimum": "Must have at least one item",
   "kpi.employee.field.itemUid": "KPI Item ID",
-  "kpi.employee.field.categoryUid": "Category",
+  "kpi.employee.field.categoryUid": "Pilihan Kategori",
   "kpi.employee.field.categoryUid.placeholder": "Select The Category",
   "kpi.employee.field.categoryName": "Kategori",
   "kpi.employee.field.categoryName.placeholder": "Ketik Kategori",
-  "kpi.employee.field.measurementUid": "Measurement",
+  "kpi.employee.field.measurementUid": "Pilihan Pengukuran",
   "kpi.employee.field.measurementUid.placeholder": "Select The Measurement",
   "kpi.employee.field.measurementDescription": "Pengukuran",
   "kpi.employee.field.measurementDescription.placeholder": "Ketik Pengukuran",
@@ -183,6 +190,10 @@
   "kpi.employee.field.note.placeholder": "Type the Additional Notes",
   "kpi.employee.field.kpiNotes": "KPI Notes",
   "kpi.employee.field.kpiNotes.placeholder": "Type the KPI Notes",
+
+  "kpi.employee.action.actions": "Actions",
+  "kpi.employee.action.moveUp": "Move Up",
+  "kpi.employee.action.moveDown": "Move Down",
 
   "kpi.measurement.message.create.success": "A new Measurement has been created",
   "kpi.measurement.message.create.failure": "Unable to process your submission",
