@@ -69,11 +69,13 @@ const createProps: mapper<LookupCustomerListProps, IOwnState> = (props: LookupCu
     fields: Object.keys(LookupCustomerField).map(key => ({
       value: key,
       name: LookupCustomerField[key]
-    }))
+    })),
+    isActive: true
   };
 
   // fill from previous request if any
   if (request && request.filter) {
+    state.isActive = request.filter.isActive,
     state.companyUid = request.filter.companyUid;
   }
 
@@ -102,6 +104,7 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
       // predefined filter
       const filter: ILookupCustomerGetAllFilter = {
         companyUid: props.companyUid,
+        isActive: props.isActive,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -161,7 +164,7 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: LookupCustomerListProps) => () => {
-    return props.companyUid !== undefined;
+    return props.companyUid !== undefined || props.isActive === false;
   },
   // handleSelection: (props: ProjectRegistrationListProps) => (values: string[]) => {
   //   console.log(values);
@@ -177,9 +180,11 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerListProps, IOwnState> = 
     const isFilterChanged = !shallowEqual(
       {
         companyUid: this.props.companyUid,
+        isActive: this.props.isActive,
       },
       {
         companyUid: prevProps.companyUid,
+        isActive: prevProps.isActive,
       }
     );
 

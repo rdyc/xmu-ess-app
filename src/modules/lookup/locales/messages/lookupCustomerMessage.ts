@@ -75,6 +75,7 @@ export const lookupCustomerFields = defineMessages({
   contactTitleAdditional: { id: `${prefix}.field.contactTitleAdditional`},
   contactTitleAdditionalPlaceholder: { id: `${prefix}.field.contactTitleAdditional.placeholder`},
   isActive: { id: `${prefix}.field.isActive`},
+  active: { id: `${prefix}.field.active`},
   
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},
