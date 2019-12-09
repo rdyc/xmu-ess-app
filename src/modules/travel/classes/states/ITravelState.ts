@@ -1,9 +1,10 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  ITravelGetAllowedRequest,
   ITravelGetAllRequest,
   ITravelGetByIdRequest,
-  ITravelPostRequest,
-  ITravelPutRequest 
+  ITravelPostRequest, 
+  ITravelPutRequest
 } from '@travel/classes/queries';
 import { ITravelApprovalGetAllRequest, ITravelApprovalGetByIdRequest, ITravelApprovalPostRequest } from '@travel/classes/queries/requestApproval';
 import { 
@@ -13,7 +14,8 @@ import {
   ITravelSettlementPutRequest, 
 } from '@travel/classes/queries/settlement';
 import { 
-  ITravelRequest,  
+  ITravelAllowedCreate,  
+  ITravelRequest,
   ITravelRequestDetail,
   ITravelSettlement,
   ITravelSettlementRequestDetail,
@@ -26,6 +28,7 @@ export interface ITravelState {
   travelRequestGetById: IQuerySingleState<ITravelGetByIdRequest, ITravelRequestDetail>;
   travelPost: IQuerySingleState<ITravelPostRequest, ITravelRequest>;
   travelPut: IQuerySingleState<ITravelPutRequest, ITravelRequest>;
+  travelAllowed: IQuerySingleState<ITravelGetAllowedRequest, ITravelAllowedCreate>;
 
   // travel settlement
   travelSettlementGetAll: IQueryCollectionState<ITravelSettlementGetAllRequest, ITravelSettlement>;

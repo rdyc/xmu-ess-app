@@ -19,6 +19,7 @@ import {
   travelSettlementApprovalGetByIdReducer, 
   travelSettlementApprovalPostReducer 
 } from './settlementApproval';
+import { travelGetAllowedReducer } from './travelGetAllowedReducer';
 
 const travelReducers = {
   travelRequestGetAll: travelGetAllReducer,
@@ -38,6 +39,8 @@ const travelReducers = {
   travelSettlementApprovalGetAll: travelSettlementApprovalGetAllReducer,
   travelSettlementApprovalGetById: travelSettlementApprovalGetByIdReducer,
   travelSettlementApprovalPost: travelSettlementApprovalPostReducer,
+
+  travelAllowed: travelGetAllowedReducer
 };
 
 export default travelReducers;
