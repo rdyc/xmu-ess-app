@@ -184,6 +184,7 @@ const handlerCreators: HandleCreators<RateFormProps, IOwnHandler> = {
 const lifeCycleFunctions: ReactLifeCycleFunctions<RateFormProps, IOwnState> = {
   componentDidMount() {
     //
+    console.log('kambing');
   },
   componentDidUpdate(prevProps: RateFormProps) {
     const { response: thisResponse } = this.props.accountEmployeeRateState.current;
