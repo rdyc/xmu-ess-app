@@ -521,6 +521,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
       loadAllRequest({
         filter
       });
+      
+      this.props.travelRequestDispatch.loadAllowedRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid
+      });
     }
   },
   componentDidUpdate(prevProps: TravelRequestFormProps) {

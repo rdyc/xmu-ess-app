@@ -1,20 +1,23 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
+  ITravelGetAllowedRequest, 
   ITravelGetAllRequest, 
   ITravelGetByIdRequest, 
   ITravelPostRequest, 
-  ITravelPutRequest 
+  ITravelPutRequest
 } from '@travel/classes/queries';
-import { ITravelRequest, ITravelRequestDetail } from '@travel/classes/response';
+import { ITravelAllowedCreate, ITravelRequest, ITravelRequestDetail } from '@travel/classes/response';
 import { 
   travelGetAllDispose, 
+  travelGetAllowedDispose, 
+  travelGetAllowedRequest, 
   travelGetAllRequest, 
   travelGetByIdDispose, 
   travelGetByIdRequest, 
   travelPostDispose, 
-  travelPostRequest, 
-  travelPutDispose, 
-  travelPutRequest 
+  travelPostRequest,
+  travelPutDispose,
+  travelPutRequest
 } from '@travel/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -23,6 +26,7 @@ interface PropsFromState {
   travelRequestState: {
     all: IQueryCollectionState<ITravelGetAllRequest, ITravelRequest>;
     detail: IQuerySingleState<ITravelGetByIdRequest, ITravelRequestDetail>;
+    allowed: IQuerySingleState<ITravelGetAllowedRequest, ITravelAllowedCreate>;
   };
 }
 
@@ -39,15 +43,18 @@ interface PropsFromDispatch {
     loadAllDispose: typeof travelGetAllDispose;
     loadDetailRequest: typeof travelGetByIdRequest;
     loadDetailDispose: typeof travelGetByIdDispose;
+    loadAllowedRequest: typeof travelGetAllowedRequest;
+    loadAllowedDispose: typeof travelGetAllowedDispose;
   };
 }
 
 export interface WithTravelRequest extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ travelRequestGetAll, travelRequestGetById }: IAppState) => ({
+const mapStateToProps = ({ travelRequestGetAll, travelRequestGetById, travelAllowed }: IAppState) => ({
   travelRequestState: {
     all: travelRequestGetAll,
-    detail: travelRequestGetById
+    detail: travelRequestGetById,
+    allowed: travelAllowed
   }
 });
 
@@ -64,6 +71,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(travelGetAllDispose()),
     loadDetailRequest: (request: ITravelGetByIdRequest) => dispatch(travelGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(travelGetByIdDispose()),
+    loadAllowedRequest: (request: ITravelGetAllowedRequest) => dispatch(travelGetAllowedRequest(request)),
+    loadAllowedDispose: () => dispatch(travelGetAllowedDispose()),
   }
 });
 

@@ -68,6 +68,8 @@
   "travel.request.section.info.subHeader": " ",
   "travel.request.section.item.title": "Travel Request Item",
   "travel.request.section.item.subHeader": " ",
+  "travel.request.section.unable": "Unable to add",
+  "travel.request.section.unable.message": "You are unable to add a new travel request because unsettled travel request is exceeded",
 
   "travel.settlement.section.approval.title": "Approval",
   "travel.settlement.section.approval.subHeader": " ",

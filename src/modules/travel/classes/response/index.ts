@@ -7,3 +7,4 @@ export * from './ITravelSettlementItem';
 export * from './ITravelSummary';
 export * from './ITravelSettlementList';
 export * from './ITravelSettlementRequestDetail';
+export * from './ITravelAllowedCreate';
