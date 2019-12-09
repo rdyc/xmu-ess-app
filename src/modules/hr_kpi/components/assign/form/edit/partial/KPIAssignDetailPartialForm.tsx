@@ -179,11 +179,10 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
               <TextField
                 {...GlobalStyle.TextField.ReadOnly}
                 {...field}
+                multiline
                 disabled={props.formikBag.isSubmitting}
                 label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
                 value={props.formikBag.values.pastRevision}
-                helperText={form.touched.revision && form.errors.revision}
-                error={form.touched.revision && Boolean(form.errors.revision)}
               />
             )}
           />

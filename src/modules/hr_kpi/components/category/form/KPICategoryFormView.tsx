@@ -66,19 +66,20 @@ export const KPICategoryFormView: React.SFC<KPICategoryFormProps> = props => (
               </div>
             </div>
           </div>
+          <div className={props.classes.flexRow}>
+            <KPIMeasurementForm 
+              categoryUid={props.initialValues.uid}
+              categoryGroup={formikBag.values.group}
+              isItemEditing={props.isItemEditing}
+              handleSetIsItemEditing={props.handleSetIsItemEditing}
+              parentFormMode={props.formMode}
+              handleAddItem={props.handleAddItem}
+              handleRemoveItem={props.handleRemoveItem}
+              handleSaveItem={props.handleSaveItem}
+            />
+          </div>
         </Form>
       )}
     />
-    <div className={props.classes.flexRow}>
-      <KPIMeasurementForm 
-        categoryUid={props.initialValues.uid}
-        isItemEditing={props.isItemEditing}
-        handleSetIsItemEditing={props.handleSetIsItemEditing}
-        parentFormMode={props.formMode}
-        handleAddItem={props.handleAddItem}
-        handleRemoveItem={props.handleRemoveItem}
-        handleSaveItem={props.handleSaveItem}
-      />
-    </div>
   </FormPage>
 );

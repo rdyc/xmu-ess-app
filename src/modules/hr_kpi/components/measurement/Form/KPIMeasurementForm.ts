@@ -37,6 +37,7 @@ export interface IKPIMeasurementFormValueList {
 
 interface OwnProps {
   categoryUid: string;
+  categoryGroup: 'kpi' | 'personal';
   isItemEditing: boolean;
   parentFormMode: FormMode;
   handleSetIsItemEditing: () => void;
