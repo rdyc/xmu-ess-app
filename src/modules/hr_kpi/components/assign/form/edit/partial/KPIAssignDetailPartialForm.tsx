@@ -30,19 +30,6 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
       />
       <CardContent>
         <Field 
-          name="uid"
-          render={({ field}: FieldProps<IKPIAssignFormValue>) => (
-            <TextField 
-              {...field}
-              {...GlobalStyle.TextField.ReadOnly}
-              disabled={props.formikBag.isSubmitting}
-              margin="normal"
-              label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-            />
-          )}
-        />
-        
-        <Field 
           name="employeeName"
           render={({ field}: FieldProps<IKPIAssignFormValue>) => (
             <TextField 

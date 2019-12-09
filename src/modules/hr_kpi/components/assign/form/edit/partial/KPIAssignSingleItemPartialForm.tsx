@@ -33,7 +33,19 @@ type AllProps
 const KPIAssignSingleItemPartialForm: React.ComponentType<AllProps> = props => (
   <Dialog
     open={props.formikBag.values.items[props.itemDialogIndex].isOpen}
-    onClose={() => props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.isOpen`, false)}
+    onClose={() => {
+      props.formikBag.setFieldValue(`items.${props.itemDialogIndex}.isOpen`, false);
+      if (
+        props.formikBag.values.items[props.itemDialogIndex].categoryUid === '' && 
+        props.formikBag.values.items[props.itemDialogIndex].categoryName === '' && 
+        props.formikBag.values.items[props.itemDialogIndex].measurementUid === '' && 
+        props.formikBag.values.items[props.itemDialogIndex].measurementDescription === '' && 
+        props.formikBag.values.items[props.itemDialogIndex].target === '' && 
+        props.formikBag.values.items[props.itemDialogIndex].amount === 0
+      ) {
+        props.fieldArray.remove(props.itemDialogIndex);
+      }
+    }}
     key={props.itemDialogIndex}
     fullScreen={props.isDialogFullScreen}
     maxWidth="md"
