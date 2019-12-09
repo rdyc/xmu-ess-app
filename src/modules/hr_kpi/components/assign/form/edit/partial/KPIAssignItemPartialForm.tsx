@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Card, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
+import { Button, Card, CardHeader, Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward, DeleteForever, GroupAdd } from '@material-ui/icons';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
@@ -73,6 +73,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
         >
           <Table
             className={classNames(props.classes.reportTable)}
+            padding="dense"
           >
             <TableHead>
               <TableRow>
@@ -94,7 +95,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                 <TableCell className={classNames(props.classes.cellWidthXXS, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.employee.field.amount)}
                 </TableCell>
-                <TableCell className={classNames(props.classes.cellWidthXSS, props.classes.ultraDense)}>
+                <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                   {props.intl.formatMessage(kpiMessage.template.action.actions)}
                 </TableCell>
               </TableRow>
@@ -181,7 +182,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                               return (
                                 <Tooltip
                                   title={touch && error || ''}
-      >
+                                >
                                   <TableCell 
                                     numeric 
                                     style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
@@ -265,51 +266,59 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             isDialogFullScreen={props.isDialogFullScreen}
                           />
                           <TableCell className={classNames(props.classes.ultraDense)}>
-                            <IconButton 
-                              onClick={() => {
-                                // remove current
-                                fields.remove(index);
+                            <Grid container spacing={0}>
+                              <Grid item xs={4}>
+                                <Tooltip title={props.intl.formatMessage(layoutMessage.action.delete)}>
+                                  <IconButton 
+                                    onClick={() => {
+                                      // remove current
+                                      fields.remove(index);
 
-                                // calculate total requested
-                                let totalRequest = 0;
-                                props.formikBag.values.items.forEach((requestItem, indexItem) => {
-                                  if (index !== indexItem) {
-                                    totalRequest = totalRequest + requestItem.weight;
-                                  } 
-                                });
+                                      // calculate total requested
+                                      let totalRequest = 0;
+                                      props.formikBag.values.items.forEach((requestItem, indexItem) => {
+                                        if (index !== indexItem) {
+                                          totalRequest = totalRequest + requestItem.weight;
+                                        } 
+                                      });
 
-                                // set request
-                                props.formikBag.setFieldValue('totalWeight', totalRequest);
-                              }}
-                            >
-                              <DeleteForever fontSize="small" />
-                            </IconButton>
-                            <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveUp)}>
-                              <IconButton 
-                                disabled={index <= 0} 
-                                onClick={() => {
-                                  const currentRow = props.formikBag.values.items[index];
+                                      // set request
+                                      props.formikBag.setFieldValue('totalWeight', totalRequest);
+                                    }}
+                                  >
+                                    <DeleteForever fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Grid>
+                              <Grid item xs={8}>
+                                <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveUp)}>
+                                  <IconButton 
+                                    disabled={index <= 0} 
+                                    onClick={() => {
+                                      const currentRow = props.formikBag.values.items[index];
 
-                                  props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index - 1]);
-                                  props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
-                                }}
-                              >
-                                <ArrowUpward fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveDown)}>
-                              <IconButton 
-                                disabled={index >= (props.formikBag.values.items.length - 1)} 
-                                onClick={() => {                                
-                                  const currentRow = props.formikBag.values.items[index];
+                                      props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index - 1]);
+                                      props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
+                                    }}
+                                  >
+                                    <ArrowUpward fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveDown)}>
+                                  <IconButton 
+                                    disabled={index >= (props.formikBag.values.items.length - 1)} 
+                                    onClick={() => {                                
+                                      const currentRow = props.formikBag.values.items[index];
 
-                                  props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index + 1]);
-                                  props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
-                                }}
-                              >
-                                <ArrowDownward fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
+                                      props.formikBag.setFieldValue(`items.${index}`, props.formikBag.values.items[index + 1]);
+                                      props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
+                                    }}
+                                  >
+                                    <ArrowDownward fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Grid>
+                            </Grid>
                           </TableCell>
                         </TableRow>
                       </Tooltip>
