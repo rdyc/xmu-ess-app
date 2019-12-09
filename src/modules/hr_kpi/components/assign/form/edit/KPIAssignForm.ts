@@ -368,10 +368,6 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
         // clear form status
         actions.setStatus();
 
-        props.stateUpdate({
-          isDialogOpen: false,
-        });
-
         // show flash message
         props.masterPage.flashMessage({
           message: props.intl.formatMessage(props.formMode === FormMode.New ? kpiMessage.employee.message.createSuccess : kpiMessage.employee.message.updateSuccess)
@@ -390,10 +386,6 @@ const handleCreators: HandleCreators<KPIAssignFormProps, IOwnHandler> = {
         
         // set form status
         actions.setStatus(error);
-
-        props.stateUpdate({
-          isDialogOpen: false,
-        });
 
         // error on form fields
         if (err && err.errors) {
