@@ -1,7 +1,6 @@
 import { FormMode } from '@generic/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
@@ -24,21 +23,7 @@ const KPITemplateDetailPartialForm: React.ComponentType<KPITemplateDetailPartial
     <CardHeader 
       title={props.intl.formatMessage(kpiMessage.template.section.infoTitle)}
     />
-    <CardContent>
-      <Field 
-        name="uid"
-        render={({ field}: FieldProps<IKPITemplateFormValue>) => (
-          <TextField 
-            {...GlobalStyle.TextField.ReadOnly}
-            {...field}
-            disabled={props.formikBag.isSubmitting}
-            margin="normal"
-            label={props.intl.formatMessage(kpiMessage.template.field.uid)}
-            helperText={props.formMode === FormMode.New && props.intl.formatMessage(layoutMessage.text.autoField)}
-          />
-        )}
-      />
-      
+    <CardContent>      
       <Field
         name="companyUid"
         render={({ field, form }: FieldProps<IKPITemplateFormValue>) => (

@@ -632,6 +632,10 @@ const styles = (theme: Theme) =>
     backgroundColorSecondary: { 
       backgroundColor: orange[500],
     },
+    backgroundColorError: { 
+      backgroundColor: red[500],
+      color: 'white'
+    },
 
     /* colors */
     colorPrimary: { 

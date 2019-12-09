@@ -30,19 +30,6 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
       />
       <CardContent>
         <Field 
-          name="uid"
-          render={({ field}: FieldProps<IKPIAssignFormValue>) => (
-            <TextField 
-              {...field}
-              {...GlobalStyle.TextField.ReadOnly}
-              disabled={props.formikBag.isSubmitting}
-              margin="normal"
-              label={props.intl.formatMessage(kpiMessage.employee.field.uid)}
-            />
-          )}
-        />
-        
-        <Field 
           name="employeeName"
           render={({ field}: FieldProps<IKPIAssignFormValue>) => (
             <TextField 
@@ -179,11 +166,10 @@ const KPIAssignDetailPartialForm: React.ComponentType<KPIAssignDetailPartialForm
               <TextField
                 {...GlobalStyle.TextField.ReadOnly}
                 {...field}
+                multiline
                 disabled={props.formikBag.isSubmitting}
                 label={props.intl.formatMessage(kpiMessage.employee.field.revision)}
                 value={props.formikBag.values.pastRevision}
-                helperText={form.touched.revision && form.errors.revision}
-                error={form.touched.revision && Boolean(form.errors.revision)}
               />
             )}
           />

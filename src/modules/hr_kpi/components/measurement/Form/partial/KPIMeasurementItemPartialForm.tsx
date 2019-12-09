@@ -1,6 +1,7 @@
 import { ISystemListFilter } from '@common/classes/filters';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
+import { KPICategoryGroupType } from '@kpi/classes/types';
 import { kpiMessage } from '@kpi/locales/messages/kpiMessage';
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
@@ -24,6 +25,7 @@ interface KPIcategoryDetailPartialFormProps {
   isItemEditing: boolean;
   index: number;
   parentFormMode: FormMode;
+  parentCategoryGroup: 'kpi' | 'personal';
   handleSetEditMode(index: number): void;
   handleSetDialogOpen(index: number): void;
   handleOnSubmitDelete(values: IKPIMeasurementFormValue, action: FormikActions<IKPIMeasurementFormValue>, measurementUid: string, index: number): void;
@@ -117,7 +119,7 @@ const KPIMeasurementItemPartialForm: React.ComponentType<AllProps> = props => (
             }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               // set current field
-              if (e.target.value === '') {
+              if (e.target.value === '' || !(props.parentCategoryGroup === KPICategoryGroupType.KPI)) {
                 props.formikBag.setFieldValue(field.name, parseFloat('0'));
               } else {
                 props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));

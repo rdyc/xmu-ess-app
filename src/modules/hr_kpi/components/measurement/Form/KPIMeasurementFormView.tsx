@@ -33,6 +33,7 @@ export const KPIMeasurementFormView: React.SFC<KPIMeasurementFormProps> = props 
                     isDialogOpen={item.isDialogOpen}
                     index={index}
                     parentFormMode={props.parentFormMode}
+                    parentCategoryGroup={props.categoryGroup}
                     handleSetEditMode={props.handleSetEditMode}
                     handleSetDialogOpen={props.handleSetDialogOpen}
                     handleRemoveFormValueList={props.handleRemoveFormValueList}

@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardHeader, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward, DeleteForever, GroupAdd } from '@material-ui/icons';
-import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
+import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 
@@ -72,7 +72,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
               <TableCell className={classNames(props.classes.cellWidthXS, props.classes.ultraDense)}>
                 {props.intl.formatMessage(kpiMessage.template.field.amount)}
               </TableCell>
-              <TableCell className={classNames(props.classes.cellWidthXSS, props.classes.ultraDense)}>
+              <TableCell className={classNames(props.classes.cellWidthSm, props.classes.ultraDense)}>
                 {props.intl.formatMessage(kpiMessage.template.action.actions)}
               </TableCell>
             </TableRow>
@@ -87,66 +87,171 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                     props.formikBag.values.items.map((item, index) =>
                     <Tooltip key={index} title={props.intl.formatMessage(kpiMessage.measurement.field.tooltip)}>
                       <TableRow key={index}>
-                        <TableCell 
-                          style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {props.formikBag.values.items[index].categoryValue}
-                        </TableCell>
-                        <TableCell 
-                          style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {props.formikBag.values.items[index].categoryName}
-                        </TableCell>
-                        <TableCell 
-                          style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {props.formikBag.values.items[index].measurementValue}
-                        </TableCell>
-                        <TableCell 
-                          style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {props.formikBag.values.items[index].target}
-                        </TableCell>
-                        <TableCell 
-                          numeric 
-                          style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {
-                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
-                            `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
-                            '-'
-                          }
-                        </TableCell>
-                        <TableCell 
-                          numeric 
-                          style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {
-                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
-                            props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
-                            props.intl.formatNumber(item.threshold || 0) ||
-                            '-'
-                          }
-                        </TableCell>
-                        <TableCell 
-                          numeric 
-                          style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense)}
-                          onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
-                        >
-                          {
-                            props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
-                            (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
-                              props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
-                            props.intl.formatNumber(item.amount) ||
-                            '-'
-                          }
-                        </TableCell>
+                        <Field
+                          name={`items.${index}.categoryUid`}
+                          render={({ form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.categoryUid`);
+                            const touch = getIn(form.touched, `items.${index}.categoryUid`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {props.formikBag.values.items[index].categoryValue}
+                                </TableCell>
+                              </Tooltip>
+                            );  
+                          }} 
+                        />
+
+                        <Field
+                          name={`items.${index}.categoryName`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.categoryName`);
+                            const touch = getIn(form.touched, `items.${index}.categoryName`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {props.formikBag.values.items[index].categoryName}
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
+                        <Field
+                          name={`items.${index}.measurementUid`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.measurementUid`);
+                            const touch = getIn(form.touched, `items.${index}.measurementUid`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {props.formikBag.values.items[index].measurementValue}
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
+                        <Field
+                          name={`items.${index}.target`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.target`);
+                            const touch = getIn(form.touched, `items.${index}.target`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  style={{ verticalAlign: 'top', whiteSpace: 'pre-line' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {props.formikBag.values.items[index].target}
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
+                        <Field
+                          name={`items.${index}.weight`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.weight`);
+                            const touch = getIn(form.touched, `items.${index}.weight`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  numeric 
+                                  style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {
+                                    props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
+                                    `${props.intl.formatNumber(props.formikBag.values.items[index].weight)} %` ||
+                                    '-'
+                                  }
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
+                        <Field
+                          name={`items.${index}.threshold`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.threshold`);
+                            const touch = getIn(form.touched, `items.${index}.threshold`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  numeric 
+                                  style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {
+                                    props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
+                                    props.formikBag.values.items[index].measurementType === MeasurementType.Minimum  &&
+                                    props.intl.formatNumber(item.threshold || 0) ||
+                                    '-'
+                                  }
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
+                        <Field
+                          name={`items.${index}.amount`}
+                          render={({ field, form }: FieldProps<IKPITemplateFormValue>) => {
+                            const error = getIn(form.errors, `items.${index}.amount`);
+                            const touch = getIn(form.touched, `items.${index}.amount`);
+
+                            return (
+                              <Tooltip
+                                title={touch && error || ''}
+                              >
+                                <TableCell 
+                                  numeric 
+                                  style={{ verticalAlign: 'top' }} className={classNames(props.classes.ultraDense, touch && Boolean(error) && props.classes.backgroundColorError)}
+                                  onClick={() => props.formikBag.setFieldValue(`items.${index}.isOpen`, true)}
+                                >
+                                  {
+                                    props.formikBag.values.items[index].categoryGroup === KPICategoryGroupType.KPI &&
+                                    (props.formikBag.values.items[index].measurementType === MeasurementType.Minimum ||
+                                      props.formikBag.values.items[index].measurementType === MeasurementType.Proporsional) &&
+                                    props.intl.formatNumber(item.amount) ||
+                                    '-'
+                                  }
+                                </TableCell>
+                              </Tooltip>
+                            );
+                          }}
+                        />
+
                         <TableCell>
                           <Tooltip title={props.intl.formatMessage(layoutMessage.action.delete)}>
                             <IconButton 
@@ -166,7 +271,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 props.formikBag.setFieldValue('totalWeight', totalRequest);
                               }}
                             >
-                              <DeleteForever />
+                              <DeleteForever fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={props.intl.formatMessage(kpiMessage.template.action.moveUp)}>
@@ -179,7 +284,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
                               }}
                             >
-                              <ArrowUpward />
+                              <ArrowUpward fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={props.intl.formatMessage(kpiMessage.template.action.moveDown)}>
@@ -192,7 +297,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                                 props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
                               }}
                             >
-                              <ArrowDownward />
+                              <ArrowDownward fontSize="small" />
                             </IconButton>
                           </Tooltip>
                         </TableCell>
