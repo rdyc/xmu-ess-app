@@ -47,6 +47,8 @@ export const travelRequestSubmission = defineMessages({
 
 // section
 export const travelRequestSection = defineMessages({
+  unable: { id: `${prefix}.section.unable` },
+  unableMessage: { id: `${prefix}.section.unable.message` },
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   itemTitle: { id: `${prefix}.section.item.title` },

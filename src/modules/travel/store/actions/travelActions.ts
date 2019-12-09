@@ -1,11 +1,12 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
+  ITravelGetAllowedRequest,
   ITravelGetAllRequest,
   ITravelGetByIdRequest,
   ITravelPostRequest,
   ITravelPutRequest,
 } from '@travel/classes/queries';
-import { ITravelRequest, ITravelRequestDetail } from '@travel/classes/response';
+import { ITravelAllowedCreate, ITravelRequest, ITravelRequestDetail } from '@travel/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum TravelAction {
@@ -25,6 +26,10 @@ export const enum TravelAction {
   PUT_SUCCESS = '@@travel/PUT_SUCCESS',
   PUT_ERROR = '@@travel/PUT_ERROR',
   PUT_DISPOSE = '@@travel/PUT_DISPOSE',
+  GET_ALLOWED_REQUEST = '@@travel/GET_ALLOWED_REQUEST',
+  GET_ALLOWED_SUCCESS = '@@travel/GET_ALLOWED_SUCCESS',
+  GET_ALLOWED_ERROR = '@@travel/GET_ALLOWED_ERROR',
+  GET_ALLOWED_DISPOSE = '@@travel/GET_ALLOWED_DISPOSE',
 }
 
 // get all travelrequest
@@ -50,3 +55,9 @@ export const travelPutRequest = (request: ITravelPutRequest) => action(TravelAct
 export const travelPutSuccess = (response: IResponseSingle<ITravelRequest>) => action(TravelAction.PUT_SUCCESS, response);
 export const travelPutError = (error: any) => action(TravelAction.PUT_ERROR, error);
 export const travelPutDispose = () => action(TravelAction.PUT_DISPOSE);
+
+// get request by id
+export const travelGetAllowedRequest = (request: ITravelGetAllowedRequest) => action(TravelAction.GET_ALLOWED_REQUEST, request);
+export const travelGetAllowedSuccess = (response: IResponseSingle<ITravelAllowedCreate>) => action(TravelAction.GET_ALLOWED_SUCCESS, response);
+export const travelGetAllowedError = (error: any) => action(TravelAction.GET_ALLOWED_ERROR, error);
+export const travelGetAllowedDispose = () => action(TravelAction.GET_ALLOWED_DISPOSE);

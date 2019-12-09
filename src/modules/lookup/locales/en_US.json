@@ -482,6 +482,7 @@
 
   "lookup.customer.field.uid": "Customer ID",
   "lookup.customer.field.isActive": "Is Active? ",
+  "lookup.customer.field.active": "Active",
   "lookup.customer.field.name": "Customer Name",
   "lookup.customer.field.name.required": "Customer name required",
   "lookup.customer.field.name.placeholder": "Type any name",

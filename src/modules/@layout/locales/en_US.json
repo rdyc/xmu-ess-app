@@ -199,6 +199,8 @@
   "kpi_category_unregistered": "kpi category is unregistered",
 
   "employee_level_unregistered": "employee level is unregistered",
+  "Validation Failed": "Validation Failed",
+  "'Categories' must not be empty.": "Categories must not be empty.",
 
   "layout.text.autoField": "This field value will be automatically filled after submitted",
   "layout.text.loading": "Loading...",

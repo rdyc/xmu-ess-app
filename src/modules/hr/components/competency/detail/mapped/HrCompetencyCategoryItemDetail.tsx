@@ -108,9 +108,8 @@ const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
                 {
                   item.categories.map(category => 
                     checkCategory(category.uid).length > 0 ?
-                      <React.Fragment>
+                      <React.Fragment key={category.uid}>
                         <ListItem
-                          key={category.uid}
                           color="inherit"
                           className={props.classes.marginFarLeft}
                           button

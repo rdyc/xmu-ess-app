@@ -108,6 +108,7 @@ export const LookupCustomerListView: React.SFC<LookupCustomerListProps> = props 
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUid: props.companyUid,
+        isActive: props.isActive
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}
