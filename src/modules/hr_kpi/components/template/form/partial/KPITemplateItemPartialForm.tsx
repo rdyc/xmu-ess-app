@@ -252,7 +252,7 @@ const KPITemplateItemPartialForm: React.ComponentType<AllProps> = props => (
                           }}
                         />
 
-                        <TableCell>
+                        <TableCell className={classNames(props.classes.ultraDense)}>
                             <Grid container spacing={0}>
                               <Grid item xs={4}>
                                 <Tooltip title={props.intl.formatMessage(layoutMessage.action.delete)}>
