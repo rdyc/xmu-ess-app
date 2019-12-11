@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
     if (response && response.data && response.data.access) {
       const access = response.data.access.filter(item => item.uid === uid)[0];
   
-      if (access && access.company && access.role && access.position && access.level) {
+      if (access && access.company && access.role && access.position) {
         const company: IUserCompany = {
           uid: access.company.uid,
           code: access.company.code,
@@ -117,10 +117,10 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
         };
 
         const level: IUserLevel = {
-          uid: access.level.uid || access.levelType || 'N/A',
-          seq: access.level.seq,
-          value: access.level.value,
-          description: access.level.description
+          uid: access.levelType || 'N/A',
+          seq: access.level && access.level.seq || 0,
+          value: access.level && access.level.value || 'N/A',
+          description: access.level && access.level.description || 'N/A'
         };
 
         const user: IAppUser = {
