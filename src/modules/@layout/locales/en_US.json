@@ -155,6 +155,7 @@
 
   "travel_unregistered":"travel is unregistered",
   "travel_settlement_not_required":"travel settlement is not required",
+  "exceeded_unsettled_travel_request": "maximum unsettled travel request",
 
   "finance_unregistered":"finance is unregistered",
   "finance_has_been_processed":"finance has been processed",
