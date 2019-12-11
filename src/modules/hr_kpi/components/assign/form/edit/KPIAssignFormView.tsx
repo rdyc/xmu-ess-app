@@ -172,7 +172,8 @@ export const KPIAssignFormView: React.SFC<KPIAssignFormProps> = props => {
 
                           formikBag.submitForm();
                         }} 
-                        autoFocus disabled={formikBag.isSubmitting}>
+                        autoFocus 
+                        disabled={formikBag.isSubmitting || (formikBag.values.isFinal && !formikBag.values.isFirst && formikBag.values.revision === '')}>
                         {props.intl.formatMessage(formikBag.values.isFinal ? layoutMessage.action.submit : layoutMessage.action.draft)}
                       </Button>
                     </DialogActions>
