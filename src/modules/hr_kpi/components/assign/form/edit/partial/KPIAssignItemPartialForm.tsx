@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardHeader, Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, WithStyles } from '@material-ui/core';
-import { ArrowDownward, ArrowUpward, DeleteForever, GroupAdd } from '@material-ui/icons';
+import { DeleteForever, GroupAdd, KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, getIn } from 'formik';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
@@ -112,7 +112,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                         <TableRow key={index}>
                           <Field
                             name={`items.${index}.categoryName`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.categoryName`);
                               const touch = getIn(form.touched, `items.${index}.categoryName`);
 
@@ -133,7 +133,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
 
                           <Field
                             name={`items.${index}.measurementDescription`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.measurementDescription`);
                               const touch = getIn(form.touched, `items.${index}.measurementDescription`);
 
@@ -154,7 +154,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
 
                           <Field
                             name={`items.${index}.target`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.target`);
                               const touch = getIn(form.touched, `items.${index}.target`);
 
@@ -175,7 +175,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
 
                           <Field
                             name={`items.${index}.weight`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.weight`);
                               const touch = getIn(form.touched, `items.${index}.weight`);
 
@@ -201,7 +201,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
 
                           <Field
                             name={`items.${index}.threshold`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.threshold`);
                               const touch = getIn(form.touched, `items.${index}.threshold`);
 
@@ -228,7 +228,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
 
                           <Field
                             name={`items.${index}.amount`}
-                            render={({ field, form }: FieldProps<IKPIAssignFormValue>) => {
+                            render={({ form }: FieldProps<IKPIAssignFormValue>) => {
                               const error = getIn(form.errors, `items.${index}.amount`);
                               const touch = getIn(form.touched, `items.${index}.amount`);
 
@@ -266,7 +266,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                             isDialogFullScreen={props.isDialogFullScreen}
                           />
                           <TableCell className={classNames(props.classes.ultraDense)}>
-                            <Grid container spacing={0}>
+                            <Grid container>
                               <Grid item xs={4}>
                                 <Tooltip title={props.intl.formatMessage(layoutMessage.action.delete)}>
                                   <IconButton 
@@ -301,7 +301,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                                       props.formikBag.setFieldValue(`items.${index - 1}`, currentRow);
                                     }}
                                   >
-                                    <ArrowUpward fontSize="small" />
+                                    <KeyboardArrowUp fontSize="small" />
                                   </IconButton>
                                 </Tooltip>
                                 <Tooltip title={props.intl.formatMessage(kpiMessage.employee.action.moveDown)}>
@@ -314,7 +314,7 @@ const KPIHRInputItemPartialForm: React.ComponentType<AllProps> = props => {
                                       props.formikBag.setFieldValue(`items.${index + 1}`, currentRow);
                                     }}
                                   >
-                                    <ArrowDownward fontSize="small" />
+                                    <KeyboardArrowDown fontSize="small" />
                                   </IconButton>
                                 </Tooltip>
                               </Grid>

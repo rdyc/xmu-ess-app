@@ -1,8 +1,7 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button, Card, CardHeader, CardMedia, DialogActions, Grid, IconButton, Tooltip, Typography } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
 import { AddImageEditor } from './AddImageEditor';
@@ -41,7 +40,7 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                             disabled={index <= 0} 
                             onClick={() => props.handleMoveAnnouncementImage(index, 'backward')}
                           >
-                            <ArrowUpwardIcon />
+                            <KeyboardArrowUp />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title={props.intl.formatMessage(lookupMessage.gallery.action.moveDown)}>
@@ -49,7 +48,7 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                             disabled={index >= (props.announcementImages.length - 1)} 
                             onClick={() => props.handleMoveAnnouncementImage(index, 'forward')}
                           >
-                            <ArrowDownwardIcon />
+                            <KeyboardArrowDown />
                           </IconButton>
                         </Tooltip>
                           <Tooltip title={props.intl.formatMessage(lookupMessage.gallery.action.remove)}>
