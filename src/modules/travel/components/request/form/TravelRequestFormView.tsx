@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, Typography } from '@material-ui/core';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import TravelRequestDetailPartialForm from './partial/TravelRequestDetailPartialForm';
 import TravelRequestItemPartialForm from './partial/TravelRequestItemPartialForm';
 import { ITravelRequestFormValue, TravelRequestFormProps } from './TravelRequestForm';
@@ -25,7 +26,8 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
     onLoadApi={props.handleOnLoadDetail}
   >
     {
-      props.travelRequestState.allowed &&
+      !props.travelRequestState.allowed.isLoading &&
+      (props.travelRequestState.allowed &&
       props.travelRequestState.allowed.response &&
       props.travelRequestState.allowed.response.data &&
       !props.travelRequestState.allowed.response.data.isAllowed &&
@@ -41,6 +43,10 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
               <CardContent>
                 <Typography>
                   {props.intl.formatMessage(travelMessage.request.section.unableMessage)}
+                </Typography>
+                <br/>
+                <Typography>
+                  Please click <Link to="/travel/settlement/requests" style={{textDecoration: 'none', fontWeight: 'bold'}}>here</Link> to submit Travel Settlement.
                 </Typography>
               </CardContent>
             </Card>
@@ -116,7 +122,7 @@ export const TravelRequestFormView: React.SFC<TravelRequestFormProps> = props =>
             </div>
           </Form>
         )}
-      />
+      />)
     }
   </FormPage>
 );
