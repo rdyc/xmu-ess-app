@@ -116,7 +116,8 @@ const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: Co
   filterAccountEmployee: {
     useAccess: true,
     orderBy: 'fullName',
-    direction: 'ascending'
+    direction: 'ascending',
+    isActive: true
   },
   filterCompany: {
     orderBy: 'name',

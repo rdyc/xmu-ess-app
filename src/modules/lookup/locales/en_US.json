@@ -452,8 +452,11 @@
   "lookup.leave.dialog.newTitle": "Submit Confirmation",
   "lookup.leave.dialog.newDescription": "Do you want to submit leave ?",
 
+  "leave.calculation.filter.employee": "Employee", 
   "leave.calculation.filter.company": "Company", 
   "leave.calculation.filter.year": "Year",   
+  "leave.calculation.filter.company.required": "Company is required", 
+  "leave.calculation.filter.year.required": "Year is required",   
   "leave.calculation.filter.companyPlaceHolder": "Choose a Company",
   "leave.calculation.filter.yearPlaceHolder": "Select a Year",
   "leave.calculation.page.title": "Employee Leave",

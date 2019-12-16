@@ -83,7 +83,7 @@ export const WorkflowListFilterView: React.SFC<WorkflowListFilterProps> = props 
             }
             {
               !props.filterCompany &&
-              <Tooltip title={props.intl.formatMessage(organizationMessage.workflow.field.company)}>
+              <Tooltip title={props.intl.formatMessage(organizationMessage.workflow.field.companyRequired)}>
                 <IconButton onClick={props.handleFilterCompanyVisibility}>
                   <Info/>
                 </IconButton>
