@@ -34,6 +34,7 @@ export * from './leave/ILookupLeaveGetListRequest';
 export * from './leave/ILookupLeaveDeleteRequest';
 export * from './leave/ILookupLeavePostRequest';
 export * from './leave/ILookupLeavePutRequest';
+export * from './leave/ICalculateLeavePostRequest';
 export * from './systemLimit/ISystemLimitPostRequest';
 export * from './systemLimit/ISystemLimitPutRequest';
 export * from './systemLimit/ISystemLimitDeleteRequest';

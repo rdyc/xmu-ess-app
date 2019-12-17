@@ -1,25 +1,26 @@
+import { AccountEmployeeAllOption } from '@account/components/options/AccountAllEmployeeOption';
+import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
-import { Paper } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import { SubmissionTrigger } from '@webjob/components/recurring/form/trigger/submission/SubmissionTrigger';
+import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { LeaveCalculationListProps } from './LeaveCalculationList';
+import { ICalculationFormValue, LeaveCalculationListProps } from './LeaveCalculationList';
 import { LeaveCalculationTableView } from './LeaveCalculationTableView';
 import { LeaveFilter } from './LeaveFilter';
-import { AccountEmployeeAllOption } from '@account/components/options/AccountAllEmployeeOption';
-import { SelectField, ISelectFieldOption } from '@layout/components/fields/SelectField';
-import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = props => {
   const { isLoading, response } = props.leaveCalculationState.all;
+  const { response: companyList } = props.lookupCompanyState.list;
   const {
     size,
-    orderBy,
     page,
-    direction,
     handleChangePage,
     handleChangeSize,
     handleGoToNext,
-    handleGoToPrevious,
-    handleChangeSort
+    handleGoToPrevious
   } = props;
 
   const render = (
@@ -35,69 +36,117 @@ export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = pr
         onClose={props.handleFilterVisibility}
         onApply={props.handleFilterApplied}
       />
-      {/* <Card square>
-        <CardContent>
-          <LeaveCalculationFilterForm onYearSelected={handleChangeFilter} />
-        </CardContent>
-      </Card> */}
-      <Paper square elevation={1}>
-        <AccountEmployeeAllOption filter={props.filterEmployee}>
-          <SelectField
-            isSearchable
-            isClearable={props.find !== ''}
-            isDisabled={!props.companyUid}
-            escapeClearsValue={true}
-            menuPlacement="auto"
-            menuPosition="fixed"
-            // valueString={item.employeeUid}
-            textFieldProps={{
-              label: props.intl.formatMessage(
-                lookupMessage.calculation.filter.employee
-              ),
-              placeholder: props.intl.formatMessage(
-                lookupMessage.calculation.filter.employee
-              ),
-            }}
-            // onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-            onChange={(selected: ISelectFieldOption) => {
-              const value = (selected && selected.value) || '';
+      {
+        response &&
+        <Paper square elevation={1}>
+          <Grid container spacing={8} className={props.classes.leaveTop}>
+            <Grid item xs={12} md={6} lg={6} xl={6}>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                className={props.classes.calculateButton} 
+                disabled={isLoading}
+                onClick={() => {
+                  let companyName: string = '';
+                  if (companyList && companyList.data) {
+                    const company = companyList.data.find(cmp => cmp.uid === props.companyUid);
+                    companyName = company ? company.name : '';
+                  }
 
-              if (value !== '') {
-                if (
-                  props.formikBag.values.responder[index].assessorType !==
-                    AssessorType.Self &&
-                  value !== props.formikBag.values.employeeUid
-                ) {
-                  props.formikBag.setFieldValue(field.name, value || '');
-                  props.formikBag.setFieldValue(
-                    `responder.${index}.employeeName`,
-                    (selected && selected.label) || ''
-                  );
+                  props.setInitialValues({
+                    companyName,
+                    companyUid: props.companyUid,
+                    year: props.year,
+                  });
+                  props.setCalculateOpen();
+                }}
+              >
+                {props.intl.formatMessage(lookupMessage.calculation.field.calculate, {year: props.year})}
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6} xl={6}>
+              <Grid item xs={12} md={6} lg={6} xl={6} className={props.classes.leaveEmploye}>
+                {
+                  props.companyUid && response.data &&
+                  <AccountEmployeeAllOption filter={props.filterEmployee}>
+                    <SelectField
+                      isSearchable
+                      isClearable={props.find !== ''}
+                      isDisabled={!props.companyUid || isLoading}
+                      escapeClearsValue={true}
+                      menuPlacement="auto"
+                      menuPosition="fixed"
+                      valueString={props.find}
+                      textFieldProps={{
+                        label: props.intl.formatMessage(
+                          lookupMessage.calculation.filter.employee
+                        ),
+                        placeholder: props.intl.formatMessage(
+                          lookupMessage.calculation.filter.employee
+                        ),
+                      }}
+                      onChange={(selected: ISelectFieldOption) => {
+                        const value = (selected && selected.value) || '';
+
+                        props.handleFindEmployee(value);
+                      }}
+                    />
+                  </AccountEmployeeAllOption>
                 }
-              } else {
-                props.formikBag.setFieldValue(field.name, value);
-              }
-            }}
-          />
-        </AccountEmployeeAllOption>
-        {isLoading && <LoadingCircular />}
-        {!isLoading && response && (
-          <LeaveCalculationTableView
-            // year={year}
-            page={page}
-            size={size}
-            orderBy={orderBy}
-            direction={direction}
-            metadata={response.metadata}
-            data={response.data}
-            handleChangePage={handleChangePage}
-            handleChangeSize={handleChangeSize}
-            handleChangeSort={handleChangeSort}
-            handleGoToNext={handleGoToNext}
-            handleGoToPrevious={handleGoToPrevious}
-          />
+              </Grid>
+            </Grid>
+          </Grid>
+          {isLoading && <LoadingCircular />}
+          {!isLoading && response && response.data && response.data.length >= 1 && (
+            <LeaveCalculationTableView
+              page={page}
+              size={size}
+              metadata={response.metadata}
+              data={response.data}
+              handleChangePage={handleChangePage}
+              handleChangeSize={handleChangeSize}
+              handleGoToNext={handleGoToNext}
+              handleGoToPrevious={handleGoToPrevious}
+            />
+          )}
+          {!isLoading && response && response.data && response.data.length < 1 && 
+            <Typography variant="h2" style={{textAlign: 'center'}}>
+              No data found
+            </Typography>
+          }
+        </Paper>
+      }
+
+      {/* Calculate Form */}
+      <Formik
+        enableReinitialize
+        initialValues={props.initialValues}
+        validationSchema={props.validationSchema}
+        onSubmit={props.handleOnSubmit}
+        render={(formikBag: FormikProps<ICalculationFormValue>) => (
+          <Form>
+
+            {/* Submission for calculate */}
+            <SubmissionTrigger
+              className={props.classes.dialogActions}
+              buttonLabelProps={{
+                reset: props.intl.formatMessage(layoutMessage.action.reset),
+                submit: props.intl.formatMessage(layoutMessage.action.submit),
+                processing: props.intl.formatMessage(layoutMessage.text.processing)
+              }}
+              formikProps={formikBag}
+              confirmationDialogProps={{
+                title: props.intl.formatMessage(lookupMessage.calculation.confirm.calculateTitle),
+                message: props.intl.formatMessage(lookupMessage.calculation.confirm.calculateDescription, {company: formikBag.values.companyName, year: formikBag.values.year}),
+                labelCancel: props.intl.formatMessage(layoutMessage.action.discard),
+                labelConfirm: props.intl.formatMessage(layoutMessage.action.continue)
+              }} 
+              isOpenDialog={props.isCalculateOpen}
+              setOpen={props.setCalculateOpen}
+            />             
+          </Form>
         )}
-      </Paper>
+    />
     </React.Fragment>
   );
 

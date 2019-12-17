@@ -10,6 +10,7 @@ export const leaveCalculationPage = defineMessages({
 export const leaveCalculationField = defineMessages({
   company: { id: `${prefix}.field.company`},
   year: { id: `${prefix}.field.year`},
+  calculate: { id: `${prefix}.field.calculate`},
 });
 
 export const leaveCalculationFilter = defineMessages({
@@ -20,4 +21,14 @@ export const leaveCalculationFilter = defineMessages({
   year: { id: `${prefix}.filter.year`},
   yearRequired: { id: `${prefix}.filter.year.required`},
   yearPlaceHolder: { id: `${prefix}.filter.yearPlaceHolder`},
+});
+
+export const leaveCalculationMessage = defineMessages({
+  calculateSuccess: { id: `${prefix}.message.calculate.success` },
+  calculateFailure: { id: `${prefix}.message.calculate.failure` },
+});
+
+export const leaveCalculationConfirm = defineMessages({
+  calculateTitle: { id: `${prefix}.confirm.calculate.title` },
+  calculateDescription: { id: `${prefix}.confirm.calculate.description` },
 });

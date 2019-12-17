@@ -7,12 +7,9 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
-  Tooltip,
   withStyles,
   WithStyles
 } from '@material-ui/core';
@@ -28,14 +25,10 @@ import { FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  // year: number;
   page: number;
   size: number;
-  orderBy: string | undefined;
-  direction: string | undefined;
   metadata: IBaseMetadata | undefined;
   data: ILeaveCalculation[] | null | undefined;
-  handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
   handleGoToPrevious: () => void;
   handleGoToNext: () => void;
@@ -51,11 +44,8 @@ const leaveCalculationTableView: React.SFC<AllProps> = props => {
     data,
     page,
     size,
-    orderBy,
-    direction,
     metadata,
     handleChangePage,
-    handleChangeSort,
     handleGoToNext,
     handleGoToPrevious,
     handleChangeSize
@@ -101,91 +91,67 @@ const leaveCalculationTableView: React.SFC<AllProps> = props => {
   );
 
   const render = (
-    <Table className={classes.minTable}>
-      <TableHead>
-        <TableRow>
-          {header.map(item => (
-            <TableCell
-              key={item.id}
-              numeric={item.id === 'fullName' ? false : true}
-              padding="default"
-              sortDirection={
-                orderBy === item.id
-                  ? direction === 'ascending'
-                    ? 'asc'
-                    : 'desc'
-                  : false
-              }
-            >
-              {item.id === 'fullName' ? (
-                <Tooltip
-                  title="Sort"
-                  disableFocusListener
-                >
-                  <TableSortLabel
-                    active={orderBy === item.id}
-                    direction={direction === 'ascending' ? 'asc' : 'desc'}
-                    onClick={() =>
-                      handleChangeSort(
-                        direction === 'ascending' ? true : false
-                      )
-                    }
-                  >
-                    {item.name}
-                  </TableSortLabel>
-                </Tooltip>
-              ) : (
-                item.name
-              )}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data &&
-          data.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
-              <TableCell>{item.employee ? item.employee.fullName : 'N/A'}</TableCell>
-              <TableCell>{item.employee ? intl.formatDate(item.employee.joinDate, GlobalFormat.Date) : 'N/A'}</TableCell>
-              <TableCell numeric>
-                <FormattedNumber value={Number(item.previousRemain)}/>
+    <React.Fragment>
+    <div style={{overflowX: 'auto'}}>
+      <Table className={classes.minTable}>
+        <TableHead>
+          <TableRow>
+            {header.map(item => (
+              <TableCell
+                key={item.id}
+                numeric={item.id === 'fullName' || item.id === 'joinDate' ? false : true}
+                padding="default"
+
+              >
+                {item.name}
               </TableCell>
-              <TableCell numeric>
-              <FormattedNumber value={Number(item.quota)}/>
-              </TableCell>
-              <TableCell numeric>
-              <FormattedNumber value={Number(item.annualLeave)}/>
-              </TableCell>
-              <TableCell numeric>
-              <FormattedNumber value={Number(item.leaveTaken)}/>
-              </TableCell>
-              <TableCell numeric>
-              <FormattedNumber value={Number(item.remain)}/>
-              </TableCell>
-            </TableRow>
-          ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          {metadata && (
-            <TablePagination
-              rowsPerPageOptions={[10, 15, 25]}
-              count={metadata.total}
-              rowsPerPage={size}
-              page={page - 1}
-              onChangePage={_handlePage}
-              onChangeRowsPerPage={e =>
-                handleChangeSize(Number(e.target.value))
-              }
-              ActionsComponent={() =>
-                tablePaginationAction(metadata.total)
-              }
-            />
-          )}
-        </TableRow>
-      </TableFooter>
-    </Table>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data &&
+            data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
+                <TableCell>{item.employee ? item.employee.fullName : 'N/A'}</TableCell>
+                <TableCell>{item.employee ? intl.formatDate(item.employee.joinDate, GlobalFormat.Date) : 'N/A'}</TableCell>
+                <TableCell numeric>
+                  <FormattedNumber value={Number(item.previousRemain)}/>
+                </TableCell>
+                <TableCell numeric>
+                <FormattedNumber value={Number(item.quota)}/>
+                </TableCell>
+                <TableCell numeric>
+                <FormattedNumber value={Number(item.annualLeave)}/>
+                </TableCell>
+                <TableCell numeric>
+                <FormattedNumber value={Number(item.leaveTaken)}/>
+                </TableCell>
+                <TableCell numeric>
+                <FormattedNumber value={Number(item.remain)}/>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
+    {metadata && (
+      <TablePagination
+        rowsPerPageOptions={[10, 15, 25]}
+        component="div"
+        count={metadata.total}
+        rowsPerPage={size}
+        page={page - 1}
+        onChangePage={_handlePage}
+        onChangeRowsPerPage={e =>
+          handleChangeSize(Number(e.target.value))
+        }
+        ActionsComponent={() =>
+          tablePaginationAction(metadata.total)
+        }
+      />
+    )}
+  </React.Fragment>
   );
 
   return render;

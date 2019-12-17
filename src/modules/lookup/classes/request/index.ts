@@ -7,6 +7,7 @@ export * from './holiday/ILookupHolidayDeletePayload';
 export * from './leave/ILookupLeavePostPayload';
 export * from './leave/ILookupLeavePutPayload';
 export * from './leave/ILookupLeaveDeletePayload';
+export * from './leave/ICalculateLeavePayload';
 export * from './systemLimit/ISystemLimitPostPayload';
 export * from './systemLimit/ISystemLimitPutPayload';
 export * from './systemLimit/ISystemLimitDeletePayload';

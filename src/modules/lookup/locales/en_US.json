@@ -463,6 +463,13 @@
   "leave.calculation.page.subHeader": " ",
   "leave.calculation.field.company": "Company",
   "leave.calculation.field.year": "Year",
+  "leave.calculation.field.calculate": "Calculate ({year})",
+
+  "leave.calculation.message.calculate.success": "{company} leave on {year} has been calculated",
+  "leave.calculation.message.calculate.failure": "Unable to process your submission",
+
+  "leave.calculation.confirm.calculate.title": "Calculate leave",
+  "leave.calculation.confirm.calculate.description": "You are about to calculate leave for {company} on {year}. Do you want to continue?",
 
   "lookup.customer.page.list.title": "Customer",
   "lookup.customer.page.list.subHeader": " ",

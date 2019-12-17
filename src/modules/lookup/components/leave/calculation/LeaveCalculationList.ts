@@ -1,9 +1,15 @@
 import { IEmployeeListFilter } from '@account/classes/filters/IEmployeeListFilter';
-import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
+import { ICalculateLeavePayload } from '@lookup/classes/request';
 import { WithLeaveCalculation, withLeaveCalculation } from '@lookup/hoc/withLeaveCalculation';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -23,44 +29,59 @@ import {
 import { LeaveCalculationListView } from './LeaveCalculationListView';
 import { ILeaveFilterResult } from './LeaveFilter';
 
+export interface ICalculationFormValue {
+  companyUid: string;
+  companyName?: string;
+  year: number;
+}
+
 interface IOwnHandlers {
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterApplied: (filter: ILeaveFilterResult) => void;
   handleOnLoadApi: () => void;
-  handleFindEmployee: () => void;
+  handleFindEmployee: (find: string) => void;
+
+  // Calculation
+  handleOnSubmit: (values: ICalculationFormValue, actions: FormikActions<ICalculationFormValue>) => void;
 }
 
 interface IOwnState extends ILeaveFilterResult {
-  orderBy: string | undefined;
-  direction?: DirectionType;
   page: number;
   size: number;
   find: string | undefined;
   isFilterOpen: boolean;
   filterEmployee?: IEmployeeListFilter;
+
+  // Calculation
+  initialValues?: ICalculationFormValue;
+  isCalculateOpen: boolean;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   stateNext: StateHandler<IOwnState>;
   statePrevious: StateHandler<IOwnState>;
-  stateSorting: StateHandler<IOwnState>;
   stateSizing: StateHandler<IOwnState>;
   statePage: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
   setFilterVisibility: StateHandler<IOwnState>;
   setFilterApplied: StateHandler<IOwnState>;
+
+  // Calculation
+  setInitialValues: StateHandler<IOwnState>;
+  setCalculateOpen: StateHandler<IOwnState>;
 }
 
 export type LeaveCalculationListProps = 
   WithLeaveCalculation &
+  WithLookupCompany &
   WithUser &
   WithLayout &
   WithMasterPage &
+  WithStyles<typeof styles> &
   RouteComponentProps &
   InjectedIntlProps &
   IOwnHandlers &
@@ -74,12 +95,21 @@ const createProps: mapper<LeaveCalculationListProps, IOwnState> = (props: LeaveC
     companyUid: request && request.companyUid || '',
     year: request && request.year || 0,
     find: request && request.filter && request.filter.find || undefined,
-    isFilterOpen: !Boolean(request && request.companyUid && request.year) || true,
+    isFilterOpen: true,
     page: request && request.filter && request.filter.page || 1,
     size: request && request.filter && request.filter.size || 10,
-    direction: request && request.filter && request.filter.direction || 'ascending',
-    orderBy: request && request.filter && request.filter.orderBy || '',
+
+    // Calculation
+    initialValues: {
+      companyUid: request && request.companyUid || '',
+      year: request && request.year || 0
+    },
+    isCalculateOpen: false,
   };
+
+  if (request && request.filter) {
+    state.isFilterOpen = false;
+  }
 
   return state;
 };
@@ -90,10 +120,6 @@ const stateUpdaters: StateUpdaters<LeaveCalculationListProps, IOwnState, IOwnSta
   }),
   statePrevious: (prevState: IOwnState) => () => ({
     page: prevState.page - 1
-  }),
-  stateSorting: (prevState: IOwnState) => (direction: DirectionType) => ({
-    direction,
-    page: 1
   }),
   stateSizing: (prevState: IOwnState) => (size: number) => ({
     size,
@@ -119,6 +145,14 @@ const stateUpdaters: StateUpdaters<LeaveCalculationListProps, IOwnState, IOwnSta
       companyUids: filter.companyUid
     }
   }),
+
+  // Calculate
+  setInitialValues: () => (values: ICalculationFormValue): Partial<IOwnState> => ({
+    initialValues: values
+  }),
+  setCalculateOpen: (prevState: IOwnState) => () => ({
+    isCalculateOpen: !prevState.isCalculateOpen
+  })
 };
 
 const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> = {
@@ -131,19 +165,16 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
   handleChangeSize: (props: LeaveCalculationListProps) => (value: number) => {
     props.stateSizing(value);
   },
-  handleChangeSort: (props: LeaveCalculationListProps) => (
-    direction: boolean
-  ) => {
-    props.stateSorting(direction ? 'descending' : 'ascending');
-  },
-  handleFindEmployee: (props: LeaveCalculationListProps) => () => {
-
+  handleFindEmployee: (props: LeaveCalculationListProps) => (find: string) => {
+    props.stateUpdate({
+      find
+    });
   },
   handleChangePage: (props: LeaveCalculationListProps) => (page: number) => {
     props.statePage(page);
   },
   handleOnLoadApi: (props: LeaveCalculationListProps) => () => {
-    const { direction, orderBy, size, find, page, year, companyUid } = props;
+    const { size, find, page, year, companyUid } = props;
     const { user } = props.userState;
     // const { isLoading, isExpired } = props.leaveCalculationState.all;
     const { loadAllRequest } = props.leaveCalculationDispatch;
@@ -153,8 +184,6 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
         companyUid,
         year,
         filter: {
-          direction,
-          orderBy,
           find,
           page,
           size,
@@ -167,40 +196,106 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
   },
   handleFilterApplied: (props: LeaveCalculationListProps) => (filter: ILeaveFilterResult) => {
     props.setFilterApplied(filter);
+    
+    if (props.filterEmployee) {
+      const isFilterChanged = !shallowEqual(
+        {
+          year: filter.year,
+          companyUid: filter.companyUid
+        },
+        {
+          year: props.year,
+          companyUid: props.companyUid
+        }
+      );
+
+      if (isFilterChanged) {
+        props.stateUpdate({
+          find: ''
+        });
+      }
+    }
   },
+  handleOnSubmit: (props: LeaveCalculationListProps) => (values: ICalculationFormValue, actions: FormikActions<ICalculationFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise(() => undefined);
+
+    if (user) {
+      // fill payload
+      const payload: ICalculateLeavePayload = {
+        // 
+      };
+
+     // set the promise
+      promise = new Promise((resolve, reject) => {
+        props.leaveCalculationDispatch.createRequest({
+          resolve,
+          reject,
+          companyUid: values.companyUid,
+          year: values.year,
+          data: payload
+        });
+      });  
+    }
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(lookupMessage.calculation.message.calculateSuccess, {company: values.companyName || values.companyUid, year: values.year})
+        });
+      })
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (err && err.errors) {
+          err.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(lookupMessage.calculation.message.calculateFailure)
+        });
+      });
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, IOwnState> = {
   componentDidMount() {
-    // const {
-    //   intl, companyUid, year
-    // } = this.props;
+    // Load company use later
+    const { response, isLoading, isExpired } = this.props.lookupCompanyState.list;
 
-    // const { isLoading, response } = this.props.leaveCalculationState.all;
-
-    // this.props.masterPage.changePage({
-    //   uid: AppMenu.LookupEmployeeLeave,
-    //   parentUid: AppMenu.Lookup,
-    //   title: intl.formatMessage(lookupMessage.calculation.page.title),
-    //   description: intl.formatMessage(lookupMessage.calculation.page.subHeader)
-    // });
-
-    // // only load data when response are empty
-    // if (!isLoading && !response) {
-    //   if (companyUid !== '' && year !== 0) {
-    //     loadData(this.props);
-    //   }
-    // }
+    if (!response && !isLoading || isExpired) {
+      this.props.lookupCompanyDispatch.loadListRequest({});
+    }
   },
   componentDidUpdate(prevProps: LeaveCalculationListProps) {
- 
+    const { isExpired } = this.props.leaveCalculationState.all;
+
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
         year: this.props.year,
         companyUid: this.props.companyUid,
-        direction: this.props.direction,
-        orderBy: this.props.orderBy,
         find: this.props.find,
         page: this.props.page,
         size: this.props.size
@@ -208,15 +303,13 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, IOwnState> 
       {
         year: prevProps.year,
         companyUid: prevProps.companyUid,
-        direction: prevProps.direction,
-        orderBy: prevProps.orderBy,
         find: prevProps.find,
         page: prevProps.page,
         size: prevProps.size
       }
     );
 
-    if (isFilterChanged) {
+    if (isFilterChanged || isExpired) {
       this.props.handleOnLoadApi();
     }
   }
@@ -226,9 +319,11 @@ export const LeaveCalculationList = compose(
   withLeaveCalculation,
   withUser,
   withLayout,
+  withLookupCompany,
   withMasterPage,
   withRouter,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

@@ -1,5 +1,6 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  ICalculateLeavePostRequest,
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
@@ -183,6 +184,7 @@ export interface ILookupState {
   lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
+  lookupLeaveCalculate: IQueryCollectionState<ICalculateLeavePostRequest, ILookupLeave>;
 
   lookupLeaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
 
