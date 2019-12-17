@@ -49,10 +49,8 @@ interface IKPIApprovalItemFormValue {
 export interface IKPIApprovalFormValue {
   uid: string;
   statusType: string;
-  // isApproved?: boolean;
   isFinal: boolean;
   isFirst: boolean;
-  // revision?: string;
   totalScore: number;
   notes: string;
   items: IKPIApprovalItemFormValue[];
