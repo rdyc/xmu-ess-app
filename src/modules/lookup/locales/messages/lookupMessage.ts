@@ -57,8 +57,10 @@ import {
   leaveSection
 } from './leave';
 import {
+  leaveCalculationConfirm,
   leaveCalculationField,
   leaveCalculationFilter,
+  leaveCalculationMessage,
   leaveCalculationPage
 } from './leaveCalculation';
 import {
@@ -176,7 +178,9 @@ export const lookupMessage = {
   calculation: {
     page: leaveCalculationPage,
     field: leaveCalculationField,
-    filter: leaveCalculationFilter
+    filter: leaveCalculationFilter,
+    message: leaveCalculationMessage,
+    confirm: leaveCalculationConfirm
   },
   currency: {
     page: currencyPage,

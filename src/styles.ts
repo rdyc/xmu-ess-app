@@ -1075,7 +1075,32 @@ const styles = (theme: Theme) =>
     },
     maxWidth: {
       width: '100%'
-    }
+    },
+    leaveTop: {
+      width: '100%',
+      margin: '0',
+      marginBottom: theme.spacing.unit
+    },
+    leaveEmploye: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: 'auto',
+        marginRight: theme.spacing.unit * 2
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginLeft: 'auto',
+        marginRight: theme.spacing.unit * 4
+      },
+    },
+    calculateButton: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: theme.spacing.unit * 2,
+        transform: 'translateY(75%)'
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginLeft: theme.spacing.unit * 4,
+        transform: 'translateY(75%)'
+      },
+  },
   });
 
 export default styles;

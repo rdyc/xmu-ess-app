@@ -128,11 +128,19 @@ const lifeCycle: ReactLifeCycleFunctions<AccountEmployeeAllOptionProps, IOwnStat
     }
   },
   componentDidUpdate(prevProps: AccountEmployeeAllOptionProps) {
-    const { isLoading: thisIsLoading, response: thisResponse } = this.props.accountEmployeeState.allList;
+    const { isLoading: thisIsLoading, response: thisResponse, request } = this.props.accountEmployeeState.allList;
     const { isLoading: prevIsLoading, response: prevResponse } = prevProps.accountEmployeeState.allList;
 
     if (thisIsLoading !== prevIsLoading) {
       this.props.setLoading(thisIsLoading);
+    }
+
+    if (request && request.filter) {
+      const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+      if (shouldUpdate) {
+        this.props.handleOnLoadApi();
+      }
     }
 
     if (thisResponse !== prevResponse) {

@@ -1,10 +1,15 @@
-import AppMenu from '@constants/AppMenu';
-import { DirectionType } from '@generic/types';
+import { IEmployeeListFilter } from '@account/classes/filters/IEmployeeListFilter';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IValidationErrorResponse } from '@layout/interfaces';
+import { ICalculateLeavePayload } from '@lookup/classes/request';
 import { WithLeaveCalculation, withLeaveCalculation } from '@lookup/hoc/withLeaveCalculation';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -13,6 +18,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -21,117 +27,135 @@ import {
 } from 'recompose';
 
 import { LeaveCalculationListView } from './LeaveCalculationListView';
+import { ILeaveFilterResult } from './LeaveFilter';
 
-interface OwnHandlers {
+export interface ICalculationFormValue {
+  companyUid: string;
+  companyName?: string;
+  year: number;
+}
+
+interface IOwnHandlers {
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
-  handleDialog: () => void;
-  handleChangeFilter: (companyUid: string, year: string) => void;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: ILeaveFilterResult) => void;
+  handleOnLoadApi: () => void;
+  handleFindEmployee: (find: string) => void;
+
+  // Calculation
+  handleOnSubmit: (values: ICalculationFormValue, actions: FormikActions<ICalculationFormValue>) => void;
 }
 
-interface OwnOptions {
-  orderBy?: string | undefined;
-  direction?: string | undefined;
-  page?: number | undefined;
-  size?: number | undefined;
-  find?: string | undefined;
-  findBy?: string | undefined;
-  open?: boolean;
-  type?: string | undefined;
-}
-
-interface OwnState {
-  companyUid: string;
-  year: number;
-  orderBy: string | undefined;
-  direction?: DirectionType;
+interface IOwnState extends ILeaveFilterResult {
   page: number;
   size: number;
   find: string | undefined;
-  findBy: string | undefined;
-  open: boolean;
-  type: string | undefined;
+  isFilterOpen: boolean;
+  filterEmployee?: IEmployeeListFilter;
+
+  // Calculation
+  initialValues?: ICalculationFormValue;
+  isCalculateOpen: boolean;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateNext: StateHandler<OwnState>;
-  statePrevious: StateHandler<OwnState>;
-  stateSorting: StateHandler<OwnState>;
-  stateSizing: StateHandler<OwnState>;
-  statePage: StateHandler<OwnState>;
-  stateDialog: StateHandler<OwnState>;
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateNext: StateHandler<IOwnState>;
+  statePrevious: StateHandler<IOwnState>;
+  stateSizing: StateHandler<IOwnState>;
+  statePage: StateHandler<IOwnState>;
+  stateUpdate: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
+
+  // Calculation
+  setInitialValues: StateHandler<IOwnState>;
+  setCalculateOpen: StateHandler<IOwnState>;
 }
 
-export type FilterProgressData = {
-  companyUid: string | null;
-  year: string | null;
-};
-
-export type LeaveCalculationListProps = WithLeaveCalculation &
+export type LeaveCalculationListProps = 
+  WithLeaveCalculation &
+  WithLookupCompany &
   WithUser &
   WithLayout &
   WithMasterPage &
+  WithStyles<typeof styles> &
   RouteComponentProps &
   InjectedIntlProps &
-  OwnOptions &
-  OwnHandlers &
-  OwnState &
-  OwnStateUpdaters;
+  IOwnHandlers &
+  IOwnState &
+  IOwnStateUpdaters;
 
-const createProps: mapper<LeaveCalculationListProps, OwnState> = (props: LeaveCalculationListProps): OwnState => {
-  const { orderBy, direction, page, size } = props;
+const createProps: mapper<LeaveCalculationListProps, IOwnState> = (props: LeaveCalculationListProps): IOwnState => {
   const { request } = props.leaveCalculationState.all;
 
-  return {
-    companyUid: '',
-    year: 0,
-    find: undefined,
-    findBy: undefined,
-    open: false,
-    type: undefined,
-    orderBy:
-      (request && request.filter && request.filter.orderBy) || orderBy || 'fullName',
-    direction:
-      (request && request.filter && request.filter.direction) ||
-      direction ||
-      'ascending',
-    page: (request && request.filter && request.filter.page) || page || 1,
-    size: (request && request.filter && request.filter.size) || size || 10
+  const state: IOwnState = {
+    companyUid: request && request.companyUid || '',
+    year: request && request.year || 0,
+    find: request && request.filter && request.filter.find || undefined,
+    isFilterOpen: true,
+    page: request && request.filter && request.filter.page || 1,
+    size: request && request.filter && request.filter.size || 10,
+
+    // Calculation
+    initialValues: {
+      companyUid: request && request.companyUid || '',
+      year: request && request.year || 0
+    },
+    isCalculateOpen: false,
   };
+
+  if (request && request.filter) {
+    state.isFilterOpen = false;
+  }
+
+  return state;
 };
 
-const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateNext: (prevState: OwnState) => () => ({
+const stateUpdaters: StateUpdaters<LeaveCalculationListProps, IOwnState, IOwnStateUpdaters> = {
+  stateNext: (prevState: IOwnState) => () => ({
     page: prevState.page + 1
   }),
-  statePrevious: (prevState: OwnState) => () => ({
+  statePrevious: (prevState: IOwnState) => () => ({
     page: prevState.page - 1
   }),
-  stateSorting: (prevState: OwnState) => (direction: DirectionType) => ({
-    direction,
-    page: 1
-  }),
-  stateSizing: (prevState: OwnState) => (size: number) => ({
+  stateSizing: (prevState: IOwnState) => (size: number) => ({
     size,
     page: 1
   }),
-  statePage: (prevState: OwnState) => (page: number) => ({
+  statePage: (prevState: IOwnState) => (page: number) => ({
     page
   }),
-  stateDialog: (prevState: OwnState) => (open: boolean) => ({
-    open
-  }),
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
+  }),
+  setFilterApplied: () => (filter: ILeaveFilterResult): Partial<IOwnState> => ({
+    ...filter,
+    isFilterOpen: false,
+    filterEmployee: {
+      isActive: true,
+      orderBy: 'fullName',
+      direction: 'ascending',
+      companyUids: filter.companyUid
+    }
+  }),
+
+  // Calculate
+  setInitialValues: () => (values: ICalculationFormValue): Partial<IOwnState> => ({
+    initialValues: values
+  }),
+  setCalculateOpen: (prevState: IOwnState) => () => ({
+    isCalculateOpen: !prevState.isCalculateOpen
+  })
 };
 
-const handlerCreators: HandleCreators<LeaveCalculationListProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> = {
   handleGoToNext: (props: LeaveCalculationListProps) => () => {
     props.stateNext();
   },
@@ -141,117 +165,166 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, OwnHandlers> = 
   handleChangeSize: (props: LeaveCalculationListProps) => (value: number) => {
     props.stateSizing(value);
   },
-  handleChangeSort: (props: LeaveCalculationListProps) => (
-    direction: boolean
-  ) => {
-    props.stateSorting(direction ? 'descending' : 'ascending');
+  handleFindEmployee: (props: LeaveCalculationListProps) => (find: string) => {
+    props.stateUpdate({
+      find
+    });
   },
   handleChangePage: (props: LeaveCalculationListProps) => (page: number) => {
     props.statePage(page);
   },
-  handleDialog: (props: LeaveCalculationListProps) => () => {
-    let { open } = props;
+  handleOnLoadApi: (props: LeaveCalculationListProps) => () => {
+    const { size, find, page, year, companyUid } = props;
+    const { user } = props.userState;
+    // const { isLoading, isExpired } = props.leaveCalculationState.all;
+    const { loadAllRequest } = props.leaveCalculationDispatch;
 
-    open = !open;
-    props.stateDialog(open);
+    if (user) {
+      loadAllRequest({
+        companyUid,
+        year,
+        filter: {
+          find,
+          page,
+          size,
+        }
+      });
+    }
   },
-  handleChangeFilter: (props: LeaveCalculationListProps) => (companyUid: string, year: string) => {
-    const { stateUpdate } = props;
+  handleFilterVisibility: (props: LeaveCalculationListProps) => () => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: LeaveCalculationListProps) => (filter: ILeaveFilterResult) => {
+    props.setFilterApplied(filter);
+    
+    if (props.filterEmployee) {
+      const isFilterChanged = !shallowEqual(
+        {
+          year: filter.year,
+          companyUid: filter.companyUid
+        },
+        {
+          year: props.year,
+          companyUid: props.companyUid
+        }
+      );
 
-    stateUpdate({
-      companyUid,
-      year
-    });
+      if (isFilterChanged) {
+        props.stateUpdate({
+          find: ''
+        });
+      }
+    }
+  },
+  handleOnSubmit: (props: LeaveCalculationListProps) => (values: ICalculationFormValue, actions: FormikActions<ICalculationFormValue>) => {
+    const { user } = props.userState;
+    let promise = new Promise(() => undefined);
+
+    if (user) {
+      // fill payload
+      const payload: ICalculateLeavePayload = {
+        // 
+      };
+
+     // set the promise
+      promise = new Promise((resolve, reject) => {
+        props.leaveCalculationDispatch.createRequest({
+          resolve,
+          reject,
+          companyUid: values.companyUid,
+          year: values.year,
+          data: payload
+        });
+      });  
+    }
+    // handling promise
+    promise
+      .then((response: boolean) => {
+        
+        // set submitting status
+        actions.setSubmitting(false);
+
+        // clear form status
+        actions.setStatus();
+
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(lookupMessage.calculation.message.calculateSuccess, {company: values.companyName || values.companyUid, year: values.year})
+        });
+      })
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
+        // set submitting status
+        actions.setSubmitting(false);
+        
+        // set form status
+        actions.setStatus(error);
+        
+        // error on form fields
+        if (err && err.errors) {
+          err.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
+          );
+        }
+        
+        // show flash message
+        props.masterPage.flashMessage({
+          message: props.intl.formatMessage(lookupMessage.calculation.message.calculateFailure)
+        });
+      });
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, IOwnState> = {
   componentDidMount() {
-    const {
-      intl, companyUid, year
-    } = this.props;
+    // Load company use later
+    const { response, isLoading, isExpired } = this.props.lookupCompanyState.list;
 
-    const { isLoading, response } = this.props.leaveCalculationState.all;
+    if (!response && !isLoading || isExpired) {
+      this.props.lookupCompanyDispatch.loadListRequest({});
+    }
+  },
+  componentDidUpdate(prevProps: LeaveCalculationListProps) {
+    const { isExpired } = this.props.leaveCalculationState.all;
 
-    this.props.masterPage.changePage({
-      uid: AppMenu.LookupEmployeeLeave,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage(lookupMessage.calculation.page.title),
-      description: intl.formatMessage(lookupMessage.calculation.page.subHeader)
-    });
-
-    // only load data when response are empty
-    if (!isLoading && !response) {
-      if (companyUid !== '' && year !== 0) {
-        loadData(this.props);
+    // track any changes in filter props
+    const isFilterChanged = !shallowEqual(
+      {
+        year: this.props.year,
+        companyUid: this.props.companyUid,
+        find: this.props.find,
+        page: this.props.page,
+        size: this.props.size
+      },
+      {
+        year: prevProps.year,
+        companyUid: prevProps.companyUid,
+        find: prevProps.find,
+        page: prevProps.page,
+        size: prevProps.size
       }
-    }
-  },
-  componentDidUpdate(props: LeaveCalculationListProps, state: OwnState) {
-    // only load when these props are different
-    if (
-      this.props.companyUid !== props.companyUid ||
-      this.props.year !== props.year ||
-      this.props.orderBy !== props.orderBy ||
-      this.props.direction !== props.direction ||
-      this.props.page !== props.page ||
-      this.props.size !== props.size ||
-      this.props.find !== props.find
-    ) {
-      const { loadAllDispose } = this.props.leaveCalculationDispatch;
+    );
 
-      loadAllDispose();
-      loadData(this.props);
+    if (isFilterChanged || isExpired) {
+      this.props.handleOnLoadApi();
     }
-  },
-  componentWillUnmount() {
-    const { masterPage } = this.props;
-    const { loadAllDispose } = this.props.leaveCalculationDispatch;
-
-    masterPage.resetPage();
-    loadAllDispose();
   }
 };
 
-const loadData = (props: LeaveCalculationListProps): void => {
-  const { orderBy, direction, size, find, findBy, page } = props;
-  const { user } = props.userState;
-  const { loadAllRequest } = props.leaveCalculationDispatch;
-  const { alertAdd } = props.layoutDispatch;
-  const { companyUid, year } = props;
-
-  if (user) {
-    loadAllRequest({
-      companyUid,
-      year,
-      filter: {
-        direction,
-        orderBy,
-        page,
-        size,
-        find,
-        findBy
-      }
-    });
-  } else {
-    alertAdd({
-      time: new Date(),
-      message: 'Unable to find current user state'
-    });
-  }
-};
-
-export const LeaveCalculationList = compose<LeaveCalculationListProps, OwnOptions>(
+export const LeaveCalculationList = compose(
   withLeaveCalculation,
   withUser,
   withLayout,
+  withLookupCompany,
   withMasterPage,
   withRouter,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(
-    createProps,
-    stateUpdaters
-  ),
-  withHandlers<LeaveCalculationListProps, OwnHandlers>(handlerCreators),
-  lifecycle<LeaveCalculationListProps, OwnState>(lifecycles)
+  withStyles(styles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(LeaveCalculationListView);
