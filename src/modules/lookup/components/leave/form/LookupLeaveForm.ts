@@ -6,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { ILookupLeavePostPayload, ILookupLeavePutPayload } from '@lookup/classes/request';
+import { ILeaveItems } from '@lookup/classes/request/leave/ILeaveItems';
 import { ILookupLeave } from '@lookup/classes/response';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -36,10 +37,11 @@ export interface ILeaveFormValue {
   uid?: string;
   companyUid: string;
   categoryType: string;
-  year: number;
+  year: string;
   name: string;
   allocation: number;
   isWithinHoliday: boolean;
+  items: ILeaveItems[];
 }
 
 interface IOwnRouteParams {
@@ -91,10 +93,11 @@ const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): 
     uid: 'Auto Generated',
     companyUid: '',
     categoryType: '',
-    year: 0,
+    year: '',
     name: '',
     allocation: 0,
     isWithinHoliday: false,
+    items: []
   },
 
   // validation props
@@ -107,8 +110,7 @@ const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): 
       .label(props.intl.formatMessage(lookupMessage.leave.field.category))
       .required(),
 
-    year: Yup.number()
-      .integer()
+    year: Yup.string()
       .label(props.intl.formatMessage(lookupMessage.leave.field.year))
       .required(),
 
@@ -120,11 +122,23 @@ const createProps: mapper<LeaveFormProps, IOwnState> = (props: LeaveFormProps): 
     allocation: Yup.number()
       .integer()
       .label(props.intl.formatMessage(lookupMessage.leave.field.allocation))
-      .min(1)
       .required(),
 
     isWithinHoliday: Yup.boolean()
       .label(props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday)),
+
+    items: Yup.array()
+      .of(
+        Yup.object().shape({
+          leaveDate: Yup.string()	
+            .label(props.intl.formatMessage(lookupMessage.leave.field.leaveDate))	
+            .required(),
+          leaveDescription: Yup.string()	
+            .label(props.intl.formatMessage(lookupMessage.leave.field.leaveDescription))	
+            .required()	
+        })
+      )
+      .min(1, props.intl.formatMessage(lookupMessage.leave.field.minLeave)),	
   }),
 
   // filter props
@@ -171,10 +185,11 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         // fill payload
         const payload: ILookupLeavePostPayload = {
           categoryType: values.categoryType,
-          year: values.year,
+          year: Number(values.year),
           name: values.name,
           allocation: values.allocation,
-          isWithinHoliday: values.isWithinHoliday
+          isWithinHoliday: values.isWithinHoliday,
+          items: values.items
         };
 
         // set the promise
@@ -197,10 +212,11 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         if (leaveUid && companyUid) {
           const payload: ILookupLeavePutPayload = {
             categoryType: values.categoryType,
-            year: values.year,
+            year: Number(values.year),
             name: values.name,
             allocation: values.allocation,
-            isWithinHoliday: values.isWithinHoliday
+            isWithinHoliday: values.isWithinHoliday,
+            items: values.items
           };
 
           // set the promise
@@ -234,7 +250,7 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/leaves/${response.uid}`, { companyUid: response.companyUid });
+        props.history.push(`/lookup/leaves/config/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: any) => {
         let err: IValidationErrorResponse | undefined = undefined;
@@ -280,11 +296,18 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<LeaveFormProps, IOwnState> = {
           uid: thisResponse.data.uid,
           companyUid: thisResponse.data.companyUid,
           categoryType: thisResponse.data.categoryType,
-          year: thisResponse.data.year,
+          year: thisResponse.data.year.toString(),
           name: thisResponse.data.name,
           allocation: thisResponse.data.allocation,
-          isWithinHoliday: thisResponse.data.isWithinHoliday
+          isWithinHoliday: thisResponse.data.isWithinHoliday,
+          items: []
         };
+
+        thisResponse.data.dates.forEach(item => initialValues.items.push({
+          uid: item.uid,
+          leaveDate: item.leaveDate,
+          leaveDescription: item.leaveDescription
+        }));
 
         this.props.setInitialValues(initialValues);
       }

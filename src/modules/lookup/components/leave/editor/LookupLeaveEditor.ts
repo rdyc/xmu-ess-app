@@ -97,6 +97,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
 
     const payload = {
       ...formData.information,
+      items: []
     };
 
     const company = payload.companyUid;

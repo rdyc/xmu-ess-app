@@ -1,4 +1,5 @@
 import { IBasePayload } from '@generic/interfaces';
+import { ILeaveItems } from './ILeaveItems';
 
 export interface ILookupLeavePostPayload extends IBasePayload {
   categoryType: string;
@@ -6,4 +7,5 @@ export interface ILookupLeavePostPayload extends IBasePayload {
   name: string;
   allocation: number;
   isWithinHoliday: boolean;
+  items: ILeaveItems[];
 }

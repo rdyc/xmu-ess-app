@@ -121,6 +121,7 @@ import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustom
 import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '../queries/gallery';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 import { IAchievementResult } from '../response/achievement';
+import { ILeavePage } from '../types';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -185,8 +186,8 @@ export interface ILookupState {
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
   lookupLeaveCalculate: IQueryCollectionState<ICalculateLeavePostRequest, ILookupLeave>;
-
   lookupLeaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
+  lookupLeavePage: ILeavePage;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetAmount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;
