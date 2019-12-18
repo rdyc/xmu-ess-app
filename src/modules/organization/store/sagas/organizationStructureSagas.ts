@@ -15,6 +15,9 @@ import {
   organizationStructureGetSubOrdinateListError,
   organizationStructureGetSubOrdinateListRequest,
   organizationStructureGetSubOrdinateListSuccess,
+  organizationStructureGetSubOrdinateTreeKPIFinalError,
+  organizationStructureGetSubOrdinateTreeKPIFinalRequest,
+  organizationStructureGetSubOrdinateTreeKPIFinalSuccess,
   organizationStructurePostError,
   organizationStructurePostRequest,
   organizationStructurePostSuccess,
@@ -97,6 +100,32 @@ function* watchGetSubOrdinateListRequest() {
   };
   
   yield takeEvery(Action.GET_SUBORDINATE_LIST_STRUCTURE_REQUEST, worker);
+}
+
+function* watchGetSubOrdinateTreeKPIFinalRequest() {
+  const worker = (action: ReturnType<typeof organizationStructureGetSubOrdinateTreeKPIFinalRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true,
+      indices: false
+    });
+    return saiyanSaga.fetch({
+      
+      method: 'GET',
+      path: `/v1/organization/structures/subordinatetreekpifinal/${action.payload.companyUid}/${action.payload.positionUid}?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -220,6 +249,7 @@ function* organizationStructureSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetSubOrdinateListRequest),
+    fork(watchGetSubOrdinateTreeKPIFinalRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

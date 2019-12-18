@@ -1,4 +1,5 @@
 import { IEmployee } from '@account/classes/response';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { 
   IOrganizationStructureAllRequest, 
@@ -6,7 +7,8 @@ import {
   IOrganizationStructureDeleteRequest,
   IOrganizationStructurePostRequest, 
   IOrganizationStructurePutRequest, 
-  IOrganizationStructureSubOrdinateListRequest
+  IOrganizationStructureSubOrdinateListRequest,
+  IOrganizationStructureSubOrdinateTreeKPIFinalRequest
 } from '@organization/classes/queries/structure';
 import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import { action } from 'typesafe-actions';
@@ -24,6 +26,10 @@ export const enum OrganizationStructureAction {
   GET_SUBORDINATE_LIST_STRUCTURE_SUCCESS = '@@organization/structure/GET_SUBORDINATE_LIST_SUCCESS',
   GET_SUBORDINATE_LIST_STRUCTURE_ERROR = '@@organization/structure/GET_SUBORDINATE_LIST_ERROR',
   GET_SUBORDINATE_LIST_STRUCTURE_DISPOSE = '@@organization/structure/GET_SUBORDINATE_LIST_DISPOSE',
+  GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_REQUEST = '@@organization/structure/GET_SUBORDINATE_TREE_KPIFINAL_REQUEST',
+  GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_SUCCESS = '@@organization/structure/GET_SUBORDINATE_TREE_KPIFINAL_SUCCESS',
+  GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_ERROR = '@@organization/structure/GET_SUBORDINATE_TREE_KPIFINAL_ERROR',
+  GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_DISPOSE = '@@organization/structure/GET_SUBORDINATE_TREE_KPIFINAL_DISPOSE',
   POST_STRUCTURE_REQUEST = '@@organization/structure/POST_REQUEST',
   POST_STRUCTURE_SUCCESS = '@@organization/structure/POST_SUCCESS',
   POST_STRUCTURE_ERROR = '@@organization/structure/POST_ERROR',
@@ -49,6 +55,12 @@ export const organizationStructureGetSubOrdinateListRequest = (request: IOrganiz
 export const organizationStructureGetSubOrdinateListSuccess = (response: IResponseCollection<IEmployee>) => action(OrganizationStructureAction.GET_SUBORDINATE_LIST_STRUCTURE_SUCCESS, response);
 export const organizationStructureGetSubOrdinateListError = (error: any) => action(OrganizationStructureAction.GET_SUBORDINATE_LIST_STRUCTURE_ERROR, error);
 export const organizationStructureGetSubOrdinateListDispose = () => action(OrganizationStructureAction.GET_SUBORDINATE_LIST_STRUCTURE_DISPOSE);
+
+// get all final
+export const organizationStructureGetSubOrdinateTreeKPIFinalRequest = (request: IOrganizationStructureSubOrdinateTreeKPIFinalRequest) => action(OrganizationStructureAction.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_REQUEST, request);
+export const organizationStructureGetSubOrdinateTreeKPIFinalSuccess = (response: IResponseCollection<IEmployeeKPIFinal>) => action(OrganizationStructureAction.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_SUCCESS, response);
+export const organizationStructureGetSubOrdinateTreeKPIFinalError = (error: any) => action(OrganizationStructureAction.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_ERROR, error);
+export const organizationStructureGetSubOrdinateTreeKPIFinalDispose = () => action(OrganizationStructureAction.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_DISPOSE);
 
 // get by id
 export const organizationStructureGetByIdRequest = (request: IOrganizationStructureByIdRequest) => action(OrganizationStructureAction.GET_BY_ID_STRUCTURE_REQUEST, request);

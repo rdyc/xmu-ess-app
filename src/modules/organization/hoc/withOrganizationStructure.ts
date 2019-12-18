@@ -1,4 +1,5 @@
 import { IEmployee } from '@account/classes/response';
+import { IEmployeeKPIFinal } from '@account/classes/response/employeeKPIFinal';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
   IOrganizationStructureAllRequest,
@@ -7,6 +8,7 @@ import {
   IOrganizationStructurePostRequest,
   IOrganizationStructurePutRequest,
   IOrganizationStructureSubOrdinateListRequest,
+  IOrganizationStructureSubOrdinateTreeKPIFinalRequest,
 } from '@organization/classes/queries/structure';
 import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import {
@@ -18,6 +20,8 @@ import {
   organizationStructureGetByIdRequest,
   organizationStructureGetSubOrdinateListDispose,
   organizationStructureGetSubOrdinateListRequest,
+  organizationStructureGetSubOrdinateTreeKPIFinalDispose,
+  organizationStructureGetSubOrdinateTreeKPIFinalRequest,
   organizationStructurePostDispose,
   organizationStructurePostRequest,
   organizationStructurePutDispose,
@@ -30,6 +34,7 @@ interface PropsFromState {
   organizationStructureState: {
     all: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
     subOrdinateList: IQueryCollectionState<IOrganizationStructureSubOrdinateListRequest, IEmployee>;
+    subOrdinateTreeKPIFinal: IQueryCollectionState<IOrganizationStructureSubOrdinateTreeKPIFinalRequest, IEmployeeKPIFinal>;
     detail: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>;
   };
 }
@@ -49,6 +54,8 @@ interface PropsFromDispatch {
     loadAllDispose: typeof organizationStructureGetAllDispose;
     loadSubOrdinateListRequest: typeof organizationStructureGetSubOrdinateListRequest;
     loadSubOrdinateListDispose: typeof organizationStructureGetSubOrdinateListDispose;
+    loadSubOrdinateTreeKPIFinalRequest: typeof organizationStructureGetSubOrdinateTreeKPIFinalRequest;
+    loadSubOrdinateTreeKPIFinalDispose: typeof organizationStructureGetSubOrdinateTreeKPIFinalDispose;
     loadDetailRequest: typeof organizationStructureGetByIdRequest;
     loadDetailDispose: typeof organizationStructureGetByIdDispose;
   };
@@ -56,10 +63,11 @@ interface PropsFromDispatch {
 
 export interface WithOrganizationStructure extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ organizationStructureGetAll, organizationStructureGetSubOrdinateList, organizationStructureGetById }: IAppState) => ({
+const mapStateToProps = ({ organizationStructureGetAll, organizationStructureGetSubOrdinateList, organizationStructureGetSubOrdinateTreeKPIFinal, organizationStructureGetById }: IAppState) => ({
   organizationStructureState: {
     all: organizationStructureGetAll,
     subOrdinateList: organizationStructureGetSubOrdinateList,
+    subOrdinateTreeKPIFinal: organizationStructureGetSubOrdinateTreeKPIFinal,
     detail: organizationStructureGetById,
   }
 });
@@ -79,6 +87,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadAllDispose: () => dispatch(organizationStructureGetAllDispose()),
     loadSubOrdinateListRequest: (request: IOrganizationStructureSubOrdinateListRequest) => dispatch(organizationStructureGetSubOrdinateListRequest(request)),
     loadSubOrdinateListDispose: () => dispatch(organizationStructureGetSubOrdinateListDispose()),
+    loadSubOrdinateTreeKPIFinalRequest: (request: IOrganizationStructureSubOrdinateTreeKPIFinalRequest) => dispatch(organizationStructureGetSubOrdinateTreeKPIFinalRequest(request)),
+    loadSubOrdinateTreeKPIFinalDispose: () => dispatch(organizationStructureGetSubOrdinateTreeKPIFinalDispose()),
     loadDetailRequest: (request: IOrganizationStructureByIdRequest) => dispatch(organizationStructureGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(organizationStructureGetByIdDispose()),
   }
