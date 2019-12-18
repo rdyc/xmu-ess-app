@@ -460,6 +460,8 @@
   "lookup.leave.field.minLeave": "Must have at least one leave date",
   "lookup.leave.field.leaveItem": "Leave dates",
   "lookup.leave.field.date": "Date",
+  "lookup.leave.field.employee": "Employee",
+  "lookup.leave.field.config": "Leave",
   
   "leave.calculation.filter.employee": "Employee", 
   "leave.calculation.filter.company": "Company", 

@@ -80,11 +80,14 @@ export const leaveField = defineMessages({
   date: { id: `${prefix}.field.date`},
   leaveItem: { id: `${prefix}.field.leaveItem`},
 
+  employee: { id: `${prefix}.field.employee`},
+  config: { id: `${prefix}.field.config`},
+  
   filterCompany: { id: `${prefix}.field.filter.company`},
   filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
 });
 
-export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder' | 'fieldTab') => {
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return leaveField.uid;
@@ -136,6 +139,15 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
       case 'leaveDate': return leaveField.leaveDatePlaceholder;
       case 'leaveDescription': return leaveField.leaveDescriptionPlaceholder;
       
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldTab') {
+    switch (field) {
+      case 'employee': return leaveField.employee;
+      case 'config': return leaveField.config;
+
       default: return {id: field};
     }
   }

@@ -17,7 +17,7 @@ export const LeaveFormView: React.SFC<LeaveFormProps> = props => (
     info={{
       uid: AppMenu.LookupLeave,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/leaves',
+      parentUrl: '/lookup/leaves/config',
       title: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.leave.page.newTitle : lookupMessage.leave.page.modifyTitle),
       description: props.intl.formatMessage(props.formMode === FormMode.New ? lookupMessage.leave.page.newSubHeader : lookupMessage.leave.page.modifySubHeader)
     }}

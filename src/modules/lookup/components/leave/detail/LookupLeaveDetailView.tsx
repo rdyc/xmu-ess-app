@@ -15,7 +15,7 @@ export const LookupLeaveDetailView: React.SFC<LeaveDetailProps> = props => (
     info={{
       uid: AppMenu.LookupLeave,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/leaves',
+      parentUrl: '/lookup/leaves/config',
       title: props.intl.formatMessage(lookupMessage.leave.page.detailTitle),
       description: props.intl.formatMessage(lookupMessage.leave.page.detailSubHeader),
     }}

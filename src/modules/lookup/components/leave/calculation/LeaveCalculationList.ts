@@ -1,4 +1,5 @@
 import { IEmployeeListFilter } from '@account/classes/filters/IEmployeeListFilter';
+import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -287,6 +288,12 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, IOwnState> 
     if (!response && !isLoading || isExpired) {
       this.props.lookupCompanyDispatch.loadListRequest({});
     }
+
+    this.props.masterPage.changePage({
+      uid: AppMenu.LookupLeave,
+      parentUid: AppMenu.Lookup,
+      title: this.props.intl.formatMessage(lookupMessage.leave.page.listTitle),
+    });
   },
   componentDidUpdate(prevProps: LeaveCalculationListProps) {
     const { isExpired } = this.props.leaveCalculationState.all;

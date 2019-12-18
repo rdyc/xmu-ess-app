@@ -250,7 +250,7 @@ const handlerCreators: HandleCreators<LeaveFormProps, IOwnHandler> = {
         });
 
         // redirect to detail
-        props.history.push(`/lookup/leaves/${response.uid}`, { companyUid: response.companyUid });
+        props.history.push(`/lookup/leaves/config/${response.uid}`, { companyUid: response.companyUid });
       })
       .catch((error: any) => {
         let err: IValidationErrorResponse | undefined = undefined;

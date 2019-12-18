@@ -1,5 +1,6 @@
 import { lookupLeaveCalculationGetAllReducer } from './lookupLeaveCalculationGetAllReducer';
 import { lookupLeaveCalculationPostReducer } from './lookupLeaveCalculationPostReducer';
+import { lookupLeaveChangePageReducer } from './lookupLeaveChangePageReducer';
 import { lookupLeaveDeleteReducer } from './lookupLeaveDeleteReducer';
 import { lookupLeaveGetAllReducer } from './lookupLeaveGetAllReducer';
 import { lookupLeaveGetByIdReducer } from './lookupLeaveGetByIdReducer';
@@ -15,5 +16,6 @@ export const lookupLeaveReducers = {
   lookupLeavePost: lookupLeavePostReducer,
   lookupLeavePut: lookupLeavePutReducer,
   lookupLeaveDelete: lookupLeaveDeleteReducer,
-  lookupLeaveCalculate: lookupLeaveCalculationPostReducer
+  lookupLeaveCalculate: lookupLeaveCalculationPostReducer,
+  lookupLeavePage: lookupLeaveChangePageReducer
 };

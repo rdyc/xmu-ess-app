@@ -39,7 +39,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/leaves/form`, { uid: item.uid, companyUid: item.companyUid })}
+            onClick={() => props.history.push(`/lookup/leaves/config/form`, { uid: item.uid, companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.modify)}            
           </Button>
@@ -47,7 +47,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
           <Button 
             size="small"
             color="secondary"
-            onClick={() => props.history.push(`/lookup/leaves/${item.uid}`, { companyUid: item.companyUid })}
+            onClick={() => props.history.push(`/lookup/leaves/config/${item.uid}`, { companyUid: item.companyUid })}
           >
             {props.intl.formatMessage(layoutMessage.action.details)}
           </Button>
@@ -66,7 +66,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
       appBarCustomComponent={
         <IconButton
           color="inherit"
-          onClick={() => props.history.push('/lookup/leaves/form')}
+          onClick={() => props.history.push('/lookup/leaves/config/form')}
         >
           <AddCircle/>
         </IconButton>

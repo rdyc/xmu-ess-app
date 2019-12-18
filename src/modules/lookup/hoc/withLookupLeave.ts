@@ -8,7 +8,9 @@ import {
   ILookupLeavePutRequest,
 } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
+import { ILeavePage, LookupLeaveTabs } from '@lookup/classes/types';
 import {
+  lookupLeaveChangePage,
   lookupLeaveDeleteDispose,
   lookupLeaveDeleteRequest,
   lookupLeaveGetAllDispose,
@@ -30,6 +32,7 @@ interface PropsFromState {
     all: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
     list: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
     detail: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
+    page: ILeavePage;
   };
 }
 
@@ -50,16 +53,20 @@ interface PropsFromDispatch {
     loadListDispose: typeof lookupLeaveGetListDispose;
     loadDetailRequest: typeof lookupLeaveGetByIdRequest;
     loadDetailDispose: typeof lookupLeaveGetByIdDispose;
+
+    // page
+    changePage: typeof lookupLeaveChangePage;
   };
 }
 
 export interface WithLookupLeave extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ lookupLeaveGetAll, lookupLeaveGetList, lookupLeaveGetById }: IAppState) => ({
+const mapStateToProps = ({ lookupLeaveGetAll, lookupLeaveGetList, lookupLeaveGetById, lookupLeavePage }: IAppState) => ({
   lookupLeaveState: {
     all: lookupLeaveGetAll,
     list: lookupLeaveGetList,
     detail: lookupLeaveGetById,
+    page: lookupLeavePage
   }
 });
 
@@ -80,6 +87,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadListDispose: () => dispatch(lookupLeaveGetListDispose()),
     loadDetailRequest: (request: ILookupLeaveGetDetailRequest) => dispatch(lookupLeaveGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(lookupLeaveGetByIdDispose()),
+
+    // page
+    changePage: (leavePage: LookupLeaveTabs) => dispatch(lookupLeaveChangePage(leavePage))
   }
 });
 

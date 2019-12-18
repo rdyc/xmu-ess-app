@@ -187,7 +187,7 @@ const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
 
       switch (props.action) {
         case LookupUserAction.Modify:
-          next = '/lookup/leaves/form';
+          next = '/lookup/leaves/config/form';
           break;
 
         default:
@@ -235,7 +235,7 @@ const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
       message: props.intl.formatMessage(lookupMessage.leave.message.deleteSuccess, { uid : props.match.params.leaveUid })
     });
 
-    props.history.push('/lookup/leaves/');
+    props.history.push('/lookup/leaves/config/');
   },
   handleSubmitFail: (props: LeaveDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     if (errors) {

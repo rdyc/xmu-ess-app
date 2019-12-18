@@ -28,6 +28,7 @@ import { HolidayForm } from './holiday/form/LookupHolidayForm';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import { LeaveForm } from './leave/form/LookupLeaveForm';
+import { LeaveTab } from './leave/leaveTab/LeaveTab';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { LookupMileageExceptionDetail } from './mileageException/detail/LookupMileageExceptionDetail';
 import { LookupMileageExceptionForm } from './mileageException/form/LookupMileageExceptionForm';
@@ -82,11 +83,14 @@ const holiday = (props: RouteComponentProps) => (
 );
 
 const leave = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}/form`} component={LeaveForm} />
-    <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
-    <Route path={`${props.match.path}`} component={LookupLeaveList} />
-  </Switch>
+  <LeaveTab>
+    <Switch>
+      <Route path={`${props.match.path}/config/form`} component={LeaveForm} />
+      <Route path={`${props.match.path}/config/:leaveUid`} component={LookupLeaveDetail} />
+      <Route path={`${props.match.path}/config`} component={LookupLeaveList} />
+      <Route path={`${props.match.path}/employee`} component={LeaveCalculationList} />
+    </Switch>
+  </LeaveTab>
 );
 
 const calculation = (props: RouteComponentProps) => (
