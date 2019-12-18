@@ -8,6 +8,7 @@ import * as React from 'react';
 
 import { LeaveDetailProps } from './LookupLeaveDetail';
 import { LookupLeaveInformation } from './shared/LookupLeaveInformation';
+import { LookupLeaveItem } from './shared/LookupLeaveItem';
 
 export const LookupLeaveDetailView: React.SFC<LeaveDetailProps> = props => (
   <PreviewPage
@@ -22,6 +23,14 @@ export const LookupLeaveDetailView: React.SFC<LeaveDetailProps> = props => (
     onLoadApi={props.handleOnLoadApi}
     primary={(data: ILookupLeaveDetail) => ([
       <LookupLeaveInformation data={data} />
+    ])}
+    secondary={(data: ILookupLeaveDetail) => ([
+      <React.Fragment>
+        {
+          data.dates.length > 1 &&
+          <LookupLeaveItem items={data.dates} />
+        }
+      </React.Fragment>
     ])}
     appBarComponent={
       props.menuOptions &&

@@ -1,6 +1,7 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
+import { ILeaveItem } from './ILeaveItem';
 
 export interface ILookupLeaveDetail {
   uid: string;
@@ -13,4 +14,5 @@ export interface ILookupLeaveDetail {
   allocation: number;
   isWithinHoliday: boolean;
   changes?: IBaseChanges;
+  dates: ILeaveItem[];
 }

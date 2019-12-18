@@ -1,3 +1,4 @@
+import { LeaveType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import FormikJsonValues from '@layout/components/formik/FormikJsonValues';
@@ -9,6 +10,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { ILeaveFormValue, LeaveFormProps } from './LookupLeaveForm';
 import LookupLeaveDetailPartialForm from './partial/LookupLeaveDetailPartialForm';
+import { LookupLeaveItemForm } from './partial/LookupLeaveItemForm';
 
 export const LeaveFormView: React.SFC<LeaveFormProps> = props => (
   <FormPage
@@ -42,6 +44,18 @@ export const LeaveFormView: React.SFC<LeaveFormProps> = props => (
               </div>
             </div>
 
+            {
+              formikBag.values.categoryType === LeaveType.CutiTahunan &&
+              <div className={props.classes.flexColumn}>
+                <div className={props.classes.flexContent}>
+                  <LookupLeaveItemForm 
+                    formikBag={formikBag}
+                    formMode={props.formMode}
+                    intl={props.intl}
+                  />
+                </div>
+              </div>
+            }
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
                 <SubmissionForm 

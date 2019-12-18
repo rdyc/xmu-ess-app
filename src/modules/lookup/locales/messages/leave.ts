@@ -68,6 +68,18 @@ export const leaveField = defineMessages({
   notWithinHoliday: {id: `${prefix}.field.notWithinHoliday`},
   isWithinHolidayPlaceholder: {id: `${prefix}.field.isWithinHoliday.placeholder`},
   
+  leaveDate: { id: `${prefix}.field.leaveDate`},
+  leaveDateRequired: {id: `${prefix}.field.leaveDate.required`},
+  leaveDatePlaceholder: {id: `${prefix}.field.leaveDate.placeholder`},
+  
+  leaveDescription: { id: `${prefix}.field.leaveDescription`},
+  leaveDescriptionRequired: {id: `${prefix}.field.leaveDescription.required`},
+  leaveDescriptionPlaceholder: {id: `${prefix}.field.leaveDescription.placeholder`},
+
+  minLeave: { id: `${prefix}.field.minLeave`},
+  date: { id: `${prefix}.field.date`},
+  leaveItem: { id: `${prefix}.field.leaveItem`},
+
   filterCompany: { id: `${prefix}.field.filter.company`},
   filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
 });
@@ -85,6 +97,8 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
       case 'year': return leaveField.year;
       case 'allocation': return leaveField.allocation;
       case 'isWithinHoliday': return leaveField.isWithinHoliday;
+      case 'leaveDate': return leaveField.leaveDate;
+      case 'leaveDescription': return leaveField.leaveDescription;
           
       default: return {id: field};
     }
@@ -100,6 +114,8 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
       case 'description': return leaveField.descriptionRequired;
       case 'year': return leaveField.yearRequired;
       case 'allocation': return leaveField.allocationRequired;
+      case 'leaveDate': return leaveField.leaveDateRequired;
+      case 'leaveDescription': return leaveField.leaveDescriptionRequired;
 
       default: return {id: field};
     }
@@ -117,6 +133,8 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
       case 'year': return leaveField.yearPlaceholder;
       case 'allocation': return leaveField.allocationPlaceholder;
       case 'isWithinHoliday': return leaveField.isWithinHolidayPlaceholder;
+      case 'leaveDate': return leaveField.leaveDatePlaceholder;
+      case 'leaveDescription': return leaveField.leaveDescriptionPlaceholder;
       
       default: return {id: field};
     }
