@@ -90,6 +90,7 @@ enum AppMenu {
   MyProfile = 'MNU85',
   LookupEmployeeLevel = 'MNU86',
   KPIOpen = 'MNU91',
+  KPISubOrdinate = 'MNU92',
   WebJob = 'MNU71',
 }
 

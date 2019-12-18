@@ -294,6 +294,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/kpi/opens';
       break;
 
+    case 'MNU92':
+      path = '/kpi/subordinates';
+      break;
+
     case 'MNU71':
       path = '/webjob';
       break;

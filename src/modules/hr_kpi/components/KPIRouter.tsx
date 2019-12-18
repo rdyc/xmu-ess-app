@@ -21,9 +21,20 @@ import { KPIFinalList } from './final/list/kpi/KPIFinalList';
 import { KPIOpenDetail } from './open/Detail/KPIOpenDetail';
 import { KPIOpenForm } from './open/form/KPIOpenForm';
 import { KPIOpenList } from './open/list/KPIOpenList';
+import { KPIFinalSubOrdinateDetail } from './subordinate/detail/KPIFinalSubOrdinateDetail';
+import { EmployeeFinalSubOrdinateList } from './subordinate/list/employee/EmployeeFinalSubOrdinateList';
+import { KPIFinalSubOrdinateList } from './subordinate/list/kpi/KPIFinalSubOrdinateList';
 import { KPITemplateDetail } from './template/detail/KPITemplateDetail';
 import { KPITemplateForm } from './template/form/KPITemplateForm';
 import { KPITemplateList } from './template/list/KPITemplateList';
+
+const subordinate = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:employeeUid/:kpiUid`} component={KPIFinalSubOrdinateDetail} />
+    <Route path={`${props.match.path}/:employeeUid`} component={KPIFinalSubOrdinateList} />
+    <Route path={`${props.match.path}`} component={EmployeeFinalSubOrdinateList} />
+  </Switch>
+);
 
 const final = (props: RouteComponentProps) => (
   <Switch>
@@ -113,6 +124,12 @@ export const KPIRoutingComponents: React.SFC<RouteComponentProps> = props => (
       menu={AppMenu.HumanResource} 
       subMenu={AppMenu.KPIEmployee} 
       component={final} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/subordinates`}
+      menu={AppMenu.HumanResource} 
+      subMenu={AppMenu.KPISubOrdinate} 
+      component={subordinate} 
     />
     <SecureMenuRoute 
       path={`${props.match.path}/employees`}
