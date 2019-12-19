@@ -10,10 +10,12 @@ import * as React from 'react';
 import { ICalculationFormValue, LeaveCalculationListProps } from './LeaveCalculationList';
 import { LeaveCalculationTableView } from './LeaveCalculationTableView';
 import { LeaveFilter } from './LeaveFilter';
+import { LeaveInfo } from './partial/LeaveInfo';
 
 export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = props => {
   const { isLoading, response } = props.leaveCalculationState.all;
   const { response: companyList } = props.lookupCompanyState.list;
+  const { response: leaveList } = props.lookupLeaveState.list;
   const {
     size,
     page,
@@ -47,11 +49,16 @@ export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = pr
           render={(formikBag: FormikProps<ICalculationFormValue>) => (
             <Form>
               <Paper square elevation={1}>
-                <Grid container spacing={8} className={props.classes.leaveTop}>
+                {
+                  leaveList && leaveList.data &&
+                  <LeaveInfo items={leaveList.data} />
+                }
+                <Grid container spacing={24} className={props.classes.leaveTop}>
                   <Grid item xs={12} md={6} lg={6} xl={6}>
                     <Button 
                       variant="contained" 
                       color="primary" 
+                      style={{color: '#fff'}}
                       className={props.classes.calculateButton} 
                       disabled={isLoading || formikBag.isSubmitting}
                       onClick={() => {
@@ -73,9 +80,9 @@ export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = pr
                     </Button>
                   </Grid>
                   <Grid item xs={12} md={6} lg={6} xl={6}>
-                    <Grid item xs={12} md={6} lg={6} xl={6} className={props.classes.leaveEmploye}>
-                      {
-                        props.companyUid && response.data &&
+                    {
+                      props.companyUid && response.data &&
+                      <Grid item xs={12} md={4} lg={4} xl={4} className={props.classes.leaveEmploye}>
                         <AccountEmployeeAllOption filter={props.filterEmployee}>
                           <SelectField
                             isSearchable
@@ -95,13 +102,13 @@ export const LeaveCalculationListView: React.SFC<LeaveCalculationListProps> = pr
                             }}
                             onChange={(selected: ISelectFieldOption) => {
                               const value = (selected && selected.value) || '';
-  
+
                               props.handleFindEmployee(value);
                             }}
                           />
                         </AccountEmployeeAllOption>
-                      }
-                    </Grid>
+                      </Grid>
+                    }
                   </Grid>
                 </Grid>
                 {!isLoading && !formikBag.isSubmitting && response && response.data && response.data.length >= 1 && (

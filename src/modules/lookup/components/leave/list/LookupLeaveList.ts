@@ -73,6 +73,7 @@ const createProps: mapper<LookupLeaveListProps, IOwnState> = (props: LookupLeave
 
   // fill from previous request if any
   if (request && request.filter) {
+    state.year = request.filter.year;
     state.companyUid = request.filter.companyUid;
   }
 
@@ -99,6 +100,7 @@ const handlerCreators: HandleCreators<LookupLeaveListProps, IOwnHandler> = {
       // predefined filter
       const filter: ILookupLeaveGetAllFilter = {
         companyUid: props.companyUid,
+        year: props.year,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -159,7 +161,8 @@ const handlerCreators: HandleCreators<LookupLeaveListProps, IOwnHandler> = {
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: LookupLeaveListProps) => () => {
-    return props.companyUid !== undefined;
+    return props.companyUid !== undefined ||
+      props.year !== undefined;
   },
 };
 
@@ -168,9 +171,11 @@ const lifecycles: ReactLifeCycleFunctions<LookupLeaveListProps, IOwnState> = {
     // track any changes in filter props
     const isFilterChanged = !shallowEqual(
       {
+        year: this.props.year,
         companyUid: this.props.companyUid,
       },
       {
+        year: prevProps.year,
         companyUid: prevProps.companyUid,
       }
     );

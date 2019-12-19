@@ -1079,7 +1079,7 @@ const styles = (theme: Theme) =>
     leaveTop: {
       width: '100%',
       margin: '0',
-      marginBottom: theme.spacing.unit
+      // marginBottom: theme.spacing.unit
     },
     leaveEmploye: {
       [theme.breakpoints.up('md')]: {

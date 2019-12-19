@@ -83,14 +83,14 @@ const holiday = (props: RouteComponentProps) => (
 );
 
 const leave = (props: RouteComponentProps) => (
-  <LeaveTab>
-    <Switch>
+  <Switch>
       <Route path={`${props.match.path}/config/form`} component={LeaveForm} />
       <Route path={`${props.match.path}/config/:leaveUid`} component={LookupLeaveDetail} />
+    <LeaveTab>
       <Route path={`${props.match.path}/config`} component={LookupLeaveList} />
       <Route path={`${props.match.path}/employee`} component={LeaveCalculationList} />
-    </Switch>
-  </LeaveTab>
+    </LeaveTab>
+  </Switch>
 );
 
 const calculation = (props: RouteComponentProps) => (
