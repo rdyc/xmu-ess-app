@@ -77,6 +77,8 @@ export const leaveField = defineMessages({
   leaveDescriptionPlaceholder: {id: `${prefix}.field.leaveDescription.placeholder`},
 
   minLeave: { id: `${prefix}.field.minLeave`},
+  noDate: { id: `${prefix}.field.noDate`},
+
   date: { id: `${prefix}.field.date`},
   leaveItem: { id: `${prefix}.field.leaveItem`},
 
@@ -85,6 +87,9 @@ export const leaveField = defineMessages({
   
   filterCompany: { id: `${prefix}.field.filter.company`},
   filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
+  
+  cutiKhusus: { id: `${prefix}.field.cutiKhusus`},
+  cutiTahunan: { id: `${prefix}.field.cutiTahunan`},
 });
 
 export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder' | 'fieldTab') => {

@@ -101,6 +101,7 @@ export const LookupLeaveListView: React.SFC<LookupLeaveListProps> = props => (
       isOpen={props.isFilterOpen}
       initialProps={{
         companyUid: props.companyUid,
+        year: props.year
       }}
       onClose={props.handleFilterVisibility}
       onApply={props.handleFilterApplied}

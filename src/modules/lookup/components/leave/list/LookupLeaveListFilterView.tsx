@@ -1,3 +1,4 @@
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { FilterCompany } from '@lookup/components/company/select';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -48,7 +49,7 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
           </Typography>
 
           {
-            (props.filterCompany) &&
+            (props.filterCompany || props.filterYear) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -67,6 +68,27 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
 
       <DialogContent className={props.classes.paddingDisabled}>
         <List>
+
+          <ListItem button onClick={props.handleFilterYearVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(lookupMessage.calculation.filter.year)}
+              secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterYear &&
+                <IconButton onClick={props.handleFilterYearOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterYearVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
           <ListItem button onClick={props.handleFilterCompanyVisibility}>
             <ListItemText
               primary={props.intl.formatMessage(lookupMessage.leave.field.company)}
@@ -90,6 +112,16 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
         </List>
       </DialogContent>
     </Dialog>
+
+    <DialogValue
+      title={props.intl.formatMessage(lookupMessage.calculation.filter.year)}
+      isOpen={props.isFilterYearOpen}
+      hideBackdrop={true}
+      items={props.yearList}
+      value={props.filterYear && props.filterYear.value}
+      onSelected={props.handleFilterYearOnSelected}
+      onClose={props.handleFilterYearOnClose}
+    />
 
     <FilterCompany
       title={props.intl.formatMessage(lookupMessage.leave.field.company)}

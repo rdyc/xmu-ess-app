@@ -1,5 +1,6 @@
 import { ICommonSystem } from '@common/classes';
 import { ICompanyList } from '@lookup/classes/response';
+import { ILeaveItem } from './ILeaveItem';
 
 export interface ILookupLeaveList {
   uid: string;
@@ -11,4 +12,5 @@ export interface ILookupLeaveList {
   name: string;
   allocation: number;
   isWithinHoliday: boolean;
+  dates: ILeaveItem[];
 }

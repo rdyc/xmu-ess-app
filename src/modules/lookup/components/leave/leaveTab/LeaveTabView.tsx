@@ -5,11 +5,14 @@ import * as React from 'react';
 import { LeaveTabProps } from './LeaveTab';
 
 export const LeaveTabView: React.SFC<LeaveTabProps> = props => {
+  const employeePath: string = `/lookup/leaves/${LookupLeaveTabs.EmployeeLeave}`;
+  const pathname: string = props.location.pathname;
+
   const tabs = Object.keys(LookupLeaveTabs).map((key, index) => ({
     id: key,
     name: LookupLeaveTabs[key]
   }));
-
+  
   const findIdx = (page?: LookupLeaveTabs) => {
     if (page) {
       const value = tabs.findIndex(idx => idx.name === page);
@@ -24,7 +27,7 @@ export const LeaveTabView: React.SFC<LeaveTabProps> = props => {
   const render = (
     <React.Fragment>
       <AppBar position="static">
-        <Tabs centered value={findIdx(props.lookupLeaveState.page.leavePage) || 0} style={{
+        <Tabs centered value={findIdx(props.lookupLeaveState.page.leavePage) || employeePath === pathname && 1 || 0} style={{
           color: '#fff',
           background: props.theme.palette.type === 'light' ? '#03a9f4' : '#212121'
         }}>

@@ -70,7 +70,7 @@ const hrCompetencyEmployeeCategoryItem: React.SFC<AllProps> = props => {
               
               {/* Category */}
               <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
-                <Typography variant="subheading" color="inherit" >
+                <Typography variant="h6" color="inherit" >
                   {item.category.competency.name} - {item.category.name}
                 </Typography>
                 <Typography variant="body1" color="inherit">

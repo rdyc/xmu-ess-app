@@ -71,22 +71,12 @@ const competencyEmployeeCategory: React.ComponentType<AllProps> = props => (
         <TableRow>
           {/* Category */}
           <TableCell colSpan={2} className={classNames(props.classes.toolbar)} >
-            <Typography variant="subheading" color="inherit" >
+            <Typography variant="h6" color="inherit" >
               {item.category.competency.name} - {item.category.name}
             </Typography>
             <Typography variant="body1" color="inherit">
               {item.category.description}
             </Typography>
-            {/* {props.active === item.category.uid && props.isExpanded ? <ExpandLess className={props.classes.expandCategory} /> : <ExpandMore  className={props.classes.expandCategory}/>}
-            <Collapse
-              in={props.active === item.category.uid && props.isExpanded}
-              timeout="auto"
-              unmountOnExit
-            >
-              <Typography variant="body1" color="inherit">
-                {item.category.description}
-              </Typography>
-            </Collapse> */}
           </TableCell>
         </TableRow>
         <FieldArray 

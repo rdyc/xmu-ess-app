@@ -1,8 +1,6 @@
-// import AppMenu from '@constants/AppMenu';
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
 import { LookupLeaveTabs } from '@lookup/classes/types';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
-// import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -66,14 +64,16 @@ const handlerCreators: HandleCreators<LeaveTabProps, IOwnHandlers> = {
 const lifecycles: ReactLifeCycleFunctions<LeaveTabProps, IOwnState> = {
   componentDidMount() {
     const { page } = this.props.lookupLeaveState;
+    const employeePath: string = `/lookup/leaves/${LookupLeaveTabs.EmployeeLeave}`;
+    const pathname: string = this.props.location.pathname;
 
-    this.props.history.push(`/lookup/leaves/${page.leavePage || LookupLeaveTabs.Leave}`);
-
-    // this.props.masterPage.changePage({
-    //   uid: AppMenu.LookupLeave,
-    //   parentUid: AppMenu.Lookup,
-    //   title: this.props.intl.formatMessage(lookupMessage.leave.page.listTitle),
-    // });
+    if (page.leavePage) {
+      this.props.history.push(`/lookup/leaves/${page.leavePage}`);
+    } else {
+      if (employeePath !== pathname) {
+        this.props.history.push(`/lookup/leaves/${LookupLeaveTabs.Leave}`);
+      }
+    }
   },
   componentDidUpdate(prevProps: LeaveTabProps) {
     // 

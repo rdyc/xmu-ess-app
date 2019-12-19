@@ -7,6 +7,7 @@ import { IValidationErrorResponse } from '@layout/interfaces';
 import { ICalculateLeavePayload } from '@lookup/classes/request';
 import { WithLeaveCalculation, withLeaveCalculation } from '@lookup/hoc/withLeaveCalculation';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -78,6 +79,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 
 export type LeaveCalculationListProps = 
   WithLeaveCalculation &
+  WithLookupLeave &
   WithLookupCompany &
   WithUser &
   WithLayout &
@@ -153,7 +155,7 @@ const stateUpdaters: StateUpdaters<LeaveCalculationListProps, IOwnState, IOwnSta
   }),
   setCalculateOpen: (prevState: IOwnState) => () => ({
     isCalculateOpen: !prevState.isCalculateOpen
-  })
+  }),
 };
 
 const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> = {
@@ -179,7 +181,7 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
     const { user } = props.userState;
     // const { isLoading, isExpired } = props.leaveCalculationState.all;
     const { loadAllRequest } = props.leaveCalculationDispatch;
-
+    const { loadListRequest } = props.lookupLeaveDispatch;
     if (user) {
       loadAllRequest({
         companyUid,
@@ -188,6 +190,13 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
           find,
           page,
           size,
+        }
+      });
+
+      loadListRequest({
+        filter: {
+          year,
+          companyUid
         }
       });
     }
@@ -281,6 +290,9 @@ const handlerCreators: HandleCreators<LeaveCalculationListProps, IOwnHandlers> =
 };
 
 const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, IOwnState> = {
+  componentWillMount() {
+    // 
+  },
   componentDidMount() {
     // Load company use later
     const { response, isLoading, isExpired } = this.props.lookupCompanyState.list;
@@ -327,6 +339,7 @@ export const LeaveCalculationList = compose(
   withUser,
   withLayout,
   withLookupCompany,
+  withLookupLeave,
   withMasterPage,
   withRouter,
   injectIntl,

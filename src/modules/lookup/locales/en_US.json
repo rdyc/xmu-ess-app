@@ -462,6 +462,9 @@
   "lookup.leave.field.date": "Date",
   "lookup.leave.field.employee": "Employee",
   "lookup.leave.field.config": "Leave",
+  "lookup.leave.field.cutiKhusus": "Cuti Khusus",
+  "lookup.leave.field.cutiTahunan": "Cuti Tahunan",
+  "lookup.leave.field.noDate": "No date is recorded",
   
   "leave.calculation.filter.employee": "Employee", 
   "leave.calculation.filter.company": "Company", 
