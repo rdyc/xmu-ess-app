@@ -26,7 +26,6 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-
 import { LookupDiemDetailView } from './LookupDiemDetailView';
 
 interface IOwnRouteParams {

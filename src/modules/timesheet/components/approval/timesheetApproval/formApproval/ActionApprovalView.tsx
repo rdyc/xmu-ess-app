@@ -24,8 +24,9 @@ export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => (
     secondary={(data: ITimesheetDetail) => ([
       <React.Fragment>
         {
-          data.workflow && 
-          data.workflow.isApproval &&
+          // dasarnya dari get all mengambil data yang pending, alias 'isapproval' pasti true
+          // data.workflow && 
+          // data.workflow.isApproval &&
           <WorkflowApprovalForm 
             title={props.approvalTitle}
             statusTypes={props.approvalStatusTypes}

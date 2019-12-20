@@ -66,6 +66,15 @@ const financeSummary: React.SFC<AllProps> = props => (
             value={props.data.document.documentNotes}
           />
         }
+        {
+          (props.data.document && props.data.document.approvalNotes) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={props.intl.formatMessage(financeMessage.approval.field.approvalNotes)}
+            value={props.data.document.approvalNotes}
+          />
+        }
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField

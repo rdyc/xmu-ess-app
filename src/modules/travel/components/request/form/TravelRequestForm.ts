@@ -8,7 +8,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
 import { GlobalFormat } from '@layout/types';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IDiem } from '@lookup/classes/response';
+import { IDiemList } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -89,7 +89,7 @@ interface IOwnOption {
 
 interface IOwnState {
   formMode: FormMode;
-  diemData?: IDiem[];
+  diemData?: IDiemList[];
 
   initialValues: ITravelRequestFormValue;
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ITravelRequestFormValue>>>;
@@ -114,7 +114,7 @@ interface IOwnHandler {
   handleSetProjectSiteFilter: (projectUid: string) => void;
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ITravelRequestFormValue, action: FormikActions<ITravelRequestFormValue>) => void;
-  handleSetDiemData: (data: IDiem[] | null) => void;
+  handleSetDiemData: (data: IDiemList[] | null) => void;
   // handleSetDiem: (projectType: string, destinationType: string) => void;
 }
 
@@ -314,7 +314,7 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
       direction: 'ascending'
     },
   }),
-  setDiemData: () => (diemData: IDiem[]): Partial<IOwnState> => ({
+  setDiemData: () => (diemData: IDiemList[]): Partial<IOwnState> => ({
     diemData
   }),
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
@@ -324,7 +324,7 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
 };
 
 const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
-  handleSetDiemData: (props: TravelRequestFormProps) => (data: IDiem[]) => {
+  handleSetDiemData: (props: TravelRequestFormProps) => (data: IDiemList[]) => {
     props.setDiemData(data);
   },
   handleSetProjectFilter: (props: TravelRequestFormProps) => (customerUid: string) => {
@@ -508,7 +508,7 @@ const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnState> = {
   componentDidMount() {
-    const { loadAllRequest } = this.props.lookupDiemDispatch;
+    const { loadListRequest } = this.props.lookupDiemDispatch;
     const { user } = this.props.userState;
     const filter: any = {
       projectType: undefined,
@@ -518,7 +518,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
     };
 
     if (user) {
-      loadAllRequest({
+      loadListRequest({
         filter
       });
       
@@ -531,7 +531,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
   componentDidUpdate(prevProps: TravelRequestFormProps) {
     // handle travel detail response
     const { response } = this.props.travelRequestState.detail;
-    const { response: diemResponse } = this.props.lookupDiemState.all;
+    const { response: diemResponse } = this.props.lookupDiemState.list;
 
     if (response !== prevProps.travelRequestState.detail.response) {
       if (response && response.data) {
@@ -545,7 +545,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
           end: response.data.end,
           customerUid: response.data.customerUid,
           projectUid: response.data.projectUid,
-          projectType: response.data.project && response.data.project.projectType === 'SPT01' ? 'SPT01' : 'SPT04',
+          projectType: response.data.project && response.data.project.projectType || '',
           siteUid: response.data.siteUid,
           activityType: response.data.activityType,
           objective: response.data.objective,
@@ -591,7 +591,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
       }
     }
 
-    if (diemResponse !== prevProps.lookupDiemState.all.response) {
+    if (diemResponse !== prevProps.lookupDiemState.list.response) {
       if (diemResponse && diemResponse.data) {
         this.props.handleSetDiemData(diemResponse.data);
       }

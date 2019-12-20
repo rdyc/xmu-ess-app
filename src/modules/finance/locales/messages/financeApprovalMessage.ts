@@ -19,6 +19,7 @@ export const financeApprovalField = defineMessages({
   total: { id: `${prefix}.field.total` },
   status: { id: `${prefix}.field.status` },
   notes: { id: `${prefix}.field.notes` },
+  approvalNotes: { id: `${prefix}.field.approvalNotes` },
   notesPlaceholder: { id: `${prefix}.field.notes.placeholder` },
   goToDocument: { id: `${prefix}.field.button.goToDocument` },
   notesExpense: { id: `${prefix}.field.notes.expense` },
