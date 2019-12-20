@@ -10,7 +10,6 @@ import { Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps } fro
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-
 import { IRoleFormValue } from '../LookupRoleForm';
 
 interface IOwnProps {

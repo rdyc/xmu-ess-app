@@ -131,10 +131,12 @@ const stateUpdaters: StateUpdaters<SystemLimitDetailProps, IOwnState, IOwnStateU
 const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: SystemLimitDetailProps) => () => { 
     if (props.userState.user && props.match.params.systemLimitUid && !props.systemLimitState.detail.isLoading) {
-      props.systemLimitDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        limitUid: props.match.params.systemLimitUid
-      });
+      if (props.history.location.state) {
+        props.systemLimitDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          limitUid: props.match.params.systemLimitUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: SystemLimitDetailProps) => (item: IPopupMenuOption) => { 

@@ -6,7 +6,7 @@ import { ISelectFieldOption, SelectField } from '@layout/components/fields/Selec
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IDiem } from '@lookup/classes/response';
+import { IDiemList } from '@lookup/classes/response';
 import { LookupCustomerOption } from '@lookup/components/customer/options/LookupCustomerOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
@@ -30,7 +30,7 @@ type TravelRequestDetailPartialFormProps = {
   filterCommonSystem?: ISystemListFilter;
   filterProject?: IProjectRegistrationGetListFilter;
   filterProjectSite?: IProjectSiteGetRequest;
-  diemData?: IDiem[];
+  diemData?: IDiemList[];
   setProjectFilter: (customerUid: string) => void;
   SetProjectSiteFilter: (projectUid: string) => void;
 };
@@ -232,12 +232,12 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 props.SetProjectSiteFilter(selected && selected.value);
                 props.formikBag.setFieldValue('siteUid', '');
 
-                let projectType = 'SPT01';
-                if (selected && selected.data && selected.data.projectType === 'SPT01') {
-                  projectType = 'SPT01';
-                } else {
-                  projectType = 'SPT04';
-                }
+                const projectType = selected && selected.data && selected.data.projectType;
+                // if (selected && selected.data && selected.data.projectType === 'SPT01') {
+                //   projectType = 'SPT01';
+                // } else {
+                //   projectType = 'SPT04';
+                // }
 
                 // set projectType 
                 props.formikBag.setFieldValue('projectType', projectType);

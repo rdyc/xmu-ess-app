@@ -25,7 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupLeaveDetailView } from './LookupLeaveDetailView';
 
@@ -129,11 +129,13 @@ const stateUpdaters: StateUpdaters<LeaveDetailProps, IOwnState, IOwnStateUpdater
 
 const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LeaveDetailProps) => () => { 
-    if (props.userState.user && props.match.params.leaveUid && !props.lookupLeaveState.detail.isLoading) {
-      props.lookupLeaveDispatch.loadDetailRequest({
-        companyUid: props.history.location.state.companyUid,
-        leaveUid: props.match.params.leaveUid
-      });
+    if (!isNullOrUndefined(props.history.location.state)) {
+      if (props.userState.user && props.match.params.leaveUid && !props.lookupLeaveState.detail.isLoading) {
+        props.lookupLeaveDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          leaveUid: props.match.params.leaveUid
+        });
+      }
     }
   },
   handleOnSelectedMenu: (props: LeaveDetailProps) => (item: IPopupMenuOption) => { 
