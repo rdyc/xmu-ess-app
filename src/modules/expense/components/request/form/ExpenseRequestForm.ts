@@ -388,6 +388,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnS
           notes: response.data.notes || '',
         };
 
+        this.props.setProjectFilter(response.data.customerUid);
+        
         // set initial values
         this.props.setInitialValues(initialValues);
       }

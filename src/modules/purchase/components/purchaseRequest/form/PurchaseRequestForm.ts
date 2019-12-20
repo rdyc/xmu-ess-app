@@ -365,6 +365,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<PurchaseRequestFormProps, IOwn
           items: [],
         };
 
+        this.props.setProjectFilter(response.data.customerUid);
+        
         // fill items
         if (response.data.items) {
           response.data.items.forEach(item => initialValues.items && initialValues.items.push({
