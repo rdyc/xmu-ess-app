@@ -157,7 +157,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<COGSFormProps, IOwnState> = {
     this.props.masterPage.changePage({
       uid: AppMenu.COGSUpload,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/cogsupload',
       title: this.props.intl.formatMessage(lookupMessage.cogsUpload.page.uploadTitle),
       description: this.props.intl.formatMessage(lookupMessage.cogsUpload.page.uploadSubHeader)
     });

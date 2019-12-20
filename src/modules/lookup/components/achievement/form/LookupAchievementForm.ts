@@ -156,7 +156,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AchievementFormProps, IOwnStat
     this.props.masterPage.changePage({
       uid: AppMenu.AchievementChart,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/achievementchart',
       title: this.props.intl.formatMessage(lookupMessage.achievement.page.newTitle),
       description: this.props.intl.formatMessage(lookupMessage.achievement.page.newSubHeader)
     });

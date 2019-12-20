@@ -79,7 +79,6 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
           </React.Fragment>
         )}
       />
-
       {
         props.formikBag.values.leaveType === LeaveType.CutiKhusus &&
         <Field
@@ -123,8 +122,9 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             leftArrowIcon={<ChevronLeft />}
             rightArrowIcon={<ChevronRight />}
             format="MMMM DD, YYYY"
-            helperText={form.touched.start && form.errors.start ||
-              props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+            helperText={props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 ?
+              props.intl.formatMessage(leaveMessage.request.field.isHoliday)
+            : (form.touched.start && form.errors.start ? form.errors.start : '') }
             error={form.touched.start && Boolean(form.errors.start) || 
               props.holidayList.findIndex(item => item === props.formikBag.values.start) !== -1 }
             onChange={(moment: Moment) => props.formikBag.setFieldValue('start', moment.format('YYYY-MM-DD'))}
@@ -159,15 +159,16 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
               fullWidth
               required={true}
               margin="normal"
-              disabled={form.isSubmitting || !props.formikBag.values.start}
+              disabled={form.isSubmitting}
               showTodayButton
               label={props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName'))}
               placeholder={props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldPlaceholder'))}
               leftArrowIcon={<ChevronLeft />}
               rightArrowIcon={<ChevronRight />}
               format="MMMM DD, YYYY"
-              helperText={form.touched.end && form.errors.end ||
-                props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 ? props.intl.formatMessage(leaveMessage.request.field.isHoliday) : '' }
+              helperText={props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 ?
+                props.intl.formatMessage(leaveMessage.request.field.isHoliday)
+              : (form.touched.end && form.errors.end ? form.errors.end : '') }
               error={form.touched.end && Boolean(form.errors.end) || 
                 props.holidayList.findIndex(item => item === props.formikBag.values.end) !== -1 }
               onChange={(moment: Moment) => props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD'))}
@@ -187,6 +188,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
         render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             required={true}
@@ -223,6 +225,7 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
         render={({ field, form }: FieldProps<ILeaveRequestFormValue>) => (
           <TextField
             {...field}
+            multiline
             fullWidth={true}
             disabled={form.isSubmitting}
             required={true}
