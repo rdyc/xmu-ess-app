@@ -161,6 +161,8 @@ const PurchaseDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormPr
             <CommonSystemOption category="currency" filter={props.filterCommonSystem}>
               <SelectField
                 isSearchable
+                menuPlacement="auto"
+                menuPosition="fixed"
                 isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
