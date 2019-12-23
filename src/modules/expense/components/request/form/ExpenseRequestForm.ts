@@ -195,7 +195,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestFormProps, IOwnState, IOwnState
   setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
     filterProject: {
       customerUids: customerUid,
-      statusTypes: ([WorkflowStatusType.Approved]).toString(),
+      statusTypes: [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened].join(),
       direction: 'ascending'
     },
   }),
