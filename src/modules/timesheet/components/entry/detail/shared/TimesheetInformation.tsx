@@ -80,12 +80,12 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
-          value={props.intl.formatTime(props.data.start, GlobalFormat.Time)}
+          value={props.data.start.substring(11, 16)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
-          value={props.intl.formatTime(props.data.end, GlobalFormat.Time)}
+          value={props.data.end.substring(11, 16)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
