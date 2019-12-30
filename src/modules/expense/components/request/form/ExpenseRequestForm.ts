@@ -192,8 +192,9 @@ const stateUpdaters: StateUpdaters<ExpenseRequestFormProps, IOwnState, IOwnState
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened].join(),
       direction: 'ascending'
@@ -219,7 +220,7 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
     }
   },
   handleSetProjectFilter: (props: ExpenseRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: ExpenseRequestFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
