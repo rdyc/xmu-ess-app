@@ -307,8 +307,9 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: ([WorkflowStatusType.Approved]).toString(),
       direction: 'ascending'
@@ -328,7 +329,7 @@ const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
     props.setDiemData(data);
   },
   handleSetProjectFilter: (props: TravelRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleSetProjectSiteFilter: (props: TravelRequestFormProps) => (projectUid: string) => {
     const { user } = props.userState;

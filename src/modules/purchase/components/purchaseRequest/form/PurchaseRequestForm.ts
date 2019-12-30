@@ -191,8 +191,9 @@ const stateUpdaters: StateUpdaters<PurchaseRequestFormProps, IOwnState, IOwnStat
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: ([WorkflowStatusType.Approved]).toString(),
       direction: 'ascending'
@@ -202,7 +203,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestFormProps, IOwnState, IOwnStat
 
 const handlerCreators: HandleCreators<PurchaseRequestFormProps, IOwnHandler> = {
   handleSetProjectFilter: (props: PurchaseRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: PurchaseRequestFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
