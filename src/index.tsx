@@ -3,7 +3,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { App } from './App';
-import registerConsoleGreeting from './registerConsoleGreeting';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
@@ -12,4 +11,3 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
-registerConsoleGreeting();

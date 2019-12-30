@@ -17,7 +17,7 @@ const PopupCenter = (w: number, h: number): string => {
 const settings: UserManagerSettings = {
   client_id: process.env.REACT_APP_CLIENT_ID || '',
   authority: process.env.REACT_APP_OAUTH_URL || '',
-  scope: process.env.REACT_APP_OAUTH_SCOPES,
+  scope: process.env.REACT_APP_OAUTH_SCOPES || '',
   response_type: 'token id_token',
   // redirect_uri: `${selfHost}/callback`,
   popup_redirect_uri: `${selfHost}/signin`,
