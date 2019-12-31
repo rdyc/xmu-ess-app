@@ -367,13 +367,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
           id: ProjectUserAction.ChangeOwner,
           name: this.props.intl.formatMessage(projectMessage.registration.option.owner),
           enabled: !isLoading,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved ]) && (isOwner || this.props.isAdmin) && !_haschildProject
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || this.props.isAdmin) && !_haschildProject
         },
         {
           id: ProjectUserAction.ManageSites,
           name: this.props.intl.formatMessage(projectMessage.registration.option.site),
           enabled: !isLoading,
-          visible: isContains(_statusType, [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened]) && this.props.isAdmin
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && this.props.isAdmin
         }
       ];
 
