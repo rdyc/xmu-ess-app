@@ -111,6 +111,7 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
     
     const dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis2.baseInterval = { count: 1, timeUnit: 'day' };
+    dateAxis2.paddingRight = 40;
     // for date *top axis, just need to remove it for place the dateaxis in bottom
     dateAxis2.renderer.opposite = true;
 

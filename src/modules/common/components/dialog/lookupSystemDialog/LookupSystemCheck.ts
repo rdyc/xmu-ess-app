@@ -43,6 +43,7 @@ export interface SystemCheck {
 }
 
 interface OwnState {
+  isLoaded: boolean;
   itemCheck: SystemCheck[];
 }
 
@@ -55,6 +56,7 @@ interface OwnHandlers {
 interface OwnStateHandler extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
   stateReset: StateHandler<OwnState>;
+  handleLoad: () => OwnState;
 }
 
 export type LookupSystemCheckProps 
@@ -67,6 +69,7 @@ export type LookupSystemCheckProps
   & InjectedIntlProps;
 
 const createProps: mapper<LookupSystemCheckProps, OwnState> = (props: LookupSystemCheckProps): OwnState => ({
+  isLoaded: false,
   itemCheck: []
 });
 
@@ -77,6 +80,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
   }),
   stateReset: (prevState: OwnState) => (itemCheck: SystemCheck[]) => ({
     itemCheck
+  }),
+  handleLoad: (state: OwnState) => () => ({
+    isLoaded: true
   })
 };
 
@@ -203,9 +209,10 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemCheckProps, OwnOption> = {
   },
   componentDidUpdate(prevProps: LookupSystemCheckProps) {
     const { response } = this.props.categoryState();
+    // const { response: prevResponse } = prevProps.categoryState();
     const { itemCheck } = this.props;
 
-    if (response && response.data) {
+    if (response && response.data && !this.props.isLoaded) {
       if (itemCheck.length === 0) {
         response.data.map(item => {
           itemCheck.push({
@@ -217,6 +224,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemCheckProps, OwnOption> = {
           itemCheck,
         });
       }
+      this.props.handleLoad();
     }
     if (prevProps.value !== this.props.value) {
       if (!this.props.value) {
