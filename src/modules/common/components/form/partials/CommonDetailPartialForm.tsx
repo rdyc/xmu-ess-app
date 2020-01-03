@@ -80,6 +80,7 @@ const CommonDetailPartialForm: React.ComponentType<CommonDetailPartialFormProps>
                 onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
                 onChange={(selected: ISelectFieldOption) => {
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.formikBag.setFieldValue('parentCode', '');
                   props.handleSetFilterCommonSystem(selected && selected.value);
                 }}
               />
