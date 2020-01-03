@@ -62,10 +62,10 @@ const lifecycles: ReactLifeCycleFunctions<ResourceMappingChartProps, {}> = {
                 project,
                 name: (item.employee.fullName.toLowerCase()),
                 start: moment(project.start).format('YYYY') !== year.toString() ? 
-                  moment().startOf('year').format('YYYY-MM-DD') : 
+                  moment(moment([year, 0])).startOf('month').format('YYYY-MM-DD') : 
                   moment(project.start).format('YYYY-MM-DD'),
-                end: moment(project.end).format('YYYY') > year.toString() ? 
-                  moment().endOf('year').format('YYYY-MM-DD') : 
+                end: moment(project.end).format('YYYY') !== year.toString() ? 
+                  moment(moment([year, 11])).endOf('month').format('YYYY-MM-DD') : 
                   moment(project.end).format('YYYY-MM-DD'),
                 // color: colorSet.getIndex(0).brighten(Number(index % 3 === 1 ? 0 : (index % 3 === 2 ? 0.4 : 0.8 ))),
                 color: colorChart[chartCounter % 5],
