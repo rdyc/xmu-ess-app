@@ -216,15 +216,17 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeCheckProps, IOwnState> 
     }
 
     if (itemCheck.length === 0 && response && response.data) {
-      response.data.map(item => {
-        itemCheck.push({
-          employee: item,
-          isCheck: false
+      if (response.data.length !== 0) {
+        response.data.map(item => {
+          itemCheck.push({
+            employee: item,
+            isCheck: false
+          });
         });
-      });
-      this.props.stateUpdate({
-        itemCheck
-      });
+        this.props.stateUpdate({
+          itemCheck
+        });
+      }
     }
     if (prevProps.value !== this.props.value) {
       if (!this.props.value) {
