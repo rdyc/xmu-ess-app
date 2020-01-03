@@ -280,6 +280,7 @@ const handlerCreators: HandleCreators<ResourceMappingFilterProps, IOwnHandler> =
   },
   handleFilterCompanyOnSelected: (props: ResourceMappingFilterProps) => (data: ILookupCompany) => {
     props.setFilterCompany(data);
+    props.setFilterEmployee();
   },
   handleFilterCompanyOnClear: (props: ResourceMappingFilterProps) => () => {
     props.setFilterCompany();
