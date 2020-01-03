@@ -56,16 +56,18 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICommonFormValue>>>;
   
   filterLookupCompany: ILookupCompanyGetListFilter;
-  filterCommonSystem: ISystemListFilter;
+  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setFilterCommonSystem: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ICommonFormValue, actions: FormikActions<ICommonFormValue>) => void;
+  handleSetFilterCommonSystem: (companyUid: string) => void;
 }
 
 export type CommonFormProps
@@ -121,16 +123,23 @@ const createProps: mapper<CommonFormProps, IOwnState> = (props: CommonFormProps)
     direction: 'ascending'
   },
   
-  filterCommonSystem: {
-    orderBy: 'value',
-    direction: 'ascending'
-  },
+  // filterCommonSystem: {
+  //   orderBy: 'value',
+  //   direction: 'ascending'
+  // },
 });
 
 const stateUpdaters: StateUpdaters<CommonFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setFilterCommonSystem: () => (companyUid: string) => ({
+    filterCommonSystem: {
+      companyUid,
+      orderBy: 'value',
+      direction: 'ascending'
+    },
+  })
 };
 
 const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
@@ -240,7 +249,10 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.message.createFailure : commonMessage.system.message.updateFailure)
         });
       });
-  }
+  },
+  handleSetFilterCommonSystem: (props: CommonFormProps) => (companyUid: string) => {
+    props.setFilterCommonSystem(companyUid);
+  },
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = {
