@@ -30,6 +30,6 @@ export enum CommonCategory {
   status = 'Status',
   transportation = 'Transport Type',
   profession = 'Profession Category',
-  competency = 'Professional Competency',
+  competency = 'Technical Competency',
   assessor = 'Assessor Type'
 }
