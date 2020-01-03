@@ -214,15 +214,17 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemCheckProps, OwnOption> = {
 
     if (response && response.data && !this.props.isLoaded) {
       if (itemCheck.length === 0) {
-        response.data.map(item => {
-          itemCheck.push({
-            item,
-            isCheck: false
+        if (response.data.length !== 0) {
+          response.data.map(item => {
+            itemCheck.push({
+              item,
+              isCheck: false
+            });
           });
-        });
-        this.props.stateUpdate({
-          itemCheck,
-        });
+          this.props.stateUpdate({
+            itemCheck,
+          });
+        }
       }
       this.props.handleLoad();
     }

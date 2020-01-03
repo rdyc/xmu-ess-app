@@ -278,6 +278,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = 
 
         // set initial values
         this.props.setInitialValues(initialValues);
+        this.props.handleSetFilterCommonSystem(response.data.companyUid || '');
       }
     }
   }
