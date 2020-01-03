@@ -3,7 +3,7 @@ import { GlobalFormat } from '@layout/types';
 import { ILeaveCalculation } from '@lookup/classes/response';
 import { LeaveCalculationHeaderList } from '@lookup/classes/types/leave/LeaveCalculationHeaderList';
 import {
-  Chip,
+  // Chip,
   IconButton,
   Table,
   TableBody,
@@ -115,13 +115,14 @@ const leaveCalculationTableView: React.SFC<AllProps> = props => {
               <TableRow key={index}>
                 <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
                 <TableCell>
-                  <Chip 
+                  {item.employee ? item.employee.fullName : 'N/A'}
+                  {/* <Chip 
                     variant="outlined"
                     // color="primary"
                     label={
                         item.employee ? item.employee.fullName : 'N/A'
                     }
-                  />
+                  /> */}
                 </TableCell>
                 <TableCell>{item.employee ? intl.formatDate(item.employee.joinDate, GlobalFormat.Date) : 'N/A'}</TableCell>
                 <TableCell numeric>
