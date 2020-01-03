@@ -21,6 +21,7 @@ type CommonDetailPartialFormProps = {
   formikBag: FormikProps<ICommonFormValue>;
   intl: InjectedIntl;
   category: string;
+  handleSetFilterCommonSystem: (companyUid: string) => void;
   filterCommonSystem?: ISystemListFilter;
   filterLookupCompany?: ILookupCompanyGetListFilter;
 };
@@ -79,6 +80,7 @@ const CommonDetailPartialForm: React.ComponentType<CommonDetailPartialFormProps>
                 onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
                 onChange={(selected: ISelectFieldOption) => {
                   props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                  props.handleSetFilterCommonSystem(selected && selected.value);
                 }}
               />
             </LookupCompanyOption>
@@ -95,7 +97,9 @@ const CommonDetailPartialForm: React.ComponentType<CommonDetailPartialFormProps>
               <CommonSystemOption category={categoryTypeTranslator(parentTypeTranslator(props.category))} filter={props.filterCommonSystem}>
                 <SelectField
                   isSearchable
-                  isDisabled={props.formikBag.isSubmitting}
+                  menuPlacement="auto"
+                  menuPosition="fixed"
+                  isDisabled={props.formikBag.isSubmitting || props.formikBag.values.companyUid === ''}
                   isClearable={field.value !== ''}
                   escapeClearsValue={true}
                   valueString={field.value}

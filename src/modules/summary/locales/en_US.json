@@ -124,7 +124,7 @@
   "summary.resourceMapping.field.company.required": "Company is required",
   "summary.resourceMapping.field.year": "Year",
   "summary.resourceMapping.field.profession": "Profession",
-  "summary.resourceMapping.field.competency": "Competencies",
+  "summary.resourceMapping.field.competency": "Technical Competencies",
   "summary.resourceMapping.field.employee": "Employees",
   "summary.resourceMapping.field.year.required": "Year is required",
   "summary.resourceMapping.field.project.id": "Project Id",
