@@ -22,10 +22,13 @@ import * as React from 'react';
 import { AccountEmployeeCheckProps } from './AccountEmployeeCheck';
 
 export const AccountEmployeeCheckView: React.SFC<AccountEmployeeCheckProps> = props => {
+  // const { itemCheck } = props;
   const checkTrue = (uid: string) => {
     const index = props.itemCheck.findIndex(item => item.employee.uid === uid);
-
-    return props.itemCheck[index].isCheck;
+    if (props.itemCheck && index !== -1) {
+      return props.itemCheck[index].isCheck;
+    }
+    return false;
   };
   
   return (
@@ -95,6 +98,9 @@ export const AccountEmployeeCheckView: React.SFC<AccountEmployeeCheckProps> = pr
       <DialogContent className={props.classes.paddingDisabled}>        
         <List>
           {
+            !props.accountEmployeeState.list.isLoading &&
+            props.itemCheck &&
+            props.employees &&
             props.employees.map((item, index) => 
               <React.Fragment key={index}>
                 <ListItem button onClick={() => props.handleItemCheck(item.uid)}>

@@ -75,10 +75,13 @@ const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnSt
 const stateUpdaters: StateUpdaters<AccountEmployeeCheckProps, IOwnState, IOwnStateUpdaters> = {
   setEmployees: (state: IOwnState, props: AccountEmployeeCheckProps) => () => {
     const { response } = props.accountEmployeeState.list;
+    const { value } = props;
 
     let employees: IEmployee[] = [];
+    const itemCheck: EmployeeCheck[] = [];
 
     if (response && response.data) {
+      console.log('tol', response.data);
       if (state.search.length > 0) {
         employees = response.data.filter(item => 
           item.fullName.toLowerCase().indexOf(state.search) !== -1 ||
@@ -87,10 +90,20 @@ const stateUpdaters: StateUpdaters<AccountEmployeeCheckProps, IOwnState, IOwnSta
       } else {
         employees = response.data;
       }
+      response.data.map(item => {
+        itemCheck.push({
+          employee: item,
+          isCheck: value && value.findIndex(tmp => tmp.employee.uid === item.uid && tmp.isCheck) !== -1 || false 
+        });
+      });
+      // this.props.stateUpdate({
+      //   itemCheck
+      // });
     }
     
     return {
-      employees
+      employees,
+      itemCheck
     };
   },
   setSearch: (state: IOwnState) => (value: string) => ({
@@ -113,7 +126,7 @@ const handlerCreators: HandleCreators<AccountEmployeeCheckProps, IOwnHandlers> =
     const { isLoading } = props.accountEmployeeState.list;
     const { loadListRequest } = props.accountEmployeeDispatch;
 
-    if (!isLoading) {
+    if (!isLoading && props.filter && props.filter.companyUids) {
       loadListRequest({ 
         filter: props.filter 
       });
@@ -173,77 +186,81 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeCheckProps, IOwnState> 
       }
     }
 
-    if (this.props.value) {
-      const { employees } = this.props;
-      this.props.value.map(item => {
-        employees.push(item.employee);
-      });
-      this.props.stateUpdate({
-        employees,
-        itemCheck: this.props.value
-      });
-    }
+    // if (this.props.value) {
+    //   const { employees } = this.props;
+    //   this.props.value.map(item => {
+    //     employees.push(item.employee);
+    //   });
+    //   this.props.stateUpdate({
+    //     employees,
+    //     itemCheck: this.props.value
+    //   });
+    // }
   },
-  componentWillUpdate(prevProps: AccountEmployeeCheckProps) {
-    if (this.props.filter && prevProps.filter) {
-      if (this.props.filter.companyUids !== prevProps.filter.companyUids) {
+  componentWillUpdate(nextProps: AccountEmployeeCheckProps) {
+    if (!this.props.filter && nextProps.filter && nextProps.filter.companyUids) {
+      this.props.handleOnLoadApi();
+    }
+    if (this.props.filter && nextProps.filter) {
+      if (this.props.filter.companyUids !== nextProps.filter.companyUids) {
         this.props.handleOnLoadApi();
       }
     }
-    const { response } = this.props.accountEmployeeState.list;
-    const { itemCheck } = this.props;
-    if (itemCheck.length === 0 && response && response.data) {
-      response.data.map(item => {
-        itemCheck.push({
-          employee: item,
-          isCheck: false
-        });
-      });
-      this.props.stateUpdate({
-        itemCheck
-      });
-    }
+    // const { response } = this.props.accountEmployeeState.list;
+    // const { itemCheck } = this.props;
+    // if (itemCheck.length === 0 && response && response.data) {
+    //   const temp: EmployeeCheck[] = [];
+
+    //   response.data.map(item => {
+    //     temp.push({
+    //       employee: item,
+    //       isCheck: false
+    //     });
+    //   });
+    //   this.props.stateUpdate({
+    //     itemCheck: temp
+    //   });
+    // }
   },
   componentDidUpdate(prevProps: AccountEmployeeCheckProps) {
     const { response } = this.props.accountEmployeeState.list;
-    const { itemCheck } = this.props;
+    const { response: prevRes } = prevProps.accountEmployeeState.list;
+    // const { itemCheck } = this.props;
 
-    if (
-      this.props.search !== prevProps.search ||
-      this.props.accountEmployeeState.list.response !== prevProps.accountEmployeeState.list.response
-      ) {
+    if (this.props.search !== prevProps.search || response !== prevRes) {
       this.props.setEmployees();
     }
 
-    if (itemCheck.length === 0 && response && response.data) {
-      if (response.data.length !== 0) {
-        response.data.map(item => {
-          itemCheck.push({
-            employee: item,
-            isCheck: false
-          });
-        });
-        this.props.stateUpdate({
-          itemCheck
-        });
-      }
-    }
     if (prevProps.value !== this.props.value) {
       if (!this.props.value) {
-        const temp: EmployeeCheck[] = [];
-        if (response && response.data) {
-          response.data.map(item => {
-            temp.push({
-              employee: item,
-              isCheck: false
-            });
-          });
-        }
-        this.props.stateUpdate({
-          itemCheck: temp
-        });
+        this.props.setEmployees();
       }
     }
+    // if (response !== prevRes) {
+    //   if (response && response.data) {
+    //     console.log('kon', response.data);
+    //     response.data.map(item => {
+    //       itemCheck.push({
+    //         employee: item,
+    //         isCheck: false
+    //       });
+    //     });
+    //     this.props.stateUpdate({
+    //       itemCheck
+    //     });
+    //   }
+    // }
+    // if (itemCheck.length === 0 && response && response.data) {
+    //   response.data.map(item => {
+    //     itemCheck.push({
+    //       employee: item,
+    //       isCheck: false
+    //     });
+    //   });
+    //   this.props.stateUpdate({
+    //     itemCheck
+    //   });
+    // }
   }
 };
 
