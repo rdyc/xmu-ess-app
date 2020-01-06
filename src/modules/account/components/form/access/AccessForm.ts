@@ -348,10 +348,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AccessFormProps, IOwnState> = 
             companyUid: thisResponse.data.companyUid,
             orderBy: 'value',
             direction: 'ascending'
-          }
-        });
-    
-        this.props.stateUpdate({
+          },
           filterDepartment: {
             companyUid: thisResponse.data.companyUid,
             parentCode: thisResponse.data.unitType || '',
