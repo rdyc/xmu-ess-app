@@ -272,7 +272,6 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
               props.formikBag.setFieldValue(field.name, '');
             }}
             invalidLabel=""
-            disablePast
             // minDate={props.formikBag.values.start}
           />
         )}
