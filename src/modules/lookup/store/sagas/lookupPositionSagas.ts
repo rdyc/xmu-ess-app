@@ -36,7 +36,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/positions?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupPositionGetAllSuccess(response.body)),
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/positions/list?${[params]}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupPositionGetListSuccess(response.body)),
@@ -81,7 +81,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupPositionGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/positions/${action.payload.companyUid}/${action.payload.positionUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupPositionGetByIdSuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchFetchByIdRequest() {
 function* watchFetchPostRequest() {
   const worker = (action: ReturnType<typeof lookupPositionPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/positions/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -144,7 +144,7 @@ function* watchFetchPostRequest() {
 function* watchFetchPutRequest() {
   const worker = (action: ReturnType<typeof lookupPositionPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/positions/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -187,7 +187,7 @@ function* watchFetchPutRequest() {
 function* watchFetchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupPositionDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/positions/`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([

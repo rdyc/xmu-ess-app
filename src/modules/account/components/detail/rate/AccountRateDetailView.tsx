@@ -2,9 +2,10 @@ import { IEmployeeRate } from '@account/classes/response/employeeRate';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
-import { Delete } from '@lookup/components/shared/Delete';
+// import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
 import { DetailPage } from '../DetailPage';
 import { AccountEmployeeRateDetailProps } from './AccountEmployeeRateDetail';
@@ -18,7 +19,7 @@ export const AccountEmployeeRateDetailView: React.SFC<AccountEmployeeRateDetailP
     >
       <PreviewPage
         info={{
-          uid: AppMenu.Account,
+          uid: AppMenu.LookupEmployee,
           parentUid: AppMenu.Lookup,
           parentUrl: `/account/employee/`,
           title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Rate'}),
@@ -39,7 +40,7 @@ export const AccountEmployeeRateDetailView: React.SFC<AccountEmployeeRateDetailP
           />
         }
       >
-        <Delete 
+        {/* <Delete 
           action={props.action}
           isOpenDialog={props.dialogOpen}
           title={props.dialogTitle}
@@ -52,7 +53,17 @@ export const AccountEmployeeRateDetailView: React.SFC<AccountEmployeeRateDetailP
           onSubmit={props.handleSubmit} 
           onSubmitSuccess={props.handleSubmitSuccess}
           onSubmitFail={props.handleSubmitFail}
-        />
+        /> */}
+        <DialogConfirmation 
+          isOpen={props.dialogOpen}
+          fullScreen={props.dialogFullScreen}
+          title={props.dialogTitle}
+          content={props.dialogContent}
+          labelCancel={props.dialogCancelLabel}
+          labelConfirm={props.dialogConfirmLabel}
+          onClickCancel={props.handleOnCloseDialog}
+          onClickConfirm={props.handleOnConfirm}
+        />  
       </PreviewPage>
     </DetailPage>
   );

@@ -279,7 +279,7 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
                 valueString={field.value}
                 textFieldProps={{
                   label: props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName')),
-                  required: false,
+                  required: true,
                   helperText: form.touched.siteUid && form.errors.siteUid,
                   error: form.touched.siteUid && Boolean(form.errors.siteUid)
                 }}

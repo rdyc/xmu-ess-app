@@ -71,7 +71,7 @@ export interface ITravelRequestFormValue {
   customerUid: string;
   projectUid: string;
   projectType: string;
-  siteUid?: string;
+  siteUid: string;
   activityType: string;
   objective?: string;
   target?: string;
@@ -183,7 +183,8 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
     //   .required(),
 
     siteUid: Yup.string()
-      .label(props.intl.formatMessage(travelMessage.request.field.siteUid)),
+      .label(props.intl.formatMessage(travelMessage.request.field.siteUid))
+      .required(),
 
     activityType: Yup.string()
       .label(props.intl.formatMessage(travelMessage.request.field.activityType))
@@ -306,8 +307,9 @@ const stateUpdaters: StateUpdaters<TravelRequestFormProps, IOwnState, IOwnStateU
   setInitialValues: (state: IOwnState) => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: ([WorkflowStatusType.Approved]).toString(),
       direction: 'ascending'
@@ -327,7 +329,7 @@ const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
     props.setDiemData(data);
   },
   handleSetProjectFilter: (props: TravelRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleSetProjectSiteFilter: (props: TravelRequestFormProps) => (projectUid: string) => {
     const { user } = props.userState;
@@ -478,17 +480,22 @@ const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
 
         props.history.push(`/travel/requests/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
-
+        
         // set form status
         actions.setStatus(error);
-
+        
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item =>
-            actions.setFieldError(item.field, props.intl.formatMessage({ id: item.message }))
+        if (err && err.errors) {
+          err.errors.forEach(item => 
+            actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
 
@@ -514,6 +521,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TravelRequestFormProps, IOwnSt
     if (user) {
       loadListRequest({
         filter
+      });
+      
+      this.props.travelRequestDispatch.loadAllowedRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid
       });
     }
   },

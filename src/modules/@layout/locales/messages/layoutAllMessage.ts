@@ -8,6 +8,7 @@ export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
   waiting: { id: `${prefix}.text.waiting`},
   processing: { id: `${prefix}.text.processing`},
+  semester: { id: `${prefix}.text.semester`},
   retry: { id: `${prefix}.text.retry`},
   none: { id: `${prefix}.text.none`},
   dataInfo: { id: `${prefix}.text.dataInfo` },
@@ -48,6 +49,7 @@ export const layoutTooltip = defineMessages({
 // action
 export const layoutAction = defineMessages({
   add: { id: `${prefix}.action.add`},
+  accept: { id: `${prefix}.action.accept`},
   remove: { id: `${prefix}.action.remove`},
   apply: { id: `${prefix}.action.apply`},
   yes: { id: `${prefix}.action.yes`},
@@ -77,7 +79,12 @@ export const layoutAction = defineMessages({
   previous: { id: `${prefix}.action.previous`},
   previousCount: { id: `${prefix}.action.previousCount`},
   delete: { id: `${prefix}.action.delete`},
-  calculation: { id: `${prefix}.action.calculation`}
+  calculation: { id: `${prefix}.action.calculation`},
+  saveAs: { id: `${prefix}.action.saveAs`},
+  draft: { id: `${prefix}.action.draft`},
+  final: { id: `${prefix}.action.final`},
+  trigger: { id: `${prefix}.action.trigger`},
+  result: { id: `${prefix}.action.result`},
 });
 
 // field

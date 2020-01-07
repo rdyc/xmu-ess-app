@@ -4,6 +4,9 @@ import {
   TravelAction as Action,
   travelGetAllDispose,
   travelGetAllError,
+  travelGetAllowedError,
+  travelGetAllowedRequest,
+  travelGetAllowedSuccess,
   travelGetAllRequest,
   travelGetAllSuccess,
   travelGetByIdDispose,
@@ -32,7 +35,7 @@ function* watchAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/travel/requests?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelGetAllSuccess(response.body))
@@ -55,7 +58,7 @@ function* watchAllFetchRequest() {
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof travelGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelGetByIdSuccess(response.body)),
@@ -75,7 +78,7 @@ function* watchByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof travelPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
@@ -113,7 +116,7 @@ function* watchPostFetchRequest() {
 function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof travelPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/travel/requests/${action.payload.companyUid}/${
         action.payload.positionUid
       }/${action.payload.travelUid}`,
@@ -152,6 +155,26 @@ function* watchPutFetchRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchAllowedFetchRequest() {
+  const worker = (action: ReturnType<typeof travelGetAllowedRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(travelGetAllowedSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(travelGetAllowedError(response))
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(travelGetAllowedError(error.message))
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_ALLOWED_REQUEST, worker);
+}
+
 function* watchSwitchAccess() {
   function* worker() { 
     yield all([
@@ -165,6 +188,7 @@ function* watchSwitchAccess() {
 
 function* travelSagas() {
   yield all([
+    fork(watchAllowedFetchRequest),
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostFetchRequest),

@@ -47,6 +47,8 @@ const HierarchyDetailPartialForm: React.ComponentType<PurchaseDetailPartialFormP
           <LookupCompanyOption filter={props.filterLookupCompany}>
             <SelectField
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}

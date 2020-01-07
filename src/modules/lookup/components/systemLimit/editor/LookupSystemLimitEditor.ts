@@ -122,7 +122,7 @@ const handlerCreators: HandleCreators<SystemLimitEditorProps, OwnHandlers> = {
         updateRequest({
           resolve, 
           reject,
-          systemLimitUid,
+          limitUid: systemLimitUid,
           companyUid: payload.companyUid ? payload.companyUid : '',
           data: payload as ISystemLimitPutPayload, 
         });
@@ -226,7 +226,7 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
       });
 
       loadDetailRequest({
-        systemLimitUid: history.location.state.uid,
+        limitUid: history.location.state.uid,
         companyUid: history.location.state.companyUid
       });
     }

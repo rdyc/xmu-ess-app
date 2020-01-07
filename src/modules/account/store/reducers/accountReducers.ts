@@ -1,9 +1,12 @@
 import accountEmployeeReducers from './employee/accountEmployeeReducers';
 import accountEmployeeAccessReducers from './employeeAccess/accountEmployeeAccessReducers';
 import accountEmployeeAccessHistoryReducers from './employeeAccessHistory/accountEmployeeAccessHistoryReducer';
+import accountEmployeeContractReducers from './employeeContract/accountEmployeeContractReducer';
 import accountEmployeeEducationReducers from './employeeEducation/accountEmployeeEducationReducer';
 import accountEmployeeExperienceReducers from './employeeExperience/accountEmployeeExperienceReducer';
 import accountEmployeeFamilyReducers from './employeeFamily/accountEmployeeFamilyReducer';
+import accountEmployeeKPIAssignReducers from './employeeKPIAssign/accountEmployeeKPIAssignReducers';
+import accountEmployeeKPIFinalReducers from './employeeKPIFinal/accountEmployeeKPIFinalReducers';
 import accountEmployeeLeaveReducers from './employeeLeave/accountEmployeeLeaveReducers';
 import accountEmployeeMyReducers from './employeeMy/accountEmployeeMyReducers';
 import accountEmployeeNoteReducers from './employeeNote/accountEmployeeNoteReducer';
@@ -21,7 +24,10 @@ const accountReducers = {
   ...accountEmployeeTrainingReducers,
   ...accountEmployeeRateReducers,
   ...accountEmployeeNoteReducers,
-  ...accountEmployeeAccessReducers
+  ...accountEmployeeAccessReducers,
+  ...accountEmployeeContractReducers,
+  ...accountEmployeeKPIAssignReducers,
+  ...accountEmployeeKPIFinalReducers,
 };
 
 export default accountReducers;

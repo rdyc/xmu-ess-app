@@ -21,18 +21,27 @@ const organizationHierarchySummary: React.SFC<AllProps> = props => (
       <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(organizationMessage.hierarchy.field.uid)}
-          value={props.data.uid}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
+          value={props.data.company && props.data.company.name || 'N/A'}
         />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(organizationMessage.hierarchy.field.name)}
           value={props.data.name}
         />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(organizationMessage.hierarchy.field.description)}
           value={props.data.description || 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.inactiveDate)}
+          value={props.data.inactiveDate && props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) || 'N/A'}
         />
       </Grid>
       {

@@ -51,7 +51,7 @@ const LookupHolidayDetailPartialForm: React.ComponentType<LookupHolidayDetailPar
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -75,7 +75,8 @@ const LookupHolidayDetailPartialForm: React.ComponentType<LookupHolidayDetailPar
         render={({ field, form }: FieldProps<IHolidayFormValue>) => (
           <TextField
           {...field}
-          fullWidth={true}
+          fullWidth
+          multiline
           disabled={form.isSubmitting}
           margin="normal"
           autoComplete="off"

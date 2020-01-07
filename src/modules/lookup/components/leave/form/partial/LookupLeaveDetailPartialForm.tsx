@@ -1,8 +1,11 @@
 import { ISystemListFilter } from '@common/classes/filters';
+import { LeaveType } from '@common/classes/types';
 import { CommonSystemOption } from '@common/components/options/CommonSystemOption';
 import { FormMode } from '@generic/types';
 import { NumberFormatter } from '@layout/components/fields/NumberFormatter';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
+import { InputYearOption } from '@layout/components/input/year/InputYearOption';
+// import { InputYearOption } from '@layout/components/input/year/InputYearOption';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
@@ -50,7 +53,7 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -77,7 +80,7 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
               isSearchable
               menuPlacement="auto"
               menuPosition="fixed"
-              isDisabled={props.formikBag.isSubmitting}
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
               valueString={field.value}
@@ -88,13 +91,16 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
                 error: form.touched.categoryType && Boolean(form.errors.categoryType)
               }}
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-              onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+                props.formikBag.setFieldValue('items', []);
+              }}
             />
           </CommonSystemOption>
         )}
       />
 
-      <Field
+      {/* <Field
         name="year"
         render={({ field, form }: FieldProps<ILeaveFormValue>) => (
           <TextField
@@ -117,6 +123,33 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
             }}
           />
         )}
+      /> */}
+
+      <Field
+        name="year"
+        render={({ field, form }: FieldProps<ILeaveFormValue>) => (
+          <InputYearOption withFuture>
+            <SelectField
+              isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
+              isDisabled={props.formMode === FormMode.Edit || props.formikBag.isSubmitting}
+              isClearable={field.value !== ''}
+              escapeClearsValue={true}
+              valueString={field.value}
+              textFieldProps={{
+                label: props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldName')),
+                required: true,
+                helperText: form.touched.year && form.errors.year,
+                error: form.touched.year && Boolean(form.errors.year)
+              }}
+              onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+              onChange={(selected: ISelectFieldOption) => {
+                props.formikBag.setFieldValue(field.name, selected && selected.value || '');
+              }}
+            />
+          </InputYearOption>
+        )}
       />
 
       <Field
@@ -124,11 +157,12 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
         render={({ field, form }: FieldProps<ILeaveFormValue>) => (
           <TextField
             {...field}
-            fullWidth={true}
+            fullWidth
+            multiline
             disabled={form.isSubmitting}
             margin="normal"
             autoComplete="off"
-            required={true}
+            required
             label={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldPlaceholder'))}
             helperText={form.touched.name && form.errors.name}
@@ -137,33 +171,36 @@ const LookupLeaveDetailPartialForm: React.ComponentType<LookupLeaveDetailPartial
         )}
       />
 
-      <Field
-        name="allocation"
-        render={({ field, form }: FieldProps<ILeaveFormValue>) => (
-          <TextField
-            {...field}
-            fullWidth={true}
-            disabled={form.isSubmitting}
-            required={true}
-            margin="normal"
-            autoComplete="off"
-            label={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldName'))}
-            placeholder={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldPlaceholder'))}
-            helperText={form.touched.allocation && form.errors.allocation}
-            error={form.touched.allocation && Boolean(form.errors.allocation)}
-            InputProps={{
-              inputComponent: NumberFormatter,
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (e.target.value === '') {
-                props.formikBag.setFieldValue(field.name, 0);
-              } else {
-                props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
-              }
-            }}
-          />
-        )}
-      />
+      {
+        props.formikBag.values.categoryType === LeaveType.CutiKhusus &&
+        <Field
+          name="allocation"
+          render={({ field, form }: FieldProps<ILeaveFormValue>) => (
+            <TextField
+              {...field}
+              fullWidth={true}
+              disabled={form.isSubmitting}
+              required={true}
+              margin="normal"
+              autoComplete="off"
+              label={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldName'))}
+              placeholder={props.intl.formatMessage(lookupMessage.leave.fieldFor(field.name, 'fieldPlaceholder'))}
+              helperText={form.touched.allocation && form.errors.allocation}
+              error={form.touched.allocation && Boolean(form.errors.allocation)}
+              InputProps={{
+                inputComponent: NumberFormatter,
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.value === '') {
+                  props.formikBag.setFieldValue(field.name, 0);
+                } else {
+                  props.formikBag.setFieldValue(field.name, parseFloat(e.target.value));
+                }
+              }}
+            />
+          )}
+        />
+      }
 
       <Field
         name="isWithinHoliday"

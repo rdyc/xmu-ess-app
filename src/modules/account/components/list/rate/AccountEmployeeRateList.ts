@@ -110,6 +110,13 @@ const handlerCreators: HandleCreators<AccountEmployeeRateListProps, IOwnHandler>
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateListProps, IOwnState> = {
+  componentDidMount() {
+    const { request } = this.props.accountEmployeeRateState.all;
+
+    if (request && request.employeeUid !== this.props.match.params.employeeUid) {
+      this.props.handleOnLoadApi(undefined, true, true);
+    }
+  }
 };
 
 export const AccountEmployeeRateList = compose(

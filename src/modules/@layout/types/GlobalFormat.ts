@@ -32,15 +32,13 @@ const TimeDateOption: IntlComponent.DateTimeFormatProps = {
   day: 'numeric',
   hour12: false,
   hour: 'numeric',
-  minute: 'numeric',
-  timeZone: 'GMT'
+  minute: 'numeric'
 };
 
 const TimeOption: IntlComponent.DateTimeFormatProps = {
   hour12: false,
   hour: 'numeric',
-  minute: 'numeric',
-  timeZone: 'GMT'
+  minute: 'numeric'
 };
 
 const MonthYearOption: IntlComponent.DateTimeFormatProps = {

@@ -1,5 +1,6 @@
 import { ICommonSystem } from '@common/classes';
 import { ILookupCompany, ILookupPosition, ILookupRole, ILookupRoleMenuList } from '@lookup/classes';
+import { IEmployeeLevel } from '@lookup/classes/response';
 
 export interface IEmployeeAccessList {
     uid: string;
@@ -15,7 +16,7 @@ export interface IEmployeeAccessList {
     departmentType: string | null;
     department: ICommonSystem | null;
     levelType: string | null;
-    level: ICommonSystem | null;
+    level: IEmployeeLevel | null;
     start: Date;
     end: Date | null;
     isActive: boolean;

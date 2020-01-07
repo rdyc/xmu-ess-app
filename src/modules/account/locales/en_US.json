@@ -22,10 +22,12 @@
   "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
   "account.shared.message.new.employe.success": "New {state} Data has been created. Add access is required for a new employee.",
+  "account.shared.message.empty.competency": "Competency not found",
 
   "account.shared.section.info.title": "Employee {state}",
   "account.shared.section.info.subHeader": " ",
   "account.shared.section.submission": "{state} Submission",
+  "account.shared.section.competency": "Technical Competencies",
 
   "account.shared.field.no": "No",
   "account.shared.field.action": "Actions",
@@ -71,8 +73,11 @@
   "account.employee.tab.rate": "Rate",
 
   "account.employee.filter.company": "Company Name",
+  "account.employee.filter.employmentType": "Employment Status",
+  "account.employee.filter.position": "Position Name",
   "account.employee.filter.role": "Role Name",
-  "account.employee.filter.isActive": "InActive Only",
+  "account.employee.filter.isActive": "Active",
+  "account.employee.filter.hasAccess": "Filter By Multi Access Company",
   "account.employee.filter.employee": "Employee",
   "account.employee.filter.placeholder.employeeSearch": "Type any employee name",
 
@@ -317,13 +322,13 @@
   "account.experience.field.employeeUid": "Employee ID",
   "account.experience.field.employeeUid.placeholder": "Employee ID",
 
-  "account.experience.field.company": "Company Name",
-  "account.experience.field.company.required": "Company Name is required",
-  "account.experience.field.company.placeholder": "Type any Company Name",
+  "account.experience.field.company": "Company",
+  "account.experience.field.company.required": "Company is required",
+  "account.experience.field.company.placeholder": "Type any Company",
 
-  "account.experience.field.position": "Position Name",
-  "account.experience.field.position.required": "Position Name is required",
-  "account.experience.field.position.placeholder": "Type any Position Name",
+  "account.experience.field.position": "Position",
+  "account.experience.field.position.required": "Position is required",
+  "account.experience.field.position.placeholder": "Type any position",
 
   "account.experience.field.start": "Start Year",
   "account.experience.field.start.required": "Start Year is required",
@@ -332,6 +337,13 @@
   "account.experience.field.end": "End Year",
   "account.experience.field.end.required": "End Year is required",
   "account.experience.field.end.placeholder": "Select a End Year",
+
+  "account.experience.field.date": "Start - End Year",
+  "account.experience.field.competencies": "Technical Competencies",
+
+  "account.experience.field.profession": "Profession",
+  "account.experience.field.profession.required": "Profession is required",
+  "account.experience.field.profession.placeholder": "Please select profession",
 
   "account.access.message.emptyProps": "Some props are empty",
   "account.access.message.create.success": "New Employee Access Data has been created",
@@ -445,5 +457,20 @@
 
   "account.note.field.text": "Note",
   "account.note.field.text.required": "Note is required",
-  "account.note.field.text.placeholder": "Type any note"
+  "account.note.field.text.placeholder": "Type any note",
+
+  "account.employee.contract.field.uid": "Contract ID",
+  "account.employee.contract.field.uid.placeholder": "Contract ID",
+
+  "account.employee.contract.field.contractNumber": "Contract Number",
+  "account.employee.contract.field.contractNumber.placeholder": "Type any contract number",
+  "account.employee.contract.field.contractNumber.required": "Contract number is required",
+
+  "account.employee.contract.field.start": "Start Date",
+  "account.employee.contract.field.start.placeholder": "Type any Training Name",
+  "account.employee.contract.field.start.required": "Training Name is required",
+
+  "account.employee.contract.field.end": "End Date",
+  "account.employee.contract.field.end.placeholder": "Type any Training Name",
+  "account.employee.contract.field.end.required": "Training Name is required"
 }

@@ -122,7 +122,12 @@ const handlerCreators: HandleCreators<COGSFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/lookup/cogsupload`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -130,8 +135,8 @@ const handlerCreators: HandleCreators<COGSFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -152,7 +157,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<COGSFormProps, IOwnState> = {
     this.props.masterPage.changePage({
       uid: AppMenu.COGSUpload,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/cogsupload',
       title: this.props.intl.formatMessage(lookupMessage.cogsUpload.page.uploadTitle),
       description: this.props.intl.formatMessage(lookupMessage.cogsUpload.page.uploadSubHeader)
     });

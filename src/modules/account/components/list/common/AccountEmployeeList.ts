@@ -70,12 +70,14 @@ const createProps: mapper<AccountEmployeeListProps, IOwnState> = (props: Account
     fields: Object.keys(AccountEmployeeField).map(key => ({ 
       value: key, 
       name: AccountEmployeeField[key] 
-    }))
+    })),
+    isActive: true
   };
 
   // fill from previous request if any
   if (request && request.filter) {
     state.companyUids = request.filter.companyUids,
+    state.employmentTypes = request.filter.employmentTypes;
     state.roleUids = request.filter.roleUids,
     state.isActive = request.filter.isActive;
   }
@@ -102,8 +104,9 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
       // predefined filter
       const filter: IEmployeeAllFilter = {
         companyUids: props.companyUids,
+        employmentTypes: props.employmentTypes,
         useAccess: false,
-        isActive: !props.isActive,
+        isActive: props.isActive,
         roleUids: props.companyUids ? props.roleUids : undefined,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
@@ -150,10 +153,10 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
   },
   handleOnBind: (props: AccountEmployeeListProps) => (item: IEmployee, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.company ? item.company.name : 'N/A',
-    tertiary: item.fullName,
-    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    primary: item.fullName,
+    secondary: item.company ? item.company.name : item.companyUid,
+    tertiary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+    quaternary: item.employment && item.employment.value || item.employmentType,
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -165,8 +168,9 @@ const handlerCreators: HandleCreators<AccountEmployeeListProps, IOwnHandler> = {
   },
   handleFilterBadge: (props: AccountEmployeeListProps) => () => {
     return props.companyUids !== undefined || 
+      props.employmentTypes !== undefined ||
       props.roleUids !== undefined ||
-      props.isActive === true;
+      props.isActive === false;
   },
 };
 
@@ -176,11 +180,13 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeListProps, IOwnState> =
     const isFilterChanged = !shallowEqual(
       {
         companyUids: this.props.companyUids,
+        employmentTypes: this.props.employmentTypes,
         roleUids: this.props.roleUids,
         isActive: this.props.isActive
       },
       {
         companyUids: prevProps.companyUids,
+        employmentTypes: prevProps.employmentTypes,
         roleUids: prevProps.roleUids,
         isActive: prevProps.isActive
       }

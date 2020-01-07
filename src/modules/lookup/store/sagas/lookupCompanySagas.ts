@@ -36,7 +36,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/companies?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupCompanyGetAllSuccess(response.body)),
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/companies/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupCompanyGetListSuccess(response.body)),
@@ -81,7 +81,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupCompanyGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/companies/${action.payload.companyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupCompanyGetByIdSuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupCompanyPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/companies`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -140,7 +140,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupCompanyPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/companies/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -180,7 +180,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupCompanyDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/companies`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

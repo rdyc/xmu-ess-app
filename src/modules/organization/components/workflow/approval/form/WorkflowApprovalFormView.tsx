@@ -121,7 +121,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
                   {...GlobalStyle.TextField.ReadOnly}
                   multiline
                   label="Status"
-                  value={props.intl.formatMessage({id: formikBag.status.message})}
+                  value={!formikBag.status.Code ? props.intl.formatMessage({id: formikBag.status.message}) : formikBag.status.Message}
                 />
               </React.Fragment>
             }

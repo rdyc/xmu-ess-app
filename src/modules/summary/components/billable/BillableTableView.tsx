@@ -166,7 +166,6 @@ const billableTableView: React.SFC<AllProps> = props => {
                     disableFocusListener
                   >
                     <Chip
-                      key={cat.name}
                       label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
                       onClick={() =>
                         _handledialog(item.employee.uid, BillableType.NonPresales)
@@ -198,7 +197,6 @@ const billableTableView: React.SFC<AllProps> = props => {
                     disableFocusListener
                   >
                     <Chip
-                      key={cat.name}
                       label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
                       onClick={() =>
                         _handledialog(item.employee.uid, BillableType.Presales)

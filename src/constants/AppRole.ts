@@ -1,6 +1,6 @@
 export enum AppRole {
-  User = 'user',
-  Maintenance = 'maintenance',
-  Audit = 'audit',
-  Admin = 'admin'
+  User = 'User',
+  Maintenance = 'Maintenance',
+  Audit = 'Audit',
+  Admin = 'Admin'
 }

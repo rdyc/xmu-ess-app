@@ -39,6 +39,7 @@ export const CommonFormView: React.SFC<CommonFormProps> = props => (
                   formMode={props.formMode}
                   intl={props.intl}
                   category={props.match.params.category}
+                  handleSetFilterCommonSystem={props.handleSetFilterCommonSystem}
                   filterCommonSystem={props.filterCommonSystem}
                   filterLookupCompany={props.filterLookupCompany}
                 />

@@ -1,4 +1,9 @@
-import { achievementField, achievementMessage, achievementPage, achievementSection } from './achievementMessage';
+import {
+  achievementField,
+  achievementMessage,
+  achievementPage,
+  achievementSection
+} from './achievementMessage';
 import {
   currencyConfirm,
   currencyDialog,
@@ -7,15 +12,24 @@ import {
   currencyForm,
   currencyMessage,
   currencyPage,
-  currencySection,
+  currencySection
 } from './currencyMessage';
+import {
+  employeeLevelConfirm,
+  employeeLevelDialog,
+  employeeLevelField,
+  employeeLevelFieldHelperFor,
+  employeeLevelMessage,
+  employeeLevelPage,
+  employeeLevelSection
+} from './employeeLevel';
 import {
   galleryAction,
   galleryField,
   galleryFieldHelperFor,
   galleryMessage,
   galleryPage,
-  gallerySection,
+  gallerySection
 } from './galleryMessage';
 import {
   holidayConfirm,
@@ -24,11 +38,31 @@ import {
   holidayFieldHelperFor,
   holidayMessage,
   holidayPage,
-  holidaySection,
+  holidaySection
 } from './holiday';
-import { inforField, inforFieldHelperFor, inforMessage, inforPage, inforSection } from './inforMessage';
-import { leaveConfirm, leaveDialog, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
-import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
+import {
+  inforField,
+  inforFieldHelperFor,
+  inforMessage,
+  inforPage,
+  inforSection
+} from './inforMessage';
+import {
+  leaveConfirm,
+  leaveDialog,
+  leaveField,
+  leaveFieldHelperFor,
+  leaveMessage,
+  leavePage,
+  leaveSection
+} from './leave';
+import {
+  leaveCalculationConfirm,
+  leaveCalculationField,
+  leaveCalculationFilter,
+  leaveCalculationMessage,
+  leaveCalculationPage
+} from './leaveCalculation';
 import {
   companyConfirm,
   companyDialog,
@@ -36,7 +70,7 @@ import {
   companyFieldHelperFor,
   companyMessage,
   companyPage,
-  companySection,
+  companySection
 } from './lookupCompanyMessage';
 import {
   customerFieldHelperFor,
@@ -45,7 +79,7 @@ import {
   lookupCustomerFields,
   lookupCustomerMessage,
   lookupCustomerPage,
-  lookupCustomerSection,
+  lookupCustomerSection
 } from './lookupCustomerMessage';
 import {
   diemFieldHelperFor,
@@ -54,7 +88,7 @@ import {
   lookupDiemField,
   lookupDiemMessage,
   lookupDiemPage,
-  lookupDiemSection,
+  lookupDiemSection
 } from './lookupDiemMessage';
 import {
   roleConfirm,
@@ -63,7 +97,7 @@ import {
   roleFieldHelperFor,
   roleMessage,
   rolePage,
-  roleSection,
+  roleSection
 } from './lookupRoleMessage';
 import {
   mileageExceptionConfirm,
@@ -71,7 +105,7 @@ import {
   mileageExceptionFieldHelperFor,
   mileageExceptionMessage,
   mileageExceptionPage,
-  mileageExceptionSection,
+  mileageExceptionSection
 } from './mileageException';
 import {
   positionConfirm,
@@ -81,7 +115,7 @@ import {
   positionForm,
   positionMessage,
   positionPage,
-  positionSection,
+  positionSection
 } from './positionMessage';
 import { lookupConfirm, lookupSubmission } from './shared';
 import {
@@ -90,7 +124,7 @@ import {
   systemLimitFieldHelperFor,
   systemLimitMessage,
   systemLimitPage,
-  systemLimitSection,
+  systemLimitSection
 } from './systemLimit';
 
 export const lookupMessage = {
@@ -144,7 +178,9 @@ export const lookupMessage = {
   calculation: {
     page: leaveCalculationPage,
     field: leaveCalculationField,
-    filter: leaveCalculationFilter
+    filter: leaveCalculationFilter,
+    message: leaveCalculationMessage,
+    confirm: leaveCalculationConfirm
   },
   currency: {
     page: currencyPage,
@@ -182,8 +218,7 @@ export const lookupMessage = {
     fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
     message: lookupDiemMessage,
-    dialog: lookupDiemDialog,
-    
+    dialog: lookupDiemDialog
   },
   customer: {
     page: lookupCustomerPage,
@@ -192,7 +227,7 @@ export const lookupMessage = {
     fieldFor: customerFieldHelperFor,
     confirm: lookupCustomerConfirm,
     message: lookupCustomerMessage,
-    dialog: lookupCustomerDialogMessage,
+    dialog: lookupCustomerDialogMessage
   },
   gallery: {
     page: galleryPage,
@@ -214,5 +249,14 @@ export const lookupMessage = {
     field: achievementField,
     message: achievementMessage,
     section: achievementSection
+  },
+  employeeLevel: {
+    page: employeeLevelPage,
+    field: employeeLevelField,
+    fieldFor: employeeLevelFieldHelperFor,
+    section: employeeLevelSection,
+    confirm: employeeLevelConfirm,
+    message: employeeLevelMessage,
+    dialog: employeeLevelDialog
   }
 };

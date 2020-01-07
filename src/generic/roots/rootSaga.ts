@@ -1,8 +1,11 @@
 import accountEmployeeAccessHistorySagas from '@account/store/sagas/accountEmployeeAccessHistorySagas';
 import accountEmployeeAccessSagas from '@account/store/sagas/accountEmployeeAccessSagas';
+import accountEmployeeContractSagas from '@account/store/sagas/accountEmployeeContractSagas';
 import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployeeExperienceSagas';
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
+import accountEmployeeKPIAssignSagas from '@account/store/sagas/accountEmployeeKPIAssignSagas';
+import accountEmployeeKPIFinalSagas from '@account/store/sagas/accountEmployeeKPIFinalSagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeNoteSagas from '@account/store/sagas/accountEmployeeNoteSagas';
@@ -10,8 +13,10 @@ import accountEmployeeRateSagas from '@account/store/sagas/accountEmployeeRateSa
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import accountEmployeeTrainingSagas from '@account/store/sagas/accountEmployeeTrainingSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
+import commonAssessorSagas from '@common/store/sagas/assessorSagas';
 import commonBloodSagas from '@common/store/sagas/bloodSagas';
 import commonCertificationSagas from '@common/store/sagas/certificationSagas';
+import commonCompetencySagas from '@common/store/sagas/competencySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDegreeSagas from '@common/store/sagas/degreeSagas';
 import commonDepartmentSagas from '@common/store/sagas/departmentSagas';
@@ -24,10 +29,13 @@ import commonFamilySagas from '@common/store/sagas/familySagas';
 import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
+import commonKpiSagas from '@common/store/sagas/kpiSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
+import commonMeasurementSagas from '@common/store/sagas/measurementSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
+import commonProfessionSagas from '@common/store/sagas/professionSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonRelationSagas from '@common/store/sagas/relationSagas';
@@ -45,7 +53,26 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import notifPeriodSagas from '@hr.notification/store/sagas/notifPeriodSagas';
+import notifSettingSagas from '@hr.notification/store/sagas/notifSettingSagas';
+import notifTemplateSagas from '@hr.notification/store/sagas/notifTemplateSagas';
+import hrCompetencyAssessmentSagas from '@hr/store/sagas/competency/assessment/hrCompetencyAssessmentSagas';
+import hrCompetencyCategorySagas from '@hr/store/sagas/competency/category/hrCompetencyCategorySagas';
+import hrCompetencyClusterSagas from '@hr/store/sagas/competency/cluster/hrCompetencyClusterSagas';
+import hrCompetencyEmployeeSagas from '@hr/store/sagas/competency/employee/hrCompetencyEmployeeSagas';
+import hrCompetencyMappedSagas from '@hr/store/sagas/competency/mapped/hrCompetencyMappedSagas';
+import hrCompetencyResultSagas from '@hr/store/sagas/competency/result/hrCompetencyResultSagas';
+import hrCornerBlogSagas from '@hr/store/sagas/corner/blog/hrCornerBlogSagas';
+import hrCornerCategorySagas from '@hr/store/sagas/corner/category/hrCornerCategorySagas';
+import hrCornerPageSagas from '@hr/store/sagas/corner/page/hrCornerPageSagas';
 import inforSagas from '@infor/store/sagas/inforSagas';
+import kpiApprovalSagas from '@kpi/store/sagas/kpiApprovalSagas';
+import kpiAssignSagas from '@kpi/store/sagas/kpiAssignSagas';
+import kpiCategorySagas from '@kpi/store/sagas/kpiCategorySagas';
+import kpiEmployeeSagas from '@kpi/store/sagas/kpiEmployeeSagas';
+import kpiMeasurementSagas from '@kpi/store/sagas/kpiMeasurementSagas';
+import kpiOpenSagas from '@kpi/store/sagas/kpiOpenSagas';
+import kpiTemplateSagas from '@kpi/store/sagas/kpiTemplateSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -55,6 +82,7 @@ import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/lookupCurrencySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
+import lookupEmployeeLevelSagas from '@lookup/store/sagas/lookupEmployeeLevelSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/lookupHolidaySagas';
 import lookupImageGallerySagas from '@lookup/store/sagas/lookupImageGallerySagas';
 import lookupLeaveCalculationSagas from '@lookup/store/sagas/lookupLeaveCalculationSagas';
@@ -70,6 +98,7 @@ import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSaga
 import organizationHierarchySagas from '@organization/store/sagas/organizationHierarchySagas';
 import organizationStructureSagas from '@organization/store/sagas/organizationStructureSagas';
 import organizationWorkflowSagas from '@organization/store/sagas/organizationWorkflowSagas';
+import employeeFinalSagas from '@profile/store/sagas/employeeFinalSagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectAdministrationSagas from '@project/store/sagas/projectAdministrationSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
@@ -92,6 +121,11 @@ import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
+import webJobDefinitionSagas from '@webjob/store/sagas/definition/webJobDefinitionSagas';
+import webJobMonitoringSagas from '@webjob/store/sagas/monitoring/webJobMonitoringSagas';
+import webJobRecurringSagas from '@webjob/store/sagas/recurring/webJobRecurringSagas';
+import markdownCategorySagas from 'playground/markdown/store/sagas/markdownCategorySagas';
+import markdownSagas from 'playground/markdown/store/sagas/markdownSagas';
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -129,6 +163,11 @@ export function* rootSaga() {
     fork(commonDepartmentSagas),
     fork(commonFamilySagas),
     fork(commonLevelSagas),
+    fork(commonCompetencySagas),
+    fork(commonProfessionSagas),
+    fork(commonKpiSagas),
+    fork(commonMeasurementSagas),
+    fork(commonAssessorSagas),
 
     // lookup
     fork(lookupLeaveCalculationSagas),
@@ -144,6 +183,7 @@ export function* rootSaga() {
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
     fork(lookupAchievementSagas),
+    fork(lookupEmployeeLevelSagas),
 
     fork(lookupVersionSagas),
     fork(lookupImageGallerySagas),
@@ -165,6 +205,9 @@ export function* rootSaga() {
     fork(accountEmployeeRateSagas),
     fork(accountEmployeeNoteSagas),
     fork(accountEmployeeAccessSagas),
+    fork(accountEmployeeContractSagas),
+    fork(accountEmployeeKPIAssignSagas),
+    fork(accountEmployeeKPIFinalSagas),
 
     // project
     fork(projectRegistrationSagas),
@@ -221,5 +264,44 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
+
+    // hr notificationSagas
+    fork(notifPeriodSagas),
+    fork(notifSettingSagas),
+    fork(notifTemplateSagas),
+
+    // markdown
+    fork(markdownSagas),
+    fork(markdownCategorySagas),
+    
+    // competency
+    fork(hrCompetencyCategorySagas),
+    fork(hrCompetencyClusterSagas),
+    fork(hrCompetencyMappedSagas),
+    fork(hrCompetencyAssessmentSagas),
+    fork(hrCompetencyEmployeeSagas),
+    fork(hrCompetencyResultSagas),
+
+    // kpi
+    fork(kpiTemplateSagas),
+    fork(kpiCategorySagas),
+    fork(kpiMeasurementSagas),
+    fork(kpiEmployeeSagas),
+    fork(kpiApprovalSagas),
+    fork(kpiAssignSagas),
+    fork(kpiOpenSagas),
+
+    // corner
+    fork(hrCornerBlogSagas),
+    fork(hrCornerCategorySagas),
+    fork(hrCornerPageSagas),
+
+    // employee final
+    fork(employeeFinalSagas),
+
+    // web job
+    fork(webJobMonitoringSagas),
+    fork(webJobRecurringSagas),
+    fork(webJobDefinitionSagas)
   ]);
 }

@@ -56,16 +56,18 @@ interface IOwnState {
   validationSchema?: Yup.ObjectSchema<Yup.Shape<{}, Partial<ICommonFormValue>>>;
   
   filterLookupCompany: ILookupCompanyGetListFilter;
-  filterCommonSystem: ISystemListFilter;
+  filterCommonSystem?: ISystemListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setInitialValues: StateHandler<IOwnState>;
+  setFilterCommonSystem: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   handleOnLoadDetail: () => void;
   handleOnSubmit: (values: ICommonFormValue, actions: FormikActions<ICommonFormValue>) => void;
+  handleSetFilterCommonSystem: (companyUid: string) => void;
 }
 
 export type CommonFormProps
@@ -121,16 +123,23 @@ const createProps: mapper<CommonFormProps, IOwnState> = (props: CommonFormProps)
     direction: 'ascending'
   },
   
-  filterCommonSystem: {
-    orderBy: 'value',
-    direction: 'ascending'
-  },
+  // filterCommonSystem: {
+  //   orderBy: 'value',
+  //   direction: 'ascending'
+  // },
 });
 
 const stateUpdaters: StateUpdaters<CommonFormProps, IOwnState, IOwnStateUpdater> = {
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
+  setFilterCommonSystem: () => (companyUid: string) => ({
+    filterCommonSystem: {
+      companyUid,
+      orderBy: 'value',
+      direction: 'ascending'
+    },
+  })
 };
 
 const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
@@ -216,7 +225,12 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
        
         props.history.push(`/common/system/${props.match.params.category}/${response.id}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -224,8 +238,8 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -235,7 +249,10 @@ const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
           message: props.intl.formatMessage(props.formMode === FormMode.New ? commonMessage.system.message.createFailure : commonMessage.system.message.updateFailure)
         });
       });
-  }
+  },
+  handleSetFilterCommonSystem: (props: CommonFormProps) => (companyUid: string) => {
+    props.setFilterCommonSystem(companyUid);
+  },
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = {
@@ -261,6 +278,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonFormProps, IOwnState> = 
 
         // set initial values
         this.props.setInitialValues(initialValues);
+        this.props.handleSetFilterCommonSystem(response.data.companyUid || '');
       }
     }
   }

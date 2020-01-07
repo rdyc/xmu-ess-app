@@ -26,11 +26,10 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
+import { isObject } from 'util';
 
 interface IOwnRouteParams {
   positionUid: string;
-  companyUid: string;
 }
 
 interface IOwnHandler {
@@ -137,13 +136,13 @@ const stateUpdaters: StateUpdaters<PositionDetailProps, IOwnState, IOwnStateUpda
 
 const handlerCreators: HandleCreators<PositionDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: PositionDetailProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
-      if (props.userState.user && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
-          props.lookupPositionDispatch.loadDetailRequest({
-            companyUid: props.history.location.state.companyUid,
-            positionUid: props.match.params.positionUid
-          });
-        }
+    if (props.userState.user && props.match.params.positionUid && !props.lookupPositionState.detail.isLoading) {
+      if (props.history.location.state) {
+        props.lookupPositionDispatch.loadDetailRequest({
+          companyUid: props.history.location.state.companyUid,
+          positionUid: props.match.params.positionUid
+        });
+      } 
     }
   },
   handleOnSelectedMenu: (props: PositionDetailProps) => (item: IPopupMenuOption) => { 

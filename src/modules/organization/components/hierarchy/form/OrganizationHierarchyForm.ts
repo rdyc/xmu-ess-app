@@ -133,6 +133,7 @@ const createProps: mapper<OrganizationHierarchyFormProps, IOwnState> = (props: O
         Yup.object().shape({
           sequence: Yup.number()
             .min(1)
+            .max(99)
             .label(props.intl.formatMessage(organizationMessage.hierarchy.field.sequence))
             .required(),
 
@@ -210,7 +211,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
       values.items.forEach(item => payload.items && payload.items.push({
         sequence: item.sequence,
         positionUid: item.positionUid,
-        relationType: item.relationType,
+        relationType: item.relationType !== '' ? item.relationType : null,
       }));
       
       // set the promise
@@ -241,9 +242,10 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
   
         // fill items
         values.items.forEach(item => payload.items && payload.items.push({
+          itemUid: item.uid,
           sequence: item.sequence,
           positionUid: item.positionUid,
-          relationType: item.relationType,
+          relationType: item.relationType !== '' ? item.relationType : null,
         }));
 
         promise = new Promise((resolve, reject) => {
@@ -276,7 +278,12 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
        
         props.history.push(`/organization/hierarchy/${response.uid}`, {companyUid: values.companyUid});
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -284,8 +291,8 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }

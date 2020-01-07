@@ -8,6 +8,7 @@ import { FormMode } from '@generic/types';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IValidationErrorResponse } from '@layout/interfaces';
+import { IEmployeeLevelListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -63,6 +64,7 @@ interface IOwnState {
   filterDepartment?: ISystemListFilter;
   filterUnit?: ISystemListFilter;
   filterLookupCompany?: ILookupCompanyGetListFilter;
+  filterLookupLevel?: IEmployeeLevelListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -152,6 +154,11 @@ const createProps: mapper<AccessFormProps, IOwnState> = (props: AccessFormProps)
     orderBy: 'name',
     direction: 'ascending'
   },
+
+  filterLookupLevel: {
+    orderBy: 'seq',
+    direction: 'descending'
+  }
 });
 
 const stateUpdaters: StateUpdaters<AccessFormProps, IOwnState, IOwnStateUpdater> = {
@@ -283,17 +290,21 @@ const handlerCreators: HandleCreators<AccessFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/account/employee/${employeeUid}/access/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
-        // console.log(error);
-
+        
         // set form status
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -331,6 +342,20 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AccessFormProps, IOwnState> = 
             start: thisResponse.data.start,
             end: thisResponse.data.end || ''
         };
+    
+        this.props.stateUpdate({
+          filterUnit: {
+            companyUid: thisResponse.data.companyUid,
+            orderBy: 'value',
+            direction: 'ascending'
+          },
+          filterDepartment: {
+            companyUid: thisResponse.data.companyUid,
+            parentCode: thisResponse.data.unitType || '',
+            orderBy: 'value',
+            direction: 'ascending'
+          }
+        });
 
         this.props.setInitialValues(initialValues);
       }

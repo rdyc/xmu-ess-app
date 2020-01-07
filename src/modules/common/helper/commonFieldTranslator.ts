@@ -18,7 +18,8 @@ export const isWithCompany = (category?: string): boolean => {
     CommonCategory.unit, CommonCategory.employment, CommonCategory.department,
     CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
     CommonCategory.degree, CommonCategory.family, CommonCategory.training,
-    CommonCategory.certification, CommonCategory.site, 
+    CommonCategory.certification, 
+    // CommonCategory.site
   ];
 
   if (isNullOrUndefined(category) || (category === '')) {
@@ -49,7 +50,9 @@ export const editableCategories = (): ICollectionValue[] => {
     CommonCategory.unit, CommonCategory.department, CommonCategory.employment,
     CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
     CommonCategory.degree, CommonCategory.family, CommonCategory.training,
-    CommonCategory.certification, CommonCategory.site,
+    CommonCategory.certification, CommonCategory.site, CommonCategory.competency,
+    CommonCategory.profession,
+    //  CommonCategory.assessor
   ];
 
   return toObjectCategories(categories);

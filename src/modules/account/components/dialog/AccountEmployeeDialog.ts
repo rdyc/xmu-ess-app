@@ -119,7 +119,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeDialogProps, IOwnState>
     const { request } = this.props.accountEmployeeState.list;
 
     // 1st load only when request are empty
-    if (!request) {
+    if (!request || request && !request.filter) {
       this.props.handleOnLoadApi();
     } else {
       // 2nd load only when request filter are present

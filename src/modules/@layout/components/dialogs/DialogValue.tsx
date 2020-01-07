@@ -30,6 +30,7 @@ interface IOwnOptions {
   onSelected: (data?: ICollectionValue) => void;
   onClose: () => void;
   isCompletion?: boolean;
+  withoutNone?: boolean | false;
 }
 
 type AllProps 
@@ -69,6 +70,7 @@ const DialogValueView: React.SFC<AllProps> = props => (
     <DialogContent className={props.classes.paddingDisabled}>
       <List>
         {
+          !props.withoutNone &&
           !props.isCompletion && (
             <React.Fragment>
               <ListItem button onClick={() => props.onSelected()}>

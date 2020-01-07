@@ -1,3 +1,4 @@
+// import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { PreviewPage } from '@layout/components/pages/PreviewPage/PreviewPage';
 import { PopupMenu } from '@layout/components/PopupMenu';
@@ -26,6 +27,7 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
     secondary={(data: ILeaveDetail) => ([
       <React.Fragment>
         {
+          // data && data.statusType !== WorkflowStatusType.Submitted &&
           <LeaveCancellationForm
             cancellationTitle={props.cancellationTitle}
             cancellationSubHeader={props.cancellationSubHeader}

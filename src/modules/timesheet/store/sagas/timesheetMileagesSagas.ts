@@ -19,7 +19,7 @@ function* watchAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/timesheet/reports/mileages?${params}`, 
       successEffects: (response: IApiResponse) => [
         put(timesheetMileagesGetAllSuccess(response.body))

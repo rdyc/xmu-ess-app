@@ -40,7 +40,7 @@ interface IListColor {
 
 interface IOwnOption {
   state: IQueryCollectionState<any, any>;
-  info: IPageInfo;
+  info?: IPageInfo;
   fields: ICollectionValue[];
   onLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   onLoadedApi?: () => void;
@@ -95,10 +95,10 @@ export type CollectionPageProps
   & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
-  orderBy: props.state.request && props.state.request.filter.orderBy,
-  direction: props.state.request && props.state.request.filter.direction,
-  page: props.state.request && props.state.request.filter.page,
-  size: props.state.request && props.state.request.filter.size,  
+  orderBy: props.state.request && props.state.request.filter && props.state.request.filter.orderBy || '',
+  direction: props.state.request && props.state.request.filter && props.state.request.filter.direction || '',
+  page: props.state.request && props.state.request.filter && props.state.request.filter.page || '',
+  size: props.state.request && props.state.request.filter && props.state.request.filter.size || '',  
   selected: []
 });
 
@@ -180,9 +180,11 @@ const handlerCreators: HandleCreators<CollectionPageProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
   componentDidMount() {
     // configure view
-    this.props.masterPage.changePage({
-      ...this.props.info
-    });
+    if (this.props.info) {
+      this.props.masterPage.changePage({
+        ...this.props.info
+      });
+    }
 
     // assign search component
     if (this.props.appBarSearchComponent) {
@@ -232,7 +234,9 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, IOwnState> = {
   },
   componentWillUnmount() {
     // reset page
-    this.props.masterPage.resetPage();
+    if (this.props.info) {
+      this.props.masterPage.resetPage();
+    }
   }
 };
 

@@ -32,7 +32,7 @@ import { IApiResponse, objectToQuerystring } from 'utils';
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowGetAllRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/workflows${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(organizationWorkflowGetAllSuccess(response.body)),
@@ -54,7 +54,7 @@ function* watchGetAllRequest() {
 function* watchGetListRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowGetListRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/workflows/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(organizationWorkflowGetListSuccess(response.body)),
@@ -74,7 +74,7 @@ function* watchGetListRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/workflows/${action.payload.companyUid}/${action.payload.menuUid}/${action.payload.workflowUid}`,
       successEffects: (response: IApiResponse) => ([
         put(organizationWorkflowGetByIdSuccess(response.body)),
@@ -94,7 +94,7 @@ function* watchGetByIdRequest() {
 function* watchGetByMenuRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowGetByMenuRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/workflows/${action.payload.companyUid}/${action.payload.menuUid}`,
       successEffects: (response: IApiResponse) => ([
         put(organizationWorkflowGetByMenuSuccess(response.body)),
@@ -114,7 +114,7 @@ function* watchGetByMenuRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/organization/workflows/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -153,7 +153,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/organization/workflows/${action.payload.companyUid}/${action.payload.menuUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -192,7 +192,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof organizationWorkflowDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/organization/workflows`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

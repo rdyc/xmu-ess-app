@@ -36,7 +36,7 @@ function* watchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeNoteGetAllSuccess(response.body)),
@@ -61,7 +61,7 @@ function* watchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeNoteGetListSuccess(response.body))
@@ -81,7 +81,7 @@ function* watchListRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeNoteGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes/${action.payload.noteId}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeNoteGetByIdSuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeNotePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -141,7 +141,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeNotePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -181,7 +181,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeNoteDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/account/employees/${action.payload.employeeUid}/notes`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

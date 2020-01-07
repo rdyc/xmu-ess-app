@@ -36,7 +36,7 @@ function* watchFetchAllRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/roles?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupRoleGetAllSuccess(response.body))
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/roles/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupRoleGetListSuccess(response.body)),
@@ -81,7 +81,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupRoleGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupRoleGetByIdSuccess(response.body)),
@@ -101,7 +101,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof lookupRolePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/roles/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -141,7 +141,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupRolePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -181,7 +181,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupRoleDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/lookup/roles`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

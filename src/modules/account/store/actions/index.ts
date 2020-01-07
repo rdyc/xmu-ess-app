@@ -10,3 +10,6 @@ export * from './accountEmployeeTrainingAction';
 export * from './accountEmployeeRateAction';
 export * from './accountEmployeeNoteAction';
 export * from './accountEmployeeAccessActions';
+export * from './accountEmployeeContractActions';
+export * from './accountEmployeeKPIFinalActions';
+export * from './accountEmployeeKPIAssignActions';

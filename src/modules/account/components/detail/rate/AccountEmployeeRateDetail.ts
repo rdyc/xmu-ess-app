@@ -41,6 +41,7 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setOptions: StateHandler<IOwnState>;
   stateUpdate: StateHandler<IOwnState>;
   setModify: StateHandler<IOwnState>;
+  setCreate: StateHandler<IOwnState>;
 }
 
 export type AccountEmployeeRateDetailProps
@@ -96,7 +97,13 @@ const stateUpdaters: StateUpdaters<AccountEmployeeRateDetailProps, IOwnState, IO
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.modifyTitle, {state: 'Rate'}),
     dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.modifyDescription, {state: 'rate'}),
-  })
+  }),
+  setCreate: (prevState: IOwnState, props: AccountEmployeeRateDetailProps) => (): Partial<IOwnState> => ({
+    action: LookupUserAction.Create,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(accountMessage.shared.confirm.createTitle, {state: 'Rate'}),
+    dialogContent: props.intl.formatMessage(accountMessage.shared.confirm.createDescription, {state: 'rate'}),
+  }),
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandler> = {
@@ -115,6 +122,9 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
       case LookupUserAction.Modify:
         props.setModify();        
         break;
+      case LookupUserAction.Create:
+        props.setCreate();        
+        break;
 
       default:
         break;
@@ -128,10 +138,10 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
     });
   },
   handleOnConfirm: (props: AccountEmployeeRateDetailProps) => () => {
-    const { response } = props.accountEmployeeRateState.current;
+    const { response, errors } = props.accountEmployeeRateState.current;
 
     // skipp untracked action or empty response
-    if (!props.action || !response) {
+    if (!props.action || !errors && !response || errors && errors.status !== 404) {
       return;
     }
 
@@ -140,7 +150,8 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
 
     // actions with new page
     const actions = [
-      LookupUserAction.Modify
+      LookupUserAction.Modify,
+      LookupUserAction.Create
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -148,6 +159,9 @@ const handlerCreators: HandleCreators<AccountEmployeeRateDetailProps, IOwnHandle
 
       switch (props.action) {
         case LookupUserAction.Modify:
+          next = `/account/employee/${employeeUid}/rate/form`;
+          break;
+        case LookupUserAction.Create:
           next = `/account/employee/${employeeUid}/rate/form`;
           break;
 
@@ -200,6 +214,31 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateDetailProps, IOwnSt
       ];
 
       this.props.setOptions(options);
+    }
+
+    // handle add a new rate
+    if (this.props.accountEmployeeRateState.current.errors && this.props.accountEmployeeRateState.current.errors !== prevProps.accountEmployeeRateState.current.errors) {
+      if (this.props.accountEmployeeRateState.current.errors.status === 404) {
+        const { isLoading } = this.props.accountEmployeeRateState.current;
+  
+        // generate option menus
+        const options: IPopupMenuOption[] = [
+          {
+            id: LookupUserAction.Refresh,
+            name: this.props.intl.formatMessage(layoutMessage.action.refresh),
+            enabled: !isLoading,
+            visible: true
+          },
+          {
+            id: LookupUserAction.Create,
+            name: this.props.intl.formatMessage(layoutMessage.action.create),
+            enabled: !isLoading,
+            visible: true
+          },
+        ];
+  
+        this.props.setOptions(options);
+      }
     }
   }
 };

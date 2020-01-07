@@ -20,7 +20,7 @@ export const lookupCustomerSection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   customerTitle: { id: `${prefix}.section.title` },
   customerSubHeader: { id: `${prefix}.section.subHeader` },
-
+  contactTitle: { id: `${prefix}.section.contact.title` },
 });
 
 // dialog
@@ -75,6 +75,7 @@ export const lookupCustomerFields = defineMessages({
   contactTitleAdditional: { id: `${prefix}.field.contactTitleAdditional`},
   contactTitleAdditionalPlaceholder: { id: `${prefix}.field.contactTitleAdditional.placeholder`},
   isActive: { id: `${prefix}.field.isActive`},
+  active: { id: `${prefix}.field.active`},
   
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},

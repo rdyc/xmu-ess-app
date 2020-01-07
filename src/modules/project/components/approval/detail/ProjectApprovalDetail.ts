@@ -172,7 +172,12 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
         // set next load
         props.setShouldLoad();
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -180,8 +185,8 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> =
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => {
+        if (err && err.errors) {
+          err.errors.forEach(item => {
             // in case to handle incorrect field on other fields
             let field = item.field;
 

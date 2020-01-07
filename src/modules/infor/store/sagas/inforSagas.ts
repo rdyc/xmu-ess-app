@@ -14,7 +14,7 @@ function* watchPostRequest() {
     data.append('file', action.payload.data.file[0]);
 
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: '/v1/infor/reports',
       payload: data,
       isJsonContent: false,

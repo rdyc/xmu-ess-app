@@ -18,41 +18,52 @@ type AllProps
 
 const positionSummary: React.SFC<AllProps> = props => (
   <Grid container>
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.position.field.uid)}
-        value={props.data.uid}
+        label={props.intl.formatMessage(lookupMessage.position.field.companyUid)}
+        value={props.data.company && props.data.company.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         multiline
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.position.field.name)}
-        value={props.data.name || 'N/A'}
+        value={props.data.name}
       />
     </Grid>
 
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        multiline
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.position.field.description)}
+        value={props.data.description || 'N/A'}
+      />
+      <FormControlLabel
+        control={ <Checkbox checked={props.data.isAllowMultiple} /> }
+        label={props.intl.formatMessage(lookupMessage.position.field.isAllowMultiple)}
+      />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.position.field.inactiveDate)}
-        value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : props.intl.formatMessage(lookupMessage.position.field.indefinitely)}
-        multiline
+        value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
       />
       <FormControlLabel
-        control={ <Checkbox checked={!props.data.isExpired} /> }
-        label={props.data.isExpired ?
-          props.intl.formatMessage(lookupMessage.position.field.isExpired) :
-          props.intl.formatMessage(lookupMessage.position.field.isNotExpired)}
-        />
+        control={ <Checkbox checked={props.data.isExpired} /> }
+        label={props.intl.formatMessage(lookupMessage.position.field.expireStatus)}
+      />
     </Grid>
 
     {
       props.data.changes &&
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

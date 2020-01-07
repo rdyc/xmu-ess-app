@@ -5,6 +5,10 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
+import { HRNotifRoutingComponents } from '@hr.notification/components';
+import { CornerRoutingComponents } from '@hr/components/CornerRouter';
+import { HrRoutingComponents } from '@hr/components/HrRouter';
+import { KPIRoutingComponents } from '@kpi/components/KPIRouter';
 import { Callback, SigninPopupCallback, SilentRenew } from '@layout/components/base';
 import { LandingPage } from '@layout/components/landingPage/LandingPage';
 import { MasterPage } from '@layout/components/masterPage/MasterPage';
@@ -20,6 +24,7 @@ import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingC
 import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
 import { TimesheetRoutingComponents } from '@timesheet/components';
 import { TravelRoutingComponents } from '@travel/components';
+import { WebJobRouter } from '@webjob/components/WebJobRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import { User } from 'oidc-client';
@@ -31,8 +36,8 @@ import { Route, Router, Switch } from 'react-router';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
-import * as store from 'store';
 
+import * as store from 'store';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -68,6 +73,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/silent_renew" component={SilentRenew} />
               <Route path="/callback" component={Callback} />
               <Route path="/account/access" component={AccountAccess} />
+              <Route path="/corner/blog" component={CornerRoutingComponents} />
 
               <MasterPage>
                 <Route path="/home" component={HomeRoutingComponents} />
@@ -84,6 +90,10 @@ const app: React.ComponentType<AllProps> = props => (
                 <Route path="/common" component={CommonRoutingComponents} />
                 <Route path="/lookup" component={LookupRoutingComponents} />
                 <Route path="/organization" component={OrganizationRoutingComponents} />
+                <Route path="/hr" component={HRNotifRoutingComponents} />
+                <Route path="/kpi" component={KPIRoutingComponents} />
+                <Route path="/hr" component={HrRoutingComponents} />
+                <Route path="/webjob" component={WebJobRouter} />
 
                 <Route path="/playground" component={playgroundRouter} />
               </MasterPage>

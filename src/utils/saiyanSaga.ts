@@ -3,7 +3,7 @@ import { all, call, Effect } from 'redux-saga/effects';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
-type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
+type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface ISaiyanSaga {
   host?: string;

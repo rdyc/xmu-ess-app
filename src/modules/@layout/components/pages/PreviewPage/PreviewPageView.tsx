@@ -12,57 +12,65 @@ export const PreviewPageView: React.SFC<PreviewPageProps> = props => (
       waitingText={props.intl.formatMessage(layoutMessage.text.waiting)}
       onRetry={() => props.onLoadApi()}
     >
-      {
-        !props.state.isLoading &&
+      {!props.state.isLoading &&
         props.state.response &&
-        props.state.response.data &&
-        <Fade 
-          in={!props.state.isLoading}
-          timeout={1000}
-          mountOnEnter
-          unmountOnExit 
-        >      
-          <div className={props.classes.flexRow}>      
-            <div className={props.classes.flexColumn}>
-              { 
-                props.primary &&
-                props.primary(props.state.response.data)
-                  .map((children, index) =>
-                    <div key={index} className={props.classes.flexContent}>
-                      {children}
-                    </div>
-                  )
-              }
-            </div>
-
-            <div className={props.classes.flexColumn}>
-              { 
-                props.secondary &&
-                props.secondary(props.state.response.data)
-                  .map((children, index) =>
-                    <div key={index} className={props.classes.flexContent}>
-                      {children}
-                    </div>
-                  )
-              }
-            </div>
-
-            <div className={props.classes.flexColumn}>
-              <div className={props.classes.flexContent}>
-                { 
-                  props.tertiary &&
-                  props.tertiary(props.state.response.data)
-                    .map((children, index) =>
+        props.state.response.data && (
+          <Fade
+            in={!props.state.isLoading}
+            timeout={1000}
+            mountOnEnter
+            unmountOnExit
+          >
+            <div className={props.classes.flexRow}>
+              <div className={props.classes.flexColumn}>
+                {props.primary &&
+                  props
+                    .primary(props.state.response.data)
+                    .map((children, index) => (
                       <div key={index} className={props.classes.flexContent}>
                         {children}
                       </div>
-                    )
-                }
+                    ))}
               </div>
+
+              {props.secondary &&
+                props
+                  .secondary(props.state.response.data)
+                  .map((children, index) => (
+                    <div key={index} className={props.classes.flexColumn}>
+                      <div className={props.classes.flexContent}>
+                        {children}
+                      </div>
+                    </div>
+                  ))}
+
+              {props.tertiary &&
+                props
+                  .tertiary(props.state.response.data)
+                  .map((children, index) => (
+                    <div key={index} className={props.classes.flexColumn}>
+                      <div className={props.classes.flexContent}>
+                        <div className={props.classes.flexContent}>
+                          {children}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+              {props.quaternary &&
+                props
+                  .quaternary(props.state.response.data)
+                  .map((children, index) => (
+                    <div key={index} className={props.classes.flex2Column}>
+                      <div className={props.classes.flexContent}>
+                        {children}
+                      </div>
+                    </div>
+                  ))}
+
             </div>
-          </div>
-        </Fade>
-      }
+          </Fade>
+        )}
     </PreloaderWithError>
 
     {props.children}

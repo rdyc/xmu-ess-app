@@ -21,7 +21,7 @@ import {
 import { LookupCustomerListFilterView } from './LookupCustomerListFilterView';
 
 export type ILookupCustomerListFilterResult = Pick<ILookupCustomerGetAllFilter,
-  'companyUid'>;
+  'companyUid' | 'isActive'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -34,6 +34,9 @@ interface IOwnState {
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
+
+  // filter status
+  filterStatus?: boolean; 
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -43,6 +46,9 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter company
   setFilterCompanyVisibility: StateHandler<IOwnState>;
   setFilterCompany: StateHandler<IOwnState>;
+
+  // filter status
+  setFilterStatus: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -55,6 +61,9 @@ interface IOwnHandler {
   handleFilterCompanyOnSelected: (data: ILookupCompany) => void;
   handleFilterCompanyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompanyOnClose: () => void;
+
+  // filter status
+  handleFilterStatusOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type LookupCustomerListFilterProps
@@ -66,14 +75,16 @@ export type LookupCustomerListFilterProps
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
-const createProps: mapper<LookupCustomerListFilterProps, IOwnState> = (): IOwnState => ({
+const createProps: mapper<LookupCustomerListFilterProps, IOwnState> = (props: LookupCustomerListFilterProps): IOwnState => ({
   isFilterCompanyOpen: false,
+  filterStatus: props.initialProps && props.initialProps.isActive
 });
 
 const stateUpdaters: StateUpdaters<LookupCustomerListFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
-    filterCompany: undefined
+    filterCompany: undefined,
+    filterStatus: true
   }),
 
   // filter company
@@ -83,6 +94,11 @@ const stateUpdaters: StateUpdaters<LookupCustomerListFilterProps, IOwnState, IOw
   setFilterCompany: () => (data?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
     filterCompany: data,
+  }),
+
+  // filter status
+  setFilterStatus: () => (checked: boolean) => ({
+    filterStatus: checked
   }),
 };
 
@@ -94,6 +110,7 @@ const handlerCreators: HandleCreators<LookupCustomerListFilterProps, IOwnHandler
   handleFilterOnApply: (props: LookupCustomerListFilterProps) => () => {
     props.onApply({
       companyUid: props.filterCompany && props.filterCompany.uid,
+      isActive: props.filterStatus
     });
   },
 
@@ -109,6 +126,11 @@ const handlerCreators: HandleCreators<LookupCustomerListFilterProps, IOwnHandler
   },
   handleFilterCompanyOnClose: (props: LookupCustomerListFilterProps) => () => {
     props.setFilterCompanyVisibility();
+  },
+
+  // filter status
+  handleFilterStatusOnChange: (props: LookupCustomerListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterStatus(checked);
   },
 };
 

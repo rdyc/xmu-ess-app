@@ -2,7 +2,7 @@ import { IEmployeeAccessList } from '@account/classes';
 import { WithAccountEmployeeMy, withAccountEmployeeMy } from '@account/hoc/withAccountEmployeeMy';
 import AppStorage from '@constants/AppStorage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppUser, IUserCompany, IUserPosition, IUserRole } from '@layout/interfaces';
+import { IAppUser, IUserCompany, IUserLevel, IUserPosition, IUserRole } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { RemoveDuplicates } from '@utils/index';
@@ -116,10 +116,18 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, IOwnHandler> = {
           description: access.role.description || ''
         };
 
+        const level: IUserLevel = {
+          uid: access.levelType || 'N/A',
+          seq: access.level && access.level.seq || 0,
+          value: access.level && access.level.value || 'N/A',
+          description: access.level && access.level.description || 'N/A'
+        };
+
         const user: IAppUser = {
           company,
           position,
           role,
+          level,
           uid: response.data.uid,
           email: response.data.email,
           fullName: response.data.fullName,

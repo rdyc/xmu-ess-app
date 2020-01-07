@@ -45,10 +45,10 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => (
 
             <div className={props.classes.flexColumn}>
               <div className={props.classes.flexContent}>
-                <LookupRoleMenuPartialForm 
+                <LookupRoleMenuPartialForm
+                  formMode={props.formMode}
                   intl={props.intl}
                   formikBag={formikBag}
-                  formMode={props.formMode}
                 />
               </div>
             </div>

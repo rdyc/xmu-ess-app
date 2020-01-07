@@ -87,16 +87,14 @@ const LeaveDetailPartialForm: React.ComponentType<LeaveDetailPartialFormProps> =
             <LookupLeaveOption filter={props.filterLookupLeave}>
               <SelectField
                 isSearchable
-                isDisabled={props.formikBag.values.leaveType !== LeaveType.CutiKhusus || props.formikBag.isSubmitting}
+                isDisabled={props.formikBag.isSubmitting}
                 isClearable={field.value !== ''}
                 escapeClearsValue={true}
                 valueString={field.value}
                 textFieldProps={{
                   label: props.intl.formatMessage(leaveMessage.request.fieldFor(field.name, 'fieldName')),
                   required: (props.formikBag.values.leaveType === LeaveType.CutiKhusus),
-                  helperText: (props.formikBag.values.leaveType !== LeaveType.CutiKhusus && 
-                    props.intl.formatMessage(leaveMessage.request.field.regularTypeActive) || 
-                    form.touched.regularType && form.errors.regularType),
+                  helperText: (form.touched.regularType && form.errors.regularType),
                   error: (props.formikBag.values.leaveType === LeaveType.CutiKhusus && form.touched.regularType && Boolean(form.errors.regularType))
                 }}
                 onMenuClose={() => props.formikBag.setFieldTouched(field.name)}

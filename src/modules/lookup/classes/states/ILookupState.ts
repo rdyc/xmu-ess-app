@@ -1,10 +1,17 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  ICalculateLeavePostRequest,
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
   ICurrencyPostRequest,
   ICurrencyPutRequest,
+  IEmployeeLevelDeleteRequest,
+  IEmployeeLevelGetAllRequest,
+  IEmployeeLevelGetDetailRequest,
+  IEmployeeLevelGetListRequest,
+  IEmployeeLevelPostRequest,
+  IEmployeeLevelPutRequest,
   ILeaveCalculationGetAllRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
@@ -79,6 +86,9 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  IEmployeeLevel,
+  IEmployeeLevelDetail,
+  IEmployeeLevelList,
   ILeaveCalculation,
   ILookupHoliday,
   ILookupHolidayDetail,
@@ -111,6 +121,7 @@ import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustom
 import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '../queries/gallery';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 import { IAchievementResult } from '../response/achievement';
+import { ILeavePage } from '../types';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -174,8 +185,9 @@ export interface ILookupState {
   lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
-
+  lookupLeaveCalculate: IQueryCollectionState<ICalculateLeavePostRequest, ILookupLeave>;
   lookupLeaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
+  lookupLeavePage: ILeavePage;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetAmount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;
@@ -194,4 +206,11 @@ export interface ILookupState {
   imageGalleryGetAll: IQueryCollectionState<IGalleryGetAllRequest, IGallery>;
   imageGalleryGetById: IQuerySingleState<IGalleryGetDetailRequest, IGallery>;  
   imageGalleryPost: IQuerySingleState<IGalleryPostRequest, IGallery>;
+
+  employeeLevelGetAll: IQueryCollectionState<IEmployeeLevelGetAllRequest, IEmployeeLevel>;
+  employeeLevelGetList: IQueryCollectionState<IEmployeeLevelGetListRequest, IEmployeeLevelList>;
+  employeeLevelGetById: IQuerySingleState<IEmployeeLevelGetDetailRequest, IEmployeeLevelDetail>;
+  employeeLevelPost: IQuerySingleState<IEmployeeLevelPostRequest, IEmployeeLevel>;
+  employeeLevelPut: IQuerySingleState<IEmployeeLevelPutRequest, IEmployeeLevel>;
+  employeeLevelDelete: IQuerySingleState<IEmployeeLevelDeleteRequest, boolean>;
 }

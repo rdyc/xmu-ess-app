@@ -191,8 +191,9 @@ const stateUpdaters: StateUpdaters<PurchaseRequestFormProps, IOwnState, IOwnStat
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: ([WorkflowStatusType.Approved]).toString(),
       direction: 'ascending'
@@ -202,7 +203,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestFormProps, IOwnState, IOwnStat
 
 const handlerCreators: HandleCreators<PurchaseRequestFormProps, IOwnHandler> = {
   handleSetProjectFilter: (props: PurchaseRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: PurchaseRequestFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
@@ -313,7 +314,12 @@ const handlerCreators: HandleCreators<PurchaseRequestFormProps, IOwnHandler> = {
        
         props.history.push(`/purchase/requests/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -321,8 +327,8 @@ const handlerCreators: HandleCreators<PurchaseRequestFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -360,6 +366,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<PurchaseRequestFormProps, IOwn
           items: [],
         };
 
+        this.props.setProjectFilter(response.data.customerUid);
+        
         // fill items
         if (response.data.items) {
           response.data.items.forEach(item => initialValues.items && initialValues.items.push({

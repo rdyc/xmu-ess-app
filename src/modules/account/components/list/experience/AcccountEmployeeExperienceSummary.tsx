@@ -46,6 +46,12 @@ const accountEmployeeExperienceSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(accountMessage.experience.field.position)}
         value={props.data.position}
       />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(accountMessage.experience.field.profession)}
+        value={props.data.profession && props.data.profession.value || 'N/A'}
+      />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField

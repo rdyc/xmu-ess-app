@@ -2,6 +2,7 @@ import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
  ISummaryGetBillableRequest,
  ISummaryGetEffectivenessRequest,
+ ISummaryGetMappingRequest,
  ISummaryGetProfitabilityRequest,
  ISummaryGetProgressRequest,
  ISummaryGetWinningRequest
@@ -11,6 +12,7 @@ import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ISummaryWinning } from '@summary/classes/response/winning';
+import { ISummaryMapping } from '../response/mapping';
 
 export interface ISummaryState {
   summaryGetBillable: IQueryCollectionState<ISummaryGetBillableRequest, ISummaryBillable>;
@@ -18,4 +20,5 @@ export interface ISummaryState {
   summaryGetProfitability: IQuerySingleState<ISummaryGetProfitabilityRequest, ISummaryProfitability>;
   summaryGetProgress: IQuerySingleState<ISummaryGetProgressRequest, ISummaryProgress>;
   summaryGetWinning: IQueryCollectionState<ISummaryGetWinningRequest, ISummaryWinning>;
+  summaryGetMapping: IQueryCollectionState<ISummaryGetMappingRequest, ISummaryMapping>;
 }

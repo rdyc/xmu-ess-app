@@ -121,7 +121,12 @@ const handlerCreators: HandleCreators<AchievementFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/lookup/achievementchart`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -129,8 +134,8 @@ const handlerCreators: HandleCreators<AchievementFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -149,9 +154,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AchievementFormProps, IOwnStat
   componentDidMount() {
     // configure view
     this.props.masterPage.changePage({
-      uid: AppMenu.Account,
+      uid: AppMenu.AchievementChart,
       parentUid: AppMenu.Lookup,
-      parentUrl: '/lookup/achievementchart',
       title: this.props.intl.formatMessage(lookupMessage.achievement.page.newTitle),
       description: this.props.intl.formatMessage(lookupMessage.achievement.page.newSubHeader)
     });

@@ -14,7 +14,7 @@ import {
 function* watchFetchRequest() {
   const worker = (action: ReturnType<typeof notificationGetAllRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/notifications?companyUid=${action.payload.companyUid}&positionUid=${action.payload.positionUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(notificationGetAllSuccess(response.body))

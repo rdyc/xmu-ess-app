@@ -15,3 +15,5 @@ export * from './holiday/ILookupHolidayGetListFilter';
 export * from './leave/ILookupLeaveGetAllFilter';
 export * from './leave/ILookupLeaveGetListFilter';
 export * from './leave/ILeaveCalculationGetAllFilter';
+export * from './employeeLevel/IEmployeeLevelAllFilter';
+export * from './employeeLevel/IEmployeeLevelListFilter';

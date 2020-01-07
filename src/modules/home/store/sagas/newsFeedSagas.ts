@@ -13,7 +13,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof newsFeedGetRequest>) => {
     return saiyanSaga.fetch({
       host: window.self.location.origin,
-      method: 'get',
+      method: 'GET',
       path: `/data/news.json`,
       successEffects: (response: IApiResponse) => [
         put(newsFeedGetSuccess(response.body)),

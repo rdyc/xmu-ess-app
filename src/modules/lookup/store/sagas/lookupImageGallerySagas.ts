@@ -27,7 +27,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/gallery?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupImageGalleryGetAllSuccess(response.body)),
@@ -47,7 +47,7 @@ function* watchFetchAllRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof lookupImageGalleryGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/lookup/gallery/${action.payload.imageUid
       }`,
       successEffects: (response: IApiResponse) => ([
@@ -72,7 +72,7 @@ function* watchPostRequest() {
     data.append('file', action.payload.data.file[0]);
 
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/lookup/gallery/`,
       payload: data,
       isJsonContent: false,

@@ -1,3 +1,4 @@
+import { LoadingCircular } from '@layout/components/loading/LoadingCircular';
 import { layoutMessage } from '@layout/locales/messages';
 import { ICompanyList } from '@lookup/classes/response';
 import {
@@ -17,7 +18,7 @@ import * as React from 'react';
 import { FilterCompanyProps } from './FilterCompany';
 
 export const FilterCompanyView: React.SFC<FilterCompanyProps> = props => {
-  const { response } = props.lookupCompanyState.list;
+  const { response, isLoading } = props.lookupCompanyState.list;
 
   const renderItem = (item: ICompanyList) => {
     return (
@@ -59,21 +60,29 @@ export const FilterCompanyView: React.SFC<FilterCompanyProps> = props => {
 
       <Divider/>
 
-      <List>
-        <ListItem button onClick={() => props.onSelected()}>
-          <Radio color="secondary" checked={!props.value} />
-          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
-        </ListItem>
-        <Divider />
+      {
+        isLoading &&
+        <LoadingCircular />
+      }
 
-        {
-          response &&
-          response.data &&
-          response.data.map(item =>
-            renderItem(item)
-          )
-        }
-      </List>
+      {
+        !isLoading &&
+        <List>
+          <ListItem button onClick={() => props.onSelected()}>
+            <Radio color="secondary" checked={!props.value} />
+            <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)}/>
+          </ListItem>
+          <Divider />
+
+          {
+            response &&
+            response.data &&
+            response.data.map(item =>
+              renderItem(item)
+            )
+          }
+        </List>
+      }
     </Dialog>
   );
 };

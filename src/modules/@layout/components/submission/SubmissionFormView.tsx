@@ -30,7 +30,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
             {...GlobalStyle.TextField.ReadOnly}
             multiline
             label="Status"
-            value={props.intl.formatMessage({id: props.formikProps.status.message})}
+            value={!props.formikProps.status.Code ? props.intl.formatMessage({id: props.formikProps.status.message}) : props.formikProps.status.Message}
           />
         </CardContent>
       }
@@ -40,7 +40,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           fullWidth
           type="reset"
           color="secondary"
-          disabled={!props.formikProps.dirty || props.formikProps.isSubmitting}
+          disabled={!props.formikProps.dirty || props.formikProps.isSubmitting || props.disableButtons}
         >
           {props.buttonLabelProps.reset}
         </Button>
@@ -49,8 +49,12 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
           fullWidth
           type="button"
           color="primary"
-          disabled={props.formikProps.isSubmitting}
-          onClick={() => props.setOpen()}
+          disabled={props.formikProps.isSubmitting || props.disableButtons}
+          onClick={() => props.confirmationDialogProps ? 
+            props.setOpen() : 
+            props.handleSubmitAction ?
+              props.handleSubmitAction() : 
+              props.formikProps.submitForm()}
         >
           {props.formikProps.isSubmitting ? props.buttonLabelProps.processing : props.buttonLabelProps.submit}
         </Button>
@@ -58,6 +62,7 @@ export const SubmissionFormView: React.ComponentType<SubmissionFormProps> = prop
     </Card>
 
     {
+      props.confirmationDialogProps &&
       !props.formikProps.isSubmitting &&
       <DialogConfirmation
         title={props.confirmationDialogProps.title}

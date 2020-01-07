@@ -33,7 +33,9 @@ const PurchaseItemPartialForm: React.ComponentType<PurchaseItemPartialFormProps>
                 <CardHeader 
                   title={`#${index + 1} - ${item.uid || 'Draft'}`}
                   action={
+                    props.formikBag.values.items.length > 1 &&
                     <IconButton 
+                      disabled={props.formikBag.isSubmitting}
                       onClick={() => {
                         // remove current
                         fields.remove(index);

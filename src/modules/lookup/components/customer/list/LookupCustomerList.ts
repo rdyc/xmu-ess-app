@@ -69,11 +69,13 @@ const createProps: mapper<LookupCustomerListProps, IOwnState> = (props: LookupCu
     fields: Object.keys(LookupCustomerField).map(key => ({
       value: key,
       name: LookupCustomerField[key]
-    }))
+    })),
+    isActive: true
   };
 
   // fill from previous request if any
   if (request && request.filter) {
+    state.isActive = request.filter.isActive,
     state.companyUid = request.filter.companyUid;
   }
 
@@ -102,6 +104,7 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
       // predefined filter
       const filter: ILookupCustomerGetAllFilter = {
         companyUid: props.companyUid,
+        isActive: props.isActive,
         find: request && request.filter && request.filter.find,
         findBy: request && request.filter && request.filter.findBy,
         orderBy: params && params.orderBy || request && request.filter && request.filter.orderBy,
@@ -147,12 +150,12 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
   },
   handleOnBind: (props: LookupCustomerListProps) => (item: ICustomer, index: number) => ({
     key: index,
-        primary: item.name,
-        secondary: item.email ? item.email : 'N/A',
-        tertiary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
-        quaternary: item.company && item.company.name || item.companyUid,
-        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
-        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+    primary: item.name,
+    secondary: item.company && item.company.name || item.companyUid,
+    tertiary: item.email ? item.email : 'N/A',
+    quaternary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
   handleFilterVisibility: (props: LookupCustomerListProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
@@ -161,7 +164,7 @@ const handlerCreators: HandleCreators<LookupCustomerListProps, IOwnHandler> = {
     props.setFilterApplied(filter);
   },
   handleFilterBadge: (props: LookupCustomerListProps) => () => {
-    return props.companyUid !== undefined;
+    return props.companyUid !== undefined || props.isActive === false;
   },
   // handleSelection: (props: ProjectRegistrationListProps) => (values: string[]) => {
   //   console.log(values);
@@ -177,9 +180,11 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerListProps, IOwnState> = 
     const isFilterChanged = !shallowEqual(
       {
         companyUid: this.props.companyUid,
+        isActive: this.props.isActive,
       },
       {
         companyUid: prevProps.companyUid,
+        isActive: prevProps.isActive,
       }
     );
 

@@ -1,6 +1,7 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { ILookupLeaveDeleteRequest, ILookupLeaveGetAllRequest, ILookupLeaveGetDetailRequest, ILookupLeaveGetListRequest, ILookupLeavePostRequest, ILookupLeavePutRequest } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
+import { LookupLeaveTabs } from '@lookup/classes/types';
 import { action } from 'typesafe-actions';
 
 export const enum LookupLeaveAction {
@@ -27,7 +28,8 @@ export const enum LookupLeaveAction {
   DELETE_REQUEST = '@@lookup/leave/DELETE_REQUEST',
   DELETE_SUCCESS = '@@lookup/leave/DELETE_SUCCESS',
   DELETE_ERROR = '@@lookup/leave/DELETE_ERROR',
-  DELETE_DISPOSE = '@@lookup/leave/DELETE_DISPOSE'
+  DELETE_DISPOSE = '@@lookup/leave/DELETE_DISPOSE',
+  CHANGE_PAGE = '@@lookup/leave/CHANGE_PAGE'
 }
 
 // get all
@@ -65,3 +67,6 @@ export const lookupLeaveDeleteRequest = (request: ILookupLeaveDeleteRequest) => 
 export const lookupLeaveDeleteSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.DELETE_SUCCESS, response);
 export const lookupLeaveDeleteError = (error: any) => action(LookupLeaveAction.DELETE_ERROR, error);
 export const lookupLeaveDeleteDispose = () => action(LookupLeaveAction.DELETE_DISPOSE);
+
+// change page
+export const lookupLeaveChangePage = (leavePage: LookupLeaveTabs) => action(LookupLeaveAction.CHANGE_PAGE, leavePage);

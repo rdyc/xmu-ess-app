@@ -1,5 +1,5 @@
 import { IEmployeeExperienceAllFilter } from '@account/classes/filters/employeeExperience';
-import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
+import { IEmployeeExperience, IEmployeeExperienceCompetency } from '@account/classes/response/employeeExperience';
 import { AccountEmployeeField } from '@account/classes/types/AccountEmployeeField';
 import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { IBasePagingFilter } from '@generic/interfaces';
@@ -24,6 +24,10 @@ import {
 } from 'recompose';
 import { AccountEmployeeExperienceListView } from './AccountEmployeeExperienceListView';
 
+interface IOwnOption {
+  employeeId?: string;
+}
+
 interface IOwnRouteParams {
   employeeUid: string;
 }
@@ -39,11 +43,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   handleOnLoadApi: (filter?: IBasePagingFilter, resetPage?: boolean, isRetry?: boolean) => void;
   handleOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
+  handleMappingOnBind: (item: IEmployeeExperience, index: number) => IDataBindResult;
+  listCompetencies: (data: IEmployeeExperienceCompetency[]) => string;
 }
 
 export type AccountEmployeeExperienceListProps 
   = IOwnRouteParams
   & IOwnState
+  & IOwnOption
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
@@ -85,41 +92,82 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceListProps, IOwnHa
 
       // when request is defined, then compare the filter props
       const shouldLoad = !shallowEqual(filter, request && request.filter || {});
-      
+
       // only load when request parameter are differents
       if (isExpired || shouldLoad || isRetry) {
-        loadAllRequest({
-          filter,
-          employeeUid: props.match.params.employeeUid,
-        });
+        if (props.employeeId) {
+          loadAllRequest({
+            filter,
+            employeeUid: props.employeeId
+          });
+        } else {
+          loadAllRequest({
+            filter,
+            employeeUid: props.match.params.employeeUid,
+          });
+        }
       }
     }
+  },
+  listCompetencies: (props: AccountEmployeeExperienceListProps) => (data: IEmployeeExperienceCompetency[]) => {
+    const competencies: string[] = [];
+    data.map(item => {
+      if (item.competency) {
+        competencies.push(item.competency.value);
+      }}
+    );
+
+    return competencies.join(', ');
   },
   handleOnBind: () => (item: IEmployeeExperience, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.company,
     tertiary: item.position,
-    quaternary: `${item.start.toString()} - ${item.end.toString()}` ,
-    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    quaternary: item.profession && item.profession.value || 'N/A',
+    quinary: `${item.start.toString()} - ${item.end.toString()}`,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
-  })
+  }),
+  handleMappingOnBind: (props: AccountEmployeeExperienceListProps) => (item: IEmployeeExperience, index: number) => {
+    const competencies: string[] = [];
+    if (item.competencies) {
+      item.competencies.map(comp => {
+        if (comp.competency) {
+          competencies.push(comp.competency.value);
+        }}
+      );
+    }
+
+    const bind: IDataBindResult = {
+      key: index,
+      primary: item.company,
+      secondary: item.position,
+      tertiary: item.profession && item.profession.value || 'N/A',
+      quaternary: item.competencies && competencies.join(', ') || 'N/A',
+      quinary: item.start.toString(),
+      senary: item.end.toString()
+    };
+
+    return bind;
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceListProps, IOwnState> = {
   componentDidMount() {
-    if (this.props.location.state) {
-    //   if (this.props.location.state.employeeName) {
-
-    //   }
+    const { employeeId, employeeUid, handleOnLoadApi } = this.props;
+    const { request } = this.props.accountEmployeeExperienceState.all;
+    if (request) {
+      if (request.employeeUid !== employeeId || request.employeeUid !== employeeUid) {
+        handleOnLoadApi(undefined, true, true);
+      }
     }
   },
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: AccountEmployeeExperienceListProps) {
     //
   }
 };
 
-export const AccountEmployeeExperienceList = compose(
+export const AccountEmployeeExperienceList = compose<AccountEmployeeExperienceListProps, IOwnOption>(
   setDisplayName('AccountEmployeeExperienceList'),
   withUser,
   withAccountEmployeeExperience,

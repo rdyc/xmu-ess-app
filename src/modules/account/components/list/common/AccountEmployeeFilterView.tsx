@@ -19,6 +19,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
 import { accountMessage } from '@account/locales/messages/accountMessage';
+import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { FilterCompany } from '@lookup/components/company/select';
 import { FilterRole } from '@lookup/components/role/select';
 import { AccountEmployeeFilterFilterProps } from './AccountEmployeeFilter';
@@ -43,7 +44,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterStatus) &&
+            (props.filterCompany || props.filterEmploymentType || props.filterStatus === false) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -81,6 +82,26 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         </ListItem>
         <Divider />
 
+        <ListItem button onClick={props.handleFilterEmploymentTypeVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(accountMessage.employee.filter.employmentType)}
+            secondary={props.filterEmploymentType && props.filterEmploymentType.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterEmploymentType &&
+              <IconButton onClick={props.handleFilterEmploymentTypeOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterEmploymentTypeVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
         {/* <ListItem button onClick={props.handleFilterRoleVisibility} disabled={props.filterRoleValue && props.filterCompany ? false : true}>
           <ListItemText 
             primary={props.intl.formatMessage(accountMessage.employee.filter.role)}
@@ -109,7 +130,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           <ListItemSecondaryAction>
             <Switch
               color="secondary"
-              checked={props.filterStatus || false}
+              checked={props.filterStatus}
               onChange={props.handleFilterStatusOnChange}
             />
           </ListItemSecondaryAction>
@@ -135,6 +156,16 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
         onSelected={props.handleFilterRoleOnSelected}
         onClose={props.handleFilterRoleOnClose}
         filter={props.filterRoleValue}
+      />
+
+      <LookupSystemDialog
+        category="employment"
+        title={props.intl.formatMessage(accountMessage.employee.filter.employmentType)}
+        hideBackdrop={true}
+        isOpen={props.isFilterEmploymentTypeOpen}
+        value={props.filterEmploymentType && props.filterEmploymentType.type}
+        onSelected={props.handleFilterEmploymentTypeOnSelected}
+        onClose={props.handleFilterEmploymentTypeOnClose}
       />
     </Dialog>
   </React.Fragment>

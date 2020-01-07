@@ -27,7 +27,7 @@ function* watchAllFetchRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/mileage?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalGetAllSuccess(response.body)),
@@ -50,7 +50,7 @@ function* watchAllFetchRequest() {
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof mileageApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalGetByIdSuccess(response.body)),
@@ -70,7 +70,7 @@ function* watchByIdFetchRequest() {
 function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof mileageApprovalPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([

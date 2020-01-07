@@ -12,6 +12,12 @@ import {
   organizationStructureGetByIdError,
   organizationStructureGetByIdRequest,
   organizationStructureGetByIdSuccess,
+  organizationStructureGetSubOrdinateListError,
+  organizationStructureGetSubOrdinateListRequest,
+  organizationStructureGetSubOrdinateListSuccess,
+  organizationStructureGetSubOrdinateTreeKPIFinalError,
+  organizationStructureGetSubOrdinateTreeKPIFinalRequest,
+  organizationStructureGetSubOrdinateTreeKPIFinalSuccess,
   organizationStructurePostError,
   organizationStructurePostRequest,
   organizationStructurePostSuccess,
@@ -31,7 +37,7 @@ function* watchGetAllRequest() {
       skipNulls: true
     });
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/structures?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(organizationStructureGetAllSuccess(response.body)),
@@ -53,7 +59,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof organizationStructureGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       successEffects: (response: IApiResponse) => ([
         put(organizationStructureGetByIdSuccess(response.body)),
@@ -70,10 +76,62 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_STRUCTURE_REQUEST, worker);
 }
 
+function* watchGetSubOrdinateListRequest() {
+  const worker = (action: ReturnType<typeof organizationStructureGetSubOrdinateListRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/organization/structures/subordinatelist?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateListSuccess(response.body)),
+        put(listBarMetadata(response.body.metadata))
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateListError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationStructureGetSubOrdinateListError(error.message)),
+      ]),
+      finallyEffects: [put(listBarLoading(false))]
+    });
+  };
+  
+  yield takeEvery(Action.GET_SUBORDINATE_LIST_STRUCTURE_REQUEST, worker);
+}
+
+function* watchGetSubOrdinateTreeKPIFinalRequest() {
+  const worker = (action: ReturnType<typeof organizationStructureGetSubOrdinateTreeKPIFinalRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true,
+      indices: false
+    });
+    return saiyanSaga.fetch({
+      
+      method: 'GET',
+      path: `/v1/organization/structures/subordinatetreekpifinal/${action.payload.companyUid}/${action.payload.positionUid}?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(organizationStructureGetSubOrdinateTreeKPIFinalError(error.message)),
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_SUBORDINATE_TREE_KPIFINAL_STRUCTURE_REQUEST, worker);
+}
+
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof organizationStructurePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/organization/structures/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -112,7 +170,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof organizationStructurePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -151,7 +209,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof organizationStructureDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/organization/structures`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -190,6 +248,8 @@ function* watchDeleteRequest() {
 function* organizationStructureSagas() {
   yield all([
     fork(watchGetAllRequest),
+    fork(watchGetSubOrdinateListRequest),
+    fork(watchGetSubOrdinateTreeKPIFinalRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

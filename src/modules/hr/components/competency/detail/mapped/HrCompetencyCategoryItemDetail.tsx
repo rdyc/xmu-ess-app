@@ -1,0 +1,202 @@
+import { IHrCompetencyMappedDetail, MappedItem } from '@hr/classes/response';
+import { WithHrCompetencyCluster, withHrCompetencyCluster } from '@hr/hoc/withHrCompetencyCluster';
+import { hrMessage } from '@hr/locales/messages/hrMessage';
+import {
+  Card,
+  CardHeader,
+  Collapse,
+  Divider,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import styles from '@styles';
+import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose, lifecycle, mapper, ReactLifeCycleFunctions, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
+
+interface IOwnOption {
+  data: IHrCompetencyMappedDetail;
+}
+
+interface IOwnState {
+  active: string | undefined;
+  isExpanded: boolean;
+  activeCategory?: string;
+  isExpandedCategory: boolean;
+}
+
+interface IOwnStateHandler extends StateHandlerMap<IOwnState> {
+  handleToggle: (uid: string) => IOwnState;
+  handleToggleCategory: (uid: string) => IOwnState;
+}
+
+type AllProps
+  = IOwnState
+  & IOwnOption
+  & IOwnStateHandler
+  & InjectedIntlProps
+  & WithHrCompetencyCluster
+  & WithStyles<typeof styles>;
+
+const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
+  active: undefined,
+  isExpanded: false,
+  activeCategory: undefined,
+  isExpandedCategory: false,
+});
+
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateHandler> = {
+  handleToggle: (state: IOwnState) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
+  }),
+  handleToggleCategory: (state: IOwnState) => (uid: string) => ({
+    activeCategory: uid,
+    isExpandedCategory: state.activeCategory === uid ? !state.isExpandedCategory : true
+  }),
+};
+
+const hrCompetencyCategoryItemDetail: React.SFC<AllProps> = props => {
+  const { data, intl, active, isExpanded, handleToggle, activeCategory, isExpandedCategory } = props;
+  const { response } = props.hrCompetencyClusterState.list;
+
+  const checkCategory = (categoryUid: string) => {
+    const category: MappedItem | undefined = data.categories.find(find => find.category.uid === categoryUid);
+
+    if (category) {
+      return category.mappedLevels;
+    }
+
+    return [];
+  };
+
+  const render = (
+    <Card square>
+      <CardHeader
+        title={intl.formatMessage(hrMessage.competency.field.type, {state: 'Cluster'})}
+      />
+      <List>
+        {
+          response &&
+          response.data &&
+          response.data.map((item) => 
+            <React.Fragment key={item.uid}>
+              <Divider />
+              <ListItem
+                button
+                selected={item.uid === active && isExpanded}
+                onClick={() => handleToggle(item.uid)}
+              >
+                <ListItemText
+                  className={data.categories.find(find => find.category.competencyUid === item.uid) ? '' : props.classes.textStrikethrough}
+                  primary={item.name}
+                />
+                <ListItemSecondaryAction>
+                  {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Collapse
+                in={active === item.uid && isExpanded}
+                timeout="auto"
+                unmountOnExit
+              >
+                {
+                  item.categories.map(category => 
+                    checkCategory(category.uid).length > 0 ?
+                      <React.Fragment key={category.uid}>
+                        <ListItem
+                          color="inherit"
+                          className={props.classes.marginFarLeft}
+                          button
+                          onClick={() => 
+                            props.handleToggleCategory(category.uid)
+                          }
+                          selected={category.uid === activeCategory && isExpandedCategory}
+                        >
+                          <ListItemText
+                              primary={category.name}
+                              primaryTypographyProps={{
+                                noWrap: true,
+                                color: 'inherit'
+                              }}
+                          />
+                          <ListItemSecondaryAction>
+                            {activeCategory === category.uid && isExpandedCategory ? <ExpandLess /> : <ExpandMore />}
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Collapse
+                          in={activeCategory === category.uid && isExpandedCategory}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          {
+                            checkCategory(category.uid).map((lv, lvIdx) => 
+                              <ListItem
+                                style={{marginLeft: '48px'}}
+                                key={lvIdx}
+                                color="inherit"
+                              >
+                                <ListItemText 
+                                  primary={`${lv.employeeLevel.value} - Level ${lv.categoryLevel.level}`}
+                                />
+                              </ListItem>
+                            )
+                          }
+                        </Collapse>
+                      </React.Fragment>
+                      :
+                      <ListItem
+                        key={category.uid}
+                        color="inherit"
+                        className={props.classes.marginFarLeft}
+                      >
+                        <ListItemText
+                            className={props.classes.textStrikethrough}
+                            primary={category.name}
+                            primaryTypographyProps={{
+                              noWrap: true,
+                              color: 'inherit'
+                            }}
+                        />
+                      </ListItem>
+                  )
+                }
+              </Collapse>
+            </React.Fragment>
+          )
+        }
+      </List>
+    </Card>
+  );
+
+  return render;
+};
+
+const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidMount() {
+    const { response } = this.props.hrCompetencyClusterState.list;
+    const { loadListRequest } = this.props.hrCompetencyClusterDispatch;
+
+    if (!response) {
+      loadListRequest({
+        filter: {
+          orderBy: 'name',
+          direction: 'ascending'
+        }
+      });
+    }
+  }
+};
+
+export const HrCompetencyCategoryItemDetail = compose<AllProps,  IOwnOption>(
+  injectIntl,
+  withHrCompetencyCluster,
+  withStyles(styles),
+  withStateHandlers(createProps, stateUpdaters),
+  lifecycle(lifecycles),
+)(hrCompetencyCategoryItemDetail);

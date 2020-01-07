@@ -20,7 +20,7 @@ export interface ITravelRequestDetail {
   customer?: ILookupCustomer;
   projectUid: string;
   project?: IProject;
-  siteUid?: string;
+  siteUid: string;
   site?: IProjectSite;
   activityType: string;
   activity?: ICommonSystem;

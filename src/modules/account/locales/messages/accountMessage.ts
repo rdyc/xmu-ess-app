@@ -4,6 +4,10 @@ import {
   accountAccessFieldHelperFor,
   accountAccessMessage
 } from './accountAccessMessage';
+import { 
+  accountContractField, 
+  accountContractFieldHelperFor 
+} from './accountContractMessage';
 import {
   accountEducationField,
   accountEducationFieldHelperFor
@@ -103,5 +107,9 @@ export const accountMessage = {
   note: {
     field: accountNoteField,
     fieldFor: accountNoteFieldHelperFor
+  },
+  contract: {
+    field: accountContractField,
+    fieldFor: accountContractFieldHelperFor
   }
 };

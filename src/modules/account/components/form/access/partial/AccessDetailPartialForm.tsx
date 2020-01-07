@@ -4,8 +4,10 @@ import { CommonSystemOption } from '@common/components/options/CommonSystemOptio
 import { FormMode } from '@generic/types';
 import { ISelectFieldOption, SelectField } from '@layout/components/fields/SelectField';
 import { layoutMessage } from '@layout/locales/messages';
+import { IEmployeeLevelListFilter } from '@lookup/classes/filters';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
 import { LookupCompanyOption } from '@lookup/components/company/options/LookupCompanyOption';
+import { LookupEmployeeLevelOption } from '@lookup/components/employeeLevel/option/LookupEmployeeLevelOption';
 import { LookupPositionOption } from '@lookup/components/position/options/LookupPositionOption';
 import { LookupRoleOption } from '@lookup/components/role/options/LookupRoleOption';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -25,6 +27,7 @@ type AccessDetailPartialFormProps = {
   filterDepartment?: ISystemListFilter;
   filterUnit?: ISystemListFilter;
   filterLookupCompany?: ILookupCompanyGetListFilter;
+  filterLookupLevel?: IEmployeeLevelListFilter;
   handleFilterUnit: (companyUid: string) => void;
   handleFilterDepartment: (companyUid: string, unitUid: string) => void;
 };
@@ -145,9 +148,11 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
       <Field
         name="levelType"
         render={({ field, form }: FieldProps<IAccessFormValue>) => (
-          <CommonSystemOption category="level" filter={props.filterCommonSystem}>
+          <LookupEmployeeLevelOption filter={props.filterLookupLevel}>
             <SelectField
               isSearchable
+              menuPlacement="auto"
+              menuPosition="fixed"
               isDisabled={props.formikBag.isSubmitting}
               isClearable={field.value !== ''}
               escapeClearsValue={true}
@@ -161,7 +166,7 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
               onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
               onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
             />
-          </CommonSystemOption>
+          </LookupEmployeeLevelOption>
         )}
       />
 
@@ -241,7 +246,6 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
               props.formikBag.setFieldValue('end', '');
             }}
             invalidLabel=""
-            disableFuture
           />
         )}
       />
@@ -253,8 +257,8 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
             {...field}
             fullWidth
             margin="normal"
+            clearable
             disabled={!props.formikBag.values.start || form.isSubmitting}
-            showTodayButton
             label={props.intl.formatMessage(accountMessage.access.fieldFor(field.name, 'fieldName'))}
             placeholder={props.intl.formatMessage(accountMessage.access.fieldFor(field.name, 'fieldPlaceholder'))}
             leftArrowIcon={<ChevronLeft />}
@@ -262,9 +266,11 @@ const AccessDetailPartialForm: React.ComponentType<AccessDetailPartialFormProps>
             format="MMMM DD, YYYY"
             helperText={form.touched.end && form.errors.end}
             error={form.touched.end && Boolean(form.errors.end)}
-            onChange={(moment: Moment) => props.formikBag.setFieldValue('end', moment.format('YYYY-MM-DD'))}
+            onChange={(moment: Moment) => {
+              moment ? props.formikBag.setFieldValue(field.name, moment.format('YYYY-MM-DD')) : 
+              props.formikBag.setFieldValue(field.name, '');
+            }}
             invalidLabel=""
-            disablePast
             // minDate={props.formikBag.values.start}
           />
         )}

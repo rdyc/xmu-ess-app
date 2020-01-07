@@ -28,7 +28,7 @@ function* watchGetAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/assignments/acceptances?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetAllSuccess(response.body))
@@ -51,7 +51,7 @@ function* watchGetAllRequest() {
 function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof projectAcceptanceGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetByIdSuccess(response.body))
@@ -71,7 +71,7 @@ function* watchGetByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof projectAcceptancePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

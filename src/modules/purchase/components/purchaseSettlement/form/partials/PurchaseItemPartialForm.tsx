@@ -66,8 +66,8 @@ const PurchaseItemPartialForm: React.ComponentType<PurchaseItemPartialFormProps>
                           {...GlobalStyle.TextField.ReadOnly}
                           {...field}
                           fullWidth
-                          label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
-                          placeholder={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
+                          label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
+                          placeholder={props.intl.formatMessage(purchaseMessage.settlement.items.requestPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
                         />

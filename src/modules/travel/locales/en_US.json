@@ -68,6 +68,8 @@
   "travel.request.section.info.subHeader": " ",
   "travel.request.section.item.title": "Travel Request Item",
   "travel.request.section.item.subHeader": " ",
+  "travel.request.section.unable": "Travel Request Temporarily Disabled.",
+  "travel.request.section.unable.message": "Unfortunately, you are unable to submit a new travel request due to the another requested travels are unsettled. You must submit settlement for previous request to continue. ",
 
   "travel.settlement.section.approval.title": "Approval",
   "travel.settlement.section.approval.subHeader": " ",

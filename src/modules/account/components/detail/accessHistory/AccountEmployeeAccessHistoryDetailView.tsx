@@ -12,7 +12,7 @@ export const AccountEmployeeAccessHistoryDetailView: React.SFC<AccountEmployeeAc
   const render = (
     <PreviewPage
       info={{
-        uid: AppMenu.Account,
+        uid: AppMenu.LookupEmployee,
         parentUid: AppMenu.Lookup,
         parentUrl: `/account/employee/${props.match.params.employeeUid}/history`,
         title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),

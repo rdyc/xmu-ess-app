@@ -129,12 +129,12 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: SystemLimitFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
-      const systemLimitUid = props.history.location.state.uid;
+      const limitUid = props.history.location.state.uid;
       const { isLoading } = props.systemLimitState.detail;
 
-      if (user && systemLimitUid && !isLoading) {
+      if (user && limitUid && !isLoading) {
         props.systemLimitDispatch.loadDetailRequest({
-          systemLimitUid,
+          limitUid,
           companyUid: props.history.location.state.companyUid,
         });
       }
@@ -166,11 +166,11 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
 
       // Edit
       if (props.formMode === FormMode.Edit) {
-        const systemLimitUid = props.history.location.state.uid;
+        const limitUid = props.history.location.state.uid;
         const companyUid = props.history.location.state.companyUid;
 
-        // must have systemlimitUid
-        if (systemLimitUid && companyUid) {
+        // must have limitUid
+        if (limitUid && companyUid) {
           const payload: ISystemLimitPutPayload = {
             categoryType: values.categoryType,
             days: values.days
@@ -179,7 +179,7 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
           // set the promise
           promise = new Promise((resolve, reject) => {
             props.systemLimitDispatch.updateRequest({
-              systemLimitUid,
+              limitUid,
               resolve,
               reject,
               companyUid: values.companyUid,
@@ -208,7 +208,12 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
         // redirect to detail
         props.history.push(`/lookup/systemlimits/${response.uid}`, { companyUid: response.companyUid });
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -216,8 +221,8 @@ const handlerCreators: HandleCreators<SystemLimitFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }

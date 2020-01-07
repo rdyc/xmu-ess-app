@@ -3,26 +3,26 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { MyCompetencyDetail } from '@profile/components/detail/competency/MyCompetencyDetail';
+import { MyKPIFinalDetail } from '@profile/components/detail/kpi/detail/MyKPIFinalDetail';
+import { MyKPIFinalList } from '@profile/components/detail/kpi/list/MyKPIFinalList';
+import { MyKPIAssignDetail } from '@profile/components/detail/kpiAssign/detail/MyKPIAssignDetail';
+import { MyKPIAssignList } from '@profile/components/detail/kpiAssign/list/MyKPIAssignList';
+import { MyProfileDetail } from '@profile/components/detail/profile/MyProfileDetail';
 import { AccountAccess } from './access';
 import { AccountEmployeeAccessDetail } from './detail/access/AccountEmployeeAccessDetail';
 import { AccountEmployeeAccessHistoryDetail } from './detail/accessHistory/AccountEmployeeAccessHistoryDetail';
 import { AccountEmployeeDetail } from './detail/common/AccountEmployeeDetail';
+import { AccountEmployeeContractDetail } from './detail/contract/AccountEmployeeContractDetail';
 import { AccountEmployeeEducationDetail } from './detail/education/AccountEmployeeEducationDetail';
 import { AccountEmployeeExperienceDetail } from './detail/experience/AccountEmployeeExperienceDetail';
 import { AccountEmployeeFamilyDetail } from './detail/family/AccountEmployeeFamilyDetail';
 import { AccountEmployeeNoteDetail } from './detail/note/AccountEmployeeNoteDetail';
 import { AccountEmployeeRateDetail } from './detail/rate/AccountEmployeeRateDetail';
 import { AccountEmployeeTrainingDetail } from './detail/training/AccountEmployeeTrainingDetail';
-// import { AccountEmployeeAccessEditor } from './editor/access/AccountEmployeeAccessEditor';
-// import { AccountEmployeeEditor } from './editor/common/AccountEmployeeEditor';
-// import { AccountEmployeeEducationEditor } from './editor/education/AccountEmployeeEducationEditor';
-// import { AccountEmployeeExperienceEditor } from './editor/experience/AccountEmployeeExperienceEditor';
-// import { AccountEmployeeFamilyEditor } from './editor/family/AccountEmployeeFamilyEditor';
-// import { AccountEmployeeNoteEditor } from './editor/note/AccountEmployeeNoteEditor';
-// import { AccountEmployeeRateEditor } from './editor/rate/AccountEmployeeRateEditor';
 import { AccessForm } from './form/access/AccessForm';
-// import { AccountEmployeeTrainingEditor } from './editor/training/AccountEmployeeTrainingEditor';
 import { EmployeeForm } from './form/common/EmployeeForm';
+import { ContractForm } from './form/contract/ContractForm';
 import { EducationForm } from './form/education/EducationForm';
 import { ExperienceForm } from './form/experience/ExperienceForm';
 import { FamilyForm } from './form/family/FamilyForm';
@@ -32,11 +32,11 @@ import { TrainingForm } from './form/training/TrainingForm';
 import { AccountEmployeeAccessList } from './list/access/AccountEmployeeAccessList';
 import { AccountEmployeeAccessHistoryList } from './list/accessHistory/AccountEmployeeAccessHistoryList';
 import { AccountEmployeeList } from './list/common/AccountEmployeeList';
+import { AccountEmployeeContractList } from './list/contract/AccountEmployeeContractList';
 import { AccountEmployeeEducationList } from './list/education/AccountEmployeeEducationList';
 import { AccountEmployeeExperienceList } from './list/experience/AccountEmployeeExperienceList';
 import { AccountEmployeeFamilyList } from './list/family/AccountEmployeeFamilyList';
 import { AccountEmployeeNoteList } from './list/note/AccountEmployeeNoteList';
-// import { AccountEmployeeRateList } from './list/rate/AccountEmployeeRateList';
 import { AccountEmployeeTrainingList } from './list/training/AccountEmployeeTrainingList';
 import { AccountProfile } from './profile';
 
@@ -48,6 +48,12 @@ const access = (props: RouteComponentProps) => (
 
 const profile = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/kpiassign/:kpiAssignUid`} component={MyKPIAssignDetail} />
+    <Route path={`${props.match.path}/kpi/:kpiUid`} component={MyKPIFinalDetail} />
+    <Route path={`${props.match.path}/kpiassign`} component={MyKPIAssignList} />
+    <Route path={`${props.match.path}/kpi`} component={MyKPIFinalList} />
+    <Route path={`${props.match.path}/competency`} component={MyCompetencyDetail} />
+    <Route path={`${props.match.path}/detail`} component={MyProfileDetail} />
     <Route path={`${props.match.path}`} component={AccountProfile} />
   </Switch>
 );
@@ -63,6 +69,7 @@ const employee = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:employeeUid/access`} component={employeeMultiAccess} />
     <Route path={`${props.match.path}/:employeeUid/rate`} component={employeeRate} />
     <Route path={`${props.match.path}/:employeeUid/note`} component={employeeNote} />
+    <Route path={`${props.match.path}/:employeeUid/contract`} component={employeeContract} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>
@@ -128,6 +135,14 @@ const employeeNote = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={NoteForm} />
     <Route path={`${props.match.path}/:noteId`} component={AccountEmployeeNoteDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeNoteList} />
+  </Switch>
+);
+
+const employeeContract = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={ContractForm} />    
+    <Route path={`${props.match.path}/:contractUid`} component={AccountEmployeeContractDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeContractList} />
   </Switch>
 );
 

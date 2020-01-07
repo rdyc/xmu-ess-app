@@ -131,7 +131,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
     if (!isNullOrUndefined(props.history.location.state)) {
       if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
         props.lookupDiemDispatch.loadDetailRequest({
-          companyUid: props.history.location.state.company,
+          companyUid: props.history.location.state.companyUid,
           diemUid: props.match.params.diemUid
         });
       }
@@ -200,8 +200,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
       });
       
       props.history.push(next, {
+        companyUid,
         uid: diemUid,
-        company: companyUid
       });
     }
   },

@@ -5,6 +5,9 @@ import {
   accountEmployeeDeleteSuccess,
   accountEmployeeGetAllDispose,
   accountEmployeeGetAllError,
+  accountEmployeeGetAllListError,
+  accountEmployeeGetAllListRequest,
+  accountEmployeeGetAllListSuccess,
   accountEmployeeGetAllRequest,
   accountEmployeeGetAllSuccess,
   accountEmployeeGetByIdDispose,
@@ -37,8 +40,8 @@ function* watchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
-      path: `/v1/account/employees?${params}`, 
+      method: 'GET',
+      path: `/v2/account/employees?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeGetAllSuccess(response.body)),
       ]), 
@@ -63,7 +66,7 @@ function* watchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeGetListSuccess(response.body))
@@ -80,10 +83,36 @@ function* watchListRequest() {
   yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
+function* watchAllListRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeGetAllListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true,
+      indices: false
+    });
+    
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/account/employees/list?${params}`,
+      successEffects: (response: IApiResponse) => ([
+        put(accountEmployeeGetAllListSuccess(response.body))
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(accountEmployeeGetAllListError(response)),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(accountEmployeeGetAllListError(error.message)),
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_ALL_LIST_REQUEST, worker);
+}
+
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeGetByIdSuccess(response.body)),
@@ -103,7 +132,7 @@ function* watchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'POST',
       path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -137,7 +166,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -177,7 +206,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'delete',
+      method: 'DELETE',
       path: `/v1/account/employees/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
@@ -217,6 +246,7 @@ function* accountEmployeeSagas() {
   yield all([
     fork(watchAllRequest),
     fork(watchListRequest),
+    fork(watchAllListRequest),
     fork(watchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),

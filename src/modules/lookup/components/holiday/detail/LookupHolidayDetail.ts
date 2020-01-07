@@ -31,7 +31,6 @@ import { LookupHolidayDetailView } from './LookupHolidayDetailView';
 
 interface IOwnRouteParams {
   holidayUid: string;
-  companyUid: string;
 }
 interface IOwnState {
   menuOptions?: IPopupMenuOption[];
@@ -117,13 +116,13 @@ const stateUpdaters: StateUpdaters<HolidayDetailProps, IOwnState, IOwnStateUpdat
     action: LookupUserAction.Modify,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'time limit'}),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'holiday'}),
   }),
   setDelete: (prevState: IOwnState, props: HolidayDetailProps) => (): Partial<IOwnState> => ({
     action: LookupUserAction.Delete,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'time limit'}),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'holiday'}),
   })
 };
 

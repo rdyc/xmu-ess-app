@@ -3,6 +3,7 @@ import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupDiemReducers } from './diem';
+import { lookupEmployeeLevelReducers } from './employeeLevel';
 import lookupImageGalleryReducers from './gallery/lookupImageGalleryReducers';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
 import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
@@ -27,7 +28,8 @@ const lookupReducers = {
   ...lookupMenuReducers,
   ...lookupAchievementReducer,
   ...lookupVersionReducers,
-  ...lookupImageGalleryReducers
+  ...lookupImageGalleryReducers,
+  ...lookupEmployeeLevelReducers
 };
 
 export default lookupReducers;

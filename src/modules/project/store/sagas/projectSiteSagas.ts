@@ -18,7 +18,7 @@ import { IApiResponse } from 'utils';
 function* watchGetRequest() {
   const worker = (action: ReturnType<typeof projectSiteGetRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectSiteGetSuccess(response.body))
@@ -41,7 +41,7 @@ function* watchGetRequest() {
 function* watchPatchRequest() {
   const worker = (action: ReturnType<typeof projectSitePatchRequest>) => {
     return saiyanSaga.fetch({
-      method: 'patch',
+      method: 'PATCH',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

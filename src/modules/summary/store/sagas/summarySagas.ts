@@ -7,6 +7,9 @@ import {
   summaryGetEffectivenessError,
   summaryGetEffectivenessRequest,
   summaryGetEffectivenessSuccess,
+  summaryGetMappingError,
+  summaryGetMappingRequest,
+  summaryGetMappingSuccess,
   summaryGetProfitabilityError,
   summaryGetProfitabilityRequest,
   summaryGetProfitabilitySuccess,
@@ -30,7 +33,7 @@ function* watchBillableFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/billable/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetBillableSuccess(response.body)),
@@ -68,7 +71,7 @@ function* watchEffectivenessFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/effectiveness?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetEffectivenessSuccess(response.body)),
@@ -101,7 +104,7 @@ function* watchEffectivenessFetchRequest() {
 function* watchProfitabilityFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetProfitabilityRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/profitability/${action.payload.customerUid}/${action.payload.projectUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetProfitabilitySuccess(response.body)),
@@ -130,7 +133,7 @@ function* watchProfitabilityFetchRequest() {
 function* watchProgressFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetProgressRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/progress/${action.payload.customerUid}/${action.payload.projectUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetProgressSuccess(response.body)),
@@ -164,7 +167,7 @@ function* watchWinningFetchRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/summary/winning/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetWinningSuccess(response.body)),
@@ -194,6 +197,44 @@ function* watchWinningFetchRequest() {
   yield takeEvery(Action.GET_WINNING_REQUEST, worker);
 }
 
+function* watchMappingFetchRequest() {
+  const worker = (action: ReturnType<typeof summaryGetMappingRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
+    return saiyanSaga.fetch({
+      method: 'GET',
+      path: `/v1/summary/mapping/${action.payload.companyUid}/${action.payload.year}?${params}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(summaryGetMappingSuccess(response.body)),
+        put(listBarMetadata(response.body.metadata))
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(summaryGetMappingError(response.body)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(summaryGetMappingError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finallyEffects: [
+        put(listBarLoading(false))
+      ]
+    });
+  };
+  
+  yield takeEvery(Action.GET_MAPPING_REQUEST, worker);
+}
+
 function* summarySagas() {
   yield all([
     fork(watchBillableFetchRequest),
@@ -201,6 +242,7 @@ function* summarySagas() {
     fork(watchProfitabilityFetchRequest),
     fork(watchProgressFetchRequest),
     fork(watchWinningFetchRequest),
+    fork(watchMappingFetchRequest)
   ]);
 }
 

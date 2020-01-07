@@ -192,8 +192,9 @@ const stateUpdaters: StateUpdaters<ExpenseRequestFormProps, IOwnState, IOwnState
   setInitialValues: () => (values: any): Partial<IOwnState> => ({
     initialValues: values
   }),
-  setProjectFilter: () => (customerUid: string): Partial<IOwnState> => ({
+  setProjectFilter: () => (companyUid: string, customerUid: string): Partial<IOwnState> => ({
     filterProject: {
+      companyUid,
       customerUids: customerUid,
       statusTypes: [WorkflowStatusType.Approved, WorkflowStatusType.ReOpened].join(),
       direction: 'ascending'
@@ -219,7 +220,7 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
     }
   },
   handleSetProjectFilter: (props: ExpenseRequestFormProps) => (customerUid: string) => {
-    props.setProjectFilter(customerUid);
+    props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: ExpenseRequestFormProps) => () => {
     if (!isNullOrUndefined(props.history.location.state)) {
@@ -325,7 +326,12 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
        
         props.history.push(`/expense/requests/${response.uid}`);
       })
-      .catch((error: IValidationErrorResponse) => {
+      .catch((error: any) => {
+        let err: IValidationErrorResponse | undefined = undefined;
+        
+        if (error.id) {
+          err = error;
+        }
         // set submitting status
         actions.setSubmitting(false);
         
@@ -333,8 +339,8 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
         actions.setStatus(error);
         
         // error on form fields
-        if (error.errors) {
-          error.errors.forEach(item => 
+        if (err && err.errors) {
+          err.errors.forEach(item => 
             actions.setFieldError(item.field, props.intl.formatMessage({id: item.message}))
           );
         }
@@ -383,6 +389,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExpenseRequestFormProps, IOwnS
           notes: response.data.notes || '',
         };
 
+        this.props.setProjectFilter(response.data.customerUid);
+        
         // set initial values
         this.props.setInitialValues(initialValues);
       }

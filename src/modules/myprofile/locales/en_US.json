@@ -1,0 +1,18 @@
+{
+  "account.profile.page.detail.title": "My {state}",
+  "account.profile.page.detail.subHeader": " ",
+
+  "account.profile.tab.detail": "Profile",
+  "account.profile.tab.competency": "Competency",
+  "account.profile.tab.kpi": "KPI Result",
+  "account.profile.tab.kpiAssign": "KPI Assigned",
+
+  "account.competency.field.color.code.info": "Color code result",
+  "account.competency.field.color.code.red": "Merah = dibawah standar",
+  "account.competency.field.color.code.blue": "Biru = sesuai atau melebihi standar",
+
+  "account.competency.field.category": "Category",
+  "account.competency.field.current": "Current",
+  "account.competency.field.result": "Result",
+  "account.competency.field.next": "Next"
+}

@@ -13,6 +13,10 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+interface IOwnOption {
+  withPast?: boolean;
+  withFuture?: boolean;
+}
 interface IOwnState {
   options: ISelectFieldOption[];
 }
@@ -23,6 +27,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 export type InputYearOptionProps
   = IOwnState
+  & IOwnOption
   & IOwnStateUpdater;
 
 const createProps: mapper<InputYearOptionProps, IOwnState> = (): IOwnState => ({
@@ -32,12 +37,12 @@ const createProps: mapper<InputYearOptionProps, IOwnState> = (): IOwnState => ({
 const stateUpdaters: StateUpdaters<InputYearOptionProps, IOwnState, IOwnStateUpdater> = {
   setOptions: () => (values: number[]): Partial<IOwnState> => {
     const options: ISelectFieldOption[] = [
-      { label: '', value: ''}
+      { label: '', value: '' }
     ];
         
     values.forEach(item => options.push({ 
       value: item.toString(), 
-      label: item.toString() 
+      label: item.toString()
     }));
 
     return {
@@ -50,7 +55,20 @@ const lifeCycle: ReactLifeCycleFunctions<InputYearOptionProps, IOwnState> = {
   componentDidMount() {    
     const getYear: number = Number(moment().format('YYYY'));
   
-    const year: number[] = [getYear - 1, getYear];
+    const year: number[] = [];
+
+    // past
+    if (this.props.withPast) {
+      year.push(getYear - 1);
+    }
+
+    // current
+    year.push(getYear);
+
+    // future
+    if (this.props.withFuture) {
+      year.push(getYear + 1);
+    }
 
     this.props.setOptions(year);
   }
@@ -65,7 +83,7 @@ const component: React.SFC<InputYearOptionProps> = props => {
         {
           React.cloneElement(children, { 
             options: props.options,
-            value: props.options.find(option => option.value === children.props.valueString)
+            value: props.options.find(option => option.value === children.props.valueString),
           })
         }
       </React.Fragment>
@@ -75,7 +93,7 @@ const component: React.SFC<InputYearOptionProps> = props => {
   return <div></div>;
 };
 
-export const InputYearOption = compose<InputYearOptionProps, {}>(
+export const InputYearOption = compose<InputYearOptionProps, IOwnOption>(
   setDisplayName('InputYearOption'),
   withStateHandlers(createProps, stateUpdaters),
   lifecycle(lifeCycle)

@@ -28,7 +28,7 @@ import { IApiResponse } from 'utils';
 function* watchCurrentRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeRateCurrentRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/rate`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeRateCurrentSuccess(response.body)),
@@ -53,7 +53,7 @@ function* watchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/rates?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeRateGetAllSuccess(response.body)),
@@ -78,7 +78,7 @@ function* watchListRequest() {
     });
     
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/rates/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeRateGetListSuccess(response.body))
@@ -98,7 +98,7 @@ function* watchListRequest() {
 function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeRateGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: `/v1/account/employees/${action.payload.employeeUid}/rates/${action.payload.rateId}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeRateGetByIdSuccess(response.body)),
@@ -118,7 +118,7 @@ function* watchByIdRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeRatePutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'PUT',
       path: `/v1/account/employees/${action.payload.employeeUid}/rates`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [

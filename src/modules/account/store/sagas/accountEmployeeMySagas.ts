@@ -10,7 +10,7 @@ import { IApiResponse } from 'utils';
 function* watchGetRequest() {
   const worker = () => {
     return saiyanSaga.fetch({
-      method: 'get',
+      method: 'GET',
       path: '/v1/account/employees/my',
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeMyGetSuccess(response.body)),
