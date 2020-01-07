@@ -12,7 +12,6 @@ import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { TimesheetEntryDetailFormView } from './TimesheetEntryDetailFormView';
 
 interface OwnProps {
@@ -86,20 +85,20 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'customerUid':
         fieldProps = {
           required: true,
-          disabled: isNullOrUndefined(activityTypeValue),
+          disabled: (activityTypeValue === undefined || activityTypeValue === null),
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
+          component: !(activityTypeValue === undefined || activityTypeValue === null) ? InputCustomer : InputText
         };
         break;
 
       case 'projectUid':
         fieldProps = {
           required: true,
-          disabled: isNullOrUndefined(customerUidValue),
+          disabled: (customerUidValue === undefined || customerUidValue === null),
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(customerUidValue) ? SelectProjectAssigment : InputText,
+          component: !(customerUidValue === undefined || customerUidValue === null) ? SelectProjectAssigment : InputText,
           filter: projectFilter
         };
         break;
@@ -110,7 +109,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           disabled: !showSiteProject,
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
+          component: !(projectUidValue === undefined || projectUidValue === null) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
           projectUid: projectUidValue
         };

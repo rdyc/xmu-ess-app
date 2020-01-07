@@ -29,7 +29,6 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIAssignBulkFormView } from './KPIAssignBulkFormView';
 
@@ -97,7 +96,7 @@ export type KPIAssignBulkFormProps
 
 const createProps: mapper<KPIAssignBulkFormProps, IOwnState> = (props: KPIAssignBulkFormProps): IOwnState => ({
   // form props 
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   loadItem: false,
   listItem: [],
 

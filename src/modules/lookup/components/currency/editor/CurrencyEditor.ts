@@ -15,7 +15,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { CurrencyEditorView } from './CurrencyEditorView';
 import { CurrencyFormData } from './CurrencyForm';
 
@@ -87,7 +86,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.currency.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -167,7 +166,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -184,7 +183,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -205,7 +204,7 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
 
         view.title = lookupMessage.currency.form.editTitle,
         view.subTitle = lookupMessage.currency.form.editSubTitle,

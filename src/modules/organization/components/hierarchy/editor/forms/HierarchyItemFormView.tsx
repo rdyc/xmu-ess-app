@@ -6,7 +6,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { Field, WrappedFieldArrayProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { HierarchyFormProps, OrganizationHierarchyItemFormData } from './HierarchyForm';
 
 export const HierarchyItemFormView: React.SFC<WrappedFieldArrayProps<OrganizationHierarchyItemFormData> & HierarchyFormProps> = props => {
@@ -67,7 +66,7 @@ export const HierarchyItemFormView: React.SFC<WrappedFieldArrayProps<Organizatio
                     // type="text"
                     name={`${field}.positionUid`}
                     required={true}
-                    disabled={isNullOrUndefined(props.companyUidValue)}
+                    disabled={props.companyUidValue === undefined || props.companyUidValue === null}
                     label={intl.formatMessage(organizationMessage.hierarchy.field.positionUid)}
                     placeholder={intl.formatMessage(organizationMessage.hierarchy.field.positionUid)}
                     filter={{

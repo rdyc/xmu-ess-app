@@ -24,7 +24,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -78,7 +77,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, IOwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.company.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -153,7 +152,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -170,7 +169,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, IOwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -206,7 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<CompanyEditorProps, {}> = {
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = lookupMessage.company.page.modifyTitle;
       view.subTitle = lookupMessage.company.page.modifySubHeader;
 

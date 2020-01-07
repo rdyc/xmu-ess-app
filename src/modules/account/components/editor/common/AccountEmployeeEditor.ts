@@ -26,7 +26,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeEditorView } from './AccountEmployeeEditorView';
 import { AccountEmployeeFormData } from './form/AccountEmployeeContainerForm';
 
@@ -91,19 +90,19 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     ];
 
     requiredFields.forEach(field => {
-      if ( !formData.information[field] || isNullOrUndefined(formData.information[field]) ) {
+      if ( !formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null) ) {
         errors.information[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
       }
     });
     
     requiredBank.forEach(field => {
-      if ( !formData.bank[field] || isNullOrUndefined(formData.bank[field]) ) {
+      if ( !formData.bank[field] || (formData.bank[field] === undefined || formData.bank[field] === null) ) {
         errors.bank[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
       }
     });
 
     requiredContact.forEach(field => {
-      if ( !formData.contact[field] || isNullOrUndefined(formData.contact[field]) ) {
+      if ( !formData.contact[field] || (formData.contact[field] === undefined || formData.contact[field] === null) ) {
         errors.contact[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -187,7 +186,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -204,7 +203,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -240,7 +239,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
       return;
     }
     
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = accountMessage.shared.page.modifyTitle;
       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

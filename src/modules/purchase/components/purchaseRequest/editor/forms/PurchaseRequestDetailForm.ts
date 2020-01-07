@@ -12,7 +12,6 @@ import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
@@ -76,11 +75,11 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'projectUid':
         fieldProps = {
           required: true,
-          disabled: isNullOrUndefined(formCustomer),
+          disabled: (formCustomer === undefined || formCustomer === null),
           category: 'project',
           label: intl.formatMessage(purchaseMessage.request.field.projectUid),
           placeholder: intl.formatMessage(purchaseMessage.request.field.projectUidPlaceholder),
-          component: !isNullOrUndefined(formCustomer) ? SelectProject : InputText,
+          component: !(formCustomer === undefined || formCustomer === null) ? SelectProject : InputText,
           filter: projectFilter,
         };
         break;
@@ -115,7 +114,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           required: !isCurrencyIdr,
           label: intl.formatMessage(purchaseMessage.request.field.rate),
           placeholder: intl.formatMessage(purchaseMessage.request.field.ratePlaceholder),
-          disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
+          disabled: isCurrencyIdr || (formCurrencyType === undefined || formCurrencyType === null),
           component: InputNumber,
           onChange: onChangeRate
         };

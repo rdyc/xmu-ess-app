@@ -39,7 +39,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 interface IOwnHandlers {
   handleValidate: (payload: ProjectRegistrationFormData) => FormErrors;
@@ -97,7 +96,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
     ];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -146,7 +145,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
           const document = source.find(doc => doc.documentType === documentType);
 
           // replace doc uid
-          if (!isNullOrUndefined(document)) {
+          if (!(document === undefined || document === null)) {
             uid = document.uid;
           }
         }
@@ -281,7 +280,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors
@@ -298,7 +297,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -352,7 +351,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
       }
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = projectMessage.registration.page.modifyTitle;
       view.subTitle = projectMessage.registration.page.modifySubHeader;
 

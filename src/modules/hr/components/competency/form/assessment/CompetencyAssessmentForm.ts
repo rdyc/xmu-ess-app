@@ -28,7 +28,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { CompetencyAssessmentFormView } from './CompetencyAssessmentFormView';
@@ -102,7 +101,7 @@ export type CompetencyAssessmentFormProps
 
 const createProps: mapper<CompetencyAssessmentFormProps, IOwnState> = (props: CompetencyAssessmentFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   
   // form values
   initialValues: {
@@ -170,7 +169,9 @@ const stateUpdaters: StateUpdaters<CompetencyAssessmentFormProps, IOwnState, IOw
 
 const handlerCreators: HandleCreators<CompetencyAssessmentFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: CompetencyAssessmentFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const assessmentUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyAssessmentState.detail;

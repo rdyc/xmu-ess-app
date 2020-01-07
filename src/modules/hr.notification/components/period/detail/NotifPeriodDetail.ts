@@ -13,8 +13,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
-
 import { NotifPeriodDetailView } from './NotifPeriodDetailView';
 
 interface IOwnRouteParams {
@@ -202,13 +200,13 @@ const handlerCreators: HandleCreators<NotifPeriodDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(notifMessage.period.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

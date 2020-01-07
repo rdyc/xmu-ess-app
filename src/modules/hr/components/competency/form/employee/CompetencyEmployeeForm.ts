@@ -28,7 +28,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { CompetencyEmployeeFormView } from './CompetencyEmployeeFormView';
@@ -98,7 +97,7 @@ export type CompetencyEmployeeFormProps
 
 const createProps: mapper<CompetencyEmployeeFormProps, IOwnState> = (props: CompetencyEmployeeFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   
   isLoad: false,
   isMappedLoad: false,
@@ -175,7 +174,9 @@ const handlerCreators: HandleCreators<CompetencyEmployeeFormProps, IOwnHandler> 
     });
   },
   handleOnLoadDetail: (props: CompetencyEmployeeFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const competencyEmployeeUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyEmployeeState.detail;

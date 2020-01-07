@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { WorkflowStatusType } from '@common/classes/types';
@@ -100,7 +99,7 @@ export type ExpenseRequestFormProps
 
 const createProps: mapper<ExpenseRequestFormProps, IOwnState> = (props: ExpenseRequestFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   minDate: moment().toDate(),
 
   // form values
@@ -209,7 +208,7 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
   handleSetMinDate: (props: ExpenseRequestFormProps) => (days: number, fromDate?: Date | null) => {
     let today = moment(); // create date today
 
-    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
+    if (fromDate) { // is fromDate exist, use from date instead
       today = moment(fromDate);
     }
 
@@ -223,7 +222,9 @@ const handlerCreators: HandleCreators<ExpenseRequestFormProps, IOwnHandler> = {
     props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: ExpenseRequestFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const expenseUid = props.history.location.state.uid;
       const { isLoading } = props.expenseRequestState.detail;

@@ -8,7 +8,6 @@ import { organizationMessage } from '@organization/locales/messages/organization
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { StructureDetailFormView } from './StructureDetailFormView';
 
 interface OwnProps {
@@ -68,7 +67,7 @@ const handlerCreators: HandleCreators<StructureDetailFormProps, OwnHandlers> = {
             label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
             component: SelectPosition,
-            disabled: isNullOrUndefined(formCompany),
+            disabled: (formCompany === undefined || formCompany === null),
             filter: positionFilter
           };
           break;

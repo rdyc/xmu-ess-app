@@ -28,7 +28,6 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPICategoryFormView } from './KPICategoryFormView';
 
@@ -87,7 +86,7 @@ export type KPICategoryFormProps
 
 const createProps: mapper<KPICategoryFormProps, IOwnState> = (props: KPICategoryFormProps): IOwnState => ({
   // form props 
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   initialValues: {
     uid: 'Auto Generated',
@@ -174,7 +173,9 @@ const handleCreators: HandleCreators<KPICategoryFormProps, IOwnHandler> = {
     });
   },
   handleOnLoadDetail: (props: KPICategoryFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const CategoryUid = props.history.location.state.uid;
       const { isLoading } = props.kpiCategoryState.detail;

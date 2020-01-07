@@ -17,7 +17,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeTrainingEditorView } from './AccountEmployeeTrainingEditorView';
 import { AccountEmployeeTrainingFormData } from './form/AccountEmployeeTrainingContainerForm';
 
@@ -78,7 +77,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     const endDate = ['end'];
 
     requiredFields.forEach(field => {
-      if (!formData.training[field] || isNullOrUndefined(formData.training[field])) {
+      if (!formData.training[field] || (formData.training[field] === null || formData.training[field] === undefined)) {
         errors.training[field] = props.intl.formatMessage(accountMessage.training.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -168,7 +167,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -185,7 +184,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -222,7 +221,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = accountMessage.shared.page.modifyTitle;
       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

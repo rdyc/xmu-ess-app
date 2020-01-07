@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   data: IExpenseDetail;
@@ -101,7 +100,7 @@ export const expenseInformation: React.SFC<AllProps> = props => {
           value={data.status ? data.status.value : 'N/A'}
         />
         {
-          !isNullOrUndefined(data.rejectedReason) ?
+          !(data.rejectedReason === null || data.rejectedReason === undefined) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(expenseMessage.request.field.rejectedReason)}

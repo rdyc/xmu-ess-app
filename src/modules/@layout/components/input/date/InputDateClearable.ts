@@ -2,7 +2,6 @@ import { Moment } from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, pure, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { InputDateClearableView } from './InputDateClearableView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
@@ -40,7 +39,7 @@ const createProps: mapper<InputDateClearableProps, OwnState> = (props: InputDate
 
 const handlerCreators: HandleCreators<InputDateClearableProps, OwnHandlers> = {
   handleOnChange: (props: InputDateClearableProps) => (event: Moment) => { 
-    !isNullOrUndefined(event) ? props.input.onChange(event.toISOString(true)) : props.input.onChange(event);
+    !(event === undefined || event === null) ? props.input.onChange(event.toISOString(true)) : props.input.onChange(event);
     console.log(event);
     props.stateUpdate({
       value: event

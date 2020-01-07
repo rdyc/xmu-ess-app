@@ -28,7 +28,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { SettlementApprovalDetailView } from './SettlementApprovalDetailView';
 
@@ -133,7 +132,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       : ['isApproved'];
       
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData[field] || (formData[field] === undefined || formData[field] === null)) {
         errors[field] = props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -202,13 +201,13 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
       // validation errors from server (400: Bad Request)
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(purchaseMessage.s_approval.message.createFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

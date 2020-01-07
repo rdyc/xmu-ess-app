@@ -25,7 +25,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { LookupCurrencyFormView } from './LookupCurrencyFormView';
 
@@ -76,7 +75,7 @@ export type CurrencyFormProps
 
 const createProps: mapper<CurrencyFormProps, IOwnState> = (props: CurrencyFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   
   // form values
   initialValues: {
@@ -116,7 +115,9 @@ const stateUpdaters: StateUpdaters<CurrencyFormProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<CurrencyFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: CurrencyFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const currencyUid = props.history.location.state.uid;
       const { isLoading } = props.lookupCurrencyState.detail;

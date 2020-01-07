@@ -25,7 +25,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupHolidayDetailView } from './LookupHolidayDetailView';
 
@@ -128,7 +127,9 @@ const stateUpdaters: StateUpdaters<HolidayDetailProps, IOwnState, IOwnStateUpdat
 
 const handlerCreators: HandleCreators<HolidayDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HolidayDetailProps) => () => { 
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       if (props.userState.user && props.match.params.holidayUid && !props.lookupHolidayState.detail.isLoading) {
         props.lookupHolidayDispatch.loadDetailRequest({
           companyUid: props.history.location.state.companyUid,
@@ -242,13 +243,13 @@ const handlerCreators: HandleCreators<HolidayDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.holiday.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

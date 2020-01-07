@@ -13,7 +13,6 @@ import { FormikActions } from 'formik';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { OrganizationWorkflowFormView } from './OrganizationWorkflowFormView';
 
@@ -113,7 +112,9 @@ const stateUpdaters: StateUpdaters<WorkflowFormProps, IOwnState, IOwnStateUpdate
 
 const handleCreators: HandleCreators<WorkflowFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: WorkflowFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const companyUid = props.history.location.state.companyUid;
       const menuUid = props.history.location.state.menuUid;

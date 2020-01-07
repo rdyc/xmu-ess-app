@@ -6,7 +6,6 @@
 // import { InjectedIntlProps, injectIntl } from 'react-intl';
 // import { compose, HandleCreators, withHandlers } from 'recompose';
 // import { WrappedFieldArrayProps } from 'redux-form';
-// import { isNullOrUndefined } from 'util';
 // import { OrganizationStructureItemFormData } from './StructureForm';
 // import { StructureItemFormView } from './StructureItemFormView';
 

@@ -30,7 +30,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { HrCompetencyMappedFormView } from './HrCompetencyMappedFormView';
@@ -108,7 +107,7 @@ export type HrCompetencyMappedFormProps
 
 const createProps: mapper<HrCompetencyMappedFormProps, IOwnState> = (props: HrCompetencyMappedFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   
   isLoad: false,
   // form values
@@ -193,7 +192,9 @@ const handlerCreators: HandleCreators<HrCompetencyMappedFormProps, IOwnHandler> 
       }
     });
     
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const mappedUid = props.history.location.state.uid;
       const { isLoading } = props.hrCompetencyMappedState.detail;

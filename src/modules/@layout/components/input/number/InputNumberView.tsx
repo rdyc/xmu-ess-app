@@ -2,7 +2,6 @@ import { TextField } from '@material-ui/core';
 import { InputBaseComponentProps } from '@material-ui/core/InputBase';
 import * as React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
-import { isNullOrUndefined, isUndefined } from 'util';
 
 import { InputNumberProps } from './InputNumber';
 
@@ -18,7 +17,7 @@ export const InputNumberView: React.SFC<InputNumberProps> = props => {
       className={compProps.className}
       thousandSeparator={true} 
       onValueChange={(values: NumberFormatValues) => {
-        _value = isUndefined(values.floatValue) ? 0 : values.floatValue;
+        _value = (values.floatValue === undefined) ? 0 : values.floatValue;
       }}
       onBlur={() => input.onChange(_value)}
     />
@@ -34,7 +33,7 @@ export const InputNumberView: React.SFC<InputNumberProps> = props => {
       placeholder={placeholder}
       required={required}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
+      error={meta.touched && !(meta.error === undefined || meta.error === null)}
       helperText={meta.touched && meta.error}
       InputProps={{
         inputComponent: inputNumberComponent

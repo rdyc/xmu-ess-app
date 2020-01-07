@@ -20,7 +20,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ISystemPostPayload, ISystemPutPayload } from '@common/classes/request';
@@ -83,7 +82,7 @@ export type CommonFormProps
 
 const createProps: mapper<CommonFormProps, IOwnState> = (props: CommonFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -144,7 +143,9 @@ const stateUpdaters: StateUpdaters<CommonFormProps, IOwnState, IOwnStateUpdater>
 
 const handlerCreators: HandleCreators<CommonFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: CommonFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const id = props.history.location.state.id;
       const { isLoading } = props.commonSystemState.detail;
 

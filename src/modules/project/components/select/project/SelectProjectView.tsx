@@ -2,7 +2,6 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { IProjectList } from '@project/classes/response';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 
 import { SelectProjectProps } from './SelectProject';
 
@@ -48,7 +47,7 @@ export const SelectProjectView: React.SFC<SelectProjectProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
+      error={meta.touched && !(meta.error === undefined || meta.error === null)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

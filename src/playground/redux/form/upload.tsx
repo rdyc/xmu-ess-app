@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { Field, FormErrors, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 // ----------------------------------------------------------------------------
 // Form.tsx
@@ -133,7 +132,7 @@ const handlerCreators: HandleCreators<UploadEditorProps, OwnHandlers> = {
     const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
-      if (!values[field] || isNullOrUndefined(values[field])) {
+      if (!values[field] || (values[field] === undefined || values[field] === null)) {
         Object.assign(errors, {[field]: 'Required'});
       }
     });
@@ -176,14 +175,14 @@ const handlerCreators: HandleCreators<UploadEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
       alertAdd({
         message: 'Gatot',
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

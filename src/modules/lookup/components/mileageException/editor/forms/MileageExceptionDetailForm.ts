@@ -13,7 +13,6 @@ import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { MileageExceptionDetailFormView } from './MileageExceptionDetailFormView';
 
 interface OwnProps {
@@ -70,11 +69,11 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
       case 'roleUid':
         fieldProps = {
           required: true,
-          disabled: formMode === FormMode.Edit  || isNullOrUndefined(companyUidValue),
+          disabled: formMode === FormMode.Edit  || (companyUidValue === undefined || companyUidValue === null),
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(companyUidValue) ? SelectLookupRole : InputText,
-          filter: !isNullOrUndefined(companyUidValue) ? roleFilter : undefined
+          component: !(companyUidValue === undefined || companyUidValue === null) ? SelectLookupRole : InputText,
+          filter: !(companyUidValue === undefined || companyUidValue === null) ? roleFilter : undefined
         };
         break;
       
@@ -96,16 +95,16 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
         };
         break;
       
-      case 'siteUid':
-        fieldProps = {
-          disabled: isNullOrUndefined(projectUidValue && companyUidValue),
-          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
-          companyUid: companyUidValue,
-          projectUid: projectUidValue
-        };
-        break;
+      // case 'siteUid':
+      //   fieldProps = {
+      //     disabled: isNullOrUndefined(projectUidValue && companyUidValue),
+      //     label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
+      //     placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
+      //     component: !isNullOrUndefined(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
+      //     companyUid: companyUidValue,
+      //     projectUid: projectUidValue
+      //   };
+      //   break;
 
       case 'percentage':
         fieldProps = {
