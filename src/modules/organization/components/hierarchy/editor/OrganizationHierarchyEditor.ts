@@ -29,6 +29,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { OrganizationHierarchyFormData } from './forms/HierarchyForm';
 import { CommonEditorView } from './OrganizationHierarchyEditorView';
 
@@ -80,7 +81,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     ];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage(organizationMessage.hierarchy.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -96,7 +97,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
         if (!item) { return ; }
 
         requiredItemFields.forEach(field => {
-          if (!item[field] || (item[field] === undefined || item[field] === null)) {
+          if (!item[field] || isNullOrUndefined(item[field])) {
             Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(organizationMessage.hierarchy.fieldFor(field, 'fieldRequired'))});
           }
         });
@@ -235,7 +236,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -252,7 +253,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -310,7 +311,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyEditorProps, {}> 
       }
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = intl.formatMessage(organizationMessage.hierarchy.page.modifyTitle);
       view.subTitle = intl.formatMessage(organizationMessage.hierarchy.page.modifySubHeader);
 

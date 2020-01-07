@@ -24,6 +24,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { ContractFormView } from './ContractFormView';
 
@@ -74,7 +75,7 @@ export type ContractFormProps
 
 const createProps: mapper<ContractFormProps, IOwnState> = (props: ContractFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   
   // form values
   initialValues: {
@@ -113,9 +114,7 @@ const stateUpdaters: StateUpdaters<ContractFormProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<ContractFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: ContractFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const employeeUid = props.match.params.employeeUid;
       const contractUid = props.history.location.state.contractUid;

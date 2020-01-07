@@ -22,6 +22,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { WorkflowStatusType } from '@common/classes/types';
@@ -94,7 +95,7 @@ export type PurchaseRequestFormProps
 
 const createProps: mapper<PurchaseRequestFormProps, IOwnState> = (props: PurchaseRequestFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -205,9 +206,7 @@ const handlerCreators: HandleCreators<PurchaseRequestFormProps, IOwnHandler> = {
     props.setProjectFilter(props.userState.user && props.userState.user.company.uid || '', customerUid);
   },
   handleOnLoadDetail: (props: PurchaseRequestFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const purchaseUid = props.history.location.state.uid;
       const { isLoading } = props.purchaseRequestState.detail;

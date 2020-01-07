@@ -12,6 +12,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 import { LeaveCalculationFilterFormView } from './LeaveCalculationFilterFormView';
 
 const formName = 'Filter';

@@ -2,6 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { SelectSystemProps } from './SelectSystem';
 
@@ -54,7 +55,7 @@ export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

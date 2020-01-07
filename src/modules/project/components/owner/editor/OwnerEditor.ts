@@ -25,6 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
@@ -76,7 +77,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
     const requiredFields = ['projectType'];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -149,13 +150,13 @@ const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       alertAdd({
         time: new Date(),
         message: intl.formatMessage(projectOwnerMessage.updateFailure),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -183,7 +184,7 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     const { user } = this.props.userState;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
-    if (!(history.location.state === undefined || history.location.state === null) && user) {
+    if (!isNullOrUndefined(history.location.state) && user) {
       this.props.masterPage.changePage({
         uid: AppMenu.ProjectRegistrationRequest,
         parentUid: AppMenu.ProjectRegistration,

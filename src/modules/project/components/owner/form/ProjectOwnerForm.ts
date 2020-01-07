@@ -36,6 +36,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ProjectOwnerFormView } from './ProjectOwnerFormView';
@@ -176,9 +177,7 @@ const stateUpdaters: StateUpdaters<ProjectOwnerFormProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<ProjectOwnerFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: ProjectOwnerFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const projectUid = props.history.location.state.uid;
       const { isLoading } = props.projectRegisterState.detail;

@@ -4,6 +4,7 @@ import { DatePicker } from 'material-ui-pickers';
 // import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { InputDateClearableProps } from './InputDateClearable';
 
@@ -36,7 +37,7 @@ export const InputDateClearableView: React.SFC<InputDateClearableProps> = props 
       label={label}
       required={required}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       // onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
       value={props.value}

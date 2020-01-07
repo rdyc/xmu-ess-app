@@ -14,6 +14,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 import { LookupRoleDetailView } from './LookupRoleDetailView';
 
 interface IOwnRouteParams {
@@ -224,13 +225,13 @@ const handlerCreators: HandleCreators<LookupRoleDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.role.message.deleteFailure),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

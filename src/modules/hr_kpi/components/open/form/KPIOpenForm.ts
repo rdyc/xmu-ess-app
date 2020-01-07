@@ -25,6 +25,7 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIOpenFormView } from './KPIOpenFormView';
 
@@ -75,7 +76,7 @@ export type KPIOpenFormProps
 
 const createProps: mapper<KPIOpenFormProps, IOwnState> = (props: KPIOpenFormProps): IOwnState => ({
   // form props 
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
   initialValues: {
     uid: 'Auto Generated',
@@ -111,9 +112,7 @@ const stateUpdaters: StateUpdaters<KPIOpenFormProps, IOwnState, IOwnStateUpdater
 
 const handleCreators: HandleCreators<KPIOpenFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: KPIOpenFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const OpenUid = props.history.location.state.uid;
       const { isLoading } = props.kpiOpenState.detail;

@@ -10,6 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { AchievementEditorView } from './AchievementEditorView';
 import { UploadFormData } from './AchievementForm';
 
@@ -35,7 +36,7 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
     const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
-      if (!values[field] || (values[field] === undefined || values[field] === null)) {
+      if (!values[field] || isNullOrUndefined(values[field])) {
         Object.assign(errors, {[field]: 'Required'});
       }
     });
@@ -82,7 +83,7 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       const message = props.intl.formatMessage(lookupMessage.achievement.message.createFailure);
@@ -91,7 +92,7 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

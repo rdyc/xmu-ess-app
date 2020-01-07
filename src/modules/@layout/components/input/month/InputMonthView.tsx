@@ -2,6 +2,7 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as moment from 'moment';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { InputMonthProps } from './InputMonth';
 
@@ -43,7 +44,7 @@ export const InputMonthView: React.SFC<InputMonthProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

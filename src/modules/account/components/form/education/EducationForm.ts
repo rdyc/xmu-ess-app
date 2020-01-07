@@ -26,6 +26,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { EducationFormView } from './EducationFormView';
 
@@ -81,7 +82,7 @@ export type EducationFormProps
 
 const createProps: mapper<EducationFormProps, IOwnState> = (props: EducationFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
   
   // form values
   initialValues: {
@@ -137,9 +138,7 @@ const stateUpdaters: StateUpdaters<EducationFormProps, IOwnState, IOwnStateUpdat
 
 const handlerCreators: HandleCreators<EducationFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: EducationFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const employeeUid = props.match.params.employeeUid;
       const educationUid = props.history.location.state.educationUid;

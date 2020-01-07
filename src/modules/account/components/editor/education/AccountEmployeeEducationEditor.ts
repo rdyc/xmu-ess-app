@@ -27,6 +27,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeEducationEditorView } from './AccountEmployeeEducationEditorView';
 import { AccountEmployeeEducationFormData } from './form/AccountEmployeeEducationContainer';
 
@@ -85,7 +86,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     ];
   
     requiredFields.forEach(field => {
-      if (!formData.education[field] || (formData.education[field] === undefined || formData.education[field] === null)) {
+      if (!formData.education[field] || isNullOrUndefined(formData.education[field])) {
         errors.education[field] = props.intl.formatMessage(accountMessage.education.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -166,7 +167,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
       console.log(submitError);
     } else {
@@ -184,7 +185,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -221,7 +222,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
       return;
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = accountMessage.shared.page.modifyTitle;
       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

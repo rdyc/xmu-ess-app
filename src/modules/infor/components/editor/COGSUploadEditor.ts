@@ -17,6 +17,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { COGSUploadEditorView } from './COGSUploadEditorView';
 import { COGSFormData } from './form/upload/COGSUploadForm';
 
@@ -96,7 +97,7 @@ const handlerCreators: HandleCreators<COGSUploadEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -105,7 +106,7 @@ const handlerCreators: HandleCreators<COGSUploadEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

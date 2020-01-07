@@ -15,6 +15,7 @@ import { DateType } from 'material-ui-pickers/constants/prop-types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
@@ -90,10 +91,10 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'projectUid': 
         fieldProps = {
           required: true,
-          disabled: (customerUidValue === undefined || customerUidValue === null),
+          disabled: isNullOrUndefined(customerUidValue),
           label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
           placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
-          component: !(customerUidValue === undefined || customerUidValue === null) ? SelectProject : InputText, 
+          component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText, 
           filter: projectFilter,
           onSelected: props.handleProjectChange
           
@@ -105,7 +106,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           disabled: !isProjectSelected,
           label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
           placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
-          component: !(projectUidValue === undefined || projectUidValue === null) ? SelectProjectSite : InputText,
+          component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
           projectUid: projectUidValue,
         };

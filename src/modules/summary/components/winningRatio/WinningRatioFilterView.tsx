@@ -25,6 +25,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { AccountEmployeeDialog } from '@account/components/dialog';
 import { FilterCompany } from '@lookup/components/company/select';
@@ -34,6 +35,7 @@ import { WinningRatioFilterProps } from './WinningRatioFilter';
 export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
     return props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
+    isNullOrUndefined(props.filterCompany) ||
       props.filterEmployee !== undefined ||
       props.filterStart !== props.start ||
       props.filterEnd !== props.end;
@@ -65,8 +67,8 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             </Typography>
 
             {
-              !props.filterCompany ||
               (props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
+              isNullOrUndefined(props.filterCompany) ||
               props.filterEmployee ||
               props.filterStart !== props.start ||          
               props.filterEnd !== props.end) &&
@@ -95,7 +97,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                (props.filterCompany && props.filterCompany.uid !== (props.resetCompany && props.resetCompany.uid) || !props.filterCompany) &&
+                (props.filterCompany && props.filterCompany.uid !== (props.resetCompany && props.resetCompany.uid) || isNullOrUndefined(props.filterCompany)) &&
                 <IconButton onClick={props.handleFilterCompanyOnClear}>
                   <ClearIcon />
                 </IconButton>

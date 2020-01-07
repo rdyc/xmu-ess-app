@@ -36,6 +36,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ICompetencyAssessmentFormValue, StatusProps } from '../../form/assessment/CompetencyAssessmentForm';
@@ -223,7 +224,7 @@ const handlerCreators: HandleCreators<HrCompetencyAssessmentDetailProps, IOwnHan
     const assessmentUid = props.match.params.assessmentUid;
     const { isLoading } = props.hrCompetencyAssessmentState.detail;
 
-    if (user && !(props.history.location.state === undefined || props.history.location.state === null)) {
+    if (user && !isNullOrUndefined(props.history.location.state)) {
       if (assessmentUid && !isLoading) {
         props.hrCompetencyAssessmentDispatch.loadDetailRequest({
           assessmentUid

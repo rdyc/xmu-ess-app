@@ -2,6 +2,7 @@ import { ICompanyList } from '@lookup/classes/response/company';
 import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 import { SelectLookupCompanyProps } from './SelectLookupCompany';
 
 export const SelectLookupCompanyView: React.SFC<SelectLookupCompanyProps> = props => {
@@ -46,7 +47,7 @@ export const SelectLookupCompanyView: React.SFC<SelectLookupCompanyProps> = prop
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

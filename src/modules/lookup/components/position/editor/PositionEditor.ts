@@ -15,6 +15,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { PositionEditorView } from './PositionEditorView';
 import { PositionFormData } from './PositionForm';
 
@@ -88,7 +89,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.position.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -183,7 +184,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -200,7 +201,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -221,7 +222,7 @@ const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
       return;
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
 
         view.title = lookupMessage.position.form.editTitle,
         view.subTitle = lookupMessage.position.form.editSubTitle,

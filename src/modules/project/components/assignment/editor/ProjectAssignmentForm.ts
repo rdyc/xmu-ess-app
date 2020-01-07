@@ -20,6 +20,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+
+import { isNullOrUndefined } from 'util';
 import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 
 export interface IProjectAssignmentItemFormData {
@@ -132,7 +134,7 @@ const handlers: HandleCreators<ProjectAssignmentFormProps, IOwnHandlers> = {
 
     if (formValues.items) {
       formValues.items.forEach(item => {
-        if ((item.statusType === undefined || item.statusType === null) || !(item.statusType && item.statusType === WorkflowStatusType.Rejected)) {
+        if (isNullOrUndefined(item.statusType) || !(item.statusType && item.statusType === WorkflowStatusType.Rejected)) {
           return hours += item.mandays * 8;
         } 
         return hours += 0;

@@ -9,6 +9,7 @@ import { SelectLookupRole } from '@lookup/components/role/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 import { AccountEmployeeAccessDetailFormView } from './AccountEmployeeAccessDetailFormView';
 
 interface OwnProps {
@@ -80,7 +81,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             companyUid: byCompanyUid,
-            disabled: ((companyUidValue === undefined || companyUidValue === null) || formMode === FormMode.Delete),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectSystem
           };
           break;
@@ -92,7 +93,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             companyUid: byCompanyUid,
             parentCode: byUnitType,
-            disabled: ((companyUidValue === undefined || companyUidValue === null) || (unitTypeValue === undefined || unitTypeValue === null) || formMode === FormMode.Delete),
+            disabled: (isNullOrUndefined(companyUidValue) || isNullOrUndefined(unitTypeValue) || formMode === FormMode.Delete),
             component: SelectSystem
           };
           break;
@@ -113,7 +114,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
-            disabled: ((companyUidValue === undefined || companyUidValue === null) || formMode === FormMode.Delete),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectLookupRole
           };
           break;
@@ -124,7 +125,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
-            disabled: ((companyUidValue === undefined || companyUidValue === null) || formMode === FormMode.Delete),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectPosition
           };
           break;

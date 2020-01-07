@@ -32,6 +32,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface IOwnHandlers {
   handleValidate: (payload: LeaveRequestFormData) => FormErrors;
@@ -178,7 +179,7 @@ const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -195,7 +196,7 @@ const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -249,7 +250,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestEditorProps, {}> = {
       }
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = leaveMessage.request.page.modifyTitle;
       view.subTitle = leaveMessage.request.page.modifySubHeader;
 

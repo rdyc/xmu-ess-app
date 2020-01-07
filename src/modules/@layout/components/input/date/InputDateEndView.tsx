@@ -1,6 +1,7 @@
 import { GlobalFormat } from '@layout/types';
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 
 import { InputDateEndProps } from './InputDateEnd';
 
@@ -16,7 +17,7 @@ export const InputDateEndView: React.SFC<InputDateEndProps> = props => {
       required={props.required}
       placeholder={props.placeholder}
       disabled={props.disabled || props.meta.submitting}
-      error={props.meta.touched && !(props.meta.error === undefined || props.meta.error === null)}
+      error={props.meta.touched && !isNullOrUndefined(props.meta.error) ? true : false}
       helperText={props.meta.touched && props.meta.error}
       multiline={props.multiline}
     />

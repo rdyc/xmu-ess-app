@@ -17,6 +17,8 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import SwipeableViews from 'react-swipeable-views';
+import { isArray } from 'util';
+
 import { ModuleIcon } from '../moduleIcon/ModuleIcon';
 import { NotificationProps } from './Notification';
 
@@ -78,7 +80,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
           }
 
           {
-            !isLoading && response && Array.isArray(response.data) && 
+            !isLoading && response && isArray(response.data) && 
             response.data
               .sort((a , b) => (a.name > b.name) ? 1 : 0)
               .map(category => 

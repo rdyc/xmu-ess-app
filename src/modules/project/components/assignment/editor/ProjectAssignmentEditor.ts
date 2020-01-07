@@ -8,7 +8,6 @@ import { IProjectAssignmentDetail } from '@project/classes/response';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -26,6 +25,9 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
+
+import * as moment from 'moment';
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
 import { IProjectAssignmentFormData, IProjectAssignmentItemFormData } from './ProjectAssignmentForm';
 
@@ -96,7 +98,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
     const requiredFields = ['projectUid'];
   
     requiredFields.forEach(field => {
-      if (!values[field] || (values[field] === undefined || values[field] === null)) {
+      if (!values[field] || isNullOrUndefined(values[field])) {
         Object.assign(errors, {[field]: props.intl.formatMessage(projectMessage.assignment.fieldFor(field, 'fieldRequired'))});
       }
     });
@@ -112,7 +114,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
         if (!item) { return ; }
 
         requiredItemFields.forEach(field => {
-          if (!item[field] || (item[field] === undefined || values[field] === null)) {
+          if (!item[field] || isNullOrUndefined(item[field])) {
             Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(projectMessage.assignment.fieldFor(field, 'fieldRequired'))});
           }
         });
@@ -189,13 +191,13 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       alertAdd({
         time: new Date(),
         message: intl.formatMessage(projectMessage.assignment.message.createFailure),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

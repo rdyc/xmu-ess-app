@@ -27,6 +27,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeAccessEditorView } from './AccountEmployeeAccessEditorView';
 import { AccountEmployeeAccessContainerFormData } from './form/AccountEmployeeAccessContainerForm';
 
@@ -85,7 +86,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     ];
   
     requiredFields.forEach(field => {
-      if (!formData.access[field] || (formData.access[field] === undefined || formData.access[field] === null)) {
+      if (!formData.access[field] || isNullOrUndefined(formData.access[field])) {
         errors.access[field] = props.intl.formatMessage(accountMessage.access.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -165,7 +166,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -182,7 +183,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -219,7 +220,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
       return;
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = accountMessage.shared.page.modifyTitle;
       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

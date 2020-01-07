@@ -2,6 +2,7 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { IHierarchyList } from '@organization/classes/response/hierarchy';
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
 import { SelectHierarchyProps } from './SelectHierarchy';
 
 export const SelectHierarchyView: React.SFC<SelectHierarchyProps> = props => {
@@ -46,7 +47,7 @@ export const SelectHierarchyView: React.SFC<SelectHierarchyProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

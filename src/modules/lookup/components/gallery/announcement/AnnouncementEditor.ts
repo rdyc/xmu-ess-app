@@ -26,6 +26,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 import { AnnouncementEditorView } from './AnnouncementEditorView';
 
 interface OwnOption {
@@ -191,7 +192,7 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -202,7 +203,7 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }, 

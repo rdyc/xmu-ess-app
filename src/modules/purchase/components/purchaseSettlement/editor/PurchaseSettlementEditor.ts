@@ -39,6 +39,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
   handleValidate: (payload: PurchaseSettlementFormData) => FormErrors;
@@ -121,7 +122,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage({ id: `purchase.field.information.${field}.required` });
       }
     });
@@ -137,7 +138,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
         if (!item) { return; }
 
         requiredItemFields.forEach(field => {
-          if (!item[field] || (item[field] === undefined || item[field] === null)) {
+          if (!item[field] || isNullOrUndefined(item[field])) {
             Object.assign(itemError, { [`${field}`]: 'Required' });
           }
         });
@@ -279,7 +280,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -296,7 +297,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -343,7 +344,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
       formMode: FormMode.New
     });
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
 
       if (!isNullOrUndefined(history.location.state.statusType)) {
       purchase.title = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);

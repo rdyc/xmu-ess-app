@@ -8,6 +8,7 @@ import { isMenusWithWorkflow } from '@organization/helper';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { isNullOrUndefined } from 'util';
 import { WorkflowListFilter } from './WorkflowListFilter';
 import { WorkflowMenuListProps } from './WorkflowMenuList';
 

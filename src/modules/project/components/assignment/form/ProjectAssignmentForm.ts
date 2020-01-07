@@ -30,6 +30,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
@@ -103,7 +104,7 @@ export type ProjectAssignmentFormProps
 
 const createProps: mapper<ProjectAssignmentFormProps, IOwnState> = (props: ProjectAssignmentFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -189,9 +190,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentFormProps, IOwnState, IOwnSt
 
 const handlerCreators: HandleCreators<ProjectAssignmentFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: ProjectAssignmentFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const assignmentUid = props.history.location.state.assignmentUid;
       const { isLoading } = props.projectAssignmentState.detail;

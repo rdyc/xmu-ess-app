@@ -4,6 +4,7 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 import { FilterFormProps } from './LeaveCalculationFilterForm';
 
 export const LeaveCalculationFilterFormView: React.SFC<FilterFormProps> = props => {
@@ -31,7 +32,7 @@ export const LeaveCalculationFilterFormView: React.SFC<FilterFormProps> = props 
             label={props.intl.formatMessage(lookupMessage.calculation.filter.year)}
             placeholder={props.intl.formatMessage(lookupMessage.calculation.filter.yearPlaceHolder)}
             component={InputYear}
-            disabled={companyUidValue === undefined || companyUidValue === null}
+            disabled={isNullOrUndefined(companyUidValue)}
             onChange={handleChangeYear}
           />
         </Grid>

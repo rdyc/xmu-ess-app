@@ -38,6 +38,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ProjectRegistrationFormView } from './ProjectRegistrationFormView';
@@ -125,8 +126,8 @@ export type ProjectRegistrationFormProps
 
 const createProps: mapper<ProjectRegistrationFormProps, IOwnState> = (props: ProjectRegistrationFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
-  isRequestor: (props.history.location.state === undefined || props.history.location.state === null) ? true : false,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  isRequestor: isNullOrUndefined(props.history.location.state) ? true : false,
   isAdmin: false,
 
   // form values
@@ -261,9 +262,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationFormProps, IOwnState, IOwn
 
 const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: ProjectRegistrationFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const projectUid = props.history.location.state.uid;
       const { isLoading } = props.projectRegisterState.detail;
@@ -513,7 +512,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationFormProps, IOwnHandler>
 const lifeCycleFunctions: ReactLifeCycleFunctions<ProjectRegistrationFormProps, IOwnState> = {
   componentDidMount() {
     // new mode
-    if (this.props.history.location.state === undefined || this.props.history.location.state === null) {
+    if (isNullOrUndefined(this.props.history.location.state)) {
       // load common system
       this.props.handleOnLoadDocumentProject();
       this.props.handleOnLoadDocumentPreSales();

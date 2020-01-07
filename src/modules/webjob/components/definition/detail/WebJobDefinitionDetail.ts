@@ -26,6 +26,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
 import { WebJobDefinitionDetailView } from './WebJobDefinitionDetailView';
 
@@ -191,13 +192,13 @@ const handlerCreators: HandleCreators<WebJobDefinitionDetailProps, IOwnHandler> 
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(webJobMessage.shared.message.deleteFailure),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

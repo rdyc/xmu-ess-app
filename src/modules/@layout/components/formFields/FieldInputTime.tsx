@@ -2,6 +2,7 @@ import { TimePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps {
   format?: string | undefined;
@@ -22,7 +23,7 @@ export const FieldInputTime: React.SFC<AllProps> = props => {
       {...input}
       label={label}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !(meta.error === undefined || meta.error === null)}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
       invalidLabel={''}

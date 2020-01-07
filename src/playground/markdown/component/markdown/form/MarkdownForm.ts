@@ -20,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { IMarkdownCategoryGetListFilter } from '../../../classes/filters/category/IMarkdownCategoryGetListFilter';
 import { IMarkdownPostPayload, IMarkdownPutPayload } from '../../../classes/request';
@@ -86,7 +87,7 @@ export type MarkdownFormProps
   & RouteComponentProps<IOwnRouteParams>;
 
 const createProps: mapper<MarkdownFormProps, IOwnState> = (props: MarkdownFormProps): IOwnState => ({
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -131,9 +132,7 @@ const stateUpdaters: StateUpdaters<MarkdownFormProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<MarkdownFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: MarkdownFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const markdownUid = props.history.location.state.uid;
       const { isLoading } = props.markdownState.detail;
       const user = props.userState.user;

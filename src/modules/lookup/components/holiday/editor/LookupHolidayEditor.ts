@@ -25,6 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -78,7 +79,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.holiday.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -101,7 +102,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
     const company = payload.companyUid;
 
     // creating
-    if (formMode === FormMode.New && company) {
+    if (formMode === FormMode.New && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve, 
@@ -119,7 +120,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
       return Promise.reject(message);
     }
 
-    if (formMode === FormMode.Edit && company) {
+    if (formMode === FormMode.Edit && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         updateRequest({
           holidayUid, 
@@ -162,7 +163,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -179,7 +180,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -215,7 +216,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       return;
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = lookupMessage.holiday.page.modifyTitle;
       view.subTitle = lookupMessage.holiday.page.modifySubHeader;
 

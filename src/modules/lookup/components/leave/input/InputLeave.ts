@@ -12,6 +12,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 import { InputLeaveView } from './InputLeaveView';
 
@@ -90,7 +91,7 @@ const handlerCreators: HandleCreators<InputLeaveProps, OwnHandlers> = {
       if (response && response.data) {
         const leave = response.data.find(item => item.uid === input.value);
   
-        if (!(leave === undefined || leave === null)) {
+        if (!isNullOrUndefined(leave)) {
           result = leave.name;
         }
       }

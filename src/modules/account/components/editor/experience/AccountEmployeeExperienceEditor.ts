@@ -26,6 +26,7 @@
 // } from 'recompose';
 // import { Dispatch } from 'redux';
 // import { FormErrors } from 'redux-form';
+// import { isNullOrUndefined, isObject } from 'util';
 
 // import { WithStyles, withStyles } from '@material-ui/core';
 // import styles from '@styles';
@@ -167,7 +168,7 @@
 //       // validation errors from server (400: Bad Request)
 //       alertAdd({
 //         time: new Date(),
-//         message: (submitError !== null && typeof submitError === 'object') ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
+//         message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
 //       });
 //       console.log(submitError);
 //     } else {
@@ -185,7 +186,7 @@
 //       alertAdd({
 //         message,
 //         time: new Date(),
-//         details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+//         details: isObject(submitError) ? submitError.message : submitError
 //       });
 //     }
 //   }
@@ -222,7 +223,7 @@
 //       return;
 //     }
 
-//     if (!(history.location.state === undefined || history.location.state === null)) {
+//     if (!isNullOrUndefined(history.location.state)) {
 //       view.title = accountMessage.shared.page.modifyTitle;
 //       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

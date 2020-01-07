@@ -32,6 +32,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface IOwnHandlers {
   handleSetMinDate: (days: number, fromDate?: Date | null) => void;
@@ -89,7 +90,7 @@ const handlerCreators: HandleCreators<TimeEntryEditorProps, IOwnHandlers> = {
   handleSetMinDate: (props: TimeEntryEditorProps) => (days: number, fromDate?: Date | null) => {
     let today = moment(); // create date today
 
-    if (fromDate) { // is fromDate exist, use from date instead
+    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
       today = moment(fromDate);
     }
 
@@ -200,7 +201,7 @@ const handlerCreators: HandleCreators<TimeEntryEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -217,7 +218,7 @@ const handlerCreators: HandleCreators<TimeEntryEditorProps, IOwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -277,7 +278,7 @@ const lifecycles: ReactLifeCycleFunctions<TimeEntryEditorProps, {}> = {
       }
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = timesheetMessage.entry.page.modifyTitle;
       view.subTitle = timesheetMessage.entry.page.modifySubHeader;
 

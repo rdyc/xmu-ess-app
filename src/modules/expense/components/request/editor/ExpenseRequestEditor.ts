@@ -39,6 +39,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
   handleSetMinDate: (days: number, fromDate?: Date | null) => void;
@@ -86,7 +87,7 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
   handleSetMinDate: (props: ExpenseRequestEditorProps) => (days: number, fromDate?: Date | null) => {
     let today = moment(); // create date today
 
-    if (fromDate) { // is fromDate exist, use from date instead
+    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
       today = moment(fromDate);
     }
 
@@ -110,7 +111,7 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
     ];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors.information[field] = props.intl.formatMessage(expenseMessage.request.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -207,7 +208,7 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -224,7 +225,7 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
       alertAdd({
         message,
         time: new Date(),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
@@ -293,7 +294,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
       }
     }
 
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(history.location.state)) {
       view.title = expenseMessage.request.page.editTitle;
       view.subTitle = expenseMessage.request.page.editSubTitle;
 

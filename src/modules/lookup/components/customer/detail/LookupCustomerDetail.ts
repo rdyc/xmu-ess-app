@@ -25,6 +25,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupCustomerDetailView } from './LookupCustomerDetailView';
 
@@ -128,9 +129,7 @@ const stateUpdaters: StateUpdaters<LookupCustomerDetailProps, IOwnState, IOwnSta
 
 const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupCustomerDetailProps) => () => { 
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       if (props.userState.user && props.match.params.customerUid && !props.lookupCustomerState.detail.isLoading ) {
         props.lookupCustomerDispatch.loadDetailRequest({
           companyUid: props.history.location.state.companyUid,
@@ -241,13 +240,13 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, IOwnHandler> = 
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.customer.message.deleteFailure),
-        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

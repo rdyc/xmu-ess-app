@@ -26,6 +26,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { LookupPositionFormView } from './LookupPositionFormView';
 
@@ -79,7 +80,7 @@ export type PositionFormProps
 
 const createProps: mapper<PositionFormProps, IOwnState> = (props: PositionFormProps): IOwnState => ({
   // form props
-  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
+  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -128,9 +129,7 @@ const stateUpdaters: StateUpdaters<PositionFormProps, IOwnState, IOwnStateUpdate
 
 const handlerCreators: HandleCreators<PositionFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: PositionFormProps) => () => {
-    const { history } = props;
-
-    if (!(history.location.state === undefined || history.location.state === null)) {
+    if (!isNullOrUndefined(props.history.location.state)) {
       const user = props.userState.user;
       const positionUid = props.history.location.state.uid;
       const companyUid = props.history.location.state.companyUid;
