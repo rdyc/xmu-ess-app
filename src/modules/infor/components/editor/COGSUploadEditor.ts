@@ -43,7 +43,7 @@ const handlerCreators: HandleCreators<COGSUploadEditorProps, OwnHandlers> = {
     const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData[field] || (formData[field] === undefined || formData[field] === null)) {
         errors[field] = props.intl.formatMessage(lookupMessage.cogsUpload.fieldFor(field, 'fieldRequired'));
       }
     });

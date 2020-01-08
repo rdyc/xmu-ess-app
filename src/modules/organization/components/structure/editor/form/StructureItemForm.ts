@@ -45,7 +45,7 @@
 //             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
 //             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
 //             component: SelectPosition,
-//             disabled: isNullOrUndefined(companyUidValue),
+//             disabled: (companyUidValue),
 //             filter: positionFilter
 //           };
 //           break;
