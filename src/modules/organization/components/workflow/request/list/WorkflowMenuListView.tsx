@@ -58,7 +58,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                     <Button
                       size="small"
                       color="secondary"
-                      disabled={isNullOrUndefined(props.companyUid)}
+                      disabled={props.companyUid === undefined || props.companyUid === null}
                       onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
                     >
                       <FormattedMessage {...layoutMessage.action.details} />

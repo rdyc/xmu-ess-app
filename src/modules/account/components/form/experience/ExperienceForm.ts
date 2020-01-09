@@ -303,7 +303,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ExperienceFormProps, IOwnState
     // if (!this.props.commonCompetencyListState.response) {
     // }
     // // new mode
-    // if (isNullOrUndefined(this.props.history.location.state)) {
+    // if ((this.props.history.location.state)) {
     //   // load common system
     //   this.props.handleOnLoadCompetencies();
     // }

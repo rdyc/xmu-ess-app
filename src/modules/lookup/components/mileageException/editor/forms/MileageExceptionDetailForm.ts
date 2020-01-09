@@ -8,7 +8,7 @@ import { SelectLookupCompany } from '@lookup/components/company/select';
 import { SelectLookupRole } from '@lookup/components/role/select/SelectLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { SelectProject } from '@project/components/select/project';
-import { SelectProjectSite } from '@project/components/select/projectSite';
+// import { SelectProjectSite } from '@project/components/select/projectSite';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -35,7 +35,7 @@ export type MileageExceptionDetailFormProps =
 
 const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: MileageExceptionDetailFormProps) => (name: string) => {
-    const { intl, formMode, companyUidValue, projectUidValue } = props;
+    const { intl, formMode, companyUidValue } = props;
 
     const projectFilter: any = {
       statusTypes: WorkflowStatusType.Approved,
@@ -96,16 +96,16 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
         };
         break;
       
-      case 'siteUid':
-        fieldProps = {
-          disabled: isNullOrUndefined(projectUidValue && companyUidValue),
-          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
-          companyUid: companyUidValue,
-          projectUid: projectUidValue
-        };
-        break;
+      // case 'siteUid':
+      //   fieldProps = {
+      //     disabled: (projectUidValue && companyUidValue),
+      //     label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
+      //     placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
+      //     component: !(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
+      //     companyUid: companyUidValue,
+      //     projectUid: projectUidValue
+      //   };
+      //   break;
 
       case 'percentage':
         fieldProps = {

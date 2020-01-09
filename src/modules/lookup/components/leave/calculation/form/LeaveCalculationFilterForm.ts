@@ -69,7 +69,7 @@ const handlerCreators: HandleCreators<FilterFormProps, OwnHandler> = {
   handleChangeCompany: (props: FilterFormProps) => (event: any, newValue: string, oldValue: string) => {
     const { change } = props;
 
-    if (!isNullOrUndefined(oldValue)) {
+    if (!(oldValue === undefined || oldValue === null)) {
       change('year', '');
     }
   },

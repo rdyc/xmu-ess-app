@@ -346,7 +346,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
     if (!isNullOrUndefined(history.location.state)) {
 
-      if (!isNullOrUndefined(history.location.state.statusType)) {
+      if (!(history.location.state.statusType === undefined || history.location.state.statusType === null)) {
       purchase.title = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
       purchase.subTitle = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
 

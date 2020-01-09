@@ -88,7 +88,7 @@
 //     ];
 
 //     requiredFields.forEach(field => {
-//       if (!formData.experience[field] || isNullOrUndefined(formData.experience[field])) {
+//       if (!formData.experience[field] || (formData.experience[field])) {
 //         errors.experience[field] = props.intl.formatMessage(accountMessage.experience.fieldFor(field, 'fieldRequired'));
 //       }
 //     });
@@ -168,7 +168,7 @@
 //       // validation errors from server (400: Bad Request)
 //       alertAdd({
 //         time: new Date(),
-//         message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
+//         message: (submitError !== null && typeof submitError === 'object') ? submitError.message : (!(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
 //       });
 //       console.log(submitError);
 //     } else {
