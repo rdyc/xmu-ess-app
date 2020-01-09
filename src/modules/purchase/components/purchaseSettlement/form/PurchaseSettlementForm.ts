@@ -19,7 +19,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { IExpense } from '@expense/classes/response';
@@ -92,7 +91,7 @@ export type PurchaseSettlementFormProps
 
 const createProps: mapper<PurchaseSettlementFormProps, IOwnState> = (props: PurchaseSettlementFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state && props.history.location.state.isModifyForm) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state  === null) ? FormMode.New : FormMode.Edit,
   isInIDR: true,
 
   // form values
@@ -201,7 +200,9 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementFormProps, IOwnState, IOwnS
 
 const handlerCreators: HandleCreators<PurchaseSettlementFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: PurchaseSettlementFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const purchaseUid = props.history.location.state.uid;
       const { isLoading } = props.purchaseSettlementState.detail;

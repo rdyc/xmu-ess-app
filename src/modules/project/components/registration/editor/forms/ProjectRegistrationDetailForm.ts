@@ -12,7 +12,6 @@ import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 interface IOwnProps {
   formMode: FormMode;
@@ -135,7 +134,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
           required: !isCurrencyIdr || isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
-          disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
+          disabled: isCurrencyIdr || (formCurrencyType === undefined || formCurrencyType === null),
           component: InputNumber,
           onChange: onChangeRate
         };

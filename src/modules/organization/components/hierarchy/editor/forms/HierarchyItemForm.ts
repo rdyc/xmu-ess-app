@@ -5,7 +5,6 @@
 // import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 // import { InjectedIntlProps, injectIntl } from 'react-intl';
 // import { compose, HandleCreators, withHandlers } from 'recompose';
-// import { isNullOrUndefined } from 'util';
 // import { HierarchyFormProps } from './HierarchyForm';
 // import { HierarchyItemFormView } from './HierarchyItemFormView';
 
@@ -54,7 +53,7 @@
 //             label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
 //             placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
 //             component: SelectPosition,
-//             disabled: (companyUidValue),
+//             disabled: isNullOrUndefined(companyUidValue),
 //             filter: positionFilter
 //           };
 //           break;

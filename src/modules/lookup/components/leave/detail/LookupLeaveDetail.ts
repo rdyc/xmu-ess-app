@@ -25,7 +25,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { LookupLeaveDetailView } from './LookupLeaveDetailView';
 
@@ -129,7 +128,9 @@ const stateUpdaters: StateUpdaters<LeaveDetailProps, IOwnState, IOwnStateUpdater
 
 const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LeaveDetailProps) => () => { 
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       if (props.userState.user && props.match.params.leaveUid && !props.lookupLeaveState.detail.isLoading) {
         props.lookupLeaveDispatch.loadDetailRequest({
           companyUid: props.history.location.state.companyUid,
@@ -243,13 +244,13 @@ const handlerCreators: HandleCreators<LeaveDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.leave.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

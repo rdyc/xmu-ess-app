@@ -25,7 +25,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
 
 import { LookupSystemLimitDetailView } from './LookupSystemLimitDetailView';
 
@@ -244,13 +243,13 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.systemLimit.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

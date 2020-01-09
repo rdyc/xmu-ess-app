@@ -8,12 +8,11 @@ import { SelectLookupCompany } from '@lookup/components/company/select';
 import { SelectLookupRole } from '@lookup/components/role/select/SelectLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { SelectProject } from '@project/components/select/project';
-// import { SelectProjectSite } from '@project/components/select/projectSite';
+import { SelectProjectSite } from '@project/components/select/projectSite';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { MileageExceptionDetailFormView } from './MileageExceptionDetailFormView';
 
 interface OwnProps {
@@ -35,7 +34,7 @@ export type MileageExceptionDetailFormProps =
 
 const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: MileageExceptionDetailFormProps) => (name: string) => {
-    const { intl, formMode, companyUidValue } = props;
+    const { intl, formMode, companyUidValue, projectUidValue } = props;
 
     const projectFilter: any = {
       statusTypes: WorkflowStatusType.Approved,
@@ -70,11 +69,11 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
       case 'roleUid':
         fieldProps = {
           required: true,
-          disabled: formMode === FormMode.Edit  || isNullOrUndefined(companyUidValue),
+          disabled: formMode === FormMode.Edit  || (companyUidValue === undefined || companyUidValue === null),
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(companyUidValue) ? SelectLookupRole : InputText,
-          filter: !isNullOrUndefined(companyUidValue) ? roleFilter : undefined
+          component: !(companyUidValue === undefined || companyUidValue === null) ? SelectLookupRole : InputText,
+          filter: !(companyUidValue === undefined || companyUidValue === null) ? roleFilter : undefined
         };
         break;
       
@@ -98,10 +97,10 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
       
       // case 'siteUid':
       //   fieldProps = {
-      //     disabled: (projectUidValue && companyUidValue),
+      //     disabled: isNullOrUndefined(projectUidValue && companyUidValue),
       //     label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
       //     placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-      //     component: !(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
+      //     component: !isNullOrUndefined(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
       //     companyUid: companyUidValue,
       //     projectUid: projectUidValue
       //   };

@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 import { ProjectRegistrationDetailView } from './ProjectRegistrationDetailView';
 
@@ -328,7 +327,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, IOwnSt
       let _haschildProject = false;
 
       if (response && response.data) {
-        _haschildProject = !isNullOrUndefined(response.data.childProjectUid);
+        _haschildProject = !(response.data.childProjectUid === undefined || response.data.childProjectUid === null);
       }
 
       // generate option menus

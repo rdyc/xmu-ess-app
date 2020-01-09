@@ -28,7 +28,6 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { KPIEmployeeFormView } from './KPIEmployeeFormView';
 
@@ -109,7 +108,7 @@ export type KPIEmployeeFormProps
 
 const createProps: mapper<KPIEmployeeFormProps, IOwnState> = (props: KPIEmployeeFormProps): IOwnState => ({
   // form props 
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   loadLatest: false,
 
   initialValues: {
@@ -211,7 +210,9 @@ const stateUpdaters: StateUpdaters<KPIEmployeeFormProps, IOwnState, IOwnStateUpd
 
 const handleCreators: HandleCreators<KPIEmployeeFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: KPIEmployeeFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const kpiUid = props.history.location.state.uid;
       const { isLoading } = props.kpiEmployeeState.detail;

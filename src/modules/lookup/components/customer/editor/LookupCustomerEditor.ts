@@ -26,7 +26,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { LookupCustomerFormData } from './forms/LookupCustomerForm';
 import { LookupCustomerEditorView } from './LookupCustomerEditorView';
 
@@ -77,7 +76,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.customer.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -94,7 +93,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
 
     const companyId = payload.companyUid;
     // creating
-    if (formMode === FormMode.New && !isNullOrUndefined(companyId)) {
+    if (formMode === FormMode.New && companyId) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve,
@@ -113,7 +112,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       return Promise.reject(message);
     }
 
-    if (formMode === FormMode.Edit && !isNullOrUndefined(companyId)) {
+    if (formMode === FormMode.Edit && companyId) {
       return new Promise((resolve, reject) => {
         updateRequest({
           customerUid,
@@ -156,7 +155,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -173,7 +172,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -209,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = lookupMessage.customer.page.modifyTitle;
       view.subTitle = lookupMessage.customer.page.modifySubHeader;
 

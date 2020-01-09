@@ -25,7 +25,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ProjectHourFormView as ProjectHourFormView } from './ProjectHourFormView';
@@ -124,7 +123,9 @@ const stateUpdaters: StateUpdaters<ProjectHourFormProps, IOwnState, IOwnStateUpd
 
 const handlerCreators: HandleCreators<ProjectHourFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: ProjectHourFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const { isLoading } = props.projectRegisterState.detail;
 

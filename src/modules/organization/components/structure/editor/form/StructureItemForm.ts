@@ -6,7 +6,6 @@
 // import { InjectedIntlProps, injectIntl } from 'react-intl';
 // import { compose, HandleCreators, withHandlers } from 'recompose';
 // import { WrappedFieldArrayProps } from 'redux-form';
-// import { isNullOrUndefined } from 'util';
 // import { OrganizationStructureItemFormData } from './StructureForm';
 // import { StructureItemFormView } from './StructureItemFormView';
 
@@ -46,7 +45,7 @@
 //             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
 //             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
 //             component: SelectPosition,
-//             disabled: (companyUidValue),
+//             disabled: isNullOrUndefined(companyUidValue),
 //             filter: positionFilter
 //           };
 //           break;

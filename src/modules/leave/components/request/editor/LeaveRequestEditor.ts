@@ -32,7 +32,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 interface IOwnHandlers {
   handleValidate: (payload: LeaveRequestFormData) => FormErrors;
@@ -95,7 +94,7 @@ const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || (formData.information[field]  === undefined || formData.information[field] === null)) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(leaveMessage.request.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -250,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestEditorProps, {}> = {
       }
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = leaveMessage.request.page.modifyTitle;
       view.subTitle = leaveMessage.request.page.modifySubHeader;
 

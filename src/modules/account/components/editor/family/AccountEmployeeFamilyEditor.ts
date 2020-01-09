@@ -27,7 +27,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeFamilyEditorView } from './AccountEmployeeFamilyEditorView';
 import { AccountEmployeeFamilyFormData } from './form/AccountEmployeeFamilyContainerForm';
 
@@ -86,7 +85,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.family[field] || isNullOrUndefined(formData.family[field])) {
+      if (!formData.family[field] || (formData.family[field] === undefined || formData.family[field] === null)) {
         errors.family[field] = props.intl.formatMessage(accountMessage.family.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -167,7 +166,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -184,7 +183,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -221,7 +220,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyEditorProps, {}> 
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (history.location.state !== null || history.location.state !== undefined) {
       view.title = accountMessage.shared.page.modifyTitle;
       view.subTitle = accountMessage.shared.page.modifySubHeader;
 

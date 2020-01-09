@@ -25,7 +25,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { LookupDiemDetailView } from './LookupDiemDetailView';
 
 interface IOwnRouteParams {
@@ -128,7 +127,9 @@ const stateUpdaters: StateUpdaters<LookupDiemDetailProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: LookupDiemDetailProps) => () => { 
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       if (props.userState.user && props.match.params.diemUid && !props.lookupDiemState.detail.isLoading) {
         props.lookupDiemDispatch.loadDetailRequest({
           companyUid: props.history.location.state.companyUid,
@@ -241,13 +242,13 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, IOwnHandler> = {
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(lookupMessage.lookupDiem.message.deleteFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

@@ -11,7 +11,6 @@ import { SelectProject } from '@project/components/select/project';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
@@ -88,7 +87,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'projectUid':
           fieldProps = {
             type: 'text',
-            disabled: isNullOrUndefined(customerUidValue),
+            disabled: (customerUidValue === null || customerUidValue === undefined),
             label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: SelectProject,

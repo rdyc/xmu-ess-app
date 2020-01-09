@@ -7,7 +7,6 @@ import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { InjectedFormProps, WrappedFieldArrayProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { LookupRoleFormData, LookupRoleMenuFormData } from './LookupRoleForm';
 import { LookupRoleMenuFormView } from './LookupRoleMenuFormView';
 
@@ -211,7 +210,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupRoleMenuFormProps, {}> = {
   componentDidUpdate(prevProps: LookupRoleMenuFormProps) {
     const { response } = this.props.lookupMenuState.list;
     // for counter menus index array
-    if (isNullOrUndefined(this.props.menus) || this.props.menus.length === 0) {
+    if ((this.props.menus === undefined || this.props.menus === null) || this.props.menus.length === 0) {
       if (response && response.data) {
         response.data.map((item, index) => {
           this.props.menus.push(item.uid);

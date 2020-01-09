@@ -20,7 +20,6 @@ import {
   reduxForm,
   WrappedFieldArrayProps,
 } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 // ----------------------------------------------------------------------------
 // Form.tsx
@@ -212,7 +211,7 @@ const handlerCreators: HandleCreators<ComplexEditorProps, OwnHandlers> = {
     const requiredFields = ['projectUid'];
   
     requiredFields.forEach(field => {
-      if (!values[field] || isNullOrUndefined(values[field])) {
+      if (!values[field] || (values[field] === undefined || values[field] === null)) {
         Object.assign(errors, {[field]: 'Required'});
       }
     });
@@ -228,7 +227,7 @@ const handlerCreators: HandleCreators<ComplexEditorProps, OwnHandlers> = {
         if (!item) { return ; }
 
         requiredItemFields.forEach(field => {
-          if (!item[field] || isNullOrUndefined(item[field])) {
+          if (!item[field] || (item[field] === undefined || item[field] === null)) {
             Object.assign(itemError, {[`${field}`]: 'Required'});
           }
         });

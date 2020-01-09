@@ -17,7 +17,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 import { GalleryFormData } from './form/upload/GalleryForm';
 import { GalleryEditorView } from './GalleryEditorView';
 
@@ -44,7 +43,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
     const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData[field] || (formData[field] === undefined || formData[field] === null)) {
         errors[field] = props.intl.formatMessage(lookupMessage.gallery.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -97,7 +96,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -106,7 +105,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

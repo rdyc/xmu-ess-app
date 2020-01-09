@@ -34,7 +34,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { TimesheetEntryFormView } from './TimesheetEntryFormView';
 
@@ -101,7 +100,7 @@ export type TimesheetEntryFormProps
   & IOwnHandler;
 
 const createProps: mapper<TimesheetEntryFormProps, IOwnState> = (props: TimesheetEntryFormProps): IOwnState => ({
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   isAdmin: false,
   minDate: new Date(),
 
@@ -197,7 +196,9 @@ const stateUpdaters: StateUpdaters<TimesheetEntryFormProps, IOwnState, IOwnState
 
 const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: TimesheetEntryFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const timesheetUid = props.history.location.state.uid;
       const { isLoading } = props.timesheetEntryState.detail;
@@ -214,7 +215,7 @@ const handlerCreators: HandleCreators<TimesheetEntryFormProps, IOwnHandler> = {
     let today = moment();
 
     // is fromDate exist, use from date instead
-    if (!isNullOrUndefined(fromDate)) {
+    if (fromDate) {
       today = moment(fromDate);
     }
 

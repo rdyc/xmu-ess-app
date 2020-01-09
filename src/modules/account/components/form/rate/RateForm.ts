@@ -24,7 +24,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { RateFormView } from './RateFormView';
 
@@ -99,7 +98,9 @@ const stateUpdaters: StateUpdaters<RateFormProps, IOwnState, IOwnStateUpdater> =
 
 const handlerCreators: HandleCreators<RateFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: RateFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const employeeUid = props.employeeUidRoute;
       const rateId = props.history.location.state.rateId;

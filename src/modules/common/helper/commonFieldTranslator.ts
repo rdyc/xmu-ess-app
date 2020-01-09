@@ -1,6 +1,5 @@
 import { CommonCategory } from '@common/classes/types';
 import { ICollectionValue } from '@layout/classes/core';
-import { isNullOrUndefined } from 'util';
 
 const toObjectCategories = (categories: CommonCategory[]): ICollectionValue[] => {
   const objectCategories =  Object.keys(CommonCategory).map(key => ({ 
@@ -22,7 +21,7 @@ export const isWithCompany = (category?: string): boolean => {
     // CommonCategory.site
   ];
 
-  if (isNullOrUndefined(category) || (category === '')) {
+  if ((category === undefined || category === null) || (category === '')) {
     return true;
   }
   
@@ -36,7 +35,7 @@ export const isWithParent = (category?: string): boolean => {
     CommonCategory.department
   ];
 
-  if (isNullOrUndefined(category) || (category === '')) {
+  if ((category === undefined || category === null) || (category === '')) {
     return true;
   }
   

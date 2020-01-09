@@ -34,7 +34,6 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { TravelRequestFormView } from './TravelRequestFormView';
 
@@ -133,7 +132,7 @@ export type TravelRequestFormProps
 
 const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelRequestFormProps): IOwnState => ({
   // form props 
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   initialValues: {
     uid: 'Auto Generated',
@@ -346,7 +345,9 @@ const handleCreators: HandleCreators<TravelRequestFormProps, IOwnHandler> = {
     }
   },
   handleOnLoadDetail: (props: TravelRequestFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const travelUid = props.history.location.state.uid;
       const { isLoading } = props.travelRequestState.detail;
