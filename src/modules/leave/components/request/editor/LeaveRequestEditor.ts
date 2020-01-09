@@ -249,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveRequestEditorProps, {}> = {
       }
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!(history.location.state === undefined || history.location.state === null)) {
       view.title = leaveMessage.request.page.modifyTitle;
       view.subTitle = leaveMessage.request.page.modifySubHeader;
 
