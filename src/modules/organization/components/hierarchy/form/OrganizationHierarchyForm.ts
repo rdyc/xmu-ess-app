@@ -212,7 +212,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
       values.items.forEach(item => payload.items && payload.items.push({
         sequence: item.sequence,
         positionUid: item.positionUid,
-        relationType: item.relationType,
+        relationType: item.relationType !== '' ? item.relationType : null,
       }));
       
       // set the promise
@@ -246,7 +246,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyFormProps, IOwnHandle
           itemUid: item.uid,
           sequence: item.sequence,
           positionUid: item.positionUid,
-          relationType: item.relationType,
+          relationType: item.relationType !== '' ? item.relationType : null,
         }));
 
         promise = new Promise((resolve, reject) => {
