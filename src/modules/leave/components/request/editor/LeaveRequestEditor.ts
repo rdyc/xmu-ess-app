@@ -178,7 +178,7 @@ const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object')  ? submitError.message : submitError
       });
     } else {
       // another errors from server
@@ -195,7 +195,7 @@ const handlerCreators: HandleCreators<LeaveRequestEditorProps, IOwnHandlers> = {
       alertAdd({
         message,
         time: new Date(),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object')  ? submitError.message : submitError
       });
     }
   }
