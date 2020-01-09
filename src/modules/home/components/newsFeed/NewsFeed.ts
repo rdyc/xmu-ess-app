@@ -18,11 +18,16 @@ export type NewsFeedProps
 
 const lifeCycles: ReactLifeCycleFunctions<NewsFeedProps, {}> = {
   componentDidMount() {
-    const { isLoading, response } = this.props.newsFeedState.all;
-    const { loadRequest } = this.props.newsFeedDispatch;
+    const { isLoading, response } = this.props.newsFeedState.list;
+    const { loadListRequest } = this.props.newsFeedDispatch;
     
     if (!isLoading && !response) {
-      loadRequest({});
+      loadListRequest({
+        filter: {
+          direction: 'ascending',
+          size: 6
+        }
+      });
     }
   }
 };
