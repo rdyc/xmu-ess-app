@@ -78,7 +78,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, IOwnHandlers> = {
     ];
 
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(lookupMessage.leave.fieldFor(field, 'fieldRequired'));
       }
     });

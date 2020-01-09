@@ -271,7 +271,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
 
     if (!(history.location.state === undefined || history.location.state === null)) {
 
-      if (!isNullOrUndefined(history.location.state.uid)) {
+      if (!(history.location.state.uid === undefined || history.location.state.uid === null)) {
         view.title = travelMessage.settlement.page.modifyTitle;
         view.subTitle = travelMessage.settlement.page.modifySubHeader;
 
@@ -289,7 +289,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
         });
       }
 
-      if (!isNullOrUndefined(history.location.state.traveluid)) {
+      if (!(history.location.state.traveluid === undefined || history.location.state.traveluid === null)) {
         view.title = travelMessage.settlement.page.newTitle,
         view.subTitle = travelMessage.settlement.page.newSubHeader,
 
