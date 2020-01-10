@@ -266,30 +266,34 @@ const TravelRequestDetailPartialForm: React.ComponentType<TravelRequestDetailPar
         )}
       />
 
-      <Field
-        name="siteUid"
-        render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
-          <React.Fragment>
-            <ProjectSiteOption filter={props.filterProjectSite}>
-              <SelectField
-                isSearchable
-                isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.values.projectUid.indexOf('GNLPS') !== -1 || props.formikBag.isSubmitting}
-                isClearable={field.value !== ''}
-                escapeClearsValue={true}
-                valueString={field.value}
-                textFieldProps={{
-                  label: props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName')),
-                  required: true,
-                  helperText: form.touched.siteUid && form.errors.siteUid,
-                  error: form.touched.siteUid && Boolean(form.errors.siteUid)
-                }}
-                onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
-                onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
-              />
-            </ProjectSiteOption>
-          </React.Fragment>
-        )}
-      />
+      {
+        props.formikBag.values.projectUid &&
+        props.formikBag.values.projectUid.indexOf('GNLPS') === -1 &&
+        <Field
+          name="siteUid"
+          render={({ field, form }: FieldProps<ITravelRequestFormValue>) => (
+            <React.Fragment>
+              <ProjectSiteOption filter={props.filterProjectSite}>
+                <SelectField
+                  isSearchable
+                  isDisabled={props.formikBag.values.projectUid === '' || props.formikBag.isSubmitting}
+                  isClearable={field.value !== ''}
+                  escapeClearsValue={true}
+                  valueString={field.value}
+                  textFieldProps={{
+                    label: props.intl.formatMessage(travelMessage.request.fieldFor(field.name, 'fieldName')),
+                    required: true,
+                    helperText: form.touched.siteUid && form.errors.siteUid,
+                    error: form.touched.siteUid && Boolean(form.errors.siteUid)
+                  }}
+                  onMenuClose={() => props.formikBag.setFieldTouched(field.name)}
+                  onChange={(selected: ISelectFieldOption) => props.formikBag.setFieldValue(field.name, selected && selected.value || '')}
+                />
+              </ProjectSiteOption>
+            </React.Fragment>
+          )}
+        />
+      }
 
       <Field
         name="activityType"
