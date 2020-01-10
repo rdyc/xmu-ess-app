@@ -3,7 +3,6 @@ import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { TravelRequestDetail } from './request/detail/TravelRequestDetail';
-// import RequestEditor from './request/editor/RequestEditor';
 import { TravelRequestForm } from './request/form/TravelRequestForm';
 import { TravelRequestList } from './request/list/TravelRequestList';
 import { TravelRequestApprovalDetail } from './requestApproval/detail/TravelRequestApprovalDetail';

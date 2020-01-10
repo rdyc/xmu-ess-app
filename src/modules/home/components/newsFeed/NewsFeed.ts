@@ -24,7 +24,8 @@ const lifeCycles: ReactLifeCycleFunctions<NewsFeedProps, {}> = {
     if (!isLoading && !response) {
       loadListRequest({
         filter: {
-          direction: 'ascending',
+          direction: 'descending',
+          orderBy: 'date',
           size: 6
         }
       });
