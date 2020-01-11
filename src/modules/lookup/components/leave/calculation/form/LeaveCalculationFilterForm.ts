@@ -12,7 +12,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 import { LeaveCalculationFilterFormView } from './LeaveCalculationFilterFormView';
 
 const formName = 'Filter';
@@ -69,7 +68,7 @@ const handlerCreators: HandleCreators<FilterFormProps, OwnHandler> = {
   handleChangeCompany: (props: FilterFormProps) => (event: any, newValue: string, oldValue: string) => {
     const { change } = props;
 
-    if (!isNullOrUndefined(oldValue)) {
+    if (!(oldValue === undefined || oldValue === null)) {
       change('year', '');
     }
   },

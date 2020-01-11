@@ -15,7 +15,6 @@ import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { InjectedIntl } from 'react-intl';
-import { isNullOrUndefined } from 'util';
 
 import { IProjectRegistrationFormValue } from '../ProjectRegistrationForm';
 
@@ -339,7 +338,7 @@ const ProjectDetailPartialForm: React.ComponentType<ProjectDetailPartialFormProp
               inputComponent: NumberFormatter
             }}
             InputLabelProps={{ 
-              shrink: !isNullOrUndefined(props.formikBag.values.valueIdr) 
+              shrink: !(props.formikBag.values.valueIdr === undefined || props.formikBag.values.valueIdr === null) 
             }} 
           />
         )}

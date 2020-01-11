@@ -19,16 +19,17 @@ export const NewsFeedView: React.SFC<NewsFeedProps> = props => (
     }
     
     <Preloader 
-      show={props.newsFeedState.all.isLoading} 
+      show={props.newsFeedState.list.isLoading} 
       label={props.intl.formatMessage(layoutMessage.text.loading)}
     >
       <Grid container spacing={16}>
         {
-          props.newsFeedState.all.response &&
-          props.newsFeedState.all.response.data.news.map((item, index) => (
+          props.newsFeedState.list.response &&
+          props.newsFeedState.list.response.data &&
+          props.newsFeedState.list.response.data.map((item, index) => (
             <Grid item key={index} sm={12} md={4} lg={4}>
               <Card square elevation={1}>
-                <CardActionArea href={item.url} target="_blank" disableRipple disableTouchRipple>
+                <CardActionArea href={item.link} target="_blank" disableRipple disableTouchRipple>
                   <CardMedia
                     component="img"
                     image={item.image}

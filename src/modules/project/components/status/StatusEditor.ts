@@ -4,11 +4,13 @@ import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithMasterPage, withMasterPage } from '@layout/hoc/withMasterPage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectStatusPutPayload } from '@project/classes/request/status';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { WithProjectStatus, withProjectStatus } from '@project/hoc/withProjectStatus';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { projectStatusMessage } from '@project/locales/messages/projectStatusMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -26,10 +28,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
-import { WithStyles, withStyles } from '@material-ui/core';
-import styles from '@styles';
 import { ProjectStatusFormData } from './forms/StatusForm';
 import { StatusEditorView } from './StatusEditorView';
 
@@ -78,7 +77,7 @@ const handlerCreators: HandleCreators<StatusEditorProps, IOwnHandlers> = {
     const requiredFields = ['statusType'];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if (!formData.information[field] || (formData.information[field] === undefined || formData.information[field] === null)) {
         errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -152,13 +151,13 @@ const handlerCreators: HandleCreators<StatusEditorProps, IOwnHandlers> = {
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       alertAdd({
         time: new Date(),
         message: intl.formatMessage(projectStatusMessage.updateFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
@@ -186,7 +185,7 @@ const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
     const { user } = this.props.userState;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
-    if (!isNullOrUndefined(history.location.state) && user) {
+    if (!(history.location.state === undefined || history.location.state === null) && user) {
       this.props.masterPage.changePage({
         uid: AppMenu.ProjectRegistrationRequest,
         parentUid: AppMenu.ProjectRegistration,

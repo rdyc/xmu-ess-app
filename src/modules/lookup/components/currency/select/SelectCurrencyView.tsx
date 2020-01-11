@@ -2,7 +2,6 @@ import { ICurrencyList } from '@lookup/classes/response';
 import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 import { SelectCurrencyProps } from './SelectCurrency';
 
 export const SelectCurrencyView: React.SFC<SelectCurrencyProps> = props => {
@@ -47,7 +46,7 @@ export const SelectCurrencyView: React.SFC<SelectCurrencyProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
+      error={meta.touched && !(meta.error === undefined || meta.error === null)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

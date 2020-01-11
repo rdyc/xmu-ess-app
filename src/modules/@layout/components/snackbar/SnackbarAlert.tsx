@@ -17,7 +17,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { compose, setDisplayName } from 'recompose';
-import { isNullOrUndefined, isObject } from 'util';
 
 const SnackbarAlertView: React.SFC<WithLayout> = props => {
   const { layoutState, layoutDispatch } = props;
@@ -43,7 +42,7 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
   const renderActions = () => {
     const actions = [];
 
-    if (!isNullOrUndefined(alert.details)) {
+    if (alert.details !== undefined || alert.details !== null) {
       actions.push(
         <Button
           key="undo"
@@ -80,10 +79,10 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-details">
-          {alert && !isObject(alert.details) && alert.details}
+          {alert && (alert.details !== null && typeof alert.details !== 'object') && alert.details}
           
           {
-            alert && isObject(alert.details) && 
+            alert && (alert.details !== null && typeof alert.details === 'object') && 
             <List disablePadding>
               {
                 parseObject(alert.details).map(item => 

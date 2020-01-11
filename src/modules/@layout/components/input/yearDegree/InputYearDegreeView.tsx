@@ -2,7 +2,6 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as moment from 'moment';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 
 import { InputYearDegreeProps } from './InputYearDegree';
 
@@ -55,7 +54,7 @@ export const InputYearDegreeView: React.SFC<InputYearDegreeProps> = props => {
       required={required}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
+      error={meta.touched && !(meta.error === undefined || meta.error === null)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile

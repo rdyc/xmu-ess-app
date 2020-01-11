@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { INotifSettingPostPayload, INotifSettingPutPayload } from '@hr.notification/classes/request/setting';
@@ -74,7 +73,7 @@ export type NotifSettingFormProps
 
 const createProps: mapper<NotifSettingFormProps, IOwnState> = (props: NotifSettingFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -133,7 +132,9 @@ const stateUpdaters: StateUpdaters<NotifSettingFormProps, IOwnState, IOwnStateUp
 
 const handlerCreators: HandleCreators<NotifSettingFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: NotifSettingFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const settingUid = props.history.location.state.uid;
       const { isLoading } = props.notifSettingState.detail;

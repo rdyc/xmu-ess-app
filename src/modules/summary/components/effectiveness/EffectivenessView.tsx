@@ -6,7 +6,6 @@ import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { AutoSizer, Column, Table as VirtualizedTable } from 'react-virtualized';
-import { isArray } from 'util';
 import { EffectivenessFilter } from './EffectivenessFilter';
 
 export type IEffectiveness = {
@@ -182,7 +181,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
               elevation={1}
               className={!isMobile ? classNames(classes.reportPaper) : classNames(classes.reportPaperMobile)}
             >
-            {response && isArray(response.data) && renderEffectiveness(response.data)}
+            {response && Array.isArray(response.data) && renderEffectiveness(response.data)}
             </Paper>
           }
         </Grid>

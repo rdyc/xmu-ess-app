@@ -28,14 +28,13 @@ import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 
 import { BillableListFilterProps } from './BillableListFilter';
 
 export const BillableListFilterView: React.SFC<BillableListFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
     return props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
-    isNullOrUndefined(props.filterCompany) ||
+      // (props.filterCompany === undefined || props.filterCompany === null) ||
       props.filterEmployee !== undefined ||
       props.filterStart !== props.start ||
       props.filterEnd !== props.end;
@@ -67,8 +66,8 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             </Typography>
 
             {
+              !props.filterCompany ||
               (props.filterCompany && props.filterCompany.uid !== ( props.resetCompany && props.resetCompany.uid ) ||
-              isNullOrUndefined(props.filterCompany) ||
               props.filterEmployee ||
               props.filterStart !== props.start ||          
               props.filterEnd !== props.end) &&
@@ -98,7 +97,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
             />
             <ListItemSecondaryAction>
               {
-                (props.filterCompany && props.filterCompany.uid !== (props.resetCompany && props.resetCompany.uid) || isNullOrUndefined(props.filterCompany)) &&
+                (props.filterCompany && props.filterCompany.uid !== (props.resetCompany && props.resetCompany.uid) || !props.filterCompany) &&
                 <IconButton onClick={props.handleFilterCompanyOnClear}>
                   <ClearIcon />
                 </IconButton>

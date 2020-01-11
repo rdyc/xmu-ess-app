@@ -25,7 +25,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 import { HrCompetencyResultDetailView } from './HrCompetencyResultDetailView';
 
@@ -127,7 +126,9 @@ const stateUpdaters: StateUpdaters<HrCompetencyResultDetailProps, IOwnState, IOw
 
 const handlerCreators: HandleCreators<HrCompetencyResultDetailProps, IOwnHandler> = {
   handleOnLoadApi: (props: HrCompetencyResultDetailProps) => () => { 
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const { user } = props.userState;
       const competencyEmployeeUid = props.match.params.competencyEmployeeUid;
       const { isLoading } = props.hrCompetencyEmployeeState.detail;

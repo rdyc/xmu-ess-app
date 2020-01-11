@@ -27,7 +27,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { LeaveCancellationFormData } from '../form/LeaveCancellationForm';
 import { LeaveCancellationDetailView } from './LeaveCancellationDetailView';
@@ -117,7 +116,7 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, IOwnHandler>
     const requiredFields = ['isApproved', 'remark'];
   
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData[field] || (formData[field] === undefined || formData[field] === null)) {
         errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -180,13 +179,13 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, IOwnHandler>
       // validation errors from server (400: Bad Request)
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: props.intl.formatMessage(leaveCancellationMessage.submitFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }
