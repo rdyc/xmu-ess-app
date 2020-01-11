@@ -25,7 +25,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 import { NoteFormView } from './NoteFormView';
 
@@ -75,7 +74,7 @@ export type NoteFormProps
 
 const createProps: mapper<NoteFormProps, IOwnState> = (props: NoteFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
   
   // form values
   initialValues: {
@@ -102,7 +101,9 @@ const stateUpdaters: StateUpdaters<NoteFormProps, IOwnState, IOwnStateUpdater> =
 
 const handlerCreators: HandleCreators<NoteFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: NoteFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const employeeUid = props.match.params.employeeUid;
       const noteId = props.history.location.state.noteId;

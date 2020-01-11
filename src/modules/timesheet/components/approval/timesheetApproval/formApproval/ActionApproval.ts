@@ -306,13 +306,13 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
       // validation errors from server (400: Bad Request)
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
         message: intl.formatMessage(timesheetMessage.approval.message.submitFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }*/

@@ -8,7 +8,6 @@ import { isMenusWithWorkflow } from '@organization/helper';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { isNullOrUndefined } from 'util';
 import { WorkflowListFilter } from './WorkflowListFilter';
 import { WorkflowMenuListProps } from './WorkflowMenuList';
 
@@ -58,7 +57,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                     <Button
                       size="small"
                       color="secondary"
-                      disabled={isNullOrUndefined(props.companyUid)}
+                      disabled={props.companyUid === undefined || props.companyUid === null}
                       onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
                     >
                       <FormattedMessage {...layoutMessage.action.details} />

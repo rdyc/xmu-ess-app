@@ -30,7 +30,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject } from 'util';
 
 import { TravelRequestApprovalDetailView } from './TravelRequestApprovalDetailView';
 
@@ -128,7 +127,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, IOwnHand
       : ['isApproved'];
 
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData[field] || (formData[field] === undefined || formData[field] === null)) {
         errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
@@ -201,13 +200,13 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, IOwnHand
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       alertAdd({
         time: new Date(),
         message: intl.formatMessage(travelApprovalMessage.submitFailure),
-        details: isObject(submitError) ? submitError.message : submitError
+        details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     }
   }

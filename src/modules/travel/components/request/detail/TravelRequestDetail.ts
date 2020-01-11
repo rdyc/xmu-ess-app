@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNull } from 'util';
 import { TravelRequestDetailView } from './TravelRequestDetailView';
 
 interface IOwnRouteParams {
@@ -255,7 +254,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelRequestDetailProps, IOwnState> =
           id: TravelUserAction.AddSettlement,
           name: this.props.intl.formatMessage(travelMessage.request.option.addSettlement),
           enabled: true,
-          visible: isContains(_statusType, [ WorkflowStatusType.Approved]) && isNull(response && response.data.settlement)
+          visible: isContains(_statusType, [ WorkflowStatusType.Approved]) && (response !== undefined && response.data.settlement === null)
         }
       ];
 

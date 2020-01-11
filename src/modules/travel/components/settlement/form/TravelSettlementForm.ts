@@ -19,7 +19,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { ISystemListFilter } from '@common/classes/filters';
@@ -114,7 +113,7 @@ export type TravelSettlementFormProps
 
 const createProps: mapper<TravelSettlementFormProps, IOwnState> = (props: TravelSettlementFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state && props.history.location.state.uid) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state !== undefined && (props.history.location.state.uid === undefined || props.history.location.state.uid === null)) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -268,27 +267,29 @@ const stateUpdaters: StateUpdaters<TravelSettlementFormProps, IOwnState, IOwnSta
 const handlerCreators: HandleCreators<TravelSettlementFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: TravelSettlementFormProps) => () => {
     const user = props.userState.user;
-    if (!isNullOrUndefined(props.history.location.state && props.history.location.state.uid)) {
-      const settlementUid = props.history.location.state.uid;
-      const { isLoading } = props.travelSettlementState.detail;
-
-      if (user && settlementUid && !isLoading) {
-        props.travelSettlementDispatch.loadRequest({
-          travelSettlementUid: settlementUid,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid
-        });
-      }
-    } else if (!isNullOrUndefined(props.history.location.state && props.history.location.state.traveluid)) {
-      const travelUid = props.history.location.state.traveluid;
-      const { isLoading } = props.travelRequestState.detail;
-
-      if (user && travelUid && !isLoading) {
-        props.travelRequestDispatch.loadDetailRequest({
-          travelUid,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid
-        });
+    if (!(props.history.location.state === undefined || props.history.location.state === null )) {
+      if (!(props.history.location.state.uid === undefined || props.history.location.state.uid === null)) {
+        const settlementUid = props.history.location.state.uid;
+        const { isLoading } = props.travelSettlementState.detail;
+  
+        if (user && settlementUid && !isLoading) {
+          props.travelSettlementDispatch.loadRequest({
+            travelSettlementUid: settlementUid,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid
+          });
+        }
+      } else if (!(props.history.location.state.traveluid === undefined || props.history.location.state.traveluid === null)) {
+        const travelUid = props.history.location.state.traveluid;
+        const { isLoading } = props.travelRequestState.detail;
+  
+        if (user && travelUid && !isLoading) {
+          props.travelRequestDispatch.loadDetailRequest({
+            travelUid,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid
+          });
+        }
       }
     }
   },

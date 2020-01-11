@@ -19,7 +19,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { withMasterPage, WithMasterPage } from '@layout/hoc/withMasterPage';
@@ -86,7 +85,7 @@ export type OrganizationStructureFormProps
 
 const createProps: mapper<OrganizationStructureFormProps, IOwnState> = (props: OrganizationStructureFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -167,7 +166,9 @@ const handlerCreators: HandleCreators<OrganizationStructureFormProps, IOwnHandle
     props.setPositionFilter(companyUid);
   },
   handleOnLoadDetail: (props: OrganizationStructureFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const structureUid = props.history.location.state.structureUid;
       const companyUid = props.history.location.state.companyUid;
       const { isLoading } = props.organizationStructureState.detail;

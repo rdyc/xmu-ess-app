@@ -13,7 +13,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
 import { AccountEmployeeAccessDetailView } from './AccountEmployeeAccessDetailView';
 
 interface IOwnRouteParams {
@@ -237,14 +236,14 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailProps, IOwnHand
     if (errors) {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
       });
     } else {
       if (props.action === LookupUserAction.Delete) {
         props.layoutDispatch.alertAdd({
           time: new Date(),
           message: props.intl.formatMessage(accountMessage.shared.message.deleteFailure),
-          details: isObject(submitError) ? submitError.message : submitError
+          details: (submitError !== null && typeof submitError === 'object') ? submitError.message : submitError
         });
       }
     }

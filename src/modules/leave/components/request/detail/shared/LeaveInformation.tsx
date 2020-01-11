@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   data: ILeaveDetail;
@@ -86,7 +85,7 @@ const leaveInformation: React.SFC<AllProps> = props => {
           value={props.data.requestedLeave}
         />
         {
-          !isNullOrUndefined(data.rejectedReason) ?
+          !(data.rejectedReason === undefined || data.rejectedReason === null) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(leaveMessage.request.field.rejectedReason)}

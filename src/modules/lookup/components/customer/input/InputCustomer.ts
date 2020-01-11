@@ -12,7 +12,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 import { InputCustomerView } from './InputCustomerView';
 
@@ -91,7 +90,7 @@ const handlerCreators: HandleCreators<InputCustomerProps, OwnHandlers> = {
       if (response && response.data) {
         const customer = response.data.find(item => item.uid === input.value);
   
-        if (!isNullOrUndefined(customer)) {
+        if (!(customer === undefined || customer === null)) {
           result = customer.name;
         }
       }

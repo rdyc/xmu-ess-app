@@ -1,7 +1,5 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
-
 import { LookupLeaveDialog } from '../dialog';
 import { InputLeaveProps } from './InputLeave';
 
@@ -24,7 +22,7 @@ export const InputLeaveView: React.SFC<InputLeaveProps> = props => {
         value={value}
         required={required}
         disabled={disabled || meta.submitting}
-        error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
+        error={meta.touched && !(meta.error === undefined || meta.error === null)}
         helperText={meta.touched && meta.error}
         onClick={() => handleDialogOpen()}
       />

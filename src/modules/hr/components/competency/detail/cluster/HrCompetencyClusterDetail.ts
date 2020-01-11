@@ -26,7 +26,6 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isObject } from 'util';
 
 import { HrCompetencyClusterDetailView } from './HrCompetencyClusterDetailView';
 
@@ -258,7 +257,7 @@ const handlerCreators: HandleCreators<HrCompetencyClusterDetailProps, IOwnHandle
     props.layoutDispatch.alertAdd({
       time: new Date(),
       message: props.intl.formatMessage(hrMessage.shared.message.deleteFailure),
-      details: isObject(submitError) ? (submitError.errors[0] ? submitError.errors[0].message : submitError.message) : submitError
+      details: (submitError !== null && typeof submitError === 'object') ? (submitError.errors[0] ? submitError.errors[0].message : submitError.message) : submitError
     });
   }
 };

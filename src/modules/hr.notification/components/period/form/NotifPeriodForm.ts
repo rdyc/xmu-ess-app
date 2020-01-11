@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { isNullOrUndefined } from 'util';
 import * as Yup from 'yup';
 
 import { INotifPeriodPostPayload, INotifPeriodPutPayload } from '@hr.notification/classes/request/period';
@@ -73,7 +72,7 @@ export type NotifPeriodFormProps
 
 const createProps: mapper<NotifPeriodFormProps, IOwnState> = (props: NotifPeriodFormProps): IOwnState => ({
   // form props
-  formMode: isNullOrUndefined(props.history.location.state) ? FormMode.New : FormMode.Edit,
+  formMode: (props.history.location.state === undefined || props.history.location.state === null) ? FormMode.New : FormMode.Edit,
 
   // form values
   initialValues: {
@@ -121,7 +120,9 @@ const stateUpdaters: StateUpdaters<NotifPeriodFormProps, IOwnState, IOwnStateUpd
 
 const handlerCreators: HandleCreators<NotifPeriodFormProps, IOwnHandler> = {
   handleOnLoadDetail: (props: NotifPeriodFormProps) => () => {
-    if (!isNullOrUndefined(props.history.location.state)) {
+    const { history } = props;
+
+    if (!(history.location.state === undefined || history.location.state === null)) {
       const user = props.userState.user;
       const periodUid = props.history.location.state.uid;
       const { isLoading } = props.notifPeriodState.detail;
