@@ -177,6 +177,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         label={props.intl.formatMessage(travelMessage.request.field.isRoundTrip)}
                         control={
                           <Checkbox
+                            disabled={props.formikBag.isSubmitting}
                             {...field}
                             value={field.value}
                             checked={props.formikBag.values.items[index].isRoundTrip}
@@ -375,6 +376,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         label={props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)}
                         control={
                           <Checkbox
+                            disabled={props.formikBag.isSubmitting}
                             {...field}
                             value={field.value}
                             checked={props.formikBag.values.items[index].isTransportByCompany}
@@ -448,6 +450,7 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                         label={props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)}
                         control={
                           <Checkbox
+                            disabled={props.formikBag.isSubmitting}
                             {...field}
                             value={field.value}
                             checked={props.formikBag.values.items[index].isHotelByCompany}
@@ -546,6 +549,9 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.diemValuePlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
                         />
                       );
                     }}
@@ -569,6 +575,9 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.currencyUidPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
                         />
                       );
                     }}
@@ -592,6 +601,9 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.currencyRatePlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
                         />
                       );
                     }}
@@ -615,6 +627,9 @@ const TravelRequestItemPartialForm: React.ComponentType<TravelRequestItemPartial
                           placeholder={props.intl.formatMessage(travelMessage.request.field.amountPlaceholder)}
                           helperText={touch && error}
                           error={touch && Boolean(error)}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
                         />
                       );
                     }}

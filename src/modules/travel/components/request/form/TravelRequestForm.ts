@@ -183,7 +183,11 @@ const createProps: mapper<TravelRequestFormProps, IOwnState> = (props: TravelReq
 
     siteUid: Yup.string()
       .label(props.intl.formatMessage(travelMessage.request.field.siteUid))
-      .required(),
+      .when('projectType', ({
+        is: (type: any) => type && type !== 'GNLPS',
+        then: Yup.string().required()
+      })),
+      // .required(),
 
     activityType: Yup.string()
       .label(props.intl.formatMessage(travelMessage.request.field.activityType))
