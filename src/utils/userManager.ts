@@ -1,5 +1,6 @@
 import { UserManagerSettings, WebStorageStateStore } from 'oidc-client';
 import { createUserManager } from 'redux-oidc';
+import { envHelper, IFieldEnvHelper } from './envHelper';
 
 const location = window.location;
 
@@ -14,9 +15,11 @@ const PopupCenter = (w: number, h: number): string => {
   return result;
 };
 
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
 const settings: UserManagerSettings = {
-  client_id: process.env.REACT_APP_CLIENT_ID || '',
-  authority: process.env.REACT_APP_OAUTH_URL || '',
+  client_id: envHelper(IFieldEnvHelper.ClientId, hostname),
+  authority: envHelper(IFieldEnvHelper.OAuth, hostname),
   scope: process.env.REACT_APP_OAUTH_SCOPES || '',
   response_type: 'token id_token',
   // redirect_uri: `${selfHost}/callback`,

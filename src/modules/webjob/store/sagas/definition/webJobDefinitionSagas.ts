@@ -14,7 +14,11 @@ import {
 } from '@webjob/store/actions';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse } from 'utils';
+import { envHelper, IApiResponse, IFieldEnvHelper } from 'utils';
+
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+const host = envHelper(IFieldEnvHelper.WebJobApiUrl, hostname);
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionGetAllRequest>) => {
@@ -24,7 +28,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/definitions?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -50,7 +54,7 @@ function* watchFetchListRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/definitions/list?${params}`,
       successEffects: (response: IApiResponse) => ([
@@ -71,7 +75,7 @@ function* watchFetchListRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}`,
       successEffects: (response: IApiResponse) => ([
@@ -96,7 +100,7 @@ function* watchPostRequest() {
     data.append('package', action.payload.data.package[0]);
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'POST',
       path: `/api/v1/definitions`,
       payload: data,
@@ -138,7 +142,7 @@ function* watchPostRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof webJobDefinitionDeleteRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'DELETE',
       path: `/api/v1/definitions`,
       payload: action.payload.data,
@@ -184,7 +188,7 @@ function* watchFetchAllJobRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}/jobs?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -210,7 +214,7 @@ function* watchFetchListJobRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/definitions/${action.payload.definitionUid}/jobs/list?${params}`,
       successEffects: (response: IApiResponse) => ([

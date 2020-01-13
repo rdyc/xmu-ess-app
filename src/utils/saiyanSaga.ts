@@ -1,7 +1,10 @@
 import { apiRequest, IApiResponse } from '@utils/api';
 import { all, call, Effect } from 'redux-saga/effects';
+import { envHelper, IFieldEnvHelper } from './envHelper';
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+const API_ENDPOINT = envHelper(IFieldEnvHelper.ApiUrl, hostname);
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

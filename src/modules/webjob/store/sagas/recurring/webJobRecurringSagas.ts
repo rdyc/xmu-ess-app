@@ -13,7 +13,11 @@ import {
 } from '@webjob/store/actions';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse } from 'utils';
+import { envHelper, IApiResponse, IFieldEnvHelper } from 'utils';
+
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+const host = envHelper(IFieldEnvHelper.WebJobApiUrl, hostname);
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringGetAllRequest>) => {
@@ -23,7 +27,7 @@ function* watchFetchAllRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/recurrings?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -44,7 +48,7 @@ function* watchFetchAllRequest() {
 function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       successEffects: (response: IApiResponse) => ([
@@ -65,7 +69,7 @@ function* watchFetchByIdRequest() {
 function* watchPostRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPostRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'POST',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
@@ -106,7 +110,7 @@ function* watchPostRequest() {
 function* watchPutRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringPutRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'PUT',
       path: `/api/v1/recurrings/${action.payload.recurringUid}`,
       payload: action.payload.data,
@@ -147,7 +151,7 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringDeleteRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'DELETE',
       path: `/api/v1/recurrings`,
       payload: action.payload.data,
@@ -188,7 +192,7 @@ function* watchDeleteRequest() {
 function* watchTriggerRequest() {
   const worker = (action: ReturnType<typeof webJobRecurringTriggerRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'POST',
       path: `/api/v1/recurrings/trigger`,
       payload: action.payload.data,

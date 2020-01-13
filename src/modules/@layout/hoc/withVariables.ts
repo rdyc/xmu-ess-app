@@ -1,7 +1,9 @@
+import { envHelper, IFieldEnvHelper } from '@utils/envHelper';
 import { connect } from 'react-redux';
 
-const roleSales = process.env.REACT_APP_ROLE_IDS_SALES;
-const rolePMO = process.env.REACT_APP_ROLE_IDS_PMO;
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+const roleSales = envHelper(IFieldEnvHelper.RoleIdsSales, hostname);
+const rolePMO = envHelper(IFieldEnvHelper.RoleIdsPmo, hostname);
 
 export interface WithVariables {
   roleSalesUids: string[] | undefined;

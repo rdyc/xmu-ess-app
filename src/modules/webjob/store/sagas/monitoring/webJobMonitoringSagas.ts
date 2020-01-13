@@ -57,12 +57,16 @@ import {
 } from '@webjob/store/actions';
 import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse } from 'utils';
+import { envHelper, IApiResponse, IFieldEnvHelper } from 'utils';
+
+const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+const host = envHelper(IFieldEnvHelper.WebJobApiUrl, hostname);
 
 function* watchFetchAllStatisticRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringStatisticGetAllRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/statistics`, 
       successEffects: (response: IApiResponse) => ([
@@ -88,7 +92,7 @@ function* watchFetchAllCountRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/counts?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -114,7 +118,7 @@ function* watchFetchAllRecurringRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/recurrings?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -135,7 +139,7 @@ function* watchFetchAllRecurringRequest() {
 function* watchFetchAllServerRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringServerGetAllRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/servers`, 
       successEffects: (response: IApiResponse) => ([
@@ -156,7 +160,7 @@ function* watchFetchAllServerRequest() {
 function* watchFetchAllQueueRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringQueueGetAllRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/queues`, 
       successEffects: (response: IApiResponse) => ([
@@ -182,7 +186,7 @@ function* watchFetchJobAllDeletedRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/deleted?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -208,7 +212,7 @@ function* watchFetchJobAllEnqueuedRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/enqueued?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -234,7 +238,7 @@ function* watchFetchJobAllFailedRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/failed?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -260,7 +264,7 @@ function* watchFetchJobAllFetchedRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/fetched?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -286,7 +290,7 @@ function* watchFetchJobAllProcessingRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/processing?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -312,7 +316,7 @@ function* watchFetchJobAllSucceededRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/succeeded?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -338,7 +342,7 @@ function* watchFetchJobAllScheduledRequest() {
     });
 
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/scheduled?${params}`, 
       successEffects: (response: IApiResponse) => ([
@@ -359,7 +363,7 @@ function* watchFetchJobAllScheduledRequest() {
 function* watchFetchJobByIdRequest() {
   const worker = (action: ReturnType<typeof webJobMonitoringJobGetDetailGetByIdRequest>) => {
     return saiyanSaga.fetch({
-      host: process.env.REACT_APP_WEBJOB_API_URL,
+      host,
       method: 'GET',
       path: `/api/v1/monitoring/jobs/${action.payload.jobId}`, 
       successEffects: (response: IApiResponse) => ([

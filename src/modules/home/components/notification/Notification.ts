@@ -5,6 +5,7 @@ import { ModuleDefinitionType, NotificationType } from '@layout/types';
 import { WithLookupVersion, withLookupVersion } from '@lookup/hoc/withLookupVersion';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
+import { envHelper, IFieldEnvHelper } from '@utils/envHelper';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -125,7 +126,9 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     props.masterPage.changeRouteFrom(category, type, uid);
   },
   handleDownloadClick: (props: NotificationProps) => () => {
-    const cdn = process.env.REACT_APP_CDN_HOST || window.location.origin;
+    const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+    const cdn = envHelper(IFieldEnvHelper.CdnHost, hostname) || window.location.origin;
 
     window.open(`${cdn}/download/android/TessaMobile.apk`, '_blank');
   }
@@ -133,7 +136,9 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<NotificationProps, IOwnState> = {
   componentDidMount() {
-    const clientId = process.env.REACT_APP_ANDROID_CLIENT_ID || window.location.origin;
+    const hostname: string = document && document.location && document.location.hostname || process.env.REACT_APP_HOST_LOCAL || '';
+
+    const clientId = envHelper(IFieldEnvHelper.AndroidId, hostname) || window.location.origin;
 
     const { isLoading, response } = this.props.lookupVersionState.detail;
     const { loadDetailRequest } = this.props.lookupVersionDispatch;
